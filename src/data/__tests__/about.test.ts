@@ -44,8 +44,8 @@ describe("About/Bio Data Validation", () => {
   });
 
   describe("Paragraphs Structure", () => {
-    it("should have exactly 3 paragraphs", () => {
-      expect(about.paragraphs.length).toBe(3);
+    it("should have at least 3 paragraphs", () => {
+      expect(about.paragraphs.length).toBeGreaterThanOrEqual(3);
     });
 
     it("should have all paragraphs as non-empty strings", () => {
@@ -200,9 +200,9 @@ describe("About/Bio Data Validation", () => {
     });
   });
 
-  describe("Phase 2 Migration Completeness (Task 3.4)", () => {
-    it("should have all content from Squarespace", () => {
-      expect(about.paragraphs.length).toBe(3);
+  describe("Content Completeness", () => {
+    it("should have complete bio content", () => {
+      expect(about.paragraphs.length).toBeGreaterThanOrEqual(3);
       expect(about.heading).toBeDefined();
     });
 

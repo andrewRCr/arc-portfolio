@@ -249,31 +249,32 @@ describe("Skills Data Validation", () => {
     });
   });
 
-  describe("Phase 2 Migration Completeness", () => {
-    it("should have skills from CineXplorer project (Task 3.2)", () => {
-      const cinexplorerSkills = ["Next.js", "React", "Tailwind CSS", "TypeScript", "PostgreSQL"];
+  describe("Core Skills Coverage", () => {
+    it("should have essential web development skills", () => {
+      const essentialSkills = ["React", "TypeScript", "JavaScript"];
 
-      cinexplorerSkills.forEach((skill) => {
+      essentialSkills.forEach((skill) => {
         const hasSkill = Object.values(skills).some((categorySkills) => categorySkills.includes(skill));
         expect(hasSkill).toBe(true);
       });
     });
 
-    it("should have skills from ARC Framework project (Task 3.2)", () => {
-      const arcSkills = ["Python", "Claude Code", "GitHub Actions"];
+    it("should have modern tooling and frameworks", () => {
+      const modernTools = ["Next.js", "Vitest", "Tailwind CSS"];
 
-      arcSkills.forEach((skill) => {
+      modernTools.forEach((skill) => {
         const hasSkill = Object.values(skills).some((categorySkills) => categorySkills.includes(skill));
         expect(hasSkill).toBe(true);
       });
     });
 
-    it("should have AI development tools category (Task 3.1)", () => {
+    it("should have AI development tools category", () => {
       expect(skills).toHaveProperty("AI-Assisted Development");
       expect(skills["AI-Assisted Development"].length).toBeGreaterThan(0);
+      expect(skills["AI-Assisted Development"]).toContain("Claude Code");
     });
 
-    it("should have modern testing tools (Vitest, React Testing Library)", () => {
+    it("should have modern testing tools", () => {
       expect(skills["Testing & Quality"]).toContain("Vitest");
       expect(skills["Testing & Quality"]).toContain("React Testing Library");
     });

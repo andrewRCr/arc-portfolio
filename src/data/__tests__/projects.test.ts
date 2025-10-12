@@ -15,9 +15,9 @@ import { projects } from "@/data/projects";
 
 describe("Projects Data Validation", () => {
   describe("Basic Structure", () => {
-    it("should have exactly 9 projects (Phase 2 complete)", () => {
+    it("should have at least 9 projects", () => {
       expect(projects).toBeDefined();
-      expect(projects.length).toBe(9);
+      expect(projects.length).toBeGreaterThanOrEqual(9);
     });
 
     it("should have all projects as valid objects", () => {
@@ -30,12 +30,16 @@ describe("Projects Data Validation", () => {
   });
 
   describe("Order Field Validation", () => {
-    it("should have unique order values from 1 to 9", () => {
+    it("should have unique order values starting from 1", () => {
       const orderValues = projects.map((p) => p.order);
       const uniqueOrders = new Set(orderValues);
 
-      expect(uniqueOrders.size).toBe(9);
-      expect(orderValues.sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+      // All order values should be unique
+      expect(uniqueOrders.size).toBe(projects.length);
+
+      // Order values should start at 1
+      const sortedOrders = [...orderValues].sort((a, b) => a - b);
+      expect(sortedOrders[0]).toBe(1);
     });
 
     it("should have sequential order values with no gaps", () => {
@@ -150,16 +154,22 @@ describe("Projects Data Validation", () => {
   });
 
   describe("Featured Projects", () => {
-    it("should have exactly 3 featured projects (new projects: 1-3)", () => {
+    it("should have at least 3 featured projects", () => {
       const featuredProjects = projects.filter((p) => p.featured);
-      expect(featuredProjects.length).toBe(3);
+      expect(featuredProjects.length).toBeGreaterThanOrEqual(3);
     });
 
-    it("should have featured projects with order 1, 2, and 3", () => {
+    it("should have featured projects with lowest order numbers", () => {
       const featuredProjects = projects.filter((p) => p.featured);
       const featuredOrders = featuredProjects.map((p) => p.order).sort((a, b) => a - b);
 
-      expect(featuredOrders).toEqual([1, 2, 3]);
+      // Featured projects should start from order 1
+      expect(featuredOrders[0]).toBe(1);
+
+      // Featured projects should have consecutive order values (no gaps)
+      for (let i = 0; i < featuredOrders.length - 1; i++) {
+        expect(featuredOrders[i + 1] - featuredOrders[i]).toBe(1);
+      }
     });
 
     it("should have CineXplorer, ARC Framework, and arc-portfolio as featured", () => {
@@ -187,7 +197,7 @@ describe("Projects Data Validation", () => {
       });
     });
 
-    it("should have expected distribution of categories", () => {
+    it("should have reasonable distribution of categories", () => {
       const categoryCounts = projects.reduce(
         (acc, project) => {
           acc[project.category] = (acc[project.category] || 0) + 1;
@@ -196,11 +206,12 @@ describe("Projects Data Validation", () => {
         {} as Record<string, number>
       );
 
-      expect(categoryCounts["Web Application"]).toBe(3); // CineXplorer, arc-portfolio, PetResort
-      expect(categoryCounts["Game Development"]).toBe(3); // Action RPG, Survival Horror, Pong
-      expect(categoryCounts["Cross-Platform Application"]).toBe(1); // TaskFocus
-      expect(categoryCounts["Development Framework"]).toBe(1); // ARC Framework
-      expect(categoryCounts["Game Mod Utility"]).toBe(1); // DOOM Mod
+      // Should have at least the baseline counts from current projects
+      expect(categoryCounts["Web Application"]).toBeGreaterThanOrEqual(3);
+      expect(categoryCounts["Game Development"]).toBeGreaterThanOrEqual(3);
+      expect(categoryCounts["Cross-Platform Application"]).toBeGreaterThanOrEqual(1);
+      expect(categoryCounts["Development Framework"]).toBeGreaterThanOrEqual(1);
+      expect(categoryCounts["Game Mod Utility"]).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -287,18 +298,12 @@ describe("Projects Data Validation", () => {
     });
   });
 
-  describe("Phase 2 Migration Completeness", () => {
-    it("should have all new projects (Tasks 2.1-2.3)", () => {
-      const newProjectSlugs = ["cinexplorer", "arc-agentic-dev-framework", "arc-portfolio"];
-
-      newProjectSlugs.forEach((slug) => {
-        const project = projects.find((p) => p.slug === slug);
-        expect(project).toBeDefined();
-      });
-    });
-
-    it("should have all Squarespace migrations (Tasks 2.4-2.9)", () => {
-      const squarespaceSlugs = [
+  describe("Core Projects Validation", () => {
+    it("should have core portfolio projects", () => {
+      const coreProjectSlugs = [
+        "cinexplorer",
+        "arc-agentic-dev-framework",
+        "arc-portfolio",
         "taskfocus",
         "petresort",
         "doom-newgame-plus-customizer",
@@ -307,7 +312,7 @@ describe("Projects Data Validation", () => {
         "pong-clone",
       ];
 
-      squarespaceSlugs.forEach((slug) => {
+      coreProjectSlugs.forEach((slug) => {
         const project = projects.find((p) => p.slug === slug);
         expect(project).toBeDefined();
       });

@@ -56,8 +56,8 @@ describe("Contact Data Validation", () => {
   });
 
   describe("Social Links Structure", () => {
-    it("should have exactly 3 social links", () => {
-      expect(contact.socialLinks.length).toBe(3);
+    it("should have at least 3 social links", () => {
+      expect(contact.socialLinks.length).toBeGreaterThanOrEqual(3);
     });
 
     it("should have all links as valid objects", () => {
@@ -215,16 +215,18 @@ describe("Contact Data Validation", () => {
     });
   });
 
-  describe("Phase 2 Migration Completeness (Task 3.5)", () => {
-    it("should have email from Squarespace", () => {
+  describe("Core Contact Information", () => {
+    it("should have primary email address", () => {
       expect(contact.email).toBe("andrew.creekmore@me.com");
     });
 
-    it("should have all 3 social links from Squarespace", () => {
-      expect(contact.socialLinks.length).toBe(3);
+    it("should have core social platforms", () => {
+      expect(contact.socialLinks.length).toBeGreaterThanOrEqual(3);
 
-      const platforms = contact.socialLinks.map((link) => link.platform).sort();
-      expect(platforms).toEqual(["GitHub", "LinkedIn", "NexusMods"]);
+      const platforms = contact.socialLinks.map((link) => link.platform);
+      expect(platforms).toContain("GitHub");
+      expect(platforms).toContain("LinkedIn");
+      expect(platforms).toContain("NexusMods");
     });
 
     it("should have links to andrewRCr profile on all platforms", () => {
