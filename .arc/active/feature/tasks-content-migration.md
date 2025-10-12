@@ -49,11 +49,12 @@
 - `src/types/__tests__/education.test.ts` - Type definition tests for education ✓
 - `src/types/__tests__/about.test.ts` - Type definition tests for about ✓
 - `src/types/__tests__/contact.test.ts` - Type definition tests for contact ✓
-- `src/data/__tests__/projects.test.ts` - Data validation tests for projects (32 comprehensive tests) ✓
-- `src/data/__tests__/skills.test.ts` - Data validation tests for skills (45 comprehensive tests) ✓
-- `src/data/__tests__/education.test.ts` - Data validation tests for education (30 comprehensive tests) ✓
-- `src/data/__tests__/about.test.ts` - Data validation tests for about/bio (39 comprehensive tests) ✓
-- `src/data/__tests__/contact.test.ts` - Data validation tests for contact (44 comprehensive tests) ✓
+- `src/data/__tests__/projects.test.ts` - Data validation tests for projects (31 tests, refactored for flexibility) ✓
+- `src/data/__tests__/projects-images.test.ts` - Image data validation tests (28 tests) ✓
+- `src/data/__tests__/skills.test.ts` - Data validation tests for skills (45 tests, refactored) ✓
+- `src/data/__tests__/education.test.ts` - Data validation tests for education (30 tests, refactored) ✓
+- `src/data/__tests__/about.test.ts` - Data validation tests for about/bio (39 tests, refactored) ✓
+- `src/data/__tests__/contact.test.ts` - Data validation tests for contact (44 tests, refactored) ✓
 - `src/components/home/__tests__/SkillsSection.test.tsx` - Component tests for skills section (to be created)
 - `src/components/home/__tests__/AboutSection.test.tsx` - Component tests for about section (to be created)
 - `src/components/projects/__tests__/ProjectCard.test.tsx` - Component tests for project card (to be created)
@@ -62,11 +63,12 @@
 ### Image Assets
 
 - `public/thumbnails/` - Project thumbnail images, one per project (9 total, to be migrated from Squarespace)
-- `public/projects/{slug}/` - Project screenshot directories, one per project (28+ screenshots total, to be migrated from Squarespace)
+- `public/projects/{slug}/` - Project screenshot directories, one per project
+  (28+ screenshots total, to be migrated from Squarespace)
 
 ### Documentation
 
-- `public/projects/README.md` - Documentation for image organization, naming conventions, and migration details (to be created)
+- `public/projects/README.md` - Documentation for image organization, naming conventions, and migration details ✓
 
 ## Tasks
 
@@ -110,13 +112,23 @@
   - [x] 3.6 Write data validation tests for skills, education, bio, contact data
   - [x] 3.7 Run incremental quality checks (type-check, lint, format, test)
 
-- [ ] 4.0 Complete image migration from Squarespace to Next.js structure
-  - [ ] 4.1 Create directory structure and download images from Squarespace using browser extension (Image Downloader Plus)
-  - [ ] 4.2 Organize downloaded images into Next.js structure with proper naming (`{slug}.webp` for thumbnails, `screenshot-{n}.webp` for screenshots)
-  - [ ] 4.3 Update project data image paths from `.jpg` to `.webp` format for all 9 projects
-  - [ ] 4.4 Create `public/projects/README.md` documenting structure, conventions, and actual image counts
-  - [ ] 4.5 Verify all images load correctly in development (npm run dev)
-  - [ ] 4.6 Run incremental quality checks (type-check, lint, format, build)
+- [x] 4.0 Complete image migration from Squarespace to Next.js structure
+  - [x] 4.1 Create directory structure and download images from Squarespace using browser extension (Image Downloader Plus)
+  - [x] 4.2 Organize downloaded images into Next.js structure with proper naming (`{slug}.webp` for thumbnails,
+        `screenshot-{n}.webp` for screenshots)
+  - [x] 4.3 Update project data image paths from `.jpg` to `.webp` format for all 9 projects
+  - [x] 4.4 Create `public/projects/README.md` documenting structure, conventions, and actual image counts
+  - [x] 4.5 Verify all images load correctly in development (npm run dev)
+  - [x] 4.6 Add image validation tests and audit existing test brittleness
+    - Created `projects-images.test.ts` with 28 tests validating image paths, naming conventions, and data integrity
+    - Tests caught real bug: ARC Framework image paths had wrong slug (`arc-framework` vs `arc-agentic-dev-framework`)
+    - Audited all 5 data validation test files for brittleness
+    - Refactored tests to use minimum thresholds (`.toBeGreaterThanOrEqual()`) instead of exact counts (`.toBe()`)
+    - Removed hardcoded exact values (project counts, GPA values, array lengths)
+    - Renamed migration-specific test sections to feature-focused names
+    - Result: Tests remain comprehensive but are now future-proof for content growth
+    - Test count: 246 passing (28 new image tests, 1 consolidated from refactoring)
+  - [x] 4.7 Run incremental quality checks (type-check, lint, format, build)
 
 ### Phase 3: Placeholder Display Components
 
