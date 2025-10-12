@@ -1,26 +1,70 @@
 /**
- * Sample skills data demonstrating Skills interface usage
+ * Skills data organized by technical domain
  *
- * Skills organized by flexible categories using canonical technology names.
- * In Phase 2, this will be updated with actual skills from Squarespace
- * plus new technologies from recent projects (AI/LLM tools, modern frameworks).
+ * Skills migrated from Squarespace and expanded with technologies from recent projects.
+ * Focus on software engineering skills (game dev tools removed - see projects for that work).
+ * Commented entries are planned enhancements currently in development.
  */
 
 import { Skills } from "@/types/skills";
 
 export const skills: Skills = {
-  // Frontend technologies
-  Frontend: ["React", "Next.js", "TypeScript", "JavaScript", "HTML", "CSS", "Tailwind CSS", "Shadcn/ui"],
+  Languages: ["TypeScript", "JavaScript", "Python", "C#", "C++", "SQL", "HTML", "CSS"],
 
-  // Backend technologies
-  Backend: ["Node.js", "Express.js", "PostgreSQL", "MongoDB", "Prisma", "REST APIs", "GraphQL"],
+  Frontend: [
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "Shadcn/ui",
+    "Chakra UI",
+    "Bootstrap",
+    "Blazor",
+    "WPF",
+    "MudBlazor",
+    "Caliburn Micro",
+    // "Framer Motion", // Planned - in development
+    // "React Hook Form", // Planned - in development
+    // "Zod", // Planned - in development
+  ],
 
-  // Development tools and workflows
-  DevOps: ["Git", "GitHub", "GitHub Actions", "Vercel", "Docker", "CI/CD", "Jest", "Vitest"],
+  Backend: [
+    "Django",
+    "Django Ninja",
+    ".NET",
+    "Node.js",
+    "Express.js",
+    "Pydantic",
+    "Entity Framework",
+    "EJS (Embedded JavaScript)",
+    // "Celery", // Planned - in development
+  ],
 
-  // Programming languages (beyond web)
-  "Programming Languages": ["TypeScript", "JavaScript", "Python", "C++", "C#", "SQL"],
+  Databases: ["PostgreSQL", "MongoDB", "SQL Server", "MySQL", "Redis"],
 
-  // Additional categories can be added as needed
-  // Example: "AI/LLM": ["Claude API", "Prompt Engineering", "LangChain"],
+  "AI-Assisted Development": [
+    "Claude Code",
+    "GitHub Copilot",
+    "Warp",
+    "CodeRabbit",
+    "v0.dev",
+    "Gemini CLI",
+    "Codex CLI",
+  ],
+
+  "DevOps & Infrastructure": ["Git", "GitHub", "Azure DevOps", "Docker", "Vercel", "Caddy", "CI/CD", "GitHub Actions"],
+
+  "Testing & Quality": [
+    "Vitest",
+    "React Testing Library",
+    "Postman",
+    "Swagger",
+    // "Playwright", // Planned - in development
+  ],
+
+  // "State Management & Data Fetching": [
+  //   "TanStack Query", // Planned - in development
+  //   "Redux Toolkit", // Planned - in development
+  // ],
+
+  Methodologies: ["Test-Driven Development (TDD)", "Spec-Driven Development", "Agile"],
 };

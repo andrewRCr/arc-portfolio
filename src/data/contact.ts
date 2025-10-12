@@ -1,37 +1,30 @@
 /**
- * Sample contact data demonstrating Contact interface usage
+ * Contact information migrated from Squarespace
  *
- * In Phase 2, this will be replaced with actual email and social links.
- * Currently expecting: email + 4 social links (GitHub, LinkedIn, etc.)
+ * Includes email and 3 social/professional links.
+ * Icon identifiers will be used with lucide-react or similar icon library.
  */
 
 import { Contact } from "@/types/contact";
 
 export const contact: Contact = {
-  // Contact email address
-  email: "sample@example.com",
+  email: "andrew.creekmore@me.com",
 
-  // Array of social media and professional network links
   socialLinks: [
     {
       platform: "GitHub",
-      url: "https://github.com/username",
-      icon: "github", // Icon identifier for rendering
+      url: "https://github.com/andrewRCr",
+      icon: "github",
     },
     {
       platform: "LinkedIn",
-      url: "https://linkedin.com/in/username",
+      url: "https://www.linkedin.com/in/andrewRCr",
       icon: "linkedin",
     },
     {
-      platform: "Twitter",
-      url: "https://twitter.com/username",
-      icon: "twitter",
-    },
-    {
-      platform: "Email",
-      url: "mailto:sample@example.com",
-      icon: "mail",
+      platform: "NexusMods",
+      url: "https://next.nexusmods.com/profile/andrewRCr/mods",
+      icon: "package", // Generic icon for modding platform (or could use "external-link")
     },
   ],
 };

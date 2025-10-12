@@ -1,37 +1,34 @@
 /**
- * Sample bio/about data demonstrating About interface usage
+ * Bio/about content migrated from Squarespace
  *
- * Supports markdown syntax in paragraphs for links and emphasis.
- * In Phase 2, this will be replaced with actual bio from Squarespace
- * (3 paragraphs, ~150 words, including NexusMods link and career transition narrative).
+ * Preserves markdown syntax for NexusMods profile link.
+ * Note: Download count is now 270K+ (was "over 200 thousand" on Squarespace).
  */
 
 import { About } from "@/types/about";
 
 export const about: About = {
-  // Section heading
-  heading: "About Me",
+  heading: "About me",
 
-  // Array of paragraph text (supports markdown syntax)
   paragraphs: [
-    "I'm a software developer with a passion for creating elegant solutions to complex problems. " +
-      "My journey into software development began with a background in psychology, which gives me " +
-      "a unique perspective on user experience and human-centered design.",
+    "I'm a recently graduated software engineer with interests and capabilities in a variety of domains, " +
+      "including both front and backend web/desktop development. I am a self-starter with high attention " +
+      "to detail and an enthusiasm for continuous learning and improvement.",
 
-    "I specialize in full-stack web development with modern technologies like React, Next.js, and TypeScript. " +
-      "I've also worked on game modifications that have been downloaded over [200,000 times](https://example.com/profile), " +
-      "demonstrating my ability to create engaging user experiences.",
+    "Previously a graduate student in psychology, I fell in love with programming and pivoted to computer science. " +
+      "In my free time, I have a hobbyist interest in video game development - both programming as well as 3D modeling " +
+      "and animation. I also enjoy reverse engineering and modifying existing games, focusing on gameplay adjustments. " +
+      "My [modding work](https://next.nexusmods.com/profile/andrewRCr/mods) has reached over 270 thousand unique user downloads.",
 
-    "As a self-starter and continuous learner, I'm always exploring new technologies and best practices. " +
-      "I believe in writing clean, maintainable code and following test-driven development principles.",
+    "I'm eager to add value to your team's project while continuing to grow my toolkit and expand my knowledge.",
   ],
 
-  // Optional highlighted achievements (not currently used in sample)
+  // Optional: Could add highlighted achievements in future
   // highlightedAchievements: [
   //   {
-  //     label: "Downloads",
+  //     label: "Mod Downloads",
   //     value: "270K+",
-  //     link: "https://nexusmods.com/profile",
+  //     link: "https://next.nexusmods.com/profile/andrewRCr/mods",
   //   },
   // ],
 };

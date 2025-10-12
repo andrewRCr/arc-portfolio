@@ -1,0 +1,271 @@
+/**
+ * Data validation tests for education data file
+ *
+ * These tests verify that:
+ * - Both degrees are present and properly structured
+ * - All required fields are present and valid
+ * - Optional fields (GPA, dates, location) are properly formatted
+ * - Degrees are ordered correctly (most recent first)
+ * - Phase 2 migration completeness
+ */
+
+import { describe, it, expect } from "vitest";
+import { education } from "@/data/education";
+
+describe("Education Data Validation", () => {
+  describe("Basic Structure", () => {
+    it("should have exactly 2 degrees", () => {
+      expect(education).toBeDefined();
+      expect(Array.isArray(education)).toBe(true);
+      expect(education.length).toBe(2);
+    });
+
+    it("should have all degrees as valid objects", () => {
+      education.forEach((degree) => {
+        expect(degree).toBeDefined();
+        expect(typeof degree).toBe("object");
+        expect(degree).not.toBeNull();
+      });
+    });
+  });
+
+  describe("Required Fields Presence", () => {
+    it("should have all required fields for every degree", () => {
+      education.forEach((degree) => {
+        // Core fields
+        expect(degree.degree).toBeDefined();
+        expect(typeof degree.degree).toBe("string");
+        expect(degree.degree.length).toBeGreaterThan(0);
+
+        expect(degree.major).toBeDefined();
+        expect(typeof degree.major).toBe("string");
+        expect(degree.major.length).toBeGreaterThan(0);
+
+        expect(degree.institution).toBeDefined();
+        expect(typeof degree.institution).toBe("string");
+        expect(degree.institution.length).toBeGreaterThan(0);
+      });
+    });
+
+    it("should have optional fields when present", () => {
+      education.forEach((degree) => {
+        if (degree.location) {
+          expect(typeof degree.location).toBe("string");
+          expect(degree.location.length).toBeGreaterThan(0);
+        }
+
+        if (degree.graduationDate) {
+          expect(typeof degree.graduationDate).toBe("string");
+          expect(degree.graduationDate.length).toBeGreaterThan(0);
+        }
+
+        if (degree.gpa) {
+          expect(typeof degree.gpa).toBe("string");
+          expect(degree.gpa.length).toBeGreaterThan(0);
+        }
+      });
+    });
+  });
+
+  describe("Computer Science Degree (OSU)", () => {
+    it("should have Oregon State University Computer Science degree", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      expect(csDegree).toBeDefined();
+    });
+
+    it("should have correct degree type", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      expect(csDegree?.degree).toBe("Bachelor of Science");
+    });
+
+    it("should have correct institution", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      expect(csDegree?.institution).toBe("Oregon State University");
+    });
+
+    it("should have location information", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      expect(csDegree?.location).toBe("Corvallis, Oregon");
+    });
+
+    it("should have graduation date", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      expect(csDegree?.graduationDate).toBe("2022");
+    });
+
+    it("should have GPA information", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      expect(csDegree?.gpa).toBeDefined();
+      expect(csDegree?.gpa).toMatch(/^\d+\.\d+\/\d+\.\d+$/); // Format: X.XX/Y.Y
+    });
+
+    it("should have GPA of 3.74/4.0", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      expect(csDegree?.gpa).toBe("3.74/4.0");
+    });
+  });
+
+  describe("Psychology Degree (UTD)", () => {
+    it("should have UT Dallas Psychology degree", () => {
+      const psychDegree = education.find((d) => d.major === "Psychology");
+      expect(psychDegree).toBeDefined();
+    });
+
+    it("should have correct degree type", () => {
+      const psychDegree = education.find((d) => d.major === "Psychology");
+      expect(psychDegree?.degree).toBe("Bachelor of Arts");
+    });
+
+    it("should have correct institution", () => {
+      const psychDegree = education.find((d) => d.major === "Psychology");
+      expect(psychDegree?.institution).toBe("The University of Texas at Dallas");
+    });
+
+    it("should have location information", () => {
+      const psychDegree = education.find((d) => d.major === "Psychology");
+      expect(psychDegree?.location).toBe("Richardson, Texas");
+    });
+
+    it("should have graduation date", () => {
+      const psychDegree = education.find((d) => d.major === "Psychology");
+      expect(psychDegree?.graduationDate).toBe("2011");
+    });
+
+    it("should have GPA information", () => {
+      const psychDegree = education.find((d) => d.major === "Psychology");
+      expect(psychDegree?.gpa).toBeDefined();
+      expect(psychDegree?.gpa).toMatch(/^\d+\.\d+\/\d+\.\d+$/); // Format: X.XX/Y.Y
+    });
+
+    it("should have GPA of 3.3/4.0", () => {
+      const psychDegree = education.find((d) => d.major === "Psychology");
+      expect(psychDegree?.gpa).toBe("3.3/4.0");
+    });
+  });
+
+  describe("Degree Ordering", () => {
+    it("should have degrees ordered by graduation date (most recent first)", () => {
+      expect(education[0].graduationDate).toBe("2022"); // Computer Science
+      expect(education[1].graduationDate).toBe("2011"); // Psychology
+    });
+
+    it("should have Computer Science degree first", () => {
+      expect(education[0].major).toBe("Computer Science");
+    });
+
+    it("should have Psychology degree second", () => {
+      expect(education[1].major).toBe("Psychology");
+    });
+  });
+
+  describe("Data Format Validation", () => {
+    it("should have properly formatted degree names", () => {
+      const validDegrees = ["Bachelor of Science", "Bachelor of Arts", "Master of Science", "Master of Arts"];
+
+      education.forEach((degree) => {
+        expect(validDegrees).toContain(degree.degree);
+      });
+    });
+
+    it("should have properly formatted GPA values", () => {
+      education.forEach((degree) => {
+        if (degree.gpa) {
+          // Should match format: "X.X/Y.Y" or "X.XX/Y.Y"
+          expect(degree.gpa).toMatch(/^\d+\.\d+\/\d+\.\d+$/);
+
+          // Extract and validate numeric values
+          const [earned, total] = degree.gpa.split("/").map((s) => parseFloat(s));
+          expect(earned).toBeGreaterThan(0);
+          expect(earned).toBeLessThanOrEqual(total);
+          expect(total).toBe(4.0); // Standard 4.0 scale
+        }
+      });
+    });
+
+    it("should have properly formatted graduation dates", () => {
+      education.forEach((degree) => {
+        if (degree.graduationDate) {
+          // Should be a 4-digit year
+          expect(degree.graduationDate).toMatch(/^\d{4}$/);
+
+          const year = parseInt(degree.graduationDate, 10);
+          expect(year).toBeGreaterThan(1980);
+          expect(year).toBeLessThanOrEqual(new Date().getFullYear());
+        }
+      });
+    });
+
+    it("should have properly formatted location strings", () => {
+      education.forEach((degree) => {
+        if (degree.location) {
+          // Should contain city and state (e.g., "City, State")
+          expect(degree.location).toContain(",");
+
+          const parts = degree.location.split(",");
+          expect(parts.length).toBeGreaterThanOrEqual(2);
+
+          parts.forEach((part) => {
+            expect(part.trim().length).toBeGreaterThan(0);
+          });
+        }
+      });
+    });
+  });
+
+  describe("Phase 2 Migration Completeness (Task 3.3)", () => {
+    it("should have both degrees from Squarespace migration", () => {
+      const majors = education.map((d) => d.major);
+      expect(majors).toContain("Computer Science");
+      expect(majors).toContain("Psychology");
+    });
+
+    it("should have all optional fields populated", () => {
+      education.forEach((degree) => {
+        expect(degree.location).toBeDefined();
+        expect(degree.graduationDate).toBeDefined();
+        expect(degree.gpa).toBeDefined();
+      });
+    });
+
+    it("should reflect career transition narrative (Psychology → Computer Science)", () => {
+      const csDegree = education.find((d) => d.major === "Computer Science");
+      const psychDegree = education.find((d) => d.major === "Psychology");
+
+      expect(csDegree).toBeDefined();
+      expect(psychDegree).toBeDefined();
+
+      // CS degree should be more recent
+      const csYear = parseInt(csDegree!.graduationDate!, 10);
+      const psychYear = parseInt(psychDegree!.graduationDate!, 10);
+      expect(csYear).toBeGreaterThan(psychYear);
+    });
+  });
+
+  describe("Data Consistency", () => {
+    it("should have no duplicate degrees", () => {
+      const degreeKeys = education.map((d) => `${d.degree}-${d.major}-${d.institution}`);
+      const uniqueKeys = new Set(degreeKeys);
+      expect(uniqueKeys.size).toBe(education.length);
+    });
+
+    it("should have consistent field types across all degrees", () => {
+      const firstDegree = education[0];
+
+      education.forEach((degree) => {
+        expect(typeof degree.degree).toBe(typeof firstDegree.degree);
+        expect(typeof degree.major).toBe(typeof firstDegree.major);
+        expect(typeof degree.institution).toBe(typeof firstDegree.institution);
+
+        if (degree.location && firstDegree.location) {
+          expect(typeof degree.location).toBe(typeof firstDegree.location);
+        }
+        if (degree.graduationDate && firstDegree.graduationDate) {
+          expect(typeof degree.graduationDate).toBe(typeof firstDegree.graduationDate);
+        }
+        if (degree.gpa && firstDegree.gpa) {
+          expect(typeof degree.gpa).toBe(typeof firstDegree.gpa);
+        }
+      });
+    });
+  });
+});
