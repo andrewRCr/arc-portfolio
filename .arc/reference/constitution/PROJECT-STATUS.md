@@ -50,7 +50,8 @@ is on completing the ARC framework setup before beginning feature development.
 - **PRD**: `.arc/active/feature/prd-content-migration.md`
 - **Tasks**: `.arc/active/feature/tasks-content-migration.md`
 - **Current Phase**: Phase 1 - Data Structures & Type Definitions
-- **Description**: Migrating all portfolio content from Squarespace into type-safe TypeScript data structures with basic display components
+- **Description**: Migrating all portfolio content from Squarespace into type-safe TypeScript data structures
+  with basic display components
 - **Key Deliverables**:
   - TypeScript interfaces for all content types (projects, skills, education, bio, contact)
   - 9 projects migrated (3 new + 6 from Squarespace) with complete data
@@ -58,7 +59,7 @@ is on completing the ARC framework setup before beginning feature development.
   - Image directory structure established
   - Placeholder display components for homepage and project pages
   - Basic navigation and routing functional
-- **Progress**: Task list generated with 8 parent tasks and 46 sub-tasks
+- **Progress**: Task list generated with 8 parent tasks and 53 sub-tasks (includes testing setup and implementation)
 
 ## Upcoming Priorities
 
@@ -79,6 +80,13 @@ is on completing the ARC framework setup before beginning feature development.
   - GitHub integration (repository stats)
   - Image galleries and demos
   - **Key Deliverables**: Complete project portfolio with detailed presentations
+
+- **Testing Suite Implementation**:
+  - Configure Vitest + React Testing Library (during content migration feature)
+  - Write tests for utilities and validation
+  - Component testing for interactive elements
+  - E2E tests with Playwright for critical flows
+  - **Key Deliverables**: Comprehensive test coverage per testing methodology
 
 ### Medium Priority
 
@@ -107,13 +115,6 @@ is on completing the ARC framework setup before beginning feature development.
 
 ### Lower Priority
 
-- **Testing Suite Implementation**:
-  - Configure Vitest + React Testing Library
-  - Write tests for utilities and validation
-  - Component testing for interactive elements
-  - E2E tests with Playwright for critical flows
-  - **Key Deliverables**: Comprehensive test coverage per testing methodology
-
 - **Analytics Integration**:
   - Configure Vercel Analytics
   - Track portfolio effectiveness metrics
@@ -129,11 +130,8 @@ is on completing the ARC framework setup before beginning feature development.
 
 ## Stretch Goals
 
-- **Blog/Writing Section**: Add content management for technical writing (Contentful, Sanity.io)
-- **Project Filtering**: Advanced search and filtering by technology, category, timeline
 - **Accessibility Audit**: Comprehensive a11y testing with screen reader validation
 - **Performance Optimization**: Bundle analysis, lazy loading optimization, image optimization audit
-- **Internationalization**: Multi-language support if international audience grows
 
 ## Key Deliverables (Target)
 

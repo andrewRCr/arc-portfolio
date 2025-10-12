@@ -323,12 +323,22 @@ The system must define TypeScript interfaces in `src/types/` covering:
 6. **Contact Form** - No functional contact form (just email/social links display)
 7. **Search/Filter** - No project search, no skill filtering, no advanced navigation
 8. **Dynamic NexusMods Integration** - No API integration for live download count (noted as future enhancement)
-9. **Testing Suite Setup** - Testing framework implementation is a separate future feature
-10. **Analytics Integration** - Vercel Analytics setup is separate from content migration
-11. **SEO Optimization** - Meta tags, Open Graph, structured data handled in separate feature
-12. **Accessibility Enhancements** - Beyond semantic HTML (detailed a11y work is separate feature)
-13. **Performance Optimization** - Beyond Next.js/Turbopack defaults (detailed optimization separate)
-14. **Animations** - No Framer Motion integration (animations are design/polish work)
+9. **Analytics Integration** - Vercel Analytics setup is separate from content migration
+10. **SEO Optimization** - Meta tags, Open Graph, structured data handled in separate feature
+11. **Accessibility Enhancements** - Beyond semantic HTML (detailed a11y work is separate feature)
+12. **Performance Optimization** - Beyond Next.js/Turbopack defaults (detailed optimization separate)
+13. **Animations** - No Framer Motion integration (animations are design/polish work)
+
+### Testing Approach for This Feature
+
+**Testing implementation is IN SCOPE** and should be added incrementally as soon as testable code exists:
+
+- **Vitest + React Testing Library setup** - Configure testing framework when first components are created
+- **Data validation tests** - Test TypeScript data files implement interfaces correctly
+- **Component tests** - Test placeholder components render data correctly
+- **Type safety tests** - Verify interfaces work as expected
+- **Integration tests** - Test navigation and routing flows
+- **Testing added incrementally** - Set up framework during Phase 1, add tests as each phase completes
 
 ### Acceptable Small Inclusions (If They Naturally Arise)
 

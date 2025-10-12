@@ -9,47 +9,51 @@
 
 ### Type Definitions
 
-- `src/types/project.ts` - TypeScript interface for project data structure
-- `src/types/skills.ts` - TypeScript interface for skills categorization
-- `src/types/education.ts` - TypeScript interface for education credentials
-- `src/types/about.ts` - TypeScript interface for bio/about content
-- `src/types/contact.ts` - TypeScript interface for contact information
+- `src/types/project.ts` - TypeScript interface for project data structure (to be created)
+- `src/types/skills.ts` - TypeScript interface for skills categorization (to be created)
+- `src/types/education.ts` - TypeScript interface for education credentials (to be created)
+- `src/types/about.ts` - TypeScript interface for bio/about content (to be created)
+- `src/types/contact.ts` - TypeScript interface for contact information (to be created)
 
 ### Data Files
 
-- `src/data/projects.ts` - All 9 projects with complete data (implements Project interface)
-- `src/data/skills.ts` - Categorized skills data (implements Skills interface)
-- `src/data/education.ts` - Education credentials (implements Education interface)
-- `src/data/about.ts` - Bio content with markdown support (implements About interface)
-- `src/data/contact.ts` - Contact information and social links (implements Contact interface)
-- `src/data/index.ts` - Centralized exports for all content data
+- `src/data/projects.ts` - All 9 projects with complete data (implements Project interface) (to be created)
+- `src/data/skills.ts` - Categorized skills data (implements Skills interface) (to be created)
+- `src/data/education.ts` - Education credentials (implements Education interface) (to be created)
+- `src/data/about.ts` - Bio content with markdown support (implements About interface) (to be created)
+- `src/data/contact.ts` - Contact information and social links (implements Contact interface) (to be created)
+- `src/data/index.ts` - Centralized exports for all content data (to be created)
 
 ### Components
 
-- `src/components/home/SkillsSection.tsx` - Placeholder component for skills display
-- `src/components/home/EducationSection.tsx` - Placeholder component for education display
-- `src/components/home/AboutSection.tsx` - Placeholder component for bio display
-- `src/components/home/ContactSection.tsx` - Placeholder component for contact display
-- `src/components/projects/ProjectCard.tsx` - Placeholder card component for project list
-- `src/components/projects/ProjectDetail.tsx` - Placeholder component for project detail pages
+- `src/components/home/SkillsSection.tsx` - Placeholder component for skills display (to be created)
+- `src/components/home/EducationSection.tsx` - Placeholder component for education display (to be created)
+- `src/components/home/AboutSection.tsx` - Placeholder component for bio display (to be created)
+- `src/components/home/ContactSection.tsx` - Placeholder component for contact display (to be created)
+- `src/components/projects/ProjectCard.tsx` - Placeholder card component for project list (to be created)
+- `src/components/projects/ProjectDetail.tsx` - Placeholder component for project detail pages (to be created)
 
 ### Pages/Routes
 
-- `src/app/page.tsx` - Homepage with all sections (Skills, Education, About, Contact)
-- `src/app/layout.tsx` - Root layout with basic navigation
-- `src/app/projects/page.tsx` - Project list page with grid/list display
-- `src/app/projects/[slug]/page.tsx` - Dynamic project detail pages
+- `src/app/page.tsx` - Homepage with all sections (Skills, Education, About, Contact) (exists, to be modified)
+- `src/app/layout.tsx` - Root layout with basic navigation (exists, to be modified)
+- `src/app/projects/page.tsx` - Project list page with grid/list display (to be created)
+- `src/app/projects/[slug]/page.tsx` - Dynamic project detail pages (to be created)
 
-### Test Files
+### Testing Configuration & Files
 
-- `src/types/__tests__/project.test.ts` - Type definition tests for projects
-- `src/data/__tests__/projects.test.ts` - Data validation tests for projects
-- `src/components/home/__tests__/SkillsSection.test.tsx` - Component tests for skills section
-- `src/components/projects/__tests__/ProjectCard.test.tsx` - Component tests for project card
+- `vitest.config.ts` - Vitest configuration for unit and component tests (to be created)
+- `src/types/__tests__/project.test.ts` - Type definition tests for projects (to be created)
+- `src/data/__tests__/projects.test.ts` - Data validation tests for projects (to be created)
+- `src/data/__tests__/skills.test.ts` - Data validation tests for skills (to be created)
+- `src/components/home/__tests__/SkillsSection.test.tsx` - Component tests for skills section (to be created)
+- `src/components/home/__tests__/AboutSection.test.tsx` - Component tests for about section (to be created)
+- `src/components/projects/__tests__/ProjectCard.test.tsx` - Component tests for project card (to be created)
+- `src/components/projects/__tests__/ProjectDetail.test.tsx` - Component tests for project detail (to be created)
 
 ### Documentation
 
-- `public/projects/README.md` - Documentation for image organization and naming conventions
+- `public/projects/README.md` - Documentation for image organization and naming conventions (to be created)
 
 ## Tasks
 
@@ -62,8 +66,11 @@
   - [ ] 1.4 Create About/Bio interface in `src/types/about.ts`
   - [ ] 1.5 Create Contact interface in `src/types/contact.ts`
   - [ ] 1.6 Create sample data files in `src/data/` demonstrating proper interface usage
-  - [ ] 1.7 Verify TypeScript compilation passes with zero errors
-  - [ ] 1.8 Run incremental quality checks (type-check, lint, format)
+  - [ ] 1.7 Create centralized data exports in `src/data/index.ts`
+  - [ ] 1.8 Configure Vitest and React Testing Library for testing
+  - [ ] 1.9 Write basic type validation tests for interfaces
+  - [ ] 1.10 Verify TypeScript compilation passes with zero errors
+  - [ ] 1.11 Run incremental quality checks (type-check, lint, format, test)
 
 ### Phase 2: Content Migration
 
@@ -78,7 +85,8 @@
   - [ ] 2.8 Migrate existing project 8: Survival Horror Project (from Squarespace)
   - [ ] 2.9 Migrate existing project 9: Pong Clone (from Squarespace)
   - [ ] 2.10 Verify all projects have correct `order` field (1-9) and accurate links
-  - [ ] 2.11 Run incremental quality checks (type-check, lint, format)
+  - [ ] 2.11 Write data validation tests for projects data file
+  - [ ] 2.12 Run incremental quality checks (type-check, lint, format, test)
 
 - [ ] 3.0 Migrate skills, education, bio, and contact data
   - [ ] 3.1 Migrate and reorganize skills data into updated category structure
@@ -86,7 +94,8 @@
   - [ ] 3.3 Migrate education credentials (2 degrees: OSU CS, UTD Psychology)
   - [ ] 3.4 Migrate bio content from Squarespace (3 paragraphs with markdown)
   - [ ] 3.5 Migrate contact information (email + 4 social links)
-  - [ ] 3.6 Run incremental quality checks (type-check, lint, format)
+  - [ ] 3.6 Write data validation tests for skills, education, bio, contact data
+  - [ ] 3.7 Run incremental quality checks (type-check, lint, format, test)
 
 - [ ] 4.0 Establish image asset directory structure and documentation
   - [ ] 4.1 Create directory structure: `public/projects/[slug]/` and `public/thumbnails/`
@@ -99,26 +108,29 @@
 - [ ] 5.0 Create placeholder display components for homepage sections
   - [ ] 5.1 Create SkillsSection component displaying categorized skills
   - [ ] 5.2 Create EducationSection component displaying degrees
-  - [ ] 5.3 Create AboutSection component with markdown rendering support
-  - [ ] 5.4 Create ContactSection component with email and social links
+  - [ ] 5.3 Create AboutSection component (decide markdown approach: react-markdown vs dangerouslySetInnerHTML)
+  - [ ] 5.4 Create ContactSection component with social links opening in new tabs
   - [ ] 5.5 Update homepage (`src/app/page.tsx`) to render all sections
-  - [ ] 5.6 Run incremental quality checks (type-check, lint, format)
+  - [ ] 5.6 Write component tests for homepage sections
+  - [ ] 5.7 Run incremental quality checks (type-check, lint, format, test)
 
 - [ ] 6.0 Create project list page and dynamic project detail pages
   - [ ] 6.1 Create ProjectCard component for grid/list display
   - [ ] 6.2 Create projects list page at `/projects` with all 9 projects
-  - [ ] 6.3 Create ProjectDetail component for individual project display
+  - [ ] 6.3 Create ProjectDetail component with external links opening in new tabs
   - [ ] 6.4 Create dynamic project detail page at `/projects/[slug]`
   - [ ] 6.5 Implement `generateStaticParams` for all 9 project slugs
   - [ ] 6.6 Verify all project links and external URLs are functional
-  - [ ] 6.7 Run incremental quality checks (type-check, lint, format)
+  - [ ] 6.7 Write component tests for ProjectCard and ProjectDetail
+  - [ ] 6.8 Run incremental quality checks (type-check, lint, format, test)
 
 - [ ] 7.0 Implement basic navigation and routing
   - [ ] 7.1 Update root layout with basic navigation header
   - [ ] 7.2 Add navigation links: Home, Projects, (future: About, Contact)
   - [ ] 7.3 Verify routing works: Homepage ↔ Projects list ↔ Project details
   - [ ] 7.4 Ensure all internal links are functional
-  - [ ] 7.5 Run incremental quality checks (type-check, lint, format)
+  - [ ] 7.5 Write integration tests for navigation and routing flows
+  - [ ] 7.6 Run incremental quality checks (type-check, lint, format, test)
 
 ### Phase 4: Validation & Quality Assurance
 
@@ -129,6 +141,7 @@
   - [ ] 8.4 Verify project ordering matches priority (new projects 1-3, existing 4-9)
   - [ ] 8.5 Verify skills categories are complete with technologies from all projects
   - [ ] 8.6 Verify education, bio, and contact data accuracy
-  - [ ] 8.7 Test all navigation and routing flows
-  - [ ] 8.8 Run full quality gate suite (type-check, lint, format, markdown, build)
-  - [ ] 8.9 Verify build succeeds and site renders without runtime errors
+  - [ ] 8.7 Run full test suite and verify all tests pass
+  - [ ] 8.8 Test all navigation and routing flows manually
+  - [ ] 8.9 Run full quality gate suite (type-check, lint, format, markdown, build, test)
+  - [ ] 8.10 Verify build succeeds and site renders without runtime errors
