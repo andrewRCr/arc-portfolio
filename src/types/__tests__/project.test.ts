@@ -13,10 +13,9 @@ import { projects } from "@/data/projects";
 import type { Project } from "@/types/project";
 
 describe("Project Interface", () => {
-  it("should have at least 1 project (Phase 2 migration in progress)", () => {
+  it("should have exactly 9 projects (Phase 2 migration complete)", () => {
     expect(projects).toBeDefined();
-    expect(projects.length).toBeGreaterThanOrEqual(1);
-    // Note: Will have 9 projects total when Phase 2 migration is complete
+    expect(projects.length).toBe(9);
   });
 
   it("should implement all required Project fields", () => {
