@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Misc
+*.lock
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Logs
+*.log
