@@ -45,22 +45,24 @@ is on completing the ARC framework setup before beginning feature development.
 
 ## Work in Progress
 
-### 🚧 Constitutional Documents
+### 🚧 Content Migration from Squarespace (In Progress - Branch: feature/content-migration)
 
-- **Current Status**: Nearly complete - finalizing PROJECT-STATUS document
-- **Remaining**: Complete PROJECT-STATUS initialization
-- **Next Step**: Commit all constitutional documents and begin feature development
+- **PRD**: `.arc/active/feature/prd-content-migration.md`
+- **Tasks**: `.arc/active/feature/tasks-content-migration.md`
+- **Current Phase**: Phase 1 - Data Structures & Type Definitions
+- **Description**: Migrating all portfolio content from Squarespace into type-safe TypeScript data structures with basic display components
+- **Key Deliverables**:
+  - TypeScript interfaces for all content types (projects, skills, education, bio, contact)
+  - 9 projects migrated (3 new + 6 from Squarespace) with complete data
+  - Skills, education, bio, and contact data migrated
+  - Image directory structure established
+  - Placeholder display components for homepage and project pages
+  - Basic navigation and routing functional
+- **Progress**: Task list generated with 8 parent tasks and 46 sub-tasks
 
 ## Upcoming Priorities
 
 ### High Priority
-
-- **Content Migration from Squarespace**:
-  - Extract all portfolio content (projects, skills, education, about)
-  - Create TypeScript data structures in `src/data/`
-  - Document Unreal Engine projects with download links
-  - Migrate resume/CV content
-  - **Key Deliverables**: All existing portfolio content structured and typed
 
 - **Homepage Implementation**:
   - Professional hero section with introduction
