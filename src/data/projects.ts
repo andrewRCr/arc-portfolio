@@ -5,13 +5,16 @@
  * - Projects 1-3: New projects (CineXplorer, ARC Framework, arc-portfolio)
  * - Projects 4-9: Existing projects from Squarespace
  *
- * Migration Status: 6/9 projects complete
+ * Migration Status: 9/9 projects complete ✓
  * ✓ Project 1: CineXplorer (Task 2.1)
  * ✓ Project 2: ARC Agentic Development Framework (Task 2.2)
  * ✓ Project 3: arc-portfolio (Task 2.3)
  * ✓ Project 4: TaskFocus (Task 2.4)
  * ✓ Project 5: PetResort (Task 2.5)
  * ✓ Project 6: NewGame+ Customizer for DOOM (2016) (Task 2.6)
+ * ✓ Project 7: Action RPG Project (Task 2.7)
+ * ✓ Project 8: Survival Horror Project (Task 2.8)
+ * ✓ Project 9: Pong Clone (Task 2.9)
  */
 
 import { Project } from "@/types/project";
@@ -393,7 +396,7 @@ export const projects: Project[] = [
       "Python desktop application generating custom DOOM (2016) mods from player-defined gameplay configurations.",
     category: "Game Mod Utility",
     tags: ["Python", "Desktop Application", "Game Modding", "Data Modeling", "Tool Development"],
-    techStack: ["Python", "Python Dataclasses", "Windows GUI", "File Generation", "DOOMModLoader Integration"],
+    techStack: ["Python", "CustomTkinter", "Python Dataclasses", "Pillow (PIL)", "pygame", "CTkToolTip"],
     features: [
       "Data modeling: Python dataclasses representing game systems (inventory, weapons, equipment, upgrades)",
       "User-friendly GUI for configuring gameplay parameters without technical knowledge",
@@ -425,8 +428,10 @@ export const projects: Project[] = [
     developmentTime: "2023",
     architectureNotes: [
       "Python dataclasses for domain modeling: structured representation of DOOM's internal game systems",
+      "CustomTkinter GUI framework with modern styling and CTkToolTip for enhanced user experience",
       "Separation of concerns: UI layer, validation logic, file generation, installation automation",
       "Configuration-to-code pipeline: translates user selections into valid .decl syntax",
+      "Pillow (PIL) for image handling and pygame for audio feedback in the interface",
       "Windows executable distribution via Python compilation for end-user accessibility",
       "Integration layer with DOOMModLoader for seamless mod installation",
     ],
@@ -441,7 +446,211 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // REMAINING PROJECTS (to be migrated)
+  // PROJECT 7: Action RPG Project (Squarespace Migration)
   // ==========================================
-  // Projects 7-9: Squarespace migrations (Tasks 2.7-2.9)
+  {
+    id: "action-rpg-project",
+    title: "Action RPG Project",
+    slug: "action-rpg-project",
+    description:
+      "Demo-length third-person action RPG developed in Unreal Engine 4 with Souls-like combat mechanics and dungeon exploration. " +
+      "Players awaken in dungeon depths and fight to the surface, battling 6 distinct enemy AI types including zombie-like Ghouls, " +
+      "Skeletal Swordsmen, Archers, fast-moving Rogues, a heavy Wendigo mini-boss, and a Large Skeletal Warrior boss. Features sophisticated " +
+      "combat systems with targeting (soft-lock and hard lock-on), defensive options (blocking, side-stepping, rolling), and a posture-break " +
+      "mechanic allowing instant-kill finishing moves. Demonstrates game systems engineering: modular equipment architecture, " +
+      "stat-based progression, idol statue checkpoints with enemy respawning, and enemy AI behavioral patterns.",
+    shortDescription:
+      "Third-person action RPG in Unreal Engine 4 with Souls-like combat, 6 enemy AI types, and posture-break mechanics.",
+    category: "Game Development",
+    tags: ["Unreal Engine 4", "C++", "Game Development", "Combat Systems", "Enemy AI", "Action RPG"],
+    techStack: ["Unreal Engine 4", "C++", "Blueprint", "AI Systems", "Animation Systems"],
+    features: [
+      "Souls-like combat design emphasizing aggressive play through posture mechanics",
+      "6 distinct enemy AI types with unique behaviors and combat patterns",
+      "Targeting systems: automatic soft-lock and manual hard lock-on for precision combat",
+      "Defensive mechanics: blocking, side-stepping, rolling for tactical engagement",
+      "Posture-break system enabling instant-kill finishing moves on weakened enemies",
+      "Modular equipment system with stat-improving weapons and armor collection",
+      "Idol statue checkpoints for healing, saving progress, and enemy respawning",
+      "Progression-based gameplay loop starting with no equipment in dungeon depths",
+    ],
+    links: {
+      github: "https://github.com/andrewRCr/ActionRPGProject",
+      liveDemo: undefined, // Game project - no live demo available
+      download: "https://drive.google.com/file/d/1aUZ3IhFJOaD7NjLIIzOBAaum8KmxyvjM/view?usp=sharing", // Google Drive - packaged executable (~5GB)
+    },
+    images: {
+      thumbnail: "/thumbnails/action-rpg.jpg", // TODO: Migrate thumbnail from Squarespace
+      screenshots: [
+        "/projects/action-rpg/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace (gameplay, combat, enemies, environments)
+        "/projects/action-rpg/screenshot-2.jpg",
+        "/projects/action-rpg/screenshot-3.jpg",
+        "/projects/action-rpg/screenshot-4.jpg",
+      ],
+      altTexts: [
+        "Action RPG combat encounter with posture-break mechanics", // TODO: Update alt text once screenshots migrated
+        "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues",
+        "Dungeon exploration and idol statue checkpoint",
+        "Boss battle with Large Skeletal Warrior",
+      ],
+    },
+    teamSize: "Solo project",
+    role: "Game Developer",
+    developmentTime: "2023",
+    architectureNotes: [
+      "Unreal Engine 4 with C++ core systems and Blueprint for rapid iteration",
+      "Modular equipment architecture for flexible stat and loadout systems",
+      "AI behavior trees and state machines for diverse enemy patterns",
+      "Animation state machines for fluid combat transitions",
+      "Posture/poise mechanic implementation for risk-reward gameplay balance",
+      "Checkpoint system architecture with persistent state and enemy respawning",
+    ],
+    highlights: [
+      "Demonstrates game systems engineering: combat architecture, enemy AI design, equipment modularity, progression loops",
+      "Showcases Unreal Engine 4 proficiency with C++ programming for core gameplay systems",
+      "Implements sophisticated combat mechanics inspired by Souls-like design philosophy",
+      "Features 6 distinct enemy AI types demonstrating behavioral variety and state-based logic",
+    ],
+    order: 7,
+    featured: false,
+  },
+
+  // ==========================================
+  // PROJECT 8: Survival Horror Project (Squarespace Migration)
+  // ==========================================
+  {
+    id: "survival-horror-project",
+    title: "Survival Horror Project",
+    slug: "survival-horror-project",
+    description:
+      "Capstone project for Bachelor's in Computer Science from Oregon State University - a comprehensive survival horror game " +
+      "developed in Unreal Engine 5 over eight weeks. Classic 90s-inspired survival horror with escape room elements: players navigate " +
+      "a zombie-infested mansion during a thunderstorm, solving 9 environmental puzzles to retrieve key items and escape. " +
+      "As project lead in a 3-person team, implemented core game framework, player locomotion and animation systems, interaction and inventory " +
+      "mechanics, combat systems with physical hit reactions and locational blood masking, enemy AI with randomized zombie variants, " +
+      "progression-based multi-floor map system, and cinematic sequences. Demonstrates comprehensive game development pipeline from framework " +
+      "design through polished gameplay mechanics.",
+    shortDescription:
+      "Capstone survival horror game in Unreal Engine 5 with puzzle-solving, inventory management, and zombie combat. Team project lead role.",
+    category: "Game Development",
+    tags: ["Unreal Engine 5", "C++", "Blueprint", "Game Development", "Team Leadership", "Capstone Project"],
+    techStack: ["Unreal Engine 5", "C++", "Blueprint", "Animation Systems", "AI Behavior Trees", "Cinematics"],
+    features: [
+      "9 environmental puzzles with varying complexity levels",
+      "Progression-updated multi-floor map system for navigation",
+      "Inventory management with item collection and usage mechanics",
+      "Third-person combat system with zombie enemies",
+      "4 distinct zombie models with randomized appearance variations (hair, clothing, skin)",
+      "Physical animation systems: hit reactions, locational blood masking, ragdoll physics",
+      "Enemy AI with behavioral variety and spawning systems",
+      "Menu systems and cinematic level sequences",
+      "Classic 90s survival horror atmosphere with escape room gameplay",
+    ],
+    links: {
+      github: "https://github.com/andrewRCr/SurvivalHorrorProject",
+      liveDemo: undefined, // Game project - no live demo available
+      download: "https://drive.google.com/file/d/1f7JPpYg7aZcZ0B5MIgAoK4epn9MWZhD4/view?usp=sharing", // Google Drive - packaged executable (~5GB)
+    },
+    images: {
+      thumbnail: "/thumbnails/survival-horror.jpg", // TODO: Migrate thumbnail from Squarespace
+      screenshots: [
+        "/projects/survival-horror/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace (mansion, puzzles, combat, zombies)
+        "/projects/survival-horror/screenshot-2.jpg",
+        "/projects/survival-horror/screenshot-3.jpg",
+        "/projects/survival-horror/screenshot-4.jpg",
+      ],
+      altTexts: [
+        "Survival Horror mansion exploration and puzzle-solving", // TODO: Update alt text once screenshots migrated
+        "Third-person combat with zombie enemies",
+        "Multi-floor map system and inventory management",
+        "Environmental puzzle mechanics and key item retrieval",
+      ],
+    },
+    teamSize: "3-person team",
+    role: "Project Lead / Game Developer",
+    developmentTime: "8 weeks (2024)",
+    architectureNotes: [
+      "Unreal Engine 5 with C++ core systems and Blueprint for rapid iteration",
+      "Animation state machines for complex character locomotion and combat transitions",
+      "Physical animation systems: hit reactions, locational damage masking, ragdoll physics",
+      "Enemy AI with behavior trees and randomized appearance generation",
+      "Progression-based map system revealing new areas as puzzles are solved",
+      "Interaction framework supporting diverse puzzle mechanics and inventory integration",
+      "Cinematic sequencer integration for narrative moments and level transitions",
+    ],
+    highlights: [
+      "Demonstrates comprehensive game development leadership: framework design, system architecture, team coordination, and delivery within 8-week timeline",
+      "Showcases Unreal Engine 5 proficiency across multiple domains: animation, AI, physics, cinematics, and gameplay programming",
+      "Capstone achievement for Computer Science degree - integrates academic knowledge with practical game development",
+      "Implements production-level systems: complex animation state machines, dynamic enemy spawning, environmental puzzle mechanics, and polished player interactions",
+    ],
+    order: 8,
+    featured: false,
+  },
+
+  // ==========================================
+  // PROJECT 9: Pong Clone (Squarespace Migration)
+  // ==========================================
+  {
+    id: "pong-clone",
+    title: "Pong Clone",
+    slug: "pong-clone",
+    description:
+      "Classic Pong game implementation written in C++ from scratch without using a game engine. Features single-player mode with AI opponent " +
+      "and local multiplayer for two human players. Demonstrates fundamental game programming concepts including game loop architecture, " +
+      "collision detection, input handling, basic AI logic, and audio integration with spatialized sound effects. Includes complete menu system " +
+      "with main menu and pause functionality, round/score tracking, and keyboard controls (WASD or arrow keys). Built using libsndfile and OpenAL " +
+      "for audio, showcasing low-level game development without engine abstractions.",
+    shortDescription:
+      "Classic Pong game in C++ without a game engine, featuring AI opponent, local multiplayer, and spatialized audio.",
+    category: "Game Development",
+    tags: ["C++", "Game Development", "Audio Programming", "Game AI", "No Engine"],
+    techStack: ["C++", "libsndfile", "OpenAL (openal-soft)"],
+    features: [
+      "Single-player mode with basic AI opponent",
+      "Local multiplayer mode for two human players",
+      "Spatialized gameplay sound effects using OpenAL",
+      "Pause/resume functionality with in-game menu",
+      "Main menu and system menu navigation",
+      "Round and score tracking system",
+      "Keyboard input handling (WASD or arrow keys)",
+      "Built from scratch without game engine dependencies",
+    ],
+    links: {
+      github: "https://github.com/andrewRCr/PongClone",
+      liveDemo: undefined, // Desktop game - no web demo
+      download: "https://github.com/andrewRCr/PongClone/releases", // Windows executable
+    },
+    images: {
+      thumbnail: "/thumbnails/pong-clone.jpg", // TODO: Migrate thumbnail from Squarespace
+      screenshots: [
+        "/projects/pong-clone/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace
+        "/projects/pong-clone/screenshot-2.jpg",
+      ],
+      altTexts: [
+        "Pong Clone gameplay with single-player AI opponent", // TODO: Update alt text once screenshots migrated
+        "Main menu and game interface",
+      ],
+    },
+    teamSize: "Solo project",
+    role: "Developer",
+    developmentTime: "2023",
+    architectureNotes: [
+      "Custom game loop implementation without engine framework",
+      "Collision detection system for paddle and ball physics",
+      "Basic AI logic for single-player opponent behavior",
+      "Audio system using libsndfile for loading and OpenAL for spatialized playback",
+      "Input handling system mapping keyboard events to paddle control",
+      "State management for menu navigation and gameplay transitions",
+      "Score and round tracking with game state persistence during pause",
+    ],
+    highlights: [
+      "Demonstrates fundamental game programming from first principles without engine abstractions",
+      "Showcases low-level C++ development: memory management, game loop architecture, collision detection",
+      "Implements audio programming with spatial sound using OpenAL",
+      "Features complete game experience: menus, multiple modes, AI opponent, sound effects",
+    ],
+    order: 9,
+    featured: false,
+  },
 ];
