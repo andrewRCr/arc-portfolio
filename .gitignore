@@ -39,3 +39,28 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# NPX cache (optional - can be cleaned with npx --clear-cache)
+.npm/
+
+# OS and editor files
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/settings.json
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# ARC Development System - temporal development workspace files
+.arc/active/CURRENT-SESSION.md
+.arc/active/*/notes-*
+.arc/upcoming/notes/
+.arc/reference/archive/notes/
+
+# Claude Code - personal configuration
+.claude/
