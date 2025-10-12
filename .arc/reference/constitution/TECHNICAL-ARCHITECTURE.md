@@ -1,316 +1,277 @@
-# [Your Project Name] Technical Architecture
+# andrewRCr Portfolio Technical Architecture
 
-<!-- 
-ARC Framework Template: Copy this file and customize for your project
-- Replace [Your Project Name] with your actual project name
-- Document your technical decisions and architectural patterns
-- Keep this focused on implementation details, not product vision
-- Update as your architecture evolves
--->
-
-This document outlines the technical architecture of [Your Project Name], covering the implementation stack,
+This document outlines the technical architecture of andrewRCr Portfolio, covering the implementation stack,
 development practices, and operational considerations.
 
 ## 1. Architecture Overview
 
-<!-- 
-Provide a high-level description of your system architecture:
-- Main components and how they interact
-- Technology choices and rationale
-- Key architectural patterns or principles
-- System boundaries and external dependencies
--->
+**andrewRCr Portfolio** is a modern static website built with Next.js using the App Router and Static Site
+Generation (SSG). The architecture prioritizes performance, accessibility, and developer experience:
 
-[Your Project Name] is [brief description of system type - e.g., "a modern full-stack web application",
-"a REST API service", "a command-line tool"]. The architecture is composed of:
+- **Frontend Application**: Next.js 15 with React 19, TypeScript, and Tailwind CSS v4
+- **UI Components**: Shadcn/ui component library for consistent, accessible design
+- **Build System**: Turbopack for fast development and optimized production builds
+- **Deployment**: Vercel platform for global CDN delivery and automatic deployments
+- **Content Management**: Code-based content updates (no CMS backend)
 
-- **[Primary Component]**: [Brief description of main component]
-- **[Secondary Component]**: [Description of supporting component]
-- **[Data Layer]**: [Database or data storage approach]
-- **[Additional Components]**: [Other key architectural elements]
-
-## 2. Backend Architecture
-
-<!-- 
-Describe your backend implementation if applicable:
-- Framework and language choices
-- API design patterns (REST, GraphQL, etc.)
-- Database and data modeling approach
-- Authentication and authorization
-- Key libraries and dependencies
-- Code organization and structure
--->
+## 2. Frontend Architecture
 
 ### Technology Stack
 
-- **Framework**: [Your backend framework and version]
-- **Language**: [Programming language and version]
-- **Database**: [Database technology and configuration approach]
-- **Authentication**: [Auth strategy - JWT, sessions, OAuth, etc.]
-- **API Documentation**: [How API is documented - OpenAPI, etc.]
-- **Code Quality**: [Linting tools and configuration]
-- **Type Safety**: [Type checking approach if applicable]
+- **Framework**: Next.js 15 with App Router and React Server Components
+- **Language**: TypeScript 5.x with strict type checking
+- **UI Components**: Shadcn/ui (Radix UI primitives with Tailwind styling)
+- **Routing**: Next.js App Router with file-system based routing
+- **State Management**: React hooks and Server Components (minimal client-side state)
+- **Data Fetching**: Static generation at build time, Server Components for dynamic data
+- **Styling**: Tailwind CSS v4 with CSS variables for theming
+- **Build Tool**: Turbopack for fast development and production builds
+- **Testing**: To be implemented (React Testing Library + Jest/Vitest)
 
 ### Key Libraries
 
-<!-- List important dependencies and their purposes -->
-- `[library-name]`: [Purpose and why chosen]
-- `[another-library]`: [Purpose and configuration notes]
-- `[additional-library]`: [Usage and benefits]
-
-### Code Organization
-
-<!-- Describe your project structure and organization patterns -->
-```
-[project-root]/
-├── [main-source-dir]/     # [Description of primary source code]
-│   ├── [module-1]/        # [Purpose of this module]
-│   ├── [module-2]/        # [Purpose of this module]
-│   └── [shared-utilities]/ # [Common utilities and helpers]
-├── [config-dir]/          # [Configuration and settings]
-└── [other-directories]/   # [Additional project structure]
-```
-
-## 3. Frontend Architecture
-
-<!-- 
-Describe your frontend implementation if applicable:
-- Framework and build tooling
-- UI component approach
-- State management strategy
-- Routing and navigation
-- Data fetching patterns
-- Styling approach
--->
-
-### Technology Stack
-
-- **Framework**: [Your frontend framework and version]
-- **Language**: [JavaScript/TypeScript and tooling]
-- **UI Components**: [Component library or custom approach]
-- **Routing**: [Routing solution and patterns]
-- **State Management**: [How application state is managed]
-- **Data Fetching**: [API communication patterns and tools]
-- **Styling**: [CSS approach - modules, styled-components, etc.]
-- **Testing**: [Testing framework and approach]
+- `next@15.5.4`: Full-stack React framework with SSG, SSR, and routing
+- `react@19.1.0` / `react-dom@19.1.0`: UI library and rendering
+- `typescript@5.x`: Type safety and enhanced developer experience
+- `tailwindcss@4.x`: Utility-first CSS framework
+- `shadcn/ui`: Accessible component primitives with Radix UI and Tailwind styling
+- `class-variance-authority`: Type-safe component variants
+- `clsx` / `tailwind-merge`: Conditional className utilities
+- `lucide-react`: Icon library for consistent iconography
+- `framer-motion`: Animation library for smooth transitions and micro-interactions (to be added)
+- `react-hook-form`: Performant form state management with minimal re-renders (to be added)
+- `zod`: TypeScript-first schema validation for forms and data (to be added)
+- `zeptomail`: Transactional email service for contact form submissions
+- `@vercel/analytics`: Real user monitoring and analytics (to be configured)
 
 ### Code Organization
 
 ```
-[frontend-src]/
-├── [pages-dir]/           # [Top-level route components]
-├── [components-dir]/      # [Reusable UI components]
-├── [hooks-dir]/           # [Custom React hooks or similar]
-├── [services-dir]/        # [API communication modules]
-└── [shared-dir]/          # [Utilities and constants]
+arc-portfolio/
+├── src/
+│   ├── app/                    # Next.js App Router pages and layouts
+│   │   ├── layout.tsx          # Root layout with metadata and providers
+│   │   ├── page.tsx            # Homepage
+│   │   ├── projects/           # Project showcase pages
+│   │   ├── about/              # About/profile page
+│   │   ├── contact/            # Contact page
+│   │   └── api/                # API routes (contact form handler)
+│   ├── components/             # Reusable React components
+│   │   ├── ui/                 # Shadcn/ui components
+│   │   ├── layout/             # Layout components (header, footer, nav)
+│   │   ├── projects/           # Project-specific components
+│   │   └── shared/             # Shared utilities and components
+│   ├── lib/                    # Utilities and helper functions
+│   │   └── utils.ts            # className utilities (cn function)
+│   ├── types/                  # TypeScript type definitions
+│   └── data/                   # Static content data (projects, skills, etc.)
+├── public/                     # Static assets (images, resume, downloads)
+├── .arc/                       # ARC development framework documentation
+├── .claude/                    # Claude Code configuration (gitignored)
+└── [config files]              # ESLint, Prettier, TypeScript configs
 ```
 
-## 4. Data Architecture
+### Component Architecture
 
-<!-- 
-Describe your data layer and persistence strategy:
-- Database choice and rationale
-- Data modeling approach
-- Caching strategies
-- External data sources
-- Data migration and versioning
--->
+- **Server Components by default**: Leverage React Server Components for static content
+- **Client Components sparingly**: Use `"use client"` only for interactivity (dark mode toggle, contact form)
+- **Composition over complexity**: Small, focused components with clear responsibilities
+- **Shadcn/ui patterns**: Copy component source into project for full customization control
+- **Responsive design**: Mobile-first approach with Tailwind breakpoints
 
-### Database Design
+## 3. Data Architecture
 
-- **Primary Database**: [Database technology and design principles]
-- **Data Modeling**: [How data relationships are structured]
-- **Migrations**: [How database changes are managed]
-- **Indexing Strategy**: [Performance optimization approach]
+### Content Strategy
 
-### Caching Strategy
+- **Static Data**: Project information, skills, education stored in TypeScript files in `src/data/`
+- **Type Safety**: All content data typed with TypeScript interfaces
+- **No Database**: Portfolio content managed in code for simplicity and version control
+- **Large Files**: Unreal Engine game projects (~5GB each) hosted externally (solution TBD)
 
-- **Application Cache**: [In-memory caching approach]
-- **Database Cache**: [Query optimization and caching]
-- **External Cache**: [Redis, Memcached, or similar if used]
+### External Services
 
-### External Data Sources
+- **GitHub API**: Potential integration for repository statistics and project metadata (to be explored)
+- **Zeptomail**: Transactional email service for contact form submissions
+- **Analytics**: Portfolio effectiveness tracking solution to be determined
+- **Domain DNS**: andrewcreekmore.com management (transfer from Squarespace)
 
-- **[API/Service Name]**: [Purpose and integration approach]
-- **[Another External Source]**: [Usage and data handling]
+### Content Updates
 
-## 5. Infrastructure & Deployment
+- **Process**: Edit content in `src/data/`, commit, push to trigger Vercel rebuild
+- **No CMS**: Content updates handled through code deployment
+- **Versioned**: All content changes tracked in Git history
 
-<!-- 
-Describe your development and deployment infrastructure:
-- Containerization approach
-- Development environment setup
-- CI/CD pipeline
-- Production deployment strategy
-- Monitoring and logging
--->
+## 4. Infrastructure & Deployment
 
 ### Development Environment
 
-- **Containerization**: [Docker, Docker Compose, or other approach]
-- **Local Development**: [How developers run the project locally]
-- **Environment Configuration**: [How environment variables and secrets are managed]
-- **Development Tools**: [Key tools for development workflow]
+- **Local Setup**: `npm install` followed by `npm run dev`
+- **Environment Variables**: `.env.local` for local development (gitignored)
+- **Hot Reload**: Turbopack provides fast refresh during development
+- **Development Tools**:
+  - VS Code with recommended extensions (Prettier, ESLint, Tailwind IntelliSense)
+  - Claude Code for AI-assisted development
+  - Git for version control
 
 ### CI/CD Pipeline
 
-- **Continuous Integration**: [CI service and workflow]
-- **Quality Gates**: [Automated checks and requirements]
-- **Deployment Process**: [How code gets to production]
-- **Environment Promotion**: [Dev → staging → production workflow]
+- **Platform**: Vercel automatic deployments
+- **Trigger**: Push to `main` branch triggers production deployment
+- **Preview Deploys**: Pull requests automatically get preview URLs
+- **Quality Gates**:
+  - Type checking: `npm run type-check`
+  - Linting: `npm run lint`
+  - Formatting: `npm run format:check`
+  - Build validation: Vercel build process
+- **Zero-Downtime**: Vercel handles deployments with instant rollback capability
 
 ### Production Architecture
 
-- **Hosting**: [Where and how the application is deployed]
-- **Scaling**: [Horizontal/vertical scaling approach]
-- **Monitoring**: [Application and infrastructure monitoring]
-- **Logging**: [Centralized logging and analysis]
-- **Security**: [Key security measures and practices]
+- **Hosting**: Vercel platform with global edge network
+- **Domain**: andrewcreekmore.com (custom domain configuration)
+- **CDN**: Automatic CDN distribution via Vercel Edge Network
+- **SSL/TLS**: Automatic HTTPS with Vercel-managed certificates
+- **Scaling**: Serverless architecture scales automatically with traffic
+- **Caching**: Static assets cached at edge locations globally
+- **Performance**:
+  - Static Site Generation (SSG) for instant page loads
+  - Image optimization via Next.js Image component
+  - Code splitting and lazy loading
+- **Monitoring**: Vercel Analytics (to be configured)
 
-## 6. Testing Strategy
-
-<!-- 
-Document your testing approach and philosophy:
-- Testing methodology (TDD, test-after, etc.)
-- Types of tests and their purposes
-- Testing tools and frameworks
-- Coverage goals and quality standards
-- Continuous testing in CI/CD
--->
+## 5. Testing Strategy
 
 ### Testing Philosophy
 
-The project follows a **[Your Testing Approach]** methodology:
+The project follows a **Pragmatic Test-Driven Development (TDD)** approach:
 
-- **[High Priority Testing]**: [What gets tested first/most thoroughly]
-- **[Standard Testing]**: [Regular testing approach for most features]
-- **[Always Required]**: [Non-negotiable testing requirements]
-- **[Quality Focus]**: [Integration vs unit vs e2e emphasis]
+- **Full TDD for Logic**: API routes, form validation, utilities, component behavior tested before implementation
+- **Test-After for Design**: Visual layout and styling tested after design stabilizes
+- **Skip Tests for Pure Presentation**: Simple presentational components without logic may omit tests
+- **E2E for Critical Flows**: Playwright for key user journeys (contact form submission, navigation)
+- **Accessibility First**: Manual and automated a11y checks integrated throughout (axe DevTools, Lighthouse)
 
-### Backend Testing
-
-- **Framework**: [Testing framework and tools]
-- **Test Types**: [Unit, integration, API tests, etc.]
-- **Database Testing**: [How data persistence is tested]
-- **Coverage Goals**: [Target coverage percentages or standards]
-- **Commands**: `[Your backend test commands]`
-
-### Frontend Testing
-
-- **Framework**: [Frontend testing tools and approach]
-- **Component Testing**: [How UI components are tested]
-- **Integration Testing**: [User workflow and interaction testing]
-- **Coverage Goals**: [Frontend testing standards]
-- **Commands**: `[Your frontend test commands]`
+See `.arc/reference/strategies/testing-methodology.md` for detailed testing approach and examples.
 
 ### Quality Gates
 
-Before any commit, the following must pass with **zero tolerance**:
+Before any commit, the following must pass:
 
-1. **Test Coverage**: [Your coverage requirements]
-2. **All Tests Pass**: [Testing standards - 100% pass rate recommended]
-3. **Code Quality**: [Linting and formatting requirements]
-4. **Type Safety**: [Type checking standards if applicable]
-5. **Documentation**: [Documentation linting and standards]
+1. **Type Safety**: `npm run type-check` - zero TypeScript errors
+2. **Code Quality**: `npm run lint` - ESLint passes with zero warnings
+3. **Code Formatting**: `npm run format:check` - Prettier formatting enforced
+4. **Documentation**: Markdown files pass markdownlint validation
+5. **Build Success**: Project builds without errors
 
-See [DEVELOPMENT-RULES.md](DEVELOPMENT-RULES.md) for complete quality gate commands and requirements.
+See DEVELOPMENT-RULES.md for complete quality gate commands and requirements.
 
-## 7. Security Considerations
+## 6. Security Considerations
 
-<!-- 
-Document security measures and considerations:
-- Authentication and authorization patterns
-- Data protection and privacy
-- Input validation and sanitization
-- Dependency security
-- Infrastructure security
--->
+- **HTTPS**: Enforced by Vercel for all requests
+- **Content Security**: No user-generated content, minimal security surface
+- **Form Handling**: Contact form uses server-side validation and Zeptomail API
+- **Environment Variables**: Sensitive keys stored in Vercel environment variables
+- **Dependencies**: Regular `npm audit` checks, automated Dependabot updates via GitHub
+- **No Authentication**: Public portfolio site requires no user authentication
+- **Input Validation**: Server-side validation for contact form submissions
+- **Rate Limiting**: Consider rate limiting for contact form via Vercel Edge Functions
 
-- **Authentication**: [How user identity is verified and managed]
-- **Authorization**: [How permissions and access control work]
-- **Data Protection**: [Encryption, secure storage, privacy measures]
-- **Input Validation**: [How user input is validated and sanitized]
-- **Dependencies**: [How third-party dependencies are secured]
-- **Infrastructure**: [Network security, HTTPS, etc.]
+## 7. Performance Considerations
 
-## 8. Performance Considerations
+### Optimization Strategies
 
-<!-- 
-Document performance optimization strategies:
-- Application performance patterns
-- Database optimization
-- Caching strategies
-- Frontend performance
-- Monitoring and metrics
--->
+- **Static Generation**: All pages pre-rendered at build time (SSG)
+- **Image Optimization**: Next.js Image component with automatic optimization
+- **Code Splitting**: Automatic route-based code splitting via Next.js
+- **Bundle Optimization**: Turbopack handles efficient bundling
+- **CSS Optimization**: Tailwind CSS purges unused styles in production
+- **Font Optimization**: Next.js font optimization for custom fonts
+- **Lazy Loading**: Dynamic imports for heavy components (project media, galleries)
 
-- **Application Performance**: [Key optimization strategies]
-- **Database Performance**: [Query optimization, indexing]
-- **Caching**: [Performance caching at various levels]
-- **Frontend Performance**: [Bundle optimization, loading strategies]
-- **Monitoring**: [Performance metrics and alerting]
+### Performance Targets
 
-## 9. Development Workflow Integration
+- **Initial Load**: Sub-2 second time-to-interactive
+- **Lighthouse Score**: 90+ across all categories (Performance, Accessibility, Best Practices, SEO)
+- **Core Web Vitals**:
+  - LCP (Largest Contentful Paint): < 2.5s
+  - FID (First Input Delay): < 100ms
+  - CLS (Cumulative Layout Shift): < 0.1
 
-<!-- 
-How technical architecture supports ARC development methodology:
-- Code quality automation
-- Testing integration with workflows
-- Documentation generation
-- Deployment automation
--->
+### Monitoring
+
+- **Vercel Analytics**: Real User Monitoring (RUM) for Core Web Vitals
+- **Lighthouse CI**: Regular automated audits
+- **Manual Testing**: Regular performance checks across devices
+
+## 8. Development Workflow Integration
 
 ### ARC Framework Integration
 
 This technical architecture supports the ARC development methodology through:
 
-- **Quality Automation**: [How quality gates are automated]
-- **Documentation**: [Technical documentation generation and maintenance]
-- **Testing Integration**: [How testing supports systematic development]
-- **Deployment**: [How infrastructure supports reliable releases]
+- **Quality Automation**: Pre-commit checks via quality-gate-enforcer agent
+- **Documentation**: Markdown-based documentation with linting enforcement
+- **Systematic Development**: Constitutional documents guide technical decisions
+- **Version Control**: All changes tracked in Git with atomic commits
 
 ### Development Commands
 
-<!-- Include key commands developers need -->
 ```bash
 # Development setup
-[Your setup commands]
+npm install                    # Install dependencies
+npm run dev                    # Start development server with Turbopack
 
 # Testing
-[Your test commands]
-
-# Quality checks
-[Your linting/type checking commands]
+npm run type-check            # TypeScript type checking
+npm run lint                  # ESLint code quality checks
+npm run format                # Format code with Prettier
+npm run format:check          # Check formatting without writing
 
 # Build and deployment
-[Your build commands]
+npm run build                 # Production build with Turbopack
+npm run start                 # Start production server locally
+npx markdownlint-cli2 "**/*.md"  # Lint markdown documentation
+
+# Quality gates (all must pass)
+npm run type-check && npm run lint && npm run format:check && npm run build
 ```
 
-## 10. Architectural Decisions
-
-<!-- 
-Document key technical decisions and their rationale:
-- Major technology choices
-- Architectural patterns adopted
-- Trade-offs made
-- Future considerations
--->
+## 9. Architectural Decisions
 
 ### Key Technical Decisions
 
-- **[Decision 1]**: [Technology/pattern chosen and why]
-- **[Decision 2]**: [Another key architectural choice and rationale]
-- **[Decision 3]**: [Additional decision with trade-offs considered]
+- **Next.js App Router over Pages Router**: Modern approach with React Server Components, better performance,
+  and future-proof architecture
+- **Turbopack over Webpack**: Significantly faster builds and hot reload during development
+- **Tailwind CSS v4**: Utility-first CSS for rapid UI development with excellent performance
+- **Shadcn/ui over Component Library**: Full control over components, no vendor lock-in, source code in repo
+- **TypeScript (strict mode)**: Type safety prevents runtime errors and improves developer experience
+- **Vercel Deployment**: Zero-configuration deployment optimized for Next.js, global CDN, automatic scaling
+- **Static Generation (SSG)**: Portfolio content doesn't change frequently, SSG provides best performance
+- **No Backend/Database**: Content managed in code simplifies architecture and improves reliability
+- **Prettier + ESLint**: Enforced code style and quality standards across all contributors
+- **Framer Motion for Animations**: Modern animation library demonstrates UX polish and attention to detail
+- **React Hook Form + Zod**: Type-safe form handling with minimal re-renders and robust validation
+- **Vercel Analytics**: Data-driven portfolio optimization and performance monitoring
+
+### Trade-offs
+
+- **No CMS**: Content updates require code deployment (acceptable for portfolio site, reduces complexity)
+- **Static Content**: Dynamic features require API routes or client-side data fetching (minimal use case)
+- **Vercel Lock-in**: Deployment optimized for Vercel (can migrate but requires reconfiguration)
 
 ### Future Considerations
 
-- **Scalability**: [How architecture can grow with the project]
-- **Technology Evolution**: [Plans for upgrading or changing technologies]
-- **Technical Debt**: [Known areas for future improvement]
+- **Testing Suite**: Implement comprehensive testing as codebase grows
+- **Analytics**: Integrate analytics solution for portfolio effectiveness tracking
+- **Large File Hosting**: Evaluate alternatives to Google Drive for Unreal Engine project downloads
+  (Vercel Large File Support, Cloudflare R2, AWS S3)
+- **Blog/Writing**: May add content management system if blogging becomes priority (Contentful, Sanity.io)
+- **Internationalization**: Consider i18n if international audience grows (currently English-only)
 
 ---
 
 *This TECHNICAL-ARCHITECTURE document complements the META-PRD by focusing on implementation details
 rather than product vision. It should be updated as the technical foundation evolves.*
 
-*Last updated: [Date]*
+*Last updated: October 12, 2025*
