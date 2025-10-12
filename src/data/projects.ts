@@ -130,11 +130,11 @@ export const projects: Project[] = [
       liveDemo: undefined, // Not applicable - framework/documentation repo
     },
     images: {
-      thumbnail: "/thumbnails/arc-framework.jpg", // TODO: Add actual thumbnail image
+      thumbnail: "/thumbnails/arc-agentic-dev-framework.jpg", // TODO: Add actual thumbnail image
       screenshots: [
-        "/projects/arc-framework/screenshot-1.jpg", // TODO: Add actual screenshots (directory structure, workflow diagrams, example docs)
-        "/projects/arc-framework/screenshot-2.jpg",
-        "/projects/arc-framework/screenshot-3.jpg",
+        "/projects/arc-agentic-dev-framework/screenshot-1.jpg", // TODO: Add actual screenshots (directory structure, workflow diagrams, example docs)
+        "/projects/arc-agentic-dev-framework/screenshot-2.jpg",
+        "/projects/arc-agentic-dev-framework/screenshot-3.jpg",
       ],
       altTexts: [
         "ARC Framework directory structure and documentation", // TODO: Update alt text once screenshots added
@@ -280,16 +280,26 @@ export const projects: Project[] = [
       download: "https://github.com/andrewRCr/TaskFocus/releases", // Windows desktop app
     },
     images: {
-      thumbnail: "/thumbnails/taskfocus.jpg", // TODO: Migrate thumbnail from Squarespace
+      thumbnail: "/thumbnails/taskfocus.webp",
       screenshots: [
-        "/projects/taskfocus/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace
-        "/projects/taskfocus/screenshot-2.jpg",
-        "/projects/taskfocus/screenshot-3.jpg",
+        "/projects/taskfocus/screenshot-1.webp",
+        "/projects/taskfocus/screenshot-2.webp",
+        "/projects/taskfocus/screenshot-3.webp",
+        "/projects/taskfocus/screenshot-4.webp",
+        "/projects/taskfocus/screenshot-5.webp",
+        "/projects/taskfocus/screenshot-6.webp",
+        "/projects/taskfocus/screenshot-7.webp",
+        "/projects/taskfocus/screenshot-8.webp",
       ],
       altTexts: [
-        "TaskFocus Today view with prioritized tasks", // TODO: Update alt text once screenshots migrated
+        "TaskFocus Today view with prioritized tasks", // TODO: Update with actual screenshot descriptions
         "Task organization with Projects and Contexts",
         "Desktop and web interface cross-platform experience",
+        "TaskFocus feature screenshot 4",
+        "TaskFocus feature screenshot 5",
+        "TaskFocus feature screenshot 6",
+        "TaskFocus feature screenshot 7",
+        "TaskFocus feature screenshot 8",
       ],
     },
     teamSize: "Solo project",
@@ -347,16 +357,26 @@ export const projects: Project[] = [
       },
     },
     images: {
-      thumbnail: "/thumbnails/petresort.jpg", // TODO: Migrate thumbnail from Squarespace
+      thumbnail: "/thumbnails/petresort.webp",
       screenshots: [
-        "/projects/petresort/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace (8 views available)
-        "/projects/petresort/screenshot-2.jpg",
-        "/projects/petresort/screenshot-3.jpg",
+        "/projects/petresort/screenshot-1.webp",
+        "/projects/petresort/screenshot-2.webp",
+        "/projects/petresort/screenshot-3.webp",
+        "/projects/petresort/screenshot-4.webp",
+        "/projects/petresort/screenshot-5.webp",
+        "/projects/petresort/screenshot-6.webp",
+        "/projects/petresort/screenshot-7.webp",
+        "/projects/petresort/screenshot-8.webp",
       ],
       altTexts: [
-        "PetResort dashboard with visit overview and metrics", // TODO: Update alt text once screenshots migrated
+        "PetResort dashboard with visit overview and metrics", // TODO: Update with actual screenshot descriptions
         "Guest and client management interfaces",
         "Admin panel with role-based access control",
+        "PetResort feature screenshot 4",
+        "PetResort feature screenshot 5",
+        "PetResort feature screenshot 6",
+        "PetResort feature screenshot 7",
+        "PetResort feature screenshot 8",
       ],
     },
     teamSize: "Solo project",
@@ -411,16 +431,18 @@ export const projects: Project[] = [
       download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
     },
     images: {
-      thumbnail: "/thumbnails/doom-mod.jpg", // TODO: Migrate thumbnail from Squarespace
+      thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
       screenshots: [
-        "/projects/doom-mod/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace (4 views of UI/customization)
-        "/projects/doom-mod/screenshot-2.jpg",
-        "/projects/doom-mod/screenshot-3.jpg",
+        "/projects/doom-newgame-plus-customizer/screenshot-1.webp",
+        "/projects/doom-newgame-plus-customizer/screenshot-2.webp",
+        "/projects/doom-newgame-plus-customizer/screenshot-3.webp",
+        "/projects/doom-newgame-plus-customizer/screenshot-4.webp",
       ],
       altTexts: [
-        "NewGame+ Customizer desktop application interface", // TODO: Update alt text once screenshots migrated
+        "NewGame+ Customizer desktop application interface", // TODO: Update with actual screenshot descriptions
         "Gameplay configuration and validation UI",
         "Custom mod generation and installation workflow",
+        "DOOM Customizer feature screenshot 4",
       ],
     },
     teamSize: "Solo project",
@@ -480,18 +502,42 @@ export const projects: Project[] = [
       download: "https://drive.google.com/file/d/1aUZ3IhFJOaD7NjLIIzOBAaum8KmxyvjM/view?usp=sharing", // Google Drive - packaged executable (~5GB)
     },
     images: {
-      thumbnail: "/thumbnails/action-rpg.jpg", // TODO: Migrate thumbnail from Squarespace
+      thumbnail: "/thumbnails/action-rpg-project.webp",
       screenshots: [
-        "/projects/action-rpg/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace (gameplay, combat, enemies, environments)
-        "/projects/action-rpg/screenshot-2.jpg",
-        "/projects/action-rpg/screenshot-3.jpg",
-        "/projects/action-rpg/screenshot-4.jpg",
+        "/projects/action-rpg-project/screenshot-1.webp",
+        "/projects/action-rpg-project/screenshot-2.webp",
+        "/projects/action-rpg-project/screenshot-3.webp",
+        "/projects/action-rpg-project/screenshot-4.webp",
+        "/projects/action-rpg-project/screenshot-5.webp",
+        "/projects/action-rpg-project/screenshot-6.webp",
+        "/projects/action-rpg-project/screenshot-7.webp",
+        "/projects/action-rpg-project/screenshot-8.webp",
+        "/projects/action-rpg-project/screenshot-9.webp",
+        "/projects/action-rpg-project/screenshot-10.webp",
+        "/projects/action-rpg-project/screenshot-11.webp",
+        "/projects/action-rpg-project/screenshot-12.webp",
+        "/projects/action-rpg-project/screenshot-13.webp",
+        "/projects/action-rpg-project/screenshot-14.webp",
+        "/projects/action-rpg-project/screenshot-15.webp",
+        "/projects/action-rpg-project/screenshot-16.webp",
       ],
       altTexts: [
-        "Action RPG combat encounter with posture-break mechanics", // TODO: Update alt text once screenshots migrated
+        "Action RPG combat encounter with posture-break mechanics", // TODO: Update with actual screenshot descriptions
         "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues",
         "Dungeon exploration and idol statue checkpoint",
         "Boss battle with Large Skeletal Warrior",
+        "Action RPG gameplay screenshot 5",
+        "Action RPG gameplay screenshot 6",
+        "Action RPG gameplay screenshot 7",
+        "Action RPG gameplay screenshot 8",
+        "Action RPG gameplay screenshot 9",
+        "Action RPG gameplay screenshot 10",
+        "Action RPG gameplay screenshot 11",
+        "Action RPG gameplay screenshot 12",
+        "Action RPG gameplay screenshot 13",
+        "Action RPG gameplay screenshot 14",
+        "Action RPG gameplay screenshot 15",
+        "Action RPG gameplay screenshot 16",
       ],
     },
     teamSize: "Solo project",
@@ -552,18 +598,54 @@ export const projects: Project[] = [
       download: "https://drive.google.com/file/d/1f7JPpYg7aZcZ0B5MIgAoK4epn9MWZhD4/view?usp=sharing", // Google Drive - packaged executable (~5GB)
     },
     images: {
-      thumbnail: "/thumbnails/survival-horror.jpg", // TODO: Migrate thumbnail from Squarespace
+      thumbnail: "/thumbnails/survival-horror-project.webp",
       screenshots: [
-        "/projects/survival-horror/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace (mansion, puzzles, combat, zombies)
-        "/projects/survival-horror/screenshot-2.jpg",
-        "/projects/survival-horror/screenshot-3.jpg",
-        "/projects/survival-horror/screenshot-4.jpg",
+        "/projects/survival-horror-project/screenshot-1.webp",
+        "/projects/survival-horror-project/screenshot-2.webp",
+        "/projects/survival-horror-project/screenshot-3.webp",
+        "/projects/survival-horror-project/screenshot-4.webp",
+        "/projects/survival-horror-project/screenshot-5.webp",
+        "/projects/survival-horror-project/screenshot-6.webp",
+        "/projects/survival-horror-project/screenshot-7.webp",
+        "/projects/survival-horror-project/screenshot-8.webp",
+        "/projects/survival-horror-project/screenshot-9.webp",
+        "/projects/survival-horror-project/screenshot-10.webp",
+        "/projects/survival-horror-project/screenshot-11.webp",
+        "/projects/survival-horror-project/screenshot-12.webp",
+        "/projects/survival-horror-project/screenshot-13.webp",
+        "/projects/survival-horror-project/screenshot-14.webp",
+        "/projects/survival-horror-project/screenshot-15.webp",
+        "/projects/survival-horror-project/screenshot-16.webp",
+        "/projects/survival-horror-project/screenshot-17.webp",
+        "/projects/survival-horror-project/screenshot-18.webp",
+        "/projects/survival-horror-project/screenshot-19.webp",
+        "/projects/survival-horror-project/screenshot-20.webp",
+        "/projects/survival-horror-project/screenshot-21.webp",
+        "/projects/survival-horror-project/screenshot-22.webp",
       ],
       altTexts: [
-        "Survival Horror mansion exploration and puzzle-solving", // TODO: Update alt text once screenshots migrated
+        "Survival Horror mansion exploration and puzzle-solving", // TODO: Update with actual screenshot descriptions
         "Third-person combat with zombie enemies",
         "Multi-floor map system and inventory management",
         "Environmental puzzle mechanics and key item retrieval",
+        "Survival Horror gameplay screenshot 5",
+        "Survival Horror gameplay screenshot 6",
+        "Survival Horror gameplay screenshot 7",
+        "Survival Horror gameplay screenshot 8",
+        "Survival Horror gameplay screenshot 9",
+        "Survival Horror gameplay screenshot 10",
+        "Survival Horror gameplay screenshot 11",
+        "Survival Horror gameplay screenshot 12",
+        "Survival Horror gameplay screenshot 13",
+        "Survival Horror gameplay screenshot 14",
+        "Survival Horror gameplay screenshot 15",
+        "Survival Horror gameplay screenshot 16",
+        "Survival Horror gameplay screenshot 17",
+        "Survival Horror gameplay screenshot 18",
+        "Survival Horror gameplay screenshot 19",
+        "Survival Horror gameplay screenshot 20",
+        "Survival Horror gameplay screenshot 21",
+        "Survival Horror gameplay screenshot 22",
       ],
     },
     teamSize: "3-person team",
@@ -622,11 +704,8 @@ export const projects: Project[] = [
       download: "https://github.com/andrewRCr/PongClone/releases", // Windows executable
     },
     images: {
-      thumbnail: "/thumbnails/pong-clone.jpg", // TODO: Migrate thumbnail from Squarespace
-      screenshots: [
-        "/projects/pong-clone/screenshot-1.jpg", // TODO: Migrate screenshots from Squarespace
-        "/projects/pong-clone/screenshot-2.jpg",
-      ],
+      thumbnail: "/thumbnails/pong-clone.webp",
+      screenshots: ["/projects/pong-clone/screenshot-1.webp", "/projects/pong-clone/screenshot-2.webp"],
       altTexts: [
         "Pong Clone gameplay with single-player AI opponent", // TODO: Update alt text once screenshots migrated
         "Main menu and game interface",

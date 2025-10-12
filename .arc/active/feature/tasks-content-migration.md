@@ -59,9 +59,14 @@
 - `src/components/projects/__tests__/ProjectCard.test.tsx` - Component tests for project card (to be created)
 - `src/components/projects/__tests__/ProjectDetail.test.tsx` - Component tests for project detail (to be created)
 
+### Image Assets
+
+- `public/thumbnails/` - Project thumbnail images, one per project (9 total, to be migrated from Squarespace)
+- `public/projects/{slug}/` - Project screenshot directories, one per project (28+ screenshots total, to be migrated from Squarespace)
+
 ### Documentation
 
-- `public/projects/README.md` - Documentation for image organization and naming conventions (to be created)
+- `public/projects/README.md` - Documentation for image organization, naming conventions, and migration details (to be created)
 
 ## Tasks
 
@@ -105,11 +110,13 @@
   - [x] 3.6 Write data validation tests for skills, education, bio, contact data
   - [x] 3.7 Run incremental quality checks (type-check, lint, format, test)
 
-- [ ] 4.0 Establish image asset directory structure and documentation
-  - [ ] 4.1 Create directory structure: `public/projects/[slug]/` and `public/thumbnails/`
-  - [ ] 4.2 Document image requirements and naming conventions in `public/projects/README.md`
-  - [ ] 4.3 Update project data with correct image path references
-  - [ ] 4.4 Document 61+ images needed from Squarespace with counts per project
+- [ ] 4.0 Complete image migration from Squarespace to Next.js structure
+  - [ ] 4.1 Create directory structure and download images from Squarespace using browser extension (Image Downloader Plus)
+  - [ ] 4.2 Organize downloaded images into Next.js structure with proper naming (`{slug}.webp` for thumbnails, `screenshot-{n}.webp` for screenshots)
+  - [ ] 4.3 Update project data image paths from `.jpg` to `.webp` format for all 9 projects
+  - [ ] 4.4 Create `public/projects/README.md` documenting structure, conventions, and actual image counts
+  - [ ] 4.5 Verify all images load correctly in development (npm run dev)
+  - [ ] 4.6 Run incremental quality checks (type-check, lint, format, build)
 
 ### Phase 3: Placeholder Display Components
 
