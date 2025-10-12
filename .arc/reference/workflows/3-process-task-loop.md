@@ -47,6 +47,7 @@ Guidelines for managing task lists in markdown files to track progress on comple
     ```bash
     git commit -m "feat({{FEATURE_BRANCH_PREFIX}}/{{FEATURE_NAME}}): add validation logic" -m "- Validates input parameters" -m "- Adds unit tests for edge cases" -m "Complete task {TASK_ID}" -m "Related to {{FEATURE_NAME}} PRD"
     ```
+
   1. Once the user commits changes, mark the **parent task** as completed in task documentation.
   2. **Verify task documentation accuracy** - ensure task status matches what was actually completed.
 
