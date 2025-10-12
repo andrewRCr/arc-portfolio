@@ -47,9 +47,9 @@ with flexibility for design exploration:
 
 ```typescript
 // Test first
-describe('validateEmail', () => {
-  it('returns error for invalid email format', () => {
-    expect(validateEmail('notanemail')).toEqual({ error: 'Invalid email format' });
+describe("validateEmail", () => {
+  it("returns error for invalid email format", () => {
+    expect(validateEmail("notanemail")).toEqual({ error: "Invalid email format" });
   });
 });
 
@@ -303,5 +303,5 @@ See DEVELOPMENT-RULES.md for complete pre-commit quality gate requirements.
 
 ---
 
-*This testing strategy supports the pragmatic development approach of andrewRCr Portfolio while maintaining
-high code quality and demonstrating professional testing practices.*
+_This testing strategy supports the pragmatic development approach of andrewRCr Portfolio while maintaining
+high code quality and demonstrating professional testing practices._

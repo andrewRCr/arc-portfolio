@@ -271,7 +271,7 @@ npm run type-check && npm run lint && npm run format:check && npm run build
 
 ---
 
-*This TECHNICAL-ARCHITECTURE document complements the META-PRD by focusing on implementation details
-rather than product vision. It should be updated as the technical foundation evolves.*
+_This TECHNICAL-ARCHITECTURE document complements the META-PRD by focusing on implementation details
+rather than product vision. It should be updated as the technical foundation evolves._
 
-*Last updated: October 12, 2025*
+_Last updated: October 12, 2025_

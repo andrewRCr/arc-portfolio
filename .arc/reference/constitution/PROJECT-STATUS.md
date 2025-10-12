@@ -181,7 +181,7 @@ The project follows the ARC development methodology using:
 
 ---
 
-*This PROJECT-STATUS document is updated regularly as features progress from planning → development → completion.
-For detailed feature specifications, see individual PRDs in the `.arc/upcoming/prds/` directory.*
+_This PROJECT-STATUS document is updated regularly as features progress from planning → development → completion.
+For detailed feature specifications, see individual PRDs in the `.arc/upcoming/prds/` directory._
 
-*Last updated: October 12, 2025*
+_Last updated: October 12, 2025_

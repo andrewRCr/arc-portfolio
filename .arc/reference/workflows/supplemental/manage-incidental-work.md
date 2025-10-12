@@ -115,9 +115,11 @@ Related to: .arc/active/feature/tasks-{main-feature}.md"
 ### Paused/Deferred Work
 
 **Paused Task Lists:**
+
 - `.arc/active/feature/tasks-{main-feature}.md` - Task X.Y complete, paused at Task X.Y+1
 
 **Resume Order After Incidental Work:**
+
 1. Complete incidental work ({brief description})
 2. Resume tasks-{main-feature}.md Task X.Y+1
 ```
@@ -234,28 +236,34 @@ Before archiving, ensure:
 **Completion Date**: {YYYY-MM-DD}
 
 **Summary**:
+
 - {1-2 sentence summary of what was accomplished}
 - {Key outcomes or improvements}
 - {Metrics if applicable: error counts, test coverage, performance}
 
 **Tooling/Architecture Changes** (if applicable):
+
 - {Major changes to build tools, dependencies, CI/CD}
 - {New patterns or standards introduced}
 
 **Files Changed**:
+
 - {Count of files modified/created/deleted}
 - {Key files and their purpose}
 
 **Follow-Up Work Created** (if any):
+
 - `.arc/active/incidental/tasks-incidental-{follow-up-slug}.md` ({brief description})
 - {Estimated effort for follow-up}
 
 **References**:
+
 - {Links to key commits}
 - {Links to external research or documentation}
 - {Links to related PRDs or task lists}
 
 **Next Steps**:
+
 1. {What to do after this incidental work completes}
 2. {Which paused work to resume}
 ```
@@ -358,6 +366,7 @@ Related to: .arc/active/feature/tasks-{main-feature}.md"
 ### Paused/Deferred Work
 
 **Paused Task Lists:**
+
 - `.arc/active/feature/tasks-{main-feature}.md` - Resume at Task X.Y
 ```
 
@@ -388,11 +397,13 @@ Return to paused feature work and continue normal workflow.
 ## Scope
 
 **Will Do**:
+
 - {Specific changes that will be made}
 - {Expected outcomes}
 - {Target metrics or completion criteria}
 
 **Won't Do** (deferred to {future-work-reference}):
+
 - {Out of scope items}
 - {Future improvements}
 - {Why these are deferred}
@@ -410,10 +421,12 @@ Return to paused feature work and continue normal workflow.
 ## Relevant Files
 
 **{Category}:**
+
 - `{file-path}`: {What changed and why}
 - `{file-path}`: {What changed and why}
 
 **{Category}:**
+
 - `{file-path}`: {What changed and why}
 
 ## Implementation Notes
@@ -421,6 +434,7 @@ Return to paused feature work and continue normal workflow.
 ### {Decision/Pattern Name}
 
 **{Context}:**
+
 - {Key technical decisions made}
 - {Rationale for approach chosen}
 - {Alternatives considered and rejected}

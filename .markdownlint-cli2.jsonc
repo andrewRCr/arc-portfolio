@@ -1,0 +1,7 @@
+{
+  // markdownlint-cli2 configuration
+  // Rules are defined in .markdownlint.json (shared with VS Code extension)
+  // This file only specifies which files to check
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules/**", ".claude/**"],
+}

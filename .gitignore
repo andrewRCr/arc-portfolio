@@ -48,7 +48,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
-.vscode/settings.json
+.vscode/
 .idea/
 
 # Temporary files

@@ -148,6 +148,6 @@ Version 1.0 is considered complete when:
 
 ---
 
-*This META-PRD serves as the foundational vision document for andrewRCr Portfolio.*
-*Individual feature work should align with this overall direction.*
-*Update this document as the project vision evolves.*
+_This META-PRD serves as the foundational vision document for andrewRCr Portfolio._
+_Individual feature work should align with this overall direction._
+_Update this document as the project vision evolves._

@@ -89,13 +89,13 @@ All code must be Prettier-formatted.
 **ALWAYS run after updating any documentation files**:
 
 ```bash
-npx markdownlint-cli2 "**/*.md"
+npm run lint:md
 ```
 
 Auto-fix available:
 
 ```bash
-npx markdownlint-cli2 --fix "**/*.md"
+npm run lint:md:fix
 ```
 
 Every markdown violation must be fixed.
@@ -346,4 +346,4 @@ This document provides core rules. See detailed protocols in:
 
 ---
 
-*These development rules ensure consistent quality and maintainability throughout the andrewRCr Portfolio project.*
+_These development rules ensure consistent quality and maintainability throughout the andrewRCr Portfolio project._

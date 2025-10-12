@@ -1,8 +1,8 @@
 # [Your Project Name] - Shared AI Context
 
-<!-- 
+<!--
 ARC Framework Template: Copy this file and customize for your project
-- Replace [Your Project Name] with your actual project name  
+- Replace [Your Project Name] with your actual project name
 - Update project overview with your specific context
 - Customize technology stack section for your tools
 - Keep ARC framework workflow references and structure
@@ -10,10 +10,10 @@ ARC Framework Template: Copy this file and customize for your project
 
 ## Project Overview
 
-<!-- 
+<!--
 Customize this section for your project:
 - Brief description of what your application does
-- Target users and main use cases  
+- Target users and main use cases
 - Project type (solo, team, client work, etc.)
 - Key business objectives or showcase goals
 -->
@@ -30,7 +30,7 @@ Customize this section for your project:
 **Constitutional Documents** (Core project foundation):
 
 - [META-PRD](../constitution/META-PRD.md) - Product vision, core features, user flows, and success metrics
-- [PROJECT-STATUS](../constitution/PROJECT-STATUS.md) - Current progress, completed work, and upcoming priorities  
+- [PROJECT-STATUS](../constitution/PROJECT-STATUS.md) - Current progress, completed work, and upcoming priorities
 - [TECHNICAL-ARCHITECTURE](../constitution/TECHNICAL-ARCHITECTURE.md) - Technical architecture, patterns, and
   implementation details
 - [DEVELOPMENT-RULES](../constitution/DEVELOPMENT-RULES.md) - Development standards, quality gates, and
@@ -69,7 +69,7 @@ Customize this section for your project:
 
 ### Technology Stack
 
-<!-- 
+<!--
 Customize this section for your specific technology choices:
 - Replace examples with your actual stack
 - Include versions where relevant
@@ -89,7 +89,7 @@ Customize this section for your specific technology choices:
 
 ### Development Environment
 
-<!-- 
+<!--
 Describe your development setup:
 - How the application runs locally
 - Key development tools and practices
@@ -103,7 +103,7 @@ Describe your development setup:
 
 ### Key Architectural Patterns
 
-<!-- 
+<!--
 Document your main architectural decisions:
 - Authentication/authorization approach
 - Data flow patterns
@@ -131,7 +131,7 @@ Document your main architectural decisions:
 
 ### User-Focused Features
 
-<!-- 
+<!--
 Describe your application's main features from user perspective:
 - Core functionality users interact with
 - Key user workflows
@@ -139,7 +139,7 @@ Describe your application's main features from user perspective:
 -->
 
 - **[Core Feature 1]**: [Brief description]
-- **[Core Feature 2]**: [Brief description]  
+- **[Core Feature 2]**: [Brief description]
 - **[Core Feature 3]**: [Brief description]
 - **[Planned Features]**: [Future functionality if relevant]
 
@@ -163,7 +163,7 @@ When working on new features:
 **Session Management**:
 
 - Review CURRENT-SESSION.md at start of work
-- Follow session handoff protocols for context preservation  
+- Follow session handoff protocols for context preservation
 - NEVER update CURRENT-SESSION.md without explicit user instruction
 
 **Task Execution**:
@@ -211,7 +211,7 @@ When working on new features:
 
 - **Set up project foundation** → `workflows/0-define-constitution.md`
 - **Start a new feature** → `workflows/1-create-prd.md`
-- **Break down tasks** → `workflows/2-generate-tasks.md`  
+- **Break down tasks** → `workflows/2-generate-tasks.md`
 - **Implement tasks** → `workflows/3-process-task-loop.md`
 - **Handle maintenance work** → `workflows/supplemental/manage-incidental-work.md`
 - **Hand off session** → `workflows/supplemental/session-handoff.md`
@@ -233,7 +233,7 @@ When working on new features:
 
 ## Project Goals and Context
 
-<!-- 
+<!--
 This section provides a high-level summary only.
 Refer to META-PRD.md for complete project vision, objectives, and success metrics.
 Keep this section as strict bullet points - brief summaries of META-PRD content.
@@ -242,7 +242,7 @@ Keep this section as strict bullet points - brief summaries of META-PRD content.
 **Primary Objectives** (See META-PRD.md for details):
 
 - [Brief summary of main objective 1]
-- [Brief summary of main objective 2]  
+- [Brief summary of main objective 2]
 - [Brief summary of main objective 3]
 
 **Key Principles** (See META-PRD.md for rationale):
@@ -261,5 +261,5 @@ Keep this section as strict bullet points - brief summaries of META-PRD content.
 
 ---
 
-*This document is maintained as part of the ARC (Agentic, Recursive, Coordination) development framework.
-It provides essential context for both human developers and AI assistants working on this project.*
+_This document is maintained as part of the ARC (Agentic, Recursive, Coordination) development framework.
+It provides essential context for both human developers and AI assistants working on this project._
