@@ -80,12 +80,12 @@
 ### Phase 2: Content Migration
 
 - [ ] 2.0 Migrate project data from Squarespace (9 projects)
-  - [ ] 2.1 Migrate priority project 1: CineXplorer (new project with full details)
-  - [ ] 2.2 Migrate priority project 2: arc-agentic-dev-framework (new project)
-  - [ ] 2.3 Migrate priority project 3: arc-portfolio (new project - this portfolio)
-  - [ ] 2.4 Migrate existing project 4: TaskFocus (from Squarespace)
-  - [ ] 2.5 Migrate existing project 5: PetResort (from Squarespace)
-  - [ ] 2.6 Migrate existing project 6: NewGame+ Customizer for DOOM (from Squarespace)
+  - [x] 2.1 Migrate priority project 1: CineXplorer (new project with full details)
+  - [x] 2.2 Migrate priority project 2: arc-agentic-dev-framework (new project)
+  - [x] 2.3 Migrate priority project 3: arc-portfolio (new project - this portfolio)
+  - [x] 2.4 Migrate existing project 4: TaskFocus (from Squarespace)
+  - [x] 2.5 Migrate existing project 5: PetResort (from Squarespace)
+  - [x] 2.6 Migrate existing project 6: NewGame+ Customizer for DOOM (from Squarespace)
   - [ ] 2.7 Migrate existing project 7: Action RPG Project (from Squarespace)
   - [ ] 2.8 Migrate existing project 8: Survival Horror Project (from Squarespace)
   - [ ] 2.9 Migrate existing project 9: Pong Clone (from Squarespace)
