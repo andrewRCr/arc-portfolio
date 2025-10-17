@@ -214,7 +214,7 @@ Break down a sub-task if it requires:
 
 ### Test-Driven Development (Pragmatic TDD)
 
-The project follows pragmatic TDD as detailed in `.arc/reference/strategies/testing-methodology.md`:
+The project follows pragmatic TDD as detailed in `.arc/reference/strategies/strategy-testing-methodology.md`:
 
 - **Write tests first for**: API routes, form validation, utilities, component behavior
 - **Test after for**: Visual layout, styling, design iterations
@@ -379,7 +379,7 @@ This document provides core rules. See detailed protocols in:
 
 - [META-PRD](META-PRD.md) - Project vision and goals
 - [Technical Architecture](TECHNICAL-ARCHITECTURE.md) - Implementation stack and patterns
-- [Testing Methodology](../strategies/testing-methodology.md) - Detailed testing approach
+- [Testing Methodology](../strategies/strategy-testing-methodology.md) - Detailed testing approach
 - [Task Processing Workflow](../workflows/3-process-task-loop.md) - Task execution workflow
 - [Atomic Commit Workflow](../workflows/supplemental/atomic-commit.md) - Commit workflow with task analysis
 - [Session Handoff Workflow](../workflows/supplemental/session-handoff.md) - Context handoff protocol

@@ -69,7 +69,10 @@ CineXplorer (primary) ──sync-cinexplorer-refinements.md──> ARC Framework
 - Current `.arc/active/` content (except format improvements to CURRENT-SESSION.md)
 - `.arc/upcoming/` planning specific to that project
 - `.arc/reference/archive/` completed work history
-- `.arc-internal/` framework-project-specific workspace
+
+**Note on `.arc-internal/`**: The framework repository (arc-agentic-dev-framework) maintains its own `.arc-internal/`
+directory for framework development work. This is framework-repo-specific and does NOT exist in adopting projects.
+Adopting projects only have `.arc/` at their root.
 
 **Principle**: Adopt framework improvements while preserving project adaptations.
 
@@ -111,8 +114,13 @@ For significant syncs, create a task list in the adopting project:
 ```bash
 # In adopting project
 # Location: .arc/active/incidental/
-# Naming: tasks-sync-arc-framework-YYYY-MM-DD.md
+# Naming: tasks-chore-sync-arc-framework-YYYY-MM-DD.md
+# Note: "chore" prefix categorizes this as maintenance/infrastructure work
 ```
+
+**Work Categorization**: Framework syncs are "chore" type incidental work - operational improvements rather than
+feature development. See `strategies/strategy-work-categorization.md` for the three-way categorization system
+and naming conventions.
 
 ### 2. Analysis
 
@@ -261,6 +269,15 @@ When framework has new files not in project:
 3. Update project's directory READMEs to reference it
 4. Verify cross-references work in project context
 
+**Important - `.example` Suffix**: Framework template files use `.example` suffix (e.g., `QUICK-REFERENCE.example.md`,
+`AGENTS.example.md`) to distinguish them as templates. When syncing to adopting projects:
+
+- **Remove the `.example` suffix** from the filename
+- Adapt template content to project-specific context (tech stack, paths, commands)
+- Examples: `QUICK-REFERENCE.example.md` → `QUICK-REFERENCE.md`, `AGENTS.example.md` → `AGENTS.md`
+
+The `.example` files remain in the framework repo as templates; adopting projects use the non-`.example` versions.
+
 ### 5. Validation
 
 **5.1 Cross-Reference Check**
@@ -275,13 +292,19 @@ grep -r "\.md)" .arc/reference/ | grep -v "http"
 **5.2 Quality Gates**
 
 ```bash
-# Lint all synced files
-npx --yes markdownlint-cli .arc/**/*.md .arc-internal/**/*.md
+# Lint all synced files (in adopting project)
+npx --yes markdownlint-cli .arc/**/*.md
+
+# Or use project-specific lint command if available
+npm run lint:md
 
 # Review changes
 git status
 git --no-pager diff --stat
 ```
+
+**Note**: The `.arc-internal/` path should NOT be included in adopting project linting commands - that directory
+only exists in the framework repository itself.
 
 **5.3 Customization Check**
 
@@ -343,7 +366,8 @@ git add .arc/
 
 # Or stage selectively
 git add .arc/reference/workflows/
-git add .arc/reference/constitution/DEVELOPMENT-RULES.example.md
+git add .arc/reference/constitution/
+git add .arc/reference/ai-instructions/
 ```
 
 **7.3 Commit Message**

@@ -151,7 +151,7 @@ The project follows a **Pragmatic Test-Driven Development (TDD)** approach:
 - **E2E for Critical Flows**: Playwright for key user journeys (contact form submission, navigation)
 - **Accessibility First**: Manual and automated a11y checks integrated throughout (axe DevTools, Lighthouse)
 
-See `.arc/reference/strategies/testing-methodology.md` for detailed testing approach and examples.
+See `.arc/reference/strategies/strategy-testing-methodology.md` for detailed testing approach and examples.
 
 ### Quality Gates
 

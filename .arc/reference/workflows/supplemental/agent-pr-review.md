@@ -156,7 +156,6 @@ Fixed in commit [hash].
 [Acknowledgment of concern]
 
 Declining because:
-
 1. **[Reason 1]** - [Details]
 2. **[Reason 2]** - [Details]
 
@@ -184,9 +183,9 @@ After all fixes committed and replies posted:
 
 1. **Verify commits are in PR** - Check GitHub shows your fixes
 2. **Resolve conversations** - Mark conversations as resolved:
-   - Issues with fixes: After posting reply with commit hash
-   - Nitpicks: Immediately (no reply needed)
-   - Deferrals: Leave open for agent/team to acknowledge
+    - Issues with fixes: After posting reply with commit hash
+    - Nitpicks: Immediately (no reply needed)
+    - Deferrals: Leave open for agent/team to acknowledge
 3. **Wait for re-review** - Agent may respond to deferrals
 4. **Delete temp file** - `rm _temp_agent_reply.md` after all replies posted
 

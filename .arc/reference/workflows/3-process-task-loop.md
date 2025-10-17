@@ -18,6 +18,7 @@ Guidelines for managing task lists in markdown files to track progress on comple
   sub-task
 - **Immediate documentation:** Update the task list file immediately after completing each subtask
 - **Completion protocol:**
+
   1. When you finish a **single sub-task**:
      - **First**: Immediately mark it as completed by changing `[ ]` to `[x]` in the task list file
      - **Second**: Update the "Relevant Files" section if new files were created or modified
@@ -26,16 +27,18 @@ Guidelines for managing task lists in markdown files to track progress on comple
      - **NEVER** continue to multiple subtasks without explicit user approval for each one
 
   2. If **all** subtasks underneath a parent task are now `[x]`, follow this sequence:
+
   - **First**: Ensure new functionality has appropriate test coverage
   - **Second**: Run the full test suite per {{BACKEND_TEST_CMD}}, {{FRONTEND_TEST_CMD}}
-
 - **Third**: Run all linting checks per {{BACKEND_LINT_CMD}}, {{FRONTEND_LINT_CMD}},
   {{TS_TYPECHECK_CMD}}, {{MARKDOWN_LINT_CMD}}
 - **Fourth**: Check if PROJECT-STATUS needs updates (feature progress, completed functionality,
   updated priorities)
+
   1. Generate standardized readiness report (see DEVELOPMENT-RULES.md for format) and await user instructions
      on how to proceed. User may choose to commit changes (AI can execute only if explicitly approved to do so)
      or review first. When committing, follow atomic-commit workflow guidelines:
+
   - Uses conventional commit format (`feat:`, `fix:`, `refactor:`, etc.)
   - Summarizes what was accomplished in the parent task
   - Lists key changes and additions
@@ -44,9 +47,10 @@ Guidelines for managing task lists in markdown files to track progress on comple
   - References the PRD context and current branch {{FEATURE_BRANCH_PREFIX}}/{{FEATURE_NAME}}
   - **Formats the message as a single-line command using `-m` flags**, replacing placeholders with real values:
 
-    ```bash
-    git commit -m "feat({{FEATURE_BRANCH_PREFIX}}/{{FEATURE_NAME}}): add validation logic" -m "- Validates input parameters" -m "- Adds unit tests for edge cases" -m "Complete task {TASK_ID}" -m "Related to {{FEATURE_NAME}} PRD"
-    ```
+      ```
+      git commit -m "feat({{FEATURE_BRANCH_PREFIX}}/{{FEATURE_NAME}}): add validation logic" -m "- Validates input parameters" -m "- Adds unit tests for edge cases" -m "Complete task {TASK_ID}" -m "Related to {{FEATURE_NAME}} PRD"
+      ```
+
   1. Once the user commits changes, mark the **parent task** as completed in task documentation.
   2. **Verify task documentation accuracy** - ensure task status matches what was actually completed.
 
@@ -112,6 +116,7 @@ When all parent tasks are complete and ready for integration:
 ## Task List Maintenance
 
 1. **Update the task list as you work:**
+
    - Mark tasks and subtasks as completed (`[x]`) per the protocol above.
    - Add new tasks as they emerge.
 
