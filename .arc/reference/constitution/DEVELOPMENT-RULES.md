@@ -272,6 +272,22 @@ feat(contact): Add form validation with Zod
 - Group related changes together (e.g., "config: " for multiple config file updates)
 - Separate formatting from functional changes
 
+## Visual Development
+
+### Design Principles
+
+- Comprehensive visual design guidelines in `/reference/strategies/strategy-visual-design-principles.md`
+- Brand style guide in `/reference/strategies/strategy-style-guide.md`
+- When making visual (front-end, UI/UX) changes, always refer to these files for guidance
+
+### Comprehensive Visual Design Review
+
+Invoke the `@visual-design-reviewer` subagent for thorough design validation when:
+
+- Completing significant UI/UX features
+- Before finalizing PRs with visual changes
+- Needing comprehensive accessibility and responsiveness testing
+
 ## Error Handling
 
 ### When Things Go Wrong
