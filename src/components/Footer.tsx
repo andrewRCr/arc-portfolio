@@ -1,17 +1,16 @@
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeToggle } from "./ThemeToggle";
 
 /**
  * Footer Component
  *
- * Simple footer with theme toggle.
- *
- * NOTE: Placeholder component - minimal styling.
- * Visual design will be enhanced during design phase.
+ * Minimal terminal-inspired footer with theme toggle.
  */
 export function Footer() {
   return (
-    <footer className="flex items-center justify-center p-4 border-t">
-      <ThemeToggle />
+    <footer className="mt-auto">
+      <div className="flex items-center justify-center p-6">
+        <ThemeToggle />
+      </div>
     </footer>
   );
 }

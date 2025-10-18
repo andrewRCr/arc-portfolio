@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
-import { themes, defaultTheme } from '@/data/themes';
-import { applyThemeColors, getThemeColors } from '@/lib/theme-utils';
+import * as React from "react";
+import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { themes, defaultTheme } from "@/data/themes";
+import { applyThemeColors, getThemeColors } from "@/lib/theme-utils";
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
 
@@ -29,10 +29,10 @@ function ThemeColorApplier() {
     if (!currentTheme) return;
 
     // Determine if we're in dark mode
-    const isDark = resolvedTheme === 'dark';
+    const isDark = resolvedTheme === "dark";
 
     // Get and apply appropriate colors
-    const colors = getThemeColors(currentTheme, isDark ? 'dark' : 'light');
+    const colors = getThemeColors(currentTheme, isDark ? "dark" : "light");
     applyThemeColors(colors);
   }, [mounted, theme, resolvedTheme]);
 

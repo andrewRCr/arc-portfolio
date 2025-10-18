@@ -1,4 +1,4 @@
-import type { ThemeColors } from '@/data/themes';
+import type { ThemeColors } from "@/data/themes";
 
 /**
  * Theme Utilities
@@ -28,9 +28,6 @@ export function applyThemeColors(colors: ThemeColors): void {
  * @param mode - 'light' or 'dark'
  * @returns ThemeColors for the specified mode
  */
-export function getThemeColors(
-  theme: { light: ThemeColors; dark: ThemeColors },
-  mode: 'light' | 'dark',
-): ThemeColors {
-  return mode === 'dark' ? theme.dark : theme.light;
+export function getThemeColors(theme: { light: ThemeColors; dark: ThemeColors }, mode: "light" | "dark"): ThemeColors {
+  return mode === "dark" ? theme.dark : theme.light;
 }

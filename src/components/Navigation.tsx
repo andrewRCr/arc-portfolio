@@ -1,42 +1,53 @@
-import Link from 'next/link';
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 /**
  * Navigation Component
  *
- * Basic navigation header with branding and section links.
- *
- * Structure:
- * - Name/branding on top row
- * - Navigation links on second row
- * - Centered layout
- *
- * NOTE: This is a placeholder component using structural Tailwind classes only.
- * Visual design (colors, shadows, borders, animations) will be added via v0.dev
- * iteration as part of Task 5.0 workflow validation.
+ * Minimal terminal-inspired navigation with:
+ * - Branding text
+ * - ALL CAPS navigation links
+ * - Active state indicated by colored background
  */
 export function Navigation() {
-  return (
-    <nav className="flex flex-col items-center gap-4 p-4">
-      {/* Name/branding row */}
-      <div className="text-lg font-semibold">Andrew Creekmore</div>
+  const pathname = usePathname();
 
-      {/* Navigation links row */}
-      <ul className="flex gap-6 list-none">
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href="/projects">Projects</Link>
-        </li>
-        <li>
-          <Link href="/skills">Skills</Link>
-        </li>
-        <li>
-          <Link href="/about">About</Link>
-        </li>
-        <li>
-          <Link href="/contact">Contact</Link>
-        </li>
+  const navItems = [
+    { label: "HOME", href: "/" },
+    { label: "PROJECTS", href: "/projects" },
+    { label: "SKILLS", href: "/skills" },
+    { label: "ABOUT", href: "/about" },
+    { label: "CONTACT", href: "/contact" },
+  ];
+
+  const isActive = (href: string) => {
+    if (!pathname) return false;
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
+
+  return (
+    <nav className="bg-background">
+      {/* Navigation links - inline, no vertical stacking */}
+      <ul className="flex gap-1 list-none items-center">
+        {navItems.map((item) => (
+          <li key={item.href}>
+            <Link
+              href={item.href}
+              className={`px-4 py-2 text-sm font-mono font-semibold transition-colors rounded ${
+                isActive(item.href)
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );
