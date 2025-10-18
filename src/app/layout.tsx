@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation";
+import { AdaptiveHero } from "@/components/AdaptiveHero";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -47,8 +48,13 @@ export default function RootLayout({
                 <Navigation />
               </div>
 
-              {/* Main content area with top padding for navigation */}
-              <main className="flex flex-col flex-1 pt-16 px-6 pb-6">{children}</main>
+              {/* Adaptive Hero - switches between expanded (home) and compact (other pages) */}
+              <div className="pt-14">
+                <AdaptiveHero />
+              </div>
+
+              {/* Main content area */}
+              <main className="flex flex-col flex-1 px-6 pb-6">{children}</main>
 
               {/* Footer at bottom of frame */}
               <Footer />
