@@ -30,9 +30,9 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-border pt-4 text-center text-xs text-muted-foreground font-mono">
+      {/* <div className="border-t border-border pt-4 text-center text-xs text-muted-foreground font-mono">
         {"< /portfolio >"}
-      </div>
+      </div> */}
     </div>
   );
 }
