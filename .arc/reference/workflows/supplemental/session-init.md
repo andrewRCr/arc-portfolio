@@ -49,12 +49,18 @@ docker ps | grep <project-prefix>
    - Last completed work and next action
    - Blockers and outstanding questions
 
-3. `.arc/reference/constitution/DEVELOPMENT-RULES.md`
+3. **Active task list** (path referenced in CURRENT-SESSION.md)
+   - Detailed subtask structure and completion status
+   - Implementation notes and technical decisions
+   - Relevant files and success criteria
+   - Example: `.arc/active/feature/tasks-content-migration.md`
+
+4. `.arc/reference/constitution/DEVELOPMENT-RULES.md`
    - Quality gate requirements
    - Commit standards and protocols
    - AI collaboration rules
 
-4. `.arc/reference/QUICK-REFERENCE.md`
+5. `.arc/reference/QUICK-REFERENCE.md`
    - Environment-specific command patterns
    - Quality gate commands
    - Path context and common workflows
