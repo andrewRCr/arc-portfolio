@@ -47,6 +47,17 @@
   --radius: 0.625rem;
   /* Theme colors are injected dynamically via ThemeProvider */
   /* See src/data/themes.ts for theme definitions */
+
+  /* Navigation vertical offset for cross-browser alignment */
+  /* Default for Chromium/Blink browsers */
+  --nav-offset: -15px;
+}
+
+/* Firefox-specific offset for better vertical centering */
+@supports (-moz-appearance: none) {
+  :root {
+    --nav-offset: -17px;
+  }
 }
 
 @layer base {

@@ -37,9 +37,9 @@ export default function RootLayout({
             <div className="min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)] border-2 border-border rounded-lg flex flex-col relative">
               {/* Navigation positioned at top with border break */}
               <div
-                className="absolute left-1/2 px-8 py-0.5 z-10"
+                className="absolute left-1/2 px-8 z-10"
                 style={{
-                  top: "-17px", // Cross-browser vertical alignment (Firefox-optimized, acceptable in Chromium)
+                  top: "var(--nav-offset)", // Browser-specific offset via CSS variable (see globals.css)
                   transform: "translateX(-50%)",
                   backgroundColor: "rgb(var(--background))",
                 }}

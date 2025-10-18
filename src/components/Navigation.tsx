@@ -43,11 +43,12 @@ export function Navigation() {
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground"
               }`}
-              style={
-                isActive(item.href)
+              style={{
+                lineHeight: "1.2",
+                ...(isActive(item.href)
                   ? { backgroundColor: "rgb(var(--muted))" }
-                  : undefined
-              }
+                  : {}),
+              }}
             >
               {item.label}
             </Link>
