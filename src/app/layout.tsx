@@ -27,11 +27,33 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ backgroundColor: "rgb(var(--background))" }}
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Navigation />
-          <main className="flex flex-col flex-1 h-full">{children}</main>
-          <Footer />
+          {/* TUI-style border frame wrapper */}
+          <div className="min-h-screen p-4 md:p-6 lg:p-8">
+            <div className="min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)] border-2 border-border rounded-lg flex flex-col relative">
+              {/* Navigation positioned at top with border break */}
+              <div
+                className="absolute left-1/2 px-8 py-0.5 z-10"
+                style={{
+                  top: "-17px", // Cross-browser vertical alignment (Firefox-optimized, acceptable in Chromium)
+                  transform: "translateX(-50%)",
+                  backgroundColor: "rgb(var(--background))",
+                }}
+              >
+                <Navigation />
+              </div>
+
+              {/* Main content area with top padding for navigation */}
+              <main className="flex flex-col flex-1 pt-16 px-6 pb-6">{children}</main>
+
+              {/* Footer at bottom of frame */}
+              <Footer />
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>

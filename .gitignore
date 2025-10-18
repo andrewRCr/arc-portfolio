@@ -64,3 +64,6 @@ Thumbs.db
 
 # Claude Code - personal configuration
 .claude/
+
+# Playwright MCP - browser automation screenshots
+.playwright-mcp/
