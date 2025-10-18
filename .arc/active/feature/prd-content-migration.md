@@ -257,30 +257,46 @@ The system must define TypeScript interfaces in `src/types/` covering:
 
 **3.2.3** Component must handle missing optional fields gracefully (no errors if field is undefined)
 
-#### 3.3 Homepage Sections
+#### 3.3 Content Section Components
 
-**3.3.1** The system must create basic homepage sections for:
+**3.3.1** The system must create modular content section components:
 
-- **Skills section** - Display categorized skills as lists (minimal styling)
-- **Education section** - Display education entries with degree and institution
-- **About section** - Render bio paragraphs with markdown support
-- **Contact section** - Display email and social links
+- **SkillsSection component** - Display categorized skills as lists (minimal styling)
+- **EducationSection component** - Display education entries with degree and institution
+- **AboutSection component** - Render bio paragraphs with markdown support
+- **ContactSection component** - Display email and social links
 
-**3.3.2** All homepage content must be rendered from migrated data (no hardcoded content)
+**3.3.2** All components must render content from migrated data (no hardcoded content)
 
-**3.3.3** Components must be modular and easily replaceable for future design work
+**3.3.3** Components must be modular, reusable building blocks - not tied to specific pages
+
+**3.3.4** Initial implementation creates individual pages: `/skills`, `/about` (displays both AboutSection and
+EducationSection components), `/contact`
+
+**3.3.5** Final page architecture is deferred to design phase for Skills and Contact; Education+About grouping on
+`/about` is confirmed as starting point
+
+**3.3.6** Components remain modular and reusable - designed to be easily moved/reorganized as needed
 
 #### 3.4 Navigation & Routing
 
 **3.4.1** The system must implement basic navigation between:
 
-- Homepage (`/`)
+- Homepage (`/`) - Hero/landing page (content TBD in design phase)
 - Projects list page (`/projects`)
 - Individual project pages (`/projects/[slug]`)
+- Skills page (`/skills`)
+- About page (`/about`) - Displays both EducationSection and AboutSection components
+- Contact page (`/contact`)
 
-**3.4.2** Navigation must be functional (clickable links work correctly)
+**3.4.2** Navigation header must include links to all sections: Home, Projects, Skills, About, Contact
 
-**3.4.3** Routing must use Next.js App Router conventions
+**3.4.3** All navigation links must be functional (clickable links work correctly)
+
+**3.4.4** Routing must use Next.js App Router conventions
+
+**3.4.5** Note: Individual pages structure allows flexibility - final architecture (consolidated vs. separate pages)
+deferred to design phase
 
 ### Phase 4: Validation & Quality Assurance
 
@@ -306,7 +322,7 @@ The system must define TypeScript interfaces in `src/types/` covering:
 
 **4.3.2** All data must display correctly (no undefined values in UI)
 
-**4.3.3** All internal navigation must work (homepage ↔ projects list ↔ project details)
+**4.3.3** All internal navigation must work (homepage ↔ all section pages ↔ projects list ↔ project details)
 
 **4.3.4** All external links must open in new tabs where appropriate
 
@@ -360,12 +376,15 @@ The system must define TypeScript interfaces in `src/types/` covering:
 - **Component replacement strategy** - Placeholder components designed to be swappable without data changes
 - **Image asset requirements** - Placeholder structure prepares for proper image gallery/lightbox components
 
-### Navigation Structure (Basic)
+### Navigation Structure (Initial Implementation)
 
-- **Homepage** - Single-page with sections (Skills, Education, About, Contact)
+- **Homepage** - Hero/landing page at `/` (content deferred to design phase)
 - **Projects list** - Dedicated page at `/projects`
 - **Project details** - Dynamic pages at `/projects/[slug]`
-- **Header/Footer** - Basic navigation links, minimal branding
+- **Content sections** - Individual pages at `/skills`, `/about` (Education+About combined), `/contact`
+- **Header/Footer** - Navigation links to all sections (Home, Projects, Skills, About, Contact)
+- **Architecture flexibility** - Individual page structure allows easy reorganization during design phase; Education+About
+  grouping confirmed as starting point
 
 ## 7. Technical Considerations
 
@@ -477,10 +496,12 @@ src/
 
 ### Phase 3 Success: Content Displayable
 
-- ✅ Homepage (`/`) renders all sections: Skills, Education, About, Contact
+- ✅ Modular content section components created (SkillsSection, EducationSection, AboutSection, ContactSection)
+- ✅ Individual pages created for each section (`/skills`, `/education`, `/about`, `/contact`)
 - ✅ Projects list page (`/projects`) displays all 9 projects in correct order
 - ✅ All 9 project detail pages (`/projects/[slug]`) render without errors
-- ✅ Basic navigation works between all pages
+- ✅ Navigation header includes all sections (Home, Projects, Skills, Education, About, Contact)
+- ✅ All navigation links functional between all pages
 - ✅ All external links are clickable and functional
 - ✅ No runtime errors in browser console
 - ✅ All data displays correctly (no "undefined" in UI)

@@ -26,6 +26,7 @@
 
 ### Components
 
+- `src/components/Navigation.tsx` - Navigation header component (to be created - Task 5.0 workflow validation)
 - `src/components/home/SkillsSection.tsx` - Placeholder component for skills display (to be created)
 - `src/components/home/EducationSection.tsx` - Placeholder component for education display (to be created)
 - `src/components/home/AboutSection.tsx` - Placeholder component for bio display (to be created)
@@ -35,8 +36,12 @@
 
 ### Pages/Routes
 
-- `src/app/page.tsx` - Homepage with all sections (Skills, Education, About, Contact) (exists, to be modified)
-- `src/app/layout.tsx` - Root layout with basic navigation (exists, to be modified)
+- `src/app/page.tsx` - Homepage (hero/landing page, content deferred to design phase) (exists, minimal modification)
+- `src/app/layout.tsx` - Root layout with navigation header (Home, Projects, Skills, About, Contact)
+  (exists, to be modified)
+- `src/app/skills/page.tsx` - Skills page displaying SkillsSection component (to be created)
+- `src/app/about/page.tsx` - About page displaying both EducationSection and AboutSection components (to be created)
+- `src/app/contact/page.tsx` - Contact page displaying ContactSection component (to be created)
 - `src/app/projects/page.tsx` - Project list page with grid/list display (to be created)
 - `src/app/projects/[slug]/page.tsx` - Dynamic project detail pages (to be created)
 
@@ -55,6 +60,7 @@
 - `src/data/__tests__/education.test.ts` - Data validation tests for education (30 tests, refactored) ✓
 - `src/data/__tests__/about.test.ts` - Data validation tests for about/bio (39 tests, refactored) ✓
 - `src/data/__tests__/contact.test.ts` - Data validation tests for contact (44 tests, refactored) ✓
+- `src/components/__tests__/Navigation.test.tsx` - Component tests for navigation (to be created - Task 5.0)
 - `src/components/home/__tests__/SkillsSection.test.tsx` - Component tests for skills section (to be created)
 - `src/components/home/__tests__/AboutSection.test.tsx` - Component tests for about section (to be created)
 - `src/components/projects/__tests__/ProjectCard.test.tsx` - Component tests for project card (to be created)
@@ -132,43 +138,67 @@
 
 ### Phase 3: Placeholder Display Components
 
-- [ ] 5.0 Create placeholder display components for homepage sections
-  - [ ] 5.1 Create SkillsSection component displaying categorized skills
-  - [ ] 5.2 Create EducationSection component displaying degrees
-  - [ ] 5.3 Create AboutSection component (decide markdown approach: react-markdown vs dangerouslySetInnerHTML)
-  - [ ] 5.4 Create ContactSection component with social links opening in new tabs
-  - [ ] 5.5 Update homepage (`src/app/page.tsx`) to render all sections
-  - [ ] 5.6 Write component tests for homepage sections
-  - [ ] 5.7 Run incremental quality checks (type-check, lint, format, test)
+- [ ] 5.0 **WORKFLOW VALIDATION**: Build navbar, validate v0.dev integration workflow
+  - [x] 5.1 Write behavior tests for Navigation (links, hrefs, content rendering - TDD: test first)
+  - [x] 5.2 Create basic Navigation component (placeholder - semantic HTML + structural Tailwind only)
+  - [x] 5.3 Add Navigation to root layout with links: Home, Projects, Skills, About, Contact
+  - [x] 5.4 Verify navigation renders and links are functional (may link to non-existent pages - OK for now)
+  - [x] 5.5 Clear starter Next.js homepage content (page.tsx)
+  - [ ] 5.6 Take Navigation component to v0.dev for design iteration
+  - [ ] 5.7 Integrate v0.dev design back into Navigation component
+  - [ ] 5.8 Write visual/accessibility tests for Navigation (after design finalized)
+  - [ ] 5.9 Review with @visual-design-reviewer agent (comprehensive design validation)
+  - [ ] 5.10 Document design decisions, patterns, tokens in `.arc/reference/strategies/strategy-style-guide.md`
+  - [ ] 5.11 Run incremental quality checks (type-check, lint, format, test)
+  - [ ] 5.12 **Validate workflow** - Confirm v0.dev → integration → review process works before proceeding
+  - **Note**: Navbar design from this task may be refined later; primary purpose is workflow validation
 
-- [ ] 6.0 Create project list page and dynamic project detail pages
-  - [ ] 6.1 Create ProjectCard component for grid/list display
-  - [ ] 6.2 Create projects list page at `/projects` with all 9 projects
-  - [ ] 6.3 Create ProjectDetail component with external links opening in new tabs
-  - [ ] 6.4 Create dynamic project detail page at `/projects/[slug]`
-  - [ ] 6.5 Implement `generateStaticParams` for all 9 project slugs
-  - [ ] 6.6 Verify all project links and external URLs are functional
-  - [ ] 6.7 Write component tests for ProjectCard and ProjectDetail
-  - [ ] 6.8 Run incremental quality checks (type-check, lint, format, test)
+- [ ] 6.0 Create modular content section components and individual pages
+  - [ ] 6.1 Write behavior tests for SkillsSection (data rendering, structure - TDD: test first)
+  - [ ] 6.2 Create SkillsSection component displaying categorized skills (modular, reusable)
+  - [ ] 6.3 Create `/skills` page using SkillsSection component
+  - [ ] 6.4 Write behavior tests for EducationSection (data rendering, structure - TDD: test first)
+  - [ ] 6.5 Create EducationSection component displaying degrees (modular, reusable)
+  - [ ] 6.6 Write behavior tests for AboutSection (markdown rendering, content - TDD: test first)
+  - [ ] 6.7 Create AboutSection component with markdown support (modular, reusable)
+  - [ ] 6.8 Create `/about` page using both EducationSection and AboutSection components
+  - [ ] 6.9 Write behavior tests for ContactSection (links, external link attributes - TDD: test first)
+  - [ ] 6.10 Create ContactSection component with social links (modular, reusable)
+  - [ ] 6.11 Create `/contact` page using ContactSection component
+  - [ ] 6.12 Run incremental quality checks (type-check, lint, format, test)
 
-- [ ] 7.0 Implement basic navigation and routing
-  - [ ] 7.1 Update root layout with basic navigation header
-  - [ ] 7.2 Add navigation links: Home, Projects, (future: About, Contact)
-  - [ ] 7.3 Verify routing works: Homepage ↔ Projects list ↔ Project details
-  - [ ] 7.4 Ensure all internal links are functional
-  - [ ] 7.5 Write integration tests for navigation and routing flows
-  - [ ] 7.6 Run incremental quality checks (type-check, lint, format, test)
+- [ ] 7.0 Create project list page and dynamic project detail pages
+  - [ ] 7.1 Write behavior tests for ProjectCard (data rendering, link functionality - TDD: test first)
+  - [ ] 7.2 Create ProjectCard component for grid/list display
+  - [ ] 7.3 Create projects list page at `/projects` with all 9 projects
+  - [ ] 7.4 Write behavior tests for ProjectDetail (data display, external link attributes, conditional rendering -
+    TDD: test first)
+  - [ ] 7.5 Create ProjectDetail component with external links opening in new tabs
+  - [ ] 7.6 Create dynamic project detail page at `/projects/[slug]`
+  - [ ] 7.7 Implement `generateStaticParams` for all 9 project slugs
+  - [ ] 7.8 Verify all project links and external URLs are functional
+  - [ ] 7.9 Run incremental quality checks (type-check, lint, format, test)
+
+- [ ] 8.0 Verify routing and navigation integration
+  - [ ] 8.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact)
+  - [ ] 8.2 Ensure all internal navigation links are functional
+  - [ ] 8.3 Confirm `/about` page displays both Education and About sections correctly
+  - [ ] 8.4 Write integration tests for navigation and routing flows
+  - [ ] 8.5 Run incremental quality checks (type-check, lint, format, test)
 
 ### Phase 4: Validation & Quality Assurance
 
-- [ ] 8.0 Validate content accuracy, type safety, and display functionality
-  - [ ] 8.1 Verify zero TypeScript errors across all files
-  - [ ] 8.2 Verify all 9 projects display correctly with accurate data
-  - [ ] 8.3 Verify all external links open correctly in new tabs
-  - [ ] 8.4 Verify project ordering matches priority (new projects 1-3, existing 4-9)
-  - [ ] 8.5 Verify skills categories are complete with technologies from all projects
-  - [ ] 8.6 Verify education, bio, and contact data accuracy
-  - [ ] 8.7 Run full test suite and verify all tests pass
-  - [ ] 8.8 Test all navigation and routing flows manually
-  - [ ] 8.9 Run full quality gate suite (type-check, lint, format, markdown, build, test)
-  - [ ] 8.10 Verify build succeeds and site renders without runtime errors
+- [ ] 9.0 Validate content accuracy, type safety, and display functionality
+  - [ ] 9.1 Verify zero TypeScript errors across all files
+  - [ ] 9.2 Verify all content section pages render correctly (`/skills`, `/about`, `/contact`)
+  - [ ] 9.3 Verify `/about` page displays both Education and About sections correctly
+  - [ ] 9.4 Verify all 9 projects display correctly with accurate data
+  - [ ] 9.5 Verify all external links open correctly in new tabs
+  - [ ] 9.6 Verify project ordering matches priority (new projects 1-3, existing 4-9)
+  - [ ] 9.7 Verify skills categories are complete with technologies from all projects
+  - [ ] 9.8 Verify education, bio, and contact data accuracy
+  - [ ] 9.9 Verify navigation header shows all sections and links work correctly
+  - [ ] 9.10 Run full test suite and verify all tests pass
+  - [ ] 9.11 Test all navigation and routing flows manually (all pages accessible)
+  - [ ] 9.12 Run full quality gate suite (type-check, lint, format, markdown, build, test)
+  - [ ] 9.13 Verify build succeeds and site renders without runtime errors
