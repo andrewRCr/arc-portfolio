@@ -55,12 +55,18 @@ docker ps | grep <project-prefix>
    - Relevant files and success criteria
    - Example: `.arc/active/feature/tasks-content-migration.md`
 
-4. `.arc/reference/constitution/DEVELOPMENT-RULES.md`
+4. `.arc/reference/workflows/3-process-task-loop.md`
+   - One-subtask-at-a-time workflow
+   - Task execution protocol
+   - Quality gate requirements per subtask
+   - Documentation update protocol
+
+5. `.arc/reference/constitution/DEVELOPMENT-RULES.md`
    - Quality gate requirements
    - Commit standards and protocols
    - AI collaboration rules
 
-5. `.arc/reference/QUICK-REFERENCE.md`
+6. `.arc/reference/QUICK-REFERENCE.md`
    - Environment-specific command patterns
    - Quality gate commands
    - Path context and common workflows
