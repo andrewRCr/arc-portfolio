@@ -62,9 +62,9 @@ update the "Session Startup Protocol" section in CURRENT-SESSION.md:
 **Dynamic (update when context changes - see CRITICAL warning above)**:
 
 - **"Session Startup Protocol" working directory paths** - update EVERY TIME you switch between:
-  - Subdirectory work (e.g., backend/, frontend/)
-  - Repo root work
-  - Different working contexts
+    - Subdirectory work (e.g., backend/, frontend/)
+    - Repo root work
+    - Different working contexts
 - Step 1: Expected pwd output
 - Step 3: Tool paths (adjust based on working directory)
 - Step 4: Path context table (all relative paths)
@@ -90,7 +90,7 @@ Update `.arc/active/CURRENT-SESSION.md` before ending session:
 
 - PRD: [path to PRD, e.g., .arc/active/feature/prd-{{FEATURE_NAME}}.md]
 - Tasks: [path to task list, e.g., .arc/active/feature/tasks-{{FEATURE_NAME}}.md]
-- Notes: [path to notes file if applicable, e.g., .arc/upcoming/notes/notes-{{FEATURE_NAME}}.md]
+- Notes: [path to notes file if applicable, e.g., .arc/active/feature/notes-{{FEATURE_NAME}}.md]
   **Work Type**: [structured | incidental: brief description]
   **Last Completed**: [specific task reference, e.g., "Task 3.2: Add validation logic"]
   [OR if work complete: "Backend Type Safety (Tasks 1-14, archived)"]

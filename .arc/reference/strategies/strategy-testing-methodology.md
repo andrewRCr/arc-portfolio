@@ -181,28 +181,28 @@ export function Card({ children }: { children: React.ReactNode }) {
 - **React Testing**: React Testing Library
 - **Coverage**: Built-in Vitest coverage reports
 - **Commands**:
-  - `npm test` - Run all tests
-  - `npm test -- --watch` - Watch mode
-  - `npm test -- --coverage` - Generate coverage report
+    - `npm test` - Run all tests
+    - `npm test -- --watch` - Watch mode
+    - `npm test -- --coverage` - Generate coverage report
 
 ### E2E Testing
 
 - **Framework**: Playwright (for critical user flows)
 - **Use cases**:
-  - Contact form submission end-to-end
-  - Navigation across pages
-  - Mobile responsive behavior
-  - Dark mode persistence
+    - Contact form submission end-to-end
+    - Navigation across pages
+    - Mobile responsive behavior
+    - Dark mode persistence
 - **Commands**:
-  - `npm run test:e2e` - Run E2E tests
-  - `npm run test:e2e:ui` - Run with Playwright UI
+    - `npm run test:e2e` - Run E2E tests
+    - `npm run test:e2e:ui` - Run with Playwright UI
 
 ### Accessibility Testing
 
 - **Tools**:
-  - axe DevTools browser extension (manual)
-  - @axe-core/react for automated checks
-  - Lighthouse CI in build pipeline
+    - axe DevTools browser extension (manual)
+    - @axe-core/react for automated checks
+    - Lighthouse CI in build pipeline
 - **Standards**: WCAG 2.1 AA compliance required
 
 ## TDD Workflow Example

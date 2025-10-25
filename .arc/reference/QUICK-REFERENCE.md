@@ -252,7 +252,7 @@ npm run type-check && npm run lint && npm run format:check && npm run lint:md &&
 ## Key Reminders
 
 1. **Repository root**: `/home/andrew/dev/arc-portfolio` - all npm commands from here
-2. **Dev server port**: `3000` (http://localhost:3000)
+2. **Dev server port**: `3000` (<http://localhost:3000>)
 3. **Quality gates**: Zero tolerance - all must pass before committing
 4. **Test location**: Co-located with source in `__tests__/` directories
 5. **TypeScript strict mode**: Enabled - no `any` types without justification

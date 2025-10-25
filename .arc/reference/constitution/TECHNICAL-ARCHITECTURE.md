@@ -109,9 +109,9 @@ arc-portfolio/
 - **Environment Variables**: `.env.local` for local development (gitignored)
 - **Hot Reload**: Turbopack provides fast refresh during development
 - **Development Tools**:
-  - VS Code with recommended extensions (Prettier, ESLint, Tailwind IntelliSense)
-  - Claude Code for AI-assisted development
-  - Git for version control
+    - VS Code with recommended extensions (Prettier, ESLint, Tailwind IntelliSense)
+    - Claude Code for AI-assisted development
+    - Git for version control
 
 ### CI/CD Pipeline
 
@@ -119,10 +119,10 @@ arc-portfolio/
 - **Trigger**: Push to `main` branch triggers production deployment
 - **Preview Deploys**: Pull requests automatically get preview URLs
 - **Quality Gates**:
-  - Type checking: `npm run type-check`
-  - Linting: `npm run lint`
-  - Formatting: `npm run format:check`
-  - Build validation: Vercel build process
+    - Type checking: `npm run type-check`
+    - Linting: `npm run lint`
+    - Formatting: `npm run format:check`
+    - Build validation: Vercel build process
 - **Zero-Downtime**: Vercel handles deployments with instant rollback capability
 
 ### Production Architecture
@@ -134,9 +134,9 @@ arc-portfolio/
 - **Scaling**: Serverless architecture scales automatically with traffic
 - **Caching**: Static assets cached at edge locations globally
 - **Performance**:
-  - Static Site Generation (SSG) for instant page loads
-  - Image optimization via Next.js Image component
-  - Code splitting and lazy loading
+    - Static Site Generation (SSG) for instant page loads
+    - Image optimization via Next.js Image component
+    - Code splitting and lazy loading
 - **Monitoring**: Vercel Analytics (to be configured)
 
 ## 5. Testing Strategy
@@ -193,9 +193,9 @@ See DEVELOPMENT-RULES.md for complete quality gate commands and requirements.
 - **Initial Load**: Sub-2 second time-to-interactive
 - **Lighthouse Score**: 90+ across all categories (Performance, Accessibility, Best Practices, SEO)
 - **Core Web Vitals**:
-  - LCP (Largest Contentful Paint): < 2.5s
-  - FID (First Input Delay): < 100ms
-  - CLS (Cumulative Layout Shift): < 0.1
+    - LCP (Largest Contentful Paint): < 2.5s
+    - FID (First Input Delay): < 100ms
+    - CLS (Cumulative Layout Shift): < 0.1
 
 ### Monitoring
 

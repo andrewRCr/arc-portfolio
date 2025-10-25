@@ -1,7 +1,43 @@
 {
   // markdownlint-cli2 configuration
-  // Rules are defined in .markdownlint.json (shared with VS Code extension)
-  // This file only specifies which files to check
-  "globs": ["**/*.md"],
-  "ignores": ["node_modules/**", ".claude/**"],
+  // Synced from CineXplorer 2025-10-24
+
+  "config": {
+    "default": true,
+    "MD007": {
+      "indent": 4
+    },
+    "MD013": {
+      "line_length": 120,
+      "code_blocks": false,
+      "tables": false
+    },
+    "MD024": {
+      "siblings_only": true
+    },
+    "MD025": false,
+    "MD029": false,
+    "MD033": false,
+    "MD036": false,
+    "MD040": false,
+    "MD041": false
+  },
+
+  "gitignore": false,
+
+  "globs": [
+    "**/*.md"
+  ],
+
+  "ignores": [
+    "**/node_modules/**",
+    "**/.venv*/**",
+    "**/venv/**",
+    ".arc/reference/archive/**",
+    ".arc-internal/reference/archive/**",
+    ".arc-internal/active/**"
+  ],
+
+  "customRules": [],
+  "overrides": []
 }
