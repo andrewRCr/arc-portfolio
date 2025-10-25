@@ -2,11 +2,30 @@
 
 **Related Task List**: `.arc/active/incidental/tasks-theme-system-fix.md`
 **Created**: 2025-10-25
-**Purpose**: Research findings, implementation discoveries, and decision rationale for theme system restructuring
+**Completed**: 2025-10-25
+**Purpose**: Architecture reference for multi-theme system - research findings, implementation decisions,
+and color palette documentation
+**Status**: COMPLETE
 
----
+## Table of Contents
 
-## Analysis Phase (Pre-Implementation)
+- [Analysis Phase](#analysis-phase)
+    - [Problem Discovery](#problem-discovery)
+    - [Theme System Architecture Verification](#theme-system-architecture-verification)
+    - [Gruvbox Color Palette Verification](#gruvbox-color-palette-verification)
+- [Architecture Decisions](#architecture-decisions)
+    - [Accent Color Strategy: Hybrid Option 3](#accent-color-strategy-hybrid-option-3)
+    - [Factory/Builder Pattern: Rejected](#factorybuilder-pattern-rejected)
+    - [File Structure: Separation of Concerns](#file-structure-separation-of-concerns)
+- [Color Convention Reference](#color-convention-reference)
+    - [shadcn/ui Semantic Color System](#shadcnui-semantic-color-system)
+    - [Component Color Usage Guidelines](#component-color-usage-guidelines)
+- [Theme Research](#theme-research)
+    - [Gruvbox](#gruvbox)
+    - [Rose Pine](#rose-pine)
+- [References](#references)
+
+## Analysis Phase
 
 ### Problem Discovery
 
@@ -407,52 +426,6 @@ highlight_high: "#cecacd", // Strong emphasis
 
 ---
 
-## Implementation Discoveries
-
-**[To be populated during Phase 2/3 as issues arise]**
-
-### Component Updates
-
-**[Notes on any edge cases or challenges during component color updates]**
-
-### Theme System Integration
-
-**[Notes on any adjustments needed to ThemeProvider or utilities]**
-
----
-
-## Visual Testing Results
-
-**[Phase 3 findings - to be populated during visual verification]**
-
-### Test Matrix
-
-- 2 themes (Gruvbox, Rose Pine) × 2 modes (light, dark) = 4 combinations
-- Pages: /skills, /about, /contact
-- Focus: Readability, contrast, hover states, visual consistency
-
-### Gruvbox Light Mode
-
-**[Findings TBD]**
-
-### Gruvbox Dark Mode
-
-**[Findings TBD]**
-
-### Rose Pine Light Mode (Dawn)
-
-**[Findings TBD]**
-
-### Rose Pine Dark Mode (Base)
-
-**[Findings TBD]**
-
-### Adjustments Made
-
-**[Document any contrast fixes, color tweaks, or hover state adjustments]**
-
----
-
 ## References
 
 ### Official Documentation
@@ -462,16 +435,7 @@ highlight_high: "#cecacd", // Strong emphasis
 - **Rose Pine**: <https://github.com/rose-pine/rose-pine-theme>
 - **shadcn/ui Theming**: <https://ui.shadcn.com/docs/theming>
 
-### Tools Used
-
-- **Contrast Checker**: [TBD - which tool used for WCAG AA validation]
-- **Color Converter**: [TBD - if needed for hex → RGB conversion]
-
 ### Related Work
 
-- **TWM Layout System PRD**: `.arc/upcoming/feature/prd-twm-layout-system.md`
-- **Content Migration Tasks**: `.arc/active/feature/tasks-content-migration.md`
-
----
-
-**Last Updated**: 2025-10-25 (Pre-implementation - analysis phase complete)
+- **TWM Layout System PRD**: `.arc/upcoming/feature/prd-twm-layout-system.md` (future work utilizing this theme system)
+- **Content Migration Tasks**: `.arc/active/feature/tasks-content-migration.md` (paused Task 7.0, ready to resume)

@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
-import { themes, defaultTheme } from "@/data/themes";
+import { themes } from "@/data/themes";
 import { applyThemeColors, getThemeColors } from "@/lib/theme-utils";
+import { ThemeContextProvider, useThemeContext } from "@/contexts/ThemeContext";
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
 
@@ -15,6 +16,7 @@ type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
  */
 function ThemeColorApplier() {
   const { theme, resolvedTheme } = useTheme();
+  const { activeTheme } = useThemeContext();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -24,10 +26,10 @@ function ThemeColorApplier() {
   React.useEffect(() => {
     if (!mounted) return;
 
-    // Get current theme (defaulting to gruvbox)
-    const currentTheme = themes[defaultTheme];
+    // Get current theme based on activeTheme context
+    const currentTheme = themes[activeTheme];
     if (!currentTheme) {
-      console.error("Theme not found:", defaultTheme);
+      console.error("Theme not found:", activeTheme);
       return;
     }
 
@@ -37,16 +39,18 @@ function ThemeColorApplier() {
     // Get and apply appropriate colors
     const colors = getThemeColors(currentTheme, isDark ? "dark" : "light");
     applyThemeColors(colors);
-  }, [mounted, theme, resolvedTheme]);
+  }, [mounted, theme, resolvedTheme, activeTheme]);
 
   return null;
 }
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
-    <NextThemesProvider {...props}>
-      <ThemeColorApplier />
-      {children}
-    </NextThemesProvider>
+    <ThemeContextProvider>
+      <NextThemesProvider {...props}>
+        <ThemeColorApplier />
+        {children}
+      </NextThemesProvider>
+    </ThemeContextProvider>
   );
 }

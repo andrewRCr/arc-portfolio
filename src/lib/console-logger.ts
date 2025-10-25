@@ -8,7 +8,7 @@
  * Gracefully degrades if log server is not running.
  */
 
-const LOG_SERVER_URL = 'http://localhost:3001/log';
+const LOG_SERVER_URL = "http://localhost:3001/log";
 
 /**
  * Initialize console logging to file.
@@ -16,17 +16,17 @@ const LOG_SERVER_URL = 'http://localhost:3001/log';
  */
 export function initConsoleLogger() {
   // Only run in development
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV !== "development") {
     return;
   }
 
   // Only run in browser
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return;
   }
 
   // Methods to intercept
-  const methods: Array<'log' | 'error' | 'warn' | 'info' | 'debug'> = ['log', 'error', 'warn', 'info', 'debug'];
+  const methods: Array<"log" | "error" | "warn" | "info" | "debug"> = ["log", "error", "warn", "info", "debug"];
 
   methods.forEach((method) => {
     const original = console[method];
@@ -41,7 +41,7 @@ export function initConsoleLogger() {
     };
   });
 
-  console.log('[Console Logger] Initialized - logs being sent to .console-logs.txt');
+  console.log("[Console Logger] Initialized - logs being sent to .console-logs.txt");
 }
 
 /**
@@ -57,7 +57,7 @@ function sendToLogServer(type: string, args: unknown[]) {
         name: arg.name,
       };
     }
-    if (typeof arg === 'object' && arg !== null) {
+    if (typeof arg === "object" && arg !== null) {
       try {
         return JSON.parse(JSON.stringify(arg)); // Deep clone and serialize
       } catch {
@@ -69,9 +69,9 @@ function sendToLogServer(type: string, args: unknown[]) {
 
   // Send to server (fire-and-forget)
   fetch(LOG_SERVER_URL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       type,

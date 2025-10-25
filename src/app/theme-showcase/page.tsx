@@ -71,13 +71,13 @@ export default function ThemeShowcasePage() {
           <h6 className="text-base font-medium">Heading 6 - The quick brown fox</h6>
 
           <p className="text-foreground">
-            Regular paragraph text in foreground color. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Vivamus lacinia odio vitae vestibulum vestibulum.
+            Regular paragraph text in foreground color. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+            lacinia odio vitae vestibulum vestibulum.
           </p>
 
           <p className="text-muted-foreground">
-            Muted paragraph text for less emphasis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Vivamus lacinia odio vitae vestibulum vestibulum.
+            Muted paragraph text for less emphasis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+            lacinia odio vitae vestibulum vestibulum.
           </p>
 
           <p className="text-sm text-muted-foreground">
