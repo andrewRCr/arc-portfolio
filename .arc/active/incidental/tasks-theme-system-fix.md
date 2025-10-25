@@ -267,80 +267,50 @@ which requires multi-theme support with light/dark variants and potential accent
 
 ## Implementation Notes
 
-### Theme System Architecture
+**📝 Detailed documentation**: `.arc/active/incidental/notes-theme-system-fix.md`
+
+### Quick Reference
 
 **File Structure**:
 
 ```
 src/data/themes/
-├── index.ts              # Registry + public exports
-├── types.ts              # Type definitions
-├── palettes/
-│   ├── gruvbox.ts        # Official palette + documentation
-│   └── rose-pine.ts      # Official palette + documentation
-└── definitions/
-    ├── gruvbox.ts        # Theme using gruvbox palette
-    └── rose-pine.ts      # Theme using rose-pine palette
+├── index.ts          # Registry + exports
+├── types.ts          # ThemeColors, Theme, ThemeRegistry interfaces
+├── palettes/         # Official color palettes with source docs
+└── definitions/      # Semantic mappings (palette → ThemeColors)
 ```
 
-**Design Principles**:
+**Key Principles**: Separation of concerns, DRY (palettes reused), type safety (const assertions)
 
-- **Separation of Concerns**: Types, palettes, definitions, registry are separate
-- **DRY**: Palettes defined once, reused across light/dark modes
-- **Type Safety**: Const assertions + strict types ensure correctness
-- **Documentation**: Palette sources cited, colors documented in code
-- **Extensibility**: Adding themes = create 2 files + 1 registry entry
+**Adding New Themes**: Create palette file + definition file + add to registry (3 steps)
 
-### Accent Color Strategy
+**Accent Strategy**: Hybrid Option 3 - all variants in ThemeColors (aqua, blue, purple, orange)
 
-**Hybrid Approach** (supports current + future needs):
+- Components use specific variants: `text-accent-blue`
+- Default `accent` for switchable elements (future TWM Layout System)
 
-- All accent variants defined in ThemeColors (aqua, blue, purple, orange)
-- Components can use specific variants: `text-accent-blue`
-- Default `accent` used for general/switchable elements
-- Future TWM Layout System can add accent switching UI that remaps CSS variables
+**Component Color Replacements**:
 
-**Gruvbox Accent Mappings** (example):
+- Borders: `border-gray-300` → `border-border`
+- Primary text: `text-gray-700/900` → `text-foreground`
+- Secondary text: `text-gray-600` → `text-muted-foreground`
+- Links: `text-blue-600` → `text-primary` or `text-accent`
+- Link hovers: `hover:text-blue-800` → `hover:text-primary/80`
+- Hover backgrounds: `hover:bg-blue-50` → `hover:bg-accent/10`
+- Hover borders: `hover:border-blue-500` → `hover:border-primary`
 
-- Light: faded variants (faded_blue, faded_purple, etc.)
-- Dark: bright variants (bright_blue, bright_purple, etc.)
-- Default accent: aqua (neutral_aqua light, bright_aqua dark)
+**Testing Approach**:
 
-### Component Color Guidelines
+- Automated: Theme completeness validation, structure checks
+- Manual: Visual verification (2 themes × 2 modes = 4 combinations)
+- Pages: /skills, /about, /contact
+- Focus: Readability, contrast, hover states
 
-**Semantic Color Usage**:
-
-- `text-foreground` - Primary text color
-- `text-muted-foreground` - Secondary/deemphasized text
-- `text-primary` - Primary action links/buttons
-- `text-accent` - Highlight/accent elements
-- `border-border` - Standard borders
-- `bg-card` - Card backgrounds (if needed)
-- `bg-accent/10` - Subtle accent backgrounds
-
-**Hover States**:
-
-- `hover:text-primary/80` - Primary link hovers (80% opacity)
-- `hover:border-primary` - Border color on hover
-- `hover:bg-accent/10` - Subtle background on hover
-
-### Testing Strategy
-
-**Automated Tests**:
-
-- Theme completeness validation (all required colors present)
-- Theme structure validation (light/dark variants, accent metadata)
-- Component tests remain unchanged (should pass with theme colors)
-
-**Manual Verification**:
-
-- Visual testing in dev server for all theme/mode combinations
-- Contrast and readability checks
-- Hover state functionality
+**See notes file for**: Architecture rationale, Gruvbox verification, accent color strategy details,
+shadcn/ui convention reference
 
 ## Related Documentation
 
 - **TWM Layout System PRD**: `.arc/upcoming/feature/prd-twm-layout-system.md`
 - **Paused Work**: `.arc/active/feature/tasks-content-migration.md` (Task 7.0)
-- **Development Rules**: `.arc/reference/constitution/DEVELOPMENT-RULES.md`
-- **Quick Reference**: `.arc/reference/QUICK-REFERENCE.md`
