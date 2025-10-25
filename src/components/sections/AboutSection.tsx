@@ -33,7 +33,7 @@ function parseMarkdownLinks(text: string): React.ReactElement[] {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 hover:text-blue-800 underline"
+        className="text-primary hover:text-primary/80 underline"
       >
         {linkText}
       </a>
@@ -55,7 +55,7 @@ export function AboutSection() {
     <section className="p-8">
       <h2 className="mb-8 text-3xl font-bold">{about.heading}</h2>
 
-      <div className="space-y-4 text-gray-700">
+      <div className="space-y-4 text-foreground">
         {about.paragraphs.map((paragraph, index) => (
           <p key={index} className="leading-relaxed">
             {parseMarkdownLinks(paragraph)}
@@ -66,15 +66,15 @@ export function AboutSection() {
       {about.highlightedAchievements && about.highlightedAchievements.length > 0 && (
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {about.highlightedAchievements.map((achievement, index) => (
-            <div key={index} className="rounded-lg border border-gray-300 p-4 text-center">
-              <p className="text-3xl font-bold text-gray-900">{achievement.value}</p>
-              <p className="text-sm text-gray-600">{achievement.label}</p>
+            <div key={index} className="rounded-lg border border-border p-4 text-center">
+              <p className="text-3xl font-bold text-foreground">{achievement.value}</p>
+              <p className="text-sm text-muted-foreground">{achievement.label}</p>
               {achievement.link && (
                 <a
                   href={achievement.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-block text-xs text-blue-600 hover:text-blue-800"
+                  className="mt-2 inline-block text-xs text-primary hover:text-primary/80"
                 >
                   View →
                 </a>
