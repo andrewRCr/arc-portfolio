@@ -26,7 +26,10 @@ function ThemeColorApplier() {
 
     // Get current theme (defaulting to gruvbox)
     const currentTheme = themes[defaultTheme];
-    if (!currentTheme) return;
+    if (!currentTheme) {
+      console.error("Theme not found:", defaultTheme);
+      return;
+    }
 
     // Determine if we're in dark mode
     const isDark = resolvedTheme === "dark";

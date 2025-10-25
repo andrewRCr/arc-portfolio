@@ -17,7 +17,10 @@ export function applyThemeColors(colors: ThemeColors): void {
   const root = document.documentElement;
 
   Object.entries(colors).forEach(([key, value]) => {
+    // Set both --{key} and --color-{key} for compatibility
+    // Tailwind v4 @theme inline uses --color-{key} format
     root.style.setProperty(`--${key}`, value);
+    root.style.setProperty(`--color-${key}`, value);
   });
 }
 
