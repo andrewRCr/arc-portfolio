@@ -16,5 +16,6 @@ yarn.lock
 # Logs
 *.log
 
-# ARC documentation (handled by markdownlint)
+# Markdown files (handled by markdownlint)
+*.md
 .arc
