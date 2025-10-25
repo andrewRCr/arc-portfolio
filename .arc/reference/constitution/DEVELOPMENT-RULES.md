@@ -1,198 +1,104 @@
-# Development Rules - andrewRCr Portfolio
+# Development Rules - arc-portfolio
 
-**Version**: 1.0
-**Last Updated**: October 12, 2025
-**Rules Hash**: `arc-portfolio-v1.0-20251012`
+**Version:** 1.0 | **Updated:** October 25, 2025 | **Hash:** `arc-portfolio-v1.0-20251025`
 
-This document consolidates the core development rules and quality standards for andrewRCr Portfolio.
-These rules are **non-negotiable** and must be followed during development, including by AI assistants.
+Core development rules and quality standards for arc-portfolio. These rules are **non-negotiable** and must be followed
+by all contributors, including AI assistants.
 
-## AI Session Initialization Required
+**For command patterns and environment context**, see [QUICK-REFERENCE.md](../QUICK-REFERENCE.md).
+**For session initialization protocol**, see [session-init.md](../workflows/supplemental/session-init.md).
 
-Before starting ANY work, AI assistants must:
-
-1. **Confirm rules version**: "Acknowledging DEVELOPMENT-RULES v1.0, hash arc-portfolio-v1.0-20251012"
-2. **State understanding**: Briefly confirm understanding of commit protocols, quality gates,
-   and session management
-3. **Verify context access**: Confirm access to required documents (META-PRD, TECHNICAL-ARCHITECTURE, etc.)
-4. **Check branch status**: Verify current git branch and ensure alignment with intended work
-
-## Session Documentation Control
-
-**CURRENT-SESSION.md Update Protocol**:
-
-- **AI NEVER updates CURRENT-SESSION.md** without explicit user instruction
-- CURRENT-SESSION.md is a handoff document controlled by the user
-- AI should report changes and progress but NOT modify this file during active work
-- User decides when and how session documentation is updated
-
-## Git & Commit Control
-
-**Manual Commit Control**:
+## Manual Commit Control
 
 - **AI NEVER initiates commits** without explicit user approval or instruction
-- **AI CAN execute commits** when user explicitly approves/instructs it to do so
-- **User approval required** to begin any git operations
-- AI reports completion with readiness report, then awaits commit instructions
+- **AI CAN execute commits** when user explicitly approves/instructs it
+- **User approval required** for all git operations
+- **MANDATORY:** Comprehensive task context analysis before any commit consideration (see atomic-commit workflow)
+- **Task list accuracy required**: Before commit consideration, verify task documentation reflects completed work
+  (parent task marked `[x]` if all subtasks complete)
+- **Never commit stale task docs**: Task list updates must be saved and included in commits for completed work
+- AI reports completion, then awaits commit instructions
 
-**Feature Branch Workflow**:
+### Quality Gates (Zero Tolerance)
 
-- **Constitutional setup**: Work directly on `main` branch (foundational documents)
-- **All feature work**: Must happen on dedicated feature branches after constitution is complete
-- **Branch naming convention**: `feature/[feature-name]` (e.g., `feature/project-showcase`)
-- **Branch verification**: Always verify correct branch before committing
-- **Merge strategy**: Preserve commit history when merging to main (no squash merge)
-- **Branch cleanup**: Delete feature branches after successful merge
+Before any commit consideration, ALL of the following must pass with **zero exceptions**.
+For specific commands, see [QUICK-REFERENCE.md](../QUICK-REFERENCE.md).
 
-## Quality Gates (Zero Tolerance)
+**Zero Tolerance Policy:** All errors, violations, and failures must be fixed. No exceptions.
 
-Before any commit consideration, ALL of the following must pass with **zero exceptions**:
+1. **Type Checking**: Zero errors
+    - Command: `npm run type-check`
 
-### 1. Type Checking: Zero errors
+2. **Code Linting**: Zero violations
+    - Command: `npm run lint`
+    - Auto-fix: `npm run lint -- --fix`
 
-```bash
-npm run type-check
-```
+3. **Code Formatting**: Must pass
+    - Command: `npm run format:check`
+    - Auto-fix: `npm run format`
 
-Every TypeScript error must be resolved before committing.
+4. **Markdown Linting**: Zero violations
+    - Command: `npm run lint:md`
+    - Auto-fix: `npm run lint:md:fix`
 
-### 2. Code Linting: Zero violations
+5. **Build Success**: Must complete
+    - Command: `npm run build`
 
-```bash
-npm run lint
-```
+6. **Tests**: 100% pass rate
+    - Command: `npm test`
 
-Auto-fix available:
+### Quality Gate Failure Protocol
 
-```bash
-npm run lint -- --fix
-```
-
-Every ESLint violation must be fixed.
-
-### 3. Code Formatting: Must pass
-
-```bash
-npm run format:check
-```
-
-Auto-fix available:
-
-```bash
-npm run format
-```
-
-All code must be Prettier-formatted.
-
-### 4. Documentation Linting: Zero violations
-
-**ALWAYS run after updating any documentation files**:
-
-```bash
-npm run lint:md
-```
-
-Auto-fix available:
-
-```bash
-npm run lint:md:fix
-```
-
-Every markdown violation must be fixed.
-
-### 5. Build Success: Must complete
-
-```bash
-npm run build
-```
-
-Project must build without errors before committing.
-
-### 6. Tests: 100% pass rate (when implemented)
-
-```bash
-npm test
-```
-
-Once testing is implemented, all tests must pass.
-
-## Quality Gate Failure Protocol
-
-If quality gates fail after work completion:
+If quality gates fail after sub-task completion:
 
 1. **Report the failure** with specific details
 2. **Identify suspected causes** and investigation areas
 3. **Ask for guidance** on whether to fix immediately or defer
-4. **Never proceed** to next task until resolved or user approves
+4. **Never proceed** to next sub-task until resolved or user approves
 
-## Leave It Cleaner: Pre-existing Issue Protocol
+### Leave It Cleaner: Pre-existing Issue Protocol
 
 **Principle:** When touching any file, leave it cleaner than you found it.
+Quality issues discovered during work should be addressed, not ignored.
 
 **When quality checks reveal pre-existing issues in files you're modifying:**
 
 1. **Assess severity and scope:**
-   - **Minor issues** (< 5 minutes): Fix immediately without asking
-   - **Moderate issues** (5-15 minutes): Fix immediately, document in commit
-   - **Major issues** (> 15 minutes): Ask for direction before proceeding
+    - **Minor issues** (< 5 minutes): Fix immediately without asking
+    - **Moderate issues** (5-15 minutes): Fix immediately, document in commit
+    - **Major issues** (> 15 minutes): Ask for direction before proceeding
 
-2. **Required actions:**
-   - ✅ **Fix immediately** - Preferred for all issues < 15 minutes
-   - ✅ **Document and defer** - Create incidental task with clear description
-   - ❌ **Ignore silently** - NEVER acceptable
+2. **Required actions (choose one):**
+    - ✅ **Fix immediately** - Preferred for all issues < 15 minutes
+    - ✅ **Document and defer** - Create incidental task list with:
+        - Clear description of issue found
+        - Why it's being deferred (time/scope constraints)
+        - Estimated effort to fix
+        - Link to relevant files/line numbers
+    - ❌ **Ignore silently** - NEVER acceptable
 
 3. **Documentation requirements:**
-   - Fixed issues: Note in commit message ("Also fixed X pre-existing issues")
-   - Deferred issues: Create task in `.arc/active/incidental/`
-   - Never: Leave issues undocumented
+    - Fixed issues: Note in commit message ("Also fixed X pre-existing issues")
+    - Deferred issues: Create task list in `.arc/active/incidental/tasks-incidental-*.md`
+    - Never: Leave issues undocumented or unaddressed
 
-## Code Quality Principles
+## Session Documentation Control
 
-Apply standard software engineering principles to maintain clean, maintainable code:
+### CURRENT-SESSION.md Update Protocol
 
-### Core Principles
-
-**DRY (Don't Repeat Yourself)**
-
-- Extract repeated logic into reusable functions, components, or utilities
-- Wait for 2-3 instances before abstracting (avoid premature optimization)
-- Share types and interfaces instead of duplicating definitions
-
-**SOLID Principles**
-
-- **Single Responsibility**: Each component/function should have one clear purpose
-- **Open/Closed**: Use composition and configuration over modification
-- **Liskov Substitution**: Subtypes must be substitutable for their base types
-- **Interface Segregation**: Keep interfaces focused and minimal
-- **Dependency Inversion**: Depend on abstractions, not concrete implementations
-
-**KISS (Keep It Simple)**
-
-- Choose simple solutions over clever ones
-- Prefer clarity over brevity when they conflict
-- Question complexity - if it's hard to explain, simplify it
-
-**YAGNI (You Aren't Gonna Need It)**
-
-- Implement features when required, not when anticipated
-- Start specific, generalize later when patterns actually emerge
-- Delete unused code
-
-### Practical Application
-
-- **Separate concerns**: UI from business logic, data fetching from presentation
-- **Use custom hooks** to abstract and share logic
-- **Prefer composition** over inheritance or duplication
-- **Design component APIs** that accept configuration
-- **When principles conflict**: Favor readability and simplicity
+- **AI NEVER updates CURRENT-SESSION.md** without explicit user instruction
+- CURRENT-SESSION.md is a handoff document only updated at session end when instructed
+- AI should report changes and progress, but user decides when/how session docs are updated
 
 ## Task Management Protocol
 
 ### One Sub-Task Rule
 
 - **Complete ONE sub-task at a time** - never bundle multiple deliverables
-- **Mandatory stop** after each sub-task completion
-- **Wait for explicit user approval** before starting next sub-task
+- **Mark complete immediately** when work is done (tests pass, quality checks pass)
+- **Mandatory stop** after reporting completion for user approval to proceed
+- **Implied permission**: User approval implies permission to proceed UNLESS explicitly stated otherwise
+  (e.g., "that's done, but before moving on..."). Address such concerns before proceeding to next subtask.
 
 ### Sub-Task Granularity Guidelines
 
@@ -203,203 +109,58 @@ Break down a sub-task if it requires:
 - Multiple interdependent changes
 - Complex debugging/investigation
 
-### Documentation Synchronization
+### Test-First Protocol
 
-- **Immediate task list updates**: Mark `[x]` in task files after each sub-task
-- **Update "Relevant Files"** section when files are created/modified
-- **Never batch documentation updates** - do immediately after work
-- **Task lists and commit messages must align**
+**BEFORE implementing any sub-task, assess test-first requirement:**
+
+**Requires test-first** (write tests BEFORE implementation):
+
+- New models (data schemas, TypeScript interfaces)
+- New API routes or route modifications
+- New service functions or business logic
+- Complex algorithms or data transformations
+- Non-trivial validation or processing logic
+- Component behavior (interactions, state changes)
+
+**Test-after acceptable**:
+
+- Simple data structures without logic
+- Presentational UI components (layout/styling)
+- Configuration file changes
+- Trivial refactoring (renaming, moving files)
+- Documentation-only changes
+
+**If unsure whether test-first applies, default to test-first.** Writing tests after implementation is harder and less effective.
+
+**During task list creation:** Ensure test sub-tasks appear BEFORE implementation sub-tasks for test-first work.
+This makes the protocol visible during execution.
 
 ## Testing Requirements
 
-### Test-Driven Development (Pragmatic TDD)
+- **Test-first protocol**: See Task Management Protocol section above for when to write tests before vs. after implementation
+- **Integration focus**: Prefer flow-level coverage over isolated units when practical
+- **All tests must pass** before any commit discussion (see quality gates above)
+- **Command patterns**: See [QUICK-REFERENCE.md](../QUICK-REFERENCE.md) for execution commands
+- **Test co-location**: Tests in `src/**/__tests__/` alongside source files
 
-The project follows pragmatic TDD as detailed in `.arc/reference/strategies/strategy-testing-methodology.md`:
+## Code Quality Principles
 
-- **Write tests first for**: API routes, form validation, utilities, component behavior
-- **Test after for**: Visual layout, styling, design iterations
-- **May skip tests for**: Pure presentational components without logic
+Apply standard software engineering principles:
 
-### Test Coverage Standards
+- **DRY** (don't repeat yourself)
+- **SOLID** (single responsibility, open/closed, dependency inversion)
+- **KISS** (keep it simple)
+- **YAGNI** (you aren't gonna need it)
 
-- **Critical paths**: 100% coverage (API routes, form validation, utilities)
-- **Component behavior**: 80%+ coverage
-- **Overall project**: 70%+ coverage
-- **Visual/presentational**: No coverage requirement
-
-### Test Execution Standards
-
-- **Before commits**: Full test suite must pass completely (when tests exist)
-- **During development**: Use watch mode for rapid feedback
-- **Coverage reporting**: `npm run test:coverage`
-
-## Commit Standards
-
-### Comprehensive Task Context Analysis Protocol
-
-**MANDATORY** before every commit consideration:
-
-1. **Examine ALL uncommitted changes**: `git status` and `git diff --stat`
-2. **Locate relevant task documentation** in `.arc/active/` or `.arc/upcoming/tasks/`
-3. **Analyze task completion status** vs documented tasks
-4. **Update task documentation** - mark subtasks complete with `[x]`
-5. **Write accurate commit messages** reflecting actual progress
-
-**Key Principle**: Commit messages must communicate WHERE the project stands after the commit.
-
-### Conventional Commit Format
-
-- **Types**: feat, fix, docs, style, refactor, test, config, chore
-- **Scope**: Use feature/component name for context
-- **Reference tasks**: Include task context when applicable
-- **Format**: `[type](scope): Brief description`
-
-Example:
-
-```
-feat(contact): Add form validation with Zod
-
-- Implement email and message validation
-- Add error message display
-- Include client-side validation feedback
-```
-
-### Atomic Commit Guidelines
-
-- Each commit should be a single logical change
-- Commits should be independently buildable/testable
-- Use descriptive messages with context
-- Group related changes together (e.g., "config: " for multiple config file updates)
-- Separate formatting from functional changes
-
-## Visual Development
-
-### Design Principles
-
-- Comprehensive visual design guidelines in `/reference/strategies/strategy-visual-design-principles.md`
-- Brand style guide in `/reference/strategies/strategy-style-guide.md`
-- When making visual (front-end, UI/UX) changes, always refer to these files for guidance
-
-### Comprehensive Visual Design Review
-
-Invoke the `@visual-design-reviewer` subagent for thorough design validation when:
-
-- Completing significant UI/UX features
-- Before finalizing PRs with visual changes
-- Needing comprehensive accessibility and responsiveness testing
-
-## Error Handling
-
-### When Things Go Wrong
-
-- **Report immediately** with full context
-- **Provide diagnostic information** (error messages, stack traces, file paths)
-- **Suggest investigation areas** based on the changes made
-- **Wait for guidance** rather than attempting fixes without approval
-
-### Never Proceed If
-
-- Quality gates are failing
-- Tests are broken
-- Linting violations exist
-- Type errors are present
-- Build fails
-- User has not approved the next step
-
-## Project-Specific Standards
-
-### Technology Stack Requirements
-
-- **TypeScript**: Strict mode enabled, no `any` types without justification
-- **React**: Use Server Components by default, Client Components only when needed
-- **Styling**: Tailwind utility classes, avoid inline styles
-- **Components**: Follow Shadcn/ui patterns for consistency
-- **Icons**: Use lucide-react for all iconography
-- **Animations**: Use Framer Motion for transitions and micro-interactions
-
-### Code Organization Standards
-
-- **File naming**: kebab-case for files, PascalCase for components
-- **Component structure**: One component per file (except tightly coupled helpers)
-- **Import order**: React → Next.js → third-party → local (handled by Prettier)
-- **Type definitions**: Store shared types in `src/types/`
-- **Utilities**: Reusable functions in `src/lib/`
-- **Data**: Static content in `src/data/` with TypeScript interfaces
-
-### Accessibility Requirements
-
-- **Semantic HTML**: Use appropriate HTML elements (not just divs)
-- **ARIA labels**: Add where semantic HTML is insufficient
-- **Keyboard navigation**: All interactive elements must be keyboard accessible
-- **Color contrast**: Meet WCAG 2.1 AA standards (4.5:1 for normal text)
-- **Focus indicators**: Visible focus states for all interactive elements
-
-### Performance Standards
-
-- **Images**: Always use Next.js `<Image>` component with proper sizing
-- **Lazy loading**: Use dynamic imports for heavy components
-- **Bundle size**: Monitor bundle size, code split when needed
-- **Core Web Vitals**: Target LCP < 2.5s, FID < 100ms, CLS < 0.1
-
-## Essential Commands
-
-### Development
-
-```bash
-# Start development server
-npm run dev
-
-# Run in production mode locally
-npm run build && npm run start
-```
-
-### Quality Checks
-
-```bash
-# Run all quality gates
-npm run type-check && npm run lint && npm run format:check && npm run build
-
-# Run tests (when implemented)
-npm test
-npm run test:coverage
-
-# Fix formatting and linting issues
-npm run format
-npm run lint -- --fix
-```
-
-### Feature Branch Management
-
-```bash
-# Create and switch to new feature branch
-git checkout -b feature/[feature-name]
-
-# Check current branch
-git status
-git branch --show-current
-
-# Switch back to main and merge (preserves commit history)
-git checkout main
-git merge feature/[feature-name]
-
-# Delete feature branch after merge
-git branch -d feature/[feature-name]
-
-# Push to remote
-git push origin main
-```
+Separate concerns, prefer composition over duplication, favor readability when principles conflict.
 
 ## Reference Documentation
 
-This document provides core rules. See detailed protocols in:
+This document provides core rules and standards. See related documentation:
 
-- [META-PRD](META-PRD.md) - Project vision and goals
-- [Technical Architecture](TECHNICAL-ARCHITECTURE.md) - Implementation stack and patterns
+- [QUICK-REFERENCE.md](../QUICK-REFERENCE.md) - Environment context, command patterns, and tool usage
+- [Task Processing Workflow](../workflows/3-process-task-loop.md) - Detailed task execution workflow
+- [Atomic Commit Workflow](../workflows/supplemental/atomic-commit.md) - Enhanced commit workflow with task context analysis
+- [AI Agent Reference Card](../ai-instructions/AGENTS.md) - Complete project context for AI
+- [Technical Architecture](TECHNICAL-ARCHITECTURE.md) - Architecture and methodology details
 - [Testing Methodology](../strategies/strategy-testing-methodology.md) - Detailed testing approach
-- [Task Processing Workflow](../workflows/3-process-task-loop.md) - Task execution workflow
-- [Atomic Commit Workflow](../workflows/supplemental/atomic-commit.md) - Commit workflow with task analysis
-- [Session Handoff Workflow](../workflows/supplemental/session-handoff.md) - Context handoff protocol
-
----
-
-_These development rules ensure consistent quality and maintainability throughout the andrewRCr Portfolio project._

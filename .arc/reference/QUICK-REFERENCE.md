@@ -1,25 +1,8 @@
 # Quick Reference - arc-portfolio
 
-**Version**: 1.0 | **Updated**: 2025-10-17 | **Location**: `.arc/reference/`
+**Version**: 1.1 | **Updated**: 2025-10-25
 
-## About This Reference Directory
-
-**Read every session:**
-
-- `DEVELOPMENT-RULES.md` (constitution/) - Rules and quality standards
-- `QUICK-REFERENCE.md` (this file) - Environment and commands
-- `CURRENT-SESSION.md` (active/) - Work status and next actions
-
-**Key documentation:**
-
-- `constitution/` - Project principles (META-PRD, TECHNICAL-ARCHITECTURE, PROJECT-STATUS, DEVELOPMENT-RULES)
-- `workflows/` - Core process guides (3-process-task-loop.md)
-- `workflows/supplemental/` - Supporting workflows (atomic-commit.md, session-handoff.md, manage-incidental-work.md,
-  session-init.md)
-- `strategies/` - Technical approaches (strategy-testing-methodology.md, strategy-work-categorization.md)
-- `ai-instructions/` - AI-specific guidance (AGENTS.md, CLAUDE.md, WARP.md)
-
----
+Command patterns and environment context for arc-portfolio.
 
 ## Environment & Path Context
 
@@ -139,37 +122,8 @@ npm run lint:md
 # 5. Build Success (must complete)
 npm run build
 
-# 6. Tests (100% pass rate when implemented)
+# 6. Tests (100% pass rate)
 npm test
-```
-
----
-
-## Tool Decision Tree
-
-```
-Need to run a command?
-│
-├─ Type checking?
-│  └─ npm run type-check
-│
-├─ Linting?
-│  └─ npm run lint (or npm run lint -- --fix for auto-fix)
-│
-├─ Formatting?
-│  └─ npm run format:check (or npm run format for auto-fix)
-│
-├─ Testing?
-│  └─ npm test (or npm run test:watch for development)
-│
-├─ Markdown linting?
-│  └─ npm run lint:md (or npm run lint:md:fix for auto-fix)
-│
-├─ Build verification?
-│  └─ npm run build
-│
-└─ Unsure?
-   └─ Check package.json scripts section
 ```
 
 ---
@@ -246,29 +200,3 @@ npm run type-check && npm run lint && npm run format:check && npm run lint:md &&
 ✅ Chain commands with && to ensure all pass
 ✅ Reference package.json for available scripts
 ✅ Use appropriate flags for incremental checks
-
----
-
-## Key Reminders
-
-1. **Repository root**: `/home/andrew/dev/arc-portfolio` - all npm commands from here
-2. **Dev server port**: `3000` (<http://localhost:3000>)
-3. **Quality gates**: Zero tolerance - all must pass before committing
-4. **Test location**: Co-located with source in `__tests__/` directories
-5. **TypeScript strict mode**: Enabled - no `any` types without justification
-
----
-
-## Tech Stack Reference
-
-**Framework**: Next.js 15.0.2 (App Router)
-**Language**: TypeScript (strict mode)
-**Styling**: Tailwind CSS
-**Testing**: Vitest + React Testing Library
-**Linting**: ESLint + Prettier
-**Icons**: lucide-react
-**Animations**: Framer Motion (when used)
-
----
-
-**Version Note**: Commands assume repository root. All npm scripts defined in package.json.
