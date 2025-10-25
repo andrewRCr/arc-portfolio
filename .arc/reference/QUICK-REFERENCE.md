@@ -29,7 +29,16 @@ Command patterns and environment context for arc-portfolio.
 **Local Development**:
 
 - **Next.js Dev Server**: `http://localhost:3000`
+- **Browser Console Log Server**: `http://localhost:3001` (runs alongside dev server)
 - **Development**: Hot reload enabled, fast refresh for React components
+
+**Console Logging for AI Debugging**:
+
+- Browser console logs are automatically captured to `.console-logs.txt`
+- AI can read this file to debug client-side issues without manual copy/paste
+- System is **always active** in development mode
+- Use `npm run dev:with-logs` to start both servers together
+- Or run separately: `npm run dev` + `npm run log-server` in separate terminals
 
 ---
 
@@ -40,8 +49,14 @@ All commands shown from **repository root**. All npm scripts defined in `package
 ### Development
 
 ```bash
-# Start development server
+# Start development server (Next.js only)
 npm run dev
+
+# Start development with console logging (RECOMMENDED FOR AI DEBUGGING)
+npm run dev:with-logs
+
+# Start log server separately (if dev server already running)
+npm run log-server
 
 # Build for production
 npm run build
@@ -152,15 +167,19 @@ npx markdownlint-cli2 .arc/path/to/file.md --fix
 ### Development Workflow
 
 ```bash
-# 1. Start dev server in one terminal
-npm run dev
+# 1. Start dev server with console logging (RECOMMENDED)
+npm run dev:with-logs
 
 # 2. Run tests in watch mode in another terminal (optional)
 npm run test:watch
 
 # 3. Make changes, verify in browser at localhost:3000
 
-# 4. Before committing, run quality gates
+# 4. Check browser console logs for AI debugging
+cat .console-logs.txt
+# Or clear logs: rm .console-logs.txt
+
+# 5. Before committing, run quality gates
 npm run type-check && npm run lint && npm run format:check && npm run lint:md && npm run build && npm test
 ```
 

@@ -39,6 +39,7 @@ contemporary web development practices, type safety, testing, and professional d
 - **Quality gates before commits**: Zero tolerance - type-check, lint, format, markdown lint, build, tests must all pass
 - **No Docker/containers**: Runs directly on host with npm
 - **TypeScript strict mode**: No `any` types without justification
+- **Console logging for AI**: Browser console logs auto-captured to `.console-logs.txt` (use `npm run dev:with-logs`)
 
 ## AI Collaboration Principles
 
