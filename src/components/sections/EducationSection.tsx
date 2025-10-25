@@ -2,7 +2,6 @@
  * EducationSection - Modular component for displaying education credentials
  *
  * Renders academic degrees with institution and optional details (location, dates, GPA).
- * Designed to be reusable across multiple pages (e.g., /about, homepage).
  */
 
 import { education } from "@/data/education";

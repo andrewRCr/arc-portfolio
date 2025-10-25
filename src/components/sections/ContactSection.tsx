@@ -2,7 +2,6 @@
  * ContactSection - Modular component for displaying contact information
  *
  * Renders email and social media links with icons.
- * Designed to be reusable across multiple pages (e.g., /contact, homepage).
  */
 
 import { contact } from "@/data/contact";

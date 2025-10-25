@@ -2,7 +2,6 @@
  * SkillsSection - Modular component for displaying categorized technical skills
  *
  * Renders skills data organized by category (Languages, Frontend, Backend, etc.)
- * Designed to be reusable across multiple pages (e.g., /skills, homepage).
  */
 
 import { skills } from "@/data/skills";

@@ -2,7 +2,6 @@
  * AboutSection - Modular component for displaying biographical content
  *
  * Renders bio paragraphs with basic markdown link support [text](url).
- * Designed to be reusable across multiple pages (e.g., /about, homepage).
  */
 
 import React from "react";
