@@ -64,3 +64,6 @@ Thumbs.db
 
 # Playwright MCP - browser automation screenshots
 .playwright-mcp/
+
+# Browser console logs (for AI debugging)
+.console-logs.txt

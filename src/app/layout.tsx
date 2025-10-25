@@ -5,6 +5,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { AdaptiveHero } from "@/components/layout/AdaptiveHero";
 import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         style={{ backgroundColor: "rgb(var(--background))" }}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ConsoleLoggerInit />
           {/* TUI-style border frame wrapper */}
           <div className="min-h-screen p-4 md:p-6 lg:p-8">
             <div className="min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)] border-2 border-border rounded-lg flex flex-col relative">
