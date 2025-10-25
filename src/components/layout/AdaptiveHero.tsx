@@ -129,12 +129,7 @@ export function AdaptiveHero() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <motion.h1
-                className="font-bold font-mono"
-                variants={nameVariants}
-                initial="expanded"
-                animate="compact"
-              >
+              <motion.h1 className="font-bold font-mono" variants={nameVariants} initial="expanded" animate="compact">
                 Andrew Creekmore
               </motion.h1>
 
@@ -167,12 +162,7 @@ export function AdaptiveHero() {
                   &gt; portfolio.init()
                 </motion.p>
 
-                <motion.h1
-                  className="font-bold font-mono"
-                  variants={nameVariants}
-                  initial="compact"
-                  animate="expanded"
-                >
+                <motion.h1 className="font-bold font-mono" variants={nameVariants} initial="compact" animate="expanded">
                   Andrew Creekmore
                 </motion.h1>
 

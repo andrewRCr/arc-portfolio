@@ -27,9 +27,9 @@ public/
 - **Dimensions**: 256x256 pixels (square)
 - **Quality**: WebP at quality 85
 - **Examples**:
-    - `taskfocus.webp`
-    - `action-rpg-project.webp`
-    - `cinexplorer.webp`
+  - `taskfocus.webp`
+  - `action-rpg-project.webp`
+  - `cinexplorer.webp`
 
 ### Screenshots
 
@@ -37,9 +37,9 @@ public/
 - **Format**: `screenshot-{n}.webp` (sequential numbering starting at 1)
 - **Quality**: WebP at quality 85
 - **Examples**:
-    - `public/projects/taskfocus/screenshot-1.webp`
-    - `public/projects/taskfocus/screenshot-2.webp`
-    - `public/projects/action-rpg-project/screenshot-1.webp`
+  - `public/projects/taskfocus/screenshot-1.webp`
+  - `public/projects/taskfocus/screenshot-2.webp`
+  - `public/projects/action-rpg-project/screenshot-1.webp`
 
 ## Image Inventory
 
