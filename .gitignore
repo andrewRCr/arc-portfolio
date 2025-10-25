@@ -58,9 +58,6 @@ Thumbs.db
 
 # ARC Development System - temporal development workspace files
 .arc/active/CURRENT-SESSION.md
-.arc/active/*/notes-*
-.arc/upcoming/notes/
-.arc/reference/archive/notes/
 
 # Claude Code - personal configuration
 .claude/
