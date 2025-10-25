@@ -1,4 +1,4 @@
-import type { ThemeColors } from "@/data/themes";
+import type { ThemeColors } from "@/data/themes/types";
 
 /**
  * Theme Utilities
