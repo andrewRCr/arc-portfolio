@@ -3,7 +3,11 @@
 **Feature**: Content Migration from Squarespace
 **PRD**: `.arc/active/feature/prd-content-migration.md`
 **Branch**: `feature/content-migration`
-**Status**: In Progress
+**Status**: PAUSED - Theme system fix in progress (`.arc/active/incidental/tasks-theme-system-fix.md`)
+
+**Pause Reason**: Section components use hardcoded colors instead of theme system, making visual
+evaluation difficult in dark mode. Addressing theme integration before continuing with project pages
+to prevent propagating anti-pattern.
 
 ## Relevant Files
 
