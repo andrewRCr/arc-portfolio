@@ -103,7 +103,7 @@
     (`/skills`, `/about`, `/contact`) now display real content. Fixed `.prettierignore` to exclude `.arc/`
     (handled by markdownlint). Quality metrics: 293 tests passing (100%), zero linting/type errors.
 
-- [ ] 7.0 Create tabbed project pages with software projects + stub mods
+- [x] 7.0 Create tabbed project pages with software projects + stub mods
     - [x] 7.1 Update project order values in `src/data/projects.ts` (TaskFocus moves to position 2)
     - [x] 7.2 Verify all projects have appropriate `category` values for badge display
         **Completed**: Changed `category` from single string to string array for multiple categories.
@@ -144,23 +144,32 @@
         reusability. Updated `/projects/page.tsx` to display mods grid in Mods tab using same responsive layout
         (md:2-col, lg:3-col) and ProjectCard component with `categoryType="mods"`. Added note indicating placeholder
         status. Exported mods from `src/data/index.ts`. Zero type errors, zero linting violations.
-    - [ ] 7.14 Write behavior tests for ProjectDetail (data display, external links, back button - TDD)
-    - [ ] 7.15 Create ProjectDetail component with back button (preserves tab state via query param)
-    - [ ] 7.16 Create dynamic detail page at `/projects/software/[slug]`
-    - [ ] 7.17 Create dynamic detail page at `/projects/mods/[slug]` (placeholder support)
-    - [ ] 7.18 Implement `generateStaticParams` for software project slugs
-    - [ ] 7.19 Implement `generateStaticParams` for placeholder mod slugs
-    - [ ] 7.20 Verify tab switching, routing, back navigation, and all links functional
-    - [ ] 7.21 Run incremental quality checks (type-check, lint, format, test)
-
-    **Architecture Notes**:
-    - Routing: `/projects` (list with tabs) → `/projects/software/[slug]` or `/projects/mods/[slug]` (details)
-    - Tab state: Query param (`?tab=mods`) for shareable links and back button preservation
-    - Badge system: `category` field displays as prominent badge (Software: "Web App"/"Game"/etc, Mods: game name)
-    - Tech tags: `tags` array for technology filtering (future enhancement per META-PRD)
-    - Project order (revised): 1-CineXplorer, 2-TaskFocus, 3-ARC, 4-arc-portfolio, 5-PetResort,
-      6-DOOM NG+ Customizer, 7-ActionRPG, 8-SurvivalHorror, 9-PongClone
-    - Placeholder mods: 2 entries with obvious dummy data, validates layout and component reusability
+    - [x] 7.14 Write behavior tests for ProjectDetail (data display, external links, back button - TDD)
+    - [x] 7.15 Create ProjectDetail component with back button (preserves tab state via query param)
+        **Completed (Tasks 7.14-7.15 batched)**: TDD approach - wrote 20 comprehensive behavior tests first, then
+        implemented ProjectDetail component. Tests cover: basic rendering (title, description, categories, tech
+        stack, features), external links (GitHub, live demo, download, NexusMods with proper target="_blank" and
+        rel attributes), back button (preserves tab state via query param, defaults to software tab), optional
+        metadata (teamSize, duration, role, highlights, architectureNotes), and accessibility (semantic headings,
+        aria-labels). Component uses theme semantic colors throughout. All 20 tests passing. Zero type errors,
+        zero linting violations.
+    - [x] 7.16 Create dynamic detail page at `/projects/software/[slug]`
+    - [x] 7.17 Create dynamic detail page at `/projects/mods/[slug]` (placeholder support)
+    - [x] 7.18 Implement `generateStaticParams` for software project slugs
+    - [x] 7.19 Implement `generateStaticParams` for placeholder mod slugs
+        **Completed (Tasks 7.16-7.19 batched)**: Created dynamic route pages for both software and mods categories.
+        Both pages use ProjectDetail component and preserve tab state via query param. Software page defaults to
+        'software' tab, mods page defaults to 'mods' tab. Implemented generateStaticParams for static generation
+        at build time - 9 software project pages + 2 mod pages (11 total). Build confirms all pages generated
+        successfully. Pages use async params/searchParams per Next.js 15 conventions. Zero type errors, zero
+        linting violations.
+    - [x] 7.20 Verify tab switching, routing, back navigation, and all links functional
+        **Completed**: User verified in-browser testing - tab switching works correctly, routing between list and
+        detail pages functional, back button preserves tab state, all external links open correctly.
+    - [x] 7.21 Run incremental quality checks (type-check, lint, format, test)
+        **Completed**: All quality gates passing - TypeScript (zero errors), ESLint (zero violations, 1 pre-existing
+        warning), Prettier (all formatted), Markdown lint (zero violations), Build (success - 11 static pages generated),
+        Tests (356/356 passing, 100% pass rate).
 
 - [ ] 8.0 Migrate and integrate mod data from NexusMods
     - [ ] 8.1 Select 5-9 mods for showcase (high-effort, well-maintained, technically interesting)
