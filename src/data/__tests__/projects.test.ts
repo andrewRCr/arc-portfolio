@@ -104,7 +104,7 @@ describe("Projects Data Validation", () => {
         expect(project.images).toBeDefined();
         expect(project.images.thumbnail).toBeDefined();
         expect(typeof project.images.thumbnail).toBe("string");
-        expect(project.images.thumbnail.length).toBeGreaterThan(0);
+        // Thumbnail can be empty (triggers placehold.co fallback in ProjectCard)
 
         expect(Array.isArray(project.images.screenshots)).toBe(true);
         expect(Array.isArray(project.images.altTexts)).toBe(true);
@@ -186,13 +186,7 @@ describe("Projects Data Validation", () => {
 
   describe("Project Categories", () => {
     it("should have valid project categories", () => {
-      const validCategories = [
-        "Web App",
-        "Desktop App",
-        "Framework",
-        "Game",
-        "Modding Tool",
-      ];
+      const validCategories = ["Web App", "Desktop App", "Framework", "Game", "Modding Tool"];
 
       projects.forEach((project) => {
         // Each category in the array should be valid

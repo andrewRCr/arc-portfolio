@@ -74,7 +74,7 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - no live demo yet
     },
     images: {
-      thumbnail: "/thumbnails/cinexplorer.jpg", // TODO: Add actual thumbnail image
+      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
       screenshots: [
         "/projects/cinexplorer/screenshot-1.jpg", // TODO: Add actual screenshots
         "/projects/cinexplorer/screenshot-2.jpg",
@@ -130,7 +130,7 @@ export const projects: Project[] = [
       liveDemo: undefined, // Not applicable - framework/documentation repo
     },
     images: {
-      thumbnail: "/thumbnails/arc-agentic-dev-framework.jpg", // TODO: Add actual thumbnail image
+      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
       screenshots: [
         "/projects/arc-agentic-dev-framework/screenshot-1.jpg", // TODO: Add actual screenshots (directory structure, workflow diagrams, example docs)
         "/projects/arc-agentic-dev-framework/screenshot-2.jpg",
@@ -204,7 +204,7 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - will be deployed to andrewcreekmore.com
     },
     images: {
-      thumbnail: "/thumbnails/arc-portfolio.jpg", // TODO: Add actual thumbnail image
+      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
       screenshots: [
         "/projects/arc-portfolio/screenshot-1.jpg", // TODO: Add actual screenshots (homepage, project showcase, component examples)
         "/projects/arc-portfolio/screenshot-2.jpg",

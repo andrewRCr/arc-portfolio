@@ -21,6 +21,12 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
   const displayedTechStack = project.techStack.slice(0, 3);
   const remainingCount = project.techStack.length - displayedTechStack.length;
 
+  // Use placehold.co fallback for missing/placeholder images (PNG format to avoid SVG issues)
+  const thumbnailSrc =
+    project.images.thumbnail && !project.images.thumbnail.includes("placeholder")
+      ? project.images.thumbnail
+      : "https://placehold.co/600x400/282828/ebdbb2.png?text=Project+Image";
+
   return (
     <Link
       href={detailUrl}
@@ -29,7 +35,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
         <Image
-          src={project.images.thumbnail}
+          src={thumbnailSrc}
           alt={`${project.title} thumbnail`}
           fill
           className="object-cover transition-transform group-hover:scale-105"

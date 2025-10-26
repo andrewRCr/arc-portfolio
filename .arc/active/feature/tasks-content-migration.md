@@ -123,13 +123,27 @@
         tags (secondary with border). Links to project detail page (/projects/{software|mods}/{slug}). Limits
         tech display to 3 items with "+N" indicator. Uses theme semantic colors throughout (bg-background,
         text-foreground, border-border, etc). Proper accessibility. All 336 tests passing.
-    - [ ] 7.7 Create projects list page at `/projects` with ProjectTabs component
-    - [ ] 7.8 Draft intro text for Software tab (emphasizes current focus, breadth)
-    - [ ] 7.9 Draft intro text for Mods tab (community work, maintenance, professionalism)
-    - [ ] 7.10 Implement software projects grid in Software tab (9 existing projects, revised order)
-    - [ ] 7.11 Create `src/data/mods.ts` with 2 placeholder mod entries (uses Project interface)
-    - [ ] 7.12 Implement placeholder mods grid in Mods tab (2 placeholders, same UI as software)
-    - [ ] 7.13 Export mods from `src/data/index.ts`
+    - [x] 7.7 Create projects list page at `/projects` with ProjectTabs component
+        **Completed**: Updated `/projects/page.tsx` to integrate ProjectTabs component. Page includes header with
+        title and description, ProjectTabs for navigation, and placeholder content area. Uses semantic theme colors
+        and responsive layout (max-width container). Page renders correctly with
+        functional tab switching. Zero type errors, zero linting violations.
+    - [x] 7.8 Draft intro text for Software tab (emphasizes current focus, breadth)
+    - [x] 7.9 Draft intro text for Mods tab (community work, maintenance, professionalism)
+    - [x] 7.10 Implement software projects grid in Software tab (9 existing projects, revised order)
+        **Completed (Tasks 7.8-7.10 batched)**: Enhanced `/projects/page.tsx` with tab-specific content. Software
+        tab displays 2-paragraph intro emphasizing full-stack expertise and current focus areas, followed by
+        responsive grid (md:2-col, lg:3-col) showing all 9 projects sorted by order field. Mods tab shows 2-paragraph
+        intro highlighting community work and professional approach, with placeholder message for Task 8.0. Page uses
+        useSearchParams to conditionally render tab content. Zero type errors, zero linting violations.
+    - [x] 7.11 Create `src/data/mods.ts` with 2 placeholder mod entries (uses Project interface)
+    - [x] 7.12 Implement placeholder mods grid in Mods tab (2 placeholders, same UI as software)
+    - [x] 7.13 Export mods from `src/data/index.ts`
+        **Completed (Tasks 7.11-7.13 batched)**: Created `src/data/mods.ts` with 2 placeholder mod entries
+        (Skyrim and Fallout 4 mods with obvious dummy data). Mods use same Project interface, validating component
+        reusability. Updated `/projects/page.tsx` to display mods grid in Mods tab using same responsive layout
+        (md:2-col, lg:3-col) and ProjectCard component with `categoryType="mods"`. Added note indicating placeholder
+        status. Exported mods from `src/data/index.ts`. Zero type errors, zero linting violations.
     - [ ] 7.14 Write behavior tests for ProjectDetail (data display, external links, back button - TDD)
     - [ ] 7.15 Create ProjectDetail component with back button (preserves tab state via query param)
     - [ ] 7.16 Create dynamic detail page at `/projects/software/[slug]`

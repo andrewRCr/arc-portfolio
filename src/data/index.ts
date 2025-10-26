@@ -5,10 +5,11 @@
  * Components can import from "@/data" instead of individual files.
  *
  * Example usage:
- *   import { projects, skills, education, about, contact } from "@/data";
+ *   import { projects, mods, skills, education, about, contact } from "@/data";
  */
 
 export { projects } from "./projects";
+export { mods } from "./mods";
 export { skills } from "./skills";
 export { education } from "./education";
 export { about } from "./about";

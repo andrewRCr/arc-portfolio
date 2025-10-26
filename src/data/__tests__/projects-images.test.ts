@@ -36,26 +36,33 @@ describe("Projects Image Data Validation", () => {
   });
 
   describe("Thumbnail Path Validation", () => {
-    it("should have valid thumbnail path format for all projects", () => {
+    it("should have valid thumbnail path format for projects with thumbnails", () => {
       projects.forEach((project) => {
-        // Should start with /thumbnails/
-        expect(project.images.thumbnail).toMatch(/^\/thumbnails\//);
+        // Empty thumbnails are allowed (trigger placehold.co fallback)
+        if (project.images.thumbnail) {
+          // Should start with /thumbnails/
+          expect(project.images.thumbnail).toMatch(/^\/thumbnails\//);
 
-        // Should end with .webp or .jpg (migrating from .jpg to .webp)
-        expect(project.images.thumbnail).toMatch(/\.(webp|jpg)$/);
+          // Should end with .webp or .jpg (migrating from .jpg to .webp)
+          expect(project.images.thumbnail).toMatch(/\.(webp|jpg)$/);
+        }
       });
     });
 
-    it("should have thumbnail filename matching project slug", () => {
+    it("should have thumbnail filename matching project slug when present", () => {
       projects.forEach((project) => {
-        const expectedThumbnail = `/thumbnails/${project.slug}.`;
-        expect(project.images.thumbnail).toContain(expectedThumbnail);
+        // Empty thumbnails are allowed (trigger placehold.co fallback)
+        if (project.images.thumbnail) {
+          const expectedThumbnail = `/thumbnails/${project.slug}.`;
+          expect(project.images.thumbnail).toContain(expectedThumbnail);
+        }
       });
     });
 
-    it("should have non-empty thumbnail paths", () => {
+    it("should have thumbnail defined (may be empty for fallback)", () => {
       projects.forEach((project) => {
-        expect(project.images.thumbnail.length).toBeGreaterThan(0);
+        // Thumbnail must be defined (string), but can be empty to trigger fallback
+        expect(typeof project.images.thumbnail).toBe("string");
       });
     });
   });
@@ -206,9 +213,12 @@ describe("Projects Image Data Validation", () => {
       });
     });
 
-    it("should have absolute paths starting with /", () => {
+    it("should have absolute paths starting with / when present", () => {
       projects.forEach((project) => {
-        expect(project.images.thumbnail.startsWith("/")).toBe(true);
+        // Empty thumbnails are allowed (trigger placehold.co fallback)
+        if (project.images.thumbnail) {
+          expect(project.images.thumbnail.startsWith("/")).toBe(true);
+        }
 
         project.images.screenshots.forEach((screenshot) => {
           expect(screenshot.startsWith("/")).toBe(true);
@@ -226,11 +236,14 @@ describe("Projects Image Data Validation", () => {
       });
     });
 
-    it("should have kebab-case slugs in paths", () => {
+    it("should have kebab-case slugs in paths when present", () => {
       projects.forEach((project) => {
-        // Slug should be lowercase with hyphens, no underscores or spaces
-        const slugPattern = /^\/thumbnails\/[a-z0-9]+(-[a-z0-9]+)*\.(webp|jpg)$/;
-        expect(project.images.thumbnail).toMatch(slugPattern);
+        // Empty thumbnails are allowed (trigger placehold.co fallback)
+        if (project.images.thumbnail) {
+          // Slug should be lowercase with hyphens, no underscores or spaces
+          const slugPattern = /^\/thumbnails\/[a-z0-9]+(-[a-z0-9]+)*\.(webp|jpg)$/;
+          expect(project.images.thumbnail).toMatch(slugPattern);
+        }
       });
     });
   });
@@ -263,11 +276,13 @@ describe("Projects Image Data Validation", () => {
   });
 
   describe("Data Integrity", () => {
-    it("should have unique thumbnail paths across all projects", () => {
-      const thumbnails = projects.map((p) => p.images.thumbnail);
-      const uniqueThumbnails = new Set(thumbnails);
+    it("should have unique thumbnail paths across projects with thumbnails", () => {
+      // Filter out empty thumbnails (which trigger placehold.co fallback)
+      const nonEmptyThumbnails = projects.map((p) => p.images.thumbnail).filter((t) => t !== "");
+      const uniqueThumbnails = new Set(nonEmptyThumbnails);
 
-      expect(uniqueThumbnails.size).toBe(projects.length);
+      // All non-empty thumbnails should be unique
+      expect(uniqueThumbnails.size).toBe(nonEmptyThumbnails.length);
     });
 
     it("should have valid project references in screenshot paths", () => {
