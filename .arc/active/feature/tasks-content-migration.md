@@ -3,82 +3,7 @@
 **Feature**: Content Migration from Squarespace
 **PRD**: `.arc/active/feature/prd-content-migration.md`
 **Branch**: `feature/content-migration`
-**Status**: PAUSED - Theme system fix in progress (`.arc/active/incidental/tasks-theme-system-fix.md`)
-
-**Pause Reason**: Section components use hardcoded colors instead of theme system, making visual
-evaluation difficult in dark mode. Addressing theme integration before continuing with project pages
-to prevent propagating anti-pattern.
-
-## Relevant Files
-
-### Type Definitions
-
-- `src/types/project.ts` - TypeScript interface for project data structure ✓
-- `src/types/skills.ts` - TypeScript interface for skills categorization ✓
-- `src/types/education.ts` - TypeScript interface for education credentials ✓
-- `src/types/about.ts` - TypeScript interface for bio/about content ✓
-- `src/types/contact.ts` - TypeScript interface for contact information ✓
-
-### Data Files
-
-- `src/data/projects.ts` - All 9 projects with complete data (implements Project interface) ✓ (Phase 2: Tasks 2.1-2.9 complete)
-- `src/data/skills.ts` - Categorized skills data (implements Skills interface) ✓ (sample, Phase 2)
-- `src/data/education.ts` - Education credentials (implements Education interface) ✓ (sample, Phase 2)
-- `src/data/about.ts` - Bio content with markdown support (implements About interface) ✓ (sample, Phase 2)
-- `src/data/contact.ts` - Contact information and social links (implements Contact interface) ✓ (sample, Phase 2)
-- `src/data/index.ts` - Centralized exports for all content data ✓
-
-### Components
-
-- `src/components/Navigation.tsx` - Navigation header component (to be created - Task 5.0 workflow validation)
-- `src/components/home/SkillsSection.tsx` - Placeholder component for skills display (to be created)
-- `src/components/home/EducationSection.tsx` - Placeholder component for education display (to be created)
-- `src/components/home/AboutSection.tsx` - Placeholder component for bio display (to be created)
-- `src/components/home/ContactSection.tsx` - Placeholder component for contact display (to be created)
-- `src/components/projects/ProjectCard.tsx` - Placeholder card component for project list (to be created)
-- `src/components/projects/ProjectDetail.tsx` - Placeholder component for project detail pages (to be created)
-
-### Pages/Routes
-
-- `src/app/page.tsx` - Homepage (hero/landing page, content deferred to design phase) (exists, minimal modification)
-- `src/app/layout.tsx` - Root layout with navigation header (Home, Projects, Skills, About, Contact)
-  (exists, to be modified)
-- `src/app/skills/page.tsx` - Skills page displaying SkillsSection component (to be created)
-- `src/app/about/page.tsx` - About page displaying both EducationSection and AboutSection components (to be created)
-- `src/app/contact/page.tsx` - Contact page displaying ContactSection component (to be created)
-- `src/app/projects/page.tsx` - Project list page with grid/list display (to be created)
-- `src/app/projects/[slug]/page.tsx` - Dynamic project detail pages (to be created)
-
-### Testing Configuration & Files
-
-- `vitest.config.ts` - Vitest configuration for unit and component tests ✓
-- `src/test/setup.ts` - Test environment setup and global test utilities ✓
-- `src/types/__tests__/project.test.ts` - Type definition tests for projects ✓
-- `src/types/__tests__/skills.test.ts` - Type definition tests for skills ✓
-- `src/types/__tests__/education.test.ts` - Type definition tests for education ✓
-- `src/types/__tests__/about.test.ts` - Type definition tests for about ✓
-- `src/types/__tests__/contact.test.ts` - Type definition tests for contact ✓
-- `src/data/__tests__/projects.test.ts` - Data validation tests for projects (31 tests, refactored for flexibility) ✓
-- `src/data/__tests__/projects-images.test.ts` - Image data validation tests (28 tests) ✓
-- `src/data/__tests__/skills.test.ts` - Data validation tests for skills (45 tests, refactored) ✓
-- `src/data/__tests__/education.test.ts` - Data validation tests for education (30 tests, refactored) ✓
-- `src/data/__tests__/about.test.ts` - Data validation tests for about/bio (39 tests, refactored) ✓
-- `src/data/__tests__/contact.test.ts` - Data validation tests for contact (44 tests, refactored) ✓
-- `src/components/__tests__/Navigation.test.tsx` - Component tests for navigation (to be created - Task 5.0)
-- `src/components/home/__tests__/SkillsSection.test.tsx` - Component tests for skills section (to be created)
-- `src/components/home/__tests__/AboutSection.test.tsx` - Component tests for about section (to be created)
-- `src/components/projects/__tests__/ProjectCard.test.tsx` - Component tests for project card (to be created)
-- `src/components/projects/__tests__/ProjectDetail.test.tsx` - Component tests for project detail (to be created)
-
-### Image Assets
-
-- `public/thumbnails/` - Project thumbnail images, one per project (9 total, to be migrated from Squarespace)
-- `public/projects/{slug}/` - Project screenshot directories, one per project
-  (28+ screenshots total, to be migrated from Squarespace)
-
-### Documentation
-
-- `public/projects/README.md` - Documentation for image organization, naming conventions, and migration details ✓
+**Status**: READY - Theme system complete, resuming Task 7.0 (expanded for tabbed project pages with mods)
 
 ## Tasks
 
@@ -178,38 +103,86 @@ to prevent propagating anti-pattern.
     (`/skills`, `/about`, `/contact`) now display real content. Fixed `.prettierignore` to exclude `.arc/`
     (handled by markdownlint). Quality metrics: 293 tests passing (100%), zero linting/type errors.
 
-- [ ] 7.0 Create project list page and dynamic project detail pages
-    - [ ] 7.1 Write behavior tests for ProjectCard (data rendering, link functionality - TDD: test first)
-    - [ ] 7.2 Create ProjectCard component for grid/list display
-    - [ ] 7.3 Create projects list page at `/projects` with all 9 projects
-    - [ ] 7.4 Write behavior tests for ProjectDetail (data display, external link attributes, conditional rendering -
-    TDD: test first)
-    - [ ] 7.5 Create ProjectDetail component with external links opening in new tabs
-    - [ ] 7.6 Create dynamic project detail page at `/projects/[slug]`
-    - [ ] 7.7 Implement `generateStaticParams` for all 9 project slugs
-    - [ ] 7.8 Verify all project links and external URLs are functional
-    - [ ] 7.9 Run incremental quality checks (type-check, lint, format, test)
+- [ ] 7.0 Create tabbed project pages with software projects + stub mods
+    - [ ] 7.1 Update project order values in `src/data/projects.ts` (TaskFocus moves to position 2)
+    - [ ] 7.2 Verify all projects have appropriate `category` values for badge display
+        (Web Application, Desktop Tool, Game, Development Framework)
+    - [ ] 7.3 Write behavior tests for ProjectTabs component (tab switching, query param handling, active state - TDD)
+    - [ ] 7.4 Create ProjectTabs component (Software/Mods tabs with query param state: `?tab=mods`)
+    - [ ] 7.5 Write behavior tests for ProjectCard (data rendering, category badge, tech tags, link - TDD)
+    - [ ] 7.6 Create ProjectCard component with category badge (prominent, first) + tech stack tags (secondary)
+    - [ ] 7.7 Create projects list page at `/projects` with ProjectTabs component
+    - [ ] 7.8 Draft intro text for Software tab (emphasizes current focus, breadth)
+    - [ ] 7.9 Draft intro text for Mods tab (community work, maintenance, professionalism)
+    - [ ] 7.10 Implement software projects grid in Software tab (9 existing projects, revised order)
+    - [ ] 7.11 Create `src/data/mods.ts` with 2 placeholder mod entries (uses Project interface)
+    - [ ] 7.12 Implement placeholder mods grid in Mods tab (2 placeholders, same UI as software)
+    - [ ] 7.13 Export mods from `src/data/index.ts`
+    - [ ] 7.14 Write behavior tests for ProjectDetail (data display, external links, back button - TDD)
+    - [ ] 7.15 Create ProjectDetail component with back button (preserves tab state via query param)
+    - [ ] 7.16 Create dynamic detail page at `/projects/software/[slug]`
+    - [ ] 7.17 Create dynamic detail page at `/projects/mods/[slug]` (placeholder support)
+    - [ ] 7.18 Implement `generateStaticParams` for software project slugs
+    - [ ] 7.19 Implement `generateStaticParams` for placeholder mod slugs
+    - [ ] 7.20 Verify tab switching, routing, back navigation, and all links functional
+    - [ ] 7.21 Run incremental quality checks (type-check, lint, format, test)
 
-- [ ] 8.0 Verify routing and navigation integration
-    - [ ] 8.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact)
-    - [ ] 8.2 Ensure all internal navigation links are functional
-    - [ ] 8.3 Confirm `/about` page displays both Education and About sections correctly
-    - [ ] 8.4 Write integration tests for navigation and routing flows
-    - [ ] 8.5 Run incremental quality checks (type-check, lint, format, test)
+    **Architecture Notes**:
+    - Routing: `/projects` (list with tabs) → `/projects/software/[slug]` or `/projects/mods/[slug]` (details)
+    - Tab state: Query param (`?tab=mods`) for shareable links and back button preservation
+    - Badge system: `category` field displays as prominent badge (Software: "Web App"/"Game"/etc, Mods: game name)
+    - Tech tags: `tags` array for technology filtering (future enhancement per META-PRD)
+    - Project order (revised): 1-CineXplorer, 2-TaskFocus, 3-ARC, 4-arc-portfolio, 5-PetResort,
+      6-DOOM NG+ Customizer, 7-ActionRPG, 8-SurvivalHorror, 9-PongClone
+    - Placeholder mods: 2 entries with obvious dummy data, validates layout and component reusability
+
+- [ ] 8.0 Migrate and integrate mod data from NexusMods
+    - [ ] 8.1 Select 5-9 mods for showcase (high-effort, well-maintained, technically interesting)
+    - [ ] 8.2 Create incidental task list for detailed per-mod migration tracking
+        (See: `.arc/active/incidental/tasks-mod-migration.md` - one sub-task per mod with full migration steps)
+    - [ ] 8.3 Execute mod migration workflow via incidental task list
+        (Adapt NexusMods descriptions, add technical details, download images, organize assets)
+    - [ ] 8.4 Replace placeholder mods in `src/data/mods.ts` with real mod data
+    - [ ] 8.5 Update `generateStaticParams` in `/projects/mods/[slug]/page.tsx` for actual mod slugs
+    - [ ] 8.6 Write data validation tests for mods (`src/data/__tests__/mods.test.ts`)
+    - [ ] 8.7 Write image validation tests for mods (`src/data/__tests__/mods-images.test.ts`)
+    - [ ] 8.8 Verify all mod pages render correctly with accurate data
+    - [ ] 8.9 Verify mod category badges display game names correctly
+    - [ ] 8.10 Verify all mod external links (NexusMods profile, individual mod pages) functional
+    - [ ] 8.11 Run incremental quality checks (type-check, lint, format, test)
+
+    **Migration Notes**:
+    - NexusMods profile: [Link to be added during migration]
+    - Mods will use `category` field for game name (e.g., "Skyrim", "DOOM", "Fallout 4")
+    - Each mod requires: title, description (adapted), features, links (NexusMods), images (banner + screenshots)
+    - Maintain same professional tone and detail level as software projects
+    - Consider adding `highlights` for download counts, community feedback, maintenance history
+    - Detailed per-mod migration steps tracked in separate incidental task list for granular progress tracking
+
+- [ ] 9.0 Verify routing and navigation integration (was 8.0)
+    - [ ] 9.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact)
+    - [ ] 9.2 Ensure all internal navigation links are functional
+    - [ ] 9.3 Verify `/projects` tab switching works (Software ↔ Mods)
+    - [ ] 9.4 Verify project detail pages back button returns to correct tab
+    - [ ] 9.5 Confirm `/about` page displays both Education and About sections correctly
+    - [ ] 9.6 Write integration tests for navigation and routing flows
+    - [ ] 9.7 Run incremental quality checks (type-check, lint, format, test)
 
 ### Phase 4: Validation & Quality Assurance
 
-- [ ] 9.0 Validate content accuracy, type safety, and display functionality
-    - [ ] 9.1 Verify zero TypeScript errors across all files
-    - [ ] 9.2 Verify all content section pages render correctly (`/skills`, `/about`, `/contact`)
-    - [ ] 9.3 Verify `/about` page displays both Education and About sections correctly
-    - [ ] 9.4 Verify all 9 projects display correctly with accurate data
-    - [ ] 9.5 Verify all external links open correctly in new tabs
-    - [ ] 9.6 Verify project ordering matches priority (new projects 1-3, existing 4-9)
-    - [ ] 9.7 Verify skills categories are complete with technologies from all projects
-    - [ ] 9.8 Verify education, bio, and contact data accuracy
-    - [ ] 9.9 Verify navigation header shows all sections and links work correctly
-    - [ ] 9.10 Run full test suite and verify all tests pass
-    - [ ] 9.11 Test all navigation and routing flows manually (all pages accessible)
-    - [ ] 9.12 Run full quality gate suite (type-check, lint, format, markdown, build, test)
-    - [ ] 9.13 Verify build succeeds and site renders without runtime errors
+- [ ] 10.0 Validate content accuracy, type safety, and display functionality (was 9.0)
+    - [ ] 10.1 Verify zero TypeScript errors across all files
+    - [ ] 10.2 Verify all content section pages render correctly (`/skills`, `/about`, `/contact`)
+    - [ ] 10.3 Verify `/about` page displays both Education and About sections correctly
+    - [ ] 10.4 Verify all 9 software projects display correctly with accurate data
+    - [ ] 10.5 Verify all mod projects display correctly with accurate data
+    - [ ] 10.6 Verify category badges display correctly (software categories + mod game names)
+    - [ ] 10.7 Verify all external links open correctly in new tabs
+    - [ ] 10.8 Verify project ordering matches revised priority (CineXplorer-1, TaskFocus-2, etc.)
+    - [ ] 10.9 Verify skills categories are complete with technologies from all projects
+    - [ ] 10.10 Verify education, bio, and contact data accuracy
+    - [ ] 10.11 Verify navigation header shows all sections and links work correctly
+    - [ ] 10.12 Run full test suite and verify all tests pass
+    - [ ] 10.13 Test all navigation and routing flows manually (all pages accessible)
+    - [ ] 10.14 Run full quality gate suite (type-check, lint, format, markdown, build, test)
+    - [ ] 10.15 Verify build succeeds and site renders without runtime errors
