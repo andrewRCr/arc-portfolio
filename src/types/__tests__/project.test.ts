@@ -35,7 +35,8 @@ describe("Project Interface", () => {
 
     // Categorization
     expect(project.category).toBeDefined();
-    expect(typeof project.category).toBe("string");
+    expect(Array.isArray(project.category)).toBe(true);
+    expect(project.category.length).toBeGreaterThanOrEqual(1);
     expect(project.tags).toBeDefined();
     expect(Array.isArray(project.tags)).toBe(true);
 
@@ -81,7 +82,7 @@ describe("Project Interface", () => {
       slug: "test",
       description: "Test description",
       shortDescription: "Test short",
-      category: "Test",
+      category: ["Test"],
       tags: [],
       techStack: [],
       features: [],

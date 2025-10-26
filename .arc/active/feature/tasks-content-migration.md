@@ -104,13 +104,25 @@
     (handled by markdownlint). Quality metrics: 293 tests passing (100%), zero linting/type errors.
 
 - [ ] 7.0 Create tabbed project pages with software projects + stub mods
-    - [ ] 7.1 Update project order values in `src/data/projects.ts` (TaskFocus moves to position 2)
-    - [ ] 7.2 Verify all projects have appropriate `category` values for badge display
-        (Web Application, Desktop Tool, Game, Development Framework)
-    - [ ] 7.3 Write behavior tests for ProjectTabs component (tab switching, query param handling, active state - TDD)
-    - [ ] 7.4 Create ProjectTabs component (Software/Mods tabs with query param state: `?tab=mods`)
-    - [ ] 7.5 Write behavior tests for ProjectCard (data rendering, category badge, tech tags, link - TDD)
-    - [ ] 7.6 Create ProjectCard component with category badge (prominent, first) + tech stack tags (secondary)
+    - [x] 7.1 Update project order values in `src/data/projects.ts` (TaskFocus moves to position 2)
+    - [x] 7.2 Verify all projects have appropriate `category` values for badge display
+        **Completed**: Changed `category` from single string to string array for multiple categories.
+        Updated all 9 projects with simplified category names. New categories: "Web App", "Desktop App",
+        "Framework", "Game", "Modding Tool". TaskFocus now has ["Desktop App", "Web App"], DOOM NG+
+        Customizer has ["Desktop App", "Modding Tool"]. Updated tests to handle array format. All 307 tests passing.
+    - [x] 7.3 Write behavior tests for ProjectTabs component (tab switching, query param handling, active state - TDD)
+    - [x] 7.4 Create ProjectTabs component (Software/Mods tabs with query param state: `?tab=mods`)
+        **Completed**: Created ProjectTabs component with 12 comprehensive behavior tests. Component uses Next.js
+        router and search params to manage tab state via query parameters (?tab=software or ?tab=mods). Defaults
+        to Software tab. Handles keyboard navigation (Enter/Space). Proper ARIA roles for accessibility (tablist,
+        tab, aria-selected). Uses theme semantic colors (border-border, text-accent, etc). All 319 tests passing.
+    - [x] 7.5 Write behavior tests for ProjectCard (data rendering, category badge, tech tags, link - TDD)
+    - [x] 7.6 Create ProjectCard component with category badge (prominent, first) + tech stack tags (secondary)
+        **Completed**: Created ProjectCard component with 17 comprehensive behavior tests. Component displays
+        project thumbnail, title, short description, category badges (prominent with bg-accent), and tech stack
+        tags (secondary with border). Links to project detail page (/projects/{software|mods}/{slug}). Limits
+        tech display to 3 items with "+N" indicator. Uses theme semantic colors throughout (bg-background,
+        text-foreground, border-border, etc). Proper accessibility. All 336 tests passing.
     - [ ] 7.7 Create projects list page at `/projects` with ProjectTabs component
     - [ ] 7.8 Draft intro text for Software tab (emphasizes current focus, breadth)
     - [ ] 7.9 Draft intro text for Mods tab (community work, maintenance, professionalism)

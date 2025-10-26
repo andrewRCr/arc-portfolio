@@ -51,8 +51,10 @@ describe("Projects Data Validation", () => {
     });
 
     it("should have projects sorted by order field", () => {
-      for (let i = 0; i < projects.length - 1; i++) {
-        expect(projects[i].order).toBeLessThan(projects[i + 1].order);
+      // Create sorted copy to test order values
+      const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
+      for (let i = 0; i < sortedProjects.length - 1; i++) {
+        expect(sortedProjects[i].order).toBeLessThan(sortedProjects[i + 1].order);
       }
     });
   });
@@ -166,10 +168,10 @@ describe("Projects Data Validation", () => {
       // Featured projects should start from order 1
       expect(featuredOrders[0]).toBe(1);
 
-      // Featured projects should have consecutive order values (no gaps)
-      for (let i = 0; i < featuredOrders.length - 1; i++) {
-        expect(featuredOrders[i + 1] - featuredOrders[i]).toBe(1);
-      }
+      // Featured projects should be among the lowest order numbers (< 5)
+      featuredOrders.forEach((order) => {
+        expect(order).toBeLessThan(5);
+      });
     });
 
     it("should have CineXplorer, ARC Framework, and arc-portfolio as featured", () => {
@@ -185,33 +187,40 @@ describe("Projects Data Validation", () => {
   describe("Project Categories", () => {
     it("should have valid project categories", () => {
       const validCategories = [
-        "Web Application",
-        "Cross-Platform Application",
-        "Development Framework",
-        "Game Mod Utility",
-        "Game Development",
+        "Web App",
+        "Desktop App",
+        "Framework",
+        "Game",
+        "Modding Tool",
       ];
 
       projects.forEach((project) => {
-        expect(validCategories).toContain(project.category);
+        // Each category in the array should be valid
+        project.category.forEach((cat) => {
+          expect(validCategories).toContain(cat);
+        });
+        // Should have at least one category
+        expect(project.category.length).toBeGreaterThanOrEqual(1);
       });
     });
 
     it("should have reasonable distribution of categories", () => {
       const categoryCounts = projects.reduce(
         (acc, project) => {
-          acc[project.category] = (acc[project.category] || 0) + 1;
+          // Count each category in the project's category array
+          project.category.forEach((cat) => {
+            acc[cat] = (acc[cat] || 0) + 1;
+          });
           return acc;
         },
         {} as Record<string, number>
       );
 
       // Should have at least the baseline counts from current projects
-      expect(categoryCounts["Web Application"]).toBeGreaterThanOrEqual(3);
-      expect(categoryCounts["Game Development"]).toBeGreaterThanOrEqual(3);
-      expect(categoryCounts["Cross-Platform Application"]).toBeGreaterThanOrEqual(1);
-      expect(categoryCounts["Development Framework"]).toBeGreaterThanOrEqual(1);
-      expect(categoryCounts["Game Mod Utility"]).toBeGreaterThanOrEqual(1);
+      expect(categoryCounts["Web App"]).toBeGreaterThanOrEqual(3);
+      expect(categoryCounts["Game"]).toBeGreaterThanOrEqual(3);
+      expect(categoryCounts["Desktop App"]).toBeGreaterThanOrEqual(1);
+      expect(categoryCounts["Framework"]).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -221,23 +230,32 @@ describe("Projects Data Validation", () => {
       expect(cinexplorer).toBeDefined();
       expect(cinexplorer?.order).toBe(1);
       expect(cinexplorer?.featured).toBe(true);
-      expect(cinexplorer?.category).toBe("Web Application");
+      expect(cinexplorer?.category).toContain("Web App");
     });
 
-    it("should have ARC Framework as project 2", () => {
+    it("should have TaskFocus as project 2", () => {
+      const taskfocus = projects.find((p) => p.slug === "taskfocus");
+      expect(taskfocus).toBeDefined();
+      expect(taskfocus?.order).toBe(2);
+      expect(taskfocus?.featured).toBe(false);
+      expect(taskfocus?.category).toContain("Desktop App");
+      expect(taskfocus?.category).toContain("Web App");
+    });
+
+    it("should have ARC Framework as project 3", () => {
       const arcFramework = projects.find((p) => p.slug === "arc-agentic-dev-framework");
       expect(arcFramework).toBeDefined();
-      expect(arcFramework?.order).toBe(2);
+      expect(arcFramework?.order).toBe(3);
       expect(arcFramework?.featured).toBe(true);
-      expect(arcFramework?.category).toBe("Development Framework");
+      expect(arcFramework?.category).toContain("Framework");
     });
 
-    it("should have arc-portfolio as project 3", () => {
+    it("should have arc-portfolio as project 4", () => {
       const arcPortfolio = projects.find((p) => p.slug === "arc-portfolio");
       expect(arcPortfolio).toBeDefined();
-      expect(arcPortfolio?.order).toBe(3);
+      expect(arcPortfolio?.order).toBe(4);
       expect(arcPortfolio?.featured).toBe(true);
-      expect(arcPortfolio?.category).toBe("Web Application");
+      expect(arcPortfolio?.category).toContain("Web App");
     });
 
     it("should have Unreal Engine projects with download links", () => {

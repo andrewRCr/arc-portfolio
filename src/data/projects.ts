@@ -35,7 +35,7 @@ export const projects: Project[] = [
     shortDescription:
       "Full-stack movie discovery platform with personalized recommendations, watchlists, and OAuth authentication. " +
       "Demonstrates modern type-safe architecture with Django Ninja + React TypeScript.",
-    category: "Web Application",
+    category: ["Web App"],
     tags: [
       "React",
       "TypeScript",
@@ -114,7 +114,7 @@ export const projects: Project[] = [
     shortDescription:
       "Documentation-only framework for AI-augmented development with structured workflows and battle-tested processes. " +
       "Emphasizes directed collaboration over autonomous automation.",
-    category: "Development Framework",
+    category: ["Framework"],
     tags: ["Documentation", "Process Framework", "AI Collaboration", "Methodology", "Git"],
     techStack: ["Markdown", "Git", "Documentation Systems", "Process Frameworks", "AI Collaboration Patterns"],
     features: [
@@ -158,7 +158,7 @@ export const projects: Project[] = [
       "Exemplifies recursive improvement philosophy: framework developed using its own methodology (self-hosting)",
       "Represents original contribution to AI-human collaboration patterns with practical, battle-tested workflows",
     ],
-    order: 2,
+    order: 3,
     featured: true,
   },
 
@@ -177,7 +177,7 @@ export const projects: Project[] = [
     shortDescription:
       "Modern portfolio website built with Next.js 15, showcasing type-safe architecture and systematic development practices. " +
       "The site you're currently viewing.",
-    category: "Web Application",
+    category: ["Web App"],
     tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Shadcn/ui", "Portfolio"],
     techStack: [
       "Next.js 15",
@@ -233,7 +233,7 @@ export const projects: Project[] = [
       "Exemplifies systematic development methodology: quality gates, pragmatic TDD, atomic commits, and ARC Framework integration",
       "Represents practical application of bleeding-edge tools: Next.js 15, React 19, Tailwind CSS v4, Turbopack",
     ],
-    order: 3,
+    order: 4,
     featured: true,
   },
 
@@ -251,7 +251,7 @@ export const projects: Project[] = [
       "Demonstrates full-stack .NET proficiency with multiple frontend frameworks and real-time data synchronization patterns.",
     shortDescription:
       "GTD-based task manager with native desktop and web interfaces, featuring bi-directional sync and comprehensive task organization.",
-    category: "Cross-Platform Application",
+    category: ["Desktop App", "Web App"],
     tags: [".NET", "C#", "Blazor", "WPF", "SQL Server", "Entity Framework", "Productivity"],
     techStack: [
       ".NET 8",
@@ -319,7 +319,7 @@ export const projects: Project[] = [
       "Showcases MVVM architectural pattern and modern C# development practices",
       "Released production application (v1.0.0) with live deployment and downloadable desktop client",
     ],
-    order: 4,
+    order: 2,
     featured: false,
   },
 
@@ -337,7 +337,7 @@ export const projects: Project[] = [
       "advanced UI/UX patterns (pagination, fuzzy search, input masking), and secure user management with password reset functionality.",
     shortDescription:
       "Employee web portal for pet care business operations with role-based access control and comprehensive management features.",
-    category: "Web Application",
+    category: ["Web App"],
     tags: ["TypeScript", "Node.js", "Express", "MongoDB", "EJS", "Bootstrap", "Full-Stack"],
     techStack: ["TypeScript", "Node.js", "Express", "MongoDB", "EJS", "Bootstrap"],
     features: [
@@ -414,7 +414,7 @@ export const projects: Project[] = [
       "applied to game modding: data modeling, validation logic, file generation, and automated installation workflows. Published on NexusMods for community distribution.",
     shortDescription:
       "Python desktop application generating custom DOOM (2016) mods from player-defined gameplay configurations.",
-    category: "Game Mod Utility",
+    category: ["Desktop App", "Modding Tool"],
     tags: ["Python", "Desktop Application", "Game Modding", "Data Modeling", "Tool Development"],
     techStack: ["Python", "CustomTkinter", "Python Dataclasses", "Pillow (PIL)", "pygame", "CTkToolTip"],
     features: [
@@ -483,7 +483,7 @@ export const projects: Project[] = [
       "stat-based progression, idol statue checkpoints with enemy respawning, and enemy AI behavioral patterns.",
     shortDescription:
       "Third-person action RPG in Unreal Engine 4 with Souls-like combat, 6 enemy AI types, and posture-break mechanics.",
-    category: "Game Development",
+    category: ["Game"],
     tags: ["Unreal Engine 4", "C++", "Game Development", "Combat Systems", "Enemy AI", "Action RPG"],
     techStack: ["Unreal Engine 4", "C++", "Blueprint", "AI Systems", "Animation Systems"],
     features: [
@@ -578,7 +578,7 @@ export const projects: Project[] = [
       "design through polished gameplay mechanics.",
     shortDescription:
       "Capstone survival horror game in Unreal Engine 5 with puzzle-solving, inventory management, and zombie combat. Team project lead role.",
-    category: "Game Development",
+    category: ["Game"],
     tags: ["Unreal Engine 5", "C++", "Blueprint", "Game Development", "Team Leadership", "Capstone Project"],
     techStack: ["Unreal Engine 5", "C++", "Blueprint", "Animation Systems", "AI Behavior Trees", "Cinematics"],
     features: [
@@ -685,7 +685,7 @@ export const projects: Project[] = [
       "for audio, showcasing low-level game development without engine abstractions.",
     shortDescription:
       "Classic Pong game in C++ without a game engine, featuring AI opponent, local multiplayer, and spatialized audio.",
-    category: "Game Development",
+    category: ["Game"],
     tags: ["C++", "Game Development", "Audio Programming", "Game AI", "No Engine"],
     techStack: ["C++", "libsndfile", "OpenAL (openal-soft)"],
     features: [

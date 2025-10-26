@@ -48,7 +48,7 @@ export interface Project {
   shortDescription: string; // Brief summary for project cards (~1-2 sentences)
 
   // Categorization and tagging
-  category: string; // Project category (e.g., "Web App", "Desktop App", "Game Mod")
+  category: string[]; // Project categories (e.g., ["Web App"], ["Desktop App", "Web App"], ["Game"])
   tags: string[]; // Technology tags using canonical names matching skills data (enables future filtering)
 
   // Technical details
