@@ -200,10 +200,13 @@ structures, display components, and proper routing for projects, skills, educati
     (`FEATURES.SHOW_MODS_TAB` in `src/config/features.ts`). All mods code/routes preserved for future re-enablement.
 
 - [ ] **8.0 Verify routing and navigation integration**
-    - [ ] 8.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact)
-    - [ ] 8.2 Ensure all internal navigation links are functional
-    - [ ] 8.3 Verify project detail pages render correctly and back button works
-    - [ ] 8.4 Confirm `/about` page displays both Education and About sections correctly
+    - [x] 8.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact) ✓
+    - [x] 8.2 Ensure all internal navigation links are functional ✓
+    - [x] 8.3 Verify project detail pages render correctly and back button works
+        - Fixed: Console Ninja extension causing severe dev mode slowdown
+        - Fixed: Featured projects on home page now link to detail pages with `?from=home`
+        - Added: Context-aware back button - returns to Home or Projects based on navigation origin
+    - [x] 8.4 Confirm `/about` page displays both Education and About sections correctly ✓
     - [ ] 8.5 Write integration tests for navigation and routing flows
     - [ ] 8.6 Run incremental quality checks (type-check, lint, format, test)
 
