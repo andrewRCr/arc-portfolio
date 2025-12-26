@@ -1,13 +1,37 @@
-# Tasks: Content Migration from Squarespace
+# Task List: Content Migration from Squarespace
 
-**Feature**: Content Migration from Squarespace
-**PRD**: `.arc/active/feature/prd-content-migration.md`
-**Branch**: `feature/content-migration`
-**Status**: READY - Theme system complete, resuming Task 7.0 (expanded for tabbed project pages with mods)
+**PRD:** `.arc/active/feature/prd-content-migration.md`
+**Created:** 2025-10-25
+**Branch:** `feature/content-migration`
+**Base Branch:** `main`
+**Status:** In Progress
+
+## Overview
+
+**Purpose:** Migrate all portfolio content from legacy Squarespace site to Next.js, establishing type-safe data
+structures, display components, and proper routing for projects, skills, education, and contact sections.
+
+## Scope
+
+### Will Do
+
+- Define TypeScript interfaces for all content types (projects, skills, education, bio, contact)
+- Migrate 9 software projects with images, descriptions, and metadata
+- Create modular display components (sections, cards, detail pages)
+- Implement tabbed project pages with software/mods separation (mods deferred via feature flag)
+- Establish navigation and routing between all pages
+
+### Won't Do
+
+- Final visual design/styling (deferred to TWM Layout System feature)
+- Mod content migration (deferred to backlog, feature flag disabled)
+- Performance optimization (separate enhancement)
+
+---
 
 ## Tasks
 
-### Phase 1: Data Structures & Type Definitions
+### **Phase 1:** Data Structures & Type Definitions
 
 - [x] 1.0 Define TypeScript interfaces and sample data structures
     - [x] 1.1 Create Project interface in `src/types/project.ts`
@@ -22,7 +46,7 @@
     - [x] 1.10 Verify TypeScript compilation passes with zero errors
     - [x] 1.11 Run incremental quality checks (type-check, lint, format, test)
 
-### Phase 2: Content Migration
+### **Phase 2:** Content Migration
 
 - [x] 2.0 Migrate project data from Squarespace (9 projects)
     - [x] 2.1 Migrate priority project 1: CineXplorer (new project with full details)
@@ -65,7 +89,7 @@
         - Test count: 246 passing (28 new image tests, 1 consolidated from refactoring)
     - [x] 4.7 Run incremental quality checks (type-check, lint, format, build)
 
-### Phase 3: Placeholder Display Components
+### **Phase 3:** Placeholder Display Components
 
 - [x] 5.0 Build basic navigation and layout foundation
     - [x] 5.1 Write behavior tests for Navigation (links, hrefs, content rendering - TDD: test first)
@@ -171,53 +195,44 @@
         warning), Prettier (all formatted), Markdown lint (zero violations), Build (success - 11 static pages generated),
         Tests (356/356 passing, 100% pass rate).
 
-- [ ] 8.0 Migrate and integrate mod data from NexusMods
-    - [ ] 8.1 Select 5-9 mods for showcase (high-effort, well-maintained, technically interesting)
-    - [ ] 8.2 Create incidental task list for detailed per-mod migration tracking
-        (See: `.arc/active/incidental/tasks-mod-migration.md` - one sub-task per mod with full migration steps)
-    - [ ] 8.3 Execute mod migration workflow via incidental task list
-        (Adapt NexusMods descriptions, add technical details, download images, organize assets)
-    - [ ] 8.4 Replace placeholder mods in `src/data/mods.ts` with real mod data
-    - [ ] 8.5 Update `generateStaticParams` in `/projects/mods/[slug]/page.tsx` for actual mod slugs
-    - [ ] 8.6 Write data validation tests for mods (`src/data/__tests__/mods.test.ts`)
-    - [ ] 8.7 Write image validation tests for mods (`src/data/__tests__/mods-images.test.ts`)
-    - [ ] 8.8 Verify all mod pages render correctly with accurate data
-    - [ ] 8.9 Verify mod category badges display game names correctly
-    - [ ] 8.10 Verify all mod external links (NexusMods profile, individual mod pages) functional
-    - [ ] 8.11 Run incremental quality checks (type-check, lint, format, test)
+- [-] ~~Migrate and integrate mod data from NexusMods~~ *(was Task 8.0 - deferred)*
+    **DEFERRED**: Moved to backlog (`.arc/backlog/feature/BACKLOG-FEATURE.md`). Mods tab disabled via feature flag
+    (`FEATURES.SHOW_MODS_TAB` in `src/config/features.ts`). All mods code/routes preserved for future re-enablement.
 
-    **Migration Notes**:
-    - NexusMods profile: [Link to be added during migration]
-    - Mods will use `category` field for game name (e.g., "Skyrim", "DOOM", "Fallout 4")
-    - Each mod requires: title, description (adapted), features, links (NexusMods), images (banner + screenshots)
-    - Maintain same professional tone and detail level as software projects
-    - Consider adding `highlights` for download counts, community feedback, maintenance history
-    - Detailed per-mod migration steps tracked in separate incidental task list for granular progress tracking
+- [ ] **8.0 Verify routing and navigation integration**
+    - [ ] 8.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact)
+    - [ ] 8.2 Ensure all internal navigation links are functional
+    - [ ] 8.3 Verify project detail pages render correctly and back button works
+    - [ ] 8.4 Confirm `/about` page displays both Education and About sections correctly
+    - [ ] 8.5 Write integration tests for navigation and routing flows
+    - [ ] 8.6 Run incremental quality checks (type-check, lint, format, test)
 
-- [ ] 9.0 Verify routing and navigation integration (was 8.0)
-    - [ ] 9.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact)
-    - [ ] 9.2 Ensure all internal navigation links are functional
-    - [ ] 9.3 Verify `/projects` tab switching works (Software ↔ Mods)
-    - [ ] 9.4 Verify project detail pages back button returns to correct tab
-    - [ ] 9.5 Confirm `/about` page displays both Education and About sections correctly
-    - [ ] 9.6 Write integration tests for navigation and routing flows
-    - [ ] 9.7 Run incremental quality checks (type-check, lint, format, test)
+### **Phase 4:** Validation & Quality Assurance
 
-### Phase 4: Validation & Quality Assurance
+- [ ] **9.0 Validate content accuracy, type safety, and display functionality**
+    - [ ] 9.1 Verify zero TypeScript errors across all files
+    - [ ] 9.2 Verify all content section pages render correctly (`/skills`, `/about`, `/contact`)
+    - [ ] 9.3 Verify `/about` page displays both Education and About sections correctly
+    - [ ] 9.4 Verify all 9 software projects display correctly with accurate data
+    - [ ] 9.5 Verify category badges display correctly for software projects
+    - [ ] 9.6 Verify all external links open correctly in new tabs
+    - [ ] 9.7 Verify project ordering matches revised priority (CineXplorer-1, TaskFocus-2, etc.)
+    - [ ] 9.8 Verify skills categories are complete with technologies from all projects
+    - [ ] 9.9 Verify education, bio, and contact data accuracy
+    - [ ] 9.10 Verify navigation header shows all sections and links work correctly
+    - [ ] 9.11 Run full test suite and verify all tests pass
+    - [ ] 9.12 Test all navigation and routing flows manually (all pages accessible)
+    - [ ] 9.13 Run full quality gate suite (type-check, lint, format, markdown, build, test)
+    - [ ] 9.14 Verify build succeeds and site renders without runtime errors
 
-- [ ] 10.0 Validate content accuracy, type safety, and display functionality (was 9.0)
-    - [ ] 10.1 Verify zero TypeScript errors across all files
-    - [ ] 10.2 Verify all content section pages render correctly (`/skills`, `/about`, `/contact`)
-    - [ ] 10.3 Verify `/about` page displays both Education and About sections correctly
-    - [ ] 10.4 Verify all 9 software projects display correctly with accurate data
-    - [ ] 10.5 Verify all mod projects display correctly with accurate data
-    - [ ] 10.6 Verify category badges display correctly (software categories + mod game names)
-    - [ ] 10.7 Verify all external links open correctly in new tabs
-    - [ ] 10.8 Verify project ordering matches revised priority (CineXplorer-1, TaskFocus-2, etc.)
-    - [ ] 10.9 Verify skills categories are complete with technologies from all projects
-    - [ ] 10.10 Verify education, bio, and contact data accuracy
-    - [ ] 10.11 Verify navigation header shows all sections and links work correctly
-    - [ ] 10.12 Run full test suite and verify all tests pass
-    - [ ] 10.13 Test all navigation and routing flows manually (all pages accessible)
-    - [ ] 10.14 Run full quality gate suite (type-check, lint, format, markdown, build, test)
-    - [ ] 10.15 Verify build succeeds and site renders without runtime errors
+---
+
+## Success Criteria
+
+- [ ] TypeScript interfaces defined for all content types (projects, skills, education, bio, contact)
+- [ ] All 9 software projects migrated with accurate data and images
+- [ ] Skills, education, bio, and contact data migrated from Squarespace
+- [ ] Modular display components created (sections, cards, detail pages)
+- [ ] Navigation and routing functional between all pages
+- [ ] All quality gates pass (type-check, lint, format, markdown, build, tests)
+- [ ] Ready for merge to main

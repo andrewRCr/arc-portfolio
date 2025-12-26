@@ -6,14 +6,15 @@ import ProjectTabs from "@/components/projects/ProjectTabs";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
+import { FEATURES } from "@/config/features";
 
 function ProjectsContent() {
   const searchParams = useSearchParams();
-  const currentTab = searchParams.get("tab") || "software";
+  const currentTab = FEATURES.SHOW_MODS_TAB ? searchParams.get("tab") || "software" : "software";
 
   // Sort projects and mods by order field
   const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
-  const sortedMods = [...mods].sort((a, b) => a.order - b.order);
+  const sortedMods = FEATURES.SHOW_MODS_TAB ? [...mods].sort((a, b) => a.order - b.order) : [];
 
   return (
     <div className="flex min-h-screen flex-col p-8">
@@ -21,29 +22,24 @@ function ProjectsContent() {
         {/* Page Header */}
         <div className="space-y-2">
           <h1 className="font-mono text-3xl font-bold text-foreground">Projects</h1>
-          <p className="text-muted-foreground">Explore my software development work and community contributions.</p>
+          <p className="text-muted-foreground">
+            {FEATURES.SHOW_MODS_TAB
+              ? "Explore my software development work and community contributions."
+              : "Explore my software development work."}
+          </p>
         </div>
 
-        {/* Tab Navigation */}
-        <ProjectTabs />
+        {/* Tab Navigation - only shown when mods tab is enabled */}
+        {FEATURES.SHOW_MODS_TAB && <ProjectTabs />}
 
         {/* Tab Content */}
         <div className="space-y-6 py-4">
           {currentTab === "software" && (
             <>
-              {/* Software Tab Intro */}
-              <div className="space-y-3">
-                <p className="text-foreground">
-                  My software portfolio showcases full-stack development expertise across web applications, desktop
-                  tools, frameworks, and game projects. Each project demonstrates production-ready code, comprehensive
-                  testing, and professional documentation practices.
-                </p>
-                <p className="text-muted-foreground">
-                  Current focus areas include modern web frameworks (React, Next.js, Django), type-safe architectures,
-                  AI-assisted development workflows, and scalable system design. Projects range from enterprise-ready
-                  platforms to experimental game engines.
-                </p>
-              </div>
+              {/* TODO: Replace placeholder intro text */}
+              <p className="text-muted-foreground italic">
+                [Placeholder] Brief intro about software projects and focus areas.
+              </p>
 
               {/* Software Projects Grid */}
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -78,10 +74,10 @@ function ProjectsContent() {
                 ))}
               </div>
 
-              {/* Note about placeholder data */}
+              {/* Placeholder notice - mods content pending */}
               <div className="rounded-lg border border-border bg-muted p-4 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Note: These are placeholder entries. Real mod data will be migrated in Task 8.0.
+                  Placeholder entries. Mod content migration pending.
                 </p>
               </div>
             </>
