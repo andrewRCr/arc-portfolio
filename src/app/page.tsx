@@ -1,4 +1,14 @@
+import Link from "next/link";
+import { projects } from "@/data/projects";
+
+// Featured projects by slug (order determines display order)
+const FEATURED_SLUGS = ["cinexplorer", "taskfocus"];
+
 export default function Home() {
+  const featuredProjects = FEATURED_SLUGS.map((slug) =>
+    projects.find((p) => p.slug === slug)
+  ).filter(Boolean);
+
   return (
     <div className="flex-1 flex flex-col p-8">
       {/* Hero Section now lives in AdaptiveHero component (see layout.tsx) */}
@@ -7,12 +17,16 @@ export default function Home() {
       <div className="space-y-4">
         <h3 className="text-sm font-mono text-muted-foreground">Featured Projects</h3>
         <div className="grid md:grid-cols-2 gap-4">
-          {["CineXplorer", "TaskFocus"].map((project) => (
-            <div key={project} className="p-4 border border-border rounded-sm hover:border-primary transition-colors">
+          {featuredProjects.map((project) => (
+            <Link
+              key={project!.slug}
+              href={`/projects/software/${project!.slug}?from=home`}
+              className="block p-4 border border-border rounded-sm hover:border-primary transition-colors"
+            >
               <p className="text-xs font-mono text-primary mb-2">{"[project]"}</p>
-              <h4 className="font-semibold mb-2">{project}</h4>
-              <p className="text-sm text-muted-foreground">Project description goes here</p>
-            </div>
+              <h4 className="font-semibold mb-2">{project!.title}</h4>
+              <p className="text-sm text-muted-foreground">{project!.shortDescription}</p>
+            </Link>
           ))}
         </div>
       </div>

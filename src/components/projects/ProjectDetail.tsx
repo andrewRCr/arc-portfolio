@@ -13,13 +13,23 @@ import type { Project } from "@/types/project";
 interface ProjectDetailProps {
   project: Project;
   currentTab?: "software" | "mods";
+  from?: string;
 }
 
-export default function ProjectDetail({ project, currentTab = "software" }: ProjectDetailProps) {
+export default function ProjectDetail({ project, currentTab = "software", from }: ProjectDetailProps) {
   const router = useRouter();
 
+  const getBackDestination = () => {
+    if (from === "home") {
+      return { href: "/", label: "Home" };
+    }
+    return { href: `/projects?tab=${currentTab}`, label: "Projects" };
+  };
+
+  const backDest = getBackDestination();
+
   const handleBackClick = () => {
-    router.push(`/projects?tab=${currentTab}`);
+    router.push(backDest.href);
   };
 
   return (
@@ -28,9 +38,9 @@ export default function ProjectDetail({ project, currentTab = "software" }: Proj
       <button
         onClick={handleBackClick}
         className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent"
-        aria-label={`Back to ${currentTab} projects`}
+        aria-label={`Back to ${backDest.label}`}
       >
-        ← Back to Projects
+        ← Back to {backDest.label}
       </button>
 
       {/* Project Header */}

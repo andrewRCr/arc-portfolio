@@ -8,6 +8,7 @@ interface ProjectPageProps {
   }>;
   searchParams: Promise<{
     tab?: string;
+    from?: string;
   }>;
 }
 
@@ -19,7 +20,7 @@ export async function generateStaticParams() {
 
 export default async function SoftwareProjectPage({ params, searchParams }: ProjectPageProps) {
   const { slug } = await params;
-  const { tab } = await searchParams;
+  const { tab, from } = await searchParams;
 
   const project = projects.find((p) => p.slug === slug);
 
@@ -32,7 +33,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
 
   return (
     <div className="flex min-h-screen flex-col p-8">
-      <ProjectDetail project={project} currentTab={currentTab} />
+      <ProjectDetail project={project} currentTab={currentTab} from={from} />
     </div>
   );
 }
