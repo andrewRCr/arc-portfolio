@@ -56,17 +56,17 @@ Thumbs.db
 *.temp
 *.log
 
-# ARC Development System - temporal development workspace files
+# Transient docs (mostly temp-notes-; regular notes- are tracked for context visibility)
+.arc/active/*/temp-*
+
+# Session handoff file (transient)
 .arc/active/CURRENT-SESSION.md
 
-# Claude Code - personal configuration
+# AI tool settings (personal development environment preferences)
 .claude/
-
-# OpenAI Codex - personal configuration
-.codex/
-
-# Google Gemini - personal configuration
+.warp/
 .gemini/
+.codex/
 
 # Playwright MCP - browser automation screenshots
 .playwright-mcp/
