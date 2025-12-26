@@ -62,6 +62,12 @@ Thumbs.db
 # Claude Code - personal configuration
 .claude/
 
+# OpenAI Codex - personal configuration
+.codex/
+
+# Google Gemini - personal configuration
+.gemini/
+
 # Playwright MCP - browser automation screenshots
 .playwright-mcp/
 

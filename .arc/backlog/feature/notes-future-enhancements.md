@@ -130,8 +130,7 @@ This allows future interactive filtering without data restructuring.
 
 ---
 
-**Document Purpose:** This file is intentionally untracked by git (see `.gitignore: .arc/upcoming/notes/`) to serve
-as a personal ideation space. When an enhancement moves from concept to planned feature, create a proper PRD using
-the `1-create-prd.md` workflow.
+**Document Purpose:** This file captures ideation and future enhancement ideas. When an enhancement
+moves from concept to planned feature, create a proper PRD using the `1_create-prd.md` workflow.
 
 **Last Updated:** October 12, 2025

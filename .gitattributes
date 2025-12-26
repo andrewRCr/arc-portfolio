@@ -16,8 +16,12 @@
 *.yml text eol=lf
 *.yaml text eol=lf
 
-# Declare files that should remain with their original line endings
+# Shell scripts
 *.sh text eol=lf
+
+# Windows scripts keep CRLF
+*.ps1 text eol=crlf
+*.bat text eol=crlf
 
 # Denote binary files
 *.png binary

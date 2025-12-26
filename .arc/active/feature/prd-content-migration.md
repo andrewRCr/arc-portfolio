@@ -71,7 +71,7 @@ The system must define TypeScript interfaces in `src/types/` covering:
 
 - Core fields: `id`, `title`, `slug`, `description`, `shortDescription`
 - Categorization: `category`, `tags` (note: `tags` must use canonical technology names matching skills data to
-  support future interactive filtering - see `.arc/upcoming/notes/notes-future-enhancements.md`)
+  support future interactive filtering - see `.arc/backlog/feature/notes-future-enhancements.md`)
 - Technical details: `techStack` (string array), `features` (string array)
 - Links object: `github`, `liveDemo`, `download`, `external`, optional `demoCredentials` (username/password)
 - Images object: `thumbnail`, `screenshots` (string array), `altTexts` (string array)

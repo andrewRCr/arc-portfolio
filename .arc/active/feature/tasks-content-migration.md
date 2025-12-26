@@ -80,7 +80,7 @@
 
     **Lessons Learned**: v0.dev workflow not effective for this project - direct collaboration in codebase more
     productive for creative layout work. Comprehensive testing, design review, and style documentation deferred to
-    TWM Layout System feature (see `.arc/upcoming/feature/prd-twm-layout-system.md`) where overall layout will be
+    TWM Layout System feature (see `.arc/backlog/feature/prd-twm-layout-system.md`) where overall layout will be
     finalized.
 
 - [x] 6.0 Create modular content section components and individual pages
