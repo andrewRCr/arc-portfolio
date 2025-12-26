@@ -7,20 +7,14 @@ work in these domains.
 
 ## Project Strategies
 
-*Create project-specific strategies in `project/` directory. Examples:*
+**Engineering:**
+
+- `project/strategy-testing-methodology.md` - Pragmatic TDD, when to test first/after/skip
 
 **Style & Design:**
 
-- `project/style/strategy-component-styling.md` - Component building patterns, recipes, wrappers
-- `project/style/strategy-color-tokens.md` - Color token reference, naming conventions
-- `project/style/strategy-layout-tokens.md` - Layout system, spacing, breakpoints
-
-**Engineering:**
-
-- `project/strategy-service-layer.md` - Service patterns, DI, repository pattern
-- `project/strategy-authentication.md` - Authentication patterns, session management
-- `project/strategy-type-safety.md` - Type checking approach, policy decisions
-- `project/strategy-testing-methodology.md` - Testing philosophy, patterns, coverage
+- `project/style/strategy-visual-design-principles.md` - Core design philosophy, accessibility, layout principles
+- `project/style/strategy-style-guide.md` - Brand style guide (placeholder - to be defined)
 
 ## ARC Framework Strategies
 
@@ -34,15 +28,12 @@ work in these domains.
 
 **Before implementing:**
 
-1. Identify domain (theming, auth, testing, etc.)
+1. Identify domain (theming, testing, etc.)
 2. Grep strategy doc for specific topic: `grep -i "your-topic" path/to/strategy.md`
 3. Read relevant section(s)
 4. Implement following guidance
 
 **When uncertain if strategy applies:** Ask. "Does this work touch [domain] where we have strategy guidance?"
-
-**For broad, multi-topic strategies** (e.g., semantic-tokens): Search for specific component/pattern,
- rather than reading entire doc upfront.
 
 ---
 
