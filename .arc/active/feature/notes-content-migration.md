@@ -224,15 +224,15 @@ Education link)
 
 **Animation Durations** (adjust to taste):
 
-| Element | Line(s) | Duration | Notes |
-|---------|---------|----------|-------|
-| Container padding | 23, 30 | `0.4s` | Vertical padding expansion/contraction |
-| Name size | 42, 50 | `0.2s` | Font size transition (text-4xl ↔ text-2xl) |
-| Prompt fade | 62, 70 | `0.3s` | "> portfolio.init()" fade in/out |
-| Tagline fade | 79, 87 | `0.3s` | Tagline fade in/out |
-| Cursor fade | 101, 107 | `0.15s` | ">_" cursor fade in/out |
-| Cursor delay | 108 | `0.15s` | Delay before cursor appears (compact state) |
-| State cross-fade | 130, 158 | `0.2s` | Overall container fade between states |
+| Element           | Line(s)  | Duration | Notes                                       |
+|-------------------|----------|----------|---------------------------------------------|
+| Container padding | 23, 30   | `0.4s`   | Vertical padding expansion/contraction      |
+| Name size         | 42, 50   | `0.2s`   | Font size transition (text-4xl ↔ text-2xl)  |
+| Prompt fade       | 62, 70   | `0.3s`   | "> portfolio.init()" fade in/out            |
+| Tagline fade      | 79, 87   | `0.3s`   | Tagline fade in/out                         |
+| Cursor fade       | 101, 107 | `0.15s`  | ">_" cursor fade in/out                     |
+| Cursor delay      | 108      | `0.15s`  | Delay before cursor appears (compact state) |
+| State cross-fade  | 130, 158 | `0.2s`   | Overall container fade between states       |
 
 **Tuning Guidelines**:
 

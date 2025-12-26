@@ -10,7 +10,8 @@ Original work licensed under MIT License
 - **Users First:** Prioritize user needs, workflows, and ease of use in every design decision.
 - **Meticulous Craft:** Aim for precision, polish, and high quality in every UI element and interaction.
 - **Speed & Performance:** Design for fast load times and snappy, responsive interactions.
-- **Simplicity & Clarity:** Strive for a clean, uncluttered interface. Ensure labels, instructions, and information are unambiguous.
+- **Simplicity & Clarity:** Strive for a clean, uncluttered interface. Ensure labels, instructions, and information are
+unambiguous.
 - **Focus & Efficiency:** Help users achieve their goals quickly and with minimal friction. Minimize unnecessary steps
   or distractions.
 - **Consistency:** Maintain a uniform design language (colors, typography, components, patterns) across the entire app.

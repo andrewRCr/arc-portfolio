@@ -48,7 +48,7 @@
     - [x] 3.7 Run incremental quality checks (type-check, lint, format, test)
 
 - [x] 4.0 Complete image migration from Squarespace to Next.js structure
-    - [x] 4.1 Create directory structure and download images from Squarespace using browser extension (Image Downloader Plus)
+    - [x] 4.1 Create directory structure and download images from Squarespace using browser extension
     - [x] 4.2 Organize downloaded images into Next.js structure with proper naming (`{slug}.webp` for thumbnails,
         `screenshot-{n}.webp` for screenshots)
     - [x] 4.3 Update project data image paths from `.jpg` to `.webp` format for all 9 projects
