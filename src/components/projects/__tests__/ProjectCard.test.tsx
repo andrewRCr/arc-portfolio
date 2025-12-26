@@ -82,7 +82,7 @@ describe("ProjectCard - Behavior Tests", () => {
     });
 
     it("displays category badges prominently (distinct styling)", () => {
-      const { container } = render(<ProjectCard project={mockProject} />);
+      render(<ProjectCard project={mockProject} />);
       const categoryBadge = screen.getByText("Web App").closest("[data-testid]");
       expect(categoryBadge).toHaveAttribute("data-testid", expect.stringContaining("category"));
     });

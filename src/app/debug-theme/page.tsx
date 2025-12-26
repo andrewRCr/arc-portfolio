@@ -48,6 +48,7 @@ export default function DebugThemePage() {
       values[varName] = value || "(not set)";
     });
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Debug page reads DOM on mount
     setVariables(values);
   }, []);
 
