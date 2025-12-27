@@ -601,6 +601,6 @@ src/
 **Related Documents:**
 
 - META-PRD: `.arc/reference/constitution/META-PRD.md`
-- TECHNICAL-ARCHITECTURE: `.arc/reference/constitution/TECHNICAL-ARCHITECTURE.md`
+- TECHNICAL-OVERVIEW: `.arc/reference/constitution/TECHNICAL-OVERVIEW.md`
 - DEVELOPMENT-RULES: `.arc/reference/constitution/DEVELOPMENT-RULES.md`
 - Content Audit: External research analyst report (October 12, 2025)

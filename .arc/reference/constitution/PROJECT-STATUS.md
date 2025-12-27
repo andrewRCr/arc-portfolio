@@ -20,7 +20,7 @@ TWM Layout System for visual design refinement.
 
 ### ARC Development Framework
 
-- Constitutional documents (META-PRD, TECHNICAL-ARCHITECTURE, DEVELOPMENT-RULES, PROJECT-STATUS)
+- Constitutional documents (META-PRD, TECHNICAL-OVERVIEW, DEVELOPMENT-RULES, PROJECT-STATUS)
 - Workflow templates and strategy documents synced
 - Claude Code configuration with custom skills and agents
 - Session management (CURRENT-SESSION.md) for context preservation

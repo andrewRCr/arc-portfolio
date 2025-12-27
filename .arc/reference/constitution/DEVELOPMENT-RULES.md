@@ -331,5 +331,5 @@ This document provides core rules and standards. See related documentation:
 - [Atomic Commit Workflow](../workflows/supplemental/atomic-commit.md) - Enhanced commit workflow with task context
   analysis
 - [AI Agent Reference Card](../agent/AGENTS.md) - Complete project context for AI
-- [Technical Architecture](TECHNICAL-ARCHITECTURE.md) - Architecture and methodology details
+- [Technical Overview](TECHNICAL-OVERVIEW.md) - Architecture and methodology details
 - [Testing Methodology](../strategies/strategy-testing-methodology.md) - Detailed testing approach
