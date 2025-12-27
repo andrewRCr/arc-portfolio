@@ -88,46 +88,61 @@
 
 **Purpose:** Create type-safe token infrastructure for theme values.
 
-- [ ] **3.1 Define token types**
+- [x] **3.1 Define token types**
+    - Created `src/lib/theme/` module with separated token files
+    - Consolidated existing `theme-utils.ts` and `theme-validation.ts` into new structure
+    - Uses `-foreground` suffix (shadcn convention) for backward compatibility
 
-    - [ ] **3.1.a Create `src/lib/tokens.ts`**
-        - Define `SemanticColorTokens` interface (~25 color tokens)
-        - Define `LayoutTokens` interface (TWM-specific)
-        - Define `SpacingTokens` interface (audit results)
-        - Export combined `DesignTokens` type
+    - [x] **3.1.a Create token type files**
+        - `src/lib/theme/tokens/colors.ts`: `SemanticColorTokens` (25 tokens)
+        - `src/lib/theme/tokens/layout.ts`: `LayoutTokens` + `DEFAULT_LAYOUT_TOKENS`
+        - `src/lib/theme/tokens/spacing.ts`: `SpacingTokens` + `DEFAULT_SPACING_TOKENS`
+        - `src/lib/theme/tokens/index.ts`: Re-exports + `DesignTokens` combined type
+        - `src/lib/theme/utils.ts`: Moved from `lib/theme-utils.ts`
+        - `src/lib/theme/validation.ts`: Moved from `lib/theme-validation.ts`
+        - `src/lib/theme/index.ts`: Public API re-exports all
 
-    - [ ] **3.1.b Define token categories**
-        - Core structure: `background`, `foreground`, `layer-01/02/03`
-        - Semantic: `primary`, `on-primary`, `secondary`, `on-secondary`, etc.
-        - Borders: `border-subtle`, `border-strong`, `ring`
-        - Interactive: `layer-hover-01/02`, `layer-active-01/02`
-        - Shadows: `shadow-sm/md/lg`
+    - [x] **3.1.b Define token categories**
+        - Core structure (5): `background`, `foreground`, `layer-01`, `layer-02`, `layer-03`
+        - Semantic (10): 5 color pairs with `-foreground` suffix (primary, secondary, accent, muted, destructive)
+        - Borders (3): `border-subtle`, `border-strong`, `ring`
+        - Interactive (4): `layer-hover-01`, `layer-hover-02`, `layer-active-01`, `layer-active-02`
+        - Shadows (3): `shadow-sm`, `shadow-md`, `shadow-lg`
 
-- [ ] **3.2 Create theme type structure**
+- [x] **3.2 Create theme type structure**
+    - Extended `ThemeColors` with 13 new semantic tokens (layers, borders, interactions, shadows)
+    - Added `LayoutOverrides` type for per-theme layout customization
+    - Updated both theme definitions (gruvbox, rose-pine) with new token values
+    - Updated `validation.ts` REQUIRED_COLOR_KEYS with all new tokens
 
-    - [ ] **3.2.a Update `src/data/themes/types.ts`**
-        - Extend existing `ThemeColors` to use new token structure
-        - Add `LayoutOverrides` for per-theme adjustments
-        - Maintain backward compatibility with existing theme usage
+    - [x] **3.2.a Update `src/data/themes/types.ts`**
+        - Added 13 tokens: layer-01/02/03, border-subtle/strong, layer-hover/active-01/02, shadow-sm/md/lg
+        - Added `LayoutOverrides = Partial<LayoutTokens>` for per-theme overrides
+        - Theme interface now includes optional `layoutOverrides` property
+        - Maintained backward compatibility (card ≈ layer-01, popover ≈ layer-02, border ≈ border-subtle)
 
-    - [ ] **3.2.b Add TWM layout tokens**
-        - `WINDOW_GAP`: Gap between windows (default: 8px)
-        - `WINDOW_BORDER_WIDTH`: Border thickness (default: 2px)
-        - `WINDOW_OPACITY`: Background transparency (default: 0.85)
-        - `TOP_BAR_HEIGHT`: Placeholder for TWM (default: TBD)
-        - `FOOTER_HEIGHT`: Placeholder for TWM (default: TBD)
+    - [x] **3.2.b Add TWM layout tokens**
+        - Already defined in `src/lib/theme/tokens/layout.ts` (Task 3.1)
+        - `DEFAULT_LAYOUT_TOKENS`: windowGap=8, windowBorderWidth=2, windowOpacity=0.85
+        - topBarHeight=48, footerHeight=32 (placeholders for TWM)
 
-- [ ] **3.3 Integrate with Tailwind**
+- [x] **3.3 Integrate with Tailwind**
+    - Project uses Tailwind v4 with CSS-based config (no tailwind.config.ts)
+    - Updated `@theme inline` block in `globals.css` with all new tokens
+    - Updated `applyThemeColors()` to handle shadow tokens (CSS values, not RGB)
+    - Build passes, all classes compile correctly
 
-    - [ ] **3.3.a Update `tailwind.config.ts`**
-        - Map semantic token names to CSS variables
-        - Add layer colors: `layer-01`, `layer-02`, `layer-03`
-        - Add `on-*` color pairs for contrast
-        - Add layout token references
+    - [x] **3.3.a Update `globals.css` @theme inline** (Tailwind v4)
+        - Added layer colors: `--color-layer-01/02/03`
+        - Added border tokens: `--color-border-subtle`, `--color-border-strong`
+        - Added interactive states: `--color-layer-hover-01/02`, `--color-layer-active-01/02`
+        - Added shadow tokens: `--shadow-sm/md/lg` (CSS values, not RGB)
+        - Added default values to `:root` for all new tokens
 
-    - [ ] **3.3.b Verify Tailwind classes work**
-        - Test: `bg-layer-01` compiles correctly
-        - Test: `text-on-primary` compiles correctly
+    - [x] **3.3.b Verify Tailwind classes work**
+        - Build succeeds with new token definitions
+        - Classes like `bg-layer-01`, `border-border-subtle`, `shadow-sm` available
+        - Note: Uses `-foreground` suffix (shadcn convention), not `on-*` prefix
 
 ### **Phase 4:** Theme Definitions
 

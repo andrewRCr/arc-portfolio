@@ -2,10 +2,18 @@
  * Theme System Type Definitions
  *
  * Defines type-safe interfaces for multi-theme support.
- * Based on shadcn/ui color convention with extended accent variants.
+ * Combines shadcn/ui conventions with semantic token system.
+ *
+ * **Token Evolution:**
+ * - Original: shadcn/ui convention (card, popover, border)
+ * - Extended: Semantic layer system (layer-01/02/03, border-subtle/strong)
+ * - Mapping: card ≈ layer-01, popover ≈ layer-02, border ≈ border-subtle
  *
  * @see https://ui.shadcn.com/docs/theming
+ * @see src/lib/theme/tokens/colors.ts for SemanticColorTokens
  */
+
+import type { LayoutTokens } from "@/lib/theme";
 
 /**
  * Available accent color variants for theme customization.
@@ -98,14 +106,96 @@ export interface ThemeColors {
   /** Text on destructive backgrounds */
   "destructive-foreground": string;
 
-  // UI element colors
-  /** Standard borders */
+  // UI element colors (shadcn/ui convention)
+  /** Standard borders (≈ border-subtle) */
   border: string;
   /** Input field borders */
   input: string;
   /** Focus ring color */
   ring: string;
+
+  // ===========================================================================
+  // SEMANTIC LAYER TOKENS (IBM Carbon pattern)
+  // ===========================================================================
+
+  /**
+   * First elevation level (card surfaces).
+   * Semantic equivalent of `card` - use for cards, panels, first elevated surfaces.
+   */
+  "layer-01": string;
+
+  /**
+   * Second elevation level (elevated surfaces, modals).
+   * Semantic equivalent of `popover` - use for modals, dialogs, dropdowns.
+   */
+  "layer-02": string;
+
+  /**
+   * Third elevation level (highest elevation).
+   * Use for dropdowns over modals, tooltips over elevated surfaces.
+   */
+  "layer-03": string;
+
+  // ===========================================================================
+  // SEMANTIC BORDER TOKENS
+  // ===========================================================================
+
+  /**
+   * Subtle border for decorative/aesthetic use.
+   * May not meet WCAG 3:1 - use border-strong for accessibility-critical contexts.
+   */
+  "border-subtle": string;
+
+  /**
+   * Strong border for accessible UI.
+   * Meets WCAG 3:1 minimum for non-text elements.
+   */
+  "border-strong": string;
+
+  // ===========================================================================
+  // INTERACTIVE STATE TOKENS
+  // ===========================================================================
+
+  /** Hover state background for layer-01 surfaces */
+  "layer-hover-01": string;
+
+  /** Hover state background for layer-02 surfaces */
+  "layer-hover-02": string;
+
+  /** Active/pressed state background for layer-01 surfaces */
+  "layer-active-01": string;
+
+  /** Active/pressed state background for layer-02 surfaces */
+  "layer-active-02": string;
+
+  // ===========================================================================
+  // SHADOW TOKENS
+  // ===========================================================================
+
+  /** Small shadow for subtle elevation (cards) */
+  "shadow-sm": string;
+
+  /** Medium shadow for moderate elevation (popovers, dropdowns) */
+  "shadow-md": string;
+
+  /** Large shadow for high elevation (modals, overlays) */
+  "shadow-lg": string;
 }
+
+/**
+ * Per-theme layout token overrides.
+ *
+ * Allows themes to customize layout values (window gaps, opacity, etc.)
+ * while falling back to DEFAULT_LAYOUT_TOKENS for unspecified values.
+ *
+ * @example
+ * // Theme with tighter window gaps
+ * layoutOverrides: {
+ *   windowGap: 4,
+ *   windowOpacity: 0.9
+ * }
+ */
+export type LayoutOverrides = Partial<LayoutTokens>;
 
 /**
  * Complete theme definition with light and dark color palettes.
@@ -115,6 +205,7 @@ export interface ThemeColors {
  * - Light mode color palette
  * - Dark mode color palette
  * - Accent variant metadata (optional)
+ * - Layout overrides (optional)
  */
 export interface Theme {
   /** Unique theme identifier (kebab-case) */
@@ -127,6 +218,8 @@ export interface Theme {
   readonly dark: ThemeColors;
   /** Accent variant configuration (optional) */
   readonly accentVariants?: AccentMetadata;
+  /** Per-theme layout token overrides (optional) */
+  readonly layoutOverrides?: LayoutOverrides;
 }
 
 /**

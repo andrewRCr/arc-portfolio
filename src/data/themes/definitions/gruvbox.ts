@@ -69,6 +69,26 @@ export const gruvboxTheme: Theme = {
     border: hexToRgb(p.light2), // #d5c4a1
     input: hexToRgb(p.light2),
     ring: hexToRgb(p.faded_green),
+
+    // Semantic layer tokens (alternating pattern for light mode)
+    "layer-01": hexToRgb(p.light0_hard), // #f9f5d7 (≈ card)
+    "layer-02": hexToRgb(p.light0), // #fbf1c7 (modals use shadows)
+    "layer-03": hexToRgb(p.light0_hard), // #f9f5d7
+
+    // Semantic border tokens
+    "border-subtle": hexToRgb(p.light2), // #d5c4a1 (≈ border)
+    "border-strong": hexToRgb(p.light3), // #bdae93 (higher contrast)
+
+    // Interactive state tokens
+    "layer-hover-01": hexToRgb(p.light1), // #ebdbb2 (slightly darker)
+    "layer-hover-02": hexToRgb(p.light0_soft), // #f2e5bc
+    "layer-active-01": hexToRgb(p.light2), // #d5c4a1 (more pronounced)
+    "layer-active-02": hexToRgb(p.light1), // #ebdbb2
+
+    // Shadow tokens
+    "shadow-sm": "0 1px 2px rgba(60, 56, 54, 0.08)",
+    "shadow-md": "0 2px 8px rgba(60, 56, 54, 0.12)",
+    "shadow-lg": "0 4px 16px rgba(60, 56, 54, 0.16)",
   },
 
   dark: {
@@ -116,6 +136,26 @@ export const gruvboxTheme: Theme = {
     border: hexToRgb(p.dark2), // #504945
     input: hexToRgb(p.dark2),
     ring: hexToRgb(p.bright_green),
+
+    // Semantic layer tokens (progressive lightening for dark mode)
+    "layer-01": hexToRgb(p.dark0_soft), // #32302f (≈ card)
+    "layer-02": hexToRgb(p.dark1), // #3c3836 (lighter)
+    "layer-03": hexToRgb(p.dark2), // #504945 (even lighter)
+
+    // Semantic border tokens
+    "border-subtle": hexToRgb(p.dark2), // #504945 (≈ border)
+    "border-strong": hexToRgb(p.dark3), // #665c54 (higher contrast)
+
+    // Interactive state tokens
+    "layer-hover-01": hexToRgb(p.dark1), // #3c3836 (slightly lighter)
+    "layer-hover-02": hexToRgb(p.dark2), // #504945
+    "layer-active-01": hexToRgb(p.dark2), // #504945 (more pronounced)
+    "layer-active-02": hexToRgb(p.dark3), // #665c54
+
+    // Shadow tokens
+    "shadow-sm": "0 1px 2px rgba(0, 0, 0, 0.16)",
+    "shadow-md": "0 2px 8px rgba(0, 0, 0, 0.24)",
+    "shadow-lg": "0 4px 16px rgba(0, 0, 0, 0.32)",
   },
 
   accentVariants: {

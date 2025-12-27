@@ -69,6 +69,26 @@ export const rosePineTheme: Theme = {
     border: hexToRgb(rosePineDawn.highlight_med), // #dfdad9
     input: hexToRgb(rosePineDawn.surface),
     ring: hexToRgb(rosePineDawn.pine),
+
+    // Semantic layer tokens (alternating pattern for light mode)
+    "layer-01": hexToRgb(rosePineDawn.surface), // #fffaf3 (≈ card)
+    "layer-02": hexToRgb(rosePineDawn.overlay), // #f2e9e1 (≈ popover)
+    "layer-03": hexToRgb(rosePineDawn.highlight_low), // #f4ede8
+
+    // Semantic border tokens
+    "border-subtle": hexToRgb(rosePineDawn.highlight_med), // #dfdad9 (≈ border)
+    "border-strong": hexToRgb(rosePineDawn.highlight_high), // #cecacd (higher contrast)
+
+    // Interactive state tokens
+    "layer-hover-01": hexToRgb(rosePineDawn.highlight_low), // #f4ede8
+    "layer-hover-02": hexToRgb(rosePineDawn.highlight_med), // #dfdad9
+    "layer-active-01": hexToRgb(rosePineDawn.highlight_med), // #dfdad9
+    "layer-active-02": hexToRgb(rosePineDawn.highlight_high), // #cecacd
+
+    // Shadow tokens
+    "shadow-sm": "0 1px 2px rgba(87, 82, 121, 0.08)",
+    "shadow-md": "0 2px 8px rgba(87, 82, 121, 0.12)",
+    "shadow-lg": "0 4px 16px rgba(87, 82, 121, 0.16)",
   },
 
   dark: {
@@ -116,6 +136,26 @@ export const rosePineTheme: Theme = {
     border: hexToRgb(rosePineMain.highlight_med), // #403d52
     input: hexToRgb(rosePineMain.surface),
     ring: hexToRgb(rosePineMain.pine),
+
+    // Semantic layer tokens (progressive lightening for dark mode)
+    "layer-01": hexToRgb(rosePineMain.surface), // #1f1d2e (≈ card)
+    "layer-02": hexToRgb(rosePineMain.overlay), // #26233a (≈ popover)
+    "layer-03": hexToRgb(rosePineMain.highlight_med), // #403d52 (lighter)
+
+    // Semantic border tokens
+    "border-subtle": hexToRgb(rosePineMain.highlight_med), // #403d52 (≈ border)
+    "border-strong": hexToRgb(rosePineMain.highlight_high), // #524f67 (higher contrast)
+
+    // Interactive state tokens
+    "layer-hover-01": hexToRgb(rosePineMain.highlight_low), // #21202e
+    "layer-hover-02": hexToRgb(rosePineMain.highlight_med), // #403d52
+    "layer-active-01": hexToRgb(rosePineMain.highlight_med), // #403d52
+    "layer-active-02": hexToRgb(rosePineMain.highlight_high), // #524f67
+
+    // Shadow tokens
+    "shadow-sm": "0 1px 2px rgba(0, 0, 0, 0.16)",
+    "shadow-md": "0 2px 8px rgba(0, 0, 0, 0.24)",
+    "shadow-lg": "0 4px 16px rgba(0, 0, 0, 0.32)",
   },
 
   accentVariants: {

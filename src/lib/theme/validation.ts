@@ -15,10 +15,10 @@ const REQUIRED_COLOR_KEYS: (keyof ThemeColors)[] = [
   // Base colors
   "background",
   "foreground",
-  // Card colors
+  // Card colors (shadcn/ui convention)
   "card",
   "card-foreground",
-  // Popover colors
+  // Popover colors (shadcn/ui convention)
   "popover",
   "popover-foreground",
   // Primary colors
@@ -47,6 +47,22 @@ const REQUIRED_COLOR_KEYS: (keyof ThemeColors)[] = [
   "border",
   "input",
   "ring",
+  // Semantic layer tokens
+  "layer-01",
+  "layer-02",
+  "layer-03",
+  // Semantic border tokens
+  "border-subtle",
+  "border-strong",
+  // Interactive state tokens
+  "layer-hover-01",
+  "layer-hover-02",
+  "layer-active-01",
+  "layer-active-02",
+  // Shadow tokens
+  "shadow-sm",
+  "shadow-md",
+  "shadow-lg",
 ];
 
 /**

@@ -6,7 +6,7 @@
 
 import { describe, it, expect } from "vitest";
 import { themes, defaultTheme } from "../index";
-import { validateTheme } from "@/lib/theme-validation";
+import { validateTheme } from "@/lib/theme";
 
 describe("Theme Registry", () => {
   it("should have at least one theme registered", () => {
