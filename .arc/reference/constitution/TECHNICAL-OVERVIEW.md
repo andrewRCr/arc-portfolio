@@ -8,7 +8,7 @@ development practices, and operational considerations.
 **arc-portfolio** is a modern static website built with Next.js using the App Router and Static Site
 Generation (SSG). The architecture prioritizes performance, accessibility, and developer experience:
 
-- **Frontend Application**: Next.js 15 with React 19, TypeScript, and Tailwind CSS
+- **Frontend Application**: Next.js with React, TypeScript, and Tailwind CSS
 - **UI Components**: Shadcn/ui component library for consistent, accessible design
 - **Testing**: Vitest + React Testing Library with comprehensive coverage
 - **Deployment**: Vercel platform for global CDN delivery and automatic deployments
@@ -18,7 +18,7 @@ Generation (SSG). The architecture prioritizes performance, accessibility, and d
 
 ### Technology Stack
 
-- **Framework**: Next.js 15 with App Router and React Server Components
+- **Framework**: Next.js with App Router and React Server Components
 - **Language**: TypeScript with strict type checking
 - **UI Components**: Shadcn/ui (Radix UI primitives with Tailwind styling)
 - **Routing**: Next.js App Router with file-system based routing

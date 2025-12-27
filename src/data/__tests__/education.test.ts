@@ -19,14 +19,6 @@ describe("Education Data Validation", () => {
       expect(Array.isArray(education)).toBe(true);
       expect(education.length).toBeGreaterThanOrEqual(2);
     });
-
-    it("should have all degrees as valid objects", () => {
-      education.forEach((degree) => {
-        expect(degree).toBeDefined();
-        expect(typeof degree).toBe("object");
-        expect(degree).not.toBeNull();
-      });
-    });
   });
 
   describe("Required Fields Presence", () => {
@@ -57,7 +49,7 @@ describe("Education Data Validation", () => {
       expect(uniqueIds.size).toBe(ids.length);
     });
 
-    it("should have optional fields when present", () => {
+    it("should have properly formatted optional fields when populated", () => {
       education.forEach((degree) => {
         if (degree.location) {
           expect(typeof degree.location).toBe("string");
@@ -167,15 +159,6 @@ describe("Education Data Validation", () => {
 
   describe("Degree Ordering", () => {
     it("should have degrees ordered by graduation date (most recent first)", () => {
-      // Verify each consecutive pair is in descending order
-      for (let i = 0; i < education.length - 1; i++) {
-        const currentYear = parseInt(education[i].graduationDate!, 10);
-        const nextYear = parseInt(education[i + 1].graduationDate!, 10);
-        expect(currentYear).toBeGreaterThanOrEqual(nextYear);
-      }
-    });
-
-    it("should match expected sorted order", () => {
       // Create sorted copy and verify original matches
       const sorted = [...education].sort((a, b) => {
         const yearA = parseInt(a.graduationDate!, 10);
@@ -191,7 +174,8 @@ describe("Education Data Validation", () => {
 
   describe("Data Format Validation", () => {
     it("should have properly formatted degree names", () => {
-      const validDegrees = ["Bachelor of Science", "Bachelor of Arts", "Master of Science", "Master of Arts"];
+      // Current data only has Bachelor degrees; expand when adding Master's
+      const validDegrees = ["Bachelor of Science", "Bachelor of Arts"];
 
       education.forEach((degree) => {
         expect(validDegrees).toContain(degree.degree);
@@ -220,6 +204,7 @@ describe("Education Data Validation", () => {
           expect(degree.graduationDate).toMatch(/^\d{4}$/);
 
           const year = parseInt(degree.graduationDate, 10);
+          // Reasonable lower bound for modern degrees
           expect(year).toBeGreaterThan(1980);
           expect(year).toBeLessThanOrEqual(new Date().getFullYear());
         }
@@ -250,7 +235,8 @@ describe("Education Data Validation", () => {
       expect(majors).toContain("Psychology");
     });
 
-    it("should have all optional fields populated", () => {
+    it("should have location, graduationDate, and gpa populated for all current entries", () => {
+      // Data completeness check - type allows optional fields, but current dataset should be complete
       education.forEach((degree) => {
         expect(degree.location).toBeDefined();
         expect(degree.graduationDate).toBeDefined();
@@ -277,26 +263,6 @@ describe("Education Data Validation", () => {
       const degreeKeys = education.map((d) => `${d.degree}-${d.major}-${d.institution}`);
       const uniqueKeys = new Set(degreeKeys);
       expect(uniqueKeys.size).toBe(education.length);
-    });
-
-    it("should have consistent field types across all degrees", () => {
-      const firstDegree = education[0];
-
-      education.forEach((degree) => {
-        expect(typeof degree.degree).toBe(typeof firstDegree.degree);
-        expect(typeof degree.major).toBe(typeof firstDegree.major);
-        expect(typeof degree.institution).toBe(typeof firstDegree.institution);
-
-        if (degree.location && firstDegree.location) {
-          expect(typeof degree.location).toBe(typeof firstDegree.location);
-        }
-        if (degree.graduationDate && firstDegree.graduationDate) {
-          expect(typeof degree.graduationDate).toBe(typeof firstDegree.graduationDate);
-        }
-        if (degree.gpa && firstDegree.gpa) {
-          expect(typeof degree.gpa).toBe(typeof firstDegree.gpa);
-        }
-      });
     });
   });
 });

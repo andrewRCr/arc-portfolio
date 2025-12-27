@@ -15,7 +15,7 @@ type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
  * Runs on mount and whenever theme/mode changes.
  */
 function ThemeColorApplier() {
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const { activeTheme } = useThemeContext();
   const [mounted, setMounted] = React.useState(false);
 
@@ -39,7 +39,7 @@ function ThemeColorApplier() {
     // Get and apply appropriate colors
     const colors = getThemeColors(currentTheme, isDark ? "dark" : "light");
     applyThemeColors(colors);
-  }, [mounted, theme, resolvedTheme, activeTheme]);
+  }, [mounted, resolvedTheme, activeTheme]);
 
   return null;
 }

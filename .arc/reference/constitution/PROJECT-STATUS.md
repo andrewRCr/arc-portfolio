@@ -1,39 +1,93 @@
 # arc-portfolio Project Status
 
-## Current State Overview
+## Overview
 
-arc-portfolio is in **active development**. Content migration from Squarespace is nearly complete, with display
-components built and functional. The site renders all content pages with basic styling. Next major work is the
-TWM Layout System for visual design refinement.
+arc-portfolio is a modern developer portfolio website showcasing full-stack development skills through project exhibits,
+technical expertise, and professional background. Built with Next.js and TypeScript, it demonstrates proficiency in
+contemporary web development practices.
+
+**Table of Contents:**
+
+1. [Status Snapshot](#status-snapshot) - Current state and active work
+2. [Roadmap](#roadmap) - Planned work by priority
+3. [Completed Major Work](#completed-major-work) - Historical achievements
+4. [Development Approach](#development-approach) - Workflow and organization
 
 ---
 
-## Completed Work
+## Status Snapshot
 
-### Project Foundation & Scaffolding
+**Last Completed:**
 
-- Next.js 15→16.1 with TypeScript, Tailwind CSS, App Router
+- Content Migration (feature) - All Squarespace content migrated with display components
+    - [Tasks](.arc/active/feature/tasks-content-migration.md)
+
+**Currently Active:**
+
+- Content Migration final review and merge
+
+**Next Priority:**
+
+- TWM Layout System (feature) - Comprehensive visual design pass
+    - [PRD](../../backlog/feature/prd-twm-layout-system.md)
+
+---
+
+## Roadmap
+
+### Feature Development
+
+*High Priority:*
+
+- **TWM Layout System** - Responsive layouts, spacing, typography, component styling refinement
+    - [PRD](../../backlog/feature/prd-twm-layout-system.md)
+
+*Medium Priority:*
+
+- **Visual Polish & Animations** - Framer Motion integration, page transitions, micro-interactions
+    - [Backlog](../../backlog/feature/BACKLOG-FEATURE.md)
+- **Mod Portfolio Integration** - Feature flag ready, infrastructure exists, needs content
+    - [Backlog](../../backlog/feature/BACKLOG-FEATURE.md)
+
+*Lower Priority:*
+
+- **Contact Form Implementation** - Form UI, email delivery (Zeptomail), rate limiting
+- **SEO & Analytics** - Meta tags, Open Graph, Vercel Analytics, sitemap
+- **Deployment** - Vercel configuration, domain transfer (andrewcreekmore.com)
+
+### Technical Infrastructure
+
+*As Needed:*
+
+- No major technical infrastructure work planned; project uses straightforward Next.js patterns
+
+---
+
+## Completed Major Work
+
+### ✅ Project Foundation & Scaffolding
+
+- Next.js with TypeScript, Tailwind CSS, App Router
 - Shadcn/ui integrated with component primitives
 - Development tooling: ESLint (flat config), Prettier, markdownlint-cli2
 - GitHub repository with CI workflow
 - Git hooks configured (conventional commits enforced)
 
-### ARC Development Framework
+### ✅ ARC Development Framework
 
 - Constitutional documents (META-PRD, TECHNICAL-OVERVIEW, DEVELOPMENT-RULES, PROJECT-STATUS)
 - Workflow templates and strategy documents synced
 - Claude Code configuration with custom skills and agents
 - Session management (CURRENT-SESSION.md) for context preservation
 
-### Testing Infrastructure
+### ✅ Testing Infrastructure
 
 - Vitest + React Testing Library configured
-- 356 tests passing (100% pass rate)
 - Test files co-located with source (`src/**/__tests__/`)
 - Data validation tests for all content types
 - Component behavior tests (TDD approach)
 
-### Content Migration (Phases 1-3 Complete)
+### ✅ Content Migration
 
 - **TypeScript interfaces** for all content types (projects, skills, education, bio, contact)
 - **9 software projects** migrated with full data and images
@@ -44,7 +98,7 @@ TWM Layout System for visual design refinement.
 - **Routing**: All pages functional (`/`, `/projects`, `/skills`, `/about`, `/contact`, project detail pages)
 - **Feature flag system**: `src/config/features.ts` for toggling features (mods tab disabled)
 
-### Theme System (Basic)
+### ✅ Theme System (Basic)
 
 - Dark/light mode toggle functional
 - Rose Pine and Gruvbox theme definitions
@@ -53,98 +107,19 @@ TWM Layout System for visual design refinement.
 
 ---
 
-## Work in Progress
+## Development Approach
 
-### Content Migration - Final Validation (Branch: `feature/content-migration`)
+The project follows a structured development workflow:
 
-- **PRD**: `.arc/active/feature/prd-content-migration.md`
-- **Tasks**: `.arc/active/feature/tasks-content-migration.md`
-- **Current Phase**: Phase 3-4 (routing verification, final validation)
-- **Remaining Tasks**:
-    - Task 8.0: Verify routing and navigation integration
-    - Task 9.0: Validate content accuracy, type safety, and display functionality
-- **Progress**: ~85% complete (7 of 9 parent tasks done)
+- **META-PRD** for high-level product requirements
+- **PRDs** for individual feature/technical specifications
+- **Task lists** for implementation tracking and execution
+- **Backlog organization**:
+    - `backlog/feature/BACKLOG-FEATURE.md` - Feature ideas bucket
+    - `backlog/technical/BACKLOG-TECHNICAL.md` - Technical ideas bucket
+    - `backlog/*/prd-*.md` - Work units ready for implementation
+- **Active work tracking** in `.arc/active/` with task lists and session state
+- **Quality gates** enforced via CI (TypeScript, ESLint, Prettier, markdownlint, tests)
+- **Systematic archival** preserving work history and decisions
 
----
-
-## Upcoming Priorities
-
-### High Priority
-
-- **TWM Layout System** (next after content migration)
-    - PRD: `.arc/backlog/feature/prd-twm-layout-system.md`
-    - Comprehensive visual design pass
-    - Responsive layouts, spacing, typography
-    - Component styling refinement
-    - Estimated: L effort
-
-### Medium Priority
-
-- **Visual Polish & Animations**
-    - Framer Motion integration (partially in place)
-    - Page transitions
-    - Micro-interactions and hover states
-    - Loading states and skeletons
-
-- **Mod Portfolio Integration** (deferred from content migration)
-    - Feature flag ready (`FEATURES.SHOW_MODS_TAB`)
-    - Infrastructure exists (tabs, routes, placeholder data)
-    - Needs: content selection, data migration, images
-    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
-
-### Lower Priority
-
-- **Contact Form Implementation**
-    - Form UI with validation
-    - Email delivery integration (Zeptomail)
-    - Rate limiting
-
-- **SEO & Analytics**
-    - Meta tags, Open Graph, structured data
-    - Vercel Analytics integration
-    - Sitemap generation
-
-- **Deployment**
-    - Vercel deployment configuration
-    - Domain transfer (andrewcreekmore.com)
-    - Production environment setup
-
----
-
-## Key Deliverables (v1.0 Target)
-
-Based on META-PRD success criteria:
-
-- [ ] All Squarespace content migrated (projects, skills, education, bio, contact)
-- [ ] Professional visual design (TWM Layout System)
-- [ ] Responsive across devices
-- [ ] Core pages functional (home, projects, skills, about, contact)
-- [ ] Performance metrics met (Lighthouse 90+)
-- [ ] Deployed on custom domain
-
----
-
-## Project Health Indicators
-
-| Metric         | Status                      |
-| -------------- | --------------------------- |
-| TypeScript     | Strict mode, zero errors    |
-| ESLint         | Zero violations             |
-| Prettier       | All files formatted         |
-| Markdown       | Zero violations (68 files)  |
-| Tests          | 356 passing (100%)          |
-| Build          | Successful                  |
-| Technical Debt | Minimal                     |
-
----
-
-## References
-
-- **Roadmap**: `.arc/backlog/ROADMAP.md` - Work sequencing
-- **Feature Backlog**: `.arc/backlog/feature/BACKLOG-FEATURE.md`
-- **Technical Backlog**: `.arc/backlog/technical/BACKLOG-TECHNICAL.md`
-- **Current Session**: `.arc/active/CURRENT-SESSION.md`
-
----
-
-**Last Updated:** 2025-12-26
+**For detailed sequencing, see [ROADMAP.md](../../backlog/ROADMAP.md).**

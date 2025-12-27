@@ -1,19 +1,23 @@
 # Incidental Work: Sync ARC Framework Updates
 
 **Created**: 2025-10-17
+**Branch name**: main
+**Base Branch**: main
 **Triggered By**: Session resume (`.arc/active/CURRENT-SESSION.md`)
 **Status**: Complete
 **Estimated Effort**: 90-120 minutes
 
 ## Context
 
+**Problem**: arc-portfolio's `.arc/` documentation was outdated compared to arc-agentic-dev-framework's current state.
+
+**Interrupts**: Phase 3 content migration work (paused to sync framework first).
+
+**Discovered**: User identified the drift before starting new feature work. Changes had been developed and
+battle-tested across CineXplorer and the framework repository.
+
 **Why Now**: Before resuming Phase 3 content migration work, ensure this project has the latest ARC framework
 improvements and workflow refinements.
-
-These changes have been developed and battle-tested across CineXplorer and the framework repository.
-
-**Discovery**: User identified that arc-portfolio's `.arc/` documentation is outdated compared to
-arc-agentic-dev-framework's current state before starting new feature work.
 
 **Impact**:
 
@@ -52,19 +56,19 @@ arc-agentic-dev-framework's current state before starting new feature work.
 ## Tasks
 
 - [x] 1. Copy sync-with-arc-framework.md workflow to project
-  - [x] 1.1 Copy file from framework to .arc/reference/workflows/supplemental/
-  - [x] 1.2 Update path reference (.arc/active/incidental/ not .arc-internal/)
-  - [x] 1.3 Verify markdown linting passes
+    - [x] 1.1 Copy file from framework to .arc/reference/workflows/supplemental/
+    - [x] 1.2 Update path reference (.arc/active/incidental/ not .arc-internal/)
+    - [x] 1.3 Verify markdown linting passes
 
 - [x] 2. Create incidental task list for sync work
-  - [x] 2.1 Create tasks-sync-arc-framework-2025-10-17.md
-  - [x] 2.2 Document framework version and context
+    - [x] 2.1 Create tasks-sync-arc-framework-2025-10-17.md
+    - [x] 2.2 Document framework version and context
 
 - [x] 3. Analyze framework vs project differences
-  - [x] 3.1 Run diff comparison between framework .arc/reference/ and project
-  - [x] 3.2 Check CURRENT-SESSION.md for structural/format improvements (preserve content)
-  - [x] 3.3 Categorize changes (new files, updated files, project-specific)
-  - [x] 3.4 Create prioritized sync list
+    - [x] 3.1 Run diff comparison between framework .arc/reference/ and project
+    - [x] 3.2 Check CURRENT-SESSION.md for structural/format improvements (preserve content)
+    - [x] 3.3 Categorize changes (new files, updated files, project-specific)
+    - [x] 3.4 Create prioritized sync list
 
 ### Analysis Results
 
@@ -104,42 +108,42 @@ arc-agentic-dev-framework's current state before starting new feature work.
 - `completion-sample.md` - Project-specific completion example
 
 - [x] 4. Sync new framework files
-  - [x] 4.1 Copy QUICK-REFERENCE.example.md and adapt to Next.js/TypeScript project
-  - [x] 4.2 Copy strategy-work-categorization.md
-  - [x] 4.3 Copy maintain-task-notes.md workflow
-  - [x] 4.4 Copy session-init.md workflow
-  - [x] 4.5 Update directory READMEs to reference new files
-  - [x] 4.6 Lint new files
+    - [x] 4.1 Copy QUICK-REFERENCE.example.md and adapt to Next.js/TypeScript project
+    - [x] 4.2 Copy strategy-work-categorization.md
+    - [x] 4.3 Copy maintain-task-notes.md workflow
+    - [x] 4.4 Copy session-init.md workflow
+    - [x] 4.5 Update directory READMEs to reference new files
+    - [x] 4.6 Lint new files
 
 - [x] 5. Sync updated workflow files
-  - [x] 5.1 Update 3-process-task-loop.md with framework improvements
-  - [x] 5.2 Update agent-pr-review.md
-  - [x] 5.3 Update archive-completed.md
-  - [x] 5.4 Update manage-incidental-work.md
-  - [x] 5.5 Update session-handoff.md
-  - [x] 5.6 Update CURRENT-SESSION.md format/structure (preserve current work content)
-  - [x] 5.7 Lint updated workflow files
+    - [x] 5.1 Update 3-process-task-loop.md with framework improvements
+    - [x] 5.2 Update agent-pr-review.md
+    - [x] 5.3 Update archive-completed.md
+    - [x] 5.4 Update manage-incidental-work.md
+    - [x] 5.5 Update session-handoff.md
+    - [x] 5.6 Update CURRENT-SESSION.md format/structure (preserve current work content)
+    - [x] 5.7 Lint updated workflow files
 
 - [x] 6. Sync updated strategy files
-  - [x] 6.1 Update strategies/README.md (already done in Task 4.5)
-  - [x] 6.2 patterns.md deleted by user (no longer needed)
-  - [x] 6.3 Lint updated strategy files (already done in Task 4.6)
+    - [x] 6.1 Update strategies/README.md (already done in Task 4.5)
+    - [x] 6.2 patterns.md deleted by user (no longer needed)
+    - [x] 6.3 Lint updated strategy files (already done in Task 4.6)
 
 - [x] 7. Review AI instructions updates
-  - [x] 7.1 Create AGENTS.md from framework example (adapted for Next.js portfolio)
-  - [x] 7.2 Update WARP.md to be minimal and reference AGENTS.md
-  - [x] 7.3 Copy ai-instructions/README.md documenting new architecture
-  - [x] 7.4 Delete AI-SHARED.md (replaced by AGENTS.md)
-  - [x] 7.5 Lint all AI instruction files (zero errors)
+    - [x] 7.1 Create AGENTS.md from framework example (adapted for Next.js portfolio)
+    - [x] 7.2 Update WARP.md to be minimal and reference AGENTS.md
+    - [x] 7.3 Copy ai-instructions/README.md documenting new architecture
+    - [x] 7.4 Delete AI-SHARED.md (replaced by AGENTS.md)
+    - [x] 7.5 Lint all AI instruction files (zero errors)
 
 - [x] 8. Validation and quality checks
-  - [x] 8.1 Verify cross-references and internal links work
-  - [x] 8.2 Run markdown linting on all .arc/ files
-  - [x] 8.3 Verify active work content intact (CURRENT-SESSION.md, tasks-content-migration.md)
-  - [x] 8.4 Check for framework placeholders that need project values
+    - [x] 8.1 Verify cross-references and internal links work
+    - [x] 8.2 Run markdown linting on all .arc/ files
+    - [x] 8.3 Verify active work content intact (CURRENT-SESSION.md, tasks-content-migration.md)
+    - [x] 8.4 Check for framework placeholders that need project values
 
 - [x] 9. Documentation and completion
-  - [x] 9.1 Add completion notes to this task list
+    - [x] 9.1 Add completion notes to this task list
 
 ## Relevant Files
 

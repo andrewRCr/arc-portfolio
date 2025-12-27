@@ -56,8 +56,8 @@ export function AboutSection() {
       <h2 className="mb-8 text-3xl font-bold">{about.heading}</h2>
 
       <div className="space-y-4 text-foreground">
-        {about.paragraphs.map((paragraph) => (
-          <p key={paragraph} className="leading-relaxed">
+        {about.paragraphs.map((paragraph, index) => (
+          <p key={index} className="leading-relaxed">
             {parseMarkdownLinks(paragraph)}
           </p>
         ))}

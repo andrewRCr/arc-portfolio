@@ -71,11 +71,7 @@ done
 # ============================================================================
 # CHECK 4: Check for common merge conflict markers
 # ============================================================================
-conflict_markers=$(git diff --cached --name-only --diff-filter=ACMR | while read file; do
-    if grep -qE '^(<<<<<<<|=======|>>>>>>>)' "$file" 2>/dev/null; then
-        echo "$file"
-    fi
-done)
+conflict_markers=$(git diff --cached --name-only --diff-filter=ACMR | xargs grep -lE '^(<<<<<<<|=======|>>>>>>>)' 2>/dev/null || true)
 
 if [ -n "$conflict_markers" ]; then
     echo -e "${RED}❌ Error: Merge conflict markers found in:${NC}"
@@ -91,9 +87,6 @@ debug_patterns=(
     "console.log"
     "console.debug"
     "debugger;"
-    "import pdb"
-    "pdb.set_trace"
-    "print("
 )
 
 for pattern in "${debug_patterns[@]}"; do
@@ -102,8 +95,9 @@ for pattern in "${debug_patterns[@]}"; do
         if echo "$file" | grep -qE "(test_|_test\.py|\.test\.ts|\.test\.tsx|spec\.)"; then
             continue
         fi
-        # Check for debug statements
-        if grep -qF "$pattern" "$file" 2>/dev/null; then
+        # Check for debug statements, excluding commented lines
+        # Filter out: // comments, /* */ block comment lines (starting with *)
+        if grep -F "$pattern" "$file" 2>/dev/null | grep -vE '^\s*//' | grep -vE '^\s*\*' | grep -q .; then
             echo "$file: $pattern"
         fi
     done)

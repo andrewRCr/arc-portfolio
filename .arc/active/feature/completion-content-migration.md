@@ -28,7 +28,7 @@ education, bio, and contact sections with proper navigation. Mods tab deferred t
     EducationSection, AboutSection, ContactSection)
     - 5 main routes (/, /projects, /skills, /about, /contact) + 9 project detail pages
     - 66 WebP images organized in public/projects/
-- **Tests Added**: 374 tests (100% pass rate)
+- **Tests Added**: 370 tests (100% pass rate)
 - **Quality Gates**: TypeScript strict mode, ESLint, Prettier, markdownlint, build verification
 
 ## Related Documentation

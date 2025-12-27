@@ -34,20 +34,54 @@ app.use((req, res, next) => {
   next();
 });
 
+// Validation limits
+const MAX_ARGS = 50;
+const MAX_ARG_SIZE = 1000; // bytes per serialized arg
+const MAX_TOTAL_SIZE = 10000; // bytes total
+
 // Log endpoint
 app.post("/log", (req, res) => {
   const { type, args, timestamp } = req.body;
 
-  // Format log entry
-  const time = new Date(timestamp).toISOString();
-  const message = args
-    .map((arg) => {
-      if (typeof arg === "object") return JSON.stringify(arg);
-      return String(arg);
-    })
-    .join(" ");
+  // Validate type
+  if (typeof type !== "string" || type.length === 0 || type.length > 20) {
+    return res.status(400).send("Invalid type");
+  }
 
-  const logLine = `[${time}] ${type.toUpperCase()}: ${message}\n`;
+  // Validate args
+  if (!Array.isArray(args)) {
+    return res.status(400).send("args must be an array");
+  }
+  if (args.length > MAX_ARGS) {
+    return res.status(400).send(`Too many args (max ${MAX_ARGS})`);
+  }
+
+  // Validate timestamp
+  const time = timestamp ? new Date(timestamp) : new Date();
+  if (isNaN(time.getTime())) {
+    return res.status(400).send("Invalid timestamp");
+  }
+
+  // Serialize args with size limits
+  let totalSize = 0;
+  const serializedArgs = [];
+  for (const arg of args) {
+    const str = typeof arg === "object" ? JSON.stringify(arg) : String(arg);
+    const size = Buffer.byteLength(str, "utf8");
+    if (size > MAX_ARG_SIZE) {
+      serializedArgs.push(str.slice(0, 200) + "...[truncated]");
+      totalSize += 215;
+    } else {
+      serializedArgs.push(str);
+      totalSize += size;
+    }
+    if (totalSize > MAX_TOTAL_SIZE) {
+      return res.status(400).send(`Payload too large (max ${MAX_TOTAL_SIZE} bytes)`);
+    }
+  }
+
+  const message = serializedArgs.join(" ");
+  const logLine = `[${time.toISOString()}] ${type.toUpperCase()}: ${message}\n`;
 
   // Respond immediately, write async (fire-and-forget)
   res.sendStatus(200);
@@ -59,9 +93,9 @@ app.post("/log", (req, res) => {
 });
 
 // Clear logs endpoint (optional - for programmatic clearing)
-app.post("/clear-logs", (req, res) => {
+app.post("/clear-logs", async (req, res) => {
   try {
-    fs.writeFileSync(LOG_FILE, "");
+    await fs.promises.writeFile(LOG_FILE, "");
     console.log("Logs cleared");
     res.sendStatus(200);
   } catch (err) {
