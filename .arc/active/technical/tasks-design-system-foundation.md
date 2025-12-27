@@ -38,72 +38,31 @@
 
 **Purpose:** Establish E2E testing capability with responsive viewport support.
 
-- [ ] **1.1 Install and configure Playwright**
+- [x] **1.1 Install and configure Playwright**
+    - Installed `@playwright/test`, browser binaries (Chromium, Firefox, WebKit)
+    - Created `e2e/` with `playwright.config.ts`, `tsconfig.json`, `tests/`
+    - Added npm scripts: `test:e2e`, `test:e2e:ui`
+    - Updated `.gitignore` with `playwright-report/`, `test-results/`
 
-    - [ ] **1.1.a Add Playwright dependencies**
-        - Install `@playwright/test`
-        - Run `npx playwright install` for browser binaries
-        - Add to `.gitignore`: `playwright-report/`, `test-results/`
+- [x] **1.2 Configure device profiles**
+    - Desktop Chrome: 1920×1080
+    - Mobile Chrome: 375×667 (touch-enabled, iPhone SE baseline)
+    - Tablet: 768×1024 (iPad)
+    - Cross-browser projects: Firefox, WebKit (optional, run with `--project`)
 
-    - [ ] **1.1.b Create `e2e/` directory structure**
-        - `e2e/playwright.config.ts` - Configuration
-        - `e2e/tests/` - Test files
-        - `e2e/tsconfig.json` - TypeScript config for E2E
+- [x] **1.3 Create smoke tests**
+    - `e2e/tests/smoke.spec.ts`: Homepage load, navigation links, theme toggle
+    - All 9 tests pass (3 tests × 3 viewports)
+    - HTML report generated at `e2e/playwright-report/`
 
-    - [ ] **1.1.c Configure Playwright for Next.js**
-        - Set `baseURL` to `http://localhost:3000`
-        - Configure `webServer` to start Next.js dev server
-        - Enable trace and screenshot on failure
+- [x] **1.4 Add CI workflow**
+    - Added `e2e` job to `.github/workflows/ci.yml` (runs after quality-gates)
+    - Tiered execution: PRs get Desktop Chrome only, main gets full viewport suite
+    - Uploads `playwright-report` artifact on failure
 
-- [ ] **1.2 Configure device profiles**
-
-    - [ ] **1.2.a Define viewport matrix in config**
-        - Mobile: 375×667 (iPhone SE - conservative baseline)
-        - Tablet: 768×1024 (iPad)
-        - Desktop: 1920×1080
-        - Enable touch emulation for mobile profile
-
-    - [ ] **1.2.b Create browser projects**
-        - Desktop Chromium (primary)
-        - Mobile Chrome (touch-enabled)
-        - Optional: Firefox, WebKit for cross-browser
-
-- [ ] **1.3 Create smoke tests**
-
-    - [ ] **1.3.a Write navigation smoke test in `e2e/tests/smoke.spec.ts`**
-        - Test: Homepage loads successfully
-        - Test: Navigation links work (Projects, Skills, About, Contact)
-        - Test: Theme toggle functions
-        - Run at all 3 viewports
-
-    - [ ] **1.3.b Verify tests pass locally**
-        - Run `npx playwright test`
-        - Verify HTML report generation
-
-- [ ] **1.4 Add CI workflow**
-
-    - [ ] **1.4.a Create or update `.github/workflows/ci.yml`**
-        - Add E2E job that runs after build
-        - Install Playwright browsers with caching
-        - Run smoke tests on Chromium for PRs
-        - Upload test report as artifact on failure
-
-    - [ ] **1.4.b Configure tiered execution**
-        - PRs: Smoke tests only (fast feedback)
-        - PRs to main: Full viewport suite
-        - Mobile viewport tests as non-blocking initially
-
-    - [ ] **1.4.c Verify CI passes**
-        - Push branch and confirm workflow runs
-        - Check artifact upload works
-
-- [ ] **1.5 Update documentation**
-
-    - [ ] **1.5.a Add Playwright commands to `QUICK-REFERENCE.md`**
-        - Local run: `npx playwright test`
-        - Headed mode: `npx playwright test --headed`
-        - UI mode: `npx playwright test --ui`
-        - Single file: `npx playwright test e2e/tests/smoke.spec.ts`
+- [x] **1.5 Update documentation**
+    - Added E2E Testing section to `QUICK-REFERENCE.md` (v1.3)
+    - Updated path table with `e2e/tests/` location
 
 ### **Phase 2:** Accessibility Testing (vitest-axe)
 
