@@ -12,6 +12,8 @@
 
 import { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
+import { axe } from "vitest-axe";
+import type { AxeResults } from "axe-core";
 import { ThemeContextProvider } from "@/contexts/ThemeContext";
 
 /**
@@ -47,3 +49,18 @@ export { customRender as render };
 
 // Export the wrapper for cases where manual wrapping is needed
 export { AllProviders as TestProviders };
+
+/**
+ * Run axe accessibility checks on a rendered component.
+ *
+ * @param ui - The React element to test
+ * @param options - Additional render options
+ * @returns Promise resolving to axe results
+ */
+export async function checkA11y(ui: ReactElement, options?: Omit<RenderOptions, "wrapper">): Promise<AxeResults> {
+  const { container } = customRender(ui, options);
+  return axe(container);
+}
+
+// Re-export axe for direct usage when needed
+export { axe };

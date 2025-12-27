@@ -68,46 +68,21 @@
 
 **Purpose:** Enable automated WCAG AA compliance testing for components.
 
-- [ ] **2.1 Install and configure vitest-axe**
+- [x] **2.1 Install and configure vitest-axe**
+    - Installed `vitest-axe` with type declarations (`src/types/vitest-axe.d.ts`)
+    - Extended `src/test/setup.ts` with matchers
+    - Added `checkA11y()` helper to `tests/test-utils.tsx` for DRY usage
 
-    - [ ] **2.1.a Add vitest-axe dependency**
-        - Install `vitest-axe`
-        - Verify jsdom environment in `vitest.config.ts` (required for axe)
+- [x] **2.2 Add accessibility tests to existing components**
+    - Navigation: axe violations, nav landmark role (2 new tests)
+    - ProjectCard: axe violations (1 new test, existing tests cover alt/links)
+    - ThemeToggle: axe violations, aria-label, keyboard accessible (3 new tests, new file)
+    - All 345 tests pass
 
-    - [ ] **2.1.b Extend test setup**
-        - Add `toHaveNoViolations` matcher to `src/test/setup.ts`
-        - Import: `import { toHaveNoViolations } from 'vitest-axe'`
-        - Extend: `expect.extend(toHaveNoViolations)`
-
-- [ ] **2.2 Add accessibility tests to existing components**
-
-    **Goal:** Demonstrate the pattern with 3 representative components.
-
-    - [ ] **2.2.a Add a11y test for `Navigation` component**
-        - Test: No accessibility violations
-        - Test: Nav landmark role present
-        - Test: Links have accessible names
-
-    - [ ] **2.2.b Add a11y test for `ProjectCard` component**
-        - Test: No accessibility violations
-        - Test: Image has alt text
-        - Test: Links are keyboard accessible
-
-    - [ ] **2.2.c Add a11y test for `ThemeToggle` component**
-        - Test: No accessibility violations
-        - Test: Button has accessible name
-        - Test: Current state announced
-
-    - [ ] **2.2.d Run tests and verify pass**
-        - `npm test`
-        - All new a11y tests should pass
-
-- [ ] **2.3 Update testing strategy documentation**
-
-    - [ ] **2.3.a Add accessibility testing section to `strategy-testing-methodology.md`**
-        - Document vitest-axe pattern
-        - Include example test code
-        - Note: axe catches ~57% of WCAG issues; manual testing still needed
+- [x] **2.3 Update testing strategy documentation**
+    - Updated `strategy-testing-methodology.md` accessibility section
+    - Documented `checkA11y()` pattern with example code
+    - Added coverage notes (~57% automated, manual testing list)
 
 ### **Phase 3:** Token System Structure
 

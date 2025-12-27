@@ -6,6 +6,7 @@
 
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { checkA11y } from "@tests/test-utils";
 import ProjectCard from "../ProjectCard";
 import type { Project } from "@/types/project";
 
@@ -159,6 +160,11 @@ describe("ProjectCard - Behavior Tests", () => {
   });
 
   describe("Accessibility", () => {
+    it("has no accessibility violations", async () => {
+      const results = await checkA11y(<ProjectCard project={mockProject} />);
+      expect(results).toHaveNoViolations();
+    });
+
     it("has accessible link text", () => {
       render(<ProjectCard project={mockProject} />);
       const link = screen.getByRole("link", { name: /test project/i });

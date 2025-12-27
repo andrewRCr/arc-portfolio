@@ -199,11 +199,38 @@ export function Card({ children }: { children: React.ReactNode }) {
 
 ### Accessibility Testing
 
-- **Tools**:
-    - axe DevTools browser extension (manual)
-    - @axe-core/react for automated checks
-    - Lighthouse CI in build pipeline
+- **Framework**: vitest-axe (integrated with Vitest)
 - **Standards**: WCAG 2.1 AA compliance required
+- **Automated coverage**: ~57% of WCAG issues (manual testing still required)
+- **Commands**:
+    - Tests run as part of `npm test`
+    - Use `checkA11y()` helper from `@tests/test-utils`
+
+**Pattern:**
+
+```typescript
+import { checkA11y } from "@tests/test-utils";
+
+it("has no accessibility violations", async () => {
+  const results = await checkA11y(<MyComponent />);
+  expect(results).toHaveNoViolations();
+});
+```
+
+**What vitest-axe catches:**
+
+- Missing alt text, form labels, ARIA attributes
+- Color contrast issues (when colors are in DOM)
+- Heading hierarchy violations
+- Keyboard navigation issues
+- Landmark and role problems
+
+**What requires manual testing:**
+
+- Keyboard-only navigation flow
+- Screen reader announcements
+- Focus management on route changes
+- Touch target sizes
 
 ## TDD Workflow Example
 
