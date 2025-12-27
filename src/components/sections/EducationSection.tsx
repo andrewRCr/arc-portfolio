@@ -12,8 +12,8 @@ export function EducationSection() {
       <h2 className="mb-8 text-3xl font-bold">Education</h2>
 
       <ul className="space-y-6">
-        {education.map((edu, index) => (
-          <li key={index} className="rounded-lg border border-border p-6">
+        {education.map((edu) => (
+          <li key={edu.id} data-testid={`education-${edu.id}`} className="rounded-lg border border-border p-6">
             <div className="space-y-2">
               <h3 className="text-xl font-semibold">
                 {edu.degree} in {edu.major}
@@ -25,17 +25,6 @@ export function EducationSection() {
                 {edu.graduationDate && <span>{edu.graduationDate}</span>}
                 {edu.gpa && <span>GPA: {edu.gpa}</span>}
               </div>
-
-              {edu.honors && edu.honors.length > 0 && (
-                <div className="mt-3">
-                  <p className="text-sm font-medium text-foreground">Honors:</p>
-                  <ul className="ml-4 list-disc text-sm text-muted-foreground">
-                    {edu.honors.map((honor, i) => (
-                      <li key={i}>{honor}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
           </li>
         ))}

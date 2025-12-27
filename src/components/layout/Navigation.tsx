@@ -38,13 +38,9 @@ export function Navigation() {
           <li key={item.href}>
             <Link
               href={item.href}
-              className={`px-2 py-1 text-sm font-mono font-semibold transition-colors ${
-                isActive(item.href) ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+              className={`px-2 py-1 text-sm font-mono font-semibold leading-[1.2] transition-colors ${
+                isActive(item.href) ? "text-foreground bg-muted" : "text-muted-foreground hover:text-foreground"
               }`}
-              style={{
-                lineHeight: "1.2",
-                ...(isActive(item.href) ? { backgroundColor: "rgb(var(--muted))" } : {}),
-              }}
             >
               {item.label}
             </Link>

@@ -56,8 +56,8 @@ export function AboutSection() {
       <h2 className="mb-8 text-3xl font-bold">{about.heading}</h2>
 
       <div className="space-y-4 text-foreground">
-        {about.paragraphs.map((paragraph, index) => (
-          <p key={index} className="leading-relaxed">
+        {about.paragraphs.map((paragraph) => (
+          <p key={paragraph} className="leading-relaxed">
             {parseMarkdownLinks(paragraph)}
           </p>
         ))}
@@ -65,8 +65,8 @@ export function AboutSection() {
 
       {about.highlightedAchievements && about.highlightedAchievements.length > 0 && (
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {about.highlightedAchievements.map((achievement, index) => (
-            <div key={index} className="rounded-lg border border-border p-4 text-center">
+          {about.highlightedAchievements.map((achievement) => (
+            <div key={achievement.label} className="rounded-lg border border-border p-4 text-center">
               <p className="text-3xl font-bold text-foreground">{achievement.value}</p>
               <p className="text-sm text-muted-foreground">{achievement.label}</p>
               {achievement.link && (
