@@ -115,9 +115,15 @@ export const projects: Project[] = [
     images: {
       thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
       screenshots: [
-        { src: "/projects/arc-agentic-dev-framework/screenshot-1.jpg", alt: "ARC Framework directory structure and documentation" },
+        {
+          src: "/projects/arc-agentic-dev-framework/screenshot-1.jpg",
+          alt: "ARC Framework directory structure and documentation",
+        },
         { src: "/projects/arc-agentic-dev-framework/screenshot-2.jpg", alt: "Template-first constitutional documents" },
-        { src: "/projects/arc-agentic-dev-framework/screenshot-3.jpg", alt: "Workflow documentation and process diagrams" },
+        {
+          src: "/projects/arc-agentic-dev-framework/screenshot-3.jpg",
+          alt: "Workflow documentation and process diagrams",
+        },
       ],
     },
     teamSize: "Solo project",
@@ -387,10 +393,22 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
       screenshots: [
-        { src: "/projects/doom-newgame-plus-customizer/screenshot-1.webp", alt: "NewGame+ Customizer desktop application interface" },
-        { src: "/projects/doom-newgame-plus-customizer/screenshot-2.webp", alt: "Gameplay configuration and validation UI" },
-        { src: "/projects/doom-newgame-plus-customizer/screenshot-3.webp", alt: "Custom mod generation and installation workflow" },
-        { src: "/projects/doom-newgame-plus-customizer/screenshot-4.webp", alt: "DOOM Customizer feature screenshot 4" },
+        {
+          src: "/projects/doom-newgame-plus-customizer/screenshot-1.webp",
+          alt: "NewGame+ Customizer desktop application interface",
+        },
+        {
+          src: "/projects/doom-newgame-plus-customizer/screenshot-2.webp",
+          alt: "Gameplay configuration and validation UI",
+        },
+        {
+          src: "/projects/doom-newgame-plus-customizer/screenshot-3.webp",
+          alt: "Custom mod generation and installation workflow",
+        },
+        {
+          src: "/projects/doom-newgame-plus-customizer/screenshot-4.webp",
+          alt: "DOOM Customizer feature screenshot 4",
+        },
       ],
     },
     teamSize: "Solo project",
@@ -452,9 +470,18 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/action-rpg-project.webp",
       screenshots: [
-        { src: "/projects/action-rpg-project/screenshot-1.webp", alt: "Action RPG combat encounter with posture-break mechanics" },
-        { src: "/projects/action-rpg-project/screenshot-2.webp", alt: "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues" },
-        { src: "/projects/action-rpg-project/screenshot-3.webp", alt: "Dungeon exploration and idol statue checkpoint" },
+        {
+          src: "/projects/action-rpg-project/screenshot-1.webp",
+          alt: "Action RPG combat encounter with posture-break mechanics",
+        },
+        {
+          src: "/projects/action-rpg-project/screenshot-2.webp",
+          alt: "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues",
+        },
+        {
+          src: "/projects/action-rpg-project/screenshot-3.webp",
+          alt: "Dungeon exploration and idol statue checkpoint",
+        },
         { src: "/projects/action-rpg-project/screenshot-4.webp", alt: "Boss battle with Large Skeletal Warrior" },
         { src: "/projects/action-rpg-project/screenshot-5.webp", alt: "Action RPG gameplay screenshot 5" },
         { src: "/projects/action-rpg-project/screenshot-6.webp", alt: "Action RPG gameplay screenshot 6" },
@@ -530,10 +557,19 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/survival-horror-project.webp",
       screenshots: [
-        { src: "/projects/survival-horror-project/screenshot-1.webp", alt: "Survival Horror mansion exploration and puzzle-solving" },
+        {
+          src: "/projects/survival-horror-project/screenshot-1.webp",
+          alt: "Survival Horror mansion exploration and puzzle-solving",
+        },
         { src: "/projects/survival-horror-project/screenshot-2.webp", alt: "Third-person combat with zombie enemies" },
-        { src: "/projects/survival-horror-project/screenshot-3.webp", alt: "Multi-floor map system and inventory management" },
-        { src: "/projects/survival-horror-project/screenshot-4.webp", alt: "Environmental puzzle mechanics and key item retrieval" },
+        {
+          src: "/projects/survival-horror-project/screenshot-3.webp",
+          alt: "Multi-floor map system and inventory management",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-4.webp",
+          alt: "Environmental puzzle mechanics and key item retrieval",
+        },
         { src: "/projects/survival-horror-project/screenshot-5.webp", alt: "Survival Horror gameplay screenshot 5" },
         { src: "/projects/survival-horror-project/screenshot-6.webp", alt: "Survival Horror gameplay screenshot 6" },
         { src: "/projects/survival-horror-project/screenshot-7.webp", alt: "Survival Horror gameplay screenshot 7" },

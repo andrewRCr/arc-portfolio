@@ -52,8 +52,7 @@ export const mods: Project[] = [
       "Placeholder entry for a Fallout 4 mod. Full mod data to be added in future work. " +
       "The actual portfolio includes settlement building tools, weapon modifications, and gameplay enhancements " +
       "demonstrating reverse engineering skills and ongoing maintenance commitment.",
-    shortDescription:
-      "Placeholder for settlement mod. Full data to be added from NexusMods portfolio.",
+    shortDescription: "Placeholder for settlement mod. Full data to be added from NexusMods portfolio.",
     category: ["Fallout 4"],
     tags: ["Modding", "Game Design", "Bug Fixing"],
     techStack: ["Creation Kit", "F4SE", "Material Editor"],
