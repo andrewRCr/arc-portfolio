@@ -2,12 +2,11 @@
  * Data validation tests for projects data file
  *
  * These tests verify that:
- * - All 9 projects are present and properly structured
- * - Order fields are unique and sequential (1-9)
+ * - All projects are present and properly structured
+ * - Order fields are unique and sequential
  * - URLs are properly formatted and consistent
  * - Featured projects are correctly marked
  * - All required data is present and valid
- * - Phase 2 migration completeness
  */
 
 import { describe, it, expect } from "vitest";
@@ -107,8 +106,11 @@ describe("Projects Data Validation", () => {
         // Thumbnail can be empty (triggers placehold.co fallback in ProjectCard)
 
         expect(Array.isArray(project.images.screenshots)).toBe(true);
-        expect(Array.isArray(project.images.altTexts)).toBe(true);
-        expect(project.images.screenshots.length).toBe(project.images.altTexts.length);
+        // Each screenshot should have src and alt properties
+        project.images.screenshots.forEach((screenshot) => {
+          expect(typeof screenshot.src).toBe("string");
+          expect(typeof screenshot.alt).toBe("string");
+        });
       });
     });
 

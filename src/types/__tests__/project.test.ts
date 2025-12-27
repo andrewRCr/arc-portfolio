@@ -13,7 +13,7 @@ import { projects } from "@/data/projects";
 import type { Project } from "@/types/project";
 
 describe("Project Interface", () => {
-  it("should have exactly 9 projects (Phase 2 migration complete)", () => {
+  it("should have exactly 9 software projects", () => {
     expect(projects).toBeDefined();
     expect(projects.length).toBe(9);
   });
@@ -54,16 +54,18 @@ describe("Project Interface", () => {
     expect(project.images).toBeDefined();
     expect(project.images.thumbnail).toBeDefined();
     expect(Array.isArray(project.images.screenshots)).toBe(true);
-    expect(Array.isArray(project.images.altTexts)).toBe(true);
 
     // Display properties
     expect(typeof project.order).toBe("number");
     expect(typeof project.featured).toBe("boolean");
   });
 
-  it("should have matching screenshots and altTexts arrays", () => {
+  it("should have screenshots with src and alt properties", () => {
     projects.forEach((project) => {
-      expect(project.images.screenshots.length).toBe(project.images.altTexts.length);
+      project.images.screenshots.forEach((screenshot) => {
+        expect(typeof screenshot.src).toBe("string");
+        expect(typeof screenshot.alt).toBe("string");
+      });
     });
   });
 
@@ -90,7 +92,6 @@ describe("Project Interface", () => {
       images: {
         thumbnail: "/test.png",
         screenshots: [],
-        altTexts: [],
       },
       order: 1,
       featured: false,

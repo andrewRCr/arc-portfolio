@@ -80,12 +80,13 @@
   --input: 213 196 161;
   --ring: 121 116 14;
 
-  /* Navigation vertical offset for cross-browser alignment */
-  /* Default for Chromium/Blink browsers */
+  /* HACK: Browser-specific navigation offset for vertical alignment.
+     Chromium and Firefox render font metrics differently, causing nav misalignment.
+     TODO: Address root cause in twm-layout-system (normalize layout, remove hack). */
   --nav-offset: -15px;
 }
 
-/* Firefox-specific offset for better vertical centering */
+/* Firefox-specific override */
 @supports (-moz-appearance: none) {
   :root {
     --nav-offset: -17px;

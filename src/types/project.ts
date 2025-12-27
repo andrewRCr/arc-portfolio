@@ -25,12 +25,19 @@ export interface ProjectLinks {
 }
 
 /**
+ * Screenshot with alt text for accessibility
+ */
+export interface Screenshot {
+  src: string; // Screenshot path (e.g., "/projects/slug/screenshot-1.webp")
+  alt: string; // Alt text for accessibility
+}
+
+/**
  * Image references for a project
  */
 export interface ProjectImages {
-  thumbnail: string; // Main thumbnail for project cards (e.g., "/thumbnails/project-slug.png")
-  screenshots: string[]; // Array of screenshot paths (e.g., ["/projects/slug/screenshot-1.png"])
-  altTexts: string[]; // Corresponding alt text for each screenshot (accessibility)
+  thumbnail: string; // Main thumbnail for project cards (e.g., "/thumbnails/project-slug.webp")
+  screenshots: Screenshot[]; // Array of screenshots with alt text
 }
 
 /**

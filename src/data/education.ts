@@ -1,8 +1,5 @@
 /**
  * Education credentials
- *
- * Migrated from Squarespace with minimal detail.
- * Optional fields (dates, GPA) likely only available on resume.
  */
 
 import { Education } from "@/types/education";

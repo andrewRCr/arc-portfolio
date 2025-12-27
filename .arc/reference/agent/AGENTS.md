@@ -1,6 +1,6 @@
 # arc-portfolio - AI Agent Reference Card
 
-**Version:** 2025-10-25 | **Maintained by:** Andrew Creekmore | **Source of truth:** `.arc/reference/`
+**Version:** 2025-12-26 | **Maintained by:** Andrew Creekmore | **Source of truth:** `.arc/reference/`
 
 ## Project Overview
 

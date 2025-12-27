@@ -309,6 +309,9 @@ This feature will be considered successful when:
 
 ### Phase 1 Questions
 
+- **Browser-specific nav offset hack**: globals.css contains a `--nav-offset` variable with browser-specific overrides
+  (Chromium vs Firefox) to fix navigation vertical alignment. Investigate root cause and eliminate the hack by
+  normalizing layout (proper flexbox/positioning, consistent line-height/font rendering). (Fix during layout rework)
 - **Top bar width**: Should top bar be full-width (like status/menu bar in Unix systems) or match window width with
   gaps on left/right (consistent with windows below)? Both could work aesthetically. (Decide during implementation)
 - **Window split for projects page**: Is resizing main content window to spawn project detail window technically

@@ -1,12 +1,10 @@
 /**
  * Game modification portfolio data
  *
- * PLACEHOLDER DATA - Task 7.11
- * This file contains placeholder mod entries to validate the tabbed project architecture.
- * Real mod data will be migrated in Task 8.0 from NexusMods portfolio (~35 published mods).
+ * Placeholder entries for validating tabbed project architecture.
+ * Full mod data (~35 published mods from NexusMods) to be added in future work.
  *
- * Note: Mods use the same Project interface as software projects, demonstrating
- * component reusability across different project categories.
+ * Mods use the same Project interface as software projects for component reusability.
  */
 
 import { Project } from "@/types/project";
@@ -20,10 +18,10 @@ export const mods: Project[] = [
     title: "[Placeholder] Example Skyrim Mod",
     slug: "placeholder-skyrim-mod",
     description:
-      "This is a placeholder entry for a Skyrim mod. Real mod data will be added in Task 8.0. " +
+      "Placeholder entry for a Skyrim mod. Full mod data to be added in future work. " +
       "The actual portfolio includes gameplay overhauls, UI improvements, and quality-of-life enhancements " +
       "published on NexusMods with thousands of downloads and active community support.",
-    shortDescription: "Placeholder for gameplay mod. Real data coming in Task 8.0 migration from NexusMods portfolio.",
+    shortDescription: "Placeholder for gameplay mod. Full data to be added from NexusMods portfolio.",
     category: ["Skyrim"],
     tags: ["Modding", "Game Design", "Community Support"],
     techStack: ["Creation Kit", "Papyrus Scripting", "xEdit"],
@@ -38,7 +36,6 @@ export const mods: Project[] = [
     images: {
       thumbnail: "", // Empty string triggers placehold.co fallback in ProjectCard
       screenshots: [],
-      altTexts: [],
     },
     order: 1,
     featured: false,
@@ -52,11 +49,11 @@ export const mods: Project[] = [
     title: "[Placeholder] Example Fallout 4 Mod",
     slug: "placeholder-fallout4-mod",
     description:
-      "This is a placeholder entry for a Fallout 4 mod. Real mod data will be added in Task 8.0. " +
+      "Placeholder entry for a Fallout 4 mod. Full mod data to be added in future work. " +
       "The actual portfolio includes settlement building tools, weapon modifications, and gameplay enhancements " +
       "demonstrating reverse engineering skills and ongoing maintenance commitment.",
     shortDescription:
-      "Placeholder for settlement mod. Real data coming in Task 8.0 migration from NexusMods portfolio.",
+      "Placeholder for settlement mod. Full data to be added from NexusMods portfolio.",
     category: ["Fallout 4"],
     tags: ["Modding", "Game Design", "Bug Fixing"],
     techStack: ["Creation Kit", "F4SE", "Material Editor"],
@@ -71,7 +68,6 @@ export const mods: Project[] = [
     images: {
       thumbnail: "", // Empty string triggers placehold.co fallback in ProjectCard
       screenshots: [],
-      altTexts: [],
     },
     order: 2,
     featured: false,

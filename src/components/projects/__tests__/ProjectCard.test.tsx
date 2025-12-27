@@ -25,8 +25,7 @@ const mockProject: Project = {
   },
   images: {
     thumbnail: "/thumbnails/test-project.webp",
-    screenshots: ["/projects/test-project/screenshot-1.webp"],
-    altTexts: ["Test screenshot"],
+    screenshots: [{ src: "/projects/test-project/screenshot-1.webp", alt: "Test screenshot" }],
   },
   order: 1,
   featured: true,

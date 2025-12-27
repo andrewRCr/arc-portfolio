@@ -34,7 +34,6 @@ const mockProject: Project = {
   images: {
     thumbnail: "/test.webp",
     screenshots: [],
-    altTexts: [],
   },
   order: 1,
   featured: true,

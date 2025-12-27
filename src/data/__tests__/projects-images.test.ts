@@ -3,7 +3,7 @@
  *
  * These tests verify that:
  * - Image paths follow correct conventions
- * - Screenshot and altText arrays match in length
+ * - Screenshots have valid src and alt properties
  * - Image paths use correct format and slugs
  * - All projects have required image fields
  *
@@ -30,7 +30,15 @@ describe("Projects Image Data Validation", () => {
         expect(typeof project.images.thumbnail).toBe("string");
 
         expect(Array.isArray(project.images.screenshots)).toBe(true);
-        expect(Array.isArray(project.images.altTexts)).toBe(true);
+      });
+    });
+
+    it("should have screenshots with src and alt properties", () => {
+      projects.forEach((project) => {
+        project.images.screenshots.forEach((screenshot) => {
+          expect(typeof screenshot.src).toBe("string");
+          expect(typeof screenshot.alt).toBe("string");
+        });
       });
     });
   });
@@ -78,10 +86,10 @@ describe("Projects Image Data Validation", () => {
       projects.forEach((project) => {
         project.images.screenshots.forEach((screenshot) => {
           // Should start with /projects/{slug}/
-          expect(screenshot).toMatch(/^\/projects\/[^/]+\//);
+          expect(screenshot.src).toMatch(/^\/projects\/[^/]+\//);
 
           // Should be screenshot-N.webp or screenshot-N.jpg
-          expect(screenshot).toMatch(/screenshot-\d+\.(webp|jpg)$/);
+          expect(screenshot.src).toMatch(/screenshot-\d+\.(webp|jpg)$/);
         });
       });
     });
@@ -90,7 +98,7 @@ describe("Projects Image Data Validation", () => {
       projects.forEach((project) => {
         project.images.screenshots.forEach((screenshot) => {
           const expectedPrefix = `/projects/${project.slug}/`;
-          expect(screenshot).toContain(expectedPrefix);
+          expect(screenshot.src).toContain(expectedPrefix);
         });
       });
     });
@@ -99,7 +107,7 @@ describe("Projects Image Data Validation", () => {
       projects.forEach((project) => {
         if (project.images.screenshots.length > 0) {
           const screenshotNumbers = project.images.screenshots.map((screenshot) => {
-            const match = screenshot.match(/screenshot-(\d+)\./);
+            const match = screenshot.src.match(/screenshot-(\d+)\./);
             return match ? parseInt(match[1], 10) : 0;
           });
 
@@ -116,42 +124,36 @@ describe("Projects Image Data Validation", () => {
 
     it("should have no duplicate screenshot paths", () => {
       projects.forEach((project) => {
-        const uniqueScreenshots = new Set(project.images.screenshots);
+        const uniqueScreenshots = new Set(project.images.screenshots.map((s) => s.src));
         expect(uniqueScreenshots.size).toBe(project.images.screenshots.length);
       });
     });
   });
 
   describe("Alt Text Validation", () => {
-    it("should have altTexts array matching screenshots array length", () => {
-      projects.forEach((project) => {
-        expect(project.images.altTexts.length).toBe(project.images.screenshots.length);
-      });
-    });
-
     it("should have non-empty alt text for each screenshot", () => {
       projects.forEach((project) => {
-        project.images.altTexts.forEach((altText) => {
-          expect(typeof altText).toBe("string");
-          expect(altText.length).toBeGreaterThan(0);
+        project.images.screenshots.forEach((screenshot) => {
+          expect(typeof screenshot.alt).toBe("string");
+          expect(screenshot.alt.length).toBeGreaterThan(0);
         });
       });
     });
 
     it("should have descriptive alt text (minimum length)", () => {
       projects.forEach((project) => {
-        project.images.altTexts.forEach((altText) => {
+        project.images.screenshots.forEach((screenshot) => {
           // Alt text should be descriptive, at least 10 characters
-          expect(altText.length).toBeGreaterThanOrEqual(10);
+          expect(screenshot.alt.length).toBeGreaterThanOrEqual(10);
         });
       });
     });
 
     it("should have properly formatted alt text (no extra whitespace)", () => {
       projects.forEach((project) => {
-        project.images.altTexts.forEach((altText) => {
-          expect(altText).toBe(altText.trim());
-          expect(altText).not.toMatch(/\s{2,}/); // No double spaces
+        project.images.screenshots.forEach((screenshot) => {
+          expect(screenshot.alt).toBe(screenshot.alt.trim());
+          expect(screenshot.alt).not.toMatch(/\s{2,}/); // No double spaces
         });
       });
     });
@@ -179,7 +181,7 @@ describe("Projects Image Data Validation", () => {
         const thumbnailFormat = project.images.thumbnail.endsWith(".webp") ? "webp" : "jpg";
 
         project.images.screenshots.forEach((screenshot) => {
-          const screenshotFormat = screenshot.endsWith(".webp") ? "webp" : "jpg";
+          const screenshotFormat = screenshot.src.endsWith(".webp") ? "webp" : "jpg";
           expect(screenshotFormat).toBe(thumbnailFormat);
         });
       });
@@ -208,7 +210,7 @@ describe("Projects Image Data Validation", () => {
         expect(project.images.thumbnail).not.toContain("\\");
 
         project.images.screenshots.forEach((screenshot) => {
-          expect(screenshot).not.toContain("\\");
+          expect(screenshot.src).not.toContain("\\");
         });
       });
     });
@@ -221,7 +223,7 @@ describe("Projects Image Data Validation", () => {
         }
 
         project.images.screenshots.forEach((screenshot) => {
-          expect(screenshot.startsWith("/")).toBe(true);
+          expect(screenshot.src.startsWith("/")).toBe(true);
         });
       });
     });
@@ -231,7 +233,7 @@ describe("Projects Image Data Validation", () => {
         expect(project.images.thumbnail).not.toMatch(/\.(WEBP|JPG|PNG)$/);
 
         project.images.screenshots.forEach((screenshot) => {
-          expect(screenshot).not.toMatch(/\.(WEBP|JPG|PNG)$/);
+          expect(screenshot.src).not.toMatch(/\.(WEBP|JPG|PNG)$/);
         });
       });
     });
@@ -290,7 +292,7 @@ describe("Projects Image Data Validation", () => {
 
       projects.forEach((project) => {
         project.images.screenshots.forEach((screenshot) => {
-          const match = screenshot.match(/^\/projects\/([^/]+)\//);
+          const match = screenshot.src.match(/^\/projects\/([^/]+)\//);
           expect(match).not.toBeNull();
 
           const slugInPath = match![1];
@@ -305,7 +307,7 @@ describe("Projects Image Data Validation", () => {
         expect(project.images.thumbnail).not.toMatch(/\s/);
 
         project.images.screenshots.forEach((screenshot) => {
-          expect(screenshot).not.toMatch(/\s/);
+          expect(screenshot.src).not.toMatch(/\s/);
         });
       });
     });

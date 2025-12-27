@@ -9,9 +9,12 @@
  *
  *   vi.mock("next/navigation", () => createNavigationMock());
  *
+ *   beforeEach(() => {
+ *     mockNavigation.reset();
+ *   });
+ *
  *   // In tests:
  *   mockNavigation.setPathname("/projects");
- *   mockNavigation.push.mockClear();
  */
 
 import { vi } from "vitest";

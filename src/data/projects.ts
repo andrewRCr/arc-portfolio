@@ -1,20 +1,8 @@
 /**
  * Portfolio project data
  *
- * Phase 2 Content Migration: Migrating 9 projects total
- * - Projects 1-3: New projects (CineXplorer, ARC Framework, arc-portfolio)
- * - Projects 4-9: Existing projects from Squarespace
- *
- * Migration Status: 9/9 projects complete ✓
- * ✓ Project 1: CineXplorer (Task 2.1)
- * ✓ Project 2: ARC Agentic Development Framework (Task 2.2)
- * ✓ Project 3: arc-portfolio (Task 2.3)
- * ✓ Project 4: TaskFocus (Task 2.4)
- * ✓ Project 5: PetResort (Task 2.5)
- * ✓ Project 6: NewGame+ Customizer for DOOM (2016) (Task 2.6)
- * ✓ Project 7: Action RPG Project (Task 2.7)
- * ✓ Project 8: Survival Horror Project (Task 2.8)
- * ✓ Project 9: Pong Clone (Task 2.9)
+ * Contains 9 software projects ordered by priority (order field).
+ * Projects include web apps, desktop apps, games, and frameworks.
  */
 
 import { Project } from "@/types/project";
@@ -76,14 +64,9 @@ export const projects: Project[] = [
     images: {
       thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
       screenshots: [
-        "/projects/cinexplorer/screenshot-1.jpg", // TODO: Add actual screenshots
-        "/projects/cinexplorer/screenshot-2.jpg",
-        "/projects/cinexplorer/screenshot-3.jpg",
-      ],
-      altTexts: [
-        "CineXplorer movie discovery interface", // TODO: Update alt text once screenshots added
-        "Advanced filtering and search functionality",
-        "User watchlist and library management",
+        { src: "/projects/cinexplorer/screenshot-1.jpg", alt: "CineXplorer movie discovery interface" },
+        { src: "/projects/cinexplorer/screenshot-2.jpg", alt: "Advanced filtering and search functionality" },
+        { src: "/projects/cinexplorer/screenshot-3.jpg", alt: "User watchlist and library management" },
       ],
     },
     teamSize: "Solo project",
@@ -132,14 +115,9 @@ export const projects: Project[] = [
     images: {
       thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
       screenshots: [
-        "/projects/arc-agentic-dev-framework/screenshot-1.jpg", // TODO: Add actual screenshots (directory structure, workflow diagrams, example docs)
-        "/projects/arc-agentic-dev-framework/screenshot-2.jpg",
-        "/projects/arc-agentic-dev-framework/screenshot-3.jpg",
-      ],
-      altTexts: [
-        "ARC Framework directory structure and documentation", // TODO: Update alt text once screenshots added
-        "Template-first constitutional documents",
-        "Workflow documentation and process diagrams",
+        { src: "/projects/arc-agentic-dev-framework/screenshot-1.jpg", alt: "ARC Framework directory structure and documentation" },
+        { src: "/projects/arc-agentic-dev-framework/screenshot-2.jpg", alt: "Template-first constitutional documents" },
+        { src: "/projects/arc-agentic-dev-framework/screenshot-3.jpg", alt: "Workflow documentation and process diagrams" },
       ],
     },
     teamSize: "Solo project",
@@ -147,8 +125,8 @@ export const projects: Project[] = [
     developmentTime: "2024-2025",
     architectureNotes: [
       "Documentation-only framework with no code dependencies - pure process and templates",
-      ".arc/ directory contains deployable template system for project adoption",
-      ".arc-internal/ workspace for framework development (self-hosting methodology)",
+      "Deployable template system for project adoption via dedicated directory structure",
+      "Self-hosting methodology: framework developed using its own development workspace",
       "Template-first documents eliminate token replacement complexity with copy-ready guidance",
       "Built on Apache 2.0 foundation (ai-dev-tasks) with significant original enhancements",
     ],
@@ -206,14 +184,9 @@ export const projects: Project[] = [
     images: {
       thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
       screenshots: [
-        "/projects/arc-portfolio/screenshot-1.jpg", // TODO: Add actual screenshots (homepage, project showcase, component examples)
-        "/projects/arc-portfolio/screenshot-2.jpg",
-        "/projects/arc-portfolio/screenshot-3.jpg",
-      ],
-      altTexts: [
-        "arc-portfolio homepage with project showcase", // TODO: Update alt text once screenshots added
-        "Type-safe content architecture and data structures",
-        "Component composition and Shadcn/ui integration",
+        { src: "/projects/arc-portfolio/screenshot-1.jpg", alt: "arc-portfolio homepage with project showcase" },
+        { src: "/projects/arc-portfolio/screenshot-2.jpg", alt: "Type-safe content architecture and data structures" },
+        { src: "/projects/arc-portfolio/screenshot-3.jpg", alt: "Component composition and Shadcn/ui integration" },
       ],
     },
     teamSize: "Solo project",
@@ -282,24 +255,14 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/taskfocus.webp",
       screenshots: [
-        "/projects/taskfocus/screenshot-1.webp",
-        "/projects/taskfocus/screenshot-2.webp",
-        "/projects/taskfocus/screenshot-3.webp",
-        "/projects/taskfocus/screenshot-4.webp",
-        "/projects/taskfocus/screenshot-5.webp",
-        "/projects/taskfocus/screenshot-6.webp",
-        "/projects/taskfocus/screenshot-7.webp",
-        "/projects/taskfocus/screenshot-8.webp",
-      ],
-      altTexts: [
-        "TaskFocus Today view with prioritized tasks", // TODO: Update with actual screenshot descriptions
-        "Task organization with Projects and Contexts",
-        "Desktop and web interface cross-platform experience",
-        "TaskFocus feature screenshot 4",
-        "TaskFocus feature screenshot 5",
-        "TaskFocus feature screenshot 6",
-        "TaskFocus feature screenshot 7",
-        "TaskFocus feature screenshot 8",
+        { src: "/projects/taskfocus/screenshot-1.webp", alt: "TaskFocus Today view with prioritized tasks" },
+        { src: "/projects/taskfocus/screenshot-2.webp", alt: "Task organization with Projects and Contexts" },
+        { src: "/projects/taskfocus/screenshot-3.webp", alt: "Desktop and web interface cross-platform experience" },
+        { src: "/projects/taskfocus/screenshot-4.webp", alt: "TaskFocus feature screenshot 4" },
+        { src: "/projects/taskfocus/screenshot-5.webp", alt: "TaskFocus feature screenshot 5" },
+        { src: "/projects/taskfocus/screenshot-6.webp", alt: "TaskFocus feature screenshot 6" },
+        { src: "/projects/taskfocus/screenshot-7.webp", alt: "TaskFocus feature screenshot 7" },
+        { src: "/projects/taskfocus/screenshot-8.webp", alt: "TaskFocus feature screenshot 8" },
       ],
     },
     teamSize: "Solo project",
@@ -351,6 +314,7 @@ export const projects: Project[] = [
     links: {
       github: "https://github.com/andrewRCr/PetResort",
       liveDemo: "https://pet-resort.andrewcreekmore.com",
+      // Public demo credentials - fictional business owner account for demo access
       demoCredentials: {
         username: "admin",
         password: "admin",
@@ -359,24 +323,14 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/petresort.webp",
       screenshots: [
-        "/projects/petresort/screenshot-1.webp",
-        "/projects/petresort/screenshot-2.webp",
-        "/projects/petresort/screenshot-3.webp",
-        "/projects/petresort/screenshot-4.webp",
-        "/projects/petresort/screenshot-5.webp",
-        "/projects/petresort/screenshot-6.webp",
-        "/projects/petresort/screenshot-7.webp",
-        "/projects/petresort/screenshot-8.webp",
-      ],
-      altTexts: [
-        "PetResort dashboard with visit overview and metrics", // TODO: Update with actual screenshot descriptions
-        "Guest and client management interfaces",
-        "Admin panel with role-based access control",
-        "PetResort feature screenshot 4",
-        "PetResort feature screenshot 5",
-        "PetResort feature screenshot 6",
-        "PetResort feature screenshot 7",
-        "PetResort feature screenshot 8",
+        { src: "/projects/petresort/screenshot-1.webp", alt: "PetResort dashboard with visit overview and metrics" },
+        { src: "/projects/petresort/screenshot-2.webp", alt: "Guest and client management interfaces" },
+        { src: "/projects/petresort/screenshot-3.webp", alt: "Admin panel with role-based access control" },
+        { src: "/projects/petresort/screenshot-4.webp", alt: "PetResort feature screenshot 4" },
+        { src: "/projects/petresort/screenshot-5.webp", alt: "PetResort feature screenshot 5" },
+        { src: "/projects/petresort/screenshot-6.webp", alt: "PetResort feature screenshot 6" },
+        { src: "/projects/petresort/screenshot-7.webp", alt: "PetResort feature screenshot 7" },
+        { src: "/projects/petresort/screenshot-8.webp", alt: "PetResort feature screenshot 8" },
       ],
     },
     teamSize: "Solo project",
@@ -433,16 +387,10 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
       screenshots: [
-        "/projects/doom-newgame-plus-customizer/screenshot-1.webp",
-        "/projects/doom-newgame-plus-customizer/screenshot-2.webp",
-        "/projects/doom-newgame-plus-customizer/screenshot-3.webp",
-        "/projects/doom-newgame-plus-customizer/screenshot-4.webp",
-      ],
-      altTexts: [
-        "NewGame+ Customizer desktop application interface", // TODO: Update with actual screenshot descriptions
-        "Gameplay configuration and validation UI",
-        "Custom mod generation and installation workflow",
-        "DOOM Customizer feature screenshot 4",
+        { src: "/projects/doom-newgame-plus-customizer/screenshot-1.webp", alt: "NewGame+ Customizer desktop application interface" },
+        { src: "/projects/doom-newgame-plus-customizer/screenshot-2.webp", alt: "Gameplay configuration and validation UI" },
+        { src: "/projects/doom-newgame-plus-customizer/screenshot-3.webp", alt: "Custom mod generation and installation workflow" },
+        { src: "/projects/doom-newgame-plus-customizer/screenshot-4.webp", alt: "DOOM Customizer feature screenshot 4" },
       ],
     },
     teamSize: "Solo project",
@@ -504,40 +452,22 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/action-rpg-project.webp",
       screenshots: [
-        "/projects/action-rpg-project/screenshot-1.webp",
-        "/projects/action-rpg-project/screenshot-2.webp",
-        "/projects/action-rpg-project/screenshot-3.webp",
-        "/projects/action-rpg-project/screenshot-4.webp",
-        "/projects/action-rpg-project/screenshot-5.webp",
-        "/projects/action-rpg-project/screenshot-6.webp",
-        "/projects/action-rpg-project/screenshot-7.webp",
-        "/projects/action-rpg-project/screenshot-8.webp",
-        "/projects/action-rpg-project/screenshot-9.webp",
-        "/projects/action-rpg-project/screenshot-10.webp",
-        "/projects/action-rpg-project/screenshot-11.webp",
-        "/projects/action-rpg-project/screenshot-12.webp",
-        "/projects/action-rpg-project/screenshot-13.webp",
-        "/projects/action-rpg-project/screenshot-14.webp",
-        "/projects/action-rpg-project/screenshot-15.webp",
-        "/projects/action-rpg-project/screenshot-16.webp",
-      ],
-      altTexts: [
-        "Action RPG combat encounter with posture-break mechanics", // TODO: Update with actual screenshot descriptions
-        "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues",
-        "Dungeon exploration and idol statue checkpoint",
-        "Boss battle with Large Skeletal Warrior",
-        "Action RPG gameplay screenshot 5",
-        "Action RPG gameplay screenshot 6",
-        "Action RPG gameplay screenshot 7",
-        "Action RPG gameplay screenshot 8",
-        "Action RPG gameplay screenshot 9",
-        "Action RPG gameplay screenshot 10",
-        "Action RPG gameplay screenshot 11",
-        "Action RPG gameplay screenshot 12",
-        "Action RPG gameplay screenshot 13",
-        "Action RPG gameplay screenshot 14",
-        "Action RPG gameplay screenshot 15",
-        "Action RPG gameplay screenshot 16",
+        { src: "/projects/action-rpg-project/screenshot-1.webp", alt: "Action RPG combat encounter with posture-break mechanics" },
+        { src: "/projects/action-rpg-project/screenshot-2.webp", alt: "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues" },
+        { src: "/projects/action-rpg-project/screenshot-3.webp", alt: "Dungeon exploration and idol statue checkpoint" },
+        { src: "/projects/action-rpg-project/screenshot-4.webp", alt: "Boss battle with Large Skeletal Warrior" },
+        { src: "/projects/action-rpg-project/screenshot-5.webp", alt: "Action RPG gameplay screenshot 5" },
+        { src: "/projects/action-rpg-project/screenshot-6.webp", alt: "Action RPG gameplay screenshot 6" },
+        { src: "/projects/action-rpg-project/screenshot-7.webp", alt: "Action RPG gameplay screenshot 7" },
+        { src: "/projects/action-rpg-project/screenshot-8.webp", alt: "Action RPG gameplay screenshot 8" },
+        { src: "/projects/action-rpg-project/screenshot-9.webp", alt: "Action RPG gameplay screenshot 9" },
+        { src: "/projects/action-rpg-project/screenshot-10.webp", alt: "Action RPG gameplay screenshot 10" },
+        { src: "/projects/action-rpg-project/screenshot-11.webp", alt: "Action RPG gameplay screenshot 11" },
+        { src: "/projects/action-rpg-project/screenshot-12.webp", alt: "Action RPG gameplay screenshot 12" },
+        { src: "/projects/action-rpg-project/screenshot-13.webp", alt: "Action RPG gameplay screenshot 13" },
+        { src: "/projects/action-rpg-project/screenshot-14.webp", alt: "Action RPG gameplay screenshot 14" },
+        { src: "/projects/action-rpg-project/screenshot-15.webp", alt: "Action RPG gameplay screenshot 15" },
+        { src: "/projects/action-rpg-project/screenshot-16.webp", alt: "Action RPG gameplay screenshot 16" },
       ],
     },
     teamSize: "Solo project",
@@ -600,52 +530,28 @@ export const projects: Project[] = [
     images: {
       thumbnail: "/thumbnails/survival-horror-project.webp",
       screenshots: [
-        "/projects/survival-horror-project/screenshot-1.webp",
-        "/projects/survival-horror-project/screenshot-2.webp",
-        "/projects/survival-horror-project/screenshot-3.webp",
-        "/projects/survival-horror-project/screenshot-4.webp",
-        "/projects/survival-horror-project/screenshot-5.webp",
-        "/projects/survival-horror-project/screenshot-6.webp",
-        "/projects/survival-horror-project/screenshot-7.webp",
-        "/projects/survival-horror-project/screenshot-8.webp",
-        "/projects/survival-horror-project/screenshot-9.webp",
-        "/projects/survival-horror-project/screenshot-10.webp",
-        "/projects/survival-horror-project/screenshot-11.webp",
-        "/projects/survival-horror-project/screenshot-12.webp",
-        "/projects/survival-horror-project/screenshot-13.webp",
-        "/projects/survival-horror-project/screenshot-14.webp",
-        "/projects/survival-horror-project/screenshot-15.webp",
-        "/projects/survival-horror-project/screenshot-16.webp",
-        "/projects/survival-horror-project/screenshot-17.webp",
-        "/projects/survival-horror-project/screenshot-18.webp",
-        "/projects/survival-horror-project/screenshot-19.webp",
-        "/projects/survival-horror-project/screenshot-20.webp",
-        "/projects/survival-horror-project/screenshot-21.webp",
-        "/projects/survival-horror-project/screenshot-22.webp",
-      ],
-      altTexts: [
-        "Survival Horror mansion exploration and puzzle-solving", // TODO: Update with actual screenshot descriptions
-        "Third-person combat with zombie enemies",
-        "Multi-floor map system and inventory management",
-        "Environmental puzzle mechanics and key item retrieval",
-        "Survival Horror gameplay screenshot 5",
-        "Survival Horror gameplay screenshot 6",
-        "Survival Horror gameplay screenshot 7",
-        "Survival Horror gameplay screenshot 8",
-        "Survival Horror gameplay screenshot 9",
-        "Survival Horror gameplay screenshot 10",
-        "Survival Horror gameplay screenshot 11",
-        "Survival Horror gameplay screenshot 12",
-        "Survival Horror gameplay screenshot 13",
-        "Survival Horror gameplay screenshot 14",
-        "Survival Horror gameplay screenshot 15",
-        "Survival Horror gameplay screenshot 16",
-        "Survival Horror gameplay screenshot 17",
-        "Survival Horror gameplay screenshot 18",
-        "Survival Horror gameplay screenshot 19",
-        "Survival Horror gameplay screenshot 20",
-        "Survival Horror gameplay screenshot 21",
-        "Survival Horror gameplay screenshot 22",
+        { src: "/projects/survival-horror-project/screenshot-1.webp", alt: "Survival Horror mansion exploration and puzzle-solving" },
+        { src: "/projects/survival-horror-project/screenshot-2.webp", alt: "Third-person combat with zombie enemies" },
+        { src: "/projects/survival-horror-project/screenshot-3.webp", alt: "Multi-floor map system and inventory management" },
+        { src: "/projects/survival-horror-project/screenshot-4.webp", alt: "Environmental puzzle mechanics and key item retrieval" },
+        { src: "/projects/survival-horror-project/screenshot-5.webp", alt: "Survival Horror gameplay screenshot 5" },
+        { src: "/projects/survival-horror-project/screenshot-6.webp", alt: "Survival Horror gameplay screenshot 6" },
+        { src: "/projects/survival-horror-project/screenshot-7.webp", alt: "Survival Horror gameplay screenshot 7" },
+        { src: "/projects/survival-horror-project/screenshot-8.webp", alt: "Survival Horror gameplay screenshot 8" },
+        { src: "/projects/survival-horror-project/screenshot-9.webp", alt: "Survival Horror gameplay screenshot 9" },
+        { src: "/projects/survival-horror-project/screenshot-10.webp", alt: "Survival Horror gameplay screenshot 10" },
+        { src: "/projects/survival-horror-project/screenshot-11.webp", alt: "Survival Horror gameplay screenshot 11" },
+        { src: "/projects/survival-horror-project/screenshot-12.webp", alt: "Survival Horror gameplay screenshot 12" },
+        { src: "/projects/survival-horror-project/screenshot-13.webp", alt: "Survival Horror gameplay screenshot 13" },
+        { src: "/projects/survival-horror-project/screenshot-14.webp", alt: "Survival Horror gameplay screenshot 14" },
+        { src: "/projects/survival-horror-project/screenshot-15.webp", alt: "Survival Horror gameplay screenshot 15" },
+        { src: "/projects/survival-horror-project/screenshot-16.webp", alt: "Survival Horror gameplay screenshot 16" },
+        { src: "/projects/survival-horror-project/screenshot-17.webp", alt: "Survival Horror gameplay screenshot 17" },
+        { src: "/projects/survival-horror-project/screenshot-18.webp", alt: "Survival Horror gameplay screenshot 18" },
+        { src: "/projects/survival-horror-project/screenshot-19.webp", alt: "Survival Horror gameplay screenshot 19" },
+        { src: "/projects/survival-horror-project/screenshot-20.webp", alt: "Survival Horror gameplay screenshot 20" },
+        { src: "/projects/survival-horror-project/screenshot-21.webp", alt: "Survival Horror gameplay screenshot 21" },
+        { src: "/projects/survival-horror-project/screenshot-22.webp", alt: "Survival Horror gameplay screenshot 22" },
       ],
     },
     teamSize: "3-person team",
@@ -705,10 +611,9 @@ export const projects: Project[] = [
     },
     images: {
       thumbnail: "/thumbnails/pong-clone.webp",
-      screenshots: ["/projects/pong-clone/screenshot-1.webp", "/projects/pong-clone/screenshot-2.webp"],
-      altTexts: [
-        "Pong Clone gameplay with single-player AI opponent", // TODO: Update alt text once screenshots migrated
-        "Main menu and game interface",
+      screenshots: [
+        { src: "/projects/pong-clone/screenshot-1.webp", alt: "Pong Clone gameplay with single-player AI opponent" },
+        { src: "/projects/pong-clone/screenshot-2.webp", alt: "Main menu and game interface" },
       ],
     },
     teamSize: "Solo project",

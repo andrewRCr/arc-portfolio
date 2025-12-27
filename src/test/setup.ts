@@ -1,8 +1,7 @@
 /**
  * Vitest setup file
  *
- * Runs before all tests to configure the testing environment.
- * Sets up Testing Library matchers and any global test utilities.
+ * Configures Testing Library matchers and registers afterEach cleanup.
  */
 
 import "@testing-library/jest-dom";

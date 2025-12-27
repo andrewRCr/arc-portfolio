@@ -8,6 +8,7 @@ interface ModPageProps {
   }>;
   searchParams: Promise<{
     tab?: string;
+    from?: string;
   }>;
 }
 
@@ -19,7 +20,7 @@ export async function generateStaticParams() {
 
 export default async function ModProjectPage({ params, searchParams }: ModPageProps) {
   const { slug } = await params;
-  const { tab } = await searchParams;
+  const { tab, from } = await searchParams;
 
   const mod = mods.find((m) => m.slug === slug);
 
@@ -32,7 +33,7 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
 
   return (
     <div className="flex min-h-screen flex-col p-8">
-      <ProjectDetail project={mod} currentTab={currentTab} />
+      <ProjectDetail project={mod} currentTab={currentTab} from={from} />
     </div>
   );
 }
