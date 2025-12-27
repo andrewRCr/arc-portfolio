@@ -199,7 +199,7 @@ structures, display components, and proper routing for projects, skills, educati
     **DEFERRED**: Moved to backlog (`.arc/backlog/feature/BACKLOG-FEATURE.md`). Mods tab disabled via feature flag
     (`FEATURES.SHOW_MODS_TAB` in `src/config/features.ts`). All mods code/routes preserved for future re-enablement.
 
-- [ ] **8.0 Verify routing and navigation integration**
+- [x] **8.0 Verify routing and navigation integration**
     - [x] 8.1 Verify routing works between all pages (Home ↔ Projects ↔ Skills ↔ About ↔ Contact) ✓
     - [x] 8.2 Ensure all internal navigation links are functional ✓
     - [x] 8.3 Verify project detail pages render correctly and back button works
@@ -207,35 +207,46 @@ structures, display components, and proper routing for projects, skills, educati
         - Fixed: Featured projects on home page now link to detail pages with `?from=home`
         - Added: Context-aware back button - returns to Home or Projects based on navigation origin
     - [x] 8.4 Confirm `/about` page displays both Education and About sections correctly ✓
-    - [ ] 8.5 Write integration tests for navigation and routing flows
-    - [ ] 8.6 Run incremental quality checks (type-check, lint, format, test)
+    - [x] 8.5 Write integration tests for navigation and routing flows
+        - Created `tests/integration/routing.test.tsx` with 18 integration tests
+        - Established `tests/integration/` directory for integration tests (unit tests remain colocated in `src/**/__tests__/`)
+        - Tests navigation active state detection for all 5 nav links
+        - Tests context-aware back button (from=home → /, default → /projects)
+        - Tests correct URL generation for featured project links and project cards
+        - Added shared test infrastructure:
+            - `tests/mocks/next-navigation.ts` - Configurable navigation mock with reset/setPathname/setSearchParams
+            - `tests/mocks/next-image.tsx` - Standard img element mock for Next.js Image
+            - `tests/test-utils.tsx` - Custom render with ThemeContextProvider wrapper
+            - Added `@tests/*` path alias to tsconfig.json and vitest.config.ts
+        - Migrated ProjectDetail.test.tsx and ProjectTabs.test.tsx to use shared mocks
+    - [x] 8.6 Run incremental quality checks (type-check, lint, format, test) ✓
 
 ### **Phase 4:** Validation & Quality Assurance
 
-- [ ] **9.0 Validate content accuracy, type safety, and display functionality**
-    - [ ] 9.1 Verify zero TypeScript errors across all files
-    - [ ] 9.2 Verify all content section pages render correctly (`/skills`, `/about`, `/contact`)
-    - [ ] 9.3 Verify `/about` page displays both Education and About sections correctly
-    - [ ] 9.4 Verify all 9 software projects display correctly with accurate data
-    - [ ] 9.5 Verify category badges display correctly for software projects
-    - [ ] 9.6 Verify all external links open correctly in new tabs
-    - [ ] 9.7 Verify project ordering matches revised priority (CineXplorer-1, TaskFocus-2, etc.)
-    - [ ] 9.8 Verify skills categories are complete with technologies from all projects
-    - [ ] 9.9 Verify education, bio, and contact data accuracy
-    - [ ] 9.10 Verify navigation header shows all sections and links work correctly
-    - [ ] 9.11 Run full test suite and verify all tests pass
-    - [ ] 9.12 Test all navigation and routing flows manually (all pages accessible)
-    - [ ] 9.13 Run full quality gate suite (type-check, lint, format, markdown, build, test)
-    - [ ] 9.14 Verify build succeeds and site renders without runtime errors
+- [x] **9.0 Validate content accuracy, type safety, and display functionality**
+    - [x] 9.1 Verify zero TypeScript errors across all files ✓ (user-verified)
+    - [x] 9.2 Verify all content section pages render correctly (`/skills`, `/about`, `/contact`) ✓ (user-verified)
+    - [x] 9.3 Verify `/about` page displays both Education and About sections correctly ✓ (user-verified)
+    - [x] 9.4 Verify all 9 software projects display correctly with accurate data ✓ (user-verified)
+    - [x] 9.5 Verify category badges display correctly for software projects ✓ (user-verified)
+    - [x] 9.6 Verify all external links open correctly in new tabs ✓ (user-verified)
+    - [x] 9.7 Verify project ordering matches revised priority (CineXplorer-1, TaskFocus-2, etc.) ✓ (user-verified)
+    - [x] 9.8 Verify skills categories are complete with technologies from all projects ✓ (user-verified)
+    - [x] 9.9 Verify education, bio, and contact data accuracy ✓ (user-verified)
+    - [x] 9.10 Verify navigation header shows all sections and links work correctly ✓ (user-verified)
+    - [x] 9.11 Run full test suite and verify all tests pass ✓ (374 tests passing)
+    - [x] 9.12 Test all navigation and routing flows manually (all pages accessible) ✓ (user-verified)
+    - [x] 9.13 Run full quality gate suite (type-check, lint, format, markdown, build, test) ✓
+    - [x] 9.14 Verify build succeeds and site renders without runtime errors ✓ (21 pages generated)
 
 ---
 
 ## Success Criteria
 
-- [ ] TypeScript interfaces defined for all content types (projects, skills, education, bio, contact)
-- [ ] All 9 software projects migrated with accurate data and images
-- [ ] Skills, education, bio, and contact data migrated from Squarespace
-- [ ] Modular display components created (sections, cards, detail pages)
-- [ ] Navigation and routing functional between all pages
-- [ ] All quality gates pass (type-check, lint, format, markdown, build, tests)
-- [ ] Ready for merge to main
+- [x] TypeScript interfaces defined for all content types (projects, skills, education, bio, contact)
+- [x] All 9 software projects migrated with accurate data and images
+- [x] Skills, education, bio, and contact data migrated from Squarespace
+- [x] Modular display components created (sections, cards, detail pages)
+- [x] Navigation and routing functional between all pages
+- [x] All quality gates pass (type-check, lint, format, markdown, build, tests)
+- [x] Ready for merge to main
