@@ -11,6 +11,14 @@ import { describe, it, expect } from "vitest";
 import { contact } from "@/data/contact";
 import type { Contact } from "@/types/contact";
 
+/** Basic RFC-like email pattern: non-whitespace@non-whitespace.non-whitespace */
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Check if URL starts with a valid protocol (http://, https://, or mailto:) */
+function isValidUrl(url: string): boolean {
+  return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:");
+}
+
 describe("Contact Interface", () => {
   it("should be defined with required fields", () => {
     expect(contact).toBeDefined();
@@ -21,9 +29,8 @@ describe("Contact Interface", () => {
   });
 
   it("should have valid email format", () => {
-    // Basic email validation (contains @ and .)
-    expect(contact.email).toContain("@");
-    expect(contact.email).toContain(".");
+    expect(contact.email.length).toBeGreaterThan(0);
+    expect(contact.email).toMatch(EMAIL_PATTERN);
   });
 
   it("should have at least one social link", () => {
@@ -48,10 +55,7 @@ describe("Contact Interface", () => {
 
   it("should have valid URL format in social links", () => {
     contact.socialLinks.forEach((link) => {
-      // URLs should start with http://, https://, or mailto:
-      const isValidUrl =
-        link.url.startsWith("http://") || link.url.startsWith("https://") || link.url.startsWith("mailto:");
-      expect(isValidUrl).toBe(true);
+      expect(isValidUrl(link.url)).toBe(true);
     });
   });
 

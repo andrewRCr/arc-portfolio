@@ -1,6 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { SkillsSection } from "../SkillsSection";
+import { skills } from "@/data/skills";
+
+/**
+ * Expected category count derived from SkillCategory union type.
+ * Update if categories are added/removed in types/skills.ts.
+ */
+const EXPECTED_CATEGORIES = Object.keys(skills).length;
 
 describe("SkillsSection - Behavior Tests", () => {
   describe("Category Rendering", () => {
@@ -18,12 +25,11 @@ describe("SkillsSection - Behavior Tests", () => {
       expect(screen.getByRole("heading", { name: /methodologies/i })).toBeInTheDocument();
     });
 
-    it("renders at least 8 skill categories", () => {
+    it("renders all skill categories", () => {
       render(<SkillsSection />);
 
-      // Get all category headings (should be h3 or similar level)
       const headings = screen.getAllByRole("heading", { level: 3 });
-      expect(headings.length).toBeGreaterThanOrEqual(8);
+      expect(headings.length).toBe(EXPECTED_CATEGORIES);
     });
   });
 
@@ -63,7 +69,8 @@ describe("SkillsSection - Behavior Tests", () => {
     it("renders at least 40 total skills across all categories", () => {
       const { container } = render(<SkillsSection />);
 
-      // Skills should be rendered as list items or similar elements
+      // Current data contains 40+ skills across 8 categories.
+      // Update threshold if skills data changes significantly.
       const skillElements = container.querySelectorAll("li");
       expect(skillElements.length).toBeGreaterThanOrEqual(40);
     });
@@ -80,8 +87,9 @@ describe("SkillsSection - Behavior Tests", () => {
     it("uses list structure for skills within categories", () => {
       const { container } = render(<SkillsSection />);
 
+      // One list per category
       const lists = container.querySelectorAll("ul");
-      expect(lists.length).toBeGreaterThanOrEqual(8); // One list per category
+      expect(lists.length).toBe(EXPECTED_CATEGORIES);
     });
 
     it("has a main heading for the section", () => {

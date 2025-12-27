@@ -1,20 +1,28 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { ContactSection } from "../ContactSection";
+import { contact } from "@/data/contact";
+
+/** Escape special regex characters in a string */
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 describe("ContactSection - Behavior Tests", () => {
+  const emailPattern = new RegExp(escapeRegex(contact.email), "i");
+
   describe("Email Rendering", () => {
     it("renders email address", () => {
       render(<ContactSection />);
 
-      expect(screen.getByText(/andrew\.creekmore@me\.com/i)).toBeInTheDocument();
+      expect(screen.getByText(emailPattern)).toBeInTheDocument();
     });
 
     it("renders email as mailto link", () => {
       render(<ContactSection />);
 
-      const emailLink = screen.getByRole("link", { name: /andrew\.creekmore@me\.com/i });
-      expect(emailLink).toHaveAttribute("href", "mailto:andrew.creekmore@me.com");
+      const emailLink = screen.getByRole("link", { name: emailPattern });
+      expect(emailLink).toHaveAttribute("href", `mailto:${contact.email}`);
     });
   });
 
@@ -22,41 +30,36 @@ describe("ContactSection - Behavior Tests", () => {
     it("renders all social platform links", () => {
       render(<ContactSection />);
 
-      expect(screen.getByRole("link", { name: /github/i })).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: /linkedin/i })).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: /nexusmods/i })).toBeInTheDocument();
+      contact.socialLinks.forEach((link) => {
+        expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
+      });
     });
 
     it("renders correct URLs for social links", () => {
       render(<ContactSection />);
 
-      const githubLink = screen.getByRole("link", { name: /github/i });
-      const linkedinLink = screen.getByRole("link", { name: /linkedin/i });
-      const nexusmodsLink = screen.getByRole("link", { name: /nexusmods/i });
-
-      expect(githubLink).toHaveAttribute("href", "https://github.com/andrewRCr");
-      expect(linkedinLink).toHaveAttribute("href", "https://www.linkedin.com/in/andrewRCr");
-      expect(nexusmodsLink).toHaveAttribute("href", expect.stringContaining("nexusmods.com"));
+      contact.socialLinks.forEach((link) => {
+        const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
+        expect(element).toHaveAttribute("href", link.url);
+      });
     });
 
     it("opens social links in new tab with security attributes", () => {
       render(<ContactSection />);
 
-      const githubLink = screen.getByRole("link", { name: /github/i });
-      const linkedinLink = screen.getByRole("link", { name: /linkedin/i });
-
-      expect(githubLink).toHaveAttribute("target", "_blank");
-      expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
-      expect(linkedinLink).toHaveAttribute("target", "_blank");
-      expect(linkedinLink).toHaveAttribute("rel", "noopener noreferrer");
+      contact.socialLinks.forEach((link) => {
+        const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
+        expect(element).toHaveAttribute("target", "_blank");
+        expect(element).toHaveAttribute("rel", "noopener noreferrer");
+      });
     });
 
     it("renders at least 3 social links", () => {
       render(<ContactSection />);
 
       const links = screen.getAllByRole("link");
-      // Should have email link + 3 social links = 4 total minimum
-      expect(links.length).toBeGreaterThanOrEqual(4);
+      // Should have email link + social links
+      expect(links.length).toBeGreaterThanOrEqual(contact.socialLinks.length + 1);
     });
   });
 
@@ -80,13 +83,13 @@ describe("ContactSection - Behavior Tests", () => {
     it("renders actual contact data from data/contact.ts", () => {
       render(<ContactSection />);
 
-      // Verify email from contact.ts
-      expect(screen.getByText(/andrew\.creekmore@me\.com/i)).toBeInTheDocument();
+      // Verify email from contact data
+      expect(screen.getByText(emailPattern)).toBeInTheDocument();
 
-      // Verify social platforms from contact.ts
-      expect(screen.getByRole("link", { name: /github/i })).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: /linkedin/i })).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: /nexusmods/i })).toBeInTheDocument();
+      // Verify all social platforms from contact data
+      contact.socialLinks.forEach((link) => {
+        expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
+      });
     });
   });
 });

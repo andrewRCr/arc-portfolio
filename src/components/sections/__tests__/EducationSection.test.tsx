@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { EducationSection } from "../EducationSection";
+import { education } from "@/data/education";
 
 describe("EducationSection - Behavior Tests", () => {
   describe("Degree Rendering", () => {
@@ -26,12 +27,13 @@ describe("EducationSection - Behavior Tests", () => {
       expect(screen.getByText(/The University of Texas at Dallas/i)).toBeInTheDocument();
     });
 
-    it("renders at least 2 education entries", () => {
-      const { container } = render(<EducationSection />);
+    it("renders all education entries", () => {
+      render(<EducationSection />);
 
-      // Education entries should be list items or similar elements
-      const entries = container.querySelectorAll("li");
-      expect(entries.length).toBeGreaterThanOrEqual(2);
+      // Each education entry should have a data-testid
+      education.forEach((edu) => {
+        expect(screen.getByTestId(`education-${edu.id}`)).toBeInTheDocument();
+      });
     });
   });
 
@@ -95,16 +97,14 @@ describe("EducationSection - Behavior Tests", () => {
     });
 
     it("preserves degree order from data structure", () => {
-      const { container } = render(<EducationSection />);
+      render(<EducationSection />);
 
-      const entries = container.querySelectorAll("li");
-      const firstEntry = entries[0];
-      const secondEntry = entries[1];
+      // Query by stable data-testid attributes derived from education IDs
+      const entries = education.map((edu) => screen.getByTestId(`education-${edu.id}`));
 
-      // First degree should be CS (more recent)
-      expect(firstEntry?.textContent).toMatch(/Computer Science/i);
-      // Second degree should be Psychology
-      expect(secondEntry?.textContent).toMatch(/Psychology/i);
+      // Verify order matches data structure (most recent first)
+      expect(entries[0]).toHaveTextContent(/Computer Science/i);
+      expect(entries[1]).toHaveTextContent(/Psychology/i);
     });
   });
 });
