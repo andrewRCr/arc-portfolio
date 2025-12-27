@@ -15,3 +15,10 @@ yarn.lock
 
 # Logs
 *.log
+
+# Markdown files (handled by markdownlint)
+*.md
+.arc
+
+# JSONC config files (trailing comma conflict with VSCode JSON validator)
+.markdownlint-cli2.jsonc

@@ -103,18 +103,18 @@ resume for follow-up.
 ## 7. Data Sources & Dependencies
 
 - **External Sources**:
-  - GitHub API (potential integration for repository statistics and project metadata - to be explored)
-  - Domain registrar (andrewcreekmore.com transfer from Squarespace to appropriate DNS provider)
+    - GitHub API (potential integration for repository statistics and project metadata - to be explored)
+    - Domain registrar (andrewcreekmore.com transfer from Squarespace to appropriate DNS provider)
 - **User-Generated**:
-  - Contact form submissions (routed through Zeptomail for transactional email)
-  - Download tracking for resume and project files
+    - Contact form submissions (routed through Zeptomail for transactional email)
+    - Download tracking for resume and project files
 - **Derived Data**:
-  - Potential analytics aggregation for portfolio effectiveness tracking (to be explored)
+    - Potential analytics aggregation for portfolio effectiveness tracking (to be explored)
 - **Dependencies**:
-  - Vercel (hosting, deployment, and CDN delivery)
-  - Zeptomail (transactional email service for contact form)
-  - GitHub (version control and potential API integration)
-  - Large file storage solution for Unreal Engine game projects (~5GB each - alternatives to Google Drive
+    - Vercel (hosting, deployment, and CDN delivery)
+    - Zeptomail (transactional email service for contact form)
+    - GitHub (version control and potential API integration)
+    - Large file storage solution for Unreal Engine game projects (~5GB each - alternatives to Google Drive
     to be evaluated for professional delivery)
 
 ## 8. Project Context

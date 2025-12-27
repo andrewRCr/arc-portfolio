@@ -8,10 +8,9 @@ and contemporary AI-assisted development practices.
 
 ### Core Framework
 
-- **[Next.js 15](https://nextjs.org/)** - Full-stack React framework with App Router and Server Components
+- **[Next.js 16](https://nextjs.org/)** - Full-stack React framework with App Router and Server Components
 - **[React 19](https://react.dev/)** - UI library with latest features
 - **[TypeScript 5.x](https://www.typescriptlang.org/)** - Type safety and enhanced developer experience
-- **[Turbopack](https://turbo.build/pack)** - Next-generation build tool for fast development and production builds
 
 ### Styling & UI
 
@@ -25,12 +24,6 @@ and contemporary AI-assisted development practices.
 
 - **[React Hook Form](https://react-hook-form.com/)** - Performant form state management with minimal re-renders
 - **[Zod](https://zod.dev/)** - TypeScript-first schema validation for forms and data
-
-### Development Tools
-
-- **[ESLint](https://eslint.org/)** - Code quality and consistency enforcement
-- **[Prettier](https://prettier.io/)** - Opinionated code formatting
-- **[Vitest](https://vitest.dev/)** - Fast unit test framework powered by Vite (to be implemented)
 
 ### External Services
 
@@ -47,31 +40,6 @@ implementation.
 
 Learn more about the ARC framework: [arc-agentic-dev-framework](https://github.com/andrewRCr/arc-agentic-dev-framework)
 
-## Project Structure
-
-```
-arc-portfolio/
-├── src/
-│   ├── app/                 # Next.js App Router pages and layouts
-│   │   ├── layout.tsx       # Root layout with metadata
-│   │   ├── page.tsx         # Homepage
-│   │   ├── projects/        # Project showcase pages
-│   │   ├── about/           # Professional profile page
-│   │   ├── contact/         # Contact page
-│   │   └── api/             # API routes (contact form handler)
-│   ├── components/          # React components
-│   │   ├── ui/              # Shadcn/ui components
-│   │   ├── layout/          # Header, footer, navigation
-│   │   └── shared/          # Reusable components
-│   ├── lib/                 # Utilities and helper functions
-│   ├── types/               # TypeScript type definitions
-│   └── data/                # Static content (projects, skills, etc.)
-├── public/                  # Static assets (images, resume, downloads)
-├── .arc/                    # ARC development framework documentation
-├── .github/workflows/       # CI/CD configuration
-└── [config files]           # ESLint, Prettier, TypeScript configs
-```
-
 ## License
 
 **Dual License:**
@@ -84,4 +52,4 @@ See [LICENSE](LICENSE) for full details.
 
 ---
 
-_Built with React 19, Next.js 15, TypeScript, Tailwind CSS v4, and deployed on Vercel._
+_Built with React 19, Next.js 16, TypeScript, Tailwind CSS v4, and deployed on Vercel._
