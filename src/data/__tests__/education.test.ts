@@ -167,16 +167,25 @@ describe("Education Data Validation", () => {
 
   describe("Degree Ordering", () => {
     it("should have degrees ordered by graduation date (most recent first)", () => {
-      expect(education[0].graduationDate).toBe("2022"); // Computer Science
-      expect(education[1].graduationDate).toBe("2011"); // Psychology
+      // Verify each consecutive pair is in descending order
+      for (let i = 0; i < education.length - 1; i++) {
+        const currentYear = parseInt(education[i].graduationDate!, 10);
+        const nextYear = parseInt(education[i + 1].graduationDate!, 10);
+        expect(currentYear).toBeGreaterThanOrEqual(nextYear);
+      }
     });
 
-    it("should have Computer Science degree first", () => {
-      expect(education[0].major).toBe("Computer Science");
-    });
+    it("should match expected sorted order", () => {
+      // Create sorted copy and verify original matches
+      const sorted = [...education].sort((a, b) => {
+        const yearA = parseInt(a.graduationDate!, 10);
+        const yearB = parseInt(b.graduationDate!, 10);
+        return yearB - yearA; // Descending
+      });
 
-    it("should have Psychology degree second", () => {
-      expect(education[1].major).toBe("Psychology");
+      education.forEach((degree, i) => {
+        expect(degree.id).toBe(sorted[i].id);
+      });
     });
   });
 

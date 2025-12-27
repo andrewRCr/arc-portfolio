@@ -79,7 +79,7 @@ export function validateTheme(theme: Theme): ValidationResult {
   for (const mode of ["light", "dark"] as const) {
     const colors = theme[mode];
     for (const key of REQUIRED_COLOR_KEYS) {
-      if (!colors[key]) {
+      if (colors[key] === undefined) {
         missing.push(`${mode}.${key}`);
       }
     }

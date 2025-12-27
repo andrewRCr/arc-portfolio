@@ -73,9 +73,9 @@ describe("ProjectCard - Behavior Tests", () => {
 
     it("renders category badges before tech stack tags", () => {
       const { container } = render(<ProjectCard project={mockProject} />);
-      const badges = container.querySelectorAll('[data-testid*="badge"]');
-      const categoryBadges = Array.from(badges).slice(0, 2); // First 2 should be categories
+      const categoryBadges = container.querySelectorAll('[data-testid="category-badge"]');
 
+      expect(categoryBadges).toHaveLength(2);
       expect(categoryBadges[0]).toHaveTextContent("Web App");
       expect(categoryBadges[1]).toHaveTextContent("Desktop App");
     });
@@ -111,12 +111,16 @@ describe("ProjectCard - Behavior Tests", () => {
       expect(screen.getByText("+1")).toBeInTheDocument();
     });
 
-    it("displays tech tags after category badges", () => {
+    it("displays tech tags with correct content", () => {
       const { container } = render(<ProjectCard project={mockProject} />);
-      const badges = container.querySelectorAll('[data-testid*="badge"]');
-      // Category badges first (2), then tech badges
-      const techBadges = Array.from(badges).slice(2);
+      const techBadges = container.querySelectorAll('[data-testid="tech-badge"]');
+
+      // First 3 tech stack items + overflow indicator
+      expect(techBadges).toHaveLength(4);
       expect(techBadges[0]).toHaveTextContent("React");
+      expect(techBadges[1]).toHaveTextContent("TypeScript");
+      expect(techBadges[2]).toHaveTextContent("Node.js");
+      expect(techBadges[3]).toHaveTextContent("+1");
     });
   });
 
@@ -127,11 +131,16 @@ describe("ProjectCard - Behavior Tests", () => {
       expect(link).toBeInTheDocument();
     });
 
-    it("links to correct project detail page", () => {
+    it("links to correct software project detail page by default", () => {
       render(<ProjectCard project={mockProject} />);
       const link = screen.getByRole("link", { name: /test project/i });
-      expect(link).toHaveAttribute("href", expect.stringContaining("/projects"));
-      expect(link).toHaveAttribute("href", expect.stringContaining("test-project"));
+      expect(link).toHaveAttribute("href", "/projects/software/test-project");
+    });
+
+    it("links to correct mods project detail page when categoryType is mods", () => {
+      render(<ProjectCard project={mockProject} categoryType="mods" />);
+      const link = screen.getByRole("link", { name: /test project/i });
+      expect(link).toHaveAttribute("href", "/projects/mods/test-project");
     });
 
     it("does not open in new tab (internal navigation)", () => {

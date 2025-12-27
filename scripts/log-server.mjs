@@ -49,14 +49,13 @@ app.post("/log", (req, res) => {
 
   const logLine = `[${time}] ${type.toUpperCase()}: ${message}\n`;
 
-  // Write to file
-  try {
-    fs.appendFileSync(LOG_FILE, logLine);
-  } catch (err) {
-    console.error("Failed to write log:", err.message);
-  }
-
+  // Respond immediately, write async (fire-and-forget)
   res.sendStatus(200);
+
+  // Write to file asynchronously
+  fs.promises.appendFile(LOG_FILE, logLine).catch((err) => {
+    console.error("Failed to write log:", err.message);
+  });
 });
 
 // Clear logs endpoint (optional - for programmatic clearing)

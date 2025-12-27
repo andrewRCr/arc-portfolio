@@ -59,18 +59,19 @@ describe("Contact Interface", () => {
     });
   });
 
-  it("should allow flexible social platform types", () => {
-    // Type assertion to verify flexible platform structure
+  it("should use constrained icon types for social links", () => {
+    // Type assertion verifies icon field accepts valid SocialIcon values
     const customContact: Contact = {
       email: "test@example.com",
       socialLinks: [
-        { platform: "Custom Platform", url: "https://example.com", icon: "custom" },
         { platform: "GitHub", url: "https://github.com/user", icon: "github" },
+        { platform: "LinkedIn", url: "https://linkedin.com/in/user", icon: "linkedin" },
+        { platform: "NexusMods", url: "https://nexusmods.com/user", icon: "package" },
       ],
     };
 
     expect(customContact).toBeDefined();
-    expect(customContact.socialLinks.length).toBe(2);
+    expect(customContact.socialLinks.length).toBe(3);
   });
 
   it("should not have duplicate platforms", () => {

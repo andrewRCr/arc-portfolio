@@ -6,6 +6,12 @@
  */
 
 /**
+ * Supported icon identifiers for social links.
+ * Must match keys in ContactSection's iconMap.
+ */
+export type SocialIcon = "github" | "linkedin" | "package";
+
+/**
  * Social media link entry
  *
  * Represents a social media profile or professional network link.
@@ -13,7 +19,7 @@
 export interface SocialLink {
   platform: string; // Platform name (e.g., "GitHub", "LinkedIn", "Twitter")
   url: string; // Full URL to profile
-  icon: string; // Icon identifier for rendering (e.g., "github", "linkedin")
+  icon: SocialIcon; // Icon identifier for rendering
 }
 
 /**

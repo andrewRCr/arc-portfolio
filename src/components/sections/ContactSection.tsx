@@ -5,10 +5,11 @@
  */
 
 import { contact } from "@/data/contact";
-import { Github, Linkedin, Package, Mail } from "lucide-react";
+import { SocialIcon } from "@/types/contact";
+import { Github, Linkedin, Package, Mail, LucideIcon } from "lucide-react";
 
 // Map icon identifiers to lucide-react components
-const iconMap = {
+const iconMap: Record<SocialIcon, LucideIcon> = {
   github: Github,
   linkedin: Linkedin,
   package: Package,
@@ -33,7 +34,7 @@ export function ContactSection() {
           <h3 className="text-xl font-semibold text-foreground">Connect</h3>
           <div className="flex flex-wrap gap-4">
             {contact.socialLinks.map((social) => {
-              const IconComponent = iconMap[social.icon as keyof typeof iconMap];
+              const IconComponent = iconMap[social.icon];
               return (
                 <a
                   key={social.platform}
@@ -42,7 +43,7 @@ export function ContactSection() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10"
                 >
-                  {IconComponent && <IconComponent className="h-5 w-5 text-foreground" />}
+                  <IconComponent className="h-5 w-5 text-foreground" />
                   <span className="font-medium text-foreground">{social.platform}</span>
                 </a>
               );

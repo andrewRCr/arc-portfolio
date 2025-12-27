@@ -23,19 +23,19 @@ import type { ThemeRegistry } from "./types";
 export const themes: ThemeRegistry = {
   gruvbox: gruvboxTheme,
   "rose-pine": rosePineTheme,
-} as const;
-
-/**
- * Default theme loaded on first visit.
- * Falls back to this theme if saved preference is invalid.
- */
-export const defaultTheme = "gruvbox";
+};
 
 /**
  * Type-safe theme names.
  * Use for theme selection validation.
  */
 export type ThemeName = keyof typeof themes;
+
+/**
+ * Default theme loaded on first visit.
+ * Falls back to this theme if saved preference is invalid.
+ */
+export const defaultTheme: ThemeName = "gruvbox";
 
 // Re-export types for external use
 export type { Theme, ThemeColors, AccentVariant, AccentMetadata } from "./types";

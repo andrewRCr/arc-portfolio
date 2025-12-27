@@ -31,9 +31,5 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
   // Preserve tab state from query param, default to 'mods' for mod pages
   const currentTab = tab === "software" ? "software" : "mods";
 
-  return (
-    <div className="flex min-h-screen flex-col p-8">
-      <ProjectDetail project={mod} currentTab={currentTab} from={from} />
-    </div>
-  );
+  return <ProjectDetail project={mod} currentTab={currentTab} from={from} />;
 }

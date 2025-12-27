@@ -173,26 +173,4 @@ describe("Routing Integration Tests", () => {
       expect(screen.queryByText(/back to home/i)).not.toBeInTheDocument();
     });
   });
-
-  describe("Featured Project Links", () => {
-    it("home page featured projects should include from=home query param", () => {
-      // This tests the expected URL pattern for featured projects
-      // The actual URL format is: /projects/software/{slug}?from=home
-      const expectedUrl = "/projects/software/test-project?from=home";
-      expect(expectedUrl).toContain("from=home");
-      expect(expectedUrl).toContain("/projects/software/");
-    });
-  });
-
-  describe("Project Card Routing", () => {
-    it("software category generates correct detail URL", () => {
-      const expectedUrl = `/projects/software/${mockProject.slug}`;
-      expect(expectedUrl).toBe("/projects/software/test-project");
-    });
-
-    it("mods category generates correct detail URL", () => {
-      const expectedUrl = `/projects/mods/${mockProject.slug}`;
-      expect(expectedUrl).toBe("/projects/mods/test-project");
-    });
-  });
 });

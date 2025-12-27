@@ -16,6 +16,26 @@ interface ProjectDetailProps {
   from?: string;
 }
 
+interface ExternalLinkProps {
+  href: string;
+  label: string;
+  ariaLabel: string;
+}
+
+function ExternalLink({ href, label, ariaLabel }: ExternalLinkProps) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+      aria-label={ariaLabel}
+    >
+      {label} →
+    </a>
+  );
+}
+
 export default function ProjectDetail({ project, currentTab = "software", from }: ProjectDetailProps) {
   const router = useRouter();
 
@@ -59,54 +79,22 @@ export default function ProjectDetail({ project, currentTab = "software", from }
       </div>
 
       {/* External Links */}
-      {(project.links.github || project.links.liveDemo || project.links.download || project.links.external) && (
-        <div className="flex flex-wrap gap-3">
-          {project.links.github && (
-            <a
-              href={project.links.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
-              aria-label="View project on GitHub"
-            >
-              GitHub →
-            </a>
-          )}
-          {project.links.liveDemo && (
-            <a
-              href={project.links.liveDemo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
-              aria-label="View live demo"
-            >
-              Live Demo →
-            </a>
-          )}
-          {project.links.download && (
-            <a
-              href={project.links.download}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
-              aria-label="Download project"
-            >
-              Download →
-            </a>
-          )}
-          {project.links.external && (
-            <a
-              href={project.links.external}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
-              aria-label="View on NexusMods"
-            >
-              View on NexusMods →
-            </a>
-          )}
-        </div>
-      )}
+      {(() => {
+        const linkDescriptors = [
+          { href: project.links.github, label: "GitHub", ariaLabel: "View project on GitHub" },
+          { href: project.links.liveDemo, label: "Live Demo", ariaLabel: "View live demo" },
+          { href: project.links.download, label: "Download", ariaLabel: "Download project" },
+          { href: project.links.external, label: "View on NexusMods", ariaLabel: "View on NexusMods" },
+        ].filter((link): link is ExternalLinkProps => Boolean(link.href));
+
+        return linkDescriptors.length > 0 ? (
+          <div className="flex flex-wrap gap-3">
+            {linkDescriptors.map((link) => (
+              <ExternalLink key={link.label} {...link} />
+            ))}
+          </div>
+        ) : null;
+      })()}
 
       {/* Tech Stack */}
       <div className="space-y-3">
