@@ -111,11 +111,10 @@ transparent backgrounds, so I can read all content comfortably.
 #### Theme System
 
 11. **Theme Selection**: Must support multiple pre-defined color themes:
-    - Initial implementation: 3 theme families (~9 total variants to test)
-    - Suggested starting themes: Gruvbox, Rose Pine, Nord, Catppuccin, Tokyo Night, Dracula, Remedy, Solarized, Everforest
-    - Select subset during implementation (3-4 families covering diverse styles)
-    - Each theme includes light and dark variant
-    - Easy to add additional themes post-launch
+    - Foundation provides 3 theme families (6 total variants): Gruvbox, Rose Pine, Remedy
+    - Each theme includes light and dark variant with WCAG AA validated contrast
+    - Token system and theme structure make adding themes straightforward post-launch
+    - Consider adding 1-2 more themes during Phase 2 if time permits (Nord, Catppuccin candidates)
 
 12. **Light/Dark Toggle**: Must include separate control for light/dark mode:
     - Toggle positioned in top bar next to theme selector
@@ -156,12 +155,13 @@ transparent backgrounds, so I can read all content comfortably.
 
 #### Quality Assurance
 
-18. **Visual/Accessibility Testing**: Must write comprehensive tests for layout components:
-    - Visual regression tests for Navigation component with new layout
-    - Accessibility tests ensuring keyboard navigation and screen reader compatibility
-    - Theme switching interaction tests (verify theme persistence, system preference sync)
-    - Responsive layout tests across desktop, tablet, mobile viewports
-    - Test all theme combinations for contrast compliance
+18. **Visual/Accessibility Testing**: Must write comprehensive tests using foundation infrastructure:
+    - **Playwright E2E tests** for responsive layout at all 3 device profiles
+    - **vitest-axe tests** for WindowContainer, ThemePicker, and layout components
+    - **Visual regression** with Playwright screenshots (baseline after layout complete)
+    - Theme switching E2E tests (persistence, system preference sync, smooth transitions)
+    - Touch target size validation (≥44×44px) for all interactive elements on mobile
+    - Contrast tests for text over semi-transparent backgrounds (extend foundation tests)
 
 19. **Design Review**: Must conduct comprehensive design validation:
     - Review with @visual-design-reviewer agent (comprehensive design validation)
@@ -214,36 +214,47 @@ The following are explicitly **out of scope** for this feature:
 
 ### Color Theme Strategy
 
-- **Diverse palette**: Select 3-4 theme families representing different color philosophies
-    - Warm tones (Gruvbox)
-    - Cool tones (Nord)
-    - Vibrant (Tokyo Night, Dracula)
-    - Natural (Everforest)
-    - Balanced (Catppuccin)
-- **Light/dark parity**: Each theme requires well-tested light and dark variants
-- **Testing priority**: Test fewer themes thoroughly rather than many superficially
+- **Foundation themes** (defined in `technical/design-system-foundation`):
+    - Warm tones: Gruvbox (earth tones, high contrast)
+    - Cool tones: Rose Pine (muted pastels, soft contrast)
+    - Accent-forward: Remedy (amber/gold accents, Base16-Eighties derived)
+- **Light/dark parity**: All 3 themes include light and dark variants, WCAG AA validated
+- **Expansion candidates**: Nord, Catppuccin for Phase 2 if time permits
+- **Testing priority**: Foundation validates contrast; TWM adds transparency/wallpaper validation
 
 ### Layout Constants
 
-Define tunable constants for consistent spacing:
+**Defined in foundation work** (`technical/design-system-foundation`):
 
-- `WINDOW_GAP`: Gap between windows (starting: 8px)
-- `WINDOW_BORDER_WIDTH`: Border thickness (starting: 2px)
-- `WINDOW_OPACITY`: Background transparency (starting: 0.85 / 85% opaque)
-- `TOP_BAR_HEIGHT`: Minimal height for top bar
-- `FOOTER_HEIGHT`: Minimal height for footer
+- `WINDOW_GAP`: Gap between windows (default: 8px)
+- `WINDOW_BORDER_WIDTH`: Border thickness (default: 2px)
+- `WINDOW_OPACITY`: Background transparency (default: 0.85 / 85% opaque)
+- `TOP_BAR_HEIGHT`: Minimal height for top bar (TBD during TWM)
+- `FOOTER_HEIGHT`: Minimal height for footer (TBD during TWM)
 
-Allow per-theme overrides where readability requires.
+Token system supports per-theme overrides where readability requires.
 
 ## 7. Technical Considerations
 
 ### Implementation Approach
 
-- **CSS Variables**: Use CSS custom properties for theme values (colors, opacity, borders)
-- **Theme Configuration**: Define themes in TypeScript objects with type safety
-- **Context API**: React Context for theme state management
-- **localStorage**: Persist theme selection and light/dark preference
-- **System Preference**: Detect and respect `prefers-color-scheme` on first visit
+**Foundation Work Available** (from `technical/design-system-foundation`):
+
+- Semantic token system (~25 tokens) with TypeScript types
+- Three themes pre-defined: Gruvbox, Rose Pine, Remedy (light/dark each)
+- Layout tokens: `WINDOW_GAP`, `WINDOW_BORDER_WIDTH`, `WINDOW_OPACITY`, heights
+- Playwright E2E with device profiles (mobile 375×667, tablet 768×1024, desktop 1920×1080)
+- vitest-axe for component accessibility testing
+- Contrast validation tests for all theme combinations
+- Component patterns: button variants, focus indicators, opacity overlays
+
+**TWM-Specific Implementation**:
+
+- **CSS Variables**: Extend foundation token system for TWM-specific values
+- **Theme Configuration**: Use existing theme structure, add any TWM-specific overrides
+- **Context API**: React Context for theme state management (existing ThemeProvider)
+- **localStorage**: Persist theme selection and light/dark preference (existing)
+- **System Preference**: Detect and respect `prefers-color-scheme` on first visit (existing)
 - **Lazy Loading**: Load wallpaper images optimally (WebP with CSS gradient fallback)
 
 ### Component Structure
@@ -272,11 +283,31 @@ Allow per-theme overrides where readability requires.
 
 ### Testing Strategy
 
-- **Visual Regression**: Capture screenshots of each theme variant for comparison
-- **Contrast Testing**: Automated WCAG AA contrast ratio validation
-- **Responsive Testing**: Verify layout across desktop, tablet, mobile viewports
-- **Theme Switching**: Test persistence, system preference sync, fallback behavior
-- **Cross-Browser**: Verify transparency, borders, and wallpaper rendering consistency
+**Leveraging Foundation Infrastructure**:
+
+- **E2E Testing (Playwright)**: Use existing device profiles for responsive validation
+    - Desktop (1920×1080): Full three-window layout
+    - Tablet (768×1024): Adapted layout
+    - Mobile (375×667): Collapsed/simplified layout
+    - Touch emulation enabled for mobile viewport tests
+- **Accessibility Testing (vitest-axe)**: Extend existing component tests
+    - WindowContainer component accessibility
+    - ThemePicker keyboard navigation and screen reader compatibility
+    - Focus management in theme controls
+- **Contrast Testing**: Foundation provides validation infrastructure
+    - All 6 theme variants already validated for WCAG AA
+    - Add tests for text over semi-transparent backgrounds + wallpaper
+- **Visual Regression**: Capture baseline screenshots after layout complete
+    - Each theme variant at each viewport
+    - Use Playwright screenshot comparison
+
+**TWM-Specific Tests**:
+
+- **Layout integrity**: Windows maintain gaps and borders at all viewports
+- **Theme switching**: Verify smooth transitions, persistence, system preference sync
+- **Wallpaper loading**: Fallback gradient displays, WebP loads correctly
+- **Touch targets**: All interactive elements ≥44×44px on mobile
+- **Cross-browser**: Transparency, backdrop-filter, borders render consistently
 
 ## 8. Success Metrics
 
@@ -309,9 +340,8 @@ This feature will be considered successful when:
 
 ### Phase 1 Questions
 
-- **Content spacing tokens**: Current codebase uses inconsistent horizontal padding (`px-6`, `px-8`, `px-14` in
-  AdaptiveHero). When implementing layout tokens, audit existing spacing values and consolidate into consistent
-  design tokens (e.g., `CONTENT_PADDING_X`, `HERO_PADDING_X`) to eliminate magic numbers across layout components.
+- ~~**Content spacing tokens**~~: RESOLVED - Foundation work includes spacing token audit with consolidation plan.
+  Semantic tokens (`CONTENT_PADDING`, `SECTION_GAP`, etc.) defined and documented.
 - **Browser-specific nav offset hack**: globals.css contains a `--nav-offset` variable with browser-specific overrides
   (Chromium vs Firefox) to fix navigation vertical alignment. Investigate root cause and eliminate the hack by
   normalizing layout (proper flexbox/positioning, consistent line-height/font rendering). (Fix during layout rework)
@@ -334,8 +364,8 @@ This feature will be considered successful when:
   by `Footer.tsx` in `layout/` using relative `../` path (violates cross-directory import convention). When building
   production `ThemePicker`, ensure proper component organization: either co-locate theme components in `layout/` or
   use `@/` absolute imports consistently. Remove or replace the prototype `ThemeSwitcher.tsx` file.
-- **Initial theme selection**: Which 3-4 theme families provide best coverage of diverse styles while maintaining
-  quality? (Decide during implementation)
+- ~~**Initial theme selection**~~: RESOLVED - Foundation work defines 3 themes: Gruvbox (warm), Rose Pine (cool),
+  Remedy (amber/gold). All include light/dark variants with WCAG AA validated contrast.
 - **High contrast mode**: Should we include dedicated high contrast theme option, or rely on sufficient contrast in
   standard themes? (Decide during implementation)
 - **Theme switch animation duration**: What transition timing feels polished without being sluggish?
@@ -356,7 +386,12 @@ This feature will be considered successful when:
 
 ---
 
-**PRD Version**: 1.0
+**PRD Version**: 1.1
 **Created**: 2025-10-25
-**Status**: Upcoming (to be started after content-migration feature completion)
-**Related Work**: Depends on content-migration feature completion (navigation and page structure foundation)
+**Updated**: 2025-12-27
+**Status**: Ready for Implementation
+**Related Work**:
+
+- ✅ Depends on: Content Migration (complete - navigation and page structure in place)
+- ⏳ Depends on: Design System Foundation (`technical/design-system-foundation`) - establishes testing
+  infrastructure, token system, and theme definitions this feature will use

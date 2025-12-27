@@ -1,8 +1,26 @@
 # Quick Reference - arc-portfolio
 
-**Version**: 1.1 | **Updated**: 2025-10-25
+**Version**: 1.2 | **Updated**: 2025-12-27
 
 Command patterns and environment context for arc-portfolio.
+
+## About This Reference Directory
+
+**Read every session:**
+
+- `DEVELOPMENT-RULES.md` (constitution/) - Rules and quality standards
+- `QUICK-REFERENCE.md` (this file) - Environment and commands
+- `CURRENT-SESSION.md` (active/) - Work status and next actions
+
+**Key documentation:**
+
+- `constitution/` - Project principles (META-PRD, TECHNICAL-OVERVIEW, PROJECT-STATUS)
+- `workflows/` - Core process guides (1_create-prd.md, 2_generate-tasks.md, 3_process-task-loop.md)
+- `workflows/supplemental/` - Supporting workflows (atomic-commit.md, session-handoff.md)
+- `strategies/` - Technical approaches (testing methodology, style guides)
+- `agent/` - AI-specific guidance (AGENTS.md, CLAUDE.md)
+
+---
 
 ## Environment & Path Context
 
@@ -108,12 +126,28 @@ npm run test:coverage
 ### Markdown Linting
 
 ```bash
-# Check markdown files
+# Check all markdown files
 npm run lint:md
 
 # Auto-fix markdown violations
 npm run lint:md:fix
+
+# Check single file only (bypass config globs)
+npx markdownlint-cli2 --no-globs "path/to/file.md"
+
+# Auto-fix single file only
+npx markdownlint-cli2 --fix --no-globs "path/to/file.md"
+
+# Fix table formatting (MD060 violations)
+# Note: --fix does NOT fix MD060 table alignment - use this instead:
+npx --yes markdown-table-prettify < input.md > output.md
 ```
+
+**Important:**
+
+- Without `--no-globs`, markdownlint-cli2 processes config globs **in addition to** specified files
+- Use `--no-globs` when checking/fixing individual files to avoid processing entire workspace
+- `markdownlint-cli2 --fix` does NOT fix MD060 (table alignment) - use `markdown-table-prettify` instead
 
 ---
 
@@ -160,8 +194,8 @@ npm test -- src/path/to/__tests__/file.test.ts
 # Run tests matching pattern
 npm test -- --testNamePattern="specific test name"
 
-# Lint specific markdown file
-npx markdownlint-cli2 .arc/path/to/file.md --fix
+# Lint specific markdown file (use --no-globs to avoid processing entire workspace)
+npx markdownlint-cli2 --fix --no-globs .arc/path/to/file.md
 ```
 
 ### Development Workflow
