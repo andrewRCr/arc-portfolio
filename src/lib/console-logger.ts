@@ -45,11 +45,24 @@ export function initConsoleLogger() {
 }
 
 /**
- * Send console message to log server
+ * Safely serialize a single argument for JSON transmission.
+ * Handles special types that JSON.stringify can't process.
  */
-function sendToLogServer(type: string, args: unknown[]) {
-  // Serialize arguments (handle objects, errors, etc.)
-  const serializedArgs = args.map((arg) => {
+function serializeArg(arg: unknown): unknown {
+  try {
+    // Handle null/undefined
+    if (arg === undefined) return "undefined";
+    if (arg === null) return null;
+
+    // Handle primitive types that JSON can't serialize
+    if (typeof arg === "symbol") return `Symbol(${arg.description ?? ""})`;
+    if (typeof arg === "bigint") return `BigInt(${String(arg)})`;
+    if (typeof arg === "function") {
+      const name = arg.name || "anonymous";
+      return `[Function: ${name}]`;
+    }
+
+    // Handle Error objects specially (preserve stack trace)
     if (arg instanceof Error) {
       return {
         message: arg.message,
@@ -57,15 +70,34 @@ function sendToLogServer(type: string, args: unknown[]) {
         name: arg.name,
       };
     }
-    if (typeof arg === "object" && arg !== null) {
+
+    // Handle objects (deep clone and serialize)
+    if (typeof arg === "object") {
       try {
-        return JSON.parse(JSON.stringify(arg)); // Deep clone and serialize
+        return JSON.parse(JSON.stringify(arg));
       } catch {
         return String(arg); // Fallback for circular references
       }
     }
+
+    // Primitives (string, number, boolean) pass through
     return arg;
-  });
+  } catch {
+    // Ultimate fallback for any unexpected serialization failure
+    try {
+      return String(arg);
+    } catch {
+      return "[Unserializable value]";
+    }
+  }
+}
+
+/**
+ * Send console message to log server
+ */
+function sendToLogServer(type: string, args: unknown[]) {
+  // Serialize arguments (handle objects, errors, special types)
+  const serializedArgs = args.map(serializeArg);
 
   // Send to server (fire-and-forget)
   fetch(LOG_SERVER_URL, {

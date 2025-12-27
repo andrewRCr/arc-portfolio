@@ -8,6 +8,36 @@ import type { ThemeColors } from "@/data/themes/types";
  */
 
 /**
+ * RGB color pattern: three numbers (0-255) separated by whitespace.
+ * Matches values like "249 245 229" used for Tailwind opacity modifiers.
+ */
+const RGB_PATTERN = /^\d{1,3}\s+\d{1,3}\s+\d{1,3}$/;
+
+/**
+ * Validates that a value is a valid RGB color string.
+ * Logs a warning and returns false for invalid values.
+ */
+function isValidColorValue(key: string, value: unknown): value is string {
+  if (typeof value !== "string") {
+    console.warn(`Theme color "${key}": expected string, got ${typeof value}`);
+    return false;
+  }
+
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    console.warn(`Theme color "${key}": value is empty`);
+    return false;
+  }
+
+  if (!RGB_PATTERN.test(trimmed)) {
+    console.warn(`Theme color "${key}": invalid RGB format "${value}" (expected "R G B" e.g. "249 245 229")`);
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Applies a theme's color palette to the document root
  * by setting CSS custom properties (variables).
  *
@@ -17,6 +47,10 @@ export function applyThemeColors(colors: ThemeColors): void {
   const root = document.documentElement;
 
   Object.entries(colors).forEach(([key, value]) => {
+    if (!isValidColorValue(key, value)) {
+      return; // Skip invalid values
+    }
+
     // Set both --{key} and --color-{key} for compatibility
     // Tailwind v4 @theme inline uses --color-{key} format
     root.style.setProperty(`--${key}`, value);
