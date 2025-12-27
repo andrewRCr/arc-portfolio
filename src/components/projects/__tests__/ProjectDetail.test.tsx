@@ -5,20 +5,13 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
 import ProjectDetail from "../ProjectDetail";
 import type { Project } from "@/types/project";
 
-// Mock Next.js navigation
-const mockPush = vi.fn();
-const mockBack = vi.fn();
-
-vi.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: mockPush,
-    back: mockBack,
-  }),
-}));
+// Apply shared navigation mock
+vi.mock("next/navigation", () => createNavigationMock());
 
 const mockProject: Project = {
   id: "test-project",
@@ -50,6 +43,10 @@ const mockProject: Project = {
 };
 
 describe("ProjectDetail - Behavior Tests", () => {
+  beforeEach(() => {
+    mockNavigation.reset();
+  });
+
   describe("Basic Rendering", () => {
     it("renders project title", () => {
       render(<ProjectDetail project={mockProject} />);
@@ -135,14 +132,14 @@ describe("ProjectDetail - Behavior Tests", () => {
       render(<ProjectDetail project={mockProject} currentTab="mods" />);
       const backButton = screen.getByRole("button", { name: /back to.*projects/i });
       backButton.click();
-      expect(mockPush).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
 
     it("back button defaults to software tab when no tab specified", () => {
       render(<ProjectDetail project={mockProject} />);
       const backButton = screen.getByRole("button", { name: /back to.*projects/i });
       backButton.click();
-      expect(mockPush).toHaveBeenCalledWith("/projects?tab=software");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
     });
   });
 

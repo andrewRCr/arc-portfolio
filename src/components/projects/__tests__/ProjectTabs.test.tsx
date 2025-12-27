@@ -6,23 +6,19 @@
 
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
 import ProjectTabs from "../ProjectTabs";
 
-// Mock Next.js router
-const mockPush = vi.fn();
-const mockPathname = "/projects";
-const mockSearchParams = new URLSearchParams();
-
-vi.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
-  usePathname: () => mockPathname,
-  useSearchParams: () => mockSearchParams,
-}));
+// Apply shared navigation mock
+vi.mock("next/navigation", () => createNavigationMock());
 
 describe("ProjectTabs - Behavior Tests", () => {
+  beforeEach(() => {
+    mockNavigation.reset();
+    mockNavigation.setPathname("/projects");
+  });
+
   describe("Tab Rendering", () => {
     it("renders both Software and Mods tabs", () => {
       render(<ProjectTabs />);
@@ -54,8 +50,7 @@ describe("ProjectTabs - Behavior Tests", () => {
     });
 
     it("marks Mods tab as active when query param is 'mods'", () => {
-      // Update mock to simulate ?tab=mods
-      mockSearchParams.set("tab", "mods");
+      mockNavigation.setSearchParams({ tab: "mods" });
 
       render(<ProjectTabs />);
 
@@ -64,9 +59,6 @@ describe("ProjectTabs - Behavior Tests", () => {
 
       expect(softwareTab).toHaveAttribute("aria-selected", "false");
       expect(modsTab).toHaveAttribute("aria-selected", "true");
-
-      // Clean up
-      mockSearchParams.delete("tab");
     });
   });
 
@@ -78,23 +70,19 @@ describe("ProjectTabs - Behavior Tests", () => {
       const modsTab = screen.getByRole("tab", { name: /mods/i });
       await user.click(modsTab);
 
-      expect(mockPush).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
 
     it("updates URL with query param when switching to Software tab", async () => {
       const user = userEvent.setup();
-      // Start with mods tab active
-      mockSearchParams.set("tab", "mods");
+      mockNavigation.setSearchParams({ tab: "mods" });
 
       render(<ProjectTabs />);
 
       const softwareTab = screen.getByRole("tab", { name: /software/i });
       await user.click(softwareTab);
 
-      expect(mockPush).toHaveBeenCalledWith("/projects?tab=software");
-
-      // Clean up
-      mockSearchParams.delete("tab");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
     });
 
     it("handles keyboard navigation (Enter key)", async () => {
@@ -105,7 +93,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       modsTab.focus();
       await user.keyboard("{Enter}");
 
-      expect(mockPush).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
 
     it("handles keyboard navigation (Space key)", async () => {
@@ -116,7 +104,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       modsTab.focus();
       await user.keyboard(" ");
 
-      expect(mockPush).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
   });
 
@@ -129,39 +117,30 @@ describe("ProjectTabs - Behavior Tests", () => {
     });
 
     it("defaults to Software tab when query param is invalid", () => {
-      mockSearchParams.set("tab", "invalid");
+      mockNavigation.setSearchParams({ tab: "invalid" });
 
       render(<ProjectTabs />);
 
       const softwareTab = screen.getByRole("tab", { name: /software/i });
       expect(softwareTab).toHaveAttribute("aria-selected", "true");
-
-      // Clean up
-      mockSearchParams.delete("tab");
     });
 
     it("recognizes 'software' as valid query param value", () => {
-      mockSearchParams.set("tab", "software");
+      mockNavigation.setSearchParams({ tab: "software" });
 
       render(<ProjectTabs />);
 
       const softwareTab = screen.getByRole("tab", { name: /software/i });
       expect(softwareTab).toHaveAttribute("aria-selected", "true");
-
-      // Clean up
-      mockSearchParams.delete("tab");
     });
 
     it("recognizes 'mods' as valid query param value", () => {
-      mockSearchParams.set("tab", "mods");
+      mockNavigation.setSearchParams({ tab: "mods" });
 
       render(<ProjectTabs />);
 
       const modsTab = screen.getByRole("tab", { name: /mods/i });
       expect(modsTab).toHaveAttribute("aria-selected", "true");
-
-      // Clean up
-      mockSearchParams.delete("tab");
     });
   });
 });

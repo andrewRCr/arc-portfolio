@@ -76,9 +76,7 @@ function ProjectsContent() {
 
               {/* Placeholder notice - mods content pending */}
               <div className="rounded-lg border border-border bg-muted p-4 text-center">
-                <p className="text-sm text-muted-foreground">
-                  Placeholder entries. Mod content migration pending.
-                </p>
+                <p className="text-sm text-muted-foreground">Placeholder entries. Mod content migration pending.</p>
               </div>
             </>
           )}

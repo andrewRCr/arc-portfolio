@@ -5,9 +5,7 @@ import { projects } from "@/data/projects";
 const FEATURED_SLUGS = ["cinexplorer", "taskfocus"];
 
 export default function Home() {
-  const featuredProjects = FEATURED_SLUGS.map((slug) =>
-    projects.find((p) => p.slug === slug)
-  ).filter(Boolean);
+  const featuredProjects = FEATURED_SLUGS.map((slug) => projects.find((p) => p.slug === slug)).filter(Boolean);
 
   return (
     <div className="flex-1 flex flex-col p-8">
