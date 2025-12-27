@@ -19,12 +19,13 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- Content Migration (feature) - All Squarespace content migrated with display components
-    - [Tasks](.arc/active/feature/tasks-content-migration.md)
+- ✅ Content Migration (feature) - 2025-12-27
+    - All Squarespace content migrated with display components
+    - [Archive](../archive/2025-q4/feature/03_content-migration/)
 
 **Currently Active:**
 
-- Content Migration final review and merge
+- None - ready for next priority
 
 **Next Priority:**
 
