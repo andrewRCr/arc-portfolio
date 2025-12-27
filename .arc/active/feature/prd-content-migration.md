@@ -1,5 +1,8 @@
 # PRD: Content Migration from Squarespace
 
+**Status:** Complete
+**Completed:** 2025-12-27
+
 ## 1. Introduction/Overview
 
 This feature migrates all portfolio content from the existing Squarespace site (andrewcreekmore.com) to the new
