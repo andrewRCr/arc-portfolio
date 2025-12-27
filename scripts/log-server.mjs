@@ -69,8 +69,9 @@ app.post("/log", (req, res) => {
     const str = typeof arg === "object" ? JSON.stringify(arg) : String(arg);
     const size = Buffer.byteLength(str, "utf8");
     if (size > MAX_ARG_SIZE) {
-      serializedArgs.push(str.slice(0, 200) + "...[truncated]");
-      totalSize += 215;
+      const truncated = str.slice(0, 200) + "...[truncated]";
+      totalSize += Buffer.byteLength(truncated, "utf8");
+      serializedArgs.push(truncated);
     } else {
       serializedArgs.push(str);
       totalSize += size;

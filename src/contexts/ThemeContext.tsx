@@ -22,15 +22,10 @@ function getStoredTheme(): ThemeName | null {
 }
 
 export function ThemeContextProvider({ children }: { children: React.ReactNode }) {
-  const [activeTheme, setActiveTheme] = React.useState<ThemeName>(defaultTheme);
-
-  // Load saved theme on mount
-  React.useEffect(() => {
-    const stored = getStoredTheme();
-    if (stored) {
-      setActiveTheme(stored);
-    }
-  }, []);
+  // Initialize with stored theme (read synchronously to avoid race condition)
+  const [activeTheme, setActiveTheme] = React.useState<ThemeName>(() => {
+    return getStoredTheme() ?? defaultTheme;
+  });
 
   // Persist theme changes to localStorage
   React.useEffect(() => {
