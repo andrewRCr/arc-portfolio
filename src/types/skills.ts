@@ -1,28 +1,32 @@
 /**
  * TypeScript interfaces for skills and technology categorization
  *
- * Defines the structure for organizing technical skills into flexible categories.
+ * Defines the structure for organizing technical skills into categories.
  * Tags use canonical technology names matching project tags to enable future filtering.
  */
 
 /**
- * Skills organized by category
+ * Allowed skill category names
  *
- * Flexible structure supporting multiple categories with extensibility for future additions
- * (e.g., proficiency levels, years of experience, icon references).
- *
- * Categories can be reorganized as needed (e.g., Frontend, Backend, AI/LLM, Databases, DevOps, Game Dev).
+ * Constrained union provides compile-time validation of category names.
+ * To add a new category: add it here, then add the corresponding data in skills.ts.
  */
-export interface Skills {
-  [category: string]: string[]; // Category name maps to array of skill/technology names
-}
+export type SkillCategory =
+  | "Languages"
+  | "Frontend"
+  | "Backend"
+  | "Databases"
+  | "AI-Assisted Development"
+  | "DevOps & Infrastructure"
+  | "Testing & Quality"
+  | "Methodologies";
 
 /**
- * Example structure:
- * {
- *   "Frontend": ["React", "Next.js", "TypeScript", "Tailwind CSS"],
- *   "Backend": ["Node.js", "Express.js", "PostgreSQL"],
- *   "AI/LLM": ["Claude API", "Prompt Engineering", "LangChain"],
- *   "DevOps": ["Git", "GitHub Actions", "Docker", "Vercel"]
- * }
+ * Skills organized by category
+ *
+ * Mapped type ensures only valid SkillCategory keys are allowed.
+ * Each category maps to an array of skill/technology names.
  */
+export type Skills = {
+  [K in SkillCategory]: string[];
+};

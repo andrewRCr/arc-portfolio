@@ -6,6 +6,7 @@ import { Education } from "@/types/education";
 
 export const education: Education[] = [
   {
+    id: "osu-cs",
     degree: "Bachelor of Science",
     major: "Computer Science",
     institution: "Oregon State University",
@@ -15,6 +16,7 @@ export const education: Education[] = [
   },
 
   {
+    id: "utd-psych",
     degree: "Bachelor of Arts",
     major: "Psychology",
     institution: "The University of Texas at Dallas",

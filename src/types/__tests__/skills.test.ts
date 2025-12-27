@@ -2,14 +2,14 @@
  * Type validation tests for Skills interface
  *
  * Verifies that skills data:
- * - Uses flexible category structure
+ * - Uses constrained SkillCategory union for category names
  * - Contains string arrays for each category
  * - Has canonical technology names
  */
 
 import { describe, it, expect } from "vitest";
 import { skills } from "@/data/skills";
-import type { Skills } from "@/types/skills";
+import type { Skills, SkillCategory } from "@/types/skills";
 
 describe("Skills Interface", () => {
   it("should be defined and have categories", () => {
@@ -35,15 +35,22 @@ describe("Skills Interface", () => {
     });
   });
 
-  it("should allow flexible category names", () => {
-    // Type assertion to verify flexible category structure
-    const customSkills: Skills = {
-      "Custom Category": ["Skill 1", "Skill 2"],
-      "Another Category": ["Skill 3"],
+  it("should enforce constrained category names via SkillCategory union", () => {
+    // Type-level test: Skills type requires all SkillCategory keys
+    const testSkills: Skills = {
+      Languages: ["TypeScript"],
+      Frontend: ["React"],
+      Backend: ["Node.js"],
+      Databases: ["PostgreSQL"],
+      "AI-Assisted Development": ["Claude Code"],
+      "DevOps & Infrastructure": ["Git"],
+      "Testing & Quality": ["Vitest"],
+      Methodologies: ["TDD"],
     };
 
-    expect(customSkills).toBeDefined();
-    expect(customSkills["Custom Category"]).toEqual(["Skill 1", "Skill 2"]);
+    // Verify we can access known categories with type safety
+    const category: SkillCategory = "Frontend";
+    expect(testSkills[category]).toEqual(["React"]);
   });
 
   it("should not have duplicate skills within categories", () => {

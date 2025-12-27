@@ -6,7 +6,7 @@
  * - All required fields are present and valid
  * - Optional fields (GPA, dates, location) are properly formatted
  * - Degrees are ordered correctly (most recent first)
- * - Phase 2 migration completeness
+ * - Data consistency and uniqueness constraints
  */
 
 import { describe, it, expect } from "vitest";
@@ -33,6 +33,10 @@ describe("Education Data Validation", () => {
     it("should have all required fields for every degree", () => {
       education.forEach((degree) => {
         // Core fields
+        expect(degree.id).toBeDefined();
+        expect(typeof degree.id).toBe("string");
+        expect(degree.id.length).toBeGreaterThan(0);
+
         expect(degree.degree).toBeDefined();
         expect(typeof degree.degree).toBe("string");
         expect(degree.degree.length).toBeGreaterThan(0);
@@ -45,6 +49,12 @@ describe("Education Data Validation", () => {
         expect(typeof degree.institution).toBe("string");
         expect(degree.institution.length).toBeGreaterThan(0);
       });
+    });
+
+    it("should have unique ids", () => {
+      const ids = education.map((d) => d.id);
+      const uniqueIds = new Set(ids);
+      expect(uniqueIds.size).toBe(ids.length);
     });
 
     it("should have optional fields when present", () => {
