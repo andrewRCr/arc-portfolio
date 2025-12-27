@@ -1,10 +1,10 @@
 # Task List: Design System Foundation
 
-**PRD:** `.arc/backlog/technical/prd-design-system-foundation.md`
+**PRD:** `.arc/active/technical/prd-design-system-foundation.md`
 **Created:** 2025-12-27
 **Branch:** `technical/design-system-foundation`
 **Base Branch:** `main`
-**Status:** Pending
+**Status:** In Progress
 
 ## Overview
 
