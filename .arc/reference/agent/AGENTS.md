@@ -33,7 +33,7 @@ contemporary web development practices, type safety, testing, and professional d
 
 **Common Friction Points:**
 
-- **All npm commands from repo root**: Commands assume `/home/andrew/dev/arc-portfolio` as working directory
+- **All npm commands from repo root**: See QUICK-REFERENCE for environment context and paths
 - **Tests co-located**: Test files in `src/**/__tests__/` directories alongside source
 - **Image paths**: Public assets at `public/`, referenced in code as `/path/to/asset`
 - **Quality gates before commits**: Zero tolerance - type-check, lint, format, markdown lint, build, tests must all pass

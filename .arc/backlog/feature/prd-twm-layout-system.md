@@ -309,6 +309,9 @@ This feature will be considered successful when:
 
 ### Phase 1 Questions
 
+- **Content spacing tokens**: Current codebase uses inconsistent horizontal padding (`px-6`, `px-8`, `px-14` in
+  AdaptiveHero). When implementing layout tokens, audit existing spacing values and consolidate into consistent
+  design tokens (e.g., `CONTENT_PADDING_X`, `HERO_PADDING_X`) to eliminate magic numbers across layout components.
 - **Browser-specific nav offset hack**: globals.css contains a `--nav-offset` variable with browser-specific overrides
   (Chromium vs Firefox) to fix navigation vertical alignment. Investigate root cause and eliminate the hack by
   normalizing layout (proper flexbox/positioning, consistent line-height/font rendering). (Fix during layout rework)
@@ -327,6 +330,10 @@ This feature will be considered successful when:
 
 ### Phase 2 Questions
 
+- **ThemeSwitcher cleanup**: Current dev-only `ThemeSwitcher` prototype lives in `src/components/` but is imported
+  by `Footer.tsx` in `layout/` using relative `../` path (violates cross-directory import convention). When building
+  production `ThemePicker`, ensure proper component organization: either co-locate theme components in `layout/` or
+  use `@/` absolute imports consistently. Remove or replace the prototype `ThemeSwitcher.tsx` file.
 - **Initial theme selection**: Which 3-4 theme families provide best coverage of diverse styles while maintaining
   quality? (Decide during implementation)
 - **High contrast mode**: Should we include dedicated high contrast theme option, or rely on sufficient contrast in

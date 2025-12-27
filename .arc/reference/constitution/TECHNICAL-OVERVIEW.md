@@ -1,16 +1,16 @@
-# andrewRCr Portfolio Technical Architecture
+# arc-portfolio Technical Overview
 
-This document outlines the technical architecture of andrewRCr Portfolio, covering the implementation stack,
+This document outlines the technical architecture of arc-portfolio, covering the implementation stack,
 development practices, and operational considerations.
 
 ## 1. Architecture Overview
 
-**andrewRCr Portfolio** is a modern static website built with Next.js using the App Router and Static Site
+**arc-portfolio** is a modern static website built with Next.js using the App Router and Static Site
 Generation (SSG). The architecture prioritizes performance, accessibility, and developer experience:
 
-- **Frontend Application**: Next.js 15 with React 19, TypeScript, and Tailwind CSS v4
+- **Frontend Application**: Next.js 15 with React 19, TypeScript, and Tailwind CSS
 - **UI Components**: Shadcn/ui component library for consistent, accessible design
-- **Build System**: Turbopack for fast development and optimized production builds
+- **Testing**: Vitest + React Testing Library with comprehensive coverage
 - **Deployment**: Vercel platform for global CDN delivery and automatic deployments
 - **Content Management**: Code-based content updates (no CMS backend)
 
@@ -19,30 +19,33 @@ Generation (SSG). The architecture prioritizes performance, accessibility, and d
 ### Technology Stack
 
 - **Framework**: Next.js 15 with App Router and React Server Components
-- **Language**: TypeScript 5.x with strict type checking
+- **Language**: TypeScript with strict type checking
 - **UI Components**: Shadcn/ui (Radix UI primitives with Tailwind styling)
 - **Routing**: Next.js App Router with file-system based routing
 - **State Management**: React hooks and Server Components (minimal client-side state)
 - **Data Fetching**: Static generation at build time, Server Components for dynamic data
-- **Styling**: Tailwind CSS v4 with CSS variables for theming
-- **Build Tool**: Turbopack for fast development and production builds
-- **Testing**: To be implemented (React Testing Library + Jest/Vitest)
+- **Styling**: Tailwind CSS with CSS variables for theming
+- **Testing**: Vitest + React Testing Library
 
 ### Key Libraries
 
-- `next@15.5.4`: Full-stack React framework with SSG, SSR, and routing
-- `react@19.1.0` / `react-dom@19.1.0`: UI library and rendering
-- `typescript@5.x`: Type safety and enhanced developer experience
-- `tailwindcss@4.x`: Utility-first CSS framework
-- `shadcn/ui`: Accessible component primitives with Radix UI and Tailwind styling
-- `class-variance-authority`: Type-safe component variants
-- `clsx` / `tailwind-merge`: Conditional className utilities
-- `lucide-react`: Icon library for consistent iconography
-- `framer-motion`: Animation library for smooth transitions and micro-interactions (to be added)
-- `react-hook-form`: Performant form state management with minimal re-renders (to be added)
-- `zod`: TypeScript-first schema validation for forms and data (to be added)
-- `zeptomail`: Transactional email service for contact form submissions
-- `@vercel/analytics`: Real user monitoring and analytics (to be configured)
+See `package.json` for current versions. Core dependencies:
+
+- **next**: Full-stack React framework with SSG, SSR, and routing
+- **react / react-dom**: UI library and rendering
+- **typescript**: Type safety and enhanced developer experience
+- **tailwindcss**: Utility-first CSS framework
+- **shadcn/ui**: Accessible component primitives with Radix UI and Tailwind styling
+- **class-variance-authority**: Type-safe component variants
+- **clsx / tailwind-merge**: Conditional className utilities
+- **lucide-react**: Icon library for consistent iconography
+- **vitest / @testing-library/react**: Testing framework and utilities
+
+Planned additions:
+
+- **framer-motion**: Animation library for smooth transitions and micro-interactions
+- **react-hook-form + zod**: Type-safe form handling with validation
+- **@vercel/analytics**: Real user monitoring and analytics
 
 ### Code Organization
 
@@ -99,7 +102,7 @@ arc-portfolio/
 
 - **Process**: Edit content in `src/data/`, commit, push to trigger Vercel rebuild
 - **No CMS**: Content updates handled through code deployment
-- **Versioned**: All content changes tracked in Git history
+- **Versioned**: All changes tracked in Git history
 
 ## 4. Infrastructure & Deployment
 
@@ -151,7 +154,7 @@ The project follows a **Pragmatic Test-Driven Development (TDD)** approach:
 - **E2E for Critical Flows**: Playwright for key user journeys (contact form submission, navigation)
 - **Accessibility First**: Manual and automated a11y checks integrated throughout (axe DevTools, Lighthouse)
 
-See `.arc/reference/strategies/strategy-testing-methodology.md` for detailed testing approach and examples.
+See `.arc/reference/strategies/project/strategy-testing-methodology.md` for detailed testing approach and examples.
 
 ### Quality Gates
 
@@ -161,7 +164,8 @@ Before any commit, the following must pass:
 2. **Code Quality**: `npm run lint` - ESLint passes with zero warnings
 3. **Code Formatting**: `npm run format:check` - Prettier formatting enforced
 4. **Documentation**: Markdown files pass markdownlint validation
-5. **Build Success**: Project builds without errors
+5. **Tests**: `npm test` - all tests pass
+6. **Build Success**: Project builds without errors
 
 See DEVELOPMENT-RULES.md for complete quality gate commands and requirements.
 
@@ -219,21 +223,26 @@ This technical architecture supports the ARC development methodology through:
 ```bash
 # Development setup
 npm install                    # Install dependencies
-npm run dev                    # Start development server with Turbopack
+npm run dev                    # Start development server
 
 # Testing
-npm run type-check            # TypeScript type checking
-npm run lint                  # ESLint code quality checks
-npm run format                # Format code with Prettier
-npm run format:check          # Check formatting without writing
+npm test                       # Run test suite
+npm run test:watch             # Run tests in watch mode
+npm run test:coverage          # Run tests with coverage
+
+# Quality checks
+npm run type-check             # TypeScript type checking
+npm run lint                   # ESLint code quality checks
+npm run format                 # Format code with Prettier
+npm run format:check           # Check formatting without writing
+npm run lint:md                # Lint markdown documentation
 
 # Build and deployment
-npm run build                 # Production build with Turbopack
-npm run start                 # Start production server locally
-npx markdownlint-cli2 "**/*.md"  # Lint markdown documentation
+npm run build                  # Production build
+npm run start                  # Start production server locally
 
 # Quality gates (all must pass)
-npm run type-check && npm run lint && npm run format:check && npm run build
+npm run type-check && npm run lint && npm run format:check && npm run lint:md && npm run build && npm test
 ```
 
 ## 9. Architectural Decisions
@@ -242,17 +251,14 @@ npm run type-check && npm run lint && npm run format:check && npm run build
 
 - **Next.js App Router over Pages Router**: Modern approach with React Server Components, better performance,
   and future-proof architecture
-- **Turbopack over Webpack**: Significantly faster builds and hot reload during development
-- **Tailwind CSS v4**: Utility-first CSS for rapid UI development with excellent performance
+- **Tailwind CSS**: Utility-first CSS for rapid UI development with excellent performance
 - **Shadcn/ui over Component Library**: Full control over components, no vendor lock-in, source code in repo
 - **TypeScript (strict mode)**: Type safety prevents runtime errors and improves developer experience
 - **Vercel Deployment**: Zero-configuration deployment optimized for Next.js, global CDN, automatic scaling
 - **Static Generation (SSG)**: Portfolio content doesn't change frequently, SSG provides best performance
 - **No Backend/Database**: Content managed in code simplifies architecture and improves reliability
 - **Prettier + ESLint**: Enforced code style and quality standards across all contributors
-- **Framer Motion for Animations**: Modern animation library demonstrates UX polish and attention to detail
-- **React Hook Form + Zod**: Type-safe form handling with minimal re-renders and robust validation
-- **Vercel Analytics**: Data-driven portfolio optimization and performance monitoring
+- **Vitest over Jest**: Faster test execution, better ESM support, seamless Vite/Next.js integration
 
 ### Trade-offs
 
@@ -262,7 +268,6 @@ npm run type-check && npm run lint && npm run format:check && npm run build
 
 ### Future Considerations
 
-- **Testing Suite**: Implement comprehensive testing as codebase grows
 - **Analytics**: Integrate analytics solution for portfolio effectiveness tracking
 - **Large File Hosting**: Evaluate alternatives to Google Drive for Unreal Engine project downloads
   (Vercel Large File Support, Cloudflare R2, AWS S3)
@@ -271,7 +276,7 @@ npm run type-check && npm run lint && npm run format:check && npm run build
 
 ---
 
-_This TECHNICAL-ARCHITECTURE document complements the META-PRD by focusing on implementation details
-rather than product vision. It should be updated as the technical foundation evolves._
+_This document complements the META-PRD by focusing on implementation details rather than product vision.
+It should be updated as the technical foundation evolves._
 
-_Last updated: October 12, 2025_
+_Last updated: December 2025_

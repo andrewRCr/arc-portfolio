@@ -22,7 +22,9 @@
    - Categories: maintenance, refactor, documentation, planning
 
 **Referencing completed work:** "see {{TASK_NAME}} in `completed-atomic-{{QUARTER}}.md`"
-    - Quick access: [Completed Atomic Tasks](../reference/archive/{{QUARTER}}/completed-atomic-{{QUARTER}}.md)
+
+- Quick access: [Completed Atomic Tasks](../reference/archive/{{QUARTER}}/completed-atomic-{{QUARTER}}.md)
+- **Quarter format:** Use `YYYY-qN` (e.g., `2025-q4` for Oct-Dec 2025)
 
 ---
 

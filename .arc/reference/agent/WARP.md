@@ -13,7 +13,7 @@ canonical docs:
 - **Session startup:** Execute Session Startup Protocol in CURRENT-SESSION.md first (verify working directory,
   verify Node.js/npm available, confirm repo root)
 - **Shell syntax:** Prefer cross-platform command syntax
-- **Command focus:** All npm commands from repo root (`/home/andrew/dev/arc-portfolio`)
+- **Command focus:** All npm commands from repo root (see QUICK-REFERENCE for environment context)
 - **Quality gates shorthand:** Reference commands from QUICK-REFERENCE (assume repo root paths); format as shell
   snippets when asked to run checks
 - **Environment checks:** Confirm Node.js/npm availability before proposing actions that depend on them
