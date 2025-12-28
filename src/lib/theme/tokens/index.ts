@@ -15,9 +15,14 @@ export { DEFAULT_LAYOUT_TOKENS } from "./layout";
 export type { SpacingTokens, SpacingTokenName } from "./spacing";
 export { DEFAULT_SPACING_TOKENS } from "./spacing";
 
+// Shadow tokens
+export type { ShadowTokens, ShadowTokenName } from "./shadows";
+export { DEFAULT_SHADOW_TOKENS_LIGHT, DEFAULT_SHADOW_TOKENS_DARK, SHADOW_OPACITY_THRESHOLDS } from "./shadows";
+
 // Combined token interface
 export interface DesignTokens {
   colors: import("./colors").SemanticColorTokens;
   layout: import("./layout").LayoutTokens;
   spacing: import("./spacing").SpacingTokens;
+  shadows: import("./shadows").ShadowTokens;
 }

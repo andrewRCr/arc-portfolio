@@ -47,19 +47,7 @@ const REQUIRED_COLOR_KEYS: (keyof ThemeColors)[] = [
   "border",
   "input",
   "ring",
-  // Semantic layer tokens
-  "layer-01",
-  "layer-02",
-  "layer-03",
-  // Semantic border tokens
-  "border-subtle",
-  "border-strong",
-  // Interactive state tokens
-  "layer-hover-01",
-  "layer-hover-02",
-  "layer-active-01",
-  "layer-active-02",
-  // Shadow tokens
+  // Shadow tokens (extension - no shadcn equivalent)
   "shadow-sm",
   "shadow-md",
   "shadow-lg",

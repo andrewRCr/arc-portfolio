@@ -12,16 +12,11 @@
   --color-background: rgb(var(--background));
   --color-foreground: rgb(var(--foreground));
 
-  /* Card/Popover (shadcn/ui convention) */
+  /* Card/Popover (shadcn/ui convention - static containers / floating overlays) */
   --color-card: rgb(var(--card));
   --color-card-foreground: rgb(var(--card-foreground));
   --color-popover: rgb(var(--popover));
   --color-popover-foreground: rgb(var(--popover-foreground));
-
-  /* Semantic layer colors (IBM Carbon pattern) */
-  --color-layer-01: rgb(var(--layer-01));
-  --color-layer-02: rgb(var(--layer-02));
-  --color-layer-03: rgb(var(--layer-03));
 
   /* Primary/Secondary/Muted */
   --color-primary: rgb(var(--primary));
@@ -47,16 +42,8 @@
 
   /* Borders */
   --color-border: rgb(var(--border));
-  --color-border-subtle: rgb(var(--border-subtle));
-  --color-border-strong: rgb(var(--border-strong));
   --color-input: rgb(var(--input));
   --color-ring: rgb(var(--ring));
-
-  /* Interactive states */
-  --color-layer-hover-01: rgb(var(--layer-hover-01));
-  --color-layer-hover-02: rgb(var(--layer-hover-02));
-  --color-layer-active-01: rgb(var(--layer-active-01));
-  --color-layer-active-02: rgb(var(--layer-active-02));
 
   /* Shadows (CSS values, not RGB) */
   --shadow-sm: var(--shadow-sm);
@@ -116,21 +103,6 @@
   --border: 213 196 161;
   --input: 213 196 161;
   --ring: 121 116 14;
-
-  /* Semantic layer tokens (Gruvbox Light defaults) */
-  --layer-01: 249 245 215;
-  --layer-02: 251 241 199;
-  --layer-03: 249 245 215;
-
-  /* Semantic border tokens */
-  --border-subtle: 213 196 161;
-  --border-strong: 189 174 147;
-
-  /* Interactive state tokens */
-  --layer-hover-01: 235 219 178;
-  --layer-hover-02: 242 229 188;
-  --layer-active-01: 213 196 161;
-  --layer-active-02: 235 219 178;
 
   /* Shadow tokens */
   --shadow-sm: 0 1px 2px rgba(60, 56, 54, 0.08);

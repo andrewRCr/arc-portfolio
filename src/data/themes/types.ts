@@ -2,15 +2,15 @@
  * Theme System Type Definitions
  *
  * Defines type-safe interfaces for multi-theme support.
- * Combines shadcn/ui conventions with semantic token system.
+ * Follows shadcn/ui token conventions with minimal extensions.
  *
- * **Token Evolution:**
- * - Original: shadcn/ui convention (card, popover, border)
- * - Extended: Semantic layer system (layer-01/02/03, border-subtle/strong)
- * - Mapping: card ≈ layer-01, popover ≈ layer-02, border ≈ border-subtle
+ * **Token Strategy (ADR-001):**
+ * - Primary vocabulary: shadcn/ui conventions (card, popover, border, etc.)
+ * - Extensions: Shadow tokens (no shadcn equivalent), layout tokens for TWM
+ * - Surface types: `card` = static containers, `popover` = floating overlays
+ * - Elevation: Shadow-based (shadow-sm/md/lg), not background color hierarchy
  *
  * @see https://ui.shadcn.com/docs/theming
- * @see src/lib/theme/tokens/colors.ts for SemanticColorTokens
  */
 
 import type { LayoutTokens } from "@/lib/theme";
@@ -107,7 +107,7 @@ export interface ThemeColors {
   "destructive-foreground": string;
 
   // UI element colors (shadcn/ui convention)
-  /** Standard borders (≈ border-subtle) */
+  /** Standard borders */
   border: string;
   /** Input field borders */
   input: string;
@@ -115,61 +115,7 @@ export interface ThemeColors {
   ring: string;
 
   // ===========================================================================
-  // SEMANTIC LAYER TOKENS (IBM Carbon pattern)
-  // ===========================================================================
-
-  /**
-   * First elevation level (card surfaces).
-   * Semantic equivalent of `card` - use for cards, panels, first elevated surfaces.
-   */
-  "layer-01": string;
-
-  /**
-   * Second elevation level (elevated surfaces, modals).
-   * Semantic equivalent of `popover` - use for modals, dialogs, dropdowns.
-   */
-  "layer-02": string;
-
-  /**
-   * Third elevation level (highest elevation).
-   * Use for dropdowns over modals, tooltips over elevated surfaces.
-   */
-  "layer-03": string;
-
-  // ===========================================================================
-  // SEMANTIC BORDER TOKENS
-  // ===========================================================================
-
-  /**
-   * Subtle border for decorative/aesthetic use.
-   * May not meet WCAG 3:1 - use border-strong for accessibility-critical contexts.
-   */
-  "border-subtle": string;
-
-  /**
-   * Strong border for accessible UI.
-   * Meets WCAG 3:1 minimum for non-text elements.
-   */
-  "border-strong": string;
-
-  // ===========================================================================
-  // INTERACTIVE STATE TOKENS
-  // ===========================================================================
-
-  /** Hover state background for layer-01 surfaces */
-  "layer-hover-01": string;
-
-  /** Hover state background for layer-02 surfaces */
-  "layer-hover-02": string;
-
-  /** Active/pressed state background for layer-01 surfaces */
-  "layer-active-01": string;
-
-  /** Active/pressed state background for layer-02 surfaces */
-  "layer-active-02": string;
-
-  // ===========================================================================
-  // SHADOW TOKENS
+  // SHADOW TOKENS (extension - no shadcn equivalent)
   // ===========================================================================
 
   /** Small shadow for subtle elevation (cards) */
