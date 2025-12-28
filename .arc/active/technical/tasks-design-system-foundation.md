@@ -16,7 +16,7 @@
 
 - Set up Playwright E2E with device profiles and CI integration
 - Integrate vitest-axe for accessibility testing
-- Create semantic token system (~25 tokens) with TypeScript types
+- Adopt shadcn/ui token conventions with minimal extensions (ADR-001)
 - Define 3 themes (Gruvbox, Rose Pine, Remedy) with light/dark variants
 - Add contrast validation tests for all theme combinations
 - Audit and consolidate existing spacing magic numbers
@@ -26,9 +26,9 @@
 ### Won't Do
 
 - Visual regression screenshots (deferred to TWM - avoids throwaway baselines)
-- Refactoring existing components to use new tokens (happens during TWM)
 - Comprehensive E2E test suite (only smoke tests; full suite during TWM)
 - Additional themes beyond 3 (sufficient for foundation validation)
+- Custom semantic token vocabulary (adopting shadcn conventions instead - ADR-001)
 
 ---
 
@@ -144,51 +144,92 @@
         - Classes like `bg-layer-01`, `border-border-subtle`, `shadow-sm` available
         - Note: Uses `-foreground` suffix (shadcn convention), not `on-*` prefix
 
+### **Phase 3.5:** Token System Alignment (shadcn Conventions)
+
+**Purpose:** Align token system with shadcn/ui conventions and document shadow-based elevation model.
+
+**Context:** Phase 3 added custom semantic tokens (layer-01/02/03, border-subtle/strong, interactive
+states). Research confirmed shadcn uses shadow-based elevation, not background color hierarchies.
+Decision: Adopt shadcn conventions as primary vocabulary, extend only for genuine gaps.
+
+**Key insight:** shadcn's `card` and `popover` tokens represent surface TYPES (static containers vs
+floating overlays), not elevation LEVELS. Depth perception comes from shadow utilities
+(`shadow-sm` → `shadow-md` → `shadow-lg`), not background color changes.
+
+- [x] **3.5.a Write ADR-001: Adopt shadcn/ui Token Conventions**
+    - Documented surface type semantics: `card` = static containers, `popover` = floating overlays
+    - Documented shadow-based elevation model (depth via shadow-sm/md/lg, not background colors)
+    - Captured alternatives (custom semantic tokens, CineXplorer approach, hybrid aliases)
+    - Explained Chakra vs Tailwind theming differences and why portfolio doesn't need complexity
+
+- [x] **3.5.b Update strategy documentation**
+    - Rewrote `strategy-style-guide.md` v1.1 with Surface Type Semantics section
+    - Added Shadow-Based Elevation section with progression table and thresholds
+    - Added Interactive States section documenting opacity modifier pattern
+    - Documented cross-theme convention: shadows primary, color delta optional fallback
+
+- [x] **3.5.c Remove redundant tokens and consolidate structure**
+    - Removed layer-01/02/03, border-subtle/strong, layer-hover-*, layer-active-* from ThemeColors
+    - Created `src/lib/theme/tokens/shadows.ts` with ShadowTokens interface and defaults
+    - Updated `tokens/index.ts` to export shadow types and constants
+    - Fixed comments in types.ts, globals.css, colors.ts (surface types, not elevation levels)
+
+- [x] **3.5.d Evaluate existing theme definitions**
+    - Gruvbox: card = popover (same) - follows shadcn convention, documented in file header
+    - Rose Pine: card ≠ popover - intentional per Rose Pine's official palette (surface vs overlay)
+    - Decision: Honor each theme's native design; documented distinction in theme file headers
+    - Updated dark mode shadow-sm opacity from 0.16 to 0.20 to meet visibility threshold
+
+- [x] **3.5.e Add shadow visibility validation tests**
+    - Created `src/lib/theme/__tests__/shadow-visibility.test.ts` (18 tests)
+    - Tests opacity thresholds: light >= 0.08, dark >= 0.20
+    - Tests shadow progression: sm < md < lg opacity
+    - All tests passing
+
+- [x] **3.5.f Quality gates**
+    - type-check: pass
+    - lint: pass
+    - format: pass
+    - markdown lint: pass
+    - build: pass
+    - tests: 363 passed
+
 ### **Phase 4:** Theme Definitions
 
-**Purpose:** Populate token values for all 3 theme families.
+**Purpose:** Verify existing themes and add Remedy theme family.
 
-- [ ] **4.1 Update Gruvbox theme**
+**Note:** After Phase 3.5 consolidation, themes use standard shadcn/ui tokens. Gruvbox and Rose Pine
+already have complete token values from initial setup. This phase focuses on verification and adding
+the third theme (Remedy).
 
-    - [ ] **4.1.a Extend `src/data/themes/gruvbox.ts`**
-        - Add all semantic token values for light variant
-        - Add all semantic token values for dark variant
-        - Add `on-*` pairs with verified contrast
-        - Add layer colors following Carbon pattern (alternating light, progressive dark)
+- [ ] **4.1 Verify existing themes**
 
-    - [ ] **4.1.b Verify theme loads correctly**
+    - [ ] **4.1.a Verify Gruvbox theme completeness**
+        - Confirm all shadcn tokens have values (light and dark variants)
+        - Confirm shadow tokens included (`shadow-sm/md/lg`)
         - Test theme switching in dev server
-        - Verify CSS variables update
 
-- [ ] **4.2 Update Rose Pine theme**
+    - [ ] **4.1.b Verify Rose Pine theme completeness**
+        - Confirm all shadcn tokens have values (Dawn = light, Moon = dark)
+        - Confirm shadow tokens included
+        - Test theme switching in dev server
 
-    - [ ] **4.2.a Extend `src/data/themes/rosepine.ts`**
-        - Add all semantic token values for light variant (Dawn)
-        - Add all semantic token values for dark variant (Moon/Main)
-        - Add `on-*` pairs with verified contrast
-        - Add layer colors
+- [ ] **4.2 Create Remedy theme**
 
-    - [ ] **4.2.b Verify theme loads correctly**
-
-- [ ] **4.3 Create Remedy theme**
-
-    - [ ] **4.3.a Create `src/data/themes/remedy.ts`**
+    - [ ] **4.2.a Create `src/data/themes/definitions/remedy.ts`**
         - Source: <https://github.com/robertrossmann/vscode-remedy>
         - Extract color palette from VS Code theme files
-        - Map to semantic token structure
+        - Map to shadcn token structure (same as gruvbox/rose-pine)
         - Add light variant and dark variant
-        - Add `on-*` pairs with verified contrast
-        - Add layer colors
+        - Add shadow tokens
 
-    - [ ] **4.3.b Register theme in `src/data/themes/index.ts`**
-        - Add to theme list
+    - [ ] **4.2.b Create `src/data/themes/palettes/remedy.ts`**
+        - Define raw color values from Remedy VS Code theme
+        - Document color sources
+
+    - [ ] **4.2.c Register theme in `src/data/themes/index.ts`**
+        - Import and add to themes registry
         - Verify theme switching works
-
-- [ ] **4.4 Update CSS variables**
-
-    - [ ] **4.4.a Ensure `globals.css` has all token variables**
-        - Add any missing CSS custom properties
-        - Verify variable naming matches Tailwind config
 
 ### **Phase 5:** Contrast Validation
 
@@ -206,18 +247,20 @@
 
 - [ ] **5.2 Write contrast tests**
 
-    - [ ] **5.2.a Test `on-*` color pairs**
-        - Test: `primary` + `on-primary` ≥ 4.5:1
-        - Test: `secondary` + `on-secondary` ≥ 4.5:1
-        - Test: `destructive` + `on-destructive` ≥ 4.5:1
-        - Test: `accent` + `on-accent` ≥ 4.5:1
-        - Test: `muted` + `on-muted` ≥ 4.5:1
-        - Expect tests to FAIL initially if themes not yet updated
+    - [ ] **5.2.a Test `-foreground` color pairs (shadcn convention)**
+        - Test: `primary` + `primary-foreground` ≥ 4.5:1
+        - Test: `secondary` + `secondary-foreground` ≥ 4.5:1
+        - Test: `destructive` + `destructive-foreground` ≥ 4.5:1
+        - Test: `accent` + `accent-foreground` ≥ 4.5:1
+        - Test: `muted` + `muted-foreground` ≥ 4.5:1
+        - Test: `card` + `card-foreground` ≥ 4.5:1
+        - Test: `popover` + `popover-foreground` ≥ 4.5:1
 
     - [ ] **5.2.b Test text on backgrounds**
         - Test: `foreground` on `background` ≥ 4.5:1
-        - Test: `foreground` on `layer-01` ≥ 4.5:1
-        - Test: `foreground` on `layer-02` ≥ 4.5:1
+        - Test: `foreground` on `card` ≥ 4.5:1
+        - Test: `foreground` on `popover` ≥ 4.5:1
+        - Test: `foreground` on `muted` ≥ 4.5:1
 
     - [ ] **5.2.c Run for all 6 theme variants**
         - Gruvbox light, Gruvbox dark
@@ -250,6 +293,11 @@
         - Component spacing (within components)
         - Layout margins (page-level)
 
+    - [ ] **6.1.c Note known spacing inconsistencies**
+        - Projects page: Header text butts against AdaptiveHero (no top spacing)
+        - Compare with Skills, About, Contact pages (have consistent top spacing)
+        - Document for TWM migration: should use `PAGE_HEADER_TOP` or equivalent token
+
 - [ ] **6.2 Define spacing token plan**
 
     - [ ] **6.2.a Propose semantic spacing tokens**
@@ -257,6 +305,7 @@
         - `CONTENT_PADDING_Y` - Vertical content padding
         - `SECTION_GAP` - Gap between sections
         - `CARD_PADDING` - Card internal padding
+        - `PAGE_HEADER_TOP` - Top spacing for page headers (consistency across pages)
         - Document mapping: which magic numbers → which token
 
     - [ ] **6.2.b Document in implementation notes**
@@ -332,26 +381,25 @@
 
 ## Implementation Notes
 
-### Token Naming Convention
+### Token Naming Convention (ADR-001)
 
-Following Material Design 3 `on-*` pattern for contrast pairs:
+Adopting shadcn/ui conventions for color tokens:
 
-- `primary` = background color
-- `on-primary` = foreground color guaranteed to contrast against `primary`
+- `-foreground` suffix for contrast pairs: `primary` + `primary-foreground`
+- Elevation tokens: `card` (first level), `popover` (second level)
+- No custom semantic vocabulary - use shadcn tokens directly
+- Extend only for genuine gaps: layout/spacing tokens, shadows
 
-### Layer Elevation Pattern (from IBM Carbon)
+See ADR-001 for full rationale.
 
-Light mode uses alternating pattern for visual distinction:
+### Token Semantic Clarification
 
-- `background`: White (#ffffff)
-- `layer-01`: Light gray (#f4f4f4)
-- `layer-02`: White (#ffffff) - alternates back
+shadcn token names are component-inspired but have broader semantic meaning:
 
-Dark mode uses progressive lightening:
-
-- `background`: Darkest (#161616)
-- `layer-01`: Lighter (#262626)
-- `layer-02`: Even lighter (#393939)
+- `card` = first elevation level (cards, panels, any elevated surface)
+- `popover` = second elevation level (modals, dialogs, dropdowns)
+- `border` = default accessible border for interactive elements
+- `muted` = deemphasized backgrounds and text
 
 ### Theme Switching Approach
 
@@ -372,11 +420,11 @@ const setTheme = (themeName: string) => {
 
 ## Success Criteria
 
-- [ ] Playwright runs locally with smoke tests passing at all 3 viewports
-- [ ] CI workflow includes E2E job with tiered execution
-- [ ] vitest-axe integrated with ≥3 component accessibility tests
+- [x] Playwright runs locally with smoke tests passing at all 3 viewports
+- [x] CI workflow includes E2E job with tiered execution
+- [x] vitest-axe integrated with ≥3 component accessibility tests
 - [ ] All 6 theme variants pass WCAG AA contrast validation (4.5:1)
-- [ ] Token types defined with ~25 semantic color tokens
+- [ ] Token system follows shadcn/ui conventions with documented extensions (ADR-001)
 - [ ] TWM layout tokens defined (gap, border, opacity, heights)
 - [ ] Spacing audit complete with consolidation plan documented
 - [ ] Component patterns documented (buttons, focus, opacity)
