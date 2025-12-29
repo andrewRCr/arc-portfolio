@@ -94,30 +94,18 @@ export interface ThemeColors {
   "accent-foreground": string;
 
   // Decorative accent variants (palette access, no semantic meaning)
+  // NOTE: No -foreground pairs - these are for decorative use only (borders, text color, indicators)
+  // NOT for backgrounds with text. Use semantic tokens (primary, secondary, etc.) for that.
   /** Red accent - decorative use, distinct from destructive */
   "accent-red": string;
-  /** Text on red accent backgrounds */
-  "accent-red-foreground": string;
-
   /** Orange accent */
   "accent-orange": string;
-  /** Text on orange accent backgrounds */
-  "accent-orange-foreground": string;
-
   /** Green accent - decorative use, no success semantics */
   "accent-green": string;
-  /** Text on green accent backgrounds */
-  "accent-green-foreground": string;
-
   /** Blue accent */
   "accent-blue": string;
-  /** Text on blue accent backgrounds */
-  "accent-blue-foreground": string;
-
   /** Purple accent */
   "accent-purple": string;
-  /** Text on purple accent backgrounds */
-  "accent-purple-foreground": string;
 
   // Destructive colors
   /** Danger/error states */

@@ -46,14 +46,19 @@ export default function ThemeShowcasePage() {
           </div>
         </div>
 
-        {/* Accent Variants */}
+        {/* Decorative Accent Colors */}
         <div className="space-y-2">
-          <h3 className="text-xl font-semibold">Accent Variants</h3>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <ColorSwatch label="Accent Blue" className="bg-accent-blue text-accent-blue-foreground" />
-            <ColorSwatch label="Accent Purple" className="bg-accent-purple text-accent-purple-foreground" />
-            <ColorSwatch label="Accent Orange" className="bg-accent-orange text-accent-orange-foreground" />
-            <ColorSwatch label="Accent Aqua (default)" className="bg-accent text-accent-foreground" />
+          <h3 className="text-xl font-semibold">Decorative Accents</h3>
+          <p className="text-sm text-muted-foreground mb-2">
+            For borders, text color, indicators - not for backgrounds with text
+          </p>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <ColorSwatch label="accent-red" className="border-4 border-accent-red bg-background text-accent-red" />
+            <ColorSwatch label="accent-orange" className="border-4 border-accent-orange bg-background text-accent-orange" />
+            <ColorSwatch label="accent-green" className="border-4 border-accent-green bg-background text-accent-green" />
+            <ColorSwatch label="accent-blue" className="border-4 border-accent-blue bg-background text-accent-blue" />
+            <ColorSwatch label="accent-purple" className="border-4 border-accent-purple bg-background text-accent-purple" />
+            <ColorSwatch label="accent (default)" className="bg-accent text-accent-foreground" />
           </div>
         </div>
       </section>

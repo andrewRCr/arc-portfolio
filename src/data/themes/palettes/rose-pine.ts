@@ -157,8 +157,36 @@ export const rosePineDawn = {
 } as const;
 
 /**
+ * Accessibility-adjusted colors for WCAG AA compliance.
+ *
+ * Rose Pine's palette is optimized for aesthetics over contrast.
+ * These adjustments maintain the visual character while meeting 4.5:1.
+ *
+ * NOTE: Rose Pine's "muted" and "subtle" are TEXT colors, not backgrounds.
+ * For shadcn's muted background token, use highlight_med instead.
+ */
+export const rosePineA11y = {
+  // Dawn (light mode) adjustments
+  /** Foam darkened 20% for base contrast (3.14 → 4.63) */
+  foam_dark: "#45767F", // Original: #56949f
+  /** Love darkened 10% for base contrast (3.84 → 4.59) */
+  love_dark: "#A2596E", // Original: #b4637a
+  /** Rose darkened 30% for base contrast (2.60 → 4.86) */
+  rose_dark: "#975B58", // Original: #d7827e
+  /** Subtle darkened 30% for highlight_med contrast (→ 5.44) */
+  subtle_dark: "#555267", // Original: #797593
+
+  // Main (dark mode) adjustments
+  /** Pine lightened 15% for base contrast (3.38 → 4.56) */
+  pine_light: "#5089A0", // Original: #31748f
+  /** Subtle lightened 25% for highlight_med contrast (→ 4.57) */
+  subtle_light: "#ACA9BF", // Original: #908caa
+} as const;
+
+/**
  * Type-safe palette color names for each variant.
  */
 export type RosePineMainColor = keyof typeof rosePineMain;
 export type RosePineMoonColor = keyof typeof rosePineMoon;
 export type RosePineDawnColor = keyof typeof rosePineDawn;
+export type RosePineA11yColor = keyof typeof rosePineA11y;

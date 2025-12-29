@@ -231,50 +231,42 @@ the third theme (Remedy).
         - Theme validation tests pass (13 tests); 371 total tests pass
         - E2E theme toggle smoke test passes
 
-### **Phase 5:** Contrast Validation
+### **Phase 5:** Contrast Validation ✓
 
 **Purpose:** Automated WCAG AA compliance testing for all theme combinations.
 
-- [ ] **5.1 Set up contrast testing**
+- [x] **5.1 Set up contrast testing**
 
-    - [ ] **5.1.a Install `color-contrast-checker`**
-        - Add to devDependencies
+    - [x] **5.1.a Install `color-contrast-checker`**
+        - Added to devDependencies; created type declaration
 
-    - [ ] **5.1.b Create contrast test utility**
-        - Create `src/data/themes/__tests__/contrast.test.ts`
-        - Helper function to check 4.5:1 ratio for text
-        - Helper function to check 3:1 ratio for UI components
+    - [x] **5.1.b Create contrast test utility**
+        - Created `src/data/themes/__tests__/contrast.test.ts` (66 tests)
+        - Helpers: `rgbToHex`, `getContrastRatio`, `meetsAANormalText`
 
-- [ ] **5.2 Write contrast tests**
+- [x] **5.2 Write contrast tests**
 
-    - [ ] **5.2.a Test `-foreground` color pairs (shadcn convention)**
-        - Test: `primary` + `primary-foreground` ≥ 4.5:1
-        - Test: `secondary` + `secondary-foreground` ≥ 4.5:1
-        - Test: `destructive` + `destructive-foreground` ≥ 4.5:1
-        - Test: `accent` + `accent-foreground` ≥ 4.5:1
-        - Test: `muted` + `muted-foreground` ≥ 4.5:1
-        - Test: `card` + `card-foreground` ≥ 4.5:1
-        - Test: `popover` + `popover-foreground` ≥ 4.5:1
+    - [x] **5.2.a Test `-foreground` color pairs (shadcn convention)**
+        - Tests 7 semantic pairs: primary, secondary, destructive, accent, muted, card, popover
+        - Removed decorative accent `-foreground` tokens (unused in practice)
 
-    - [ ] **5.2.b Test text on backgrounds**
-        - Test: `foreground` on `background` ≥ 4.5:1
-        - Test: `foreground` on `card` ≥ 4.5:1
-        - Test: `foreground` on `popover` ≥ 4.5:1
-        - Test: `foreground` on `muted` ≥ 4.5:1
+    - [x] **5.2.b Test text on backgrounds**
+        - Tests foreground on: background, card, popover, muted
 
-    - [ ] **5.2.c Run for all 6 theme variants**
-        - Gruvbox light, Gruvbox dark
-        - Rose Pine light, Rose Pine dark
-        - Remedy light, Remedy dark
+    - [x] **5.2.c Run for all 6 theme variants**
+        - Initial run: 19 failures across all themes
 
-    - [ ] **5.2.d Fix any failing contrast ratios**
-        - Adjust theme colors as needed
-        - Re-run tests until all pass
+    - [x] **5.2.d Fix failing contrast ratios**
+        - **Approach:** within-palette swaps first, minimal adjustments as fallback
+        - **Remedy (7 fixes):** Added `remedyA11y` palette; adjusted primary/secondary/accent/muted foregrounds
+        - **Gruvbox (4 fixes):** Added `gruvboxA11y` palette; darkened light/primary 5%, palette swaps for accent/destructive/muted
+        - **Rose Pine (8 fixes):** Added `rosePineA11y` palette; **semantic fix**: muted was TEXT color used as bg, now
+        uses highlight_med; adjusted secondary/destructive/accent/primary
 
-- [ ] **5.3 Run quality gates**
-    - [ ] 5.3.a `npm test` - all tests pass
-    - [ ] 5.3.b `npm run type-check` - no errors
-    - [ ] 5.3.c `npm run lint` - no violations
+- [x] **5.3 Run quality gates**
+    - [x] 5.3.a `npm test` - 437 tests pass (66 contrast tests)
+    - [x] 5.3.b `npm run type-check` - no errors
+    - [x] 5.3.c `npm run lint` - no violations
 
 ### **Phase 6:** Spacing Token Audit
 

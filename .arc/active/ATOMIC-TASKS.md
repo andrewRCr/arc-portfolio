@@ -30,7 +30,13 @@
 
 ## Active
 
-<!-- Add tasks here with checkboxes -->
+- [ ] Consolidate theme debug pages
+    - Problem: Have both `app/debug-theme/` (CSS var inspection) and `app/theme-showcase/` (visual swatches)
+      with duplicated purpose; theme-showcase has stale "aqua" accent labels
+    - Approach: Consolidate into `app/(dev)/theme-debug/` with sections (like CineXplorer pattern);
+      fix accent variant labels to match actual tokens (red/orange/green/blue/purple)
+    - Files: `src/app/debug-theme/`, `src/app/theme-showcase/`
+    - Rationale: Consistency with CineXplorer, single source of truth for theme debugging
 
 <!-- Example structure:
 

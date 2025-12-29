@@ -96,8 +96,32 @@ export const remedyAccents = {
 } as const;
 
 /**
+ * Accessibility-adjusted colors for WCAG AA compliance.
+ *
+ * These are minimal adjustments to original palette colors where
+ * no in-palette combination achieves 4.5:1 contrast ratio.
+ * Documented with original color and adjustment applied.
+ */
+export const remedyA11y = {
+  // Light mode adjustments
+  /** Cyan lightened 10% for black text contrast (3.86 → 4.50) */
+  cyan_light: "#6E9893", // Original: #5E8D87
+  /** ForegroundDimmed darkened 20% for muted bg contrast (3.33 → 4.81) */
+  foregroundDimmed_dark: "#6E6450", // Original: #8A7D64
+
+  // Dark mode adjustments
+  /** Orange lightened 5% for dark base contrast (4.32 → 4.58) */
+  orange_light: "#EC7054", // Original: #EB684B
+  /** Red lightened 15% for dark base contrast (3.70 → 4.59) */
+  red_light: "#D47D7D", // Original: #CC6666
+  /** ForegroundDimmed lightened 3% for muted bg contrast (4.37 → 4.54) */
+  foregroundDimmed_light: "#AB9B7C", // Original: #A89878
+} as const;
+
+/**
  * Type-safe palette color access.
  */
 export type RemedyBrightColor = keyof typeof remedyBright;
 export type RemedyDarkColor = keyof typeof remedyDark;
 export type RemedyAccentColor = keyof typeof remedyAccents.normal;
+export type RemedyA11yColor = keyof typeof remedyA11y;

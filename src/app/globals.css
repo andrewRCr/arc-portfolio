@@ -29,12 +29,12 @@
   /* Accent colors */
   --color-accent: rgb(var(--accent));
   --color-accent-foreground: rgb(var(--accent-foreground));
-  --color-accent-blue: rgb(var(--accent-blue));
-  --color-accent-blue-foreground: rgb(var(--accent-blue-foreground));
-  --color-accent-purple: rgb(var(--accent-purple));
-  --color-accent-purple-foreground: rgb(var(--accent-purple-foreground));
+  /* Decorative accents - no foreground pairs (decorative use only) */
+  --color-accent-red: rgb(var(--accent-red));
   --color-accent-orange: rgb(var(--accent-orange));
-  --color-accent-orange-foreground: rgb(var(--accent-orange-foreground));
+  --color-accent-green: rgb(var(--accent-green));
+  --color-accent-blue: rgb(var(--accent-blue));
+  --color-accent-purple: rgb(var(--accent-purple));
 
   /* Destructive */
   --color-destructive: rgb(var(--destructive));
@@ -92,12 +92,12 @@
   --muted-foreground: 102 92 84;
   --accent: 104 157 106;
   --accent-foreground: 60 56 54;
-  --accent-blue: 7 102 120;
-  --accent-blue-foreground: 251 241 199;
-  --accent-purple: 143 63 113;
-  --accent-purple-foreground: 251 241 199;
+  /* Decorative accents - no foreground pairs */
+  --accent-red: 157 0 6;
   --accent-orange: 175 58 3;
-  --accent-orange-foreground: 251 241 199;
+  --accent-green: 121 116 14;
+  --accent-blue: 7 102 120;
+  --accent-purple: 143 63 113;
   --destructive: 157 0 6;
   --destructive-foreground: 251 241 199;
   --border: 213 196 161;

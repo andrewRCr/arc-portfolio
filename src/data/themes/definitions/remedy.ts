@@ -16,7 +16,7 @@
  * Depth perception comes from shadow utilities.
  */
 
-import { remedyBright, remedyDark, remedyAccents } from "../palettes/remedy";
+import { remedyBright, remedyDark, remedyAccents, remedyA11y } from "../palettes/remedy";
 import type { Theme } from "../types";
 
 /**
@@ -49,32 +49,32 @@ export const remedyTheme: Theme = {
     "popover-foreground": hexToRgb(remedyBright.foreground),
 
     // Primary colors (orange - Remedy signature)
+    // A11Y: foreground changed from base to black for WCAG AA (4.53:1)
     primary: hexToRgb(remedyAccents.normal.orange), // #EB684B
-    "primary-foreground": hexToRgb(remedyBright.base),
+    "primary-foreground": hexToRgb(remedyAccents.normal.black), // #282A2E
 
     // Secondary colors (yellow)
+    // A11Y: foreground changed from base to black for WCAG AA (5.78:1)
     secondary: hexToRgb(remedyAccents.normal.yellow), // #DE935F
-    "secondary-foreground": hexToRgb(remedyBright.base),
+    "secondary-foreground": hexToRgb(remedyAccents.normal.black), // #282A2E
 
     // Muted colors
+    // A11Y: foregroundDimmed darkened 20% for WCAG AA (4.81:1) - preserves muted semantic
     muted: hexToRgb(remedyBright.baseCode),
-    "muted-foreground": hexToRgb(remedyBright.foregroundDimmed), // #8A7D64
+    "muted-foreground": hexToRgb(remedyA11y.foregroundDimmed_dark), // #6E6450 (original: #8A7D64)
 
     // Default accent (cyan - cool contrast to warm orange)
-    accent: hexToRgb(remedyAccents.normal.cyan), // #5E8D87
-    "accent-foreground": hexToRgb(remedyBright.base),
+    // A11Y: cyan lightened 10% + black fg for WCAG AA (4.50:1)
+    accent: hexToRgb(remedyA11y.cyan_light), // #6E9893 (original: #5E8D87)
+    "accent-foreground": hexToRgb(remedyAccents.normal.black), // #282A2E
 
     // Decorative accent variants
+    // No -foreground pairs - decorative use only (borders, text color, indicators)
     "accent-red": hexToRgb(remedyAccents.normal.red), // #A54242
-    "accent-red-foreground": hexToRgb(remedyBright.base),
     "accent-orange": hexToRgb(remedyAccents.normal.orange), // #EB684B
-    "accent-orange-foreground": hexToRgb(remedyBright.base),
     "accent-green": hexToRgb(remedyAccents.normal.green), // #8C9440
-    "accent-green-foreground": hexToRgb(remedyBright.base),
     "accent-blue": hexToRgb(remedyAccents.normal.blue), // #5F819D
-    "accent-blue-foreground": hexToRgb(remedyBright.base),
     "accent-purple": hexToRgb(remedyAccents.normal.magenta), // #85678F
-    "accent-purple-foreground": hexToRgb(remedyBright.base),
 
     // Destructive colors
     destructive: hexToRgb(remedyAccents.normal.red), // #A54242
@@ -105,7 +105,8 @@ export const remedyTheme: Theme = {
     "popover-foreground": hexToRgb(remedyDark.foreground),
 
     // Primary colors (orange - Remedy signature)
-    primary: hexToRgb(remedyAccents.bright.orange), // #EB684B
+    // A11Y: orange lightened 5% for WCAG AA (4.58:1)
+    primary: hexToRgb(remedyA11y.orange_light), // #EC7054 (original: #EB684B)
     "primary-foreground": hexToRgb(remedyDark.base),
 
     // Secondary colors (yellow - bright variant)
@@ -113,27 +114,25 @@ export const remedyTheme: Theme = {
     "secondary-foreground": hexToRgb(remedyDark.base),
 
     // Muted colors
+    // A11Y: foregroundDimmed lightened 3% for WCAG AA (4.54:1) - preserves muted semantic
     muted: hexToRgb(remedyDark.baseCode),
-    "muted-foreground": hexToRgb(remedyDark.foregroundDimmed), // #A89878
+    "muted-foreground": hexToRgb(remedyA11y.foregroundDimmed_light), // #AB9B7C (original: #A89878)
 
     // Default accent (cyan - cool contrast to warm palette)
     accent: hexToRgb(remedyAccents.bright.cyan), // #8ABEB7
     "accent-foreground": hexToRgb(remedyDark.base),
 
     // Decorative accent variants (bright variants for dark mode)
+    // No -foreground pairs - decorative use only (borders, text color, indicators)
     "accent-red": hexToRgb(remedyAccents.bright.red), // #CC6666
-    "accent-red-foreground": hexToRgb(remedyDark.base),
     "accent-orange": hexToRgb(remedyAccents.bright.orange), // #EB684B
-    "accent-orange-foreground": hexToRgb(remedyDark.base),
     "accent-green": hexToRgb(remedyAccents.bright.green), // #B5BD68
-    "accent-green-foreground": hexToRgb(remedyDark.base),
     "accent-blue": hexToRgb(remedyAccents.bright.blue), // #81A2BE
-    "accent-blue-foreground": hexToRgb(remedyDark.base),
     "accent-purple": hexToRgb(remedyAccents.bright.magenta), // #B294BB
-    "accent-purple-foreground": hexToRgb(remedyDark.base),
 
     // Destructive colors
-    destructive: hexToRgb(remedyAccents.bright.red), // #CC6666
+    // A11Y: red lightened 15% for WCAG AA (4.59:1)
+    destructive: hexToRgb(remedyA11y.red_light), // #D47D7D (original: #CC6666)
     "destructive-foreground": hexToRgb(remedyDark.base),
 
     // UI element colors
