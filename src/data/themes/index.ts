@@ -11,6 +11,7 @@
  */
 
 import { gruvboxTheme } from "./definitions/gruvbox";
+import { remedyTheme } from "./definitions/remedy";
 import { rosePineTheme } from "./definitions/rose-pine";
 import type { ThemeRegistry } from "./types";
 
@@ -22,6 +23,7 @@ import type { ThemeRegistry } from "./types";
  */
 export const themes: ThemeRegistry = {
   gruvbox: gruvboxTheme,
+  remedy: remedyTheme,
   "rose-pine": rosePineTheme,
 };
 
