@@ -54,10 +54,19 @@ export default function ThemeShowcasePage() {
           </p>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <ColorSwatch label="accent-red" className="border-4 border-accent-red bg-background text-accent-red" />
-            <ColorSwatch label="accent-orange" className="border-4 border-accent-orange bg-background text-accent-orange" />
-            <ColorSwatch label="accent-green" className="border-4 border-accent-green bg-background text-accent-green" />
+            <ColorSwatch
+              label="accent-orange"
+              className="border-4 border-accent-orange bg-background text-accent-orange"
+            />
+            <ColorSwatch
+              label="accent-green"
+              className="border-4 border-accent-green bg-background text-accent-green"
+            />
             <ColorSwatch label="accent-blue" className="border-4 border-accent-blue bg-background text-accent-blue" />
-            <ColorSwatch label="accent-purple" className="border-4 border-accent-purple bg-background text-accent-purple" />
+            <ColorSwatch
+              label="accent-purple"
+              className="border-4 border-accent-purple bg-background text-accent-purple"
+            />
             <ColorSwatch label="accent (default)" className="bg-accent text-accent-foreground" />
           </div>
         </div>

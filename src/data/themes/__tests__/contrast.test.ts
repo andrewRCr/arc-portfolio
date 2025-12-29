@@ -117,17 +117,12 @@ describe("Theme Contrast Validation", () => {
                 const passes = meetsAANormalText(bgColor, fgColor);
 
                 if (!passes) {
-                  console.log(
-                    `  FAIL: ${themeName}/${mode} ${label} - ratio: ${ratio.toFixed(2)}:1 (need 4.5:1)`
-                  );
+                  console.log(`  FAIL: ${themeName}/${mode} ${label} - ratio: ${ratio.toFixed(2)}:1 (need 4.5:1)`);
                   console.log(`    bg: ${bgColor} (${rgbToHex(bgColor)})`);
                   console.log(`    fg: ${fgColor} (${rgbToHex(fgColor)})`);
                 }
 
-                expect(
-                  passes,
-                  `${label} contrast ratio ${ratio.toFixed(2)}:1 should be ≥ 4.5:1`
-                ).toBe(true);
+                expect(passes, `${label} contrast ratio ${ratio.toFixed(2)}:1 should be ≥ 4.5:1`).toBe(true);
               });
             });
           });
@@ -141,17 +136,12 @@ describe("Theme Contrast Validation", () => {
                 const passes = meetsAANormalText(bgColor, fgColor);
 
                 if (!passes) {
-                  console.log(
-                    `  FAIL: ${themeName}/${mode} ${label} - ratio: ${ratio.toFixed(2)}:1 (need 4.5:1)`
-                  );
+                  console.log(`  FAIL: ${themeName}/${mode} ${label} - ratio: ${ratio.toFixed(2)}:1 (need 4.5:1)`);
                   console.log(`    bg: ${bgColor} (${rgbToHex(bgColor)})`);
                   console.log(`    fg: ${fgColor} (${rgbToHex(fgColor)})`);
                 }
 
-                expect(
-                  passes,
-                  `${label} contrast ratio ${ratio.toFixed(2)}:1 should be ≥ 4.5:1`
-                ).toBe(true);
+                expect(passes, `${label} contrast ratio ${ratio.toFixed(2)}:1 should be ≥ 4.5:1`).toBe(true);
               });
             });
           });
