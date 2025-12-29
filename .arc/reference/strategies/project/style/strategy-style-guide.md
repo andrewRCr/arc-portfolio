@@ -1,6 +1,6 @@
 # Strategy: Style Guide
 
-**Version:** 1.1 | **Updated:** 2025-12-28
+**Version:** 1.2 | **Updated:** 2025-12-29
 
 This document outlines the style guide for arc-portfolio, including design token conventions, the
 shadow-based elevation model, and visual guidelines.
@@ -8,10 +8,11 @@ shadow-based elevation model, and visual guidelines.
 ## Table of Contents
 
 1. [Design Token System](#design-token-system)
-2. [Surface Type Semantics](#surface-type-semantics)
-3. [Shadow-Based Elevation](#shadow-based-elevation)
-4. [Interactive States](#interactive-states)
-5. [Extending the Token System](#extending-the-token-system)
+2. [Semantic vs Decorative Tokens](#semantic-vs-decorative-tokens)
+3. [Surface Type Semantics](#surface-type-semantics)
+4. [Shadow-Based Elevation](#shadow-based-elevation)
+5. [Interactive States](#interactive-states)
+6. [Extending the Token System](#extending-the-token-system)
 
 ---
 
@@ -29,14 +30,15 @@ extensions for genuine gaps. This decision is documented in ADR-001.
 
 ### Token Categories
 
-| Category     | Tokens                                          | Purpose                          |
-|--------------|-------------------------------------------------|----------------------------------|
-| **Base**     | `background`, `foreground`                      | Page background and default text |
-| **Surfaces** | `card`, `popover`                               | Container and overlay surfaces   |
-| **Actions**  | `primary`, `secondary`, `accent`, `destructive` | Interactive element colors       |
-| **Muted**    | `muted`, `muted-foreground`                     | Deemphasized content             |
-| **UI**       | `border`, `input`, `ring`                       | Borders, inputs, focus rings     |
-| **Shadows**  | `shadow-sm/md/lg`                               | Elevation shadows (extension)    |
+| Category       | Tokens                                          | Purpose                              |
+|----------------|-------------------------------------------------|--------------------------------------|
+| **Base**       | `background`, `foreground`                      | Page background and default text     |
+| **Surfaces**   | `card`, `popover`                               | Container and overlay surfaces       |
+| **Semantic**   | `primary`, `secondary`, `accent`, `destructive` | Functional meaning (actions, states) |
+| **Decorative** | `accent-red/orange/green/blue/purple`           | Palette access (styling, no meaning) |
+| **Muted**      | `muted`, `muted-foreground`                     | Deemphasized content                 |
+| **UI**         | `border`, `input`, `ring`                       | Borders, inputs, focus rings         |
+| **Shadows**    | `shadow-sm/md/lg`                               | Elevation shadows (extension)        |
 
 ### Foreground Pairing Convention
 
@@ -46,6 +48,61 @@ Each background token has a `-foreground` pair for text contrast:
 <button className="bg-primary text-primary-foreground">Submit</button>
 <div className="bg-card text-card-foreground">Card content</div>
 ```
+
+---
+
+## Semantic vs Decorative Tokens
+
+Tokens serve two fundamentally different purposes. Understanding this distinction prevents misuse
+and enables flexible theming.
+
+### Semantic Tokens (Convey Meaning)
+
+Use these when the color choice communicates **what something does** or **what state it's in**:
+
+| Token         | Meaning                                     | Example Usage                     |
+|---------------|---------------------------------------------|-----------------------------------|
+| `primary`     | This is the main action                     | Submit buttons, key CTAs          |
+| `secondary`   | This is an alternative action               | Cancel buttons, secondary options |
+| `destructive` | This action is dangerous or indicates error | Delete buttons, error messages    |
+| `muted`       | This content is deemphasized                | Disabled states, help text        |
+
+### Decorative Tokens (Palette Access)
+
+Use these when you want a **specific color for styling**, without implying meaning:
+
+| Token           | Purpose                                     |
+|-----------------|---------------------------------------------|
+| `accent-red`    | Red for decoration (NOT implying danger)    |
+| `accent-orange` | Orange for decoration                       |
+| `accent-green`  | Green for decoration (NOT implying success) |
+| `accent-blue`   | Blue for decoration                         |
+| `accent-purple` | Purple for decoration                       |
+
+### When to Use Which
+
+**Same color, different reasons:**
+
+```tsx
+// Semantic: "This button deletes something dangerous"
+<button className="bg-destructive text-destructive-foreground">Delete Account</button>
+
+// Decorative: "I want a red accent for visual design"
+<div className="border-accent-red">Featured section</div>
+```
+
+Both use red, but for different purposes. The delete button uses `destructive` because the color
+conveys danger. The border uses `accent-red` because it's a styling choice with no semantic
+meaning.
+
+### Why This Matters
+
+1. **Theming flexibility**: Themes can map their distinctive colors to decorative accents without
+   forcing semantic meaning (e.g., Remedy's red is used for emphasis, not just errors)
+2. **Design polish**: When refining the UI, decorative accents let you use theme-specific colors
+   to make each theme "feel" like itself
+3. **Separation of concerns**: Semantic tokens change when meaning changes; decorative tokens
+   change when the design changes
 
 ---
 

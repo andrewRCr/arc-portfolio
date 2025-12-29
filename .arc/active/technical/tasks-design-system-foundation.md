@@ -202,34 +202,34 @@ floating overlays), not elevation LEVELS. Depth perception comes from shadow uti
 already have complete token values from initial setup. This phase focuses on verification and adding
 the third theme (Remedy).
 
-- [ ] **4.1 Verify existing themes**
+- [x] **4.1 Verify existing themes**
 
-    - [ ] **4.1.a Verify Gruvbox theme completeness**
-        - Confirm all shadcn tokens have values (light and dark variants)
-        - Confirm shadow tokens included (`shadow-sm/md/lg`)
-        - Test theme switching in dev server
+    - [x] **4.1.a Verify Gruvbox theme completeness**
+        - ✅ All 27 shadcn tokens present (light + dark variants)
+        - ✅ Shadow tokens included with proper opacity scaling
+        - ✅ Theme validation tests pass (13 tests), shadow visibility tests pass (18 tests)
+        - ✅ E2E theme toggle smoke test passes
 
-    - [ ] **4.1.b Verify Rose Pine theme completeness**
-        - Confirm all shadcn tokens have values (Dawn = light, Moon = dark)
-        - Confirm shadow tokens included
-        - Test theme switching in dev server
+    - [x] **4.1.b Verify Rose Pine theme completeness**
+        - ✅ All tokens present; Dawn = light, Main = dark (per official palette)
+        - ✅ Intentional card ≠ popover distinction preserved (documented in file header)
+        - ✅ Shadow tokens included; all validation tests pass
 
-- [ ] **4.2 Create Remedy theme**
+- [x] **4.2 Create Remedy theme**
 
-    - [ ] **4.2.a Create `src/data/themes/definitions/remedy.ts`**
+    - [x] **4.2.a Create `src/data/themes/palettes/remedy.ts`**
+        - Extracted colors from VS Code theme: bright/dark variants + shared accents
         - Source: <https://github.com/robertrossmann/vscode-remedy>
-        - Extract color palette from VS Code theme files
-        - Map to shadcn token structure (same as gruvbox/rose-pine)
-        - Add light variant and dark variant
-        - Add shadow tokens
 
-    - [ ] **4.2.b Create `src/data/themes/palettes/remedy.ts`**
-        - Define raw color values from Remedy VS Code theme
-        - Document color sources
+    - [x] **4.2.b Create `src/data/themes/definitions/remedy.ts`**
+        - Mapped palette to shadcn tokens following ui.ts semantic hints
+        - Primary = orange (accent/button.primary), Secondary = yellow
+        - Default accent = cyan (contrast to warm orange signature)
+        - card = popover (shadcn default, no distinct surfaces in palette)
 
-    - [ ] **4.2.c Register theme in `src/data/themes/index.ts`**
-        - Import and add to themes registry
-        - Verify theme switching works
+    - [x] **4.2.c Register theme in `src/data/themes/index.ts`**
+        - Theme validation tests pass (13 tests); 371 total tests pass
+        - E2E theme toggle smoke test passes
 
 ### **Phase 5:** Contrast Validation
 
