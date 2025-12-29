@@ -57,15 +57,20 @@ export default defineConfig({
       },
     },
 
-    // Cross-browser (optional, run with --project flag)
+    // Cross-browser - Firefox runs locally, WebKit requires CI (WSL2 missing deps)
     {
       name: "Firefox",
       use: { ...devices["Desktop Firefox"] },
     },
-    {
-      name: "WebKit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    // WebKit only in CI - WSL2 lacks required system libraries locally
+    ...(process.env.CI
+      ? [
+          {
+            name: "WebKit",
+            use: { ...devices["Desktop Safari"] },
+          },
+        ]
+      : []),
   ],
 
   webServer: {

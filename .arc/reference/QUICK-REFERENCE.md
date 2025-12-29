@@ -150,7 +150,8 @@ npm run test:e2e -- e2e/tests/smoke.spec.ts
 - E2E tests auto-start dev server if not running
 - Reports saved to `e2e/playwright-report/` (gitignored)
 - Test artifacts in `e2e/test-results/` (gitignored)
-- CI runs Desktop Chrome only for PRs, full viewport suite for main
+- **Local:** Runs Desktop Chrome, Mobile Chrome, Tablet, Firefox (WebKit excluded - WSL2 lacks deps)
+- **CI:** Adds WebKit to test suite (full browser coverage)
 
 ### Markdown Linting
 
