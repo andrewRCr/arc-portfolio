@@ -96,13 +96,17 @@ describe("Theme Colors Structure", () => {
         expect(colors.accent).toBeDefined();
         expect(colors["accent-foreground"]).toBeDefined();
 
-        // Accent variants
+        // Decorative accent variants
+        expect(colors["accent-red"]).toBeDefined();
+        expect(colors["accent-red-foreground"]).toBeDefined();
+        expect(colors["accent-orange"]).toBeDefined();
+        expect(colors["accent-orange-foreground"]).toBeDefined();
+        expect(colors["accent-green"]).toBeDefined();
+        expect(colors["accent-green-foreground"]).toBeDefined();
         expect(colors["accent-blue"]).toBeDefined();
         expect(colors["accent-blue-foreground"]).toBeDefined();
         expect(colors["accent-purple"]).toBeDefined();
         expect(colors["accent-purple-foreground"]).toBeDefined();
-        expect(colors["accent-orange"]).toBeDefined();
-        expect(colors["accent-orange-foreground"]).toBeDefined();
       }
     });
   });

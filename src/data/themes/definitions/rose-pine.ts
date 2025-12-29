@@ -61,13 +61,17 @@ export const rosePineTheme: Theme = {
     accent: hexToRgb(rosePineDawn.rose), // #d7827e
     "accent-foreground": hexToRgb(rosePineDawn.base),
 
-    // Accent variants
+    // Decorative accent variants
+    "accent-red": hexToRgb(rosePineDawn.love), // #b4637a
+    "accent-red-foreground": hexToRgb(rosePineDawn.base),
+    "accent-orange": hexToRgb(rosePineDawn.gold), // #ea9d34
+    "accent-orange-foreground": hexToRgb(rosePineDawn.base),
+    "accent-green": hexToRgb(rosePineDawn.foam), // #56949f (cyan as green)
+    "accent-green-foreground": hexToRgb(rosePineDawn.base),
     "accent-blue": hexToRgb(rosePineDawn.pine), // #286983 (teal as blue)
     "accent-blue-foreground": hexToRgb(rosePineDawn.base),
     "accent-purple": hexToRgb(rosePineDawn.iris), // #907aa9
     "accent-purple-foreground": hexToRgb(rosePineDawn.base),
-    "accent-orange": hexToRgb(rosePineDawn.gold), // #ea9d34
-    "accent-orange-foreground": hexToRgb(rosePineDawn.base),
 
     // Destructive colors
     destructive: hexToRgb(rosePineDawn.love), // #b4637a
@@ -113,13 +117,17 @@ export const rosePineTheme: Theme = {
     accent: hexToRgb(rosePineMain.rose), // #ebbcba
     "accent-foreground": hexToRgb(rosePineMain.base),
 
-    // Accent variants
+    // Decorative accent variants
+    "accent-red": hexToRgb(rosePineMain.love), // #eb6f92
+    "accent-red-foreground": hexToRgb(rosePineMain.base),
+    "accent-orange": hexToRgb(rosePineMain.gold), // #f6c177
+    "accent-orange-foreground": hexToRgb(rosePineMain.base),
+    "accent-green": hexToRgb(rosePineMain.foam), // #9ccfd8 (cyan as green)
+    "accent-green-foreground": hexToRgb(rosePineMain.base),
     "accent-blue": hexToRgb(rosePineMain.pine), // #31748f (teal as blue)
     "accent-blue-foreground": hexToRgb(rosePineMain.base),
     "accent-purple": hexToRgb(rosePineMain.iris), // #c4a7e7
     "accent-purple-foreground": hexToRgb(rosePineMain.base),
-    "accent-orange": hexToRgb(rosePineMain.gold), // #f6c177
-    "accent-orange-foreground": hexToRgb(rosePineMain.base),
 
     // Destructive colors
     destructive: hexToRgb(rosePineMain.love), // #eb6f92
@@ -137,7 +145,7 @@ export const rosePineTheme: Theme = {
   },
 
   accentVariants: {
-    default: "aqua", // Using "aqua" as alias for pine (teal)
-    available: ["aqua", "blue", "purple", "orange"],
+    default: "red", // Rose Pine signature is rose/love (mauve-red)
+    available: ["red", "orange", "green", "blue", "purple"],
   },
 } as const;

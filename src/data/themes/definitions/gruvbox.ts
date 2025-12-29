@@ -4,6 +4,13 @@
  * Maps Gruvbox palette colors to shadcn/ui semantic roles.
  * Supports light and dark modes with extended accent variants.
  *
+ * **Gruvbox Color Naming (non-standard):**
+ * Official Gruvbox uses idiosyncratic color names that don't match visual perception:
+ * - "aqua" (#8ec07c) = visually mint/light green
+ * - "green" (#b8bb26) = visually lime/yellow-green
+ * - "blue" (#83a598) = visually muted teal/seafoam
+ * We preserve official naming in palette references but note visual reality in comments.
+ *
  * **Surface Type Mapping:**
  * Gruvbox palette doesn't define distinct surface levels, so we follow
  * shadcn's default convention: `card` and `popover` use the same color.
@@ -54,17 +61,21 @@ export const gruvboxTheme: Theme = {
     muted: hexToRgb(p.light1), // #ebdbb2
     "muted-foreground": hexToRgb(p.dark3), // #665c54
 
-    // Default accent (aqua - cool contrast)
+    // Default accent (official "aqua", visually mint green)
     accent: hexToRgb(p.neutral_aqua), // #689d6a
     "accent-foreground": hexToRgb(p.dark1),
 
-    // Accent variants (all faded for light mode)
-    "accent-blue": hexToRgb(p.faded_blue), // #076678
+    // Decorative accent variants (all faded for light mode)
+    "accent-red": hexToRgb(p.faded_red), // #9d0006
+    "accent-red-foreground": hexToRgb(p.light0),
+    "accent-orange": hexToRgb(p.faded_orange), // #af3a03
+    "accent-orange-foreground": hexToRgb(p.light0),
+    "accent-green": hexToRgb(p.faded_green), // #79740e (official "green", visually lime)
+    "accent-green-foreground": hexToRgb(p.light0),
+    "accent-blue": hexToRgb(p.faded_blue), // #076678 (official "blue", visually teal)
     "accent-blue-foreground": hexToRgb(p.light0),
     "accent-purple": hexToRgb(p.faded_purple), // #8f3f71
     "accent-purple-foreground": hexToRgb(p.light0),
-    "accent-orange": hexToRgb(p.faded_orange), // #af3a03
-    "accent-orange-foreground": hexToRgb(p.light0),
 
     // Destructive colors
     destructive: hexToRgb(p.faded_red), // #9d0006
@@ -106,17 +117,21 @@ export const gruvboxTheme: Theme = {
     muted: hexToRgb(p.dark1), // #3c3836
     "muted-foreground": hexToRgb(p.light4), // #a89984
 
-    // Default accent (aqua - cool contrast)
+    // Default accent (official "aqua", visually mint green)
     accent: hexToRgb(p.bright_aqua), // #8ec07c
     "accent-foreground": hexToRgb(p.dark0),
 
-    // Accent variants (all bright for dark mode)
-    "accent-blue": hexToRgb(p.bright_blue), // #83a598
+    // Decorative accent variants (all bright for dark mode)
+    "accent-red": hexToRgb(p.bright_red), // #fb4934
+    "accent-red-foreground": hexToRgb(p.dark0),
+    "accent-orange": hexToRgb(p.bright_orange), // #fe8019
+    "accent-orange-foreground": hexToRgb(p.dark0),
+    "accent-green": hexToRgb(p.bright_green), // #b8bb26 (official "green", visually lime)
+    "accent-green-foreground": hexToRgb(p.dark0),
+    "accent-blue": hexToRgb(p.bright_blue), // #83a598 (official "blue", visually teal)
     "accent-blue-foreground": hexToRgb(p.dark0),
     "accent-purple": hexToRgb(p.bright_purple), // #d3869b
     "accent-purple-foreground": hexToRgb(p.dark0),
-    "accent-orange": hexToRgb(p.bright_orange), // #fe8019
-    "accent-orange-foreground": hexToRgb(p.dark0),
 
     // Destructive colors
     destructive: hexToRgb(p.bright_red), // #fb4934
@@ -134,7 +149,7 @@ export const gruvboxTheme: Theme = {
   },
 
   accentVariants: {
-    default: "aqua",
-    available: ["aqua", "blue", "purple", "orange"],
+    default: "green", // Default accent uses official "aqua" (visually mint green)
+    available: ["red", "orange", "green", "blue", "purple"],
   },
 } as const;

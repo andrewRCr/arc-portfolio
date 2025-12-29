@@ -33,13 +33,17 @@ const REQUIRED_COLOR_KEYS: (keyof ThemeColors)[] = [
   // Default accent colors
   "accent",
   "accent-foreground",
-  // Accent variants
+  // Decorative accent variants (palette access, no semantic meaning)
+  "accent-red",
+  "accent-red-foreground",
+  "accent-orange",
+  "accent-orange-foreground",
+  "accent-green",
+  "accent-green-foreground",
   "accent-blue",
   "accent-blue-foreground",
   "accent-purple",
   "accent-purple-foreground",
-  "accent-orange",
-  "accent-orange-foreground",
   // Destructive colors
   "destructive",
   "destructive-foreground",

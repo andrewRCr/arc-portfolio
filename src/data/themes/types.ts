@@ -17,9 +17,15 @@ import type { LayoutTokens } from "@/lib/theme";
 
 /**
  * Available accent color variants for theme customization.
- * Supports future accent switching UI in TWM Layout System.
+ *
+ * These are **decorative** colors - they provide palette access without
+ * semantic meaning. Use these for styling choices, not to convey state.
+ * For semantic colors, use `primary`, `secondary`, `destructive`, etc.
+ *
+ * Example: A red decorative border uses `accent-red`, while an error
+ * state uses `destructive`. Both may be red, but for different reasons.
  */
-export type AccentVariant = "aqua" | "blue" | "purple" | "orange";
+export type AccentVariant = "red" | "orange" | "green" | "blue" | "purple";
 
 /**
  * Metadata for accent color variants.
@@ -38,8 +44,11 @@ export interface AccentMetadata {
  * All colors are RGB space-separated values (e.g., "249 245 229") to support
  * Tailwind's opacity modifiers (bg-primary/50).
  *
- * Extended with accent color variants (aqua, blue, purple, orange) to support
- * design flexibility and future accent switching functionality.
+ * **Token Categories:**
+ * - Semantic tokens (shadcn): primary, secondary, destructive, muted - convey meaning
+ * - Decorative accents (extension): accent-red/orange/green/blue/purple - palette access
+ *
+ * Use semantic tokens for functional meaning, accent tokens for design styling.
  */
 export interface ThemeColors {
   // Base colors
@@ -84,21 +93,31 @@ export interface ThemeColors {
   /** Text on accent backgrounds */
   "accent-foreground": string;
 
-  // Extended accent variants
-  /** Blue accent variant */
+  // Decorative accent variants (palette access, no semantic meaning)
+  /** Red accent - decorative use, distinct from destructive */
+  "accent-red": string;
+  /** Text on red accent backgrounds */
+  "accent-red-foreground": string;
+
+  /** Orange accent */
+  "accent-orange": string;
+  /** Text on orange accent backgrounds */
+  "accent-orange-foreground": string;
+
+  /** Green accent - decorative use, no success semantics */
+  "accent-green": string;
+  /** Text on green accent backgrounds */
+  "accent-green-foreground": string;
+
+  /** Blue accent */
   "accent-blue": string;
   /** Text on blue accent backgrounds */
   "accent-blue-foreground": string;
 
-  /** Purple accent variant */
+  /** Purple accent */
   "accent-purple": string;
   /** Text on purple accent backgrounds */
   "accent-purple-foreground": string;
-
-  /** Orange accent variant */
-  "accent-orange": string;
-  /** Text on orange accent backgrounds */
-  "accent-orange-foreground": string;
 
   // Destructive colors
   /** Danger/error states */
