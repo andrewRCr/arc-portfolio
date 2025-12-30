@@ -31,16 +31,16 @@ export function FeedbackSection() {
                 <AlertTitle>Destructive Alert</AlertTitle>
                 <AlertDescription>Something went wrong. Please try again.</AlertDescription>
               </Alert>
-              {/* Custom styled alerts using theme colors */}
+              {/* Custom styled alerts using decorative accent colors (demonstration only) */}
               <Alert className="border-accent-green bg-accent-green/10">
                 <CheckCircle2 className="h-4 w-4 text-accent-green" />
-                <AlertTitle className="text-accent-green">Success</AlertTitle>
-                <AlertDescription>Your changes have been saved successfully.</AlertDescription>
+                <AlertTitle className="text-accent-green">Accent Green</AlertTitle>
+                <AlertDescription>Custom alert using accent-green token.</AlertDescription>
               </Alert>
               <Alert className="border-accent-orange bg-accent-orange/10">
                 <AlertTriangle className="h-4 w-4 text-accent-orange" />
-                <AlertTitle className="text-accent-orange">Warning</AlertTitle>
-                <AlertDescription>This action cannot be undone.</AlertDescription>
+                <AlertTitle className="text-accent-orange">Accent Orange</AlertTitle>
+                <AlertDescription>Custom alert using accent-orange token.</AlertDescription>
               </Alert>
             </div>
           </div>
@@ -57,19 +57,24 @@ export function FeedbackSection() {
             <div className="flex flex-wrap gap-3">
               {/* Accent-colored outline badges using theme accent colors */}
               <Badge variant="outline" className="border-accent-green text-accent-green">
-                Success
+                Green
               </Badge>
               <Badge variant="outline" className="border-accent-orange text-accent-orange">
-                Warning
+                Orange
               </Badge>
               <Badge variant="outline" className="border-accent-blue text-accent-blue">
-                Info
+                Blue
               </Badge>
               <Badge variant="outline" className="border-accent-purple text-accent-purple">
-                New
+                Purple
               </Badge>
             </div>
           </div>
+
+          {/* Disclaimer */}
+          <p className="text-xs text-muted-foreground">
+            Accent-colored components are decorative only. Use semantic tokens (destructive) for status meaning.
+          </p>
         </CardContentInset>
       </CardContent>
     </Card>

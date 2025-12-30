@@ -22,6 +22,9 @@ import { SHADOW_OPACITY_THRESHOLDS } from "@/lib/theme/tokens/shadows";
  * - "0 1px 2px rgba(0, 0, 0, 0.08)" → 0.08
  * - "0 2px 8px rgba(60, 56, 54, 0.12)" → 0.12
  *
+ * Note: Only extracts from the first shadow in multi-shadow values.
+ * Current theme tokens use single shadows, so this is sufficient.
+ *
  * @returns Opacity value (0-1) or null if not found
  */
 function extractShadowOpacity(shadowValue: string): number | null {

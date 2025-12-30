@@ -1,11 +1,13 @@
 /**
  * Theme Utilities
  *
- * Helper functions for injecting theme CSS variables at runtime.
- * Enables dynamic theme switching without page reloads.
+ * Helper functions for theme management:
+ * - Runtime CSS variable injection for dynamic theme switching
+ * - Contrast ratio calculation for WCAG validation
  */
 
 import type { ThemeColors } from "@/data/themes/types";
+import ColorContrastChecker from "color-contrast-checker";
 
 /**
  * RGB color pattern: three numbers (0-255) separated by whitespace.
@@ -97,4 +99,68 @@ export function applyThemeColors(colors: ThemeColors): void {
  */
 export function getThemeColors(theme: { light: ThemeColors; dark: ThemeColors }, mode: "light" | "dark"): ThemeColors {
   return mode === "dark" ? theme.dark : theme.light;
+}
+
+// =============================================================================
+// Contrast Utilities
+// =============================================================================
+
+const ccc = new ColorContrastChecker();
+
+/**
+ * Convert RGB space-separated string to hex color.
+ * Example: "251 241 199" → "#fbf1c7"
+ * @throws Error if input is not valid "R G B" format with 0-255 values
+ */
+export function rgbToHex(rgb: string): string {
+  if (!rgb || typeof rgb !== "string") {
+    throw new Error(`Invalid RGB format: expected "R G B" string, got ${typeof rgb}`);
+  }
+
+  const parts = rgb.trim().split(/\s+/);
+  if (parts.length !== 3) {
+    throw new Error(`Invalid RGB format: expected 3 values, got ${parts.length} in "${rgb}"`);
+  }
+
+  const values = parts.map((p) => {
+    const n = Number(p);
+    if (!Number.isFinite(n) || n < 0 || n > 255 || !Number.isInteger(n)) {
+      throw new Error(`Invalid RGB value: "${p}" is not an integer 0-255 in "${rgb}"`);
+    }
+    return n;
+  });
+
+  return (
+    "#" +
+    values
+      .map((n) => {
+        const hex = n.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      })
+      .join("")
+  );
+}
+
+/**
+ * Calculate contrast ratio between two RGB space-separated colors.
+ * Returns ratio as number (e.g., 7.5 for 7.5:1).
+ */
+export function getContrastRatio(rgb1: string, rgb2: string): number {
+  const hex1 = rgbToHex(rgb1);
+  const hex2 = rgbToHex(rgb2);
+
+  const lum1 = ccc.hexToLuminance(hex1);
+  const lum2 = ccc.hexToLuminance(hex2);
+
+  return ccc.getContrastRatio(lum1, lum2);
+}
+
+/**
+ * Check if contrast ratio meets WCAG AA for normal text (4.5:1).
+ */
+export function meetsAANormalText(rgb1: string, rgb2: string): boolean {
+  const hex1 = rgbToHex(rgb1);
+  const hex2 = rgbToHex(rgb2);
+  // fontSize 14 triggers normal text requirement (4.5:1)
+  return ccc.isLevelAA(hex1, hex2, 14);
 }

@@ -13,69 +13,9 @@
  */
 
 import { describe, it, expect } from "vitest";
-import ColorContrastChecker from "color-contrast-checker";
 import { themes } from "../index";
 import type { ThemeColors } from "../types";
-
-const ccc = new ColorContrastChecker();
-
-/**
- * Convert RGB space-separated string to hex color.
- * Example: "251 241 199" → "#fbf1c7"
- * @throws Error if input is not valid "R G B" format with 0-255 values
- */
-function rgbToHex(rgb: string): string {
-  if (!rgb || typeof rgb !== "string") {
-    throw new Error(`Invalid RGB format: expected "R G B" string, got ${typeof rgb}`);
-  }
-
-  const parts = rgb.trim().split(/\s+/);
-  if (parts.length !== 3) {
-    throw new Error(`Invalid RGB format: expected 3 values, got ${parts.length} in "${rgb}"`);
-  }
-
-  const values = parts.map((p) => {
-    const n = Number(p);
-    if (!Number.isFinite(n) || n < 0 || n > 255 || !Number.isInteger(n)) {
-      throw new Error(`Invalid RGB value: "${p}" is not an integer 0-255 in "${rgb}"`);
-    }
-    return n;
-  });
-
-  return (
-    "#" +
-    values
-      .map((n) => {
-        const hex = n.toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-      })
-      .join("")
-  );
-}
-
-/**
- * Calculate contrast ratio between two RGB space-separated colors.
- * Returns ratio as number (e.g., 7.5 for 7.5:1).
- */
-function getContrastRatio(rgb1: string, rgb2: string): number {
-  const hex1 = rgbToHex(rgb1);
-  const hex2 = rgbToHex(rgb2);
-
-  const lum1 = ccc.hexToLuminance(hex1);
-  const lum2 = ccc.hexToLuminance(hex2);
-
-  return ccc.getContrastRatio(lum1, lum2);
-}
-
-/**
- * Check if contrast ratio meets WCAG AA for normal text (4.5:1).
- */
-function meetsAANormalText(rgb1: string, rgb2: string): boolean {
-  const hex1 = rgbToHex(rgb1);
-  const hex2 = rgbToHex(rgb2);
-  // fontSize 14 triggers normal text requirement (4.5:1)
-  return ccc.isLevelAA(hex1, hex2, 14);
-}
+import { rgbToHex, getContrastRatio, meetsAANormalText } from "@/lib/theme/utils";
 
 // Semantic foreground pairs to test - background token + its -foreground counterpart
 // NOTE: Decorative accents (accent-red/orange/green/blue/purple) are NOT tested here
@@ -157,6 +97,3 @@ describe("Theme Contrast Validation", () => {
     });
   });
 });
-
-// Export utilities for potential reuse
-export { rgbToHex, getContrastRatio, meetsAANormalText };
