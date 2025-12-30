@@ -15,18 +15,7 @@
 
 import { rosePineMain, rosePineDawn, rosePineA11y } from "../palettes/rose-pine";
 import type { Theme } from "../types";
-
-/**
- * Convert hex color to RGB space-separated string for Tailwind.
- * Example: "#191724" → "25 23 36"
- */
-function hexToRgb(hex: string): string {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) {
-    throw new Error(`Invalid hex color: ${hex}`);
-  }
-  return `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`;
-}
+import { hexToRgb } from "../utils";
 
 export const rosePineTheme: Theme = {
   name: "rose-pine",

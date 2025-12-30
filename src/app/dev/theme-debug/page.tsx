@@ -18,10 +18,33 @@ import {
   InteractiveStatesSection,
 } from "./_sections";
 
-// Gate to development mode only
-if (process.env.NODE_ENV !== "development") {
-  notFound();
-}
+/** CSS color variables to display in debug view */
+const COLOR_VARS = [
+  "--background",
+  "--foreground",
+  "--primary",
+  "--primary-foreground",
+  "--secondary",
+  "--secondary-foreground",
+  "--muted",
+  "--muted-foreground",
+  "--accent",
+  "--accent-foreground",
+  "--accent-red",
+  "--accent-orange",
+  "--accent-green",
+  "--accent-blue",
+  "--accent-purple",
+  "--destructive",
+  "--destructive-foreground",
+  "--border",
+  "--input",
+  "--ring",
+  "--card",
+  "--card-foreground",
+  "--popover",
+  "--popover-foreground",
+] as const;
 
 /**
  * Theme Debug Page
@@ -32,6 +55,11 @@ if (process.env.NODE_ENV !== "development") {
  * Route: /dev/theme-debug (only accessible in development)
  */
 export default function ThemeDebugPage() {
+  // Gate to development mode only
+  if (process.env.NODE_ENV !== "development") {
+    notFound();
+  }
+
   const { theme: colorMode } = useTheme();
   const { activeTheme, setActiveTheme } = useThemeContext();
   const [mounted, setMounted] = useState(false);
@@ -51,35 +79,8 @@ export default function ThemeDebugPage() {
     const root = document.documentElement;
     const computedStyle = getComputedStyle(root);
 
-    const colorVars = [
-      "--background",
-      "--foreground",
-      "--primary",
-      "--primary-foreground",
-      "--secondary",
-      "--secondary-foreground",
-      "--muted",
-      "--muted-foreground",
-      "--accent",
-      "--accent-foreground",
-      "--accent-red",
-      "--accent-orange",
-      "--accent-green",
-      "--accent-blue",
-      "--accent-purple",
-      "--destructive",
-      "--destructive-foreground",
-      "--border",
-      "--input",
-      "--ring",
-      "--card",
-      "--card-foreground",
-      "--popover",
-      "--popover-foreground",
-    ];
-
     const values: Record<string, string> = {};
-    colorVars.forEach((varName) => {
+    COLOR_VARS.forEach((varName) => {
       const value = computedStyle.getPropertyValue(varName).trim();
       values[varName] = value || "(not set)";
     });
@@ -91,7 +92,9 @@ export default function ThemeDebugPage() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerOffset = 120;
+      // Get sticky header height dynamically, fallback to 120px
+      const stickyHeader = document.querySelector(".sticky.top-0");
+      const headerOffset = stickyHeader ? stickyHeader.getBoundingClientRect().height + 16 : 120;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });

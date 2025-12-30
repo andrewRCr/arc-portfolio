@@ -131,5 +131,12 @@ export function isValidThemeName(name: string, themes: Record<string, Theme>): b
  * const theme = getTheme(savedTheme, themes, 'gruvbox');
  */
 export function getTheme(name: string, themes: Record<string, Theme>, defaultName: string): Theme {
-  return themes[name] ?? themes[defaultName];
+  const theme = themes[name] ?? themes[defaultName];
+  if (!theme) {
+    throw new Error(
+      `Theme "${name}" not found and default "${defaultName}" is also missing. ` +
+        `Available themes: ${Object.keys(themes).join(", ") || "(none)"}`
+    );
+  }
+  return theme;
 }

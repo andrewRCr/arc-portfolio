@@ -45,7 +45,8 @@
   --color-input: rgb(var(--input));
   --color-ring: rgb(var(--ring));
 
-  /* Shadows (CSS values, not RGB) */
+  /* Shadows - actual values defined in :root, referenced here for Tailwind theming.
+     Unlike colors (which need rgb() wrapper), shadows are complete CSS values. */
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);

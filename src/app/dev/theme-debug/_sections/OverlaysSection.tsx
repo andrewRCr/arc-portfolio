@@ -34,8 +34,8 @@ export function OverlaysSection() {
           {/* Tooltips */}
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-muted-foreground">Tooltips</h3>
-            <div className="flex flex-wrap gap-4">
-              <TooltipProvider>
+            <TooltipProvider>
+              <div className="flex flex-wrap gap-4">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="outline">Hover me</Button>
@@ -44,8 +44,6 @@ export function OverlaysSection() {
                     <p>This is a tooltip</p>
                   </TooltipContent>
                 </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="secondary">Another tooltip</Button>
@@ -54,8 +52,8 @@ export function OverlaysSection() {
                     <p>Tooltips can appear on different sides</p>
                   </TooltipContent>
                 </Tooltip>
-              </TooltipProvider>
-            </div>
+              </div>
+            </TooltipProvider>
           </div>
 
           {/* Popovers */}

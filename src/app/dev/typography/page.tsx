@@ -10,11 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { Separator } from "@/components/ui/separator";
 
-// Gate to development mode only
-if (process.env.NODE_ENV !== "development") {
-  notFound();
-}
-
 /**
  * Typography Debug Page
  *
@@ -24,6 +19,11 @@ if (process.env.NODE_ENV !== "development") {
  * Route: /dev/typography (only accessible in development)
  */
 export default function TypographyPage() {
+  // Gate to development mode only
+  if (process.env.NODE_ENV !== "development") {
+    notFound();
+  }
+
   const { theme: colorMode } = useTheme();
   const { activeTheme, setActiveTheme } = useThemeContext();
   const [mounted, setMounted] = useState(false);

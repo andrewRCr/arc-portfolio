@@ -24,13 +24,13 @@ describe("ThemeToggle - Accessibility Tests", () => {
 
   it("has accessible button with aria-label", () => {
     render(<ThemeToggle />);
-    const button = screen.getByRole("button", { name: /toggle theme/i });
+    const button = screen.getByRole("button", { name: /current mode:.*click to switch/i });
     expect(button).toBeInTheDocument();
   });
 
   it("button is keyboard accessible", () => {
     render(<ThemeToggle />);
-    const button = screen.getByRole("button", { name: /toggle theme/i });
+    const button = screen.getByRole("button", { name: /current mode:.*click to switch/i });
     expect(button).not.toBeDisabled();
     expect(button.tagName).toBe("BUTTON");
   });

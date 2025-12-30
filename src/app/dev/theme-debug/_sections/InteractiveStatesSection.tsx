@@ -40,16 +40,16 @@ export function InteractiveStatesSection() {
               Styled anchors using theme tokens - primary and decorative accents
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="#" className="text-primary underline hover:text-primary/80">
+              <a href="#interactive" className="text-primary underline hover:text-primary/80">
                 Primary
               </a>
-              <a href="#" className="text-accent-blue underline hover:text-accent-blue/80">
+              <a href="#interactive" className="text-accent-blue underline hover:text-accent-blue/80">
                 Blue
               </a>
-              <a href="#" className="text-accent-green underline hover:text-accent-green/80">
+              <a href="#interactive" className="text-accent-green underline hover:text-accent-green/80">
                 Green
               </a>
-              <a href="#" className="text-accent-purple underline hover:text-accent-purple/80">
+              <a href="#interactive" className="text-accent-purple underline hover:text-accent-purple/80">
                 Purple
               </a>
             </div>

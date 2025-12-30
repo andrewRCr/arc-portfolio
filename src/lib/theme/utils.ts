@@ -10,8 +10,10 @@ import type { ThemeColors } from "@/data/themes/types";
 /**
  * RGB color pattern: three numbers (0-255) separated by whitespace.
  * Matches values like "249 245 229" used for Tailwind opacity modifiers.
+ * Each channel validated to 0-255 range.
  */
-const RGB_PATTERN = /^\d{1,3}\s+\d{1,3}\s+\d{1,3}$/;
+const RGB_CHANNEL = "(?:25[0-5]|2[0-4]\\d|1?\\d{1,2})";
+const RGB_PATTERN = new RegExp(`^${RGB_CHANNEL}\\s+${RGB_CHANNEL}\\s+${RGB_CHANNEL}$`);
 
 /**
  * Token keys that are CSS values (not RGB colors).

@@ -18,18 +18,7 @@
 
 import { remedyBright, remedyDark, remedyAccents, remedyA11y } from "../palettes/remedy";
 import type { Theme } from "../types";
-
-/**
- * Convert hex color to RGB space-separated string for Tailwind.
- * Example: "#FCEED1" → "252 238 209"
- */
-function hexToRgb(hex: string): string {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) {
-    throw new Error(`Invalid hex color: ${hex}`);
-  }
-  return `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`;
-}
+import { hexToRgb } from "../utils";
 
 export const remedyTheme: Theme = {
   name: "remedy",
@@ -147,7 +136,8 @@ export const remedyTheme: Theme = {
   },
 
   accentVariants: {
-    default: "green", // Maps to cyan (cool contrast to warm orange)
+    // "green" in Remedy palette is actually a teal/cyan shade - provides cool contrast to warm orange primary
+    default: "green",
     available: ["red", "orange", "green", "blue", "purple"],
   },
 } as const;

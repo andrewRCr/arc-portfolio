@@ -19,18 +19,7 @@
 
 import { gruvboxPalette as p, gruvboxA11y } from "../palettes/gruvbox";
 import type { Theme } from "../types";
-
-/**
- * Convert hex color to RGB space-separated string for Tailwind.
- * Example: "#fbf1c7" → "251 241 199"
- */
-function hexToRgb(hex: string): string {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) {
-    throw new Error(`Invalid hex color: ${hex}`);
-  }
-  return `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`;
-}
+import { hexToRgb } from "../utils";
 
 export const gruvboxTheme: Theme = {
   name: "gruvbox",
@@ -145,7 +134,9 @@ export const gruvboxTheme: Theme = {
   },
 
   accentVariants: {
-    default: "green", // Default accent uses official "aqua" (visually mint green)
+    // Variant names map to accent-{name} tokens. "green" = accent-green (lime/yellow-green).
+    // Base "accent" token uses Gruvbox "aqua" (mint) - see accent token definitions above.
+    default: "green",
     available: ["red", "orange", "green", "blue", "purple"],
   },
 } as const;

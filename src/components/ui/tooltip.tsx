@@ -9,6 +9,11 @@ function TooltipProvider({ delayDuration = 0, ...props }: React.ComponentProps<t
   return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
 }
 
+/**
+ * Self-contained Tooltip with built-in provider.
+ * Each Tooltip includes its own TooltipProvider for convenience.
+ * For multiple tooltips, wrap them in a single TooltipProvider instead.
+ */
 function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
   return (
     <TooltipProvider>
@@ -23,7 +28,7 @@ function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimiti
 
 function TooltipContent({
   className,
-  sideOffset = 0,
+  sideOffset = 6,
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {

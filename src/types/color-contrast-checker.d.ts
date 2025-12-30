@@ -1,3 +1,13 @@
+/**
+ * Type declarations for color-contrast-checker
+ *
+ * Library version: 2.1.0
+ * Last verified: 2025-12-27
+ *
+ * These declarations cover our usage patterns only.
+ * Update when upgrading the library.
+ */
+
 declare module "color-contrast-checker" {
   interface RGB {
     r: number;

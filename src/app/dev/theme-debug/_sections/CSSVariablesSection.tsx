@@ -35,8 +35,12 @@ export function CSSVariablesSection({ variables, open, onOpenChange }: CSSVariab
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="pb-2 pr-4 text-left">Variable</th>
-                    <th className="pb-2 text-left">Value (RGB)</th>
+                    <th scope="col" className="pb-2 pr-4 text-left">
+                      Variable
+                    </th>
+                    <th scope="col" className="pb-2 text-left">
+                      Value (RGB)
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

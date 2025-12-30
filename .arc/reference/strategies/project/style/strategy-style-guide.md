@@ -260,13 +260,16 @@ Button patterns follow semantic token usage with consistent sizing and hover sta
 
 ### Variant Definitions
 
-| Variant   | Background      | Text                   | Hover                                      | Use Case                   |
-|-----------|-----------------|------------------------|--------------------------------------------|----------------------------|
-| Primary   | `bg-primary`    | `primary-foreground`   | `hover:bg-primary/90`                      | Main CTAs, submit actions  |
-| Secondary | `bg-secondary`  | `secondary-foreground` | `hover:bg-secondary/90`                    | Alternative actions        |
-| Accent    | `bg-accent`     | `accent-foreground`    | `hover:bg-accent/90`                       | Highlights, selected       |
-| Outline   | `border-border` | `foreground`           | `hover:border-primary hover:bg-accent/10`  | Subtle actions, social     |
-| Ghost     | transparent     | `muted-foreground`     | `hover:text-accent`                        | Back buttons, subtle links |
+Following shadcn/ui conventions:
+
+| Variant     | Background       | Text                      | Hover                     | Use Case                   |
+|-------------|------------------|---------------------------|---------------------------|----------------------------|
+| default     | `bg-primary`     | `primary-foreground`      | `hover:bg-primary/90`     | Main CTAs, submit actions  |
+| secondary   | `bg-secondary`   | `secondary-foreground`    | `hover:bg-secondary/80`   | Alternative actions        |
+| destructive | `bg-destructive` | `destructive-foreground`  | `hover:bg-destructive/90` | Delete, dangerous actions  |
+| outline     | `border-border`  | `foreground`              | `hover:bg-accent`         | Subtle actions, social     |
+| ghost       | transparent      | `foreground`              | `hover:bg-accent`         | Back buttons, subtle links |
+| link        | transparent      | `primary`                 | `hover:underline`         | Inline text links          |
 
 ### Sizing Classes
 
@@ -339,7 +342,17 @@ customize it for better contrast or aesthetic preference.
 
 - **Contrast**: Focus indicators must have 3:1 contrast against adjacent colors (WCAG 2.1 AA)
 - **Visibility**: Ring must be visible on both light and dark backgrounds
-- **Non-color cues**: Focus uses both color AND outline (not color alone)
+
+### Form Controls (Checkbox, Radio, Switch)
+
+Small interactive elements use **2px borders** for visibility:
+
+```tsx
+<Checkbox className="size-4 border-2 border-input" />
+```
+
+**Rationale**: At 16px (size-4), a 1px border is difficult to see, especially in dark mode.
+The 2px border ensures the control boundary is clearly visible across all themes.
 
 ---
 
@@ -373,13 +386,8 @@ Tailwind markup when a suitable component exists.
 
 ### Available Components
 
-Components are installed to `src/components/ui/`. Current inventory:
-
-- **Button** - Variants: default, secondary, destructive, outline, ghost, link
-- **Card** - Card, CardHeader, CardTitle, CardContent, CardFooter
-- **Collapsible** - Collapsible, CollapsibleTrigger, CollapsibleContent
-- **Separator** - Horizontal/vertical dividers
-- **Select** - Dropdown select menus
+Components are installed to `src/components/ui/`. Browse the directory for the current inventory -
+each file is self-documenting with TypeScript types and JSDoc comments.
 
 ### When to Add Components
 

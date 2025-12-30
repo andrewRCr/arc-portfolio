@@ -29,8 +29,6 @@ test.describe("Smoke Tests", () => {
   });
 
   test("navigation links work", async ({ page }) => {
-    await page.goto("/");
-
     // Test each navigation link
     const navTests = [
       { name: "PROJECTS", expectedPath: "/projects" },
@@ -41,6 +39,8 @@ test.describe("Smoke Tests", () => {
     ];
 
     for (const { name, expectedPath } of navTests) {
+      // Start from homepage each iteration to avoid inter-test coupling
+      await page.goto("/");
       await page.getByRole("link", { name }).click();
       await expect(page).toHaveURL(expectedPath);
     }
@@ -53,34 +53,32 @@ test.describe("Smoke Tests", () => {
     const themeToggle = page.getByRole("button", { name: /toggle theme/i });
     await expect(themeToggle).toBeVisible();
 
-    // Get initial theme state from html element
-    const getTheme = () =>
-      page
-        .locator("html")
-        .getAttribute("class")
-        .then((cls) => cls || "");
+    const html = page.locator("html");
 
-    const initialClasses = await getTheme();
+    // Get initial theme state
+    const initialClasses = (await html.getAttribute("class")) || "";
     const initiallyDark = initialClasses.includes("dark");
 
-    // Click toggle and verify theme changed
+    // Click toggle and wait for theme class to change
     await themeToggle.click();
 
-    // Wait for theme transition
-    await page.waitForTimeout(100);
+    if (initiallyDark) {
+      // Was dark, should now be light (no "dark" class)
+      await expect(html).not.toHaveClass(/dark/);
+    } else {
+      // Was light, should now be dark
+      await expect(html).toHaveClass(/dark/);
+    }
 
-    const newClasses = await getTheme();
-    const nowDark = newClasses.includes("dark");
-
-    // Theme should have toggled
-    expect(nowDark).not.toBe(initiallyDark);
-
-    // Toggle back and verify it returns to original
+    // Toggle back and wait for theme to return to original state
     await themeToggle.click();
-    await page.waitForTimeout(100);
 
-    const finalClasses = await getTheme();
-    const finallyDark = finalClasses.includes("dark");
-    expect(finallyDark).toBe(initiallyDark);
+    if (initiallyDark) {
+      // Should return to dark
+      await expect(html).toHaveClass(/dark/);
+    } else {
+      // Should return to light (no "dark" class)
+      await expect(html).not.toHaveClass(/dark/);
+    }
   });
 });

@@ -60,6 +60,7 @@ export function FormControlsSection() {
             <h3 className="text-lg font-semibold text-muted-foreground">Checkboxes &amp; Switches</h3>
             <div className="flex flex-wrap gap-8">
               <div className="flex items-center space-x-2">
+                {/* c === true converts "indeterminate" state to false */}
                 <Checkbox id="checkbox-demo" checked={checked} onCheckedChange={(c) => setChecked(c === true)} />
                 <Label htmlFor="checkbox-demo">Checkbox {checked ? "(checked)" : "(unchecked)"}</Label>
               </div>
