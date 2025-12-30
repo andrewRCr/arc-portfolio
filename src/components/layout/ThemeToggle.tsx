@@ -2,16 +2,15 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 /**
  * ThemeToggle Component
  *
- * Simple button to toggle between light and dark themes.
+ * Icon button to toggle between light and dark color modes.
+ * Shows the current mode (sun for light, moon for dark).
  * Uses next-themes for theme management with localStorage persistence.
- *
- * NOTE: This is a minimal implementation. Visual styling will be enhanced
- * during design phase. Future enhancement: multi-theme switcher with
- * pre-defined themes (rose-pine, gruvbox, etc.).
  */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -23,19 +22,20 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <button className="px-3 py-1 text-sm border rounded" disabled>
-        Theme
-      </button>
+      <Button variant="outline" size="icon" disabled aria-label="Toggle color mode">
+        <Sun className="h-4 w-4" />
+      </Button>
     );
   }
 
   return (
-    <button
+    <Button
+      variant="outline"
+      size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="px-3 py-1 text-sm border rounded hover:bg-accent"
-      aria-label="Toggle theme"
+      aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
-      {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
-    </button>
+      {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+    </Button>
   );
 }

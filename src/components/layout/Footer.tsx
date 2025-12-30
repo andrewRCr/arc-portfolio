@@ -27,12 +27,20 @@ export function Footer() {
             {isDev && (
               <>
                 <span className="text-border">|</span>
+                <span>debug:</span>
                 <Link
                   href="/dev/theme-debug"
                   className="text-accent hover:text-accent/80 underline transition-colors"
                   title="Theme debug (dev only)"
                 >
-                  [theme-debug]
+                  [theme]
+                </Link>
+                <Link
+                  href="/dev/typography"
+                  className="text-accent hover:text-accent/80 underline transition-colors"
+                  title="Typography debug (dev only)"
+                >
+                  [typography]
                 </Link>
               </>
             )}
