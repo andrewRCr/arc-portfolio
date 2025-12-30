@@ -6,7 +6,7 @@
 
 import { describe, it, expect } from "vitest";
 import { themes, defaultTheme } from "../index";
-import { validateTheme } from "@/lib/theme-validation";
+import { validateTheme } from "@/lib/theme";
 
 describe("Theme Registry", () => {
   it("should have at least one theme registered", () => {
@@ -92,17 +92,16 @@ describe("Theme Colors Structure", () => {
       for (const mode of ["light", "dark"] as const) {
         const colors = theme[mode];
 
-        // Default accent
+        // Default accent (semantic - has foreground pair)
         expect(colors.accent).toBeDefined();
         expect(colors["accent-foreground"]).toBeDefined();
 
-        // Accent variants
-        expect(colors["accent-blue"]).toBeDefined();
-        expect(colors["accent-blue-foreground"]).toBeDefined();
-        expect(colors["accent-purple"]).toBeDefined();
-        expect(colors["accent-purple-foreground"]).toBeDefined();
+        // Decorative accent variants (no foreground pairs - decorative use only)
+        expect(colors["accent-red"]).toBeDefined();
         expect(colors["accent-orange"]).toBeDefined();
-        expect(colors["accent-orange-foreground"]).toBeDefined();
+        expect(colors["accent-green"]).toBeDefined();
+        expect(colors["accent-blue"]).toBeDefined();
+        expect(colors["accent-purple"]).toBeDefined();
       }
     });
   });

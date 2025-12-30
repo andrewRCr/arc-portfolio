@@ -30,8 +30,6 @@
 
 ## Active
 
-<!-- Add tasks here with checkboxes -->
-
 <!-- Example structure:
 
 - [ ] {{Task name}}

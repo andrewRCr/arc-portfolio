@@ -1,0 +1,75 @@
+/**
+ * Layout Token Definitions
+ *
+ * Defines layout tokens for the TWM (Tiling Window Manager) system.
+ * These tokens control spatial and visual properties for the window-based layout.
+ */
+
+/**
+ * Layout tokens for TWM (Tiling Window Manager) system.
+ *
+ * These tokens define spatial and visual properties for the window-based layout.
+ * Values are numeric (pixels) or ratios for flexibility in calculations.
+ *
+ * **Per-theme overrides:** Themes can override these defaults for visual variety.
+ */
+export interface LayoutTokens {
+  /**
+   * Gap between windows in the TWM layout.
+   *
+   * **Default:** 8 (pixels)
+   * **Usage:** Grid gap, window spacing
+   */
+  windowGap: number;
+
+  /**
+   * Border width for window containers.
+   *
+   * **Default:** 2 (pixels)
+   * **Usage:** Window frame borders
+   */
+  windowBorderWidth: number;
+
+  /**
+   * Background opacity for window containers.
+   *
+   * **Default:** 0.85 (85%)
+   * **Range:** 0-1
+   * **Usage:** Semi-transparent window backgrounds
+   */
+  windowOpacity: number;
+
+  /**
+   * Top bar height (header/navigation area).
+   *
+   * **Default:** TBD during TWM implementation
+   * **Usage:** Fixed header height
+   */
+  topBarHeight: number;
+
+  /**
+   * Footer height (status bar area).
+   *
+   * **Default:** TBD during TWM implementation
+   * **Usage:** Fixed footer height
+   */
+  footerHeight: number;
+}
+
+/**
+ * Default layout token values.
+ *
+ * Themes can override these via `layoutOverrides` property.
+ */
+export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
+  windowGap: 8,
+  windowBorderWidth: 2,
+  windowOpacity: 0.85,
+  topBarHeight: 48, // Placeholder - finalize during TWM
+  footerHeight: 32, // Placeholder - finalize during TWM
+};
+
+/**
+ * All layout token names for type-safe token access.
+ */
+export type LayoutTokenName = keyof LayoutTokens;

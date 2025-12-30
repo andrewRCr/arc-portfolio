@@ -110,7 +110,19 @@ export const gruvboxPalette = {
 } as const;
 
 /**
+ * Accessibility-adjusted colors for WCAG AA compliance.
+ *
+ * These are minimal adjustments to original palette colors where
+ * no in-palette combination achieves 4.5:1 contrast ratio.
+ */
+export const gruvboxA11y = {
+  /** Faded green darkened 5% for light0 contrast (4.29 → 4.67) */
+  faded_green_dark: "#736E0D", // Original: #79740e
+} as const;
+
+/**
  * Type-safe palette color names.
  * Use for referencing palette colors with TypeScript autocomplete.
  */
 export type GruvboxColor = keyof typeof gruvboxPalette;
+export type GruvboxA11yColor = keyof typeof gruvboxA11y;

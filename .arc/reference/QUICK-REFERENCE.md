@@ -1,6 +1,6 @@
 # Quick Reference - arc-portfolio
 
-**Version**: 1.2 | **Updated**: 2025-12-27
+**Version**: 1.3 | **Updated**: 2025-12-27
 
 Command patterns and environment context for arc-portfolio.
 
@@ -35,7 +35,8 @@ Command patterns and environment context for arc-portfolio.
 | Components       | `src/components/`       | React components                    |
 | Data files       | `src/data/`             | Static content data                 |
 | Type definitions | `src/types/`            | TypeScript interfaces               |
-| Tests            | `src/**/__tests__/`     | Test files (co-located)             |
+| Unit tests       | `src/**/__tests__/`     | Unit test files (co-located)        |
+| E2E tests        | `e2e/tests/`            | Playwright E2E tests                |
 | Public assets    | `public/`               | Static assets, images               |
 | .arc docs        | `.arc/`                 | Documentation                       |
 | Config files     | Root directory          | next.config.ts, tsconfig.json, etc. |
@@ -110,10 +111,10 @@ npm run format:check
 npm run format
 ```
 
-### Testing
+### Testing (Unit)
 
 ```bash
-# Run all tests
+# Run all unit tests
 npm test
 
 # Run tests in watch mode
@@ -122,6 +123,35 @@ npm run test:watch
 # Run tests with coverage
 npm run test:coverage
 ```
+
+### Testing (E2E)
+
+```bash
+# Run E2E tests (all primary viewports: Desktop, Mobile, Tablet)
+npm run test:e2e
+
+# Run on specific project/viewport
+npm run test:e2e -- --project="Desktop Chrome"
+npm run test:e2e -- --project="Mobile Chrome"
+npm run test:e2e -- --project="Tablet"
+
+# Run in headed mode (visible browser)
+npm run test:e2e -- --headed
+
+# Run in UI mode (interactive debugging)
+npm run test:e2e:ui
+
+# Run specific test file
+npm run test:e2e -- e2e/tests/smoke.spec.ts
+```
+
+**Notes:**
+
+- E2E tests auto-start dev server if not running
+- Reports saved to `e2e/playwright-report/` (gitignored)
+- Test artifacts in `e2e/test-results/` (gitignored)
+- **Local:** Runs Desktop Chrome, Mobile Chrome, Tablet, Firefox (WebKit excluded - WSL2 lacks deps)
+- **CI:** Adds WebKit to test suite (full browser coverage)
 
 ### Markdown Linting
 

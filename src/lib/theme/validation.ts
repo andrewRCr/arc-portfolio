@@ -15,10 +15,10 @@ const REQUIRED_COLOR_KEYS: (keyof ThemeColors)[] = [
   // Base colors
   "background",
   "foreground",
-  // Card colors
+  // Card colors (shadcn/ui convention)
   "card",
   "card-foreground",
-  // Popover colors
+  // Popover colors (shadcn/ui convention)
   "popover",
   "popover-foreground",
   // Primary colors
@@ -33,13 +33,13 @@ const REQUIRED_COLOR_KEYS: (keyof ThemeColors)[] = [
   // Default accent colors
   "accent",
   "accent-foreground",
-  // Accent variants
-  "accent-blue",
-  "accent-blue-foreground",
-  "accent-purple",
-  "accent-purple-foreground",
+  // Decorative accent variants (palette access, no semantic meaning)
+  // No -foreground pairs - decorative use only (borders, text color, indicators)
+  "accent-red",
   "accent-orange",
-  "accent-orange-foreground",
+  "accent-green",
+  "accent-blue",
+  "accent-purple",
   // Destructive colors
   "destructive",
   "destructive-foreground",
@@ -47,6 +47,10 @@ const REQUIRED_COLOR_KEYS: (keyof ThemeColors)[] = [
   "border",
   "input",
   "ring",
+  // Shadow tokens (extension - no shadcn equivalent)
+  "shadow-sm",
+  "shadow-md",
+  "shadow-lg",
 ];
 
 /**
@@ -127,5 +131,12 @@ export function isValidThemeName(name: string, themes: Record<string, Theme>): b
  * const theme = getTheme(savedTheme, themes, 'gruvbox');
  */
 export function getTheme(name: string, themes: Record<string, Theme>, defaultName: string): Theme {
-  return themes[name] ?? themes[defaultName];
+  const theme = themes[name] ?? themes[defaultName];
+  if (!theme) {
+    throw new Error(
+      `Theme "${name}" not found and default "${defaultName}" is also missing. ` +
+        `Available themes: ${Object.keys(themes).join(", ") || "(none)"}`
+    );
+  }
+  return theme;
 }

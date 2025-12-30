@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { checkA11y } from "@tests/test-utils";
 import { Navigation } from "../Navigation";
 
 describe("Navigation - Behavior Tests", () => {
@@ -60,6 +61,16 @@ describe("Navigation - Behavior Tests", () => {
         expect(link.textContent).toBeTruthy();
         expect(link.textContent!.length).toBeGreaterThan(0);
       });
+    });
+
+    it("has no accessibility violations", async () => {
+      const results = await checkA11y(<Navigation />);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("has nav landmark role", () => {
+      render(<Navigation />);
+      expect(screen.getByRole("navigation")).toBeInTheDocument();
     });
   });
 });
