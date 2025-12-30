@@ -6,7 +6,7 @@ import { ThemeSwitcher } from "../ThemeSwitcher";
  * Footer Component
  *
  * Minimal terminal-inspired footer with theme controls and theme switcher.
- * In development mode, includes theme switcher and link to theme showcase page.
+ * In development mode, includes theme switcher and link to theme debug page.
  *
  * ThemeSwitcher serves as functional prototype for more sophisticated
  * theme picker planned in TWM Layout System (top bar).
@@ -28,11 +28,11 @@ export function Footer() {
               <>
                 <span className="text-border">|</span>
                 <Link
-                  href="/theme-showcase"
+                  href="/dev/theme-debug"
                   className="text-accent hover:text-accent/80 underline transition-colors"
-                  title="Theme showcase (dev only)"
+                  title="Theme debug (dev only)"
                 >
-                  [theme-showcase]
+                  [theme-debug]
                 </Link>
               </>
             )}
