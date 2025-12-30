@@ -2,9 +2,10 @@
 
 **PRD:** `.arc/active/technical/prd-design-system-foundation.md`
 **Created:** 2025-12-27
+**Completed:** 2025-12-30
 **Branch:** `technical/design-system-foundation`
 **Base Branch:** `main`
-**Status:** In Progress
+**Status:** Complete
 
 ## Overview
 
@@ -387,54 +388,15 @@ the third theme (Remedy).
 
 ---
 
-## Implementation Notes
-
-### Token Naming Convention (ADR-001)
-
-Adopting shadcn/ui conventions for color tokens:
-
-- `-foreground` suffix for contrast pairs: `primary` + `primary-foreground`
-- Elevation tokens: `card` (first level), `popover` (second level)
-- No custom semantic vocabulary - use shadcn tokens directly
-- Extend only for genuine gaps: layout/spacing tokens, shadows
-
-See ADR-001 for full rationale.
-
-### Token Semantic Clarification
-
-shadcn token names are component-inspired but have broader semantic meaning:
-
-- `card` = first elevation level (cards, panels, any elevated surface)
-- `popover` = second elevation level (modals, dialogs, dropdowns)
-- `border` = default accessible border for interactive elements
-- `muted` = deemphasized backgrounds and text
-
-### Theme Switching Approach
-
-Simple CSS variable updates (no provider recreation needed):
-
-```typescript
-const setTheme = (themeName: string) => {
-  const tokens = themes[themeName];
-  Object.entries(tokens).forEach(([key, value]) => {
-    document.documentElement.style.setProperty(`--color-${key}`, value);
-  });
-  document.documentElement.setAttribute('data-theme', themeName);
-  localStorage.setItem('theme', themeName);
-};
-```
-
----
-
 ## Success Criteria
 
 - [x] Playwright runs locally with smoke tests passing at all 3 viewports
 - [x] CI workflow includes E2E job with tiered execution
 - [x] vitest-axe integrated with ≥3 component accessibility tests
-- [ ] All 6 theme variants pass WCAG AA contrast validation (4.5:1)
-- [ ] Token system follows shadcn/ui conventions with documented extensions (ADR-001)
-- [ ] TWM layout tokens defined (gap, border, opacity, heights)
-- [ ] Spacing audit complete with consolidation plan documented
-- [ ] Component patterns documented (buttons, focus, opacity)
-- [ ] All quality gates pass
-- [ ] Ready to begin TWM Layout System feature
+- [x] All 6 theme variants pass WCAG AA contrast validation (4.5:1)
+- [x] Token system follows shadcn/ui conventions with documented extensions (ADR-001)
+- [x] TWM layout tokens defined (gap, border, opacity, heights)
+- [x] Spacing audit complete with consolidation plan documented
+- [x] Component patterns documented (buttons, focus, opacity)
+- [x] All quality gates pass
+- [x] Ready to begin TWM Layout System feature

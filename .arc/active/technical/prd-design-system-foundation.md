@@ -1,7 +1,7 @@
 # PRD: Design System Foundation
 
 **Type:** Technical Infrastructure
-**Status:** Ready for Implementation
+**Status:** Complete
 **Created:** 2025-12-27
 
 ---
@@ -299,14 +299,12 @@ arc-portfolio/
 
 1. ~~**Remedy Theme Source:**~~ RESOLVED - Use official source: <https://github.com/robertrossmann/vscode-remedy>
    (Base16-Eighties derived, dark & light variants with orange accents)
-2. **Spacing Token Granularity:** How many spacing tokens needed? (4-6 semantic names vs. numeric scale)
-   Decide during spacing audit
-3. **CI Timeout Configuration:** What timeout values for E2E tests? Start with defaults, tune based on
-   actual execution times
-4. **Mobile Viewport Selection:** iPhone SE (375×667) vs iPhone 14 (390×844)? Start with smaller
-   viewport for more conservative testing
-5. **Shadow Token Implementation:** CSS box-shadow values or Tailwind shadow scale? Evaluate during
-   implementation based on TWM needs
+2. ~~**Spacing Token Granularity:**~~ RESOLVED - Component-level tokens (cardPadding, buttonPadding, etc.)
+   are stable; layout-level spacing deferred to TWM. See Phase 6 audit in task list.
+3. ~~**CI Timeout Configuration:**~~ RESOLVED - Playwright defaults work well; no tuning needed.
+4. ~~**Mobile Viewport Selection:**~~ RESOLVED - iPhone SE (375×667) selected as conservative baseline.
+5. ~~**Shadow Token Implementation:**~~ RESOLVED - CSS box-shadow values used (not Tailwind scale);
+   shadow-sm/md/lg with opacity scaling per light/dark mode.
 
 ---
 
