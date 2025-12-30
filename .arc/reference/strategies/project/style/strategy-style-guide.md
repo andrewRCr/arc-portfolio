@@ -343,6 +343,72 @@ customize it for better contrast or aesthetic preference.
 
 ---
 
+## shadcn/ui Component Usage
+
+arc-portfolio uses **shadcn/ui** for reusable UI components. Prefer shadcn components over raw
+Tailwind markup when a suitable component exists.
+
+### Why Use shadcn Components?
+
+| Raw Tailwind                              | shadcn Component                             |
+| ----------------------------------------- | -------------------------------------------- |
+| Verbose class strings repeated everywhere | Semantic, reusable components                |
+| Manual variant management                 | Built-in variant system (size, variant props)|
+| Inconsistent patterns across codebase     | Consistent API and styling                   |
+| Higher maintenance burden                 | Single source of truth in `components/ui/`   |
+
+### Example Comparison
+
+```tsx
+// Raw Tailwind (avoid for common patterns)
+<button className="rounded border border-border bg-background px-3 py-1 text-sm transition-colors hover:bg-accent hover:text-accent-foreground">
+  Cancel
+</button>
+
+// shadcn Button (preferred)
+<Button variant="outline" size="sm">
+  Cancel
+</Button>
+```
+
+### Available Components
+
+Components are installed to `src/components/ui/`. Current inventory:
+
+- **Button** - Variants: default, secondary, destructive, outline, ghost, link
+- **Card** - Card, CardHeader, CardTitle, CardContent, CardFooter
+- **Collapsible** - Collapsible, CollapsibleTrigger, CollapsibleContent
+- **Separator** - Horizontal/vertical dividers
+- **Select** - Dropdown select menus
+
+### When to Add Components
+
+Add a shadcn component when:
+
+1. **Pattern repeats 3+ times** - If you're writing the same Tailwind classes repeatedly
+2. **Complex interaction** - Components with state, accessibility, or animations
+3. **Standard UI element** - Buttons, inputs, dialogs, etc.
+
+Install with: `npx shadcn@latest add <component-name>`
+
+### When Raw Tailwind is Fine
+
+- One-off styling for unique layouts
+- Simple static elements (headings, paragraphs)
+- Custom components where shadcn has no equivalent
+- Prototyping before patterns solidify
+
+### Component Customization
+
+shadcn components are **copied into your codebase**, not imported from a package. This means:
+
+- Components live in `src/components/ui/`
+- You can modify them directly for project needs
+- Modifications should follow existing token conventions
+- Document significant changes in component comments
+
+---
+
 ## Extending the Token System
 
 Extensions should only be added when a concrete use case arises with no shadcn equivalent.
