@@ -3,34 +3,36 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2025-12-26
+**Last Updated:** 2025-12-30
 
 ---
 
 ## Current Sequencing Strategy
 
-### Phase A: Content Foundation (Current)
+### Phase A: Foundation ✅
 
-Complete content migration to establish functional baseline before visual polish.
+Establish content baseline and design system infrastructure before visual design work.
 
-1. **Content Migration - Final Validation**
-   - Branch: `feature/content-migration`
-   - Tasks: `.arc/active/feature/tasks-content-migration.md`
-   - Rationale: Must complete before layout changes; establishes all routes and content
-   - Scope: Routing verification, content accuracy validation, quality gates
-   - Status: ~85% complete (Tasks 8.0, 9.0 remaining)
+1. ✅ **Content Migration** (2025-12-27)
+   - All Squarespace content migrated with display components
+   - [Archive](../.arc/reference/archive/2025-q4/feature/03_content-migration/)
 
-### Phase B: Visual Design System
+2. ✅ **Design System Foundation** (2025-12-30)
+   - Token architecture (shadcn conventions), E2E testing (Playwright), accessibility validation
+   - 3 theme families (Gruvbox, Rose Pine, Remedy) with WCAG AA compliance
+   - [Archive](../.arc/reference/archive/2025-q4/technical/04_design-system-foundation/)
+
+### Phase B: Visual Design System (Current)
 
 Transform placeholder styling into distinctive, polished design.
 
-2. **TWM Layout System**
+3. **TWM Layout System**
    - PRD: `.arc/backlog/feature/prd-twm-layout-system.md`
    - Rationale: Core visual identity; affects all pages; foundational for polish work
    - Scope: Three-window layout, theming architecture, responsive adaptation
-   - Dependencies: Content migration complete (stable routes/components to style)
+   - Dependencies: Content migration complete, design system foundation established
 
-3. **Visual Polish & Animations**
+4. **Visual Polish & Animations**
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
    - Rationale: Refinement layer after layout system established
    - Scope: Framer Motion, transitions, micro-interactions, loading states
@@ -40,17 +42,17 @@ Transform placeholder styling into distinctive, polished design.
 
 Final features and deployment preparation.
 
-4. **Contact Form** (if needed for v1.0)
+5. **Contact Form** (if needed for v1.0)
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
    - Rationale: Core portfolio functionality; email integration
    - Scope: Form UI, validation, Zeptomail, rate limiting
 
-5. **SEO & Meta Tags**
+6. **SEO & Meta Tags**
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
    - Rationale: Required for production deployment
    - Scope: Open Graph, structured data, sitemap, robots.txt
 
-6. **Deployment**
+7. **Deployment**
    - Rationale: Final step; requires all above complete
    - Scope: Vercel setup, domain transfer, production config
 
@@ -71,16 +73,16 @@ Items that can wait until after initial deployment:
 ## Dependency Analysis
 
 ```
-Content Migration ──────► TWM Layout System ──────► Visual Polish
-                                    │
-                                    ▼
-                              Contact Form (parallel possible)
-                                    │
-                                    ▼
-                              SEO & Meta Tags
-                                    │
-                                    ▼
-                               Deployment
+Content Migration ──► Design System Foundation ──► TWM Layout System ──► Visual Polish
+                                                            │
+                                                            ▼
+                                                      Contact Form (parallel possible)
+                                                            │
+                                                            ▼
+                                                      SEO & Meta Tags
+                                                            │
+                                                            ▼
+                                                       Deployment
 ```
 
 ---
@@ -127,4 +129,5 @@ Content Migration ──────► TWM Layout System ──────► 
 
 ## Change Log
 
+- **2025-12-30**: Added Design System Foundation to Phase A (Foundation), marked phase complete, updated numbering
 - **2025-12-26**: Initial roadmap created from PROJECT-STATUS and backlog audit

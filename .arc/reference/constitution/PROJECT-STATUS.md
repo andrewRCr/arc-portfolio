@@ -19,9 +19,9 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ Content Migration (feature) - 2025-12-27
-    - All Squarespace content migrated with display components
-    - [Archive](../archive/2025-q4/feature/03_content-migration/)
+- ✅ Design System Foundation (technical) - 2025-12-30
+    - Token architecture, E2E testing, accessibility validation, 3 theme families
+    - [Archive](../archive/2025-q4/technical/04_design-system-foundation/)
 
 **Currently Active:**
 
@@ -99,12 +99,16 @@ contemporary web development practices.
 - **Routing**: All pages functional (`/`, `/projects`, `/skills`, `/about`, `/contact`, project detail pages)
 - **Feature flag system**: `src/config/features.ts` for toggling features (mods tab disabled)
 
-### ✅ Theme System (Basic)
+### ✅ Design System Foundation
 
-- Dark/light mode toggle functional
-- Rose Pine and Gruvbox theme definitions
-- CSS custom properties for semantic colors
-- ThemeProvider context
+- **Token architecture**: 27 shadcn color tokens + shadow tokens + layout tokens
+- **Theme families**: Gruvbox, Rose Pine, Remedy (6 variants total, light/dark each)
+- **Accessibility**: WCAG AA contrast validation for all theme variants
+- **E2E testing**: Playwright with 3 device profiles (Desktop, Mobile, Tablet) + CI integration
+- **Accessibility testing**: vitest-axe with `checkA11y()` helper
+- **Architecture decision**: ADR-001 adopted shadcn/ui token conventions
+- **Style guide**: `strategy-style-guide.md` v1.1 with component patterns
+- Dark/light mode toggle, ThemeProvider context
 
 ---
 
