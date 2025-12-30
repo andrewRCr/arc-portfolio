@@ -55,11 +55,19 @@ export function FeedbackSection() {
               <Badge variant="outline">Outline</Badge>
             </div>
             <div className="flex flex-wrap gap-3">
-              {/* Custom colored badges using theme accent colors */}
-              <Badge className="bg-accent-green text-background">Success</Badge>
-              <Badge className="bg-accent-orange text-background">Warning</Badge>
-              <Badge className="bg-accent-blue text-background">Info</Badge>
-              <Badge className="bg-accent-purple text-background">New</Badge>
+              {/* Accent-colored outline badges using theme accent colors */}
+              <Badge variant="outline" className="border-accent-green text-accent-green">
+                Success
+              </Badge>
+              <Badge variant="outline" className="border-accent-orange text-accent-orange">
+                Warning
+              </Badge>
+              <Badge variant="outline" className="border-accent-blue text-accent-blue">
+                Info
+              </Badge>
+              <Badge variant="outline" className="border-accent-purple text-accent-purple">
+                New
+              </Badge>
             </div>
           </div>
         </CardContentInset>

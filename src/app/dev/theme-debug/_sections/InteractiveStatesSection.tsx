@@ -79,13 +79,13 @@ export function InteractiveStatesSection() {
             <h3 className="text-lg font-semibold text-muted-foreground">Social Link Style</h3>
             <div className="flex flex-wrap gap-4">
               <a
-                href="#"
+                href="#interactive"
                 className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10"
               >
                 <span className="font-medium text-foreground">GitHub</span>
               </a>
               <a
-                href="#"
+                href="#interactive"
                 className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10"
               >
                 <span className="font-medium text-foreground">LinkedIn</span>

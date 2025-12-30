@@ -18,6 +18,8 @@ const RGB_PATTERN = new RegExp(`^${RGB_CHANNEL}\\s+${RGB_CHANNEL}\\s+${RGB_CHANN
 /**
  * Token keys that are CSS values (not RGB colors).
  * These are applied directly without RGB validation.
+ *
+ * Must match shadow tokens in src/data/themes/types.ts (ThemeColors interface).
  */
 const CSS_VALUE_TOKENS = ["shadow-sm", "shadow-md", "shadow-lg"];
 

@@ -55,11 +55,15 @@ const COLOR_VARS = [
  * Route: /dev/theme-debug (only accessible in development)
  */
 export default function ThemeDebugPage() {
-  // Gate to development mode only
+  // Gate to development mode only - wrapper ensures hooks in content are unconditional
   if (process.env.NODE_ENV !== "development") {
     notFound();
   }
+  return <ThemeDebugContent />;
+}
 
+/** Inner component with hooks - always called unconditionally */
+function ThemeDebugContent() {
   const { theme: colorMode } = useTheme();
   const { activeTheme, setActiveTheme } = useThemeContext();
   const [mounted, setMounted] = useState(false);

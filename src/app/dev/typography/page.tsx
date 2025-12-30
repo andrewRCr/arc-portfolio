@@ -19,11 +19,15 @@ import { Separator } from "@/components/ui/separator";
  * Route: /dev/typography (only accessible in development)
  */
 export default function TypographyPage() {
-  // Gate to development mode only
+  // Gate to development mode only - wrapper ensures hooks in content are unconditional
   if (process.env.NODE_ENV !== "development") {
     notFound();
   }
+  return <TypographyContent />;
+}
 
+/** Inner component with hooks - always called unconditionally */
+function TypographyContent() {
   const { theme: colorMode } = useTheme();
   const { activeTheme, setActiveTheme } = useThemeContext();
   const [mounted, setMounted] = useState(false);

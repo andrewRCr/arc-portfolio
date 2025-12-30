@@ -77,16 +77,6 @@ function meetsAANormalText(rgb1: string, rgb2: string): boolean {
   return ccc.isLevelAA(hex1, hex2, 14);
 }
 
-/**
- * Check if contrast ratio meets WCAG AA for large text/UI (3:1).
- */
-function meetsAALargeText(rgb1: string, rgb2: string): boolean {
-  const hex1 = rgbToHex(rgb1);
-  const hex2 = rgbToHex(rgb2);
-  // fontSize 18 triggers large text requirement (3:1)
-  return ccc.isLevelAA(hex1, hex2, 18);
-}
-
 // Semantic foreground pairs to test - background token + its -foreground counterpart
 // NOTE: Decorative accents (accent-red/orange/green/blue/purple) are NOT tested here
 // because they have no -foreground pairs - they're for decorative use only (borders, text color)
@@ -169,4 +159,4 @@ describe("Theme Contrast Validation", () => {
 });
 
 // Export utilities for potential reuse
-export { rgbToHex, getContrastRatio, meetsAANormalText, meetsAALargeText };
+export { rgbToHex, getContrastRatio, meetsAANormalText };

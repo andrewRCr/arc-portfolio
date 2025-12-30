@@ -49,8 +49,9 @@ test.describe("Smoke Tests", () => {
   test("theme toggle functions", async ({ page }) => {
     await page.goto("/");
 
-    // Find the theme toggle button
-    const themeToggle = page.getByRole("button", { name: /toggle theme/i });
+    // Find the theme toggle button by its aria-label pattern
+    // Component uses: "Current mode: {theme}. Click to switch to {other} mode"
+    const themeToggle = page.getByRole("button", { name: /switch to .* mode/i });
     await expect(themeToggle).toBeVisible();
 
     const html = page.locator("html");

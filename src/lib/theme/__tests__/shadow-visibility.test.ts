@@ -51,6 +51,12 @@ describe("Shadow Visibility Validation", () => {
       expect(extractShadowOpacity("0 4px 16px rgba(0, 0, 0, 0.25)")).toBe(0.25);
     });
 
+    it("extracts opacity from modern rgb(r g b / a) format", () => {
+      expect(extractShadowOpacity("0 1px 2px rgb(0 0 0 / 0.08)")).toBe(0.08);
+      expect(extractShadowOpacity("0 2px 8px rgb(60 56 54 / 0.12)")).toBe(0.12);
+      expect(extractShadowOpacity("0 4px 16px rgb(0 0 0 / 25%)")).toBe(0.25);
+    });
+
     it("returns null for shadows without opacity", () => {
       expect(extractShadowOpacity("0 1px 2px black")).toBeNull();
       expect(extractShadowOpacity("none")).toBeNull();
