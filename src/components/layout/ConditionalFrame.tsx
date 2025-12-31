@@ -18,20 +18,23 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const isDevRoute = pathname?.startsWith("/dev");
 
   if (isDevRoute) {
-    // Dev pages: no inner frame, no navigation
-    return <>{children}</>;
+    // Dev pages: no inner frame, no navigation, but still need scroll container
+    return <div className="flex flex-col flex-1 min-h-0 overflow-auto">{children}</div>;
   }
 
   // Regular pages: inner TUI frame with navigation
+  // Outer padding provides space for Navigation to render above border
   return (
-    <div className="relative border-2 border-border rounded-lg flex flex-col flex-1 min-h-0">
-      {/* Navigation positioned to intersect the border */}
-      <div className="absolute left-1/2 -translate-x-1/2 -top-px -translate-y-1/2 bg-background px-6 z-10">
-        <Navigation />
-      </div>
+    <div className="flex flex-col flex-1 min-h-0 p-4 md:p-6">
+      <div className="relative border-2 border-border rounded-lg flex flex-col flex-1 min-h-0">
+        {/* Navigation positioned to intersect the border */}
+        <div className="absolute left-1/2 -translate-x-1/2 -top-px -translate-y-1/2 bg-background px-6 z-10">
+          <Navigation />
+        </div>
 
-      {/* Content area with top padding for nav clearance */}
-      <div className="flex flex-col flex-1 pt-8 px-4 pb-4 md:px-6 md:pb-6">{children}</div>
+        {/* Content area - scrolls independently, TUI frame stays fixed */}
+        <div className="flex flex-col flex-1 min-h-0 overflow-auto pt-8 px-4 pb-4 md:px-6 md:pb-6">{children}</div>
+      </div>
     </div>
   );
 }

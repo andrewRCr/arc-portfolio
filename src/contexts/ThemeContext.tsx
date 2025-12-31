@@ -34,6 +34,19 @@ export function ThemeContextProvider({ children }: { children: React.ReactNode }
     }
   }, [activeTheme]);
 
+  // Sync theme across tabs via storage event
+  // Note: storage event only fires when localStorage is changed by a DIFFERENT tab
+  React.useEffect(() => {
+    function handleStorageChange(event: StorageEvent) {
+      if (event.key === STORAGE_KEY && event.newValue && event.newValue in themes) {
+        setActiveTheme(event.newValue as ThemeName);
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   return <ThemeContext.Provider value={{ activeTheme, setActiveTheme }}>{children}</ThemeContext.Provider>;
 }
 

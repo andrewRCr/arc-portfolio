@@ -40,15 +40,13 @@ export function LayoutWrapper({ children, wallpaperSrc }: LayoutWrapperProps) {
       {/* Background layer */}
       <WallpaperBackground imageSrc={wallpaperSrc} />
 
-      {/* Three-window layout */}
-      <div className="min-h-screen flex flex-col" style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}>
+      {/* Three-window layout - fixed viewport, content scrolls inside */}
+      <div className="h-screen flex flex-col" style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}>
         {/* Top bar - fixed height */}
         <TopBar />
 
-        {/* Main content window - fills remaining space, scrollable */}
-        <WindowContainer className="flex-1 min-h-0 overflow-auto">
-          {children}
-        </WindowContainer>
+        {/* Main content window - fills remaining space, content scrolls inside */}
+        <WindowContainer className="flex-1 min-h-0 flex flex-col">{children}</WindowContainer>
 
         {/* Footer bar - fixed height */}
         <FooterBar />
