@@ -20,10 +20,11 @@ export interface WindowContainerProps {
  *
  * **Styling:**
  * - Border width from layout tokens (`windowBorderWidth`)
- * - Semi-transparent background via `windowOpacity`
+ * - Semi-transparent background via CSS (controlled by `data-window-container` attribute)
  * - Theme-aware border color via `border-border`
  * - Square corners (no border-radius)
- * - Card background for content area
+ * - Background color for base content layer
+ * - Opacity can be toggled via `html[data-env-preview]` for dev tools
  *
  * @example
  * ```tsx
@@ -34,15 +35,15 @@ export interface WindowContainerProps {
  * ```
  */
 export function WindowContainer({ children, className }: WindowContainerProps) {
-  const { windowBorderWidth, windowOpacity } = DEFAULT_LAYOUT_TOKENS;
+  const { windowBorderWidth } = DEFAULT_LAYOUT_TOKENS;
 
   return (
     <div
-      className={cn("border-border bg-card", className)}
+      data-window-container
+      className={cn("border-border bg-background", className)}
       style={{
         borderWidth: `${windowBorderWidth}px`,
         borderStyle: "solid",
-        opacity: windowOpacity,
       }}
     >
       {children}

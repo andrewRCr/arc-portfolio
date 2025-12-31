@@ -131,3 +131,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* TWM Window Container opacity control */
+[data-window-container] {
+  opacity: 0.95;
+}
+
+/* Environment Preview toggle for dev pages - when OFF, use full opacity */
+html[data-env-preview="false"] [data-window-container] {
+  opacity: 1;
+}

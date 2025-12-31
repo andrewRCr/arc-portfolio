@@ -59,13 +59,12 @@ describe("FooterBar", () => {
       });
     });
 
-    it("applies WindowContainer opacity", () => {
+    it("has data-window-container for CSS-controlled opacity", () => {
       const { container } = render(<FooterBar />);
 
       const wrapper = container.firstChild as HTMLElement;
-      expect(wrapper).toHaveStyle({
-        opacity: String(DEFAULT_LAYOUT_TOKENS.windowOpacity),
-      });
+      // Opacity is now controlled via CSS targeting [data-window-container]
+      expect(wrapper).toHaveAttribute("data-window-container");
     });
   });
 

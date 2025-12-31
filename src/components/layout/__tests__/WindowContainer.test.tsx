@@ -56,7 +56,7 @@ describe("WindowContainer", () => {
   });
 
   describe("Background Styling", () => {
-    it("applies background opacity from layout tokens", () => {
+    it("has data-window-container attribute for CSS-controlled opacity", () => {
       const { container } = render(
         <WindowContainer>
           <p>Content</p>
@@ -64,10 +64,9 @@ describe("WindowContainer", () => {
       );
 
       const wrapper = container.firstChild as HTMLElement;
-      // Opacity is applied via CSS custom property or inline style
-      expect(wrapper).toHaveStyle({
-        opacity: String(DEFAULT_LAYOUT_TOKENS.windowOpacity),
-      });
+      // Opacity is now controlled via CSS targeting [data-window-container]
+      // See globals.css for the actual opacity value (0.95 default, 1 when env-preview="false")
+      expect(wrapper).toHaveAttribute("data-window-container");
     });
   });
 

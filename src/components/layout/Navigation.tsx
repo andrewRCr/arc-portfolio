@@ -31,7 +31,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="bg-background">
+    <nav>
       {/* Navigation links - inline, no vertical stacking */}
       <ul className="flex gap-1 list-none items-center">
         {navItems.map((item) => (

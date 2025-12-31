@@ -36,12 +36,13 @@ export interface WallpaperBackgroundProps {
 export function WallpaperBackground({ imageSrc }: WallpaperBackgroundProps) {
   // Theme-aware gradient using CSS custom properties
   // Uses muted colors for subtle background that works with any theme
+  // Note: CSS variables store RGB triplets (e.g., "60 56 54"), not HSL
   const gradientStyle = {
     background: `linear-gradient(
       135deg,
-      hsl(var(--muted)) 0%,
-      hsl(var(--background)) 50%,
-      hsl(var(--muted)) 100%
+      rgb(var(--accent)) 0%,
+      rgb(var(--background)) 50%,
+      rgb(var(--primary)) 100%
     )`,
   };
 
