@@ -5,7 +5,7 @@ import { AboutSection } from "@/components/sections/AboutSection";
 
 export default function AboutPage() {
   return (
-    <PageLayout header={<PageHeader title="About" subtitle="Background, experience, and education." />}>
+    <PageLayout header={<PageHeader title="About" subtitle="Background and qualifications." />}>
       <div className="space-y-8">
         <AboutSection />
         <EducationSection />

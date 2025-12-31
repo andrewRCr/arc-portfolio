@@ -5,13 +5,15 @@
  */
 
 import { education } from "@/data/education";
+import { SectionHeader } from "@/components/layout/SectionHeader";
 
 export function EducationSection() {
   return (
-    <section className="px-8">
-      {/* <h2 className="mb-8 text-3xl font-bold">Education</h2> */}
+    <section>
+      <SectionHeader title="Education" />
 
-      <ul className="space-y-6">
+      {/* Content with horizontal padding */}
+      <ul className="mt-4 space-y-6 px-8">
         {education.map((edu) => (
           <li key={edu.id} data-testid={`education-${edu.id}`} className="rounded-lg border border-border p-6">
             <div className="space-y-2">
