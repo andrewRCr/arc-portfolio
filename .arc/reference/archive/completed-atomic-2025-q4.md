@@ -4,6 +4,22 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] DevPageLayout extraction + TWM layout fixes
+    - **Outcome:** Extracted shared `DevPageHeader` component for dev pages with title, jump links,
+      and optional Environment Preview toggle (controls window opacity). Created `ConditionalFrame`
+      component for route-based inner TUI frame rendering (dev pages skip frame/nav). Fixed TWM
+      layout issues: gradient colors (hsl→rgb), nav background consistency (bg-card→bg-background),
+      WindowContainer semantic fix (bg-card→bg-background), moved opacity control to CSS via
+      `data-window-container` attribute.
+    - **Files:** Created `src/components/layout/ConditionalFrame.tsx`,
+      `src/components/dev/DevPageHeader.tsx`. Modified `src/app/layout.tsx`,
+      `src/app/dev/theme-debug/page.tsx`, `src/app/dev/typography/page.tsx`,
+      `src/components/layout/WindowContainer.tsx`, `src/components/layout/WallpaperBackground.tsx`,
+      `src/components/layout/Navigation.tsx`, `src/components/layout/TopBar.tsx`,
+      `src/app/globals.css`
+
+    - **Branch:** `feature/twm-layout-system`
+
 - [x] Restructure theme debug page + add comprehensive UI components
     - **Outcome:** Extracted page into modular section components (`_sections/`), added Form Controls,
       Feedback, and Overlays sections with new shadcn components (input, textarea, checkbox, switch,

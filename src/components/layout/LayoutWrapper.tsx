@@ -46,8 +46,8 @@ export function LayoutWrapper({ children, wallpaperSrc }: LayoutWrapperProps) {
         <TopBar />
 
         {/* Main content window - fills remaining space, scrollable */}
-        <WindowContainer className="flex-1 flex flex-col overflow-auto">
-          <main className="flex flex-col flex-1 p-4 md:p-6">{children}</main>
+        <WindowContainer className="flex-1 min-h-0 overflow-auto">
+          {children}
         </WindowContainer>
 
         {/* Footer bar - fixed height */}
