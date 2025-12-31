@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeSwitcher } from "../ThemeSwitcher";
@@ -18,9 +19,12 @@ import { ThemeSwitcher } from "../ThemeSwitcher";
  * ```
  */
 export function TopBar() {
+  const { topBarHeight, windowBorderWidth } = DEFAULT_LAYOUT_TOKENS;
+  const innerHeight = topBarHeight - windowBorderWidth * 2;
+
   return (
     <WindowContainer>
-      <header className="flex items-center justify-between px-4 py-2">
+      <header className="flex items-center justify-between px-4" style={{ height: innerHeight }}>
         {/* Branding - links to home */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">

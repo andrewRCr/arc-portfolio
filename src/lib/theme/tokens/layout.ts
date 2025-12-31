@@ -77,8 +77,8 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   windowGap: 8,
   windowBorderWidth: 2,
   windowOpacity: 0.85,
-  topBarHeight: 48, // Placeholder - finalize during TWM
-  footerHeight: 32, // Placeholder - finalize during TWM
+  topBarHeight: 42, // 28px content + 8px padding + 4px borders + 2px breathing room
+  footerHeight: 36, // 18px icons + 12px padding + 4px borders + 2px breathing room
   navGapHalf: 190,
 };
 
