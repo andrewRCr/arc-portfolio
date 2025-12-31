@@ -202,17 +202,17 @@ Combine parent tasks, sub-tasks, and optional implementation notes into the stan
 
 - [ ] **1.1 Write tests for core functionality**
 
-    - [ ] 1.1.1 Create test for validation
+    - [ ] **1.1.a Create test for validation**
         - Test cases listed here
         - Expect tests to FAIL initially
-    - [ ] 1.1.2 Run tests and verify failures
+    - [ ] **1.1.b Run tests and verify failures**
 
 - [ ] **1.2 Implement core functionality**
 
-    - [ ] 1.2.1 Create implementation
+    - [ ] **1.2.a Create implementation**
         - Implementation details here
-    - [ ] 1.2.2 Run tests - should now PASS
-    - [ ] 1.2.3 Run quality gates
+    - [ ] **1.2.b Run tests - should now PASS**
+    - [ ] **1.2.c Run quality gates**
 
 ## Implementation Notes
 
