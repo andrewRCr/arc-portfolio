@@ -35,9 +35,22 @@ describe("FooterBar", () => {
 
       const links = screen.getAllByRole("link");
       links.forEach((link) => {
-        expect(link).toHaveAttribute("target", "_blank");
-        expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"));
+        const href = link.getAttribute("href") || "";
+        // Only external links (not mailto:) should have target="_blank"
+        if (!href.startsWith("mailto:")) {
+          expect(link).toHaveAttribute("target", "_blank");
+          expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"));
+        }
       });
+    });
+
+    it("renders Email link without target=_blank", () => {
+      render(<FooterBar />);
+
+      const emailLink = screen.getByRole("link", { name: /email/i });
+      expect(emailLink).toBeInTheDocument();
+      expect(emailLink).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
+      expect(emailLink).not.toHaveAttribute("target");
     });
   });
 

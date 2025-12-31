@@ -4,10 +4,9 @@
  * These tests verify that:
  * - Contact structure is complete and properly formatted
  * - Email is valid and properly formatted
- * - All 3 social links are present with correct data
+ * - All social links are present with correct data
  * - URLs are valid and properly formatted
  * - Icons are specified for all links
- * - Phase 2 migration completeness
  */
 
 import { describe, it, expect } from "vitest";
@@ -153,14 +152,14 @@ describe("Contact Data Validation", () => {
 
     it("should have valid icon identifier", () => {
       expect(nexusLink?.icon).toBeDefined();
-      expect(nexusLink?.icon).toBe("package"); // or could be "external-link"
+      expect(nexusLink?.icon).toBe("nexusmods");
     });
   });
 
   describe("URL Format Validation", () => {
-    it("should have all URLs starting with https://", () => {
+    it("should have all URLs starting with https:// or mailto:", () => {
       contact.socialLinks.forEach((link) => {
-        expect(link.url).toMatch(/^https:\/\//);
+        expect(link.url).toMatch(/^(https:\/\/|mailto:)/);
       });
     });
 
@@ -180,12 +179,13 @@ describe("Contact Data Validation", () => {
       });
     });
 
-    it("should have valid domain names", () => {
+    it("should have valid domain names or mailto", () => {
       const validDomains = ["github.com", "linkedin.com", "nexusmods.com"];
 
       contact.socialLinks.forEach((link) => {
+        const isMailto = link.url.startsWith("mailto:");
         const hasDomain = validDomains.some((domain) => link.url.includes(domain));
-        expect(hasDomain).toBe(true);
+        expect(isMailto || hasDomain).toBe(true);
       });
     });
   });
@@ -229,10 +229,12 @@ describe("Contact Data Validation", () => {
       expect(platforms).toContain("NexusMods");
     });
 
-    it("should have links to andrewRCr profile on all platforms", () => {
-      contact.socialLinks.forEach((link) => {
-        expect(link.url).toContain("andrewRCr");
-      });
+    it("should have links to andrewRCr profile on external platforms", () => {
+      contact.socialLinks
+        .filter((link) => !link.url.startsWith("mailto:"))
+        .forEach((link) => {
+          expect(link.url).toContain("andrewRCr");
+        });
     });
   });
 
@@ -245,18 +247,18 @@ describe("Contact Data Validation", () => {
 
     it("should have consistent URL formatting across all links", () => {
       contact.socialLinks.forEach((link) => {
-        // All should use https
-        expect(link.url.startsWith("https://")).toBe(true);
+        // All should use https or mailto
+        expect(link.url.startsWith("https://") || link.url.startsWith("mailto:")).toBe(true);
 
-        // All should have no www except LinkedIn
-        if (link.platform !== "LinkedIn") {
+        // External links should have no www except LinkedIn
+        if (link.platform !== "LinkedIn" && !link.url.startsWith("mailto:")) {
           expect(link.url.includes("www.")).toBe(false);
         }
       });
     });
 
     it("should have proper capitalization for platform names", () => {
-      const properNames = ["GitHub", "LinkedIn", "NexusMods"];
+      const properNames = ["Email", "GitHub", "LinkedIn", "NexusMods"];
 
       contact.socialLinks.forEach((link) => {
         expect(properNames).toContain(link.platform);
@@ -265,12 +267,14 @@ describe("Contact Data Validation", () => {
   });
 
   describe("Username Consistency", () => {
-    it("should use andrewRCr username consistently across platforms", () => {
-      contact.socialLinks.forEach((link) => {
-        // All URLs should contain andrewRCr (case-insensitive for LinkedIn)
-        const url = link.url.toLowerCase();
-        expect(url).toContain("andrewrcr");
-      });
+    it("should use andrewRCr username consistently across external platforms", () => {
+      contact.socialLinks
+        .filter((link) => !link.url.startsWith("mailto:"))
+        .forEach((link) => {
+          // All external URLs should contain andrewRCr (case-insensitive for LinkedIn)
+          const url = link.url.toLowerCase();
+          expect(url).toContain("andrewrcr");
+        });
     });
 
     it("should preserve capitalization in GitHub and NexusMods URLs", () => {
@@ -300,22 +304,28 @@ describe("Contact Data Validation", () => {
   });
 
   describe("Link Order", () => {
-    it("should have GitHub as first link", () => {
-      expect(contact.socialLinks[0].platform).toBe("GitHub");
+    it("should have Email as first link", () => {
+      expect(contact.socialLinks[0].platform).toBe("Email");
     });
 
-    it("should have LinkedIn as second link", () => {
-      expect(contact.socialLinks[1].platform).toBe("LinkedIn");
+    it("should have GitHub as second link", () => {
+      expect(contact.socialLinks[1].platform).toBe("GitHub");
     });
 
-    it("should have NexusMods as third link", () => {
-      expect(contact.socialLinks[2].platform).toBe("NexusMods");
+    it("should have LinkedIn as third link", () => {
+      expect(contact.socialLinks[2].platform).toBe("LinkedIn");
+    });
+
+    it("should have NexusMods as fourth link", () => {
+      expect(contact.socialLinks[3].platform).toBe("NexusMods");
     });
 
     it("should have professional links before hobby links", () => {
-      // GitHub and LinkedIn (professional) should come before NexusMods (hobby)
+      // Email, GitHub and LinkedIn (professional) should come before NexusMods (hobby)
       const professionalIndices = contact.socialLinks
-        .map((link, index) => (link.platform === "GitHub" || link.platform === "LinkedIn" ? index : -1))
+        .map((link, index) =>
+          link.platform === "Email" || link.platform === "GitHub" || link.platform === "LinkedIn" ? index : -1
+        )
         .filter((i) => i !== -1);
 
       const hobbyIndices = contact.socialLinks

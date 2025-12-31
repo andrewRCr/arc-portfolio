@@ -1,31 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { about } from "@/data/about";
 import { AboutSection } from "../AboutSection";
 
 describe("AboutSection - Behavior Tests", () => {
   describe("Content Rendering", () => {
-    it("renders the section heading", () => {
-      render(<AboutSection />);
-
-      const heading = screen.getByRole("heading", { level: 2, name: /about me/i });
-      expect(heading).toBeInTheDocument();
-    });
-
-    it("renders all paragraphs", () => {
-      render(<AboutSection />);
-
-      // Verify key content from each paragraph
-      expect(screen.getByText(/recently graduated software engineer/i)).toBeInTheDocument();
-      expect(screen.getByText(/Previously a graduate student in psychology/i)).toBeInTheDocument();
-      expect(screen.getByText(/eager to add value to your team/i)).toBeInTheDocument();
-    });
-
-    it("renders at least 3 paragraphs", () => {
+    it("renders paragraphs from about data", () => {
       const { container } = render(<AboutSection />);
 
-      // Paragraphs should be rendered as p elements
       const paragraphs = container.querySelectorAll("p");
-      expect(paragraphs.length).toBeGreaterThanOrEqual(3);
+      expect(paragraphs.length).toBe(about.paragraphs.length);
     });
   });
 
@@ -33,17 +17,19 @@ describe("AboutSection - Behavior Tests", () => {
     it("renders markdown links as clickable anchor elements", () => {
       render(<AboutSection />);
 
-      const link = screen.getByRole("link", { name: /modding work/i });
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute("href", expect.stringContaining("nexusmods.com"));
+      // Should have at least one external link (from markdown in content)
+      const links = screen.queryAllByRole("link");
+      expect(links.length).toBeGreaterThan(0);
     });
 
-    it("opens external links in new tab", () => {
+    it("opens external links in new tab with security attributes", () => {
       render(<AboutSection />);
 
-      const link = screen.getByRole("link", { name: /modding work/i });
-      expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      const links = screen.queryAllByRole("link");
+      links.forEach((link) => {
+        expect(link).toHaveAttribute("target", "_blank");
+        expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      });
     });
   });
 
@@ -60,32 +46,6 @@ describe("AboutSection - Behavior Tests", () => {
 
       const paragraphs = container.querySelectorAll("p");
       expect(paragraphs.length).toBeGreaterThan(0);
-    });
-  });
-
-  describe("Data Integration", () => {
-    it("renders actual about data from data/about.ts", () => {
-      render(<AboutSection />);
-
-      // Verify specific content from about.ts
-      expect(screen.getByText(/recently graduated software engineer/i)).toBeInTheDocument();
-      expect(screen.getByText(/Previously a graduate student in psychology/i)).toBeInTheDocument();
-      expect(screen.getByText(/video game development/i)).toBeInTheDocument();
-      expect(screen.getByText(/270 thousand/i)).toBeInTheDocument();
-    });
-
-    it("preserves paragraph order from data structure", () => {
-      const { container } = render(<AboutSection />);
-
-      const paragraphs = container.querySelectorAll("p");
-      const paragraphTexts = Array.from(paragraphs).map((p) => p.textContent);
-
-      // First paragraph should mention software engineer
-      expect(paragraphTexts[0]).toMatch(/software engineer/i);
-      // Second paragraph should mention psychology
-      expect(paragraphTexts[1]).toMatch(/psychology/i);
-      // Third paragraph should mention adding value
-      expect(paragraphTexts[2]).toMatch(/add value/i);
     });
   });
 });

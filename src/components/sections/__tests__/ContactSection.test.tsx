@@ -27,10 +27,13 @@ describe("ContactSection - Behavior Tests", () => {
   });
 
   describe("Social Links Rendering", () => {
-    it("renders all social platform links", () => {
+    // Filter out email since ContactSection shows it separately
+    const externalSocialLinks = contact.socialLinks.filter((link) => link.icon !== "mail");
+
+    it("renders all external social platform links", () => {
       render(<ContactSection />);
 
-      contact.socialLinks.forEach((link) => {
+      externalSocialLinks.forEach((link) => {
         expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
       });
     });
@@ -38,7 +41,7 @@ describe("ContactSection - Behavior Tests", () => {
     it("renders correct URLs for social links", () => {
       render(<ContactSection />);
 
-      contact.socialLinks.forEach((link) => {
+      externalSocialLinks.forEach((link) => {
         const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
         expect(element).toHaveAttribute("href", link.url);
       });
@@ -47,7 +50,7 @@ describe("ContactSection - Behavior Tests", () => {
     it("opens social links in new tab with security attributes", () => {
       render(<ContactSection />);
 
-      contact.socialLinks.forEach((link) => {
+      externalSocialLinks.forEach((link) => {
         const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
         expect(element).toHaveAttribute("target", "_blank");
         expect(element).toHaveAttribute("rel", "noopener noreferrer");
@@ -58,8 +61,8 @@ describe("ContactSection - Behavior Tests", () => {
       render(<ContactSection />);
 
       const links = screen.getAllByRole("link");
-      // Should have email link + social links
-      expect(links.length).toBeGreaterThanOrEqual(contact.socialLinks.length + 1);
+      // Should have email link + external social links
+      expect(links.length).toBeGreaterThanOrEqual(externalSocialLinks.length + 1);
     });
   });
 
@@ -71,11 +74,11 @@ describe("ContactSection - Behavior Tests", () => {
       expect(section).toBeInTheDocument();
     });
 
-    it("has a main heading for the section", () => {
+    it("has a Connect heading for social links", () => {
       render(<ContactSection />);
 
-      const mainHeading = screen.getByRole("heading", { level: 2, name: /contact/i });
-      expect(mainHeading).toBeInTheDocument();
+      const heading = screen.getByRole("heading", { level: 3, name: /connect/i });
+      expect(heading).toBeInTheDocument();
     });
   });
 
@@ -86,10 +89,12 @@ describe("ContactSection - Behavior Tests", () => {
       // Verify email from contact data
       expect(screen.getByText(emailPattern)).toBeInTheDocument();
 
-      // Verify all social platforms from contact data
-      contact.socialLinks.forEach((link) => {
-        expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
-      });
+      // Verify external social platforms from contact data (email filtered out in component)
+      contact.socialLinks
+        .filter((link) => link.icon !== "mail")
+        .forEach((link) => {
+          expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
+        });
     });
   });
 });
