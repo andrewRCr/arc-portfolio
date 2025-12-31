@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { AdaptiveHero } from "@/components/layout/AdaptiveHero";
-import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
 
 const geistSans = Geist({
@@ -35,27 +35,24 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ConsoleLoggerInit />
-          {/* TUI-style border frame wrapper */}
-          <div className="min-h-screen p-4 md:p-6 lg:p-8">
-            <div className="min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)] border-2 border-border rounded-lg flex flex-col relative">
-              {/* Navigation positioned at top with border break */}
-              {/* Note: top uses CSS variable for browser-specific offset (see globals.css) */}
-              <div className="absolute left-1/2 -translate-x-1/2 top-[var(--nav-offset)] bg-background px-8 z-10">
+          <LayoutWrapper>
+            {/* Inner TUI-style frame with rounded border - fills full height */}
+            <div className="relative border-2 border-border rounded-lg flex flex-col flex-1 min-h-0">
+              {/* Navigation positioned to intersect the border */}
+              <div className="absolute left-1/2 -translate-x-1/2 -top-px -translate-y-1/2 bg-card px-6 z-10">
                 <Navigation />
               </div>
 
-              {/* Adaptive Hero - switches between expanded (home) and compact (other pages) */}
-              <div className="pt-14">
+              {/* Content area with top padding for nav clearance */}
+              <div className="flex flex-col flex-1 pt-8 px-4 pb-4 md:px-6 md:pb-6">
+                {/* Adaptive Hero - switches between expanded (home) and compact (other pages) */}
                 <AdaptiveHero />
+
+                {/* Page content */}
+                {children}
               </div>
-
-              {/* Main content area */}
-              <main className="flex flex-col flex-1 px-6 pb-6">{children}</main>
-
-              {/* Footer at bottom of frame */}
-              <Footer />
             </div>
-          </div>
+          </LayoutWrapper>
         </ThemeProvider>
       </body>
     </html>
