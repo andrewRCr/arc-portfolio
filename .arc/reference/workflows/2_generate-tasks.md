@@ -36,6 +36,54 @@ foundational documents for broader context:
 - **[PROJECT-STATUS](../constitution/PROJECT-STATUS.md)** - Current priorities and project state
 - **[TECHNICAL-OVERVIEW](../constitution/TECHNICAL-OVERVIEW.md)** - Architectural patterns and conventions
 
+### Step 1.5: Simplify PRD Header Metadata
+
+PRDs written in advance (with dependencies) include extra metadata fields that are no longer needed
+once task generation begins. Simplify the header to the standard format.
+
+**Remove these fields if present:**
+
+- `Updated:` line
+- `Related Work:` section (dependencies are now complete)
+
+**Keep these fields:**
+
+- `Type:` (Feature or Technical)
+- `Status:` (update to "In Progress" or leave as "Ready for Implementation")
+- `Created:` (original creation date)
+
+**Before:**
+
+```markdown
+# PRD: Feature Name
+
+**Type:** Feature
+**Status:** Ready for Implementation
+**Created:** 2025-10-25
+**Updated:** 2025-12-31
+
+**Related Work:**
+
+- ✅ Complete: Some Dependency - description
+
+---
+```
+
+**After:**
+
+```markdown
+# PRD: Feature Name
+
+**Type:** Feature
+**Status:** Ready for Implementation
+**Created:** 2025-10-25
+
+---
+```
+
+**Rationale:** Dependency tracking is useful while waiting for prerequisites. Once task generation
+begins, that context is historical and adds noise to the active document.
+
 ### Step 2: Assess Current Codebase State
 
 Review the existing codebase to identify:
