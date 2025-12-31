@@ -1,5 +1,11 @@
 # PRD: Tiling Window Manager (TWM) Layout System
 
+**Type:** Feature
+**Status:** In Progress
+**Created:** 2025-10-25
+
+---
+
 ## 1. Introduction/Overview
 
 This feature introduces a distinctive visual design system inspired by tiling window managers, transforming the
@@ -222,17 +228,18 @@ The following are explicitly **out of scope** for this feature:
 - **Expansion candidates**: Nord, Catppuccin for Phase 2 if time permits
 - **Testing priority**: Foundation validates contrast; TWM adds transparency/wallpaper validation
 
-### Layout Constants
+### Layout Tokens
 
-**Defined in foundation work** (`technical/design-system-foundation`):
+**Defined in foundation work** (`src/lib/theme/tokens/layout.ts`):
 
-- `WINDOW_GAP`: Gap between windows (default: 8px)
-- `WINDOW_BORDER_WIDTH`: Border thickness (default: 2px)
-- `WINDOW_OPACITY`: Background transparency (default: 0.85 / 85% opaque)
-- `TOP_BAR_HEIGHT`: Minimal height for top bar (TBD during TWM)
-- `FOOTER_HEIGHT`: Minimal height for footer (TBD during TWM)
+- `windowGap`: Gap between windows (default: 8px)
+- `windowBorderWidth`: Border thickness (default: 2px)
+- `windowOpacity`: Background transparency (default: 0.85 / 85% opaque)
+- `topBarHeight`: Minimal height for top bar (placeholder: 48px, finalize during TWM)
+- `footerHeight`: Minimal height for footer (placeholder: 32px, finalize during TWM)
 
-Token system supports per-theme overrides where readability requires.
+Tokens are properties of `LayoutTokens` interface (camelCase per object property convention).
+Per-theme overrides supported via `Theme.layoutOverrides: Partial<LayoutTokens>`.
 
 ## 7. Technical Considerations
 
@@ -242,7 +249,7 @@ Token system supports per-theme overrides where readability requires.
 
 - Semantic token system (~25 tokens) with TypeScript types
 - Three themes pre-defined: Gruvbox, Rose Pine, Remedy (light/dark each)
-- Layout tokens: `WINDOW_GAP`, `WINDOW_BORDER_WIDTH`, `WINDOW_OPACITY`, heights
+- Layout tokens: `windowGap`, `windowBorderWidth`, `windowOpacity`, `topBarHeight`, `footerHeight`
 - Playwright E2E with device profiles (mobile 375×667, tablet 768×1024, desktop 1920×1080)
 - vitest-axe for component accessibility testing
 - Contrast validation tests for all theme combinations
@@ -377,21 +384,4 @@ This feature will be considered successful when:
 - **Wallpaper per-theme**: Do any themes require different wallpaper for readability, or can single wallpaper work
   across all? (Test during implementation)
 
-### Post-Launch Questions
-
-- **User theme preferences**: Which themes are most popular? Should we add more in that style?
-- **Mobile usage**: What percentage of visitors view on mobile? Does this warrant additional mobile optimization?
-- **Window split adoption**: If implemented, do users discover and use the project detail split view?
-- **Additional themes**: Should we expand beyond initial 3-4 theme families based on user feedback?
-
 ---
-
-**PRD Version**: 1.1
-**Created**: 2025-10-25
-**Updated**: 2025-12-27
-**Status**: Ready for Implementation
-**Related Work**:
-
-- ✅ Depends on: Content Migration (complete - navigation and page structure in place)
-- ⏳ Depends on: Design System Foundation (`technical/design-system-foundation`) - establishes testing
-  infrastructure, token system, and theme definitions this feature will use
