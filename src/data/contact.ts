@@ -12,6 +12,11 @@ export const contact: Contact = {
 
   socialLinks: [
     {
+      platform: "Email",
+      url: "mailto:andrew.creekmore@me.com",
+      icon: "mail",
+    },
+    {
       platform: "GitHub",
       url: "https://github.com/andrewRCr",
       icon: "github",
@@ -24,7 +29,7 @@ export const contact: Contact = {
     {
       platform: "NexusMods",
       url: "https://next.nexusmods.com/profile/andrewRCr/mods",
-      icon: "package", // Generic icon for modding platform (or could use "external-link")
+      icon: "nexusmods",
     },
   ],
 };
