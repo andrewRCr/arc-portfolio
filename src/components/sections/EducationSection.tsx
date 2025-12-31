@@ -8,8 +8,8 @@ import { education } from "@/data/education";
 
 export function EducationSection() {
   return (
-    <section className="p-8">
-      <h2 className="mb-8 text-3xl font-bold">Education</h2>
+    <section className="px-8">
+      {/* <h2 className="mb-8 text-3xl font-bold">Education</h2> */}
 
       <ul className="space-y-6">
         {education.map((edu) => (

@@ -54,6 +54,18 @@ export interface LayoutTokens {
    * **Usage:** Fixed footer height
    */
   footerHeight: number;
+
+  /**
+   * Half-width of the Navigation gap in the TUI frame border.
+   *
+   * The TUI frame border uses clip-path to create a centered gap where
+   * Navigation sits. This value is half the total gap width.
+   *
+   * **Default:** 190 (pixels)
+   * **Usage:** TUI frame border clip-path calculation
+   * **Note:** Adjust if Navigation width changes significantly
+   */
+  navGapHalf: number;
 }
 
 /**
@@ -67,6 +79,7 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   windowOpacity: 0.85,
   topBarHeight: 48, // Placeholder - finalize during TWM
   footerHeight: 32, // Placeholder - finalize during TWM
+  navGapHalf: 190,
 };
 
 /**

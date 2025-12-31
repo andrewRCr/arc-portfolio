@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { useThemeContext } from "@/contexts/ThemeContext";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import {
   CSSVariablesSection,
@@ -102,11 +103,7 @@ export default function ThemeDebugPage() {
   }
 
   return (
-    <>
-      {/* Shared dev page header with theme controls and Environment Preview toggle */}
-      <DevPageHeader title="Theme Debug" jumpLinks={JUMP_LINKS} showEnvPreview />
-
-      {/* Content */}
+    <PageLayout header={<DevPageHeader title="Theme Debug" jumpLinks={JUMP_LINKS} showEnvPreview />}>
       <div className="mx-auto max-w-4xl space-y-8 p-8">
         <CSSVariablesSection variables={variables} open={cssOpen} onOpenChange={setCssOpen} />
         <ColorPaletteSection />
@@ -117,6 +114,6 @@ export default function ThemeDebugPage() {
         <CardsLayoutSection />
         <InteractiveStatesSection />
       </div>
-    </>
+    </PageLayout>
   );
 }

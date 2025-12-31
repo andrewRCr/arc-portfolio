@@ -52,8 +52,8 @@ function parseMarkdownLinks(text: string): React.ReactElement[] {
 
 export function AboutSection() {
   return (
-    <section className="p-8">
-      <h2 className="mb-8 text-3xl font-bold">{about.heading}</h2>
+    <section className="px-8 py-2">
+      {/* <h2 className="mb-8 text-3xl font-bold">{about.heading}</h2> */}
 
       <div className="space-y-4 text-foreground">
         {about.paragraphs.map((paragraph, index) => (

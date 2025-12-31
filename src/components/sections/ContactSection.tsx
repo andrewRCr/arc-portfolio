@@ -17,8 +17,8 @@ const iconMap: Record<SocialIcon, LucideIcon> = {
 
 export function ContactSection() {
   return (
-    <section className="p-8">
-      <h2 className="mb-8 text-3xl font-bold">Contact</h2>
+    <section className="px-8 py-2">
+      {/* <h2 className="mb-8 text-3xl font-bold">Contact</h2> */}
 
       <div className="space-y-8">
         {/* Email */}

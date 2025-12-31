@@ -40,10 +40,11 @@ export function WindowContainer({ children, className }: WindowContainerProps) {
   return (
     <div
       data-window-container
-      className={cn("border-border bg-background", className)}
+      className={cn("border-border backdrop-blur-md", className)}
       style={{
         borderWidth: `${windowBorderWidth}px`,
         borderStyle: "solid",
+        backgroundColor: "rgb(var(--background) / 0.85)",
       }}
     >
       {children}

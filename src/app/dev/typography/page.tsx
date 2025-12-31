@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -41,11 +42,7 @@ export default function TypographyPage() {
   }
 
   return (
-    <>
-      {/* Shared dev page header with theme controls */}
-      <DevPageHeader title="Typography" jumpLinks={JUMP_LINKS} showEnvPreview />
-
-      {/* Content */}
+    <PageLayout header={<DevPageHeader title="Typography" jumpLinks={JUMP_LINKS} showEnvPreview />}>
       <div className="mx-auto max-w-4xl space-y-8 p-8">
         {/* Headings */}
         <Card id="headings">
@@ -179,6 +176,6 @@ export default function TypographyPage() {
           </CardContent>
         </Card>
       </div>
-    </>
+    </PageLayout>
   );
 }
