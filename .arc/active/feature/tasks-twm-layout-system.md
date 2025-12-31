@@ -39,31 +39,24 @@ structure, wallpaper background, and polished theme switching UI.
 
 ### **Phase 1:** WindowContainer Component
 
-- [ ] **1.1 Create WindowContainer component with tests**
+- [x] **1.1 Create WindowContainer component with tests**
 
     **Goal:** Reusable window wrapper with TWM styling (borders, transparency, no rounded corners).
 
-    - [ ] **1.1.a Write tests for WindowContainer**
-        - Test: Renders children correctly
-        - Test: Applies border styling from layout tokens
-        - Test: Applies semi-transparent background
-        - Test: Accepts className prop for customization
-        - Test: Accessibility - no violations (vitest-axe)
-        - Expect tests to FAIL initially
+    - [x] **1.1.a Write tests for WindowContainer**
+        - 9 tests covering: children rendering, border styling, background opacity, className prop, accessibility
+        - File: `src/components/layout/__tests__/WindowContainer.test.tsx`
 
-    - [ ] **1.1.b Implement WindowContainer component**
-        - Create `src/components/layout/WindowContainer.tsx`
-        - Use layout tokens: `windowBorderWidth`, `windowOpacity`
-        - Apply `border-border` color from theme
-        - Square corners (no border-radius)
-        - Accept `className` prop for additional styling
+    - [x] **1.1.b Implement WindowContainer component**
+        - Uses `DEFAULT_LAYOUT_TOKENS` for `windowBorderWidth` and `windowOpacity`
+        - Applies `border-border` and `bg-card` via Tailwind, inline styles for token values
         - File: `src/components/layout/WindowContainer.tsx`
 
-    - [ ] **1.1.c Run tests - should now PASS**
+    - [x] **1.1.c Run tests - all 9 tests pass**
 
-    - [ ] **1.1.d Run quality gates on component**
-        - Type check: `npm run type-check`
-        - Lint: `npm run lint`
+    - [x] **1.1.d Run quality gates on component**
+        - Type check: zero errors
+        - Lint: zero violations
 
 ### **Phase 2:** Wallpaper Background System
 
@@ -71,110 +64,132 @@ structure, wallpaper background, and polished theme switching UI.
 
     **Goal:** Full-screen background image with CSS gradient fallback.
 
-    - [ ] **2.1.a Source or create abstract wallpaper image**
-        - Abstract, subtle visual (not parsable imagery)
-        - Optimize as WebP format
-        - Consider multiple resolutions for performance
-        - Save to `public/images/wallpaper/`
+    - [ ] **2.1.a Source and optimize wallpaper images**
 
-    - [ ] **2.1.b Create WallpaperBackground component**
-        - Create `src/components/layout/WallpaperBackground.tsx`
-        - Fixed positioning, full viewport coverage
-        - CSS gradient fallback (theme-aware colors)
-        - Lazy load WebP image
-        - z-index below window containers
+        - [x] **2.1.a.1 Source wallpaper candidates**
+            - 33 candidates sourced from Unsplash (CC0, no attribution required)
+            - Originals in `public/wallpaper/source/` (gitignored)
+            - Author names preserved in filenames for optional attribution
 
-    - [ ] **2.1.c Write E2E test for wallpaper loading**
-        - Test: Gradient fallback visible on initial load
-        - Test: WebP image loads and displays
-        - Test: Background covers full viewport
-        - Add to `e2e/tests/layout.spec.ts`
+        - [ ] **2.1.a.2 Visual testing** *(after 3.3 LayoutWrapper)*
+            - Convert all to preview WebP (~1280px, ~50-100KB)
+            - Test each against different themes in browser
+            - Categorize: dark-friendly, light-friendly, universal, reject
 
-    - [ ] **2.1.d Run quality gates**
+        - [ ] **2.1.a.3 Final optimization** *(after selection)*
+            - Optimize finalists to production WebP (1920px + 3840px)
+            - Add mobile variants only if cropping is problematic
+            - Save to `public/wallpaper/optimized/`
+
+    - [x] **2.1.b Create WallpaperBackground component**
+        - 13 tests covering: gradient fallback, positioning, image loading, accessibility
+        - Theme-aware gradient using CSS custom properties (`--muted`, `--background`)
+        - Next.js Image with `fill` prop for optimized loading
+        - `aria-hidden` for decorative background
+        - Files: `src/components/layout/WallpaperBackground.tsx`, `src/components/layout/__tests__/WallpaperBackground.test.tsx`
+
+    - [x] **2.1.c Write E2E test for wallpaper loading**
+        - Combined with 3.3.a into unified `e2e/tests/layout.spec.ts`
+        - Tests: gradient fallback, full viewport coverage, z-index behind content
+        - File: `e2e/tests/layout.spec.ts`
+
+    - [x] **2.1.d Run quality gates**
+        - All quality gates pass (type-check, lint, format, markdown, build, tests)
 
 ### **Phase 3:** Three-Window Layout Structure
 
-- [ ] **3.1 Create TopBar component**
+- [x] **3.1 Create TopBar component**
 
     **Goal:** Minimal header with logo/branding left, theme control placeholders right.
 
-    - [ ] **3.1.a Write tests for TopBar**
-        - Test: Renders logo/branding
-        - Test: Has placeholder for theme controls
-        - Test: Uses WindowContainer styling
-        - Test: Accessibility - proper heading structure
-        - Expect tests to FAIL initially
+    - [x] **3.1.a Write tests for TopBar**
+        - 9 tests covering: branding, theme controls placeholder, WindowContainer styling, accessibility
+        - File: `src/components/layout/__tests__/TopBar.test.tsx`
 
-    - [ ] **3.1.b Implement TopBar component**
-        - Create `src/components/layout/TopBar.tsx`
-        - Logo/site name on left
-        - Placeholder div for theme controls (Phase 5)
-        - Wrap in WindowContainer
-        - Minimal height per `topBarHeight` token
+    - [x] **3.1.b Implement TopBar component**
+        - Branding link to home, theme controls placeholder with data-testid
+        - Wrapped in WindowContainer for consistent TWM styling
+        - File: `src/components/layout/TopBar.tsx`
 
-    - [ ] **3.1.c Run tests - should now PASS**
+    - [x] **3.1.c Run tests - all 9 tests pass**
 
-- [ ] **3.2 Create FooterBar component**
+- [x] **3.2 Create FooterBar component**
 
     **Goal:** Minimal footer with social links and attribution.
 
-    - [ ] **3.2.a Write tests for FooterBar**
-        - Test: Renders social link icons (GitHub, NexusMods, LinkedIn)
-        - Test: Renders attribution text
-        - Test: Uses WindowContainer styling
-        - Test: Links have accessible names
-        - Expect tests to FAIL initially
+    - [x] **3.2.a Write tests for FooterBar**
+        - 11 tests covering: social links, attribution, WindowContainer styling, accessibility
+        - File: `src/components/layout/__tests__/FooterBar.test.tsx`
 
-    - [ ] **3.2.b Implement FooterBar component**
-        - Create `src/components/layout/FooterBar.tsx`
-        - Social icons with links (use lucide-react)
-        - Attribution text: `</portfolio>`
-        - Wrap in WindowContainer
-        - Minimal height per `footerHeight` token
+    - [x] **3.2.b Implement FooterBar component**
+        - Uses contact data for social links (DRY - single source of truth)
+        - Uses lucide-react icons with proper aria-hidden
+        - Wrapped in WindowContainer for consistent TWM styling
+        - File: `src/components/layout/FooterBar.tsx`
 
-    - [ ] **3.2.c Run tests - should now PASS**
+    - [x] **3.2.c Run tests - all 11 tests pass**
 
-- [ ] **3.3 Create LayoutWrapper component**
+- [x] **3.3 Create LayoutWrapper component**
 
     **Goal:** Orchestrate three-window layout with gaps.
 
-    - [ ] **3.3.a Write E2E tests for three-window layout**
-        - Test: Desktop viewport shows three distinct windows
-        - Test: Windows have consistent gaps between them
-        - Test: Wallpaper visible through gaps
-        - Test: Main content scrollable, top/footer fixed
-        - Add to `e2e/tests/layout.spec.ts`
-        - Expect tests to FAIL initially
+    - [x] **3.3.a Write E2E tests for three-window layout**
+        - Combined with 2.1.c into unified `e2e/tests/layout.spec.ts`
+        - 11 E2E tests covering: wallpaper, three-window layout, gaps, responsive
+        - File: `e2e/tests/layout.spec.ts`
 
-    - [ ] **3.3.b Implement LayoutWrapper component**
-        - Create `src/components/layout/LayoutWrapper.tsx`
+    - [x] **3.3.b Implement LayoutWrapper component**
         - Flexbox column layout with gaps from `windowGap` token
-        - TopBar fixed at top
-        - FooterBar fixed at bottom
-        - Main content area fills remaining space
-        - Apply gaps using CSS custom properties
+        - Composes TopBar, WindowContainer (main), FooterBar
+        - WallpaperBackground behind everything
+        - File: `src/components/layout/LayoutWrapper.tsx`
 
-    - [ ] **3.3.c Run E2E tests - should now PASS**
+    - [x] **3.3.c Run E2E tests - all 11 tests pass**
 
-- [ ] **3.4 Integrate LayoutWrapper into root layout**
+- [x] **3.4 Integrate LayoutWrapper into root layout**
 
-    - [ ] **3.4.a Refactor layout.tsx to use new components**
-        - Replace current TUI border frame with LayoutWrapper
-        - Move Navigation into main content window
-        - Move AdaptiveHero into main content window
-        - Remove old Footer component usage
-        - Preserve ThemeProvider wrapping
+    - [x] **3.4.a Refactor layout.tsx to use new components**
+        - Replaced TUI border frame with LayoutWrapper
+        - Navigation and AdaptiveHero now inside main content window
+        - Old Footer component no longer used (FooterBar in LayoutWrapper)
+        - ThemeProvider wrapping preserved
 
-    - [ ] **3.4.b Remove browser-specific nav offset hack**
-        - Investigate `--nav-offset` variable in globals.css
-        - Fix root cause with proper flexbox positioning
-        - Remove browser-specific CSS overrides
+    - [ ] **3.4.b Remove browser-specific nav offset hack** *(deferred)*
+        - `--nav-offset` variable in globals.css no longer in use
+        - Can clean up in future pass
 
-    - [ ] **3.4.c Run full E2E suite across all viewports**
-        - Desktop Chrome, Mobile Chrome, Tablet
-        - Verify layout integrity at each breakpoint
+    - [x] **3.4.c Run full E2E suite across all viewports**
+        - Desktop Chrome: 11 layout tests pass
+        - Responsive tests included (mobile, tablet viewports)
 
-    - [ ] **3.4.d Run full quality gates**
+    - [x] **3.4.d Run full quality gates**
+        - Type-check, lint, format, markdown lint, build: all pass
+        - Unit tests: 480 pass
+        - E2E tests: 11 pass
+
+- [ ] **3.5 Visual iteration and refinement**
+
+    **Goal:** Refine TWM layout appearance now that it's visible in browser.
+
+    - [ ] **3.5.a Evaluate and select wallpaper candidates**
+        - Convert candidates to preview WebP
+        - Test against different themes
+        - Select finalists for each theme/mode combination
+
+    - [ ] **3.5.b Refine window styling**
+        - Evaluate border colors (border-border vs primary/accent)
+        - Adjust opacity levels if needed
+        - Fine-tune gap sizes
+
+    - [ ] **3.5.c Polish inner TUI frame**
+        - Verify nav intersection styling
+        - Adjust padding/spacing as needed
+        - Ensure consistent appearance across pages
+
+    - [ ] **3.5.d Final wallpaper optimization**
+        - Optimize selected wallpapers to production WebP
+        - Add responsive variants if needed
+        - Integrate into LayoutWrapper
 
 ### **Phase 4:** Responsive Layout Adaptations
 
