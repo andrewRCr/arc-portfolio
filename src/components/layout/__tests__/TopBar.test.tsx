@@ -17,14 +17,14 @@ describe("TopBar", () => {
     it("renders logo/branding text", () => {
       render(<TopBar />);
 
-      // Site name should be visible
-      expect(screen.getByText(/andrew creekmore/i)).toBeInTheDocument();
+      // Site handle should be visible
+      expect(screen.getByText(/andrewRCr/i)).toBeInTheDocument();
     });
 
     it("branding links to home page", () => {
       render(<TopBar />);
 
-      const brandingLink = screen.getByRole("link", { name: /andrew creekmore/i });
+      const brandingLink = screen.getByRole("link", { name: /andrewRCr/i });
       expect(brandingLink).toHaveAttribute("href", "/");
     });
   });
@@ -50,13 +50,12 @@ describe("TopBar", () => {
       });
     });
 
-    it("applies WindowContainer opacity", () => {
+    it("has data-window-container for CSS-controlled opacity", () => {
       const { container } = render(<TopBar />);
 
       const wrapper = container.firstChild as HTMLElement;
-      expect(wrapper).toHaveStyle({
-        opacity: String(DEFAULT_LAYOUT_TOKENS.windowOpacity),
-      });
+      // Opacity is now controlled via CSS targeting [data-window-container]
+      expect(wrapper).toHaveAttribute("data-window-container");
     });
   });
 
@@ -86,7 +85,7 @@ describe("TopBar", () => {
     it("branding link is keyboard accessible", () => {
       render(<TopBar />);
 
-      const brandingLink = screen.getByRole("link", { name: /andrew creekmore/i });
+      const brandingLink = screen.getByRole("link", { name: /andrewRCr/i });
       expect(brandingLink).not.toBeDisabled();
     });
   });

@@ -22,9 +22,12 @@ export function TopBar() {
     <WindowContainer>
       <header className="flex items-center justify-between px-4 py-2">
         {/* Branding - links to home */}
-        <Link href="/" className="text-foreground font-mono font-semibold text-sm hover:text-primary transition-colors">
-          andrew creekmore
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <span className="text-foreground font-mono font-bold">andrewRCr</span>
+          </Link>
+          <span className="text-primary font-mono">&gt;_</span>
+        </div>
 
         {/* Theme controls - temporary until ThemePicker is implemented */}
         <div data-testid="theme-controls-placeholder" className="flex items-center gap-3">

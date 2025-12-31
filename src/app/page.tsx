@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { projects } from "@/data/projects";
 import type { Project } from "@/types/project";
+import { Hero } from "@/components/layout/Hero";
 
 // Featured projects by slug (order determines display order)
 const FEATURED_SLUGS = ["cinexplorer", "taskfocus"];
@@ -16,7 +17,8 @@ export default function Home() {
 
   return (
     <div className="flex-1 flex flex-col p-8">
-      {/* Hero Section now lives in AdaptiveHero component (see layout.tsx) */}
+      {/* Hero Section */}
+      <Hero />
 
       {/* Featured Project Cards */}
       <div className="space-y-4">
