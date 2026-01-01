@@ -3,10 +3,6 @@
  *
  * Full hero section for the home page with terminal-inspired styling.
  * Displays name, tagline, and decorative prompt element.
- *
- * Note: This is a simplified version extracted from AdaptiveHero.
- * AdaptiveHero remains available for potential future use (animated
- * transitions between expanded/compact states based on route).
  */
 export function Hero() {
   return (
