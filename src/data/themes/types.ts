@@ -116,6 +116,8 @@ export interface ThemeColors {
   // UI element colors (shadcn/ui convention)
   /** Standard borders */
   border: string;
+  /** High-contrast borders for prominent UI elements (window frames, TUI frame) */
+  "border-strong": string;
   /** Input field borders */
   input: string;
   /** Focus ring color */

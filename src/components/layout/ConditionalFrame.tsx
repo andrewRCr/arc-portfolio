@@ -24,10 +24,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
     // Pages handle their own scroll structure via PageLayout
     return (
       <div className="flex flex-col flex-1 min-h-0 p-4 md:p-6">
-        <div
-          className="flex flex-col flex-1 min-h-0 mx-auto w-full"
-          style={{ maxWidth: contentMaxWidth }}
-        >
+        <div className="flex flex-col flex-1 min-h-0 mx-auto w-full" style={{ maxWidth: contentMaxWidth }}>
           {children}
         </div>
       </div>
@@ -44,7 +41,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
       >
         {/* TUI frame border - clip-path creates gap for Navigation */}
         <div
-          className="absolute inset-0 border-2 border-border rounded-lg pointer-events-none"
+          className="absolute inset-0 border-2 border-border-strong rounded-lg pointer-events-none"
           style={{
             clipPath: `polygon(
               0 0,

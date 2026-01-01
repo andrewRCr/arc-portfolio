@@ -56,7 +56,7 @@ describe("WindowContainer", () => {
   });
 
   describe("Background Styling", () => {
-    it("has data-window-container attribute for CSS-controlled opacity", () => {
+    it("has data-window-container attribute for CSS targeting", () => {
       const { container } = render(
         <WindowContainer>
           <p>Content</p>
@@ -64,9 +64,19 @@ describe("WindowContainer", () => {
       );
 
       const wrapper = container.firstChild as HTMLElement;
-      // Opacity is now controlled via CSS targeting [data-window-container]
-      // See globals.css for the actual opacity value (0.95 default, 1 when env-preview="false")
       expect(wrapper).toHaveAttribute("data-window-container");
+    });
+
+    it("injects windowOpacity token as CSS variable", () => {
+      const { container } = render(
+        <WindowContainer>
+          <p>Content</p>
+        </WindowContainer>
+      );
+
+      const wrapper = container.firstChild as HTMLElement;
+      // Token value injected as CSS variable, used by globals.css for background-color
+      expect(wrapper.style.getPropertyValue("--window-bg-opacity")).toBe(String(DEFAULT_LAYOUT_TOKENS.windowOpacity));
     });
   });
 
@@ -80,19 +90,6 @@ describe("WindowContainer", () => {
 
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toHaveClass("custom-class");
-    });
-
-    it("preserves base classes when className is provided", () => {
-      const { container } = render(
-        <WindowContainer className="custom-class">
-          <p>Content</p>
-        </WindowContainer>
-      );
-
-      const wrapper = container.firstChild as HTMLElement;
-      // Should have both custom class and border class from Tailwind
-      expect(wrapper).toHaveClass("custom-class");
-      expect(wrapper).toHaveClass("border-border");
     });
   });
 

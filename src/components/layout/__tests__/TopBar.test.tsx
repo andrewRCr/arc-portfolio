@@ -66,14 +66,6 @@ describe("TopBar", () => {
       expect(screen.getByRole("banner")).toBeInTheDocument();
     });
 
-    it("uses flexbox layout with space-between", () => {
-      const { container } = render(<TopBar />);
-
-      // The inner header element should have flex layout
-      const header = container.querySelector("header");
-      expect(header).toHaveClass("flex");
-      expect(header).toHaveClass("justify-between");
-    });
   });
 
   describe("Accessibility", () => {

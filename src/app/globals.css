@@ -42,6 +42,7 @@
 
   /* Borders */
   --color-border: rgb(var(--border));
+  --color-border-strong: rgb(var(--border-strong));
   --color-input: rgb(var(--input));
   --color-ring: rgb(var(--ring));
 
@@ -102,6 +103,7 @@
   --destructive: 157 0 6;
   --destructive-foreground: 251 241 199;
   --border: 213 196 161;
+  --border-strong: 189 174 147;
   --input: 213 196 161;
   --ring: 121 116 14;
 
@@ -132,12 +134,13 @@
   }
 }
 
-/* TWM Window Container opacity control */
+/* TWM Window Container background opacity
+   Token value injected via --window-bg-opacity from WindowContainer component */
 [data-window-container] {
-  opacity: 0.95;
+  background-color: rgb(var(--background) / var(--window-bg-opacity));
 }
 
 /* Environment Preview toggle for dev pages - when OFF, use full opacity */
 html[data-env-preview="false"] [data-window-container] {
-  opacity: 1;
+  --window-bg-opacity: 1 !important;
 }

@@ -59,12 +59,16 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      // Get header height dynamically, fallback to 80px
-      const header = document.querySelector("[data-dev-header]");
-      const headerOffset = header ? header.getBoundingClientRect().height + 16 : 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+      // Find the scrollable container (PageLayout's overflow-auto div)
+      // It's the closest scrollable ancestor of the target element
+      const scrollContainer = element.closest(".overflow-auto");
+      if (scrollContainer) {
+        // Scroll within the container, not the window
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const offsetTop = elementRect.top - containerRect.top + scrollContainer.scrollTop - 16;
+        scrollContainer.scrollTo({ top: offsetTop, behavior: "smooth" });
+      }
     }
   };
 

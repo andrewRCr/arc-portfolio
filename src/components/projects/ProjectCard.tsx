@@ -26,7 +26,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
   return (
     <Link
       href={detailUrl}
-      className="group block overflow-hidden rounded-lg border border-border bg-background transition-colors hover:border-accent"
+      className="group block overflow-hidden rounded-lg border border-border bg-background transition-colors hover:border-secondary/60"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">

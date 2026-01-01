@@ -39,7 +39,7 @@ export function Navigation() {
             <Link
               href={item.href}
               className={`px-2 py-1 text-sm font-mono font-semibold leading-[1.2] transition-colors ${
-                isActive(item.href) ? "text-foreground bg-muted" : "text-muted-foreground hover:text-foreground"
+                isActive(item.href) ? "text-foreground bg-secondary/20" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {item.label}

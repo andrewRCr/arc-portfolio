@@ -71,6 +71,7 @@ export const remedyTheme: Theme = {
 
     // UI element colors
     border: hexToRgb(remedyBright.border), // #E5D9BC
+    "border-strong": hexToRgb(remedyBright.shadow), // #C9BEAA (higher contrast for window frames)
     input: hexToRgb(remedyBright.baseCode),
     ring: hexToRgb(remedyAccents.normal.orange),
 
@@ -126,6 +127,7 @@ export const remedyTheme: Theme = {
 
     // UI element colors
     border: hexToRgb(remedyDark.border), // #4A3F3D
+    "border-strong": hexToRgb("#6E5D5A"), // Interpolated: lighter for contrast on dark bg
     input: hexToRgb(remedyDark.baseCode),
     ring: hexToRgb(remedyAccents.bright.orange),
 

@@ -33,7 +33,7 @@ function parseMarkdownLinks(text: string): React.ReactElement[] {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-primary hover:text-primary/80 underline"
+        className="text-accent hover:text-accent/80 underline"
       >
         {linkText}
       </a>
@@ -72,7 +72,7 @@ export function AboutSection() {
                   href={achievement.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-block text-xs text-primary hover:text-primary/80"
+                  className="mt-2 inline-block text-xs text-accent hover:text-accent/80 underline"
                 >
                   View →
                 </a>

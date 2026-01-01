@@ -23,20 +23,17 @@ const iconMap: Record<SocialIcon, IconComponent> = {
 export function ContactSection() {
   return (
     <section className="px-8 py-2">
-      {/* <h2 className="mb-8 text-3xl font-bold">Contact</h2> */}
-
       <div className="space-y-8">
         {/* Email */}
         <div className="flex items-center gap-3">
           <Mail className="h-6 w-6 text-muted-foreground" />
-          <a href={`mailto:${contact.email}`} className="text-lg text-primary hover:text-primary/80 underline">
+          <a href={`mailto:${contact.email}`} className="text-lg text-accent hover:text-accent/80 underline">
             {contact.email}
           </a>
         </div>
 
         {/* Social Links (excluding email, which is shown above) */}
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-foreground">Connect</h3>
           <div className="flex flex-wrap gap-4">
             {contact.socialLinks
               .filter((social) => social.icon !== "mail")
@@ -48,7 +45,7 @@ export function ContactSection() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10"
+                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60"
                   >
                     <IconComponent className="h-5 w-5 text-foreground" />
                     <span className="font-medium text-foreground">{social.platform}</span>

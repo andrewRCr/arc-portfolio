@@ -73,13 +73,6 @@ describe("ContactSection - Behavior Tests", () => {
       const section = container.querySelector("section");
       expect(section).toBeInTheDocument();
     });
-
-    it("has a Connect heading for social links", () => {
-      render(<ContactSection />);
-
-      const heading = screen.getByRole("heading", { level: 3, name: /connect/i });
-      expect(heading).toBeInTheDocument();
-    });
   });
 
   describe("Data Integration", () => {

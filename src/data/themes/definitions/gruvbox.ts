@@ -70,6 +70,7 @@ export const gruvboxTheme: Theme = {
 
     // UI element colors
     border: hexToRgb(p.light2), // #d5c4a1
+    "border-strong": hexToRgb(p.light3), // #bdae93 (higher contrast for window frames)
     input: hexToRgb(p.light2),
     ring: hexToRgb(p.faded_green),
 
@@ -124,6 +125,7 @@ export const gruvboxTheme: Theme = {
 
     // UI element colors
     border: hexToRgb(p.dark2), // #504945
+    "border-strong": hexToRgb(p.dark3), // #665c54 (higher contrast for window frames)
     input: hexToRgb(p.dark2),
     ring: hexToRgb(p.bright_green),
 

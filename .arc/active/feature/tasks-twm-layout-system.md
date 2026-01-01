@@ -181,16 +181,37 @@ structure, wallpaper background, and polished theme switching UI.
         - **Note:** Footer alignment varies across md breakpoint (768px) due to
           ConditionalFrame's responsive padding; deferred to Phase 4
 
-    - [ ] **3.5.b Refine window styling**
-        - Evaluate border colors (border-border vs primary/accent)
-        - Adjust opacity levels if needed
-        - Fine-tune gap sizes
+    - [x] **3.5.b Refine window styling**
+        - [x] Fix opacity token usage - WindowContainer now uses `windowOpacity` token via
+          CSS variable (`--window-bg-opacity`), dev toggle preserved
+        - [x] Adjusted opacity from 0.85 → 0.80 for better wallpaper visibility
+        - [x] Add `border-strong` token - higher contrast border for window frames/TUI
+        - [x] WindowContainer uses `border-border-strong` (unhovered), `hover:border-primary`
+        - [x] ConditionalFrame (TUI) uses `border-border-strong`
+        - [x] Gradient updated: accent → background → secondary (was primary)
+        - [x] Nav active indicator: `bg-secondary/20` (was bg-muted)
+        - [x] Standardize hover borders on secondary (cards, buttons, links)
+        - [x] Update style guide v1.3: secondary = "interactive feedback",
+          accent = "decorative emphasis"
+        - [x] Update dev page InteractiveStatesSection - updated link examples to use
+          accent (standard), hover borders to use secondary pattern
+        - [x] Text links use accent - updated style guide link variant, button.tsx,
+          ContactSection, AboutSection
+        - [x] theme-debug page audited - patterns consistent with guidance
+        - [x] Fixed jump links - DevPageHeader now scrolls within PageLayout's
+          overflow container instead of window
+        - [x] Hover borders use `/60` opacity for softer effect across theme combos
+        - [x] Removed brittle CSS class tests (TopBar, WindowContainer, ContactSection)
+        - **Deferred:** In some theme/context combos, `border` token is light on contrast
+          (e.g., social link buttons on contact page). Could use `border-strong` but
+          keeping that limited to window/TUI frames until wallpaper/gradient finalized.
 
     - [ ] **3.5.c Evaluate wallpaper approach**
         - **Key decision:** Gradient vs image wallpapers
-        - Current gradient fallback (theme accent→primary) is very appealing:
+        - Current gradient (accent → background → secondary) is very appealing:
             - Reinforces each theme's distinctive feel
             - Clean, modern aesthetic
+            - Uses secondary to avoid primary/hover border conflict
             - Possible enhancement: randomize gradient direction per session/page load
         - Still worth testing image candidates against gradient for comparison
         - Convert a few top candidates to preview WebP

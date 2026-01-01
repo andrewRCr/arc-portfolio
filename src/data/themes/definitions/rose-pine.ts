@@ -69,6 +69,7 @@ export const rosePineTheme: Theme = {
 
     // UI element colors
     border: hexToRgb(rosePineDawn.highlight_med), // #dfdad9
+    "border-strong": hexToRgb(rosePineDawn.highlight_high), // #cecacd (higher contrast for window frames)
     input: hexToRgb(rosePineDawn.surface),
     ring: hexToRgb(rosePineDawn.pine),
 
@@ -124,6 +125,7 @@ export const rosePineTheme: Theme = {
 
     // UI element colors
     border: hexToRgb(rosePineMain.highlight_med), // #403d52
+    "border-strong": hexToRgb(rosePineMain.highlight_high), // #524f67 (higher contrast for window frames)
     input: hexToRgb(rosePineMain.surface),
     ring: hexToRgb(rosePineMain.pine),
 

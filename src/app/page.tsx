@@ -30,7 +30,7 @@ export default function Home() {
               <Link
                 key={project.slug}
                 href={`/projects/software/${project.slug}?from=home`}
-                className="block p-4 border border-border rounded-sm hover:border-primary transition-colors"
+                className="block p-4 border border-border rounded-sm hover:border-secondary/60 transition-colors"
               >
                 <p className="text-xs font-mono text-primary mb-2">{"[project]"}</p>
                 <h4 className="font-semibold mb-2">{project.title}</h4>

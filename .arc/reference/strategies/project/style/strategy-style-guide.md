@@ -1,6 +1,6 @@
 # Strategy: Style Guide
 
-**Version:** 1.2 | **Updated:** 2025-12-29
+**Version:** 1.3 | **Updated:** 2026-01-01
 
 This document outlines the style guide for arc-portfolio, including design token conventions, the
 shadow-based elevation model, and visual guidelines.
@@ -62,12 +62,12 @@ and enables flexible theming.
 
 Use these when the color choice communicates **what something does** or **what state it's in**:
 
-| Token         | Meaning                                     | Example Usage                     |
-|---------------|---------------------------------------------|-----------------------------------|
-| `primary`     | This is the main action                     | Submit buttons, key CTAs          |
-| `secondary`   | This is an alternative action               | Cancel buttons, secondary options |
-| `destructive` | This action is dangerous or indicates error | Delete buttons, error messages    |
-| `muted`       | This content is deemphasized                | Disabled states, help text        |
+| Token         | Meaning                                     | Example Usage                  |
+|---------------|---------------------------------------------|--------------------------------|
+| `primary`     | This is the main action                     | Submit buttons, key CTAs       |
+| `secondary`   | Interactive feedback for actions            | Hover borders, active states   |
+| `destructive` | This action is dangerous or indicates error | Delete buttons, error messages |
+| `muted`       | This content is deemphasized                | Disabled states, help text     |
 
 ### Decorative Tokens (Palette Access)
 
@@ -147,12 +147,12 @@ extension.
 
 ### Action Tokens
 
-| Token         | Semantic Meaning        | Usage                                      |
-|---------------|-------------------------|--------------------------------------------|
-| `primary`     | Main call-to-action     | Submit buttons, key links, primary actions |
-| `secondary`   | Supporting actions      | Cancel buttons, alternative options        |
-| `accent`      | Highlights and emphasis | Active states, selected items, callouts    |
-| `destructive` | Danger/error states     | Delete buttons, error messages             |
+| Token         | Semantic Meaning     | Usage                                     |
+|---------------|----------------------|-------------------------------------------|
+| `primary`     | Main call-to-action  | Submit buttons, key links, frame hover    |
+| `secondary`   | Interactive feedback | Hover borders, nav active, gradient       |
+| `accent`      | Decorative emphasis  | Callouts, highlights, special features    |
+| `destructive` | Danger/error states  | Delete buttons, error messages            |
 
 ### Muted Token
 
@@ -252,6 +252,24 @@ Interactive states use **opacity modifiers**, not separate color tokens.
 | Active   | -20%          | `active:bg-primary/80` |
 | Disabled | 50% overall   | `disabled:opacity-50`  |
 
+### Border Hover Pattern
+
+For bordered elements (cards, outline buttons, social links), use `secondary` with 60% opacity:
+
+```tsx
+// Standard border hover (cards, outline buttons)
+<div className="border border-border hover:border-secondary/60">
+
+// Nav active state uses background with 20% opacity
+<span className="bg-secondary/20">
+```
+
+**Why secondary/60?**
+
+- Consistent with nav active pattern (`bg-secondary/20`)
+- Softer than full-strength secondary in strong theme combos
+- Border-only is cleaner than border + background hover
+
 ---
 
 ## Button Variants
@@ -269,7 +287,7 @@ Following shadcn/ui conventions:
 | destructive | `bg-destructive` | `destructive-foreground`  | `hover:bg-destructive/90` | Delete, dangerous actions  |
 | outline     | `border-border`  | `foreground`              | `hover:bg-accent`         | Subtle actions, social     |
 | ghost       | transparent      | `foreground`              | `hover:bg-accent`         | Back buttons, subtle links |
-| link        | transparent      | `primary`                 | `hover:underline`         | Inline text links          |
+| link        | transparent      | `accent`                  | `hover:underline`         | Inline text links          |
 
 ### Sizing Classes
 
@@ -288,7 +306,7 @@ Following shadcn/ui conventions:
 </button>
 
 // Outline button (social links, subtle actions)
-<a className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10">
+<a className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60">
   <Icon className="h-5 w-5" />
   <span className="font-medium">Platform</span>
 </a>

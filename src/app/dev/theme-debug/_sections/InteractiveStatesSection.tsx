@@ -37,11 +37,11 @@ export function InteractiveStatesSection() {
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-muted-foreground">Raw Anchor Links</h3>
             <p className="text-sm text-muted-foreground">
-              Styled anchors using theme tokens - primary and decorative accents
+              Styled anchors using theme tokens - accent (standard) and decorative palette
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="#interactive" className="text-primary underline hover:text-primary/80">
-                Primary
+              <a href="#interactive" className="text-accent underline hover:text-accent/80">
+                Accent (Standard)
               </a>
               <a href="#interactive" className="text-accent-blue underline hover:text-accent-blue/80">
                 Blue
@@ -58,18 +58,21 @@ export function InteractiveStatesSection() {
           {/* Hover Cards */}
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-muted-foreground">Hover Cards</h3>
+            <p className="text-sm text-muted-foreground">
+              Standard: border-only with opacity (hover:border-secondary/60)
+            </p>
             <div className="grid gap-4 md:grid-cols-3">
-              <div className="cursor-pointer rounded-lg border border-border p-4 transition-colors hover:border-primary hover:bg-accent/10">
-                <h4 className="font-semibold">Border + Background</h4>
-                <p className="text-sm text-muted-foreground">Hover to see effect</p>
+              <div className="cursor-pointer rounded-lg border border-border p-4 transition-colors hover:border-secondary/60">
+                <h4 className="font-semibold">Border Only (Standard)</h4>
+                <p className="text-sm text-muted-foreground">Clean, subtle feedback</p>
               </div>
-              <div className="cursor-pointer rounded-lg border border-border p-4 transition-all hover:scale-105 hover:border-accent">
+              <div className="cursor-pointer rounded-lg border border-border p-4 transition-all hover:scale-105 hover:border-secondary/60">
                 <h4 className="font-semibold">Scale + Border</h4>
-                <p className="text-sm text-muted-foreground">Hover to see effect</p>
+                <p className="text-sm text-muted-foreground">For image cards</p>
               </div>
               <div className="cursor-pointer rounded-lg bg-muted p-4 transition-colors hover:bg-accent hover:text-accent-foreground">
                 <h4 className="font-semibold">Full Background</h4>
-                <p className="text-sm text-muted-foreground">Hover to see effect</p>
+                <p className="text-sm text-muted-foreground">Ghost button style</p>
               </div>
             </div>
           </div>
@@ -77,16 +80,17 @@ export function InteractiveStatesSection() {
           {/* Social Link Style */}
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-muted-foreground">Social Link Style</h3>
+            <p className="text-sm text-muted-foreground">Outline buttons with border-only hover</p>
             <div className="flex flex-wrap gap-4">
               <a
                 href="#interactive"
-                className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10"
+                className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60"
               >
                 <span className="font-medium text-foreground">GitHub</span>
               </a>
               <a
                 href="#interactive"
-                className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10"
+                className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60"
               >
                 <span className="font-medium text-foreground">LinkedIn</span>
               </a>

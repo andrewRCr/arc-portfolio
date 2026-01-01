@@ -20,10 +20,10 @@ export interface WindowContainerProps {
  *
  * **Styling:**
  * - Border width from layout tokens (`windowBorderWidth`)
- * - Semi-transparent background via CSS (controlled by `data-window-container` attribute)
- * - Theme-aware border color via `border-border`
+ * - Semi-transparent background via `windowOpacity` token (injected as CSS variable)
+ * - Theme-aware border color via `border-strong`, primary on hover
  * - Square corners (no border-radius)
- * - Background color for base content layer
+ * - Backdrop blur for depth effect
  * - Opacity can be toggled via `html[data-env-preview]` for dev tools
  *
  * @example
@@ -35,17 +35,19 @@ export interface WindowContainerProps {
  * ```
  */
 export function WindowContainer({ children, className }: WindowContainerProps) {
-  const { windowBorderWidth } = DEFAULT_LAYOUT_TOKENS;
+  const { windowBorderWidth, windowOpacity } = DEFAULT_LAYOUT_TOKENS;
 
   return (
     <div
       data-window-container
-      className={cn("border-border backdrop-blur-md", className)}
-      style={{
-        borderWidth: `${windowBorderWidth}px`,
-        borderStyle: "solid",
-        backgroundColor: "rgb(var(--background) / 0.85)",
-      }}
+      className={cn("border-border-strong hover:border-primary backdrop-blur-md transition-colors", className)}
+      style={
+        {
+          borderWidth: `${windowBorderWidth}px`,
+          borderStyle: "solid",
+          "--window-bg-opacity": windowOpacity,
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>

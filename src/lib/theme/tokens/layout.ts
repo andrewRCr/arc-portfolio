@@ -92,7 +92,7 @@ export interface LayoutTokens {
 export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   windowGap: 8,
   windowBorderWidth: 2,
-  windowOpacity: 0.85,
+  windowOpacity: 0.8,
   topBarHeight: 42, // 28px content + 8px padding + 4px borders + 2px breathing room
   footerHeight: 36, // 18px icons + 12px padding + 4px borders + 2px breathing room
   navGapHalf: 190,
