@@ -181,25 +181,27 @@ structure, wallpaper background, and polished theme switching UI.
         - **Note:** Footer alignment varies across md breakpoint (768px) due to
           ConditionalFrame's responsive padding; deferred to Phase 4
 
-    - [ ] **3.5.b Evaluate and select wallpaper candidates**
-        - Convert candidates to preview WebP
-        - Test against different themes
-        - Select finalists for each theme/mode combination
-
-    - [ ] **3.5.c Refine window styling**
+    - [ ] **3.5.b Refine window styling**
         - Evaluate border colors (border-border vs primary/accent)
         - Adjust opacity levels if needed
         - Fine-tune gap sizes
 
-    - [ ] **3.5.d Polish inner TUI frame**
-        - Verify nav intersection styling
-        - Adjust padding/spacing as needed
-        - Ensure consistent appearance across pages
+    - [ ] **3.5.c Evaluate wallpaper approach**
+        - **Key decision:** Gradient vs image wallpapers
+        - Current gradient fallback (theme accent→primary) is very appealing:
+            - Reinforces each theme's distinctive feel
+            - Clean, modern aesthetic
+            - Possible enhancement: randomize gradient direction per session/page load
+        - Still worth testing image candidates against gradient for comparison
+        - Convert a few top candidates to preview WebP
+        - Test both approaches against different theme/mode combinations
+        - **Decision point:** Choose gradient, image, or theme-dependent approach
 
-    - [ ] **3.5.e Final wallpaper optimization**
-        - Optimize selected wallpapers to production WebP
-        - Add responsive variants if needed
-        - Integrate into LayoutWrapper
+    - [ ] **3.5.d Finalize wallpaper implementation**
+        - If gradient: Consider direction randomization, ensure works across all themes
+        - If images: Optimize to production WebP, add responsive variants if needed
+        - Integrate final choice into LayoutWrapper
+        - Verify appearance across all theme/mode combinations
 
 ### **Phase 4:** Responsive Layout Adaptations
 
