@@ -206,23 +206,26 @@ structure, wallpaper background, and polished theme switching UI.
           (e.g., social link buttons on contact page). Could use `border-strong` but
           keeping that limited to window/TUI frames until wallpaper/gradient finalized.
 
-    - [ ] **3.5.c Evaluate wallpaper approach**
-        - **Key decision:** Gradient vs image wallpapers
-        - Current gradient (accent → background → secondary) is very appealing:
-            - Reinforces each theme's distinctive feel
-            - Clean, modern aesthetic
-            - Uses secondary to avoid primary/hover border conflict
-            - Possible enhancement: randomize gradient direction per session/page load
-        - Still worth testing image candidates against gradient for comparison
-        - Convert a few top candidates to preview WebP
-        - Test both approaches against different theme/mode combinations
-        - **Decision point:** Choose gradient, image, or theme-dependent approach
-
-    - [ ] **3.5.d Finalize wallpaper implementation**
-        - If gradient: Consider direction randomization, ensure works across all themes
-        - If images: Optimize to production WebP, add responsive variants if needed
-        - Integrate final choice into LayoutWrapper
-        - Verify appearance across all theme/mode combinations
+    - [x] **3.5.c Evaluate and finalize wallpaper approach**
+        - **Decision:** Keep gradient as default, support image wallpapers as theme-aware option
+        - **Evaluation performed:**
+            - Tested gradient variations (0-50-100 vs asymmetric stops)
+            - Asymmetric gradients lose TWM "window contrast" feel
+            - Standard gradient (accent → background → secondary) preserves aesthetic
+            - For readability concerns: use card surfaces where content density requires
+            - Tested 33 image wallpaper candidates, narrowed to 19 finalists
+            - Images rotated/optimized (1920px WebP, ~6.6MB total)
+            - Created dev tooling: WallpaperSwitcher + WallpaperContext for testing
+        - **Architecture for future:**
+            - Wallpapers can be tagged by theme compatibility
+            - Per-theme defaults (gradient or specific image)
+            - User selection within compatible subset
+            - Theme & Wallpaper Control System broken out to separate feature
+              (see `plan-theme-wallpaper-controls.md`)
+        - **Files added (dev tooling, to be replaced by proper feature):**
+            - `src/contexts/WallpaperContext.tsx`
+            - `src/components/WallpaperSwitcher.tsx`
+            - `public/wallpaper/optimized/` (19 WebP images)
 
 ### **Phase 4:** Responsive Layout Adaptations
 
@@ -279,128 +282,55 @@ responsive styles.
         - Verify transparency effect over wallpaper
         - Confirm no visual regressions
 
-### **Phase 5:** ThemePicker Component
+### **Phase 5:** Accessibility & Testing
 
-- [ ] **5.1 Create ThemePicker component with tests**
-
-    **Goal:** Replace prototype ThemeSwitcher with polished 8-square palette picker.
-
-    - [ ] **5.1.a Write tests for ThemePicker**
-        - Test: Renders 8-square color palette representing current theme
-        - Test: Opens popover on click
-        - Test: Displays available themes with names and swatches
-        - Test: Live preview updates palette on hover
-        - Test: Selecting theme updates context and closes popover
-        - Test: Keyboard accessible (arrow keys, Enter, Escape)
-        - Test: Accessibility - proper ARIA attributes
-        - Expect tests to FAIL initially
-
-    - [ ] **5.1.b Implement ThemePicker component**
-        - Create `src/components/layout/ThemePicker.tsx`
-        - 8-square palette grid showing theme colors
-        - Use Popover from shadcn/ui
-        - Theme options with name labels and color swatches
-        - Hover preview: update palette squares
-        - Click to select: update ThemeContext, close popover
-        - Focus management for keyboard navigation
-
-    - [ ] **5.1.c Run tests - should now PASS**
-
-    - [ ] **5.1.d Run quality gates**
-
-- [ ] **5.2 Integrate ThemePicker into TopBar**
-
-    - [ ] **5.2.a Add ThemePicker to TopBar theme controls area**
-        - Position next to existing ThemeToggle
-        - Verify spacing and alignment
-        - Test across all breakpoints
-
-    - [ ] **5.2.b Remove prototype ThemeSwitcher**
-        - Delete `src/components/ThemeSwitcher.tsx`
-        - Remove import from Footer.tsx
-        - Update any remaining references
-
-    - [ ] **5.2.c Run quality gates**
-
-### **Phase 6:** Theme Switch Animations
-
-- [ ] **6.1 Add CSS transition for theme changes**
-
-    **Goal:** Smooth color transitions when switching themes.
-
-    - [ ] **6.1.a Implement CSS transitions for theme colors**
-        - Add transition property to color-related CSS variables
-        - Duration: ~200-300ms (tune for feel)
-        - Easing: ease-out or similar
-        - Apply to background, foreground, border colors
-
-    - [ ] **6.1.b Respect reduced motion preference**
-        - Check `prefers-reduced-motion` media query
-        - Disable or minimize transitions when set
-        - Test with reduced motion enabled
-
-    - [ ] **6.1.c Write E2E test for smooth transitions**
-        - Test: Theme switch doesn't cause jarring flash
-        - Test: Colors transition smoothly
-        - Add to `e2e/tests/theme.spec.ts`
-
-    - [ ] **6.1.d Run quality gates**
-
-### **Phase 7:** Accessibility & Testing
-
-- [ ] **7.1 Comprehensive accessibility testing**
+- [ ] **5.1 Comprehensive accessibility testing**
 
     **Goal:** Verify WCAG 2.1 AA compliance for all new components.
 
-    - [ ] **7.1.a Write vitest-axe tests for all new components**
+    - [ ] **5.1.a Write vitest-axe tests for all new components**
         - WindowContainer accessibility
         - TopBar accessibility (heading structure, landmarks)
         - FooterBar accessibility (link names, landmarks)
-        - ThemePicker accessibility (focus management, ARIA)
         - Use `checkA11y()` helper from test-utils
 
-    - [ ] **7.1.b Test contrast over semi-transparent backgrounds**
+    - [ ] **5.1.b Test contrast over semi-transparent backgrounds**
         - Extend foundation contrast tests
         - Test text readability over wallpaper + transparency
         - All 6 theme variants must pass
 
-    - [ ] **7.1.c Verify keyboard navigation**
+    - [ ] **5.1.c Verify keyboard navigation**
         - Tab through all interactive elements
-        - Theme controls fully keyboard accessible
+        - Prototype theme controls keyboard accessible
         - Focus indicators visible
 
-- [ ] **7.2 Visual regression baselines**
+- [ ] **5.2 Visual regression baselines**
 
     **Goal:** Capture baseline screenshots for future regression testing.
 
-    - [ ] **7.2.a Create visual regression test file**
+    - [ ] **5.2.a Create visual regression test file**
         - Create `e2e/tests/visual-regression.spec.ts`
         - Screenshot each theme variant at each viewport
         - Desktop, Tablet, Mobile × 6 themes = 18 baselines
 
-    - [ ] **7.2.b Capture initial baselines**
+    - [ ] **5.2.b Capture initial baselines**
         - Run tests to generate baseline screenshots
         - Review baselines for correctness
         - Commit baselines to repo
 
-### **Phase 8:** Documentation & Cleanup
+### **Phase 6:** Documentation & Cleanup
 
-- [ ] **8.1 Update style guide documentation**
+- [ ] **6.1 Update style guide documentation**
 
-    - [ ] **8.1.a Document TWM layout patterns**
+    - [ ] **6.1.a Document TWM layout patterns**
         - Window container usage
         - Gap system and responsive breakpoints
         - Transparency and layering approach
         - Update `strategy-style-guide.md`
 
-    - [ ] **8.1.b Document theme picker patterns**
-        - 8-square palette component usage
-        - Popover behavior and keyboard interaction
-        - Integration with ThemeContext
+- [ ] **6.2 Final quality validation**
 
-- [ ] **8.2 Final quality validation**
-
-    - [ ] **8.2.a Run complete quality gates**
+    - [ ] **6.2.a Run complete quality gates**
         - Type check: `npm run type-check`
         - Lint: `npm run lint`
         - Format: `npm run format:check`
@@ -409,38 +339,23 @@ responsive styles.
         - Unit tests: `npm test`
         - E2E tests: `npm run test:e2e`
 
-    - [ ] **8.2.b Design review with visual-design-reviewer agent**
+    - [ ] **6.2.b Design review with visual-design-reviewer agent**
         - Validate visual consistency across pages
         - Verify interactive states (hover, focus, active)
         - Assess mobile adaptation quality
         - Confirm distinctive, professional aesthetic
 
-### **Phase 9:** Evaluation & Decisions
+---
 
-- [ ] **9.1 Window split evaluation (from PRD)**
+## Decisions Made (Formerly Phase 9)
 
-    **Goal:** Evaluate feasibility of project page window splitting.
+The following evaluations were performed during Task 3.5.c and decided inline:
 
-    - [ ] **9.1.a Assess technical feasibility**
-        - Can main window resize to spawn project detail window?
-        - Animation complexity acceptable?
-        - Mobile/tablet implications?
-
-    - [ ] **9.1.b Make implementation decision**
-        - If feasible and desirable: create follow-up task list
-        - If not feasible: document decision and defer
-
-- [ ] **9.2 Layout refinement evaluation**
-
-    - [ ] **9.2.a Evaluate footer window necessity**
-        - Does separate footer window add value or clutter?
-        - Consider merging into main content (2-window layout)
-        - Document decision
-
-    - [ ] **9.2.b Evaluate AdaptiveHero simplification**
-        - Does branding in top bar make hero redundant?
-        - Consider simplifying to single variant
-        - Document decision
+- **9.1 Window split for project pages**: Not compatible with current design. Body content
+  surface area is at a premium in TWM layout; splitting would compromise usability.
+- **9.2.a Footer window necessity**: Keep as-is. Three-window layout works well.
+- **9.2.b AdaptiveHero simplification**: Abandon. Same reasoning as 9.1 - space constraints
+  in TWM design don't benefit from this approach.
 
 ---
 
@@ -448,11 +363,9 @@ responsive styles.
 
 - [ ] Three-window TWM layout renders correctly at all viewports
 - [ ] Wallpaper background displays with gradient fallback
-- [ ] ThemePicker provides intuitive theme selection with live preview
-- [ ] Theme switching is smooth with proper transitions
 - [ ] All interactive elements meet 44×44px touch target on mobile
 - [ ] WCAG 2.1 AA compliance verified (contrast, keyboard, screen reader)
 - [ ] Visual regression baselines captured for all theme/viewport combinations
 - [ ] Lighthouse Performance ≥90, Accessibility ≥95
 - [ ] All quality gates pass (type-check, lint, format, build, tests)
-- [ ] Ready for design review and potential follow-up work
+- [ ] Ready for design review and follow-up Theme & Wallpaper Control System feature

@@ -28,6 +28,16 @@ create a PRD in `.arc/active/feature/` and begin the standard workflow.
 
 ### User Experience
 
+- **Theme & Wallpaper Control System**
+    - Description: Unified theme/wallpaper selection replacing prototype ThemeSwitcher. Theme-aware
+      wallpaper filtering, per-theme persistence, polished picker UI.
+    - Value: Personalized experience with authorial control; users choose from curated options
+    - Plan: `plan-theme-wallpaper-controls.md`
+    - Dependencies: TWM Layout System (provides wallpaper infrastructure)
+    - Effort estimate: M
+    - Notes: Broken out from TWM Layout System Phase 5 during evaluation. Includes ThemePicker
+      (8-square palette), WallpaperPicker (thumbnail grid), fallback logic for theme switches.
+
 - **Featured Skills Logo Grid (Home Page)**
     - Description: Add horizontal rows of tech/skill logos to home page below Featured Projects
     - Value: Instant "at a glance" skill overview - common portfolio pattern for good reason.

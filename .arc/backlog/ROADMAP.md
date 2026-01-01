@@ -29,17 +29,24 @@ Transform placeholder styling into distinctive, polished design.
 3. **TWM Layout System**
    - PRD: `.arc/active/feature/prd-twm-layout-system.md`
    - Rationale: Core visual identity; affects all pages; foundational for polish work
-   - Scope: Three-window layout, theming architecture, responsive adaptation
+   - Scope: Three-window layout, wallpaper background, responsive adaptation
    - Dependencies: Content migration complete, design system foundation established
 
-4. **Content Polish**
+4. **Theme & Wallpaper Control System**
+   - Plan: `.arc/backlog/feature/plan-theme-wallpaper-controls.md`
+   - Rationale: Polished theme/wallpaper selection UI; completes visual framework
+   - Scope: ThemePicker component, WallpaperPicker with theme-aware filtering,
+     per-theme wallpaper persistence, unified control UI
+   - Dependencies: TWM Layout System (provides wallpaper infrastructure)
+
+5. **Content Polish**
    - Plan: `.arc/backlog/feature/plan-content-polish.md`
    - Rationale: Pages need structural completion before animation polish
    - Scope: Project detail pages (header, images, copy), Skills page reorganization,
      About copy pass, Contact form + polish, Home skills logo grid
-   - Dependencies: TWM Layout System (styling foundation)
+   - Dependencies: Theme & Wallpaper Control System (styling framework complete)
 
-5. **Visual Polish**
+6. **Visual Polish**
    - Plan: `.arc/backlog/feature/plan-twm-startup-animation.md` (primary)
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md` (additional items)
    - Rationale: Animation/transition layer after pages are structurally complete
@@ -50,18 +57,18 @@ Transform placeholder styling into distinctive, polished design.
 
 Production readiness and deployment.
 
-6. **Feature Flag System**
+7. **Feature Flag System**
    - Rationale: Unified infrastructure for dev-only content, incomplete projects, and future feature rollouts
    - Scope: Centralized flag definitions, environment-based defaults (dev vs prod), type-safe API
    - Consolidates: Dev pages visibility, mods tab gating, incomplete project hiding
    - Enables: Deploy v1.0 without waiting for all projects; enable incrementally as completed
 
-7. **SEO & Meta Tags**
+8. **SEO & Meta Tags**
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
    - Rationale: Discoverability and social sharing
    - Scope: Open Graph (social previews), structured data (search), sitemap, robots.txt
 
-8. **Deployment**
+9. **Deployment**
    - Rationale: Final step; requires all above complete
    - Scope: Vercel setup, domain transfer, production config
 
@@ -85,6 +92,9 @@ Items that can wait until after initial deployment:
 
 ```
 Content Migration ──► Design System Foundation ──► TWM Layout System
+                                                            │
+                                                            ▼
+                                               Theme & Wallpaper Controls
                                                             │
                                                             ▼
                                                       Content Polish
@@ -149,9 +159,12 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Change Log
 
-- **2026-01-01**: Added Feature Flag System (C6), renamed Phase C to "Launch", added incomplete projects
+- **2026-01-01**: Added Theme & Wallpaper Control System (B4), renumbered subsequent items. Broken out
+  from TWM Layout System Phase 5 after evaluation showed need for dedicated feature with state
+  management, persistence, and unified control UI.
+- **2026-01-01**: Added Feature Flag System (C7), renamed Phase C to "Launch", added incomplete projects
   strategy (feature-flagged, enable incrementally post-v1.0), updated scoping decisions
-- **2026-01-01**: Added Content Polish (B4), renamed Visual Polish & Animations to Visual Polish (B5),
+- **2026-01-01**: Added Content Polish (B5), renamed Visual Polish & Animations to Visual Polish (B6),
   moved Contact Form into Content Polish scope, updated dependency diagram
 - **2025-12-30**: Added Design System Foundation to Phase A (Foundation), marked phase complete, updated numbering
 - **2025-12-26**: Initial roadmap created from PROJECT-STATUS and backlog audit

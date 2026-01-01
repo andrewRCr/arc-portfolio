@@ -105,12 +105,9 @@ transparent backgrounds, so I can read all content comfortably.
 
 #### Project Page Window Splitting (Evaluation)
 
-10. **Window Split Evaluation**: At end of Phase 1, evaluate feasibility and desirability of:
-    - Splitting main content window when project clicked on projects page
-    - Spawning project detail in new window to the right
-    - Resizing existing content to accommodate split view
-    - Decision: Implement if viable and desirable, defer if not feasible
-    - Scope: Projects page only (most likely candidate for feature)
+10. **Window Split Evaluation**: ~~At end of Phase 1, evaluate feasibility and desirability of~~
+    - **RESOLVED**: Not compatible with current design. Body content surface area is at
+      a premium in TWM layout; splitting would compromise usability. Feature abandoned.
 
 ### Phase 2: Theme Switching & Polish
 
@@ -128,12 +125,14 @@ transparent backgrounds, so I can read all content comfortably.
     - Controls light/dark variant of currently selected theme
     - Independent of theme selection (themes don't control light/dark)
 
-13. **Theme Picker UI**: Must provide intuitive theme selection interface:
-    - Clickable color palette component showing 8 squares representing current theme
-    - Opens popover menu on click
-    - Displays available themes with both names and color swatches
-    - Live preview: 8-square palette updates on hover over theme options
-    - Clean, modern, sleek aesthetic
+13. **Theme Picker UI**: ~~Must provide intuitive theme selection interface~~
+    - **DEFERRED**: Broken out to separate "Theme & Wallpaper Control System" feature
+    - See `plan-theme-wallpaper-controls.md` for expanded scope including:
+        - ThemePicker (8-square palette with popover)
+        - WallpaperPicker (theme-aware filtering, thumbnails)
+        - Per-theme wallpaper persistence
+        - Unified control UI
+    - Prototype ThemeSwitcher/WallpaperSwitcher remain for dev testing
 
 14. **Theme Persistence**: Must remember user preferences:
     - Store selected theme and light/dark preference in localStorage
@@ -143,10 +142,12 @@ transparent backgrounds, so I can read all content comfortably.
 
 #### Visual Polish
 
-15. **Theme Switch Animations**: Must include smooth transitions when switching themes:
-    - Smooth color transitions between theme switches
-    - Duration and easing tuned for professional feel
-    - No jarring flashes or abrupt changes
+15. **Theme Switch Animations**: ~~Must include smooth transitions when switching themes~~
+    - **DESCOPED**: Evaluated and determined not worth implementing
+    - CSS transitions on color variables have questionable polish value
+    - Instant theme switches are industry standard (GitHub, VS Code)
+    - A fade could feel sluggish rather than polished
+    - Can be revisited post-launch if desired
 
 16. **Accessibility Compliance**: Must meet WCAG 2.1 AA standards:
     - Text contrast ratio ≥4.5:1 for all theme combinations
@@ -185,16 +186,12 @@ transparent backgrounds, so I can read all content comfortably.
 
 #### Content Evaluation
 
-21. **Hero Refinement Evaluation**: At end of Phase 2, evaluate AdaptiveHero component:
-    - Consider simplifying to single hero variant (large/expanded version on home only)
-    - Evaluate if logo/branding in top bar makes adaptive hero redundant
-    - Decision: Refactor immediately, defer to future work, or keep as-is
-    - Rationale: Logo in top bar may make name display in hero unnecessary
+21. **Hero Refinement Evaluation**: ~~At end of Phase 2, evaluate AdaptiveHero component~~
+    - **RESOLVED**: Abandon simplification. Space constraints in TWM design don't benefit
+      from this approach. Body content surface area is at a premium.
 
-22. **Footer Layout Evaluation**: At end of Phase 2, evaluate window count:
-    - Assess whether separate footer window adds value vs. clutter
-    - Option: Merge footer content back into main content window (2-window layout)
-    - Decision made after seeing complete implementation
+22. **Footer Layout Evaluation**: ~~At end of Phase 2, evaluate window count~~
+    - **RESOLVED**: Keep as-is. Three-window layout works well, footer window adds value.
 
 ## 5. Non-Goals (Out of Scope)
 
@@ -352,36 +349,25 @@ This feature will be considered successful when:
 - **Browser-specific nav offset hack**: globals.css contains a `--nav-offset` variable with browser-specific overrides
   (Chromium vs Firefox) to fix navigation vertical alignment. Investigate root cause and eliminate the hack by
   normalizing layout (proper flexbox/positioning, consistent line-height/font rendering). (Fix during layout rework)
-- **Top bar width**: Should top bar be full-width (like status/menu bar in Unix systems) or match window width with
-  gaps on left/right (consistent with windows below)? Both could work aesthetically. (Decide during implementation)
-- **Window split for projects page**: Is resizing main content window to spawn project detail window technically
-  feasible with acceptable complexity? (Evaluate at end of Phase 1)
+- ~~**Top bar width**~~: RESOLVED - Full-width with consistent gaps matching windows below.
+- ~~**Window split for projects page**~~: RESOLVED - Not compatible with design. Body content surface area at premium.
 - **Mobile layout strategy**: Does collapsed single-column with gaps maintain aesthetic effectively, or is
   traditional mobile layout required? (Decide during implementation)
-- **Gap tuning**: What gap size strikes the right balance between visual separation and space efficiency?
-  (Tune during implementation)
-- **Border visibility**: What border thickness provides sufficient contrast without overwhelming content?
-  (Tune during implementation)
-- **Window hover effects**: Should windows have hover interaction (border color change + potentially reduced/removed
-  transparency for focus effect)? Could enhance tiling WM feel. (Evaluate during implementation)
+- ~~**Gap tuning**~~: RESOLVED - 8px gaps work well with current design.
+- ~~**Border visibility**~~: RESOLVED - 2px borders with `border-strong` token provide good contrast.
+- ~~**Window hover effects**~~: RESOLVED - Implemented. Hover changes border to primary color.
 
 ### Phase 2 Questions
 
-- **ThemeSwitcher cleanup**: Current dev-only `ThemeSwitcher` prototype lives in `src/components/` but is imported
-  by `Footer.tsx` in `layout/` using relative `../` path (violates cross-directory import convention). When building
-  production `ThemePicker`, ensure proper component organization: either co-locate theme components in `layout/` or
-  use `@/` absolute imports consistently. Remove or replace the prototype `ThemeSwitcher.tsx` file.
+- ~~**ThemeSwitcher cleanup**~~: DEFERRED to Theme & Wallpaper Control System feature. Prototype remains for dev use.
 - ~~**Initial theme selection**~~: RESOLVED - Foundation work defines 3 themes: Gruvbox (warm), Rose Pine (cool),
   Remedy (amber/gold). All include light/dark variants with WCAG AA validated contrast.
 - **High contrast mode**: Should we include dedicated high contrast theme option, or rely on sufficient contrast in
   standard themes? (Decide during implementation)
-- **Theme switch animation duration**: What transition timing feels polished without being sluggish?
-  (Tune during implementation)
-- **Footer window necessity**: Does separate footer window add value, or is it visual clutter?
-  (Evaluate at end of Phase 2)
-- **Hero component fate**: Should AdaptiveHero be simplified given branding in top bar?
-  (Evaluate at end of Phase 2)
-- **Wallpaper per-theme**: Do any themes require different wallpaper for readability, or can single wallpaper work
-  across all? (Test during implementation)
+- ~~**Theme switch animation duration**~~: DESCOPED - Theme switch animations not implemented (see requirement 15).
+- ~~**Footer window necessity**~~: RESOLVED - Keep as-is. Three-window layout works well.
+- ~~**Hero component fate**~~: RESOLVED - Abandon simplification. Space constraints don't benefit from this.
+- ~~**Wallpaper per-theme**~~: RESOLVED - Gradient as default works across all themes. Image wallpapers tagged by
+  theme compatibility for future Theme & Wallpaper Control System feature (see `plan-theme-wallpaper-controls.md`).
 
 ---
