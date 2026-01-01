@@ -43,7 +43,7 @@ export default function TypographyPage() {
 
   return (
     <PageLayout header={<DevPageHeader title="Typography" jumpLinks={JUMP_LINKS} showEnvPreview />}>
-      <div className="mx-auto max-w-4xl space-y-8 p-8">
+      <div className="space-y-8 p-8">
         {/* Headings */}
         <Card id="headings">
           <CardHeader>

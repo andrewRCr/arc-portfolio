@@ -104,7 +104,7 @@ export default function ThemeDebugPage() {
 
   return (
     <PageLayout header={<DevPageHeader title="Theme Debug" jumpLinks={JUMP_LINKS} showEnvPreview />}>
-      <div className="mx-auto max-w-4xl space-y-8 p-8">
+      <div className="space-y-8 p-8">
         <CSSVariablesSection variables={variables} open={cssOpen} onOpenChange={setCssOpen} />
         <ColorPaletteSection />
         <ButtonsSection />

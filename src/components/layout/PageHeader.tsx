@@ -8,7 +8,8 @@
  * - Title and optional subtitle
  * - Optional children for additional controls (tabs, filters, etc.)
  * - Bottom border separator
- * - Configurable max-width
+ *
+ * Width constraint is handled by PageLayout - this component fills available width.
  */
 
 export interface PageHeaderProps {
@@ -18,36 +19,24 @@ export interface PageHeaderProps {
   subtitle?: string;
   /** Content below title (tabs, filters, etc.) OR full custom content if no title */
   children?: React.ReactNode;
-  /** Maximum width constraint for content (default: none) */
-  maxWidth?: "4xl" | "6xl" | "none";
 }
 
-const maxWidthClasses = {
-  "4xl": "max-w-4xl",
-  "6xl": "max-w-6xl",
-  none: "",
-};
-
-export function PageHeader({ title, subtitle, children, maxWidth = "none" }: PageHeaderProps) {
-  const maxWidthClass = maxWidthClasses[maxWidth];
-
+export function PageHeader({ title, subtitle, children }: PageHeaderProps) {
   return (
     <div className="pb-3">
-      <div className={`${maxWidthClass} mx-auto`}>
-        {/* Title/subtitle if provided */}
-        {title && (
-          <div className="space-y-1">
-            <h1 className="font-mono text-2xl font-bold text-foreground">{title}</h1>
-            {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
-          </div>
-        )}
+      {/* Title/subtitle if provided */}
+      {title && (
+        <div className="space-y-1">
+          <h1 className="font-mono text-2xl font-bold text-foreground">{title}</h1>
+          {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+        </div>
+      )}
 
-        {/* Children: controls below title, or full custom content */}
-        {children && <div className={title ? "mt-3" : ""}>{children}</div>}
+      {/* Children: controls below title, or full custom content */}
+      {children && <div className={title ? "mt-3" : ""}>{children}</div>}
 
-        {/* Bottom separator */}
-        <div className="mt-3 border-b border-border/50" />
-      </div>
+      {/* Bottom separator */}
+      <div className="mt-3 border-b border-border/50" />
     </div>
   );
 }

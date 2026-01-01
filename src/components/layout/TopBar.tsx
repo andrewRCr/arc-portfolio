@@ -19,12 +19,15 @@ import { ThemeSwitcher } from "../ThemeSwitcher";
  * ```
  */
 export function TopBar() {
-  const { topBarHeight, windowBorderWidth } = DEFAULT_LAYOUT_TOKENS;
+  const { topBarHeight, windowBorderWidth, topBarContentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
 
   return (
     <WindowContainer>
-      <header className="flex items-center justify-between px-4" style={{ height: innerHeight }}>
+      <header
+        className="flex items-center justify-between px-4 mx-auto w-full"
+        style={{ height: innerHeight, maxWidth: topBarContentMaxWidth }}
+      >
         {/* Branding - links to home */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">

@@ -17,20 +17,31 @@ import { Navigation } from "./Navigation";
 export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDevRoute = pathname?.startsWith("/dev");
+  const { navGapHalf, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
   if (isDevRoute) {
     // Dev pages: no inner frame, no navigation
     // Pages handle their own scroll structure via PageLayout
-    return <div className="flex flex-col flex-1 min-h-0 pt-4 px-4 pb-4 md:pt-6 md:px-6 md:pb-6">{children}</div>;
+    return (
+      <div className="flex flex-col flex-1 min-h-0 p-4 md:p-6">
+        <div
+          className="flex flex-col flex-1 min-h-0 mx-auto w-full"
+          style={{ maxWidth: contentMaxWidth }}
+        >
+          {children}
+        </div>
+      </div>
+    );
   }
-
-  const { navGapHalf } = DEFAULT_LAYOUT_TOKENS;
 
   // Regular pages: inner TUI frame with navigation
   // Outer padding provides space for Navigation to render above border
   return (
     <div className="flex flex-col flex-1 min-h-0 p-4 md:p-6">
-      <div className="relative rounded-lg flex flex-col flex-1 min-h-0">
+      <div
+        className="relative rounded-lg flex flex-col flex-1 min-h-0 mx-auto w-full"
+        style={{ maxWidth: contentMaxWidth }}
+      >
         {/* TUI frame border - clip-path creates gap for Navigation */}
         <div
           className="absolute inset-0 border-2 border-border rounded-lg pointer-events-none"

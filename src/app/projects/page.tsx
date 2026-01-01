@@ -28,14 +28,13 @@ function ProjectsContent() {
               ? "Explore my software development work and community contributions."
               : "Explore my software development work."
           }
-          maxWidth="6xl"
         >
           {/* Tab Navigation - only shown when mods tab is enabled */}
           {FEATURES.SHOW_MODS_TAB && <ProjectTabs />}
         </PageHeader>
       }
     >
-      <div className="mx-auto w-full max-w-6xl px-4">
+      <div className="px-4">
         {/* Tab Panels */}
         {currentTab === "software" && (
           <div

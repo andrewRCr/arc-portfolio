@@ -66,6 +66,22 @@ export interface LayoutTokens {
    * **Note:** Adjust if Navigation width changes significantly
    */
   navGapHalf: number;
+
+  /**
+   * Maximum width for main page content.
+   *
+   * **Default:** 1152 (pixels) - equivalent to Tailwind's max-w-6xl
+   * **Usage:** PageLayout content constraint, FooterBar inner content
+   */
+  contentMaxWidth: number;
+
+  /**
+   * Maximum width for TopBar inner content.
+   *
+   * **Default:** 1400 (pixels) - slightly wider than main content
+   * **Usage:** TopBar inner content constraint for visual hierarchy
+   */
+  topBarContentMaxWidth: number;
 }
 
 /**
@@ -80,6 +96,8 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   topBarHeight: 42, // 28px content + 8px padding + 4px borders + 2px breathing room
   footerHeight: 36, // 18px icons + 12px padding + 4px borders + 2px breathing room
   navGapHalf: 190,
+  contentMaxWidth: 1152, // Tailwind max-w-6xl equivalent (72rem)
+  topBarContentMaxWidth: 1200, // Wider than content for visual hierarchy
 };
 
 /**

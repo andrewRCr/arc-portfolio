@@ -171,27 +171,43 @@ structure, wallpaper background, and polished theme switching UI.
 
     **Goal:** Refine TWM layout appearance now that it's visible in browser.
 
-    - [ ] **3.5.a Evaluate and select wallpaper candidates**
+    - [x] **3.5.a Standardize content width constraints**
+        - Added layout tokens: `contentMaxWidth` (1152px), `topBarContentMaxWidth` (1200px)
+        - PageLayout wraps header/children with centered max-width constraint
+        - TopBar content extends ~8px beyond TUI frame per side (visual hierarchy)
+        - FooterBar content matches contentMaxWidth (slightly inset at large viewports)
+        - TUI frame (ConditionalFrame) constrained to contentMaxWidth
+        - Removed manual max-w classes from PageHeader, DevPageHeader, pages
+        - **Note:** Footer alignment varies across md breakpoint (768px) due to
+          ConditionalFrame's responsive padding; deferred to Phase 4
+
+    - [ ] **3.5.b Evaluate and select wallpaper candidates**
         - Convert candidates to preview WebP
         - Test against different themes
         - Select finalists for each theme/mode combination
 
-    - [ ] **3.5.b Refine window styling**
+    - [ ] **3.5.c Refine window styling**
         - Evaluate border colors (border-border vs primary/accent)
         - Adjust opacity levels if needed
         - Fine-tune gap sizes
 
-    - [ ] **3.5.c Polish inner TUI frame**
+    - [ ] **3.5.d Polish inner TUI frame**
         - Verify nav intersection styling
         - Adjust padding/spacing as needed
         - Ensure consistent appearance across pages
 
-    - [ ] **3.5.d Final wallpaper optimization**
+    - [ ] **3.5.e Final wallpaper optimization**
         - Optimize selected wallpapers to production WebP
         - Add responsive variants if needed
         - Integrate into LayoutWrapper
 
 ### **Phase 4:** Responsive Layout Adaptations
+
+**Deferred from Phase 3:** Footer content alignment varies across the md breakpoint (768px).
+At large viewports, footer is slightly inset from TUI frame (intentional). Below md, footer
+aligns with TUI frame. Between 768px-~1200px, footer may appear slightly wider than TUI frame
+due to ConditionalFrame's responsive padding jump (`p-4` → `p-6`). Address when implementing
+responsive styles.
 
 - [ ] **4.1 Implement tablet layout adaptations**
 

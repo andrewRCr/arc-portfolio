@@ -38,13 +38,16 @@ const iconMap: Record<SocialIcon, IconComponent> = {
  * ```
  */
 export function FooterBar() {
-  const { footerHeight, windowBorderWidth } = DEFAULT_LAYOUT_TOKENS;
+  const { footerHeight, windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = footerHeight - windowBorderWidth * 2;
   const isDev = process.env.NODE_ENV === "development";
 
   return (
     <WindowContainer>
-      <footer className="flex items-center justify-between px-4" style={{ height: innerHeight }}>
+      <footer
+        className="flex items-center justify-between px-4 mx-auto w-full"
+        style={{ height: innerHeight, maxWidth: contentMaxWidth }}
+      >
         {/* Social Links */}
         <nav aria-label="Social links" className="flex items-center gap-3">
           {contact.socialLinks.map((link) => {
