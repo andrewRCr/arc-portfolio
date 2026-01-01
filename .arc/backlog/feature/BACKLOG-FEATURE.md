@@ -52,6 +52,16 @@ create a PRD in `.arc/active/feature/` and begin the standard workflow.
     - Note: If "Featured Skills Logo Grid" is implemented first, this could extend it
       with filtering behavior rather than replacing it
 
+- **TWM Startup Animation**
+    - Description: "Terminal boot" animation on first home visit - single command window
+      types "portfolio init", morphs into TopBar, other windows expand into place
+    - Value: Memorable first impression, reinforces TWM/TUI aesthetic, portfolio differentiator
+    - Plan: `plan-twm-startup-animation.md` (5-phase implementation with technical approach)
+    - Dependencies: TWM Layout System must be merged first
+    - Effort estimate: M-L
+    - Notes: Session-tracked (once per session). Retriggerable via TopBar branding click.
+      Respects prefers-reduced-motion. Optional TUI frame "assembly" animation as final polish.
+
 ---
 
 ## Lower Priority / Ideas
