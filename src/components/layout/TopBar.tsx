@@ -3,6 +3,7 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeSwitcher } from "../ThemeSwitcher";
+import { WallpaperSwitcher } from "../WallpaperSwitcher";
 
 /**
  * TopBar Component
@@ -38,6 +39,7 @@ export function TopBar() {
 
         {/* Theme controls - temporary until ThemePicker is implemented */}
         <div data-testid="theme-controls-placeholder" className="flex items-center gap-3">
+          <WallpaperSwitcher />
           <ThemeSwitcher />
           <ThemeToggle />
         </div>

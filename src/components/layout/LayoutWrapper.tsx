@@ -1,4 +1,7 @@
+"use client";
+
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
 import { WindowContainer } from "./WindowContainer";
@@ -10,8 +13,6 @@ import { WallpaperBackground } from "./WallpaperBackground";
 export interface LayoutWrapperProps {
   /** Main content to render in the central window */
   children: React.ReactNode;
-  /** Optional wallpaper image path */
-  wallpaperSrc?: string;
 }
 
 /**
@@ -27,13 +28,14 @@ export interface LayoutWrapperProps {
  *
  * @example
  * ```tsx
- * <LayoutWrapper wallpaperSrc="/wallpaper/abstract.webp">
+ * <LayoutWrapper>
  *   <MainContent />
  * </LayoutWrapper>
  * ```
  */
-export function LayoutWrapper({ children, wallpaperSrc }: LayoutWrapperProps) {
+export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const { windowGap } = DEFAULT_LAYOUT_TOKENS;
+  const { wallpaperSrc } = useWallpaperContext();
 
   return (
     <>

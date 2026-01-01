@@ -40,7 +40,7 @@ export function WindowContainer({ children, className }: WindowContainerProps) {
   return (
     <div
       data-window-container
-      className={cn("border-border-strong hover:border-primary backdrop-blur-md transition-colors", className)}
+      className={cn("border-border-strong hover:border-primary backdrop-blur-lg transition-colors", className)}
       style={
         {
           borderWidth: `${windowBorderWidth}px`,

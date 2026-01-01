@@ -5,6 +5,7 @@ import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { themes } from "@/data/themes";
 import { applyThemeColors, getThemeColors } from "@/lib/theme";
 import { ThemeContextProvider, useThemeContext } from "@/contexts/ThemeContext";
+import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
 
@@ -47,10 +48,12 @@ function ThemeColorApplier() {
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <ThemeContextProvider>
-      <NextThemesProvider {...props}>
-        <ThemeColorApplier />
-        {children}
-      </NextThemesProvider>
+      <WallpaperContextProvider>
+        <NextThemesProvider {...props}>
+          <ThemeColorApplier />
+          {children}
+        </NextThemesProvider>
+      </WallpaperContextProvider>
     </ThemeContextProvider>
   );
 }
