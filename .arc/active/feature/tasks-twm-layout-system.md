@@ -235,39 +235,60 @@ aligns with TUI frame. Between 768px-~1200px, footer may appear slightly wider t
 due to ConditionalFrame's responsive padding jump (`p-4` → `p-6`). Address when implementing
 responsive styles.
 
-- [ ] **4.1 Implement tablet layout adaptations**
+- [x] **4.1 Implement tablet layout adaptations**
 
     **Goal:** Maintain TWM aesthetic on tablet (768×1024).
 
-    - [ ] **4.1.a Write E2E tests for tablet layout**
-        - Test: Three-window structure preserved
-        - Test: Gaps adjust appropriately
-        - Test: Touch targets meet 44×44px minimum
-        - Expect tests to FAIL initially
+    - [x] **4.1.a Write E2E tests for tablet layout**
+        - Added `Tablet Layout (768×1024)` test suite to `e2e/tests/layout.spec.ts`
+        - Tests: structure, gaps, touch targets (nav, TopBar, FooterBar), horizontal scroll
+        - **TDD results:** 3 pass (structure, gaps, scroll), 3 fail (touch targets < 44px)
+        - **Incidental fix:** Added `<main>` landmark to PageLayout (was missing)
 
-    - [ ] **4.1.b Implement tablet breakpoint styles**
-        - Adjust gap size if needed
-        - Verify content remains readable
-        - Test with touch emulation
+    - [x] **4.1.b Implement tablet breakpoint styles**
+        - Gaps and content readability verified (no changes needed)
+        - Added touch-mode "active window" border effect:
+            - `LayoutWrapper`: Tracks `activeWindow` state, passes props to all windows
+            - `WindowContainer`: Added `isActive`/`onActivate` props, `data-active` attribute
+            - `TopBar`/`FooterBar`: Accept and forward window activation props
+            - `globals.css`: Media queries for hover (desktop) vs active (touch) border highlight
+        - **Touch targets deferred to Phase 5** (design implications need evaluation)
 
-    - [ ] **4.1.c Run tablet E2E tests - should now PASS**
+    - [x] **4.1.c Add unit tests for active window feature**
+        - `WindowContainer.test.tsx`: 5 new tests for `isActive`/`onActivate` props
+        - `LayoutWrapper.test.tsx`: 6 new tests for active window state management
+        - CSS media query behavior verified manually (jsdom doesn't support media queries)
+        - **Total:** 486 tests passing (+11 new)
 
 - [ ] **4.2 Implement mobile layout adaptations**
 
     **Goal:** Graceful mobile adaptation (375×667).
 
-    - [ ] **4.2.a Write E2E tests for mobile layout**
-        - Test: Layout collapses to single column if needed
-        - Test: Windows stack vertically with reduced gaps
-        - Test: All touch targets ≥44×44px
-        - Test: Content remains accessible and readable
-        - Expect tests to FAIL initially
+    - [x] **4.2.a Write E2E tests for mobile layout**
+        - Added `Mobile Layout (375×667)` test suite to `e2e/tests/layout.spec.ts`
+        - Tests: structure, gaps, nav dropdown, horizontal scroll, hero overflow
+        - **TDD results:** 2 pass (structure, gaps), 3 fail (nav dropdown, scroll, hero)
+        - Touch target tests deferred to Phase 5
 
     - [ ] **4.2.b Implement mobile breakpoint styles**
-        - Reduce gaps on mobile
-        - Consider collapsing top bar if space constrained
-        - Ensure footer remains accessible
-        - Decision: Keep aesthetic or simplify based on usability
+
+        - [x] **4.2.b.1 Create `useMediaQuery` hook**
+            - File: `src/hooks/useMediaQuery.ts`
+            - Uses `useSyncExternalStore` for React 18+ best practices
+            - SSR-safe with server snapshot returning `false`
+            - Exports preset queries: `PHONE_QUERY`, `TOUCH_DEVICE_QUERY`
+            - 7 unit tests in `src/hooks/__tests__/useMediaQuery.test.ts`
+
+        - [ ] **4.2.b.2 Implement mobile navigation (select-style dropdown)**
+            - Replace horizontal nav links with styled dropdown on mobile
+            - Visual consistency with desktop nav items (same font/padding styling)
+            - Dropdown indicator (▼) shows expandable
+            - Uses `useMediaQuery` for breakpoint detection
+
+        - [ ] **4.2.b.3 Implement general mobile responsive styles**
+            - Hero: Reduce `px-14` padding on mobile (fix horizontal scroll)
+            - Gaps: Reduce layout gaps for mobile viewport
+            - Footer: Ensure remains accessible and readable
 
     - [ ] **4.2.c Run mobile E2E tests - should now PASS**
 
@@ -303,6 +324,13 @@ responsive styles.
         - Tab through all interactive elements
         - Prototype theme controls keyboard accessible
         - Focus indicators visible
+
+    - [ ] **5.1.d Implement touch target sizing (44×44px minimum)**
+        - **Deferred from Phase 4:** Touch targets require design decisions (spacing, footer height)
+        - Navigation links, TopBar branding, FooterBar icons currently undersized
+        - Use invisible padding pattern where possible (touch target > visual element)
+        - Evaluate layout impact and adjust spacing/heights as needed
+        - Update E2E touch target tests to pass
 
 - [ ] **5.2 Visual regression baselines**
 
