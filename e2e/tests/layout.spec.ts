@@ -372,7 +372,7 @@ test.describe("TWM Layout System", () => {
       await page.goto("/projects"); // Non-home page to show navigation
 
       // On phone, navigation should be a single dropdown element, not multiple links
-      const nav = page.locator("nav");
+      const nav = page.getByRole("navigation", { name: "Main navigation" });
       await expect(nav).toBeVisible();
 
       // Should have a dropdown/select element for navigation
@@ -380,11 +380,12 @@ test.describe("TWM Layout System", () => {
       await expect(dropdown).toBeVisible();
 
       // Should NOT show individual nav links on mobile
+      // (dropdown content is portaled out, so links inside nav should be 0)
       const navLinks = nav.getByRole("link");
       const linkCount = await navLinks.count();
 
-      // Either no visible links (all in dropdown) or just the current page indicator
-      expect(linkCount).toBeLessThanOrEqual(1);
+      // No visible links - all navigation is in the dropdown menu
+      expect(linkCount).toBe(0);
     });
 
     test("content remains accessible without horizontal scroll", async ({ page }) => {

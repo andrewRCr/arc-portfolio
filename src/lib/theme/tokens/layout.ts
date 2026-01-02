@@ -56,16 +56,50 @@ export interface LayoutTokens {
   footerHeight: number;
 
   /**
-   * Half-width of the Navigation gap in the TUI frame border.
+   * Half-width of the Navigation gap in the TUI frame border (desktop).
    *
    * The TUI frame border uses clip-path to create a centered gap where
    * Navigation sits. This value is half the total gap width.
    *
    * **Default:** 190 (pixels)
-   * **Usage:** TUI frame border clip-path calculation
+   * **Usage:** TUI frame border clip-path calculation (tablet and above)
    * **Note:** Adjust if Navigation width changes significantly
    */
   navGapHalf: number;
+
+  /**
+   * Half-width of the Navigation gap in the TUI frame border (mobile).
+   *
+   * On phone viewports, navigation collapses to a dropdown showing the
+   * current page. This narrower gap accommodates the single-item display.
+   *
+   * **Default:** 70 (pixels) - fits widest item "PROJECTS" + chevron
+   * **Usage:** TUI frame border clip-path calculation (phone only)
+   */
+  navGapHalfMobile: number;
+
+  /**
+   * Minimum height for navigation container.
+   *
+   * Ensures consistent vertical positioning for both desktop (horizontal links)
+   * and mobile (dropdown trigger) navigation variants.
+   *
+   * **Default:** 28 (pixels)
+   * **Usage:** Navigation container min-height for consistent border gap positioning
+   */
+  navHeight: number;
+
+  /**
+   * Depth of the navigation gap notch in the TUI frame border.
+   *
+   * The clip-path creates a notch at the top of the frame where the Navigation
+   * sits. This value controls how deep the notch cuts into the border area.
+   * Should be slightly larger than `windowBorderWidth` to fully clear the border.
+   *
+   * **Default:** 3 (pixels)
+   * **Usage:** TUI frame border clip-path vertical offset
+   */
+  navGapDepth: number;
 
   /**
    * Maximum width for main page content.
@@ -96,6 +130,9 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   topBarHeight: 42, // 28px content + 8px padding + 4px borders + 2px breathing room
   footerHeight: 36, // 18px icons + 12px padding + 4px borders + 2px breathing room
   navGapHalf: 190,
+  navGapHalfMobile: 70,
+  navHeight: 28,
+  navGapDepth: 3,
   contentMaxWidth: 1152, // Tailwind max-w-6xl equivalent (72rem)
   topBarContentMaxWidth: 1200, // Wider than content for visual hierarchy
 };

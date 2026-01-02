@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { useMediaQuery, PHONE_QUERY } from "@/hooks/useMediaQuery";
 import { Navigation } from "./Navigation";
 
 /**
@@ -13,11 +14,20 @@ import { Navigation } from "./Navigation";
  *
  * This component provides the frame structure but NOT scrolling.
  * Pages use PageLayout to handle header/content scroll separation.
+ *
+ * The TUI frame border gap adjusts for viewport:
+ * - Phone: Narrower gap for collapsed dropdown navigation
+ * - Tablet+: Full gap for horizontal navigation links
  */
 export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isPhone = useMediaQuery(PHONE_QUERY);
   const isDevRoute = pathname?.startsWith("/dev");
-  const { navGapHalf, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
+  const { navGapHalf, navGapHalfMobile, navGapDepth, windowBorderWidth, contentMaxWidth } =
+    DEFAULT_LAYOUT_TOKENS;
+
+  // Use narrower gap for mobile collapsed navigation
+  const currentNavGapHalf = isPhone ? navGapHalfMobile : navGapHalf;
 
   if (isDevRoute) {
     // Dev pages: no inner frame, no navigation
@@ -33,22 +43,24 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
 
   // Regular pages: inner TUI frame with navigation
   // Outer padding provides space for Navigation to render above border
+  // Mobile: extra top padding for nav clearance, tighter sides/bottom
   return (
-    <div className="flex flex-col flex-1 min-h-0 p-4 md:p-6">
+    <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:p-6">
       <div
         className="relative rounded-lg flex flex-col flex-1 min-h-0 mx-auto w-full"
         style={{ maxWidth: contentMaxWidth }}
       >
         {/* TUI frame border - clip-path creates gap for Navigation */}
         <div
-          className="absolute inset-0 border-2 border-border-strong rounded-lg pointer-events-none"
+          className="absolute inset-0 border-solid border-border-strong rounded-lg pointer-events-none"
           style={{
+            borderWidth: windowBorderWidth,
             clipPath: `polygon(
               0 0,
-              calc(50% - ${navGapHalf}px) 0,
-              calc(50% - ${navGapHalf}px) 3px,
-              calc(50% + ${navGapHalf}px) 3px,
-              calc(50% + ${navGapHalf}px) 0,
+              calc(50% - ${currentNavGapHalf}px) 0,
+              calc(50% - ${currentNavGapHalf}px) ${navGapDepth}px,
+              calc(50% + ${currentNavGapHalf}px) ${navGapDepth}px,
+              calc(50% + ${currentNavGapHalf}px) 0,
               100% 0,
               100% 100%,
               0 100%
