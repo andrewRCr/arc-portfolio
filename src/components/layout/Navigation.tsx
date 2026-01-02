@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { NAV_ITEMS } from "@/config/site";
 
 /**
  * Navigation Component
@@ -13,14 +14,6 @@ import { usePathname } from "next/navigation";
  */
 export function Navigation() {
   const pathname = usePathname();
-
-  const navItems = [
-    { label: "HOME", href: "/" },
-    { label: "PROJECTS", href: "/projects" },
-    { label: "SKILLS", href: "/skills" },
-    { label: "ABOUT", href: "/about" },
-    { label: "CONTACT", href: "/contact" },
-  ];
 
   const isActive = (href: string) => {
     if (!pathname) return false;
@@ -34,7 +27,7 @@ export function Navigation() {
     <nav>
       {/* Navigation links - inline, no vertical stacking */}
       <ul className="flex gap-1 list-none items-center">
-        {navItems.map((item) => (
+        {NAV_ITEMS.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href}

@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { render, checkA11y } from "@tests/test-utils";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { SITE } from "@/config/site";
 import { TopBar } from "../TopBar";
 
 // Mock next-themes for ThemeToggle
@@ -14,17 +15,17 @@ vi.mock("next-themes", () => ({
 
 describe("TopBar", () => {
   describe("Branding", () => {
-    it("renders logo/branding text", () => {
+    it("renders site handle from config", () => {
       render(<TopBar />);
 
-      // Site handle should be visible
-      expect(screen.getByText(/andrewRCr/i)).toBeInTheDocument();
+      // Site handle should be visible (from SITE config)
+      expect(screen.getByText(SITE.handle)).toBeInTheDocument();
     });
 
     it("branding links to home page", () => {
       render(<TopBar />);
 
-      const brandingLink = screen.getByRole("link", { name: /andrewRCr/i });
+      const brandingLink = screen.getByRole("link", { name: new RegExp(SITE.handle, "i") });
       expect(brandingLink).toHaveAttribute("href", "/");
     });
   });
@@ -65,7 +66,6 @@ describe("TopBar", () => {
 
       expect(screen.getByRole("banner")).toBeInTheDocument();
     });
-
   });
 
   describe("Accessibility", () => {
@@ -77,7 +77,7 @@ describe("TopBar", () => {
     it("branding link is keyboard accessible", () => {
       render(<TopBar />);
 
-      const brandingLink = screen.getByRole("link", { name: /andrewRCr/i });
+      const brandingLink = screen.getByRole("link", { name: new RegExp(SITE.handle, "i") });
       expect(brandingLink).not.toBeDisabled();
     });
   });

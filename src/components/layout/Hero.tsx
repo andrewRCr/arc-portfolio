@@ -1,3 +1,5 @@
+import { SITE } from "@/config/site";
+
 /**
  * Hero Component
  *
@@ -12,9 +14,9 @@ export function Hero() {
           <div className="space-y-2">
             <p className="text-xs font-mono text-muted-foreground">&gt; portfolio.init()</p>
 
-            <h1 className="text-4xl font-bold font-mono">Andrew Creekmore</h1>
+            <h1 className="text-4xl font-bold font-mono">{SITE.name}</h1>
 
-            <p className="text-lg text-muted-foreground">Full-stack developer &amp; creative technologist</p>
+            <p className="text-lg text-muted-foreground">{SITE.tagline}</p>
           </div>
         </div>
       </div>
