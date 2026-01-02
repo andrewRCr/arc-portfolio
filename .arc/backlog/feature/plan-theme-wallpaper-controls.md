@@ -232,6 +232,9 @@ testing against all theme/mode combinations during Task 3.5.c.
 - Fallback logic (compatible/incompatible wallpaper scenarios)
 - Persistence save/load
 - Available wallpapers filtering by theme
+- **Deferred from TWM Layout System:** Tests for `ThemeSwitcher.tsx`, `WallpaperSwitcher.tsx`,
+  `ThemeContext.tsx`, and `WallpaperContext.tsx` - these components will be significantly
+  refactored/replaced during this work unit, so testing is deferred until new implementation
 
 **E2E tests:**
 

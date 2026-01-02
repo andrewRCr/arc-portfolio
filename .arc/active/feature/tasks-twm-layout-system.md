@@ -270,7 +270,7 @@ responsive styles.
         - **TDD results:** 3 pass (structure, gaps, nav dropdown), 2 fail (scroll, hero overflow)
         - Touch target tests deferred to Phase 5
 
-    - [ ] **4.2.b Implement mobile breakpoint styles**
+    - [x] **4.2.b Implement mobile breakpoint styles**
 
         - [x] **4.2.b.1 Create `useMediaQuery` hook**
             - File: `src/hooks/useMediaQuery.ts`
@@ -289,12 +289,27 @@ responsive styles.
             - DRY improvement: ConditionalFrame now uses `windowBorderWidth` token (consistency)
             - Files: `MobileNavigation.tsx`, `dropdown-menu.tsx` (shadcn), Navigation.tsx, ConditionalFrame.tsx, layout.ts
 
-        - [ ] **4.2.b.3 Implement general mobile responsive styles**
-            - Hero: Reduce `px-14` padding on mobile (fix horizontal scroll)
-            - Gaps: Reduce layout gaps for mobile viewport
-            - Footer: Ensure remains accessible and readable
+        - [x] **4.2.b.3 Implement general mobile responsive styles**
+            - [x] Hero: Changed `px-14` to `pl-0 md:pl-2` (fixes horizontal scroll, slight desktop indent)
+            - [x] Footer dev links: Hidden on mobile via `hidden md:flex` (declutters footer)
+            - [x] Viewport height: Changed `h-screen` to `h-dvh` (fixes mobile browser chrome)
+            - [x] Body overflow: Added `overflow-hidden` to html/body (prevents scroll past footer)
+            - [x] WindowContainer UX: Click outside windows resets active state (touch parity with hover)
+            - [x] Section padding: Standardized to `px-0 md:px-4` (About, Education, Contact, Skills)
+            - [x] AboutSection: Added card wrapper for visual consistency with Education cards
+            - [x] Home page: Made padding responsive (`p-2 md:p-8`) - landing page gets more desktop breathing room
+            - [x] Tagline: Updated to "Full-stack developer | code & creativity" with responsive break
 
-    - [ ] **4.2.c Run mobile E2E tests - should now PASS**
+    - [x] **4.2.c Run mobile E2E tests - should now PASS**
+        - 22 passed, 3 expected failures (touch target tests deferred to Phase 5)
+        - Fixed Hero overflow test to check Hero element specifically (not body overflow from TopBar)
+        - Fixed smoke tests to handle mobile dropdown navigation (`role="menuitem"`)
+
+    - [ ] **4.2.d Add unit tests for new TWM layout components**
+        - `MobileNavigation.tsx` - dropdown nav, active page detection, trigger styling
+        - `Hero.tsx` - tagline split logic for responsive break
+        - `ConditionalFrame.tsx` - responsive nav gap logic, dev route vs regular route rendering
+        - **Deferred to Theme/Wallpaper work unit:** ThemeSwitcher, WallpaperSwitcher, contexts
 
 - [ ] **4.3 Cross-viewport visual verification**
 
@@ -306,6 +321,11 @@ responsive styles.
         - Check gaps and borders render correctly
         - Verify transparency effect over wallpaper
         - Confirm no visual regressions
+
+    - [ ] **4.3.c Test on actual phone hardware via ngrok**
+        - Set up ngrok tunnel to local dev server
+        - Test on physical iOS/Android device
+        - Verify touch interactions, viewport behavior, and visual rendering
 
 ### **Phase 5:** Accessibility & Testing
 
