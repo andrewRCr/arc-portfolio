@@ -43,11 +43,11 @@ export function PageLayout({ header, children, fullWidth = false }: PageLayoutPr
       )}
 
       {/* Scrollable content area - scrollbar only here */}
-      <div className="flex-1 min-h-0 overflow-auto">
+      <main className="flex-1 min-h-0 overflow-auto">
         <div className="mx-auto w-full h-full" style={contentStyle}>
           {children}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

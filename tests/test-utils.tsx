@@ -15,19 +15,25 @@ import { render, RenderOptions } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import type { AxeResults } from "axe-core";
 import { ThemeContextProvider } from "@/contexts/ThemeContext";
+import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
 
 /**
  * Test wrapper that provides all necessary context providers.
  *
  * Currently includes:
  * - ThemeContextProvider (for useThemeContext hook)
+ * - WallpaperContextProvider (for useWallpaperContext hook)
  *
  * Note: We don't include NextThemesProvider here because it requires
  * browser APIs that don't work well in jsdom. Components that need
  * next-themes should mock it separately.
  */
 function AllProviders({ children }: { children: React.ReactNode }) {
-  return <ThemeContextProvider>{children}</ThemeContextProvider>;
+  return (
+    <ThemeContextProvider>
+      <WallpaperContextProvider>{children}</WallpaperContextProvider>
+    </ThemeContextProvider>
+  );
 }
 
 /**

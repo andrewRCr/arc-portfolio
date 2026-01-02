@@ -70,9 +70,10 @@ test.describe("TWM Layout System", () => {
       const topBar = page.getByRole("banner");
       await expect(topBar).toBeVisible();
 
-      // Should contain branding link
-      const branding = page.getByRole("link", { name: /andrew creekmore/i });
-      await expect(branding).toBeVisible();
+      // Should contain branding link that navigates to home
+      const brandingLink = topBar.getByRole("link").first();
+      await expect(brandingLink).toBeVisible();
+      await expect(brandingLink).toHaveAttribute("href", "/");
     });
 
     test("displays FooterBar at bottom of viewport", async ({ page }) => {
@@ -193,6 +194,221 @@ test.describe("TWM Layout System", () => {
       await expect(page.getByRole("banner")).toBeVisible();
       await expect(page.getByRole("main")).toBeVisible();
       await expect(page.getByRole("contentinfo")).toBeVisible();
+    });
+  });
+
+  test.describe("Tablet Layout (768×1024)", () => {
+    test.beforeEach(async ({ page }) => {
+      await page.setViewportSize({ width: 768, height: 1024 });
+    });
+
+    test("three-window structure preserved at tablet size", async ({ page }) => {
+      await page.goto("/");
+
+      const topBar = page.getByRole("banner");
+      const main = page.getByRole("main");
+      const footerBar = page.getByRole("contentinfo");
+
+      // All three windows visible
+      await expect(topBar).toBeVisible();
+      await expect(main).toBeVisible();
+      await expect(footerBar).toBeVisible();
+
+      // Verify vertical ordering (TopBar → Main → Footer)
+      const topBox = await topBar.boundingBox();
+      const mainBox = await main.boundingBox();
+      const footerBox = await footerBar.boundingBox();
+
+      expect(topBox).not.toBeNull();
+      expect(mainBox).not.toBeNull();
+      expect(footerBox).not.toBeNull();
+
+      expect(topBox!.y).toBeLessThan(mainBox!.y);
+      expect(mainBox!.y).toBeLessThan(footerBox!.y);
+    });
+
+    test("gaps between windows visible at tablet size", async ({ page }) => {
+      await page.goto("/");
+
+      const topBar = page.getByRole("banner");
+      const footerBar = page.getByRole("contentinfo");
+
+      const topBox = await topBar.boundingBox();
+      const footerBox = await footerBar.boundingBox();
+      const viewportHeight = await page.evaluate(() => window.innerHeight);
+
+      expect(topBox).not.toBeNull();
+      expect(footerBox).not.toBeNull();
+
+      // TopBar has gap from viewport top
+      expect(topBox!.y).toBeGreaterThan(0);
+
+      // FooterBar has gap from viewport bottom
+      expect(footerBox!.y + footerBox!.height).toBeLessThan(viewportHeight);
+    });
+
+    test("navigation links meet 44×44px touch target minimum", async ({ page }) => {
+      await page.goto("/projects"); // Non-home page to show navigation
+
+      // Get all navigation links
+      const navLinks = page.locator("nav").getByRole("link");
+      const count = await navLinks.count();
+
+      expect(count).toBeGreaterThan(0);
+
+      // Check each link meets minimum touch target size
+      for (let i = 0; i < count; i++) {
+        const link = navLinks.nth(i);
+        const box = await link.boundingBox();
+
+        expect(box).not.toBeNull();
+        // Touch targets should be at least 44×44px for accessibility
+        expect(box!.width).toBeGreaterThanOrEqual(44);
+        expect(box!.height).toBeGreaterThanOrEqual(44);
+      }
+    });
+
+    test("TopBar touch targets meet 44×44px minimum", async ({ page }) => {
+      await page.goto("/");
+
+      // Branding link
+      const brandingLink = page.getByRole("banner").getByRole("link");
+      const brandingBox = await brandingLink.boundingBox();
+      expect(brandingBox).not.toBeNull();
+      expect(brandingBox!.width).toBeGreaterThanOrEqual(44);
+      expect(brandingBox!.height).toBeGreaterThanOrEqual(44);
+
+      // Theme toggle button
+      const themeToggle = page.getByRole("banner").getByRole("button");
+      const toggleBox = await themeToggle.boundingBox();
+      expect(toggleBox).not.toBeNull();
+      expect(toggleBox!.width).toBeGreaterThanOrEqual(44);
+      expect(toggleBox!.height).toBeGreaterThanOrEqual(44);
+    });
+
+    test("FooterBar touch targets meet 44×44px minimum", async ({ page }) => {
+      await page.goto("/");
+
+      // Social links (GitHub, LinkedIn, etc.)
+      const socialNav = page.getByRole("contentinfo").getByRole("navigation", { name: /social/i });
+      const socialLinks = socialNav.getByRole("link");
+      const count = await socialLinks.count();
+
+      expect(count).toBeGreaterThan(0);
+
+      for (let i = 0; i < count; i++) {
+        const link = socialLinks.nth(i);
+        const box = await link.boundingBox();
+
+        expect(box).not.toBeNull();
+        expect(box!.width).toBeGreaterThanOrEqual(44);
+        expect(box!.height).toBeGreaterThanOrEqual(44);
+      }
+    });
+
+    test("content remains readable without horizontal scroll", async ({ page }) => {
+      await page.goto("/");
+
+      // Page should not have horizontal overflow
+      const hasHorizontalScroll = await page.evaluate(() => {
+        return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+      });
+
+      expect(hasHorizontalScroll).toBe(false);
+    });
+  });
+
+  test.describe("Mobile Layout (375×667)", () => {
+    test.beforeEach(async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 667 });
+    });
+
+    test("three-window structure preserved at phone size", async ({ page }) => {
+      await page.goto("/");
+
+      const topBar = page.getByRole("banner");
+      const main = page.getByRole("main");
+      const footerBar = page.getByRole("contentinfo");
+
+      // All three windows visible
+      await expect(topBar).toBeVisible();
+      await expect(main).toBeVisible();
+      await expect(footerBar).toBeVisible();
+
+      // Verify vertical ordering (TopBar → Main → Footer)
+      const topBox = await topBar.boundingBox();
+      const mainBox = await main.boundingBox();
+      const footerBox = await footerBar.boundingBox();
+
+      expect(topBox).not.toBeNull();
+      expect(mainBox).not.toBeNull();
+      expect(footerBox).not.toBeNull();
+
+      expect(topBox!.y).toBeLessThan(mainBox!.y);
+      expect(mainBox!.y).toBeLessThan(footerBox!.y);
+    });
+
+    test("windows stack vertically with gaps", async ({ page }) => {
+      await page.goto("/");
+
+      const topBar = page.getByRole("banner");
+      const footerBar = page.getByRole("contentinfo");
+
+      const topBox = await topBar.boundingBox();
+      const footerBox = await footerBar.boundingBox();
+      const viewportHeight = await page.evaluate(() => window.innerHeight);
+
+      expect(topBox).not.toBeNull();
+      expect(footerBox).not.toBeNull();
+
+      // TopBar has gap from viewport top
+      expect(topBox!.y).toBeGreaterThan(0);
+
+      // FooterBar has gap from viewport bottom
+      expect(footerBox!.y + footerBox!.height).toBeLessThan(viewportHeight);
+    });
+
+    test("navigation collapses to dropdown on phone", async ({ page }) => {
+      await page.goto("/projects"); // Non-home page to show navigation
+
+      // On phone, navigation should be a single dropdown element, not multiple links
+      const nav = page.locator("nav");
+      await expect(nav).toBeVisible();
+
+      // Should have a dropdown/select element for navigation
+      const dropdown = nav.locator("[data-mobile-nav]");
+      await expect(dropdown).toBeVisible();
+
+      // Should NOT show individual nav links on mobile
+      const navLinks = nav.getByRole("link");
+      const linkCount = await navLinks.count();
+
+      // Either no visible links (all in dropdown) or just the current page indicator
+      expect(linkCount).toBeLessThanOrEqual(1);
+    });
+
+    test("content remains accessible without horizontal scroll", async ({ page }) => {
+      await page.goto("/");
+
+      // Page should not have horizontal overflow
+      const hasHorizontalScroll = await page.evaluate(() => {
+        return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+      });
+
+      expect(hasHorizontalScroll).toBe(false);
+    });
+
+    test("hero section fits within viewport width", async ({ page }) => {
+      await page.goto("/");
+
+      // Hero should not cause horizontal overflow
+      const heroOverflows = await page.evaluate(() => {
+        // Check if any element causes horizontal scroll
+        const body = document.body;
+        return body.scrollWidth > body.clientWidth;
+      });
+
+      expect(heroOverflows).toBe(false);
     });
   });
 });

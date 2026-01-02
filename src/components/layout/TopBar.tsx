@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { SITE } from "@/config/site";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { WallpaperSwitcher } from "../WallpaperSwitcher";
+
+export interface TopBarProps {
+  /** Whether this window is currently active (for touch devices) */
+  isActive?: boolean;
+  /** Callback when window is activated (clicked/tapped) */
+  onActivate?: () => void;
+}
 
 /**
  * TopBar Component
@@ -19,12 +27,12 @@ import { WallpaperSwitcher } from "../WallpaperSwitcher";
  * <TopBar />
  * ```
  */
-export function TopBar() {
+export function TopBar({ isActive, onActivate }: TopBarProps = {}) {
   const { topBarHeight, windowBorderWidth, topBarContentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
 
   return (
-    <WindowContainer>
+    <WindowContainer isActive={isActive} onActivate={onActivate}>
       <header
         className="flex items-center justify-between px-4 mx-auto w-full"
         style={{ height: innerHeight, maxWidth: topBarContentMaxWidth }}
@@ -32,7 +40,7 @@ export function TopBar() {
         {/* Branding - links to home */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <span className="text-foreground font-mono font-bold">andrewRCr</span>
+            <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
           </Link>
           <span className="text-primary font-mono">&gt;_</span>
         </div>

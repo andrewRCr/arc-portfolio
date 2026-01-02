@@ -20,6 +20,13 @@ const iconMap: Record<SocialIcon, IconComponent> = {
   nexusmods: NexusModsIcon,
 };
 
+export interface FooterBarProps {
+  /** Whether this window is currently active (for touch devices) */
+  isActive?: boolean;
+  /** Callback when window is activated (clicked/tapped) */
+  onActivate?: () => void;
+}
+
 /**
  * FooterBar Component
  *
@@ -37,13 +44,13 @@ const iconMap: Record<SocialIcon, IconComponent> = {
  * <FooterBar />
  * ```
  */
-export function FooterBar() {
+export function FooterBar({ isActive, onActivate }: FooterBarProps = {}) {
   const { footerHeight, windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = footerHeight - windowBorderWidth * 2;
   const isDev = process.env.NODE_ENV === "development";
 
   return (
-    <WindowContainer>
+    <WindowContainer isActive={isActive} onActivate={onActivate}>
       <footer
         className="flex items-center justify-between px-4 mx-auto w-full"
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}

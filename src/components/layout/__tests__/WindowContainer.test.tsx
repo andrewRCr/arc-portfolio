@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
 import { checkA11y } from "@tests/test-utils";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { WindowContainer } from "../WindowContainer";
@@ -90,6 +90,67 @@ describe("WindowContainer", () => {
 
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toHaveClass("custom-class");
+    });
+  });
+
+  describe("Active Window State (Touch Devices)", () => {
+    it("does not have data-active attribute by default", () => {
+      const { container } = render(
+        <WindowContainer>
+          <p>Content</p>
+        </WindowContainer>
+      );
+
+      const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper).not.toHaveAttribute("data-active");
+    });
+
+    it("does not have data-active attribute when isActive is false", () => {
+      const { container } = render(
+        <WindowContainer isActive={false}>
+          <p>Content</p>
+        </WindowContainer>
+      );
+
+      const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper).not.toHaveAttribute("data-active");
+    });
+
+    it("has data-active='true' when isActive is true", () => {
+      const { container } = render(
+        <WindowContainer isActive={true}>
+          <p>Content</p>
+        </WindowContainer>
+      );
+
+      const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper).toHaveAttribute("data-active", "true");
+    });
+
+    it("calls onActivate callback when clicked", () => {
+      const handleActivate = vi.fn();
+      const { container } = render(
+        <WindowContainer onActivate={handleActivate}>
+          <p>Content</p>
+        </WindowContainer>
+      );
+
+      const wrapper = container.firstChild as HTMLElement;
+      fireEvent.click(wrapper);
+
+      expect(handleActivate).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not error when clicked without onActivate prop", () => {
+      const { container } = render(
+        <WindowContainer>
+          <p>Content</p>
+        </WindowContainer>
+      );
+
+      const wrapper = container.firstChild as HTMLElement;
+      // Should not throw
+      expect(() => fireEvent.click(wrapper)).not.toThrow();
     });
   });
 

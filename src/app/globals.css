@@ -144,3 +144,17 @@
 html[data-env-preview="false"] [data-window-container] {
   --window-bg-opacity: 1 !important;
 }
+
+/* TWM Window Container border highlight
+   Desktop: hover effect | Touch devices: active (tapped) effect */
+@media (hover: hover) {
+  [data-window-container]:hover {
+    border-color: rgb(var(--primary));
+  }
+}
+
+@media (hover: none) {
+  [data-window-container][data-active="true"] {
+    border-color: rgb(var(--primary));
+  }
+}
