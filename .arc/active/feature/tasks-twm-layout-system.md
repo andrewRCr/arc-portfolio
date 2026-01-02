@@ -267,7 +267,7 @@ responsive styles.
     - [x] **4.2.a Write E2E tests for mobile layout**
         - Added `Mobile Layout (375×667)` test suite to `e2e/tests/layout.spec.ts`
         - Tests: structure, gaps, nav dropdown, horizontal scroll, hero overflow
-        - **TDD results:** 2 pass (structure, gaps), 3 fail (nav dropdown, scroll, hero)
+        - **TDD results:** 3 pass (structure, gaps, nav dropdown), 2 fail (scroll, hero overflow)
         - Touch target tests deferred to Phase 5
 
     - [ ] **4.2.b Implement mobile breakpoint styles**
@@ -279,11 +279,15 @@ responsive styles.
             - Exports preset queries: `PHONE_QUERY`, `TOUCH_DEVICE_QUERY`
             - 7 unit tests in `src/hooks/__tests__/useMediaQuery.test.ts`
 
-        - [ ] **4.2.b.2 Implement mobile navigation (select-style dropdown)**
-            - Replace horizontal nav links with styled dropdown on mobile
-            - Visual consistency with desktop nav items (same font/padding styling)
-            - Dropdown indicator (▼) shows expandable
-            - Uses `useMediaQuery` for breakpoint detection
+        - [x] **4.2.b.2 Implement mobile navigation (select-style dropdown)**
+            - Created `MobileNavigation` component using Shadcn DropdownMenu
+            - Trigger styled like nav item (no border, same font/padding)
+            - ChevronDown icon as dropdown indicator; `modal={false}` prevents layout shift
+            - Navigation.tsx conditionally renders mobile/desktop based on `useMediaQuery`
+            - ConditionalFrame uses responsive gap width and asymmetric padding for nav clearance
+            - New layout tokens: `navGapHalfMobile` (70), `navHeight` (28), `navGapDepth` (3)
+            - DRY improvement: ConditionalFrame now uses `windowBorderWidth` token (consistency)
+            - Files: `MobileNavigation.tsx`, `dropdown-menu.tsx` (shadcn), Navigation.tsx, ConditionalFrame.tsx, layout.ts
 
         - [ ] **4.2.b.3 Implement general mobile responsive styles**
             - Hero: Reduce `px-14` padding on mobile (fix horizontal scroll)
