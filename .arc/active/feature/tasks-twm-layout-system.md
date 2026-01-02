@@ -260,7 +260,7 @@ responsive styles.
         - CSS media query behavior verified manually (jsdom doesn't support media queries)
         - **Total:** 486 tests passing (+11 new)
 
-- [ ] **4.2 Implement mobile layout adaptations**
+- [x] **4.2 Implement mobile layout adaptations**
 
     **Goal:** Graceful mobile adaptation (375×667).
 
@@ -305,10 +305,11 @@ responsive styles.
         - Fixed Hero overflow test to check Hero element specifically (not body overflow from TopBar)
         - Fixed smoke tests to handle mobile dropdown navigation (`role="menuitem"`)
 
-    - [ ] **4.2.d Add unit tests for new TWM layout components**
-        - `MobileNavigation.tsx` - dropdown nav, active page detection, trigger styling
-        - `Hero.tsx` - tagline split logic for responsive break
-        - `ConditionalFrame.tsx` - responsive nav gap logic, dev route vs regular route rendering
+    - [x] **4.2.d Add unit tests for new TWM layout components**
+        - MobileNavigation (10 tests): trigger rendering, dropdown content, semantic structure, a11y
+        - Hero (8 tests): content rendering, tagline split logic, visual structure, a11y
+        - ConditionalFrame (13 tests): dev/regular route rendering, responsive nav gap, frame styling, a11y
+        - Added `tests/mocks/use-media-query.ts` for reusable viewport mocking
         - **Deferred to Theme/Wallpaper work unit:** ThemeSwitcher, WallpaperSwitcher, contexts
 
 - [ ] **4.3 Cross-viewport visual verification**

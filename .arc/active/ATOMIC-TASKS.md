@@ -30,14 +30,4 @@
 
 ## Active
 
-- [ ] Test suite quality improvements (non-TWM)
-    - **Problem:** Test suite has redundant tests, weak assertions, and DRY violations
-    - **Approach:**
-        - Remove WindowContainer styling duplication from FooterBar/TopBar tests
-        - Strengthen weak assertions (e.g., `toBeGreaterThan(0)` → actual values)
-        - Create shared mocks for `next-themes` pattern
-        - Add keyboard navigation tests to ProjectTabs (ArrowLeft/Right, Home/End)
-        - Add PageLayout, PageHeader, SectionHeader tests (basic coverage)
-    - **Files:** `src/components/**/__tests__/*.test.tsx`, `tests/mocks/`
-    - **Rationale:** Identified during TWM test coverage analysis; improves test maintainability
-    - **Note:** Theme/wallpaper component tests deferred to that work unit
+(none)
