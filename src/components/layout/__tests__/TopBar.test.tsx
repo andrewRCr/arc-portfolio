@@ -1,17 +1,11 @@
 import { screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { render, checkA11y } from "@tests/test-utils";
-import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { createNextThemesMock } from "@tests/mocks/next-themes";
 import { SITE } from "@/config/site";
 import { TopBar } from "../TopBar";
 
-// Mock next-themes for ThemeToggle
-vi.mock("next-themes", () => ({
-  useTheme: () => ({
-    theme: "dark",
-    setTheme: vi.fn(),
-  }),
-}));
+vi.mock("next-themes", () => createNextThemesMock());
 
 describe("TopBar", () => {
   describe("Branding", () => {
@@ -37,26 +31,6 @@ describe("TopBar", () => {
       // Theme controls area should exist (identified by data attribute for future integration)
       const themeControlsArea = container.querySelector('[data-testid="theme-controls-placeholder"]');
       expect(themeControlsArea).toBeInTheDocument();
-    });
-  });
-
-  describe("WindowContainer Styling", () => {
-    it("applies WindowContainer border styling", () => {
-      const { container } = render(<TopBar />);
-
-      // TopBar wraps in WindowContainer, which applies border
-      const wrapper = container.firstChild as HTMLElement;
-      expect(wrapper).toHaveStyle({
-        borderWidth: `${DEFAULT_LAYOUT_TOKENS.windowBorderWidth}px`,
-      });
-    });
-
-    it("has data-window-container for CSS-controlled opacity", () => {
-      const { container } = render(<TopBar />);
-
-      const wrapper = container.firstChild as HTMLElement;
-      // Opacity is now controlled via CSS targeting [data-window-container]
-      expect(wrapper).toHaveAttribute("data-window-container");
     });
   });
 

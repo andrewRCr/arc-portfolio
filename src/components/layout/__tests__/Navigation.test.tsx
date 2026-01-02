@@ -51,15 +51,13 @@ describe("Navigation - Behavior Tests", () => {
   });
 
   describe("Accessibility", () => {
-    it("all links have accessible text", () => {
+    it("all links have accessible names", () => {
       render(<Navigation />);
 
       const links = screen.getAllByRole("link");
 
       links.forEach((link) => {
-        // Each link should have text content
-        expect(link.textContent).toBeTruthy();
-        expect(link.textContent!.length).toBeGreaterThan(0);
+        expect(link).toHaveAccessibleName();
       });
     });
 

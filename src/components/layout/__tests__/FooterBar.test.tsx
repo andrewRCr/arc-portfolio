@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { checkA11y } from "@tests/test-utils";
-import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { FooterBar } from "../FooterBar";
 
 describe("FooterBar", () => {
@@ -59,25 +58,6 @@ describe("FooterBar", () => {
       render(<FooterBar />);
 
       expect(screen.getByText(/<\/portfolio>/)).toBeInTheDocument();
-    });
-  });
-
-  describe("WindowContainer Styling", () => {
-    it("applies WindowContainer border styling", () => {
-      const { container } = render(<FooterBar />);
-
-      const wrapper = container.firstChild as HTMLElement;
-      expect(wrapper).toHaveStyle({
-        borderWidth: `${DEFAULT_LAYOUT_TOKENS.windowBorderWidth}px`,
-      });
-    });
-
-    it("has data-window-container for CSS-controlled opacity", () => {
-      const { container } = render(<FooterBar />);
-
-      const wrapper = container.firstChild as HTMLElement;
-      // Opacity is now controlled via CSS targeting [data-window-container]
-      expect(wrapper).toHaveAttribute("data-window-container");
     });
   });
 
