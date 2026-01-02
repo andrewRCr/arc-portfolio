@@ -41,11 +41,7 @@ export function MobileNavigation() {
   const { navHeight } = DEFAULT_LAYOUT_TOKENS;
 
   return (
-    <nav
-      aria-label="Main navigation"
-      className="flex items-center"
-      style={{ minHeight: navHeight }}
-    >
+    <nav aria-label="Main navigation" className="flex items-center" style={{ minHeight: navHeight }}>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger
           data-mobile-nav

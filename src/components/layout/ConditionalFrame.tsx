@@ -23,8 +23,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPhone = useMediaQuery(PHONE_QUERY);
   const isDevRoute = pathname?.startsWith("/dev");
-  const { navGapHalf, navGapHalfMobile, navGapDepth, windowBorderWidth, contentMaxWidth } =
-    DEFAULT_LAYOUT_TOKENS;
+  const { navGapHalf, navGapHalfMobile, navGapDepth, windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
   // Use narrower gap for mobile collapsed navigation
   const currentNavGapHalf = isPhone ? navGapHalfMobile : navGapHalf;

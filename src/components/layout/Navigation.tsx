@@ -40,11 +40,7 @@ export function Navigation() {
 
   // Tablet and above: full horizontal navigation
   return (
-    <nav
-      aria-label="Main navigation"
-      className="flex items-center"
-      style={{ minHeight: navHeight }}
-    >
+    <nav aria-label="Main navigation" className="flex items-center" style={{ minHeight: navHeight }}>
       {/* Navigation links - inline, no vertical stacking */}
       <ul className="flex gap-1 list-none items-center">
         {NAV_ITEMS.map((item) => (
