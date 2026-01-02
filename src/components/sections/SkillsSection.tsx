@@ -9,7 +9,7 @@ import { skills } from "@/data/skills";
 
 export function SkillsSection() {
   return (
-    <section className="px-4 md:px-8 py-2">
+    <section className="px-0 md:px-4 py-2">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {Object.entries(skills).map(([category, skillList]) => (
           <div key={category} className="rounded-lg border border-border p-4">

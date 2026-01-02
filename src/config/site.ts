@@ -17,7 +17,7 @@ export const SITE = {
   /** Browser tab title */
   title: "Andrew Creekmore - Portfolio",
   /** Tagline for Hero section */
-  tagline: "Full-stack developer & creative technologist",
+  tagline: "Full-stack developer | code & creativity",
   /** Meta description for SEO */
   metaDescription: "Portfolio showcasing full-stack development projects and technical expertise",
 } as const;

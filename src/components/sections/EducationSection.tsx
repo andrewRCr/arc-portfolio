@@ -13,7 +13,7 @@ export function EducationSection() {
       <SectionHeader title="Education" />
 
       {/* Content with horizontal padding */}
-      <ul className="mt-4 space-y-6 px-8">
+      <ul className="mt-4 space-y-6 px-0 md:px-4">
         {education.map((edu) => (
           <li key={edu.id} data-testid={`education-${edu.id}`} className="rounded-lg border border-border p-6">
             <div className="space-y-2">

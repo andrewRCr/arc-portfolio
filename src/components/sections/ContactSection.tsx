@@ -22,7 +22,7 @@ const iconMap: Record<SocialIcon, IconComponent> = {
 
 export function ContactSection() {
   return (
-    <section className="px-8 py-2">
+    <section className="px-0 md:px-4 py-2">
       <div className="space-y-8">
         {/* Email */}
         <div className="flex items-center gap-3">

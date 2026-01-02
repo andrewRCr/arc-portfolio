@@ -52,13 +52,15 @@ function parseMarkdownLinks(text: string): React.ReactElement[] {
 
 export function AboutSection() {
   return (
-    <section className="px-8 py-2">
-      <div className="space-y-4 text-foreground">
-        {about.paragraphs.map((paragraph, index) => (
-          <p key={index} className="leading-relaxed">
-            {parseMarkdownLinks(paragraph)}
-          </p>
-        ))}
+    <section className="px-0 md:px-4 py-2">
+      <div className="rounded-lg border border-border p-6">
+        <div className="space-y-4 text-foreground">
+          {about.paragraphs.map((paragraph, index) => (
+            <p key={index} className="leading-relaxed">
+              {parseMarkdownLinks(paragraph)}
+            </p>
+          ))}
+        </div>
       </div>
 
       {about.highlightedAchievements && about.highlightedAchievements.length > 0 && (

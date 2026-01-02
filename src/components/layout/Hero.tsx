@@ -8,7 +8,7 @@ import { SITE } from "@/config/site";
  */
 export function Hero() {
   return (
-    <div className="px-14 py-2 pb-4">
+    <div className="pl-0 md:pl-2 py-2 pb-4">
       <div className="border-l-2 border-primary pl-6">
         <div className="space-y-4 mb-12">
           <div className="space-y-2">
@@ -16,7 +16,22 @@ export function Hero() {
 
             <h1 className="text-4xl font-bold font-mono">{SITE.name}</h1>
 
-            <p className="text-lg text-muted-foreground">{SITE.tagline}</p>
+            <p className="text-lg text-muted-foreground">
+              {(() => {
+                const parts = SITE.tagline.split(" | ");
+                if (parts.length === 2) {
+                  return (
+                    <>
+                      {parts[0]}
+                      <br className="md:hidden" />
+                      <span className="hidden md:inline">&nbsp; | &nbsp;</span>
+                      {parts[1]}
+                    </>
+                  );
+                }
+                return SITE.tagline;
+              })()}
+            </p>
           </div>
         </div>
       </div>

@@ -51,7 +51,13 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <WallpaperBackground imageSrc={wallpaperSrc} />
 
       {/* Three-window layout - fixed viewport, content scrolls inside */}
-      <div className="h-screen flex flex-col" style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}>
+      {/* h-dvh uses dynamic viewport height, accounting for mobile browser chrome */}
+      {/* Clicking gap areas (outside windows) resets active state */}
+      <div
+        className="h-dvh flex flex-col"
+        style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}
+        onClick={() => setActiveWindow(null)}
+      >
         {/* Top bar - fixed height */}
         <TopBar isActive={activeWindow === "top"} onActivate={() => setActiveWindow("top")} />
 

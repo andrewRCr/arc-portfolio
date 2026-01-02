@@ -78,7 +78,7 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps = {}) {
         {/* Right side: Dev links (dev-only) + Attribution */}
         <div className="flex items-center gap-3">
           {isDev && (
-            <nav aria-label="Developer tools" className="flex items-center gap-2 font-mono text-xs">
+            <nav aria-label="Developer tools" className="hidden md:flex items-center gap-2 font-mono text-xs">
               <span className="text-muted-foreground">dev:</span>
               <Link href="/dev/theme-debug" className="text-accent hover:text-accent/80 transition-colors">
                 [theme]
