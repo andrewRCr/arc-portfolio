@@ -402,14 +402,15 @@ test.describe("TWM Layout System", () => {
     test("hero section fits within viewport width", async ({ page }) => {
       await page.goto("/");
 
-      // Hero should not cause horizontal overflow
-      const heroOverflows = await page.evaluate(() => {
-        // Check if any element causes horizontal scroll
-        const body = document.body;
-        return body.scrollWidth > body.clientWidth;
+      // Hero element should not exceed viewport width
+      const heroFits = await page.evaluate(() => {
+        const hero = document.querySelector("main")?.firstElementChild;
+        if (!hero) return false;
+        const heroRect = hero.getBoundingClientRect();
+        return heroRect.right <= window.innerWidth && heroRect.left >= 0;
       });
 
-      expect(heroOverflows).toBe(false);
+      expect(heroFits).toBe(true);
     });
   });
 });

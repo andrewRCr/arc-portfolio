@@ -10,22 +10,46 @@ import { test, expect } from "@playwright/test";
  */
 
 test.describe("Smoke Tests", () => {
+  /**
+   * Helper to check if viewport is mobile (< 768px)
+   */
+  async function isMobileViewport(page: import("@playwright/test").Page): Promise<boolean> {
+    const viewport = page.viewportSize();
+    return viewport ? viewport.width < 768 : false;
+  }
+
+  /**
+   * Helper to open mobile nav dropdown if on mobile viewport
+   */
+  async function openMobileNavIfNeeded(page: import("@playwright/test").Page): Promise<void> {
+    if (await isMobileViewport(page)) {
+      const navTrigger = page.getByRole("button", { name: /navigation menu/i });
+      await navTrigger.click();
+    }
+  }
+
   test("homepage loads successfully", async ({ page }) => {
     await page.goto("/");
 
     // Verify page has loaded with expected content
     await expect(page).toHaveTitle(/arc-portfolio|Andrew/i);
 
-    // Verify navigation is present
-    const nav = page.locator("nav");
-    await expect(nav).toBeVisible();
+    // Verify main navigation is present
+    const mainNav = page.getByRole("navigation", { name: "Main navigation" });
+    await expect(mainNav).toBeVisible();
 
-    // Verify all nav links are present
-    await expect(page.getByRole("link", { name: "HOME" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "PROJECTS" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "SKILLS" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "ABOUT" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "CONTACT" })).toBeVisible();
+    // On mobile, nav links are in dropdown; on desktop, they're visible
+    if (await isMobileViewport(page)) {
+      // Mobile: verify dropdown trigger is present
+      await expect(page.getByRole("button", { name: /navigation menu/i })).toBeVisible();
+    } else {
+      // Desktop: verify all nav links are visible
+      await expect(page.getByRole("link", { name: "HOME" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "PROJECTS" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "SKILLS" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "ABOUT" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "CONTACT" })).toBeVisible();
+    }
   });
 
   test("navigation links work", async ({ page }) => {
@@ -38,10 +62,20 @@ test.describe("Smoke Tests", () => {
       { name: "HOME", expectedPath: "/" },
     ];
 
+    const isMobile = await isMobileViewport(page);
+
     for (const { name, expectedPath } of navTests) {
       // Start from homepage each iteration to avoid inter-test coupling
       await page.goto("/");
-      await page.getByRole("link", { name }).click();
+
+      if (isMobile) {
+        // Mobile: open dropdown, then click menuitem
+        await openMobileNavIfNeeded(page);
+        await page.getByRole("menuitem", { name }).click();
+      } else {
+        // Desktop: click link directly
+        await page.getByRole("link", { name }).click();
+      }
       await expect(page).toHaveURL(expectedPath);
     }
   });
