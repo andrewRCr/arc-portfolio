@@ -111,8 +111,9 @@ else
         # Matches: (Tasks 2.2-2.3), (Tasks 2.3.a-2.3.d), (Tasks 2.3.c-e)
         elif echo "$context_line" | grep -qE '\(Tasks [0-9]+(\.[0-9A-Za-z]+)+-[0-9A-Za-z]+(\.[0-9A-Za-z]+)*\)$'; then
             :
-        # Matches: (Tasks 2.3, 4.5), (Tasks 2.3.a, 4.5.b, 6.7)
-        elif echo "$context_line" | grep -qE '\(Tasks [0-9]+(\.[0-9A-Za-z]+)+(, [0-9]+(\.[0-9A-Za-z]+)+)+\)$'; then
+        # Matches: (Tasks 2.3, 4.5), (Tasks 2.3.a, 4.5.b, 6.7), (Tasks 4.3, 5.1.a-c)
+        # Each element can be simple (4.3, 5.1.a) or range (5.1.a-c, 2.3-2.5)
+        elif echo "$context_line" | grep -qE '\(Tasks [0-9]+(\.[0-9A-Za-z]+)+(-[0-9A-Za-z]+(\.[0-9A-Za-z]+)*)?(, [0-9]+(\.[0-9A-Za-z]+)+(-[0-9A-Za-z]+(\.[0-9A-Za-z]+)*)?)+\)$'; then
             :
         # Matches: (Task 7.2.c; planning), (Task 2.3.a; maintenance)
         elif echo "$context_line" | grep -qE '\(Task [0-9]+(\.[0-9A-Za-z]+)+; (planning|maintenance)\)$'; then

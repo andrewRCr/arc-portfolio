@@ -312,21 +312,20 @@ responsive styles.
         - Added `tests/mocks/use-media-query.ts` for reusable viewport mocking
         - **Deferred to Theme/Wallpaper work unit:** ThemeSwitcher, WallpaperSwitcher, contexts
 
-- [ ] **4.3 Cross-viewport visual verification**
+- [x] **4.3 Cross-viewport visual verification**
 
-    - [ ] **4.3.a Run full E2E suite on all device profiles**
-        - Desktop Chrome, Mobile Chrome, Tablet, Firefox
-        - Verify consistent rendering
+    - [x] **4.3.a Run full E2E suite on all device profiles**
+        - 88 passed across Desktop Chrome, Mobile Chrome, Tablet, Firefox
+        - 12 expected failures: touch target sizing tests (deferred to 5.1.d)
 
-    - [ ] **4.3.b Manual visual inspection**
-        - Check gaps and borders render correctly
-        - Verify transparency effect over wallpaper
-        - Confirm no visual regressions
+    - [x] **4.3.b Manual visual inspection**
+        - Gaps, borders, transparency verified in browser
 
-    - [ ] **4.3.c Test on actual phone hardware via ngrok**
-        - Set up ngrok tunnel to local dev server
-        - Test on physical iOS/Android device
-        - Verify touch interactions, viewport behavior, and visual rendering
+    - [x] **4.3.c Test on actual phone hardware via Cloudflare Tunnel**
+        - Tested on iPhone 16 Pro via cloudflared quick tunnel
+        - Touch interactions functional, viewport behavior correct, visual rendering consistent
+        - Design decision: keep consistent TWM aesthetic across viewports; mobile-specific adaptations
+          (nav dropdown, future theme switcher) provide targeted UX improvements
 
 ### **Phase 5:** Accessibility & Testing
 
@@ -334,21 +333,22 @@ responsive styles.
 
     **Goal:** Verify WCAG 2.1 AA compliance for all new components.
 
-    - [ ] **5.1.a Write vitest-axe tests for all new components**
-        - WindowContainer accessibility
-        - TopBar accessibility (heading structure, landmarks)
-        - FooterBar accessibility (link names, landmarks)
-        - Use `checkA11y()` helper from test-utils
+    - [x] **5.1.a Write vitest-axe tests for all new components**
+        - Already existed: WindowContainer, TopBar, FooterBar, Navigation, Hero, MobileNavigation,
+          ConditionalFrame, PageLayout, PageHeader, SectionHeader, WallpaperBackground, ThemeToggle
+        - Added: LayoutWrapper integration a11y test (assembled layout + landmark ordering)
 
-    - [ ] **5.1.b Test contrast over semi-transparent backgrounds**
-        - Extend foundation contrast tests
-        - Test text readability over wallpaper + transparency
-        - All 6 theme variants must pass
+    - [x] **5.1.b Test contrast over semi-transparent backgrounds**
+        - Added `alphaComposite()` utility to compute effective background color
+        - Created `WALLPAPER_GRADIENT` constant in `lib/theme/tokens/wallpaper.ts` (single source of truth)
+        - WallpaperBackground component now uses `buildWallpaperGradient()` from shared token
+        - Tests foreground on card (80% opacity) over all 3 gradient stops (accent, background, secondary)
+        - 18 new tests: 3 themes × 2 modes × 3 gradient stops; all pass WCAG AA 4.5:1
 
-    - [ ] **5.1.c Verify keyboard navigation**
-        - Tab through all interactive elements
-        - Prototype theme controls keyboard accessible
-        - Focus indicators visible
+    - [x] **5.1.c Verify keyboard navigation**
+        - Fixed: Projects page tabpanel attributes now conditional on `FEATURES.SHOW_MODS_TAB`
+        - Scrollable main content areas are keyboard-focusable by design (browser behavior for a11y)
+        - Tab navigation works correctly; focus indicators visible; arrow key scrolling works
 
     - [ ] **5.1.d Implement touch target sizing (44×44px minimum)**
         - **Deferred from Phase 4:** Touch targets require design decisions (spacing, footer height)

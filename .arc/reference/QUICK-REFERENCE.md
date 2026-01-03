@@ -228,6 +228,14 @@ npm test -- --testNamePattern="specific test name"
 npx markdownlint-cli2 --fix --no-globs .arc/path/to/file.md
 ```
 
+### Mobile Device Testing
+
+```bash
+# Expose local dev server via Cloudflare quick tunnel
+~/.local/bin/cloudflared tunnel --url http://localhost:3000
+# Generates random *.trycloudflare.com URL for mobile testing
+```
+
 ### Development Workflow
 
 ```bash
