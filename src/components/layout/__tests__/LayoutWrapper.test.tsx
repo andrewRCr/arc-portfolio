@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { render } from "@tests/test-utils";
+import { render, checkA11y } from "@tests/test-utils";
 import { LayoutWrapper } from "../LayoutWrapper";
 
 describe("LayoutWrapper", () => {
@@ -109,6 +109,43 @@ describe("LayoutWrapper", () => {
       expect(topBarWindow).not.toHaveAttribute("data-active");
       expect(mainWindow).not.toHaveAttribute("data-active");
       expect(footerWindow).toHaveAttribute("data-active", "true");
+    });
+  });
+
+  describe("Accessibility", () => {
+    it("has no accessibility violations in assembled layout", async () => {
+      const results = await checkA11y(
+        <LayoutWrapper>
+          <main>
+            <h1>Page Title</h1>
+            <p>Page content</p>
+          </main>
+        </LayoutWrapper>
+      );
+      expect(results).toHaveNoViolations();
+    });
+
+    it("has correct landmark structure (banner, main content, contentinfo)", () => {
+      render(
+        <LayoutWrapper>
+          <main>
+            <h1>Page Title</h1>
+            <p>Content</p>
+          </main>
+        </LayoutWrapper>
+      );
+
+      // Verify landmark ordering: banner first, then main, then contentinfo
+      const banner = screen.getByRole("banner");
+      const contentinfo = screen.getByRole("contentinfo");
+
+      expect(banner).toBeInTheDocument();
+      expect(contentinfo).toBeInTheDocument();
+
+      // Banner should appear before contentinfo in DOM order
+      expect(
+        banner.compareDocumentPosition(contentinfo) & Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy();
     });
   });
 });
