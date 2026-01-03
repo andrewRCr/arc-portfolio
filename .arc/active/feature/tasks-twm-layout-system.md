@@ -329,7 +329,7 @@ responsive styles.
 
 ### **Phase 5:** Accessibility & Testing
 
-- [ ] **5.1 Comprehensive accessibility testing**
+- [x] **5.1 Comprehensive accessibility testing**
 
     **Goal:** Verify WCAG 2.1 AA compliance for all new components.
 
@@ -350,12 +350,15 @@ responsive styles.
         - Scrollable main content areas are keyboard-focusable by design (browser behavior for a11y)
         - Tab navigation works correctly; focus indicators visible; arrow key scrolling works
 
-    - [ ] **5.1.d Implement touch target sizing (44×44px minimum)**
-        - **Deferred from Phase 4:** Touch targets require design decisions (spacing, footer height)
-        - Navigation links, TopBar branding, FooterBar icons currently undersized
-        - Use invisible padding pattern where possible (touch target > visual element)
-        - Evaluate layout impact and adjust spacing/heights as needed
-        - Update E2E touch target tests to pass
+    - [x] **5.1.d Implement touch target sizing (44×44px minimum)**
+        - TopBar and FooterBar heights unified at 48px (44px inner) for visual balance
+        - Created reusable `TouchTarget` wrapper component (`min-h-11 min-w-11`, `data-touch-target`)
+        - Navigation links: invisible padding via inner span (visual indicator stays compact)
+        - TopBar: branding link gets `min-h-11`; theme controls wrapped in `TouchTarget`
+        - FooterBar: social icons get `min-h-11 min-w-11` on anchor elements
+        - Dev tools nav hidden on tablet (`lg:flex` instead of `md:flex`)
+        - Hero margin reduced on phone (`mb-8 md:mb-12`) for tighter mobile layout
+        - All 3 tablet touch target E2E tests pass
 
 - [ ] **5.2 Visual regression baselines**
 

@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <div className="pl-0 md:pl-2 py-2 pb-4">
       <div className="border-l-2 border-primary pl-6">
-        <div className="space-y-4 mb-12">
+        <div className="space-y-4 mb-8 md:mb-12">
           <div className="space-y-2">
             <p className="text-xs font-mono text-muted-foreground">&gt; portfolio.init()</p>
 

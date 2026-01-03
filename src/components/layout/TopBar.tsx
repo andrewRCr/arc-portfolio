@@ -5,6 +5,7 @@ import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { WallpaperSwitcher } from "../WallpaperSwitcher";
+import { TouchTarget } from "../ui/TouchTarget";
 
 export interface TopBarProps {
   /** Whether this window is currently active (for touch devices) */
@@ -28,8 +29,10 @@ export interface TopBarProps {
  * ```
  */
 export function TopBar({ isActive, onActivate }: TopBarProps = {}) {
-  const { topBarHeight, windowBorderWidth, topBarContentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
-  const innerHeight = topBarHeight - windowBorderWidth * 2;
+  const { windowBorderWidth, topBarContentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
+  // Touch target evaluation: 48px total matches FooterBar for visual balance
+  // Original: topBarHeight (42) - windowBorderWidth * 2 = 38px
+  const innerHeight = 48 - windowBorderWidth * 2;
 
   return (
     <WindowContainer isActive={isActive} onActivate={onActivate}>
@@ -39,17 +42,23 @@ export function TopBar({ isActive, onActivate }: TopBarProps = {}) {
       >
         {/* Branding - links to home */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Link href="/" className="min-h-11 flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
           </Link>
           <span className="text-primary font-mono">&gt;_</span>
         </div>
 
         {/* Theme controls - temporary until ThemePicker is implemented */}
-        <div data-testid="theme-controls-placeholder" className="flex items-center gap-3">
-          <WallpaperSwitcher />
-          <ThemeSwitcher />
-          <ThemeToggle />
+        <div data-testid="theme-controls-placeholder" className="flex items-center">
+          <TouchTarget>
+            <WallpaperSwitcher />
+          </TouchTarget>
+          <TouchTarget>
+            <ThemeSwitcher />
+          </TouchTarget>
+          <TouchTarget>
+            <ThemeToggle />
+          </TouchTarget>
         </div>
       </header>
     </WindowContainer>

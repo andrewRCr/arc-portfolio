@@ -23,7 +23,7 @@ export function ThemeSwitcher() {
 
   return (
     <div className="flex items-center gap-2">
-      <label htmlFor="theme-select" className="text-sm text-muted-foreground">
+      <label htmlFor="theme-select" className="pl-2 text-sm text-muted-foreground">
         Theme:
       </label>
       <select

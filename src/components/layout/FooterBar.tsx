@@ -45,8 +45,10 @@ export interface FooterBarProps {
  * ```
  */
 export function FooterBar({ isActive, onActivate }: FooterBarProps = {}) {
-  const { footerHeight, windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
-  const innerHeight = footerHeight - windowBorderWidth * 2;
+  const { windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
+  // Touch target evaluation: 48px inner height for 44px touch targets with breathing room
+  // Original: footerHeight (36) - windowBorderWidth * 2 = 32px
+  const innerHeight = 48 - windowBorderWidth * 2;
   const isDev = process.env.NODE_ENV === "development";
 
   return (
@@ -67,7 +69,7 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps = {}) {
                 {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
                 aria-label={link.platform}
                 title={link.platform}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="min-h-11 min-w-11 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Icon size={18} aria-hidden="true" />
               </a>
@@ -78,7 +80,7 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps = {}) {
         {/* Right side: Dev links (dev-only) + Attribution */}
         <div className="flex items-center gap-3">
           {isDev && (
-            <nav aria-label="Developer tools" className="hidden md:flex items-center gap-2 font-mono text-xs">
+            <nav aria-label="Developer tools" className="hidden lg:flex items-center gap-2 font-mono text-xs">
               <span className="text-muted-foreground">dev:</span>
               <Link href="/dev/theme-debug" className="text-accent hover:text-accent/80 transition-colors">
                 [theme]

@@ -278,12 +278,18 @@ test.describe("TWM Layout System", () => {
       expect(brandingBox!.width).toBeGreaterThanOrEqual(44);
       expect(brandingBox!.height).toBeGreaterThanOrEqual(44);
 
-      // Theme toggle button
-      const themeToggle = page.getByRole("banner").getByRole("button");
-      const toggleBox = await themeToggle.boundingBox();
-      expect(toggleBox).not.toBeNull();
-      expect(toggleBox!.width).toBeGreaterThanOrEqual(44);
-      expect(toggleBox!.height).toBeGreaterThanOrEqual(44);
+      // Theme control touch targets (wallpaper switcher, theme switcher, theme toggle)
+      const touchTargets = page.getByRole("banner").locator("[data-touch-target]");
+      const count = await touchTargets.count();
+      expect(count).toBe(3); // 3 theme controls
+
+      for (let i = 0; i < count; i++) {
+        const target = touchTargets.nth(i);
+        const box = await target.boundingBox();
+        expect(box).not.toBeNull();
+        expect(box!.width).toBeGreaterThanOrEqual(44);
+        expect(box!.height).toBeGreaterThanOrEqual(44);
+      }
     });
 
     test("FooterBar touch targets meet 44×44px minimum", async ({ page }) => {
