@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { buildWallpaperGradient } from "@/lib/theme";
 
 /**
  * Props for the WallpaperBackground component.
@@ -34,20 +35,8 @@ export interface WallpaperBackgroundProps {
  * ```
  */
 export function WallpaperBackground({ imageSrc }: WallpaperBackgroundProps) {
-  // Theme-aware gradient using CSS custom properties
-  // Uses muted colors for subtle background that works with any theme
-  // Note: CSS variables store RGB triplets (e.g., "60 56 54"), not HSL
-  const gradientStyle = {
-    background: `linear-gradient(
-      135deg,
-      rgb(var(--accent)) 0%,
-      rgb(var(--background)) 50%,
-      rgb(var(--secondary)) 100%
-    )`,
-  };
-
   return (
-    <div className="fixed inset-0 z-[-1]" style={gradientStyle} aria-hidden="true">
+    <div className="fixed inset-0 z-[-1]" style={{ background: buildWallpaperGradient() }} aria-hidden="true">
       {imageSrc && <Image src={imageSrc} alt="" fill loading="lazy" className="object-cover" sizes="100vw" />}
     </div>
   );

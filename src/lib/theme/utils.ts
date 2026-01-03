@@ -164,3 +164,36 @@ export function meetsAANormalText(rgb1: string, rgb2: string): boolean {
   // fontSize 14 triggers normal text requirement (4.5:1)
   return ccc.isLevelAA(hex1, hex2, 14);
 }
+
+/**
+ * Parse RGB space-separated string to array of numbers.
+ * Example: "251 241 199" → [251, 241, 199]
+ */
+export function parseRgb(rgb: string): [number, number, number] {
+  const parts = rgb.trim().split(/\s+/).map(Number);
+  if (parts.length !== 3 || parts.some((n) => !Number.isFinite(n))) {
+    throw new Error(`Invalid RGB format: "${rgb}"`);
+  }
+  return parts as [number, number, number];
+}
+
+/**
+ * Alpha-composite two RGB colors.
+ * Simulates overlaying a semi-transparent foreground over a background.
+ *
+ * @param fgRgb - Foreground color (RGB string, e.g., "251 241 199")
+ * @param fgAlpha - Foreground opacity (0-1)
+ * @param bgRgb - Background color (RGB string)
+ * @returns Composited color as RGB string
+ */
+export function alphaComposite(fgRgb: string, fgAlpha: number, bgRgb: string): string {
+  const fg = parseRgb(fgRgb);
+  const bg = parseRgb(bgRgb);
+
+  const result = fg.map((fgChannel, i) => {
+    const composite = fgAlpha * fgChannel + (1 - fgAlpha) * bg[i];
+    return Math.round(Math.min(255, Math.max(0, composite)));
+  });
+
+  return result.join(" ");
+}

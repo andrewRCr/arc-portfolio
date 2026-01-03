@@ -19,6 +19,10 @@ export { DEFAULT_SPACING_TOKENS } from "./spacing";
 export type { ShadowTokens, ShadowTokenName } from "./shadows";
 export { DEFAULT_SHADOW_TOKENS_LIGHT, DEFAULT_SHADOW_TOKENS_DARK, SHADOW_OPACITY_THRESHOLDS } from "./shadows";
 
+// Wallpaper tokens
+export type { GradientStop } from "./wallpaper";
+export { WALLPAPER_GRADIENT, buildWallpaperGradient } from "./wallpaper";
+
 // Combined token interface
 export interface DesignTokens {
   colors: import("./colors").SemanticColorTokens;

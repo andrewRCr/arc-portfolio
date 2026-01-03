@@ -15,7 +15,8 @@
 import { describe, it, expect } from "vitest";
 import { themes } from "../index";
 import type { ThemeColors } from "../types";
-import { rgbToHex, getContrastRatio, meetsAANormalText } from "@/lib/theme/utils";
+import { rgbToHex, getContrastRatio, meetsAANormalText, alphaComposite } from "@/lib/theme/utils";
+import { DEFAULT_LAYOUT_TOKENS, WALLPAPER_GRADIENT } from "@/lib/theme";
 
 // Semantic foreground pairs to test - background token + its -foreground counterpart
 // NOTE: Decorative accents (accent-red/orange/green/blue/purple) are NOT tested here
@@ -90,6 +91,60 @@ describe("Theme Contrast Validation", () => {
 
                 expect(passes, `${label} contrast ratio ${ratio.toFixed(2)}:1 should be ≥ 4.5:1`).toBe(true);
               });
+            });
+          });
+        });
+      });
+    });
+  });
+});
+
+/**
+ * Semi-transparent Window Contrast Tests
+ *
+ * Tests contrast when text is rendered over semi-transparent card backgrounds
+ * that overlay the wallpaper gradient fallback.
+ *
+ * Uses actual tokens (windowOpacity, WALLPAPER_GRADIENT) so tests automatically
+ * update if configuration changes.
+ */
+describe("Transparency over Gradient Fallback", () => {
+  const { windowOpacity } = DEFAULT_LAYOUT_TOKENS;
+
+  Object.entries(themes).forEach(([themeName, theme]) => {
+    describe(`${theme.label} Theme`, () => {
+      (["light", "dark"] as const).forEach((mode) => {
+        describe(`${mode} mode`, () => {
+          const colors = theme[mode];
+
+          WALLPAPER_GRADIENT.stops.forEach(({ token, position }) => {
+            const label = `${token} (gradient ${position})`;
+
+            it(`foreground on card (${windowOpacity * 100}% opacity) over ${label}`, () => {
+              const cardColor = colors.card as string;
+              const wallpaperColor = colors[token] as string;
+              const foregroundColor = colors.foreground as string;
+
+              // Compute effective background: card at windowOpacity over wallpaper
+              const effectiveBg = alphaComposite(cardColor, windowOpacity, wallpaperColor);
+
+              const ratio = getContrastRatio(effectiveBg, foregroundColor);
+              const passes = meetsAANormalText(effectiveBg, foregroundColor);
+
+              if (!passes) {
+                console.log(
+                  `  FAIL: ${themeName}/${mode} transparency over ${label} - ratio: ${ratio.toFixed(2)}:1 (need 4.5:1)`
+                );
+                console.log(`    card: ${cardColor} @ ${windowOpacity * 100}%`);
+                console.log(`    wallpaper: ${wallpaperColor}`);
+                console.log(`    effective bg: ${effectiveBg} (${rgbToHex(effectiveBg)})`);
+                console.log(`    foreground: ${foregroundColor} (${rgbToHex(foregroundColor)})`);
+              }
+
+              expect(
+                passes,
+                `foreground over transparent card over ${label}: ${ratio.toFixed(2)}:1 should be ≥ 4.5:1`
+              ).toBe(true);
             });
           });
         });

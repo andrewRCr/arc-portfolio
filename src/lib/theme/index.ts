@@ -25,7 +25,7 @@ export type {
   DesignTokens,
 } from "./tokens";
 
-export { DEFAULT_LAYOUT_TOKENS, DEFAULT_SPACING_TOKENS } from "./tokens";
+export { DEFAULT_LAYOUT_TOKENS, DEFAULT_SPACING_TOKENS, WALLPAPER_GRADIENT, buildWallpaperGradient } from "./tokens";
 
 // Theme utilities
 export { applyThemeColors, getThemeColors } from "./utils";
