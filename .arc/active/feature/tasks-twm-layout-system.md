@@ -360,16 +360,47 @@ responsive styles.
         - Hero margin reduced on phone (`mb-8 md:mb-12`) for tighter mobile layout
         - All 3 tablet touch target E2E tests pass
 
-- [ ] **5.2 Visual regression baselines**
+- [ ] **5.2 Scroll affordance indicator**
+
+    **Goal:** Provide visual feedback when content extends beyond visible viewport.
+
+    - [ ] **5.2.a Write tests for useScrollFade hook**
+        - Test: no overflow → showFade: false
+        - Test: overflow at top → showFade: true
+        - Test: overflow scrolled to bottom → showFade: false
+        - Test: updates on scroll events
+        - Test: updates on resize (content/viewport changes)
+
+    - [ ] **5.2.b Implement useScrollFade hook**
+        - Detect if container has overflow (scrollHeight > clientHeight)
+        - Track scroll position with debounced handler
+        - Calculate whether at bottom (within threshold)
+        - Return `showFade` boolean and ref to attach
+        - Handle resize observer for dynamic content
+
+    - [ ] **5.2.c Create ScrollFade component with tests**
+        - Wrap scrollable content with fade overlay
+        - Gradient positioned at bottom, fades to transparent
+        - Uses theme-aware colors (card background → transparent)
+        - Only renders when `showFade` is true
+
+    - [ ] **5.2.d Integrate with main content area**
+        - Apply to scrollable main content in LayoutWrapper
+        - Verify behavior on Home, Projects, Project detail pages
+        - Test on mobile viewport (primary use case)
+        - E2E test for fade visibility/hide behavior
+        - All quality gates pass
+
+- [ ] **5.3 Visual regression baselines**
 
     **Goal:** Capture baseline screenshots for future regression testing.
 
-    - [ ] **5.2.a Create visual regression test file**
+    - [ ] **5.3.a Create visual regression test file**
         - Create `e2e/tests/visual-regression.spec.ts`
         - Screenshot each theme variant at each viewport
         - Desktop, Tablet, Mobile × 6 themes = 18 baselines
 
-    - [ ] **5.2.b Capture initial baselines**
+    - [ ] **5.3.b Capture initial baselines**
         - Run tests to generate baseline screenshots
         - Review baselines for correctness
         - Commit baselines to repo
