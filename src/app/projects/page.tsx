@@ -35,13 +35,13 @@ function ProjectsContent() {
       }
     >
       <div className="px-4">
-        {/* Tab Panels */}
+        {/* Projects content - tab panel attributes only when tabs enabled */}
         {currentTab === "software" && (
           <div
-            id="panel-software"
-            role="tabpanel"
-            aria-labelledby="tab-software"
-            tabIndex={0}
+            id={FEATURES.SHOW_MODS_TAB ? "panel-software" : undefined}
+            role={FEATURES.SHOW_MODS_TAB ? "tabpanel" : undefined}
+            aria-labelledby={FEATURES.SHOW_MODS_TAB ? "tab-software" : undefined}
+            tabIndex={FEATURES.SHOW_MODS_TAB ? 0 : undefined}
             className="space-y-6 py-4"
           >
             {/* Software Projects Grid */}
@@ -53,7 +53,8 @@ function ProjectsContent() {
           </div>
         )}
 
-        {currentTab === "mods" && (
+        {/* Mods panel - only rendered when tabs enabled */}
+        {FEATURES.SHOW_MODS_TAB && currentTab === "mods" && (
           <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6 py-4">
             {/* Mods Tab Intro */}
             <div className="space-y-3">
