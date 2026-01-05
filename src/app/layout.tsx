@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
+import { defaultTheme } from "@/data/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,6 +23,26 @@ export const metadata: Metadata = {
   description: SITE.metaDescription,
 };
 
+/**
+ * Blocking script to prevent FOUC (flash of unstyled content).
+ *
+ * Runs synchronously before paint to set the theme palette class on <html>.
+ * next-themes handles the light/dark mode class separately.
+ *
+ * Combined with CSS class variants (.remedy.dark, .rose-pine.light, etc.),
+ * this ensures correct theme colors render on first paint.
+ */
+const themeInitScript = `
+(function() {
+  try {
+    var palette = localStorage.getItem('arc-portfolio-theme') || '${defaultTheme}';
+    document.documentElement.classList.add(palette);
+  } catch (e) {
+    document.documentElement.classList.add('${defaultTheme}');
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,6 +50,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         style={{ backgroundColor: "rgb(var(--background))" }}

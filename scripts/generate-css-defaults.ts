@@ -1,15 +1,17 @@
 #!/usr/bin/env npx tsx
 /**
- * Generate CSS Default Theme Values
+ * Generate CSS Theme Definitions
  *
- * Reads the default theme definition and updates globals.css with the correct
- * CSS variable defaults. This prevents FOUC (flash of unstyled content) by
- * ensuring CSS defaults match the JS-applied default theme.
+ * Generates two sections in globals.css:
+ * 1. :root defaults - fallback values from default theme's dark mode
+ * 2. Theme class variants - all theme/mode combinations as CSS classes
+ *
+ * This eliminates FOUC by allowing a blocking script to set classes
+ * (e.g., `class="remedy dark"`) before React hydrates, with CSS handling
+ * the variable resolution instantly.
  *
  * Usage: npx tsx scripts/generate-css-defaults.ts
- *
- * The script updates the :root block in src/app/globals.css between the
- * AUTO-GENERATED markers.
+ *        npm run generate:css-defaults
  */
 
 import * as fs from "fs";
@@ -20,9 +22,13 @@ import { DEFAULT_LAYOUT_TOKENS } from "../src/lib/theme/tokens/layout";
 
 const GLOBALS_CSS_PATH = path.join(__dirname, "../src/app/globals.css");
 
-// Markers in globals.css that delimit the auto-generated section
+// Markers for :root defaults (inside :root block)
 const START_MARKER = "/* AUTO-GENERATED THEME DEFAULTS - DO NOT EDIT MANUALLY */";
 const END_MARKER = "/* END AUTO-GENERATED THEME DEFAULTS */";
+
+// Markers for theme class variants (after :root block)
+const VARIANTS_START_MARKER = "/* AUTO-GENERATED THEME VARIANTS - DO NOT EDIT MANUALLY */";
+const VARIANTS_END_MARKER = "/* END AUTO-GENERATED THEME VARIANTS */";
 
 /**
  * Layout tokens that should be exposed as CSS variables.
@@ -51,32 +57,36 @@ function generateLayoutCssVariables(): string {
 }
 
 /**
- * Generate CSS variable declarations from theme colors.
+ * Token categories for organizing CSS output.
  */
-function generateThemeCssVariables(themeColors: ThemeColors): string {
+const TOKEN_CATEGORIES: Record<string, (keyof ThemeColors)[]> = {
+  "Base colors": ["background", "foreground"],
+  "Card colors": ["card", "card-foreground"],
+  "Popover colors": ["popover", "popover-foreground"],
+  "Primary colors": ["primary", "primary-foreground"],
+  "Secondary colors": ["secondary", "secondary-foreground"],
+  "Muted colors": ["muted", "muted-foreground"],
+  "Accent colors": ["accent", "accent-foreground"],
+  "Decorative accents": ["accent-red", "accent-orange", "accent-green", "accent-blue", "accent-purple"],
+  "Destructive colors": ["destructive", "destructive-foreground"],
+  "UI elements": ["border", "border-strong", "input", "ring"],
+  "Shadow tokens": ["shadow-sm", "shadow-md", "shadow-lg"],
+};
+
+/**
+ * Generate CSS variable declarations from theme colors.
+ * @param themeColors - Theme color values
+ * @param indent - Indentation string (default 2 spaces for :root)
+ */
+function generateThemeCssVariables(themeColors: ThemeColors, indent = "  "): string {
   const lines: string[] = [];
 
-  // Group tokens by category for readability
-  const categories: Record<string, (keyof ThemeColors)[]> = {
-    "Base colors": ["background", "foreground"],
-    "Card colors": ["card", "card-foreground"],
-    "Popover colors": ["popover", "popover-foreground"],
-    "Primary colors": ["primary", "primary-foreground"],
-    "Secondary colors": ["secondary", "secondary-foreground"],
-    "Muted colors": ["muted", "muted-foreground"],
-    "Accent colors": ["accent", "accent-foreground"],
-    "Decorative accents": ["accent-red", "accent-orange", "accent-green", "accent-blue", "accent-purple"],
-    "Destructive colors": ["destructive", "destructive-foreground"],
-    "UI elements": ["border", "border-strong", "input", "ring"],
-    "Shadow tokens": ["shadow-sm", "shadow-md", "shadow-lg"],
-  };
-
-  for (const [category, tokens] of Object.entries(categories)) {
-    lines.push(`  /* ${category} */`);
+  for (const [category, tokens] of Object.entries(TOKEN_CATEGORIES)) {
+    lines.push(`${indent}/* ${category} */`);
     for (const token of tokens) {
       const value = themeColors[token];
       if (value !== undefined) {
-        lines.push(`  --${token}: ${value};`);
+        lines.push(`${indent}--${token}: ${value};`);
       }
     }
     lines.push("");
@@ -91,7 +101,27 @@ function generateThemeCssVariables(themeColors: ThemeColors): string {
 }
 
 /**
- * Update globals.css with generated theme defaults.
+ * Generate all theme class variants.
+ * Creates .{themeName}.dark and .{themeName}.light for each theme.
+ */
+function generateThemeVariants(): string {
+  const blocks: string[] = [];
+
+  for (const [themeName, theme] of Object.entries(themes)) {
+    // Dark mode variant
+    const darkVars = generateThemeCssVariables(theme.dark, "  ");
+    blocks.push(`.${themeName}.dark {\n${darkVars}\n}`);
+
+    // Light mode variant
+    const lightVars = generateThemeCssVariables(theme.light, "  ");
+    blocks.push(`.${themeName}.light {\n${lightVars}\n}`);
+  }
+
+  return blocks.join("\n\n");
+}
+
+/**
+ * Update globals.css with generated theme defaults and variants.
  */
 function updateGlobalsCss(): void {
   // Get the default theme's dark mode colors (dark mode is the preferred default)
@@ -104,15 +134,15 @@ function updateGlobalsCss(): void {
   const themeColors = theme.dark;
   const themeCssVariables = generateThemeCssVariables(themeColors);
   const layoutCssVariables = generateLayoutCssVariables();
+  const themeVariants = generateThemeVariants();
 
   // Read current globals.css
   let css = fs.readFileSync(GLOBALS_CSS_PATH, "utf-8");
 
-  // Check if markers exist
-  const hasMarkers = css.includes(START_MARKER) && css.includes(END_MARKER);
+  // === Update :root defaults ===
+  const hasDefaultMarkers = css.includes(START_MARKER) && css.includes(END_MARKER);
 
-  if (hasMarkers) {
-    // Replace content between markers
+  if (hasDefaultMarkers) {
     const startIndex = css.indexOf(START_MARKER);
     const endIndex = css.indexOf(END_MARKER) + END_MARKER.length;
 
@@ -135,9 +165,43 @@ ${layoutCssVariables}
     process.exit(1);
   }
 
+  // === Update theme variants ===
+  const hasVariantMarkers = css.includes(VARIANTS_START_MARKER) && css.includes(VARIANTS_END_MARKER);
+  const themeCount = Object.keys(themes).length;
+  const variantBlock = `${VARIANTS_START_MARKER}
+/* Generated: ${themeCount} themes × 2 modes = ${themeCount * 2} class variants */
+
+${themeVariants}
+
+${VARIANTS_END_MARKER}`;
+
+  if (hasVariantMarkers) {
+    // Replace existing variants section
+    const startIndex = css.indexOf(VARIANTS_START_MARKER);
+    const endIndex = css.indexOf(VARIANTS_END_MARKER) + VARIANTS_END_MARKER.length;
+
+    const before = css.slice(0, startIndex);
+    const after = css.slice(endIndex);
+
+    css = before + variantBlock + after;
+  } else {
+    // Insert variants section after :root block (before @layer base)
+    const layerBaseIndex = css.indexOf("@layer base");
+    if (layerBaseIndex !== -1) {
+      const before = css.slice(0, layerBaseIndex);
+      const after = css.slice(layerBaseIndex);
+      css = before + variantBlock + "\n\n" + after;
+    } else {
+      // Fallback: append to end
+      css = css + "\n\n" + variantBlock;
+    }
+  }
+
   // Write updated file
   fs.writeFileSync(GLOBALS_CSS_PATH, css, "utf-8");
-  console.log(`Updated ${GLOBALS_CSS_PATH} with ${defaultTheme} theme defaults and layout tokens`);
+  console.log(`Updated ${GLOBALS_CSS_PATH}:`);
+  console.log(`  - :root defaults from "${defaultTheme}" theme (dark mode)`);
+  console.log(`  - ${themeCount * 2} theme class variants (${themeCount} themes × 2 modes)`);
 }
 
 // Run the script

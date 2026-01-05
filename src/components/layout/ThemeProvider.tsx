@@ -1,46 +1,41 @@
 "use client";
 
 import * as React from "react";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
-import { themes } from "@/data/themes";
-import { applyThemeColors, getThemeColors } from "@/lib/theme";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ThemeName } from "@/data/themes";
 import { ThemeContextProvider, useThemeContext } from "@/contexts/ThemeContext";
 import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
 
 /**
- * ThemeColorApplier
+ * ThemePaletteSync
  *
- * Client component that applies theme colors based on current theme and mode.
- * Runs on mount and whenever theme/mode changes.
+ * Syncs the theme palette class on <html> when user changes themes.
+ * The blocking script in layout.tsx handles initial load; this handles runtime changes.
+ *
+ * CSS class variants (.remedy.dark, .rose-pine.light, etc.) handle the actual styling.
+ * next-themes handles the light/dark mode class separately.
  */
-function ThemeColorApplier() {
-  const { resolvedTheme } = useTheme();
+function ThemePaletteSync() {
   const { activeTheme } = useThemeContext();
-  const [mounted, setMounted] = React.useState(false);
+  const previousThemeRef = React.useRef<ThemeName | null>(null);
 
   React.useEffect(() => {
-    setMounted(true);
-  }, []);
+    const root = document.documentElement;
 
-  React.useEffect(() => {
-    if (!mounted) return;
-
-    // Get current theme based on activeTheme context
-    const currentTheme = themes[activeTheme];
-    if (!currentTheme) {
-      console.error("Theme not found:", activeTheme);
-      return;
+    // Remove previous theme class (if any) to avoid class accumulation
+    if (previousThemeRef.current && previousThemeRef.current !== activeTheme) {
+      root.classList.remove(previousThemeRef.current);
     }
 
-    // Determine if we're in dark mode
-    const isDark = resolvedTheme === "dark";
+    // Add current theme class (may already exist from blocking script on first load)
+    if (!root.classList.contains(activeTheme)) {
+      root.classList.add(activeTheme);
+    }
 
-    // Get and apply appropriate colors
-    const colors = getThemeColors(currentTheme, isDark ? "dark" : "light");
-    applyThemeColors(colors);
-  }, [mounted, resolvedTheme, activeTheme]);
+    previousThemeRef.current = activeTheme;
+  }, [activeTheme]);
 
   return null;
 }
@@ -50,7 +45,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
     <ThemeContextProvider>
       <WallpaperContextProvider>
         <NextThemesProvider {...props}>
-          <ThemeColorApplier />
+          <ThemePaletteSync />
           {children}
         </NextThemesProvider>
       </WallpaperContextProvider>
