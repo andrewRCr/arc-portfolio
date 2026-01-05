@@ -419,7 +419,7 @@ responsive styles.
         - Includes responsive breakpoint table and component reference
         - Decision: Keep as single document (~575 lines); reconsider splitting at ~800 lines
 
-- [ ] **6.2 Cleanup & DRY improvements**
+- [x] **6.2 Cleanup & DRY improvements**
 
     - [x] **6.2.a Scrollbar styling and layout token DRY refactor**
         - Implemented cross-browser scrollbar styling using OverlayScrollbars
@@ -431,15 +431,37 @@ responsive styles.
         - Files: `layout.ts`, `PageLayout.tsx`, `globals.css`, `generate-css-defaults.ts`,
           `SkillsSection.tsx`, `projects/page.tsx`
 
-    - [ ] **6.2.b Address `--nav-offset` browser-specific hack**
-        - Current: `globals.css:139-142` has browser-specific offset for nav alignment
-        - Chromium vs Firefox render font metrics differently
-        - Investigate root cause and find proper fix (normalize layout, font metrics, etc.)
+    - [x] **6.2.b Remove dead `--nav-offset` CSS variable**
+        - Investigation: Variable defined but never used (`var(--nav-offset)` had zero matches)
+        - Layout evolution made the hack obsolete
+        - Removed definition and Firefox `@supports` override block from `globals.css`
 
-    - [ ] **6.2.c Investigate flash of defaults on page load**
-        - FOUC observed when refreshing - CSS variables visible before JS theme applies
-        - Research idiomatic solutions (critical CSS, CSS-in-JS hydration, etc.)
-        - Implement fix or document as known limitation
+    - [x] **6.2.c Investigate flash of defaults on page load**
+        - Research completed via external-research-analyst agent
+        - Root cause: ThemeColorApplier runs after React hydration, creating gap
+        - Decision: CSS class variants approach (precompile all theme/mode combinations,
+          blocking script sets class before paint)
+
+    - [x] **6.2.d Implement CSS class variants for FOUC elimination**
+
+        - [x] **6.2.d.1 Extend generate-css-defaults.ts for all theme variants**
+            - Generates `.{theme}.{mode}` blocks for all themes (3 themes × 2 modes = 6 variants)
+            - `:root` fallback preserved (remedy dark)
+            - Script outputs to globals.css between auto-generated markers
+
+        - [x] **6.2.d.2 Add blocking script to layout.tsx**
+            - Inline `<script>` in `<head>` reads `arc-portfolio-theme` from localStorage
+            - Sets palette class on `<html>` before paint
+            - next-themes handles light/dark mode class separately
+
+        - [x] **6.2.d.3 Simplify ThemeColorApplier to ThemePaletteSync**
+            - Renamed component, removed JS-based CSS variable application
+            - Now just syncs className when user changes theme palette
+            - Removed unused `applyThemeColors`/`getThemeColors` from lib/theme
+
+        - [x] **6.2.d.4 Verify quality gates**
+            - Type check, lint, format, markdown lint, build, tests all pass
+            - Browser testing pending (user verification)
 
 - [ ] **6.3 Final quality validation**
 

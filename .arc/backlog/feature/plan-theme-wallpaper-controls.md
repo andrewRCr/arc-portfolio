@@ -243,6 +243,31 @@ testing against all theme/mode combinations during Task 3.5.c.
 - Per-theme preference persists across page loads
 - Mobile UI works correctly
 
+## Implementation Notes
+
+### FOUC Prevention Pattern
+
+The TWM Layout System implemented CSS class variants for theme palette FOUC elimination. The same
+pattern should apply to mode-dependent UI elements in the new controls:
+
+**Problem**: React components using `useTheme()` flash because they render a placeholder until
+hydration completes. Example: Sun icon → Moon icon flash when in dark mode.
+
+**Solution**: Use CSS class-based visibility instead of React conditional rendering:
+
+```tsx
+// No flash - CSS handles visibility based on <html class="dark">
+<Button>
+  <Sun className="dark:hidden" />
+  <Moon className="hidden dark:block" />
+</Button>
+```
+
+This works because next-themes' blocking script sets the `dark` class before paint. CSS selectors
+resolve instantly without waiting for React hydration.
+
+**Apply to**: Any UI element that should look different in light/dark mode (icons, labels, etc.)
+
 ## Open Questions
 
 - **Thumbnail generation**: Generate small preview thumbnails (~100px) or lazy-load full images?
