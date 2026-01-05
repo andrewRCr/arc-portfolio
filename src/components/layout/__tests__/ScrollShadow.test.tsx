@@ -1,20 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { ScrollShadow } from "../ScrollShadow";
 
-// Mock next-themes
-vi.mock("next-themes", () => ({
-  useTheme: vi.fn(() => ({ resolvedTheme: "light" })),
-}));
-
-import { useTheme } from "next-themes";
-const mockUseTheme = vi.mocked(useTheme);
-
 describe("ScrollShadow", () => {
-  beforeEach(() => {
-    mockUseTheme.mockReturnValue({ resolvedTheme: "light" } as ReturnType<typeof useTheme>);
-  });
-
   describe("Top Shadow", () => {
     it("renders with correct test id", () => {
       render(<ScrollShadow position="top" visible={true} />);
@@ -29,12 +17,11 @@ describe("ScrollShadow", () => {
       expect(shadow).toHaveClass("absolute", "top-0", "left-0", "right-0");
     });
 
-    it("has radial gradient background", () => {
+    it("has data attribute for CSS gradient styling", () => {
       render(<ScrollShadow position="top" visible={true} />);
 
       const shadow = screen.getByTestId("scroll-shadow-top");
-      expect(shadow.style.backgroundImage).toContain("radial-gradient");
-      expect(shadow.style.backgroundImage).toContain("farthest-side");
+      expect(shadow).toHaveAttribute("data-scroll-shadow", "top");
     });
   });
 
@@ -52,12 +39,11 @@ describe("ScrollShadow", () => {
       expect(shadow).toHaveClass("absolute", "bottom-0", "left-0", "right-0");
     });
 
-    it("has radial gradient background", () => {
+    it("has data attribute for CSS gradient styling", () => {
       render(<ScrollShadow position="bottom" visible={true} />);
 
       const shadow = screen.getByTestId("scroll-shadow-bottom");
-      expect(shadow.style.backgroundImage).toContain("radial-gradient");
-      expect(shadow.style.backgroundImage).toContain("farthest-side");
+      expect(shadow).toHaveAttribute("data-scroll-shadow", "bottom");
     });
   });
 
@@ -94,11 +80,12 @@ describe("ScrollShadow", () => {
       expect(shadow).toHaveClass("pointer-events-none");
     });
 
-    it("has specified height", () => {
+    it("has height class for shadow size", () => {
       render(<ScrollShadow position="bottom" visible={true} />);
 
       const shadow = screen.getByTestId("scroll-shadow-bottom");
-      expect(shadow.style.height).toBe("20px");
+      // h-5 = 20px (1.25rem)
+      expect(shadow).toHaveClass("h-5");
     });
   });
 
@@ -111,25 +98,15 @@ describe("ScrollShadow", () => {
     });
   });
 
-  describe("Theme-based Opacity", () => {
-    it("uses higher opacity in dark mode than light mode", () => {
-      // Extract opacity from gradient string
-      const extractOpacity = (gradient: string) => {
-        const match = gradient.match(/rgba\(0,\s*0,\s*0,\s*([\d.]+)\)/);
-        return match ? parseFloat(match[1]) : 0;
-      };
+  describe("CSS-based Theme Support", () => {
+    it("uses data attribute for CSS selector targeting", () => {
+      // The gradient styling is handled via CSS using [data-scroll-shadow] selectors
+      // with .dark class variations for theme-aware opacity.
+      // This test verifies the correct data attribute is set for CSS to work.
+      render(<ScrollShadow position="top" visible={true} />);
 
-      // Render in light mode
-      mockUseTheme.mockReturnValue({ resolvedTheme: "light" } as ReturnType<typeof useTheme>);
-      const { rerender } = render(<ScrollShadow position="top" visible={true} />);
-      const lightOpacity = extractOpacity(screen.getByTestId("scroll-shadow-top").style.backgroundImage);
-
-      // Render in dark mode
-      mockUseTheme.mockReturnValue({ resolvedTheme: "dark" } as ReturnType<typeof useTheme>);
-      rerender(<ScrollShadow position="top" visible={true} />);
-      const darkOpacity = extractOpacity(screen.getByTestId("scroll-shadow-top").style.backgroundImage);
-
-      expect(darkOpacity).toBeGreaterThan(lightOpacity);
+      const shadow = screen.getByTestId("scroll-shadow-top");
+      expect(shadow).toHaveAttribute("data-scroll-shadow", "top");
     });
   });
 });

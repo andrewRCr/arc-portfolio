@@ -1,7 +1,3 @@
-"use client";
-
-import { useTheme } from "next-themes";
-
 /**
  * ScrollShadow Component
  *
@@ -11,6 +7,9 @@ import { useTheme } from "next-themes";
  *
  * Positioned absolutely at the top or bottom of a relative container that
  * wraps the scrollable area (must be placed outside the scroll container).
+ *
+ * Uses CSS variables for theme-aware opacity to avoid hydration mismatches.
+ * The gradient opacity is defined in globals.css via --scroll-shadow-opacity.
  *
  * Use with `useScrollShadow` hook which provides visibility booleans:
  *
@@ -33,36 +32,17 @@ export interface ScrollShadowProps {
   visible: boolean;
 }
 
-/** Shadow height in pixels */
-const SHADOW_HEIGHT = 20;
-
-/** Shadow opacity by mode (0-1) - dark mode needs higher opacity for visibility */
-const SHADOW_OPACITY_LIGHT = 0.15;
-const SHADOW_OPACITY_DARK = 0.2;
-
 export function ScrollShadow({ position, visible }: ScrollShadowProps) {
-  const { resolvedTheme } = useTheme();
   const isTop = position === "top";
-  const isDark = resolvedTheme === "dark";
-  const opacity = isDark ? SHADOW_OPACITY_DARK : SHADOW_OPACITY_LIGHT;
-
-  // Radial gradient: intense at the edge, fading toward content
-  // farthest-side creates an ellipse that extends to the farthest side
-  const gradient = isTop
-    ? `radial-gradient(farthest-side at 50% 0%, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`
-    : `radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`;
 
   return (
     <div
       data-testid={`scroll-shadow-${position}`}
+      data-scroll-shadow={position}
       aria-hidden="true"
-      className={`pointer-events-none absolute left-0 right-0 transition-opacity duration-250 ${
+      className={`pointer-events-none absolute left-0 right-0 h-5 transition-opacity duration-250 ${
         isTop ? "top-0" : "bottom-0"
       } ${visible ? "opacity-100" : "opacity-0"}`}
-      style={{
-        height: SHADOW_HEIGHT,
-        backgroundImage: gradient,
-      }}
     />
   );
 }

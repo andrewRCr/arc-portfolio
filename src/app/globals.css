@@ -79,38 +79,58 @@
 :root {
   --radius: 0.625rem;
 
-  /* Theme colors - Default to Gruvbox Light (will be overridden by ThemeProvider) */
-  --background: 251 241 199;
-  --foreground: 60 56 54;
-  --card: 249 245 215;
-  --card-foreground: 60 56 54;
-  --popover: 249 245 215;
-  --popover-foreground: 60 56 54;
-  --primary: 121 116 14;
-  --primary-foreground: 251 241 199;
-  --secondary: 175 58 3;
-  --secondary-foreground: 251 241 199;
-  --muted: 235 219 178;
-  --muted-foreground: 102 92 84;
-  --accent: 104 157 106;
-  --accent-foreground: 60 56 54;
-  /* Decorative accents - no foreground pairs */
-  --accent-red: 157 0 6;
-  --accent-orange: 175 58 3;
-  --accent-green: 121 116 14;
-  --accent-blue: 7 102 120;
-  --accent-purple: 143 63 113;
-  --destructive: 157 0 6;
-  --destructive-foreground: 251 241 199;
-  --border: 213 196 161;
-  --border-strong: 189 174 147;
-  --input: 213 196 161;
-  --ring: 121 116 14;
+  /* AUTO-GENERATED THEME DEFAULTS - DO NOT EDIT MANUALLY */
+  /* Source: themes["remedy"].dark from src/data/themes */
+  /* Base colors */
+  --background: 53 43 42;
+  --foreground: 245 216 153;
+
+  /* Card colors */
+  --card: 61 50 49;
+  --card-foreground: 245 216 153;
+
+  /* Popover colors */
+  --popover: 61 50 49;
+  --popover-foreground: 245 216 153;
+
+  /* Primary colors */
+  --primary: 236 112 84;
+  --primary-foreground: 53 43 42;
+
+  /* Secondary colors */
+  --secondary: 240 198 116;
+  --secondary-foreground: 53 43 42;
+
+  /* Muted colors */
+  --muted: 61 50 49;
+  --muted-foreground: 171 155 124;
+
+  /* Accent colors */
+  --accent: 138 190 183;
+  --accent-foreground: 53 43 42;
+
+  /* Decorative accents */
+  --accent-red: 204 102 102;
+  --accent-orange: 235 104 75;
+  --accent-green: 181 189 104;
+  --accent-blue: 129 162 190;
+  --accent-purple: 178 148 187;
+
+  /* Destructive colors */
+  --destructive: 212 125 125;
+  --destructive-foreground: 53 43 42;
+
+  /* UI elements */
+  --border: 74 63 61;
+  --border-strong: 110 93 90;
+  --input: 61 50 49;
+  --ring: 235 104 75;
 
   /* Shadow tokens */
-  --shadow-sm: 0 1px 2px rgba(60, 56, 54, 0.08);
-  --shadow-md: 0 2px 8px rgba(60, 56, 54, 0.12);
-  --shadow-lg: 0 4px 16px rgba(60, 56, 54, 0.16);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+  /* END AUTO-GENERATED THEME DEFAULTS */
 
   /* HACK: Browser-specific navigation offset for vertical alignment.
      Chromium and Firefox render font metrics differently, causing nav misalignment.
@@ -147,6 +167,41 @@
 /* Environment Preview toggle for dev pages - when OFF, use full opacity */
 html[data-env-preview="false"] [data-window-container] {
   --window-bg-opacity: 1 !important;
+}
+
+/* Scroll shadow affordance gradients
+   CSS-only implementation avoids hydration mismatches from useTheme() */
+[data-scroll-shadow="top"] {
+  background-image: radial-gradient(
+    farthest-side at 50% 0%,
+    rgba(0, 0, 0, 0.15) 0%,
+    transparent 100%
+  );
+}
+
+[data-scroll-shadow="bottom"] {
+  background-image: radial-gradient(
+    farthest-side at 50% 100%,
+    rgba(0, 0, 0, 0.15) 0%,
+    transparent 100%
+  );
+}
+
+/* Dark mode: higher opacity for visibility on dark backgrounds */
+.dark [data-scroll-shadow="top"] {
+  background-image: radial-gradient(
+    farthest-side at 50% 0%,
+    rgba(0, 0, 0, 0.2) 0%,
+    transparent 100%
+  );
+}
+
+.dark [data-scroll-shadow="bottom"] {
+  background-image: radial-gradient(
+    farthest-side at 50% 100%,
+    rgba(0, 0, 0, 0.2) 0%,
+    transparent 100%
+  );
 }
 
 /* TWM Window Container border highlight
