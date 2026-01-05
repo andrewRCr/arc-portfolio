@@ -45,13 +45,12 @@ export function Navigation() {
       <ul className="flex gap-1 list-none items-center">
         {NAV_ITEMS.map((item) => (
           <li key={item.href}>
-            <Link
-              href={item.href}
-              className="min-h-11 lg:min-h-0 flex items-center"
-            >
+            <Link href={item.href} className="min-h-11 lg:min-h-0 flex items-center">
               <span
                 className={`px-2 py-1 text-sm font-mono font-semibold leading-[1.2] transition-colors ${
-                  isActive(item.href) ? "text-foreground bg-secondary/20" : "text-muted-foreground hover:text-foreground"
+                  isActive(item.href)
+                    ? "text-foreground bg-secondary/20"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {item.label}

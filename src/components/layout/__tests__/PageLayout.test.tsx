@@ -1,10 +1,24 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { checkA11y } from "@tests/test-utils";
 import { PageLayout } from "../PageLayout";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 
 describe("PageLayout", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "ResizeObserver",
+      vi.fn(() => ({
+        observe: vi.fn(),
+        unobserve: vi.fn(),
+        disconnect: vi.fn(),
+      }))
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
   describe("Content Rendering", () => {
     it("renders children in main element", () => {
       render(
@@ -74,6 +88,17 @@ describe("PageLayout", () => {
       );
 
       expect(screen.getByRole("main")).toHaveClass("overflow-auto");
+    });
+
+    it("renders scroll shadow elements", () => {
+      render(
+        <PageLayout>
+          <p>Content</p>
+        </PageLayout>
+      );
+
+      expect(screen.getByTestId("scroll-shadow-top")).toBeInTheDocument();
+      expect(screen.getByTestId("scroll-shadow-bottom")).toBeInTheDocument();
     });
   });
 

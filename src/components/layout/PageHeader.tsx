@@ -23,7 +23,7 @@ export interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, children }: PageHeaderProps) {
   return (
-    <div className="pb-3">
+    <div>
       {/* Title/subtitle if provided */}
       {title && (
         <div className="space-y-1">
@@ -36,7 +36,7 @@ export function PageHeader({ title, subtitle, children }: PageHeaderProps) {
       {children && <div className={title ? "mt-3" : ""}>{children}</div>}
 
       {/* Bottom separator */}
-      <div className="mt-3 border-b border-border/50" />
+      <div className="mt-3 mx-4 border-b border-border/50" />
     </div>
   );
 }

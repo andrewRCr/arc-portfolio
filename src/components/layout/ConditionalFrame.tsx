@@ -74,7 +74,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Content area - pages handle scroll via PageLayout */}
-        <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:pt-8 md:px-6 md:pb-6">{children}</div>
+        <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-0.5 md:pt-8 md:px-6">{children}</div>
       </div>
     </div>
   );

@@ -360,36 +360,39 @@ responsive styles.
         - Hero margin reduced on phone (`mb-8 md:mb-12`) for tighter mobile layout
         - All 3 tablet touch target E2E tests pass
 
-- [ ] **5.2 Scroll affordance indicator**
+- [x] **5.2 Scroll affordance indicator**
 
     **Goal:** Provide visual feedback when content extends beyond visible viewport.
 
-    - [ ] **5.2.a Write tests for useScrollFade hook**
-        - Test: no overflow → showFade: false
-        - Test: overflow at top → showFade: true
-        - Test: overflow scrolled to bottom → showFade: false
-        - Test: updates on scroll events
-        - Test: updates on resize (content/viewport changes)
+    **Note:** Initial gradient fade approach (linear gradient from card to transparent) failed
+    visually with TWM bordered container design - created hard "cut off" at window edges.
+    Pivoted to JS-based radial gradient scroll shadows.
 
-    - [ ] **5.2.b Implement useScrollFade hook**
-        - Detect if container has overflow (scrollHeight > clientHeight)
-        - Track scroll position with debounced handler
-        - Calculate whether at bottom (within threshold)
-        - Return `showFade` boolean and ref to attach
-        - Handle resize observer for dynamic content
+    - [x] **5.2.a Scroll boundary alignment**
+        - PageHeader: Removed `pb-3`, added `mx-4` to divider for edge inset
+        - PageLayout: Unconditional `pt-3 pb-4 px-2` content padding; `min-h-full` fix for bottom padding
+        - ConditionalFrame: `pb-0.5` for TUI frame border clearance (2px border width)
+        - Hero/Home: Adjusted padding to compensate for PageLayout changes
 
-    - [ ] **5.2.c Create ScrollFade component with tests**
-        - Wrap scrollable content with fade overlay
-        - Gradient positioned at bottom, fades to transparent
-        - Uses theme-aware colors (card background → transparent)
-        - Only renders when `showFade` is true
+    - [x] **5.2.b Implement useScrollShadow hook**
+        - Callback ref pattern for reliable DOM attachment
+        - ResizeObserver for dynamic content changes
+        - Tracks both top and bottom shadow visibility (10px threshold)
+        - 15 tests covering: no overflow, position states, scroll events, resize, cleanup
+        - File: `src/hooks/useScrollShadow.ts`
 
-    - [ ] **5.2.d Integrate with main content area**
-        - Apply to scrollable main content in LayoutWrapper
-        - Verify behavior on Home, Projects, Project detail pages
-        - Test on mobile viewport (primary use case)
-        - E2E test for fade visibility/hide behavior
-        - All quality gates pass
+    - [x] **5.2.c Create ScrollShadow component**
+        - Radial gradient shadows (intense at center, fades at edges)
+        - Theme-aware opacity (higher in dark mode for visibility)
+        - CSS transitions for smooth 250ms fade in/out
+        - 13 tests covering: positioning, visibility, styling, a11y, theme behavior
+        - File: `src/components/layout/ScrollShadow.tsx`
+
+    - [x] **5.2.d Integrate with PageLayout**
+        - Both top and bottom shadows rendered (always present, opacity-controlled)
+        - Shadows align with PageHeader divider (top) and TUI frame (bottom)
+        - Works correctly with semi-transparent backgrounds
+        - All quality gates pass (591 unit tests)
 
 - [ ] **5.3 Visual regression baselines**
 

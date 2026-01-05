@@ -40,9 +40,7 @@ export const WALLPAPER_GRADIENT = {
  * Uses CSS custom properties for theme-aware colors.
  */
 export function buildWallpaperGradient(): string {
-  const stops = WALLPAPER_GRADIENT.stops
-    .map((stop) => `rgb(var(--${stop.token})) ${stop.position}`)
-    .join(", ");
+  const stops = WALLPAPER_GRADIENT.stops.map((stop) => `rgb(var(--${stop.token})) ${stop.position}`).join(", ");
 
   return `linear-gradient(${WALLPAPER_GRADIENT.direction}, ${stops})`;
 }

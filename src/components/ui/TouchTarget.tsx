@@ -16,10 +16,7 @@ interface TouchTargetProps {
  */
 export function TouchTarget({ children, className = "" }: TouchTargetProps) {
   return (
-    <div
-      className={`min-h-11 min-w-11 flex items-center justify-center ${className}`}
-      data-touch-target
-    >
+    <div className={`min-h-11 min-w-11 flex items-center justify-center ${className}`} data-touch-target>
       {children}
     </div>
   );

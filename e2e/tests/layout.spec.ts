@@ -419,4 +419,93 @@ test.describe("TWM Layout System", () => {
       expect(heroFits).toBe(true);
     });
   });
+
+  test.describe("Scroll Shadow Affordance", () => {
+    test("shows bottom shadow when content overflows and at top", async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 667 });
+      await page.goto("/skills"); // Skills page has enough content to overflow
+
+      const bottomShadow = page.getByTestId("scroll-shadow-bottom");
+      const topShadow = page.getByTestId("scroll-shadow-top");
+
+      // Check if page has overflow
+      const hasOverflow = await page.evaluate(() => {
+        const main = document.querySelector("main");
+        return main ? main.scrollHeight > main.clientHeight : false;
+      });
+
+      if (hasOverflow) {
+        // At top: bottom shadow visible (opacity-100), top shadow hidden (opacity-0)
+        await expect(bottomShadow).toHaveClass(/opacity-100/);
+        await expect(topShadow).toHaveClass(/opacity-0/);
+      }
+    });
+
+    test("shows top shadow when scrolled down", async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 667 });
+      await page.goto("/skills");
+
+      const main = page.getByRole("main");
+      const topShadow = page.getByTestId("scroll-shadow-top");
+
+      const hasOverflow = await main.evaluate((el) => el.scrollHeight > el.clientHeight);
+
+      if (hasOverflow) {
+        // Scroll down partway
+        await main.evaluate((el) => {
+          el.scrollTo({ top: 100, behavior: "instant" });
+        });
+
+        // Top shadow should now be visible
+        await expect(topShadow).toHaveClass(/opacity-100/);
+      }
+    });
+
+    test("hides bottom shadow when scrolled to bottom", async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 667 });
+      await page.goto("/skills");
+
+      const main = page.getByRole("main");
+      const bottomShadow = page.getByTestId("scroll-shadow-bottom");
+
+      const hasOverflow = await main.evaluate((el) => el.scrollHeight > el.clientHeight);
+
+      if (hasOverflow) {
+        // Scroll to bottom
+        await main.evaluate((el) => {
+          el.scrollTo({ top: el.scrollHeight, behavior: "instant" });
+        });
+
+        // Bottom shadow should be hidden
+        await expect(bottomShadow).toHaveClass(/opacity-0/);
+      }
+    });
+
+    test("scroll shadows are decorative (aria-hidden)", async ({ page }) => {
+      await page.goto("/skills");
+
+      const topShadow = page.getByTestId("scroll-shadow-top");
+      const bottomShadow = page.getByTestId("scroll-shadow-bottom");
+
+      await expect(topShadow).toHaveAttribute("aria-hidden", "true");
+      await expect(bottomShadow).toHaveAttribute("aria-hidden", "true");
+    });
+
+    test("scroll shadows do not block interaction", async ({ page }) => {
+      await page.goto("/skills");
+
+      const topShadow = page.getByTestId("scroll-shadow-top");
+      const bottomShadow = page.getByTestId("scroll-shadow-bottom");
+
+      const topPointerEvents = await topShadow.evaluate((el) => {
+        return window.getComputedStyle(el).pointerEvents;
+      });
+      const bottomPointerEvents = await bottomShadow.evaluate((el) => {
+        return window.getComputedStyle(el).pointerEvents;
+      });
+
+      expect(topPointerEvents).toBe("none");
+      expect(bottomPointerEvents).toBe("none");
+    });
+  });
 });

@@ -143,9 +143,7 @@ describe("LayoutWrapper", () => {
       expect(contentinfo).toBeInTheDocument();
 
       // Banner should appear before contentinfo in DOM order
-      expect(
-        banner.compareDocumentPosition(contentinfo) & Node.DOCUMENT_POSITION_FOLLOWING
-      ).toBeTruthy();
+      expect(banner.compareDocumentPosition(contentinfo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
   });
 });
