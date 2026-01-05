@@ -394,40 +394,41 @@ responsive styles.
         - Works correctly with semi-transparent backgrounds
         - All quality gates pass (591 unit tests)
 
-- [ ] **5.3 Visual regression baselines**
+- [x] **5.3 Visual regression baselines**
 
     **Goal:** Capture baseline screenshots for future regression testing.
 
-    - [ ] **5.3.a Create visual regression test file**
-        - Create `e2e/tests/visual-regression.spec.ts`
-        - Screenshot each theme variant at each viewport
-        - Desktop, Tablet, Mobile × 6 themes = 18 baselines
+    - [x] **5.3.a Create visual regression test file**
+        - Created `e2e/tests/visual-regression.spec.ts`
+        - 18 theme/mode/viewport baselines (3 themes × 2 modes × 3 viewports)
+        - 3 page-specific baselines (projects, skills, background)
+        - Tests set localStorage before navigation for consistent theme application
 
-    - [ ] **5.3.b Capture initial baselines**
-        - Run tests to generate baseline screenshots
-        - Review baselines for correctness
-        - Commit baselines to repo
+    - [x] **5.3.b Capture initial baselines**
+        - 21 baseline screenshots generated in `e2e/tests/visual-regression.spec.ts-snapshots/`
+        - All tests pass with Desktop Chrome project
+        - Note: Baselines will need updating when theme/wallpaper controls change
 
 ### **Phase 6:** Documentation & Cleanup
 
-- [ ] **6.1 Update style guide documentation**
+- [x] **6.1 Update style guide documentation**
 
-    - [ ] **6.1.a Document TWM layout patterns**
-        - Window container usage
-        - Gap system and responsive breakpoints
-        - Transparency and layering approach
-        - Update `strategy-style-guide.md`
+    - [x] **6.1.a Document TWM layout patterns**
+        - Added "TWM Layout System" section to `strategy-style-guide.md` (v1.4)
+        - Documents layout tokens, WindowContainer, gap system, transparency/layering
+        - Includes responsive breakpoint table and component reference
+        - Decision: Keep as single document (~575 lines); reconsider splitting at ~800 lines
 
 - [ ] **6.2 Final quality validation**
 
-    - [ ] **6.2.a Run complete quality gates**
-        - Type check: `npm run type-check`
-        - Lint: `npm run lint`
-        - Format: `npm run format:check`
-        - Markdown lint: `npm run lint:md`
-        - Build: `npm run build`
-        - Unit tests: `npm test`
-        - E2E tests: `npm run test:e2e`
+    - [x] **6.2.a Run complete quality gates**
+        - Type check: zero errors ✓
+        - Lint: zero violations ✓
+        - Format: all files pass ✓
+        - Markdown lint: zero violations ✓
+        - Build: success ✓
+        - Unit tests: 591 passed ✓
+        - E2E tests: 111 passed, 42 skipped (visual regression Desktop-only) ✓
 
     - [ ] **6.2.b Design review with visual-design-reviewer agent**
         - Validate visual consistency across pages

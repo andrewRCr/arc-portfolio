@@ -1,9 +1,9 @@
 # Strategy: Style Guide
 
-**Version:** 1.3 | **Updated:** 2026-01-01
+**Version:** 1.4 | **Updated:** 2026-01-05
 
 This document outlines the style guide for arc-portfolio, including design token conventions, the
-shadow-based elevation model, and visual guidelines.
+shadow-based elevation model, TWM layout system, and visual guidelines.
 
 ## Table of Contents
 
@@ -11,10 +11,12 @@ shadow-based elevation model, and visual guidelines.
 2. [Semantic vs Decorative Tokens](#semantic-vs-decorative-tokens)
 3. [Surface Type Semantics](#surface-type-semantics)
 4. [Shadow-Based Elevation](#shadow-based-elevation)
-5. [Interactive States](#interactive-states)
-6. [Button Variants](#button-variants)
-7. [Focus Indicator Strategy](#focus-indicator-strategy)
-8. [Extending the Token System](#extending-the-token-system)
+5. [TWM Layout System](#twm-layout-system)
+6. [Interactive States](#interactive-states)
+7. [Button Variants](#button-variants)
+8. [Focus Indicator Strategy](#focus-indicator-strategy)
+9. [shadcn/ui Component Usage](#shadcnui-component-usage)
+10. [Extending the Token System](#extending-the-token-system)
 
 ---
 
@@ -217,6 +219,138 @@ These thresholds are enforced via automated tests.
 **Optional fallback**: Themes MAY define `popover` slightly lighter than `card` if shadows alone
 don't provide sufficient visual separation (especially in dark themes). This is a per-theme
 decision, not a system requirement.
+
+---
+
+## TWM Layout System
+
+arc-portfolio uses a **Tiling Window Manager (TWM)** aesthetic with a three-window layout structure.
+This section documents the layout tokens, window containers, and responsive behavior.
+
+### Layout Overview
+
+The layout consists of three stacked windows over a wallpaper background:
+
+```
+┌─────────────────────────────────────────┐
+│              TopBar (header)            │  ← Fixed height
+├─────────────────────────────────────────┤
+│                                         │
+│           Main Content                  │  ← Flexible, scrollable
+│                                         │
+├─────────────────────────────────────────┤
+│              FooterBar                  │  ← Fixed height
+└─────────────────────────────────────────┘
+```
+
+Windows are separated by consistent **gaps** that reveal the wallpaper background behind.
+
+### Layout Tokens
+
+Layout tokens are defined in `src/lib/theme/tokens/layout.ts` and control window appearance:
+
+| Token                   | Default | Purpose                                    |
+| ----------------------- | ------- | ------------------------------------------ |
+| `windowGap`             | 8px     | Gap between windows and from viewport edge |
+| `windowBorderWidth`     | 2px     | Border width for window containers         |
+| `windowOpacity`         | 0.8     | Background opacity for semi-transparency   |
+| `topBarHeight`          | 42px    | Fixed height for header window             |
+| `footerHeight`          | 36px    | Fixed height for footer window             |
+| `contentMaxWidth`       | 1152px  | Max width for main page content            |
+| `topBarContentMaxWidth` | 1200px  | Max width for TopBar inner content         |
+
+Additional tokens control navigation gap positioning in the TUI frame border:
+
+- `navGapHalf`, `navGapHalfMobile`, `navHeight`, `navGapDepth`
+
+### WindowContainer Component
+
+`WindowContainer` is the reusable wrapper for TWM windows:
+
+```tsx
+<WindowContainer className="p-4">
+  <h1>Window Content</h1>
+</WindowContainer>
+```
+
+**Styling characteristics:**
+
+- Border width from `windowBorderWidth` token (2px default)
+- Semi-transparent background via `windowOpacity` token (80% default)
+- `border-border-strong` color (stronger than standard border)
+- `backdrop-blur-lg` for depth effect through wallpaper
+- Square corners (no border-radius) for TWM aesthetic
+- Hover state: border changes to primary color (desktop)
+- Active state: touch devices use `isActive` prop for highlight
+
+### Gap System
+
+Windows use consistent gaps defined by `windowGap`:
+
+```tsx
+// LayoutWrapper applies gaps via inline styles
+<div style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}>
+```
+
+The gap serves two purposes:
+
+1. **Visual separation** between windows
+2. **Wallpaper visibility** through the gaps (depth cue)
+
+### Transparency and Layering
+
+The TWM layout uses transparency for depth perception:
+
+| Layer              | Opacity | Purpose                               |
+| ------------------ | ------- | ------------------------------------- |
+| Wallpaper          | 100%    | Full opacity background               |
+| Window backgrounds | 80%     | Semi-transparent, wallpaper visible   |
+| Content            | 100%    | Full opacity for readability          |
+
+The `backdrop-blur-lg` on windows creates a frosted glass effect, ensuring content remains
+readable while maintaining the layered aesthetic.
+
+**Why 80% opacity?** Higher values (85-90%) make the wallpaper less visible. Lower values
+compromise text readability. 80% balances both concerns.
+
+### Responsive Breakpoints
+
+The layout uses Tailwind's default breakpoints:
+
+| Breakpoint | Width  | Viewport   | Layout Adaptations                    |
+| ---------- | ------ | ---------- | ------------------------------------- |
+| Default    | < 640  | Phone      | Single-column, dropdown nav           |
+| `sm`       | 640px  | Small      | Minor spacing adjustments             |
+| `md`       | 768px  | Tablet     | Horizontal nav, larger touch targets  |
+| `lg`       | 1024px | Desktop    | Full layout, hover states             |
+| `xl`       | 1280px | Wide       | Content max-width constraint applies  |
+
+**Key responsive behaviors:**
+
+- **Phone**: Navigation collapses to dropdown, windows fill viewport width
+- **Tablet**: Horizontal navigation, 44×44px touch targets enforced
+- **Desktop**: Full hover effects, standard interaction patterns
+
+### LayoutWrapper Usage
+
+`LayoutWrapper` is the top-level layout component:
+
+```tsx
+// In root layout or page wrapper
+<LayoutWrapper>
+  <PageLayout title="Projects">
+    {/* Page content */}
+  </PageLayout>
+</LayoutWrapper>
+```
+
+**Components:**
+
+- `LayoutWrapper` - Orchestrates three-window structure
+- `WindowContainer` - Reusable window wrapper
+- `TopBar` - Header with branding and theme controls
+- `FooterBar` - Footer with social links
+- `WallpaperBackground` - Full-viewport background image
 
 ---
 
