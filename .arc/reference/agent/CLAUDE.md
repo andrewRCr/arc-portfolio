@@ -107,12 +107,12 @@ This is typically invoked via slash command when the user needs to step away bri
 
 - None currently configured
 
-**Available but disabled by default (request if needed):**
+**Available but disabled by default (enable per-use, then disable):**
 
-- **Playwright** - Browser automation and testing
+- **Playwright** - Browser automation and testing (required for visual-design-reviewer agent)
 
-These MCPs consume significant tokens when enabled, so they're disabled by default. If you have a legitimate need
-(debugging UI issues, testing browser interactions, etc.), ask the user to enable them. Don't assume availability.
+Playwright consumes significant tokens just being enabled, so it's disabled by default. Enable it when needed
+(design reviews, UI debugging), then disable after use. Ask user to enable before invoking visual-design-reviewer.
 
 ## Sub-Agent Availability
 
@@ -135,3 +135,33 @@ These MCPs consume significant tokens when enabled, so they're disabled by defau
 **Why this matters:** The external-research-analyst agent can autonomously perform multiple fetches, synthesize
 information, and handle expanding research scope. Using it for broader research tasks is more efficient than
 sequential WebFetch calls in the main conversation.
+
+---
+
+**Visual Design Reviewer** - Available for comprehensive UI/UX design reviews using Playwright.
+
+**Prerequisites:**
+
+- ⚠️ **Ask user to enable Playwright MCP** before invoking (disabled by default due to token cost)
+- Dev server must be running (`npm run dev` at `http://localhost:3000`)
+- Remind user to disable Playwright MCP after review completes
+
+**When to use:**
+
+- ✅ Design review of UI changes before merging
+- ✅ Verifying visual consistency across pages
+- ✅ Testing responsive design across viewports (desktop/tablet/mobile)
+- ✅ Accessibility compliance checks (WCAG 2.1 AA)
+- ✅ Interactive state verification (hover, focus, active)
+
+**When NOT to use:**
+
+- ❌ Pure code review without visual component
+- ❌ Backend-only changes
+- ❌ When Playwright MCP is not enabled
+
+**Project-specific context to include in prompt:**
+
+- Dev server URL: `http://localhost:3000`
+- Style guides: `.arc/reference/strategies/project/style/strategy-visual-design-principles.md`
+- Pages to review: `/`, `/projects`, `/skills`, `/about`, `/contact`

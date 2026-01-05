@@ -82,6 +82,10 @@ npm run build
 
 # Start production server (after build)
 npm run start
+
+# Regenerate CSS theme defaults (after modifying theme tokens)
+# Auto-runs on build, but run manually after editing scripts/generate-css-defaults.ts
+npm run generate:css-defaults
 ```
 
 ### Type Checking
