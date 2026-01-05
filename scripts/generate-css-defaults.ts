@@ -16,6 +16,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { themes, defaultTheme } from "../src/data/themes";
 import type { ThemeColors } from "../src/data/themes/types";
+import { DEFAULT_LAYOUT_TOKENS } from "../src/lib/theme/tokens/layout";
 
 const GLOBALS_CSS_PATH = path.join(__dirname, "../src/app/globals.css");
 
@@ -24,9 +25,35 @@ const START_MARKER = "/* AUTO-GENERATED THEME DEFAULTS - DO NOT EDIT MANUALLY */
 const END_MARKER = "/* END AUTO-GENERATED THEME DEFAULTS */";
 
 /**
+ * Layout tokens that should be exposed as CSS variables.
+ * Maps token name to CSS variable name.
+ */
+const LAYOUT_TOKENS_TO_CSS: Record<string, string> = {
+  contentPaddingY: "--content-padding-y",
+  contentPaddingX: "--content-padding-x",
+};
+
+/**
+ * Generate CSS variable declarations from layout tokens.
+ */
+function generateLayoutCssVariables(): string {
+  const lines: string[] = [];
+  lines.push("  /* Layout tokens */");
+
+  for (const [tokenName, cssVar] of Object.entries(LAYOUT_TOKENS_TO_CSS)) {
+    const value = DEFAULT_LAYOUT_TOKENS[tokenName as keyof typeof DEFAULT_LAYOUT_TOKENS];
+    if (value !== undefined) {
+      lines.push(`  ${cssVar}: ${value}px;`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
+/**
  * Generate CSS variable declarations from theme colors.
  */
-function generateCssVariables(themeColors: ThemeColors): string {
+function generateThemeCssVariables(themeColors: ThemeColors): string {
   const lines: string[] = [];
 
   // Group tokens by category for readability
@@ -75,7 +102,8 @@ function updateGlobalsCss(): void {
   }
 
   const themeColors = theme.dark;
-  const cssVariables = generateCssVariables(themeColors);
+  const themeCssVariables = generateThemeCssVariables(themeColors);
+  const layoutCssVariables = generateLayoutCssVariables();
 
   // Read current globals.css
   let css = fs.readFileSync(GLOBALS_CSS_PATH, "utf-8");
@@ -93,7 +121,9 @@ function updateGlobalsCss(): void {
 
     const generatedBlock = `${START_MARKER}
   /* Source: themes["${defaultTheme}"].dark from src/data/themes */
-${cssVariables}
+${themeCssVariables}
+
+${layoutCssVariables}
   ${END_MARKER}`;
 
     css = before + generatedBlock + after;
@@ -107,7 +137,7 @@ ${cssVariables}
 
   // Write updated file
   fs.writeFileSync(GLOBALS_CSS_PATH, css, "utf-8");
-  console.log(`Updated ${GLOBALS_CSS_PATH} with ${defaultTheme} theme defaults`);
+  console.log(`Updated ${GLOBALS_CSS_PATH} with ${defaultTheme} theme defaults and layout tokens`);
 }
 
 // Run the script

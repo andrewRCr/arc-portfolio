@@ -42,7 +42,7 @@ function ProjectsContent() {
             role={FEATURES.SHOW_MODS_TAB ? "tabpanel" : undefined}
             aria-labelledby={FEATURES.SHOW_MODS_TAB ? "tab-software" : undefined}
             tabIndex={FEATURES.SHOW_MODS_TAB ? 0 : undefined}
-            className="space-y-6 py-4"
+            className="space-y-6"
           >
             {/* Software Projects Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -55,7 +55,7 @@ function ProjectsContent() {
 
         {/* Mods panel - only rendered when tabs enabled */}
         {FEATURES.SHOW_MODS_TAB && currentTab === "mods" && (
-          <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6 py-4">
+          <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6">
             {/* Mods Tab Intro */}
             <div className="space-y-3">
               <p className="text-foreground">

@@ -419,18 +419,34 @@ responsive styles.
         - Includes responsive breakpoint table and component reference
         - Decision: Keep as single document (~575 lines); reconsider splitting at ~800 lines
 
-- [ ] **6.2 Final quality validation**
+- [ ] **6.2 Cleanup & DRY improvements**
 
-    - [x] **6.2.a Run complete quality gates**
-        - Type check: zero errors ✓
-        - Lint: zero violations ✓
-        - Format: all files pass ✓
-        - Markdown lint: zero violations ✓
-        - Build: success ✓
-        - Unit tests: 591 passed ✓
-        - E2E tests: 111 passed, 42 skipped (visual regression Desktop-only) ✓
+    - [x] **6.2.a Scrollbar styling and layout token DRY refactor**
+        - Implemented cross-browser scrollbar styling using OverlayScrollbars
+        - Created `contentPaddingY` and `contentPaddingX` layout tokens (single source of truth)
+        - Extended `generate-css-defaults.ts` to auto-generate layout tokens as CSS variables
+        - Scrollbar colors now theme-aware via `rgb(var(--border-strong) / 0.5)` etc.
+        - Removed redundant page-level padding (SkillsSection `py-2`, projects `py-4`)
+        - Fixed PageLayout header/content padding separation
+        - Files: `layout.ts`, `PageLayout.tsx`, `globals.css`, `generate-css-defaults.ts`,
+          `SkillsSection.tsx`, `projects/page.tsx`
 
-    - [ ] **6.2.b Design review with visual-design-reviewer agent**
+    - [ ] **6.2.b Address `--nav-offset` browser-specific hack**
+        - Current: `globals.css:139-142` has browser-specific offset for nav alignment
+        - Chromium vs Firefox render font metrics differently
+        - Investigate root cause and find proper fix (normalize layout, font metrics, etc.)
+
+    - [ ] **6.2.c Investigate flash of defaults on page load**
+        - FOUC observed when refreshing - CSS variables visible before JS theme applies
+        - Research idiomatic solutions (critical CSS, CSS-in-JS hydration, etc.)
+        - Implement fix or document as known limitation
+
+- [ ] **6.3 Final quality validation**
+
+    - [ ] **6.3.a Run complete quality gates**
+        - Type check, lint, format, markdown lint, build, unit tests, E2E tests
+
+    - [ ] **6.3.b Design review with visual-design-reviewer agent**
         - Validate visual consistency across pages
         - Verify interactive states (hover, focus, active)
         - Assess mobile adaptation quality

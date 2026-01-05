@@ -110,6 +110,24 @@ export interface LayoutTokens {
   contentMaxWidth: number;
 
   /**
+   * Vertical padding for scrollable page content area.
+   *
+   * **Default:** 28 (pixels)
+   * **Usage:** PageLayout top/bottom padding, scrollbar track alignment
+   * **CSS Variable:** --content-padding-y (auto-generated)
+   */
+  contentPaddingY: number;
+
+  /**
+   * Horizontal padding for scrollable page content area.
+   *
+   * **Default:** 8 (pixels)
+   * **Usage:** PageLayout left/right padding
+   * **CSS Variable:** --content-padding-x (auto-generated)
+   */
+  contentPaddingX: number;
+
+  /**
    * Maximum width for TopBar inner content.
    *
    * **Default:** 1400 (pixels) - slightly wider than main content
@@ -134,6 +152,8 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   navHeight: 28,
   navGapDepth: 3,
   contentMaxWidth: 1152, // Tailwind max-w-6xl equivalent (72rem)
+  contentPaddingY: 28, // CSS variable: --content-padding-y (auto-generated)
+  contentPaddingX: 8, // CSS variable: --content-padding-x (auto-generated)
   topBarContentMaxWidth: 1200, // Wider than content for visual hierarchy
 };
 
