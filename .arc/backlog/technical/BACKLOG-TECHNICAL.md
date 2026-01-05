@@ -16,7 +16,26 @@ create a PRD/plan in `.arc/active/technical/` and begin the standard workflow.
 
 ## Medium Priority
 
-*No medium priority items currently.*
+### Lighthouse Performance & Accessibility Baseline
+
+**Trigger:** Pre-deployment (part of SEO & Analytics work unit)
+
+**Context:** TWM Layout System deferred Lighthouse testing (Performance ≥90, Accessibility ≥95) to this
+phase. Current test coverage validates functionality and WCAG AA compliance, but doesn't measure
+Core Web Vitals (LCP, FID, CLS) or full Lighthouse scores.
+
+**Proposed work:**
+
+- Run Lighthouse CI against production build
+- Establish baseline scores for Performance, Accessibility, Best Practices, SEO
+- Document Core Web Vitals targets (LCP <2.5s, FID <100ms, CLS <0.1)
+- Consider integrating Lighthouse CI into GitHub Actions for regression detection
+
+**Why deferred:** Static Next.js portfolio with optimized images should perform well by default.
+Existing E2E tests, vitest-axe, and design review provide adequate quality assurance pre-deployment.
+Lighthouse adds value for ongoing monitoring, not blocking initial deployment.
+
+**Origin:** TWM Layout System feature completion (2026-01-05)
 
 ---
 

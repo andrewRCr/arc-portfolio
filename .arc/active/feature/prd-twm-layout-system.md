@@ -1,8 +1,9 @@
 # PRD: Tiling Window Manager (TWM) Layout System
 
 **Type:** Feature
-**Status:** In Progress
+**Status:** Complete
 **Created:** 2025-10-25
+**Completed:** 2026-01-05
 
 ---
 
@@ -346,13 +347,12 @@ This feature will be considered successful when:
 
 - ~~**Content spacing tokens**~~: RESOLVED - Foundation work includes spacing token audit with consolidation plan.
   Semantic tokens (`CONTENT_PADDING`, `SECTION_GAP`, etc.) defined and documented.
-- **Browser-specific nav offset hack**: globals.css contains a `--nav-offset` variable with browser-specific overrides
-  (Chromium vs Firefox) to fix navigation vertical alignment. Investigate root cause and eliminate the hack by
-  normalizing layout (proper flexbox/positioning, consistent line-height/font rendering). (Fix during layout rework)
+- ~~**Browser-specific nav offset hack**~~: RESOLVED - Variable was dead code (defined but never used). Removed
+  `--nav-offset` definition and Firefox `@supports` override block in Task 6.2.b.
 - ~~**Top bar width**~~: RESOLVED - Full-width with consistent gaps matching windows below.
 - ~~**Window split for projects page**~~: RESOLVED - Not compatible with design. Body content surface area at premium.
-- **Mobile layout strategy**: Does collapsed single-column with gaps maintain aesthetic effectively, or is
-  traditional mobile layout required? (Decide during implementation)
+- ~~**Mobile layout strategy**~~: RESOLVED - Collapsed single-column with gaps maintains aesthetic effectively.
+  Mobile/tablet layouts work well with adapted spacing and touch targets.
 - ~~**Gap tuning**~~: RESOLVED - 8px gaps work well with current design.
 - ~~**Border visibility**~~: RESOLVED - 2px borders with `border-strong` token provide good contrast.
 - ~~**Window hover effects**~~: RESOLVED - Implemented. Hover changes border to primary color.
@@ -362,8 +362,8 @@ This feature will be considered successful when:
 - ~~**ThemeSwitcher cleanup**~~: DEFERRED to Theme & Wallpaper Control System feature. Prototype remains for dev use.
 - ~~**Initial theme selection**~~: RESOLVED - Foundation work defines 3 themes: Gruvbox (warm), Rose Pine (cool),
   Remedy (amber/gold). All include light/dark variants with WCAG AA validated contrast.
-- **High contrast mode**: Should we include dedicated high contrast theme option, or rely on sufficient contrast in
-  standard themes? (Decide during implementation)
+- ~~**High contrast mode**~~: RESOLVED - Rely on sufficient contrast in standard themes. All 6 theme variants
+  validated for WCAG AA compliance (4.5:1 contrast). Can revisit if user feedback indicates need.
 - ~~**Theme switch animation duration**~~: DESCOPED - Theme switch animations not implemented (see requirement 15).
 - ~~**Footer window necessity**~~: RESOLVED - Keep as-is. Three-window layout works well.
 - ~~**Hero component fate**~~: RESOLVED - Abandon simplification. Space constraints don't benefit from this.
