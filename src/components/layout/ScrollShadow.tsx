@@ -38,7 +38,7 @@ const SHADOW_HEIGHT = 20;
 
 /** Shadow opacity by mode (0-1) - dark mode needs higher opacity for visibility */
 const SHADOW_OPACITY_LIGHT = 0.15;
-const SHADOW_OPACITY_DARK = 0.35;
+const SHADOW_OPACITY_DARK = 0.2;
 
 export function ScrollShadow({ position, visible }: ScrollShadowProps) {
   const { resolvedTheme } = useTheme();
@@ -49,8 +49,8 @@ export function ScrollShadow({ position, visible }: ScrollShadowProps) {
   // Radial gradient: intense at the edge, fading toward content
   // farthest-side creates an ellipse that extends to the farthest side
   const gradient = isTop
-    ? `radial-gradient(farthest-side at 50% 25%, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`
-    : `radial-gradient(farthest-side at 50% 75%, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`;
+    ? `radial-gradient(farthest-side at 50% 0%, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`
+    : `radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`;
 
   return (
     <div
