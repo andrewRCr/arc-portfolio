@@ -465,8 +465,12 @@ responsive styles.
 
 - [ ] **6.3 Final quality validation**
 
-    - [ ] **6.3.a Run complete quality gates**
-        - Type check, lint, format, markdown lint, build, unit tests, E2E tests
+    - [x] **6.3.a Run complete quality gates**
+        - All quality gates pass: type check, lint, format, markdown lint, build
+        - Unit tests: 591 passing
+        - E2E tests: 143 passing (69 skipped - visual regression tests only run on Desktop Chrome)
+        - Fixed scroll tests to use OverlayScrollbars viewport selector `[data-overlayscrollbars-viewport]`
+        - Updated visual regression baselines after CSS class variant changes
 
     - [ ] **6.3.b Design review with visual-design-reviewer agent**
         - Validate visual consistency across pages
