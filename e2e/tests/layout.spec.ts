@@ -160,18 +160,30 @@ test.describe("TWM Layout System", () => {
     });
 
     test("main content is scrollable when content overflows", async ({ page }) => {
-      // Navigate to a page with enough content to scroll
-      await page.goto("/projects");
+      // Use mobile viewport to guarantee content overflow on skills page
+      await page.setViewportSize({ width: 375, height: 667 });
+      await page.goto("/skills");
 
-      const main = page.getByRole("main");
+      // OverlayScrollbars creates a viewport element with this data attribute
+      const osViewport = page.locator("[data-overlayscrollbars-viewport]");
+      await expect(osViewport).toBeVisible();
 
-      // Check if main area allows scrolling
-      const overflow = await main.evaluate((el) => {
-        return window.getComputedStyle(el).overflowY;
+      // Verify content overflows in the OverlayScrollbars viewport
+      const hasOverflow = await osViewport.evaluate((el) => el.scrollHeight > el.clientHeight);
+      expect(hasOverflow).toBe(true);
+
+      // Get initial scroll position
+      const initialScroll = await osViewport.evaluate((el) => el.scrollTop);
+      expect(initialScroll).toBe(0);
+
+      // Scroll down using the viewport element
+      await osViewport.evaluate((el) => {
+        el.scrollTo({ top: 200, behavior: "instant" });
       });
 
-      // Should allow scrolling (auto or scroll)
-      expect(["auto", "scroll", "visible"]).toContain(overflow);
+      // Verify scroll position changed
+      const finalScroll = await osViewport.evaluate((el) => el.scrollTop);
+      expect(finalScroll).toBe(200);
     });
   });
 
@@ -445,14 +457,15 @@ test.describe("TWM Layout System", () => {
       await page.setViewportSize({ width: 375, height: 667 });
       await page.goto("/skills");
 
-      const main = page.getByRole("main");
+      // Use OverlayScrollbars viewport for scroll operations
+      const osViewport = page.locator("[data-overlayscrollbars-viewport]");
       const topShadow = page.getByTestId("scroll-shadow-top");
 
-      const hasOverflow = await main.evaluate((el) => el.scrollHeight > el.clientHeight);
+      const hasOverflow = await osViewport.evaluate((el) => el.scrollHeight > el.clientHeight);
 
       if (hasOverflow) {
-        // Scroll down partway
-        await main.evaluate((el) => {
+        // Scroll down partway using the OverlayScrollbars viewport
+        await osViewport.evaluate((el) => {
           el.scrollTo({ top: 100, behavior: "instant" });
         });
 
@@ -465,14 +478,15 @@ test.describe("TWM Layout System", () => {
       await page.setViewportSize({ width: 375, height: 667 });
       await page.goto("/skills");
 
-      const main = page.getByRole("main");
+      // Use OverlayScrollbars viewport for scroll operations
+      const osViewport = page.locator("[data-overlayscrollbars-viewport]");
       const bottomShadow = page.getByTestId("scroll-shadow-bottom");
 
-      const hasOverflow = await main.evaluate((el) => el.scrollHeight > el.clientHeight);
+      const hasOverflow = await osViewport.evaluate((el) => el.scrollHeight > el.clientHeight);
 
       if (hasOverflow) {
-        // Scroll to bottom
-        await main.evaluate((el) => {
+        // Scroll to bottom using the OverlayScrollbars viewport
+        await osViewport.evaluate((el) => {
           el.scrollTo({ top: el.scrollHeight, behavior: "instant" });
         });
 

@@ -26,6 +26,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
   return (
     <Link
       href={detailUrl}
+      data-testid="project-card"
       className="group block overflow-hidden rounded-lg border border-border bg-background transition-colors hover:border-secondary/60"
     >
       {/* Thumbnail */}
