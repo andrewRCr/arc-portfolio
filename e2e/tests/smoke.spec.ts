@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { MD_BREAKPOINT } from "../constants";
 
 /**
  * Smoke tests for arc-portfolio.
@@ -11,11 +12,11 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Smoke Tests", () => {
   /**
-   * Helper to check if viewport is mobile (< 768px)
+   * Helper to check if viewport is mobile (below md breakpoint)
    */
   async function isMobileViewport(page: import("@playwright/test").Page): Promise<boolean> {
     const viewport = page.viewportSize();
-    return viewport ? viewport.width < 768 : false;
+    return viewport ? viewport.width < MD_BREAKPOINT : false;
   }
 
   /**

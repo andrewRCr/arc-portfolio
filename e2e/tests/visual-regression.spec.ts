@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 /**
  * Visual Regression Tests
@@ -17,6 +17,28 @@ import { test, expect } from "@playwright/test";
  * consider adding selective multi-browser baselines (e.g., home page only across
  * browsers) rather than full matrix expansion.
  */
+
+/**
+ * Wait for page to be visually stable before taking screenshot.
+ * - Waits for theme CSS variables to be applied
+ * - Waits for network to settle
+ * - Small buffer for CSS animations/transitions to complete
+ */
+async function waitForVisualStability(page: Page): Promise<void> {
+  // Wait for theme CSS variables to be applied
+  await page.waitForFunction(() => {
+    const root = document.documentElement;
+    const style = window.getComputedStyle(root);
+    return style.getPropertyValue("--background").trim().length > 0;
+  });
+
+  // Wait for network activity to settle
+  await page.waitForLoadState("networkidle");
+
+  // Small buffer for CSS animations/transitions to complete
+  // This is a pragmatic fallback - most animations complete within 300ms
+  await page.waitForTimeout(300);
+}
 
 // Skip visual regression tests on non-Desktop Chrome projects
 test.beforeEach(async ({}, testInfo) => {
@@ -64,16 +86,8 @@ test.describe("Visual Regression Baselines", () => {
           // Navigate to home page
           await page.goto("/");
 
-          // Wait for theme to be applied (CSS variables set on root)
-          await page.waitForFunction(() => {
-            const root = document.documentElement;
-            const style = window.getComputedStyle(root);
-            // Check that theme colors are applied (background should have RGB value)
-            return style.getPropertyValue("--background").trim().length > 0;
-          });
-
-          // Wait for any animations to settle
-          await page.waitForTimeout(500);
+          // Wait for visual stability before screenshot
+          await waitForVisualStability(page);
 
           // Take full-page screenshot
           await expect(page).toHaveScreenshot(`${testName}.png`, {
@@ -113,7 +127,7 @@ test.describe("Page-Specific Baselines", () => {
 
   test("home-page", async ({ page }) => {
     await page.goto("/");
-    await page.waitForTimeout(500);
+    await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-home.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.01,
@@ -122,7 +136,7 @@ test.describe("Page-Specific Baselines", () => {
 
   test("projects-page", async ({ page }) => {
     await page.goto("/projects");
-    await page.waitForTimeout(500);
+    await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-projects.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.01,
@@ -131,7 +145,7 @@ test.describe("Page-Specific Baselines", () => {
 
   test("skills-page", async ({ page }) => {
     await page.goto("/skills");
-    await page.waitForTimeout(500);
+    await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-skills.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.01,
@@ -140,7 +154,7 @@ test.describe("Page-Specific Baselines", () => {
 
   test("about-page", async ({ page }) => {
     await page.goto("/about");
-    await page.waitForTimeout(500);
+    await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-about.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.01,
@@ -149,7 +163,7 @@ test.describe("Page-Specific Baselines", () => {
 
   test("contact-page", async ({ page }) => {
     await page.goto("/contact");
-    await page.waitForTimeout(500);
+    await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-contact.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.01,

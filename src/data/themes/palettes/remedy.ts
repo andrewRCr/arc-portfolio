@@ -57,6 +57,8 @@ export const remedyDark = {
   // Borders and shadows
   /** Border color - lightened base */
   border: "#4A3F3D",
+  /** Strong border - interpolated lighter for contrast on dark bg */
+  borderStrong: "#6E5D5A",
   /** Shadow color */
   shadow: "#1A1514",
 } as const;

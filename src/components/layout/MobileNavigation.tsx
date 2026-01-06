@@ -52,18 +52,22 @@ export function MobileNavigation() {
           <ChevronDown className="size-3.5" aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center" className="min-w-[120px]">
-          {NAV_ITEMS.map((item) => (
-            <DropdownMenuItem key={item.href} asChild>
-              <Link
-                href={item.href}
-                className={`w-full font-mono font-semibold text-sm ${
-                  isActive(item.href) ? "text-foreground bg-secondary/20" : "text-muted-foreground"
-                }`}
-              >
-                {item.label}
-              </Link>
-            </DropdownMenuItem>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <DropdownMenuItem key={item.href} asChild>
+                <Link
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`w-full font-mono font-semibold text-sm ${
+                    active ? "text-foreground bg-secondary/20" : "text-muted-foreground"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenuContent>
       </DropdownMenu>
     </nav>

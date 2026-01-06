@@ -10,6 +10,8 @@ function escapeRegex(str: string): string {
 
 describe("ContactSection - Behavior Tests", () => {
   const emailPattern = new RegExp(escapeRegex(contact.email), "i");
+  // Filter out email since ContactSection shows it separately
+  const externalSocialLinks = contact.socialLinks.filter((link) => link.icon !== "mail");
 
   describe("Email Rendering", () => {
     it("renders email address", () => {
@@ -27,9 +29,6 @@ describe("ContactSection - Behavior Tests", () => {
   });
 
   describe("Social Links Rendering", () => {
-    // Filter out email since ContactSection shows it separately
-    const externalSocialLinks = contact.socialLinks.filter((link) => link.icon !== "mail");
-
     it("renders all external social platform links", () => {
       render(<ContactSection />);
 
@@ -57,12 +56,12 @@ describe("ContactSection - Behavior Tests", () => {
       });
     });
 
-    it("renders at least 3 social links", () => {
+    it("renders email link plus all external social links", () => {
       render(<ContactSection />);
 
       const links = screen.getAllByRole("link");
-      // Should have email link + external social links
-      expect(links.length).toBeGreaterThanOrEqual(externalSocialLinks.length + 1);
+      // Should have exactly: 1 email link + external social links
+      expect(links.length).toBe(externalSocialLinks.length + 1);
     });
   });
 
@@ -82,12 +81,10 @@ describe("ContactSection - Behavior Tests", () => {
       // Verify email from contact data
       expect(screen.getByText(emailPattern)).toBeInTheDocument();
 
-      // Verify external social platforms from contact data (email filtered out in component)
-      contact.socialLinks
-        .filter((link) => link.icon !== "mail")
-        .forEach((link) => {
-          expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
-        });
+      // Verify external social platforms from contact data
+      externalSocialLinks.forEach((link) => {
+        expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
+      });
     });
   });
 });

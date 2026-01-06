@@ -33,7 +33,11 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
     // Pages handle their own scroll structure via PageLayout
     return (
       <div className="flex flex-col flex-1 min-h-0 p-4 md:p-6">
-        <div className="flex flex-col flex-1 min-h-0 mx-auto w-full" style={{ maxWidth: contentMaxWidth }}>
+        <div
+          data-testid="content-wrapper"
+          className="flex flex-col flex-1 min-h-0 mx-auto w-full"
+          style={{ maxWidth: contentMaxWidth }}
+        >
           {children}
         </div>
       </div>
@@ -46,6 +50,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:p-6">
       <div
+        data-testid="content-wrapper"
         className="relative rounded-lg flex flex-col flex-1 min-h-0 mx-auto w-full"
         style={{ maxWidth: contentMaxWidth }}
       >

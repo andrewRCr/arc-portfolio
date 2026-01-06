@@ -13,6 +13,8 @@ export interface WindowContainerProps {
   isActive?: boolean;
   /** Callback when window is activated (clicked/tapped) */
   onActivate?: () => void;
+  /** Window identifier for testing (sets data-window-id attribute) */
+  windowId?: string;
 }
 
 /**
@@ -39,7 +41,7 @@ export interface WindowContainerProps {
  * </WindowContainer>
  * ```
  */
-export function WindowContainer({ children, className, isActive, onActivate }: WindowContainerProps) {
+export function WindowContainer({ children, className, isActive, onActivate, windowId }: WindowContainerProps) {
   const { windowBorderWidth, windowOpacity } = DEFAULT_LAYOUT_TOKENS;
 
   const handleClick = (e: React.MouseEvent) => {
@@ -50,6 +52,7 @@ export function WindowContainer({ children, className, isActive, onActivate }: W
   return (
     <div
       data-window-container
+      data-window-id={windowId}
       data-active={isActive || undefined}
       onClick={handleClick}
       className={cn("border-border-strong backdrop-blur-lg transition-colors", className)}

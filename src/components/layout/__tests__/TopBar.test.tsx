@@ -26,11 +26,10 @@ describe("TopBar", () => {
 
   describe("Theme Controls Placeholder", () => {
     it("has placeholder element for theme controls", () => {
-      const { container } = render(<TopBar />);
+      render(<TopBar />);
 
       // Theme controls area should exist (identified by data attribute for future integration)
-      const themeControlsArea = container.querySelector('[data-testid="theme-controls-placeholder"]');
-      expect(themeControlsArea).toBeInTheDocument();
+      expect(screen.getByTestId("theme-controls-placeholder")).toBeInTheDocument();
     });
   });
 

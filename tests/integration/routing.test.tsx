@@ -45,17 +45,12 @@ describe("Routing Integration Tests", () => {
   });
 
   describe("Navigation Active State", () => {
-    // Helper to get the styled span inside a navigation link
-    const getLinkSpan = (link: HTMLElement) => link.querySelector("span");
-
     it("marks Home link as active when on home page", () => {
       mockNavigation.setPathname("/");
       render(<Navigation />);
 
       const homeLink = screen.getByRole("link", { name: /home/i });
-      const span = getLinkSpan(homeLink);
-      // Active state is indicated by text-foreground class (not text-muted-foreground)
-      expect(span).toHaveClass("text-foreground");
+      expect(homeLink).toHaveAttribute("aria-current", "page");
     });
 
     it("marks Projects link as active when on projects page", () => {
@@ -63,7 +58,7 @@ describe("Routing Integration Tests", () => {
       render(<Navigation />);
 
       const projectsLink = screen.getByRole("link", { name: /projects/i });
-      expect(getLinkSpan(projectsLink)).toHaveClass("text-foreground");
+      expect(projectsLink).toHaveAttribute("aria-current", "page");
     });
 
     it("marks Projects link as active when on project detail page", () => {
@@ -71,7 +66,7 @@ describe("Routing Integration Tests", () => {
       render(<Navigation />);
 
       const projectsLink = screen.getByRole("link", { name: /projects/i });
-      expect(getLinkSpan(projectsLink)).toHaveClass("text-foreground");
+      expect(projectsLink).toHaveAttribute("aria-current", "page");
     });
 
     it("marks Skills link as active when on skills page", () => {
@@ -79,7 +74,7 @@ describe("Routing Integration Tests", () => {
       render(<Navigation />);
 
       const skillsLink = screen.getByRole("link", { name: /skills/i });
-      expect(getLinkSpan(skillsLink)).toHaveClass("text-foreground");
+      expect(skillsLink).toHaveAttribute("aria-current", "page");
     });
 
     it("marks About link as active when on about page", () => {
@@ -87,7 +82,7 @@ describe("Routing Integration Tests", () => {
       render(<Navigation />);
 
       const aboutLink = screen.getByRole("link", { name: /about/i });
-      expect(getLinkSpan(aboutLink)).toHaveClass("text-foreground");
+      expect(aboutLink).toHaveAttribute("aria-current", "page");
     });
 
     it("marks Contact link as active when on contact page", () => {
@@ -95,7 +90,7 @@ describe("Routing Integration Tests", () => {
       render(<Navigation />);
 
       const contactLink = screen.getByRole("link", { name: /contact/i });
-      expect(getLinkSpan(contactLink)).toHaveClass("text-foreground");
+      expect(contactLink).toHaveAttribute("aria-current", "page");
     });
 
     it("does not mark Home as active when on other pages", () => {
@@ -103,7 +98,7 @@ describe("Routing Integration Tests", () => {
       render(<Navigation />);
 
       const homeLink = screen.getByRole("link", { name: /home/i });
-      expect(getLinkSpan(homeLink)).toHaveClass("text-muted-foreground");
+      expect(homeLink).not.toHaveAttribute("aria-current");
     });
 
     it("only marks one link as active at a time", () => {
@@ -111,7 +106,7 @@ describe("Routing Integration Tests", () => {
       render(<Navigation />);
 
       const links = screen.getAllByRole("link");
-      const activeLinks = links.filter((link) => getLinkSpan(link)?.classList.contains("text-foreground"));
+      const activeLinks = links.filter((link) => link.getAttribute("aria-current") === "page");
 
       expect(activeLinks).toHaveLength(1);
       expect(activeLinks[0]).toHaveTextContent("SKILLS");

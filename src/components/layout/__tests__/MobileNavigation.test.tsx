@@ -77,7 +77,7 @@ describe("MobileNavigation", () => {
       await user.click(screen.getByRole("button"));
 
       const activeItem = screen.getByRole("menuitem", { name: "SKILLS" });
-      expect(activeItem).toHaveClass("text-foreground");
+      expect(activeItem).toHaveAttribute("aria-current", "page");
     });
   });
 

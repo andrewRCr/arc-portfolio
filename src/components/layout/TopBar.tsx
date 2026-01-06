@@ -28,14 +28,14 @@ export interface TopBarProps {
  * <TopBar />
  * ```
  */
-export function TopBar({ isActive, onActivate }: TopBarProps = {}) {
+export function TopBar({ isActive, onActivate }: TopBarProps) {
   const { windowBorderWidth, topBarContentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   // Touch target evaluation: 48px total matches FooterBar for visual balance
   // Original: topBarHeight (42) - windowBorderWidth * 2 = 38px
   const innerHeight = 48 - windowBorderWidth * 2;
 
   return (
-    <WindowContainer isActive={isActive} onActivate={onActivate}>
+    <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate}>
       <header
         className="flex items-center justify-between px-4 mx-auto w-full"
         style={{ height: innerHeight, maxWidth: topBarContentMaxWidth }}

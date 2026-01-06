@@ -43,21 +43,26 @@ export function Navigation() {
     <nav aria-label="Main navigation" className="flex items-center" style={{ minHeight: navHeight }}>
       {/* Navigation links - inline, no vertical stacking */}
       <ul className="flex gap-1 list-none items-center">
-        {NAV_ITEMS.map((item) => (
-          <li key={item.href}>
-            <Link href={item.href} className="min-h-11 lg:min-h-0 flex items-center">
-              <span
-                className={`px-2 py-1 text-sm font-mono font-semibold leading-[1.2] transition-colors ${
-                  isActive(item.href)
-                    ? "text-foreground bg-secondary/20"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+        {NAV_ITEMS.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="min-h-11 lg:min-h-0 flex items-center"
+                aria-current={active ? "page" : undefined}
               >
-                {item.label}
-              </span>
-            </Link>
-          </li>
-        ))}
+                <span
+                  className={`px-2 py-1 text-sm font-mono font-semibold leading-[1.2] transition-colors ${
+                    active ? "text-foreground bg-secondary/20" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

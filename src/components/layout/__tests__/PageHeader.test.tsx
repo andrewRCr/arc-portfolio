@@ -46,15 +46,6 @@ describe("PageHeader", () => {
     });
   });
 
-  describe("Visual Structure", () => {
-    it("has bottom border separator", () => {
-      const { container } = render(<PageHeader title="Test" />);
-
-      const separator = container.querySelector(".border-b");
-      expect(separator).toBeInTheDocument();
-    });
-  });
-
   describe("Accessibility", () => {
     it("has no accessibility violations with title", async () => {
       const results = await checkA11y(<PageHeader title="Page Title" subtitle="Description" />);

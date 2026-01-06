@@ -24,6 +24,10 @@ describe("LayoutWrapper", () => {
   });
 
   describe("Active Window State", () => {
+    // Helper to get window containers by stable ID
+    const getWindow = (container: HTMLElement, id: "top" | "main" | "footer") =>
+      container.querySelector(`[data-window-id="${id}"]`) as HTMLElement;
+
     it("no window is active by default", () => {
       const { container } = render(
         <LayoutWrapper>
@@ -31,10 +35,9 @@ describe("LayoutWrapper", () => {
         </LayoutWrapper>
       );
 
-      const windowContainers = container.querySelectorAll("[data-window-container]");
-      windowContainers.forEach((window) => {
-        expect(window).not.toHaveAttribute("data-active");
-      });
+      expect(getWindow(container, "top")).not.toHaveAttribute("data-active");
+      expect(getWindow(container, "main")).not.toHaveAttribute("data-active");
+      expect(getWindow(container, "footer")).not.toHaveAttribute("data-active");
     });
 
     it("clicking TopBar activates it", () => {
@@ -44,9 +47,7 @@ describe("LayoutWrapper", () => {
         </LayoutWrapper>
       );
 
-      const windowContainers = container.querySelectorAll("[data-window-container]");
-      const topBarWindow = windowContainers[0]; // First window is TopBar
-
+      const topBarWindow = getWindow(container, "top");
       fireEvent.click(topBarWindow);
 
       expect(topBarWindow).toHaveAttribute("data-active", "true");
@@ -59,9 +60,7 @@ describe("LayoutWrapper", () => {
         </LayoutWrapper>
       );
 
-      const windowContainers = container.querySelectorAll("[data-window-container]");
-      const mainWindow = windowContainers[1]; // Second window is main content
-
+      const mainWindow = getWindow(container, "main");
       fireEvent.click(mainWindow);
 
       expect(mainWindow).toHaveAttribute("data-active", "true");
@@ -74,9 +73,7 @@ describe("LayoutWrapper", () => {
         </LayoutWrapper>
       );
 
-      const windowContainers = container.querySelectorAll("[data-window-container]");
-      const footerWindow = windowContainers[2]; // Third window is FooterBar
-
+      const footerWindow = getWindow(container, "footer");
       fireEvent.click(footerWindow);
 
       expect(footerWindow).toHaveAttribute("data-active", "true");
@@ -89,8 +86,9 @@ describe("LayoutWrapper", () => {
         </LayoutWrapper>
       );
 
-      const windowContainers = container.querySelectorAll("[data-window-container]");
-      const [topBarWindow, mainWindow, footerWindow] = Array.from(windowContainers);
+      const topBarWindow = getWindow(container, "top");
+      const mainWindow = getWindow(container, "main");
+      const footerWindow = getWindow(container, "footer");
 
       // Click TopBar
       fireEvent.click(topBarWindow);
@@ -143,6 +141,8 @@ describe("LayoutWrapper", () => {
       expect(contentinfo).toBeInTheDocument();
 
       // Banner should appear before contentinfo in DOM order
+      // compareDocumentPosition returns a bitmask; masking with DOCUMENT_POSITION_FOLLOWING
+      // yields non-zero if contentinfo follows banner in the document
       expect(banner.compareDocumentPosition(contentinfo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
   });

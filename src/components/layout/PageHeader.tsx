@@ -35,7 +35,7 @@ export function PageHeader({ title, subtitle, children }: PageHeaderProps) {
       {/* Children: controls below title, or full custom content */}
       {children && <div className={title ? "mt-3" : ""}>{children}</div>}
 
-      {/* Bottom separator */}
+      {/* Bottom separator - mx-4 inset creates visual hierarchy, not meant to align with parent padding */}
       <div className="mt-3 mx-4 border-b border-border/50" />
     </div>
   );

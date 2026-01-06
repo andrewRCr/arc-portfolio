@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { VIEWPORTS } from "../constants";
 
 /**
  * Layout tests for the TWM (Tiling Window Manager) system.
@@ -199,7 +200,7 @@ test.describe("TWM Layout System", () => {
     });
 
     test("layout adapts to tablet viewport", async ({ page }) => {
-      await page.setViewportSize({ width: 768, height: 1024 });
+      await page.setViewportSize(VIEWPORTS.tablet);
       await page.goto("/");
 
       // All three sections should be visible on tablet
@@ -211,7 +212,7 @@ test.describe("TWM Layout System", () => {
 
   test.describe("Tablet Layout (768×1024)", () => {
     test.beforeEach(async ({ page }) => {
-      await page.setViewportSize({ width: 768, height: 1024 });
+      await page.setViewportSize(VIEWPORTS.tablet);
     });
 
     test("three-window structure preserved at tablet size", async ({ page }) => {

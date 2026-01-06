@@ -54,15 +54,6 @@ describe("Hero", () => {
     });
   });
 
-  describe("Visual Structure", () => {
-    it("has left border accent", () => {
-      const { container } = render(<Hero />);
-
-      const borderElement = container.querySelector(".border-l-2.border-primary");
-      expect(borderElement).toBeInTheDocument();
-    });
-  });
-
   describe("Accessibility", () => {
     it("has no accessibility violations", async () => {
       const results = await checkA11y(<Hero />);

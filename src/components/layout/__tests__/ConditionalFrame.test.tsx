@@ -140,14 +140,14 @@ describe("ConditionalFrame", () => {
   describe("Content Constraints", () => {
     it("applies max-width from layout tokens", () => {
       mockNavigation.setPathname("/");
-      const { container } = render(
+      render(
         <ConditionalFrame>
           <p>Content</p>
         </ConditionalFrame>
       );
 
-      const wrapper = container.querySelector(`[style*="max-width: ${DEFAULT_LAYOUT_TOKENS.contentMaxWidth}px"]`);
-      expect(wrapper).toBeInTheDocument();
+      const wrapper = screen.getByTestId("content-wrapper");
+      expect(wrapper).toHaveStyle({ maxWidth: `${DEFAULT_LAYOUT_TOKENS.contentMaxWidth}px` });
     });
   });
 

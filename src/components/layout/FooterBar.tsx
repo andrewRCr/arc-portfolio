@@ -44,7 +44,7 @@ export interface FooterBarProps {
  * <FooterBar />
  * ```
  */
-export function FooterBar({ isActive, onActivate }: FooterBarProps = {}) {
+export function FooterBar({ isActive, onActivate }: FooterBarProps) {
   const { windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   // Touch target evaluation: 48px inner height for 44px touch targets with breathing room
   // Original: footerHeight (36) - windowBorderWidth * 2 = 32px
@@ -52,7 +52,7 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps = {}) {
   const isDev = process.env.NODE_ENV === "development";
 
   return (
-    <WindowContainer isActive={isActive} onActivate={onActivate}>
+    <WindowContainer windowId="footer" isActive={isActive} onActivate={onActivate}>
       <footer
         className="flex items-center justify-between px-4 mx-auto w-full"
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}

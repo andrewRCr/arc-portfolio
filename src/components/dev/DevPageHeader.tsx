@@ -70,7 +70,7 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
   };
 
   return (
-    <div data-dev-header className="pb-3">
+    <div data-dev-header>
       {/* Top row: Title and optional controls */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-xl font-bold">{title}</h1>

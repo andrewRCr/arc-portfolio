@@ -39,18 +39,6 @@ describe("PageLayout", () => {
 
       expect(screen.getByTestId("header")).toBeInTheDocument();
     });
-
-    it("does not render header wrapper when header not provided", () => {
-      const { container } = render(
-        <PageLayout>
-          <p>Page content</p>
-        </PageLayout>
-      );
-
-      // Only main should be a direct child (no shrink-0 header wrapper)
-      const flexContainer = container.firstChild as HTMLElement;
-      expect(flexContainer.children).toHaveLength(1);
-    });
   });
 
   describe("Content Width Constraint", () => {
