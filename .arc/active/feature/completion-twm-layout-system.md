@@ -7,10 +7,9 @@
 
 ## Summary
 
-Transformed the portfolio into a distinctive tiling window manager aesthetic with three-window layout
-(TopBar, main content, FooterBar), wallpaper background system with gradient fallback, and comprehensive
-responsive adaptations. The implementation establishes a professional, memorable visual identity while
-maintaining WCAG 2.1 AA accessibility compliance across all theme variants.
+Implements a tiling window manager aesthetic with three-window layout (TopBar, main content, FooterBar),
+wallpaper background system with gradient fallback, and comprehensive responsive adaptations. Establishes
+a distinctive visual identity while maintaining WCAG 2.1 AA accessibility compliance across all theme variants.
 
 ## Key Implementation Details
 
@@ -34,7 +33,7 @@ maintaining WCAG 2.1 AA accessibility compliance across all theme variants.
     - ThemePaletteSync for runtime theme switching
     - CSS generation script (`generate-css-defaults.ts`) for theme variants
     - Visual regression baselines (21 screenshots, deferred from foundation)
-- **Tests Added**: 154 new unit tests, 134 new E2E tests (totals: 591 unit, 143 E2E)
+- **Tests Added**: 154 new unit tests, 53 new E2E tests (totals: 588 unit, 53 E2E unique / 212 cross-browser)
 - **Quality Gates**: Type check, ESLint, Prettier, markdownlint, build, Vitest, Playwright all passing
 
 ## Related Documentation
@@ -47,6 +46,8 @@ maintaining WCAG 2.1 AA accessibility compliance across all theme variants.
 ## Follow-Up Work
 
 - **Theme & Wallpaper Control System** (deferred to separate feature): ThemePicker UI, WallpaperPicker
-  with theme-aware filtering, per-theme wallpaper persistence. See `plan-theme-wallpaper-controls.md`
+  with theme-aware filtering, per-theme wallpaper persistence. This will replace the current placeholder
+  theme/wallpaper controls (ThemeSwitcher, WallpaperSwitcher) which are dev-only utilities not intended
+  for production. See `plan-theme-wallpaper-controls.md`
 - **Lighthouse Performance Baseline** (deferred to SEO & Analytics): Pre-deployment performance and
   accessibility score validation. See `BACKLOG-TECHNICAL.md`

@@ -19,9 +19,6 @@ structure, wallpaper background, and polished theme switching UI.
 - Create three-window layout (top bar, main content, footer)
 - Add wallpaper background with CSS gradient fallback
 - Build WindowContainer component with configurable styling
-- Create ThemePicker component (replaces prototype ThemeSwitcher)
-- Move theme controls to top bar
-- Add smooth theme switch animations
 - Comprehensive E2E and accessibility testing
 - Visual regression baselines
 - Responsive adaptations for mobile/tablet
@@ -33,6 +30,13 @@ structure, wallpaper background, and polished theme switching UI.
 - Keyboard shortcuts for theme switching
 - Window dragging/repositioning
 - Advanced tiling features (maximize, minimize, stacking)
+- Smooth theme switch animations (decided against - instant switching feels more responsive)
+
+### Deferred (to Theme & Wallpaper Control System feature)
+
+- ThemePicker component (replaces prototype ThemeSwitcher)
+- WallpaperPicker component (replaces prototype WallpaperSwitcher)
+- See `plan-theme-wallpaper-controls.md` for planned implementation
 
 ---
 
