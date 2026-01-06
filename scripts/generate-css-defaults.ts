@@ -48,7 +48,7 @@ function generateLayoutCssVariables(): string {
 
   for (const [tokenName, cssVar] of Object.entries(LAYOUT_TOKENS_TO_CSS)) {
     const value = DEFAULT_LAYOUT_TOKENS[tokenName as keyof typeof DEFAULT_LAYOUT_TOKENS];
-    if (value !== undefined) {
+    if (typeof value === "number" && Number.isFinite(value)) {
       lines.push(`  ${cssVar}: ${value}px;`);
     }
   }
