@@ -19,9 +19,9 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ Design System Foundation (technical) - 2025-12-30
-    - Token architecture, E2E testing, accessibility validation, 3 theme families
-    - [Archive](../archive/2025-q4/technical/04_design-system-foundation/)
+- ✅ TWM Layout System (feature) - 2026-01-06
+    - Three-window layout, wallpaper system, responsive adaptation, 588 tests
+    - [Archive](../archive/2026-q1/feature/01_twm-layout-system/)
 
 **Currently Active:**
 
@@ -29,8 +29,8 @@ contemporary web development practices.
 
 **Next Priority:**
 
-- TWM Layout System (feature) - Comprehensive visual design pass
-    - [PRD](../../backlog/feature/prd-twm-layout-system.md)
+- Theme & Wallpaper Control System (feature) - Polished theme/wallpaper selection UI
+    - [Plan](../../backlog/feature/plan-theme-wallpaper-controls.md)
 
 ---
 
@@ -40,8 +40,8 @@ contemporary web development practices.
 
 *High Priority:*
 
-- **TWM Layout System** - Responsive layouts, spacing, typography, component styling refinement
-    - [PRD](../../backlog/feature/prd-twm-layout-system.md)
+- **Theme & Wallpaper Control System** - Polished theme/wallpaper selection UI
+    - [Plan](../../backlog/feature/plan-theme-wallpaper-controls.md)
 
 *Medium Priority:*
 
@@ -109,6 +109,16 @@ contemporary web development practices.
 - **Architecture decision**: ADR-001 adopted shadcn/ui token conventions
 - **Style guide**: `strategy-style-guide.md` v1.1 with component patterns
 - Dark/light mode toggle, ThemeProvider context
+
+### ✅ TWM Layout System
+
+- **Three-window layout**: TopBar, main content (WindowContainer), FooterBar with TWM visual identity
+- **Wallpaper system**: 18 curated wallpapers with gradient blending, theme-aware switcher
+- **Responsive adaptation**: Mobile navigation dropdown, viewport-adaptive components
+- **Layout infrastructure**: PageLayout, ScrollShadow, ConditionalFrame, Hero components
+- **Developer tooling**: DevPageHeader for dev pages, CSS defaults generator script
+- **Test coverage**: 588 tests including E2E visual regression and accessibility validation
+- **Touch targets**: 44×44px minimum with TouchTarget component
 
 ---
 

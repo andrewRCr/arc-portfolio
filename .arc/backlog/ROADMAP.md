@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-01
+**Last Updated:** 2026-01-06
 
 ---
 
@@ -26,11 +26,9 @@ Establish content baseline and design system infrastructure before visual design
 
 Transform placeholder styling into distinctive, polished design.
 
-3. **TWM Layout System**
-   - PRD: `.arc/active/feature/prd-twm-layout-system.md`
-   - Rationale: Core visual identity; affects all pages; foundational for polish work
-   - Scope: Three-window layout, wallpaper background, responsive adaptation
-   - Dependencies: Content migration complete, design system foundation established
+3. ✅ **TWM Layout System** (2026-01-06)
+   - Three-window layout, wallpaper system, responsive adaptation, 588 tests
+   - [Archive](../reference/archive/2026-q1/feature/01_twm-layout-system/)
 
 4. **Theme & Wallpaper Control System**
    - Plan: `.arc/backlog/feature/plan-theme-wallpaper-controls.md`
@@ -159,6 +157,7 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Change Log
 
+- **2026-01-06**: TWM Layout System completed and archived
 - **2026-01-01**: Added Theme & Wallpaper Control System (B4), renumbered subsequent items. Broken out
   from TWM Layout System Phase 5 after evaluation showed need for dedicated feature with state
   management, persistence, and unified control UI.
