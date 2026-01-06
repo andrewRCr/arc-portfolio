@@ -29,10 +29,8 @@ export interface TopBarProps {
  * ```
  */
 export function TopBar({ isActive, onActivate }: TopBarProps) {
-  const { windowBorderWidth, topBarContentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
-  // Touch target evaluation: 48px total matches FooterBar for visual balance
-  // Original: topBarHeight (42) - windowBorderWidth * 2 = 38px
-  const innerHeight = 48 - windowBorderWidth * 2;
+  const { windowBorderWidth, topBarContentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
+  const innerHeight = topBarHeight - windowBorderWidth * 2;
 
   return (
     <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate}>
@@ -42,9 +40,11 @@ export function TopBar({ isActive, onActivate }: TopBarProps) {
       >
         {/* Branding - links to home */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="min-h-11 flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
-          </Link>
+          <TouchTarget>
+            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
+            </Link>
+          </TouchTarget>
           <span className="text-primary font-mono">&gt;_</span>
         </div>
 

@@ -235,6 +235,8 @@ testing against all theme/mode combinations during Task 3.5.c.
 - **Deferred from TWM Layout System:** Tests for `ThemeSwitcher.tsx`, `WallpaperSwitcher.tsx`,
   `ThemeContext.tsx`, and `WallpaperContext.tsx` - these components will be significantly
   refactored/replaced during this work unit, so testing is deferred until new implementation
+- **TopBar tests:** Once theme controls UI is integrated, update `TopBar.test.tsx` to query by
+  role/accessible name instead of `data-testid="theme-controls-placeholder"`
 
 **E2E tests:**
 

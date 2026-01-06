@@ -11,13 +11,17 @@ function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrim
 }
 
 function DropdownMenuPortal({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
-  return <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />;
+  return <DropdownMenuPrimitive.Portal {...props} />;
 }
 
 function DropdownMenuTrigger({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
   return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />;
 }
 
+/**
+ * Dropdown menu content with Portal wrapper.
+ * Note: Portal is included - do not wrap with DropdownMenuPortal.
+ */
 function DropdownMenuContent({
   className,
   sideOffset = 4,

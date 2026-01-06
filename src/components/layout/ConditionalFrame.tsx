@@ -47,6 +47,17 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   // Regular pages: inner TUI frame with navigation
   // Outer padding provides space for Navigation to render above border
   // Mobile: extra top padding for nav clearance, tighter sides/bottom
+  const borderClipPath = `polygon(
+    0 0,
+    calc(50% - ${currentNavGapHalf}px) 0,
+    calc(50% - ${currentNavGapHalf}px) ${navGapDepth}px,
+    calc(50% + ${currentNavGapHalf}px) ${navGapDepth}px,
+    calc(50% + ${currentNavGapHalf}px) 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  )`;
+
   return (
     <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:p-6">
       <div
@@ -57,19 +68,13 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
         {/* TUI frame border - clip-path creates gap for Navigation */}
         <div
           className="absolute inset-0 border-solid border-border-strong rounded-lg pointer-events-none"
-          style={{
-            borderWidth: windowBorderWidth,
-            clipPath: `polygon(
-              0 0,
-              calc(50% - ${currentNavGapHalf}px) 0,
-              calc(50% - ${currentNavGapHalf}px) ${navGapDepth}px,
-              calc(50% + ${currentNavGapHalf}px) ${navGapDepth}px,
-              calc(50% + ${currentNavGapHalf}px) 0,
-              100% 0,
-              100% 100%,
-              0 100%
-            )`,
-          }}
+          style={
+            {
+              borderWidth: windowBorderWidth,
+              WebkitClipPath: borderClipPath,
+              clipPath: borderClipPath,
+            } as React.CSSProperties
+          }
           aria-hidden="true"
         />
 

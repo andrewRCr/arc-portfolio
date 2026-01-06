@@ -45,10 +45,8 @@ export interface FooterBarProps {
  * ```
  */
 export function FooterBar({ isActive, onActivate }: FooterBarProps) {
-  const { windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
-  // Touch target evaluation: 48px inner height for 44px touch targets with breathing room
-  // Original: footerHeight (36) - windowBorderWidth * 2 = 32px
-  const innerHeight = 48 - windowBorderWidth * 2;
+  const { windowBorderWidth, contentMaxWidth, footerHeight } = DEFAULT_LAYOUT_TOKENS;
+  const innerHeight = footerHeight - windowBorderWidth * 2;
   const isDev = process.env.NODE_ENV === "development";
 
   return (

@@ -24,18 +24,13 @@ let _theme = "dark";
 let _resolvedTheme = "dark";
 
 export const mockNextThemes = {
+  /** Spy for setTheme - exposed via useTheme().setTheme */
   setTheme: vi.fn((theme: string) => {
     _theme = theme;
     _resolvedTheme = theme;
   }),
 
-  /** Set the current theme value */
-  setCurrentTheme(theme: string) {
-    _theme = theme;
-    _resolvedTheme = theme;
-  },
-
-  /** Reset to default state */
+  /** Reset to default state and clear spy call history */
   reset() {
     _theme = "dark";
     _resolvedTheme = "dark";

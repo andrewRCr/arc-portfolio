@@ -36,7 +36,12 @@ export interface WallpaperBackgroundProps {
  */
 export function WallpaperBackground({ imageSrc }: WallpaperBackgroundProps) {
   return (
-    <div className="fixed inset-0 z-[-1]" style={{ background: buildWallpaperGradient() }} aria-hidden="true">
+    <div
+      className="fixed inset-0 z-[-1]"
+      style={{ background: buildWallpaperGradient() }}
+      aria-hidden="true"
+      data-testid="wallpaper-background"
+    >
       {imageSrc && <Image src={imageSrc} alt="" fill loading="lazy" className="object-cover" sizes="100vw" />}
     </div>
   );

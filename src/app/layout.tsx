@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/config/site";
+import { PALETTE_STORAGE_KEY } from "@/config/storage";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 const themeInitScript = `
 (function() {
   try {
-    var palette = localStorage.getItem('arc-portfolio-theme') || '${defaultPalette}';
+    var palette = localStorage.getItem('${PALETTE_STORAGE_KEY}') || '${defaultPalette}';
     document.documentElement.classList.add(palette);
   } catch (e) {
     document.documentElement.classList.add('${defaultPalette}');

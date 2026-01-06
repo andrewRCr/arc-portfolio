@@ -34,9 +34,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
 
   return (
     <PageLayout>
-      <div className="p-4 md:p-8">
-        <ProjectDetail project={project} currentTab={currentTab} from={from} />
-      </div>
+      <ProjectDetail project={project} currentTab={currentTab} from={from} />
     </PageLayout>
   );
 }

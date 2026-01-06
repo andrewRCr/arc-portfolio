@@ -40,7 +40,7 @@ export function ScrollShadow({ position, visible }: ScrollShadowProps) {
       data-testid={`scroll-shadow-${position}`}
       data-scroll-shadow={position}
       aria-hidden="true"
-      className={`pointer-events-none absolute left-0 right-0 h-5 transition-opacity duration-250 ${
+      className={`pointer-events-none absolute left-0 right-0 h-5 transition-opacity duration-300 ${
         isTop ? "top-0" : "bottom-0"
       } ${visible ? "opacity-100" : "opacity-0"}`}
     />

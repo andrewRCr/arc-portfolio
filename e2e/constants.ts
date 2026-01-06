@@ -20,5 +20,5 @@ export const MD_BREAKPOINT = 768;
 export const VIEWPORTS = {
   mobile: { width: 375, height: 667 },
   tablet: { width: MD_BREAKPOINT, height: 1024 },
-  desktop: { width: 1280, height: 720 },
+  desktop: { width: 1920, height: 1080 },
 } as const;

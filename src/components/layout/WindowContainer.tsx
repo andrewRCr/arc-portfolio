@@ -44,8 +44,8 @@ export interface WindowContainerProps {
 export function WindowContainer({ children, className, isActive, onActivate, windowId }: WindowContainerProps) {
   const { windowBorderWidth, windowOpacity } = DEFAULT_LAYOUT_TOKENS;
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent click from bubbling to parent (deactivate handler)
+  const handlePointerDown = (e: React.PointerEvent) => {
+    e.stopPropagation(); // Prevent event from bubbling to parent (deactivate handler)
     onActivate?.();
   };
 
@@ -54,7 +54,7 @@ export function WindowContainer({ children, className, isActive, onActivate, win
       data-window-container
       data-window-id={windowId}
       data-active={isActive || undefined}
-      onClick={handleClick}
+      onPointerDown={handlePointerDown}
       className={cn("border-border-strong backdrop-blur-lg transition-colors", className)}
       style={
         {

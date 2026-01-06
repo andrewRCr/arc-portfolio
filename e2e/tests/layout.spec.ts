@@ -17,7 +17,7 @@ test.describe("TWM Layout System", () => {
       await page.goto("/");
 
       // Wallpaper container should exist with gradient background
-      const wallpaper = page.locator('[aria-hidden="true"]').first();
+      const wallpaper = page.locator('[data-testid="wallpaper-background"]');
       await expect(wallpaper).toBeVisible();
 
       // Should have gradient in computed styles
@@ -30,7 +30,7 @@ test.describe("TWM Layout System", () => {
     test("background covers full viewport", async ({ page }) => {
       await page.goto("/");
 
-      const wallpaper = page.locator('[aria-hidden="true"]').first();
+      const wallpaper = page.locator('[data-testid="wallpaper-background"]');
 
       // Should be fixed positioned covering viewport
       const styles = await wallpaper.evaluate((el) => {
@@ -52,7 +52,7 @@ test.describe("TWM Layout System", () => {
     test("wallpaper is behind content (negative z-index)", async ({ page }) => {
       await page.goto("/");
 
-      const wallpaper = page.locator('[aria-hidden="true"]').first();
+      const wallpaper = page.locator('[data-testid="wallpaper-background"]');
 
       const zIndex = await wallpaper.evaluate((el) => {
         return window.getComputedStyle(el).zIndex;
@@ -162,7 +162,7 @@ test.describe("TWM Layout System", () => {
 
     test("main content is scrollable when content overflows", async ({ page }) => {
       // Use mobile viewport to guarantee content overflow on skills page
-      await page.setViewportSize({ width: 375, height: 667 });
+      await page.setViewportSize(VIEWPORTS.mobile);
       await page.goto("/skills");
 
       // OverlayScrollbars creates a viewport element with this data attribute
@@ -190,7 +190,7 @@ test.describe("TWM Layout System", () => {
 
   test.describe("Responsive Layout", () => {
     test("layout adapts to mobile viewport", async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
+      await page.setViewportSize(VIEWPORTS.mobile);
       await page.goto("/");
 
       // All three sections should still be visible on mobile
@@ -263,8 +263,9 @@ test.describe("TWM Layout System", () => {
     test("navigation links meet 44×44px touch target minimum", async ({ page }) => {
       await page.goto("/projects"); // Non-home page to show navigation
 
-      // Get all navigation links
-      const navLinks = page.locator("nav").getByRole("link");
+      // Get main navigation links only (not footer social links or dev links)
+      const mainNav = page.locator('nav[aria-label="Main navigation"]');
+      const navLinks = mainNav.getByRole("link");
       const count = await navLinks.count();
 
       expect(count).toBeGreaterThan(0);
@@ -284,17 +285,10 @@ test.describe("TWM Layout System", () => {
     test("TopBar touch targets meet 44×44px minimum", async ({ page }) => {
       await page.goto("/");
 
-      // Branding link
-      const brandingLink = page.getByRole("banner").getByRole("link");
-      const brandingBox = await brandingLink.boundingBox();
-      expect(brandingBox).not.toBeNull();
-      expect(brandingBox!.width).toBeGreaterThanOrEqual(44);
-      expect(brandingBox!.height).toBeGreaterThanOrEqual(44);
-
-      // Theme control touch targets (wallpaper switcher, theme switcher, theme toggle)
+      // All touch targets in TopBar (branding + 3 theme controls)
       const touchTargets = page.getByRole("banner").locator("[data-touch-target]");
       const count = await touchTargets.count();
-      expect(count).toBe(3); // 3 theme controls
+      expect(count).toBe(4); // branding + wallpaper switcher + theme switcher + theme toggle
 
       for (let i = 0; i < count; i++) {
         const target = touchTargets.nth(i);
@@ -339,7 +333,7 @@ test.describe("TWM Layout System", () => {
 
   test.describe("Mobile Layout (375×667)", () => {
     test.beforeEach(async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
+      await page.setViewportSize(VIEWPORTS.mobile);
     });
 
     test("three-window structure preserved at phone size", async ({ page }) => {
@@ -435,7 +429,7 @@ test.describe("TWM Layout System", () => {
 
   test.describe("Scroll Shadow Affordance", () => {
     test("shows bottom shadow when content overflows and at top", async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
+      await page.setViewportSize(VIEWPORTS.mobile);
       await page.goto("/skills"); // Skills page has enough content to overflow
 
       const bottomShadow = page.getByTestId("scroll-shadow-bottom");
@@ -455,7 +449,7 @@ test.describe("TWM Layout System", () => {
     });
 
     test("shows top shadow when scrolled down", async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
+      await page.setViewportSize(VIEWPORTS.mobile);
       await page.goto("/skills");
 
       // Use OverlayScrollbars viewport for scroll operations
@@ -476,7 +470,7 @@ test.describe("TWM Layout System", () => {
     });
 
     test("hides bottom shadow when scrolled to bottom", async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
+      await page.setViewportSize(VIEWPORTS.mobile);
       await page.goto("/skills");
 
       // Use OverlayScrollbars viewport for scroll operations

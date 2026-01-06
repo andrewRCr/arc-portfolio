@@ -53,7 +53,7 @@ export default function ProjectDetail({ project, currentTab = "software", from }
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-8">
+    <div className="mx-auto w-full max-w-4xl space-y-8 px-0 md:px-4">
       {/* Back Button */}
       <button
         onClick={handleBackClick}

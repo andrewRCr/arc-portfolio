@@ -40,7 +40,7 @@ describe("LayoutWrapper", () => {
       expect(getWindow(container, "footer")).not.toHaveAttribute("data-active");
     });
 
-    it("clicking TopBar activates it", () => {
+    it("pointer down on TopBar activates it", () => {
       const { container } = render(
         <LayoutWrapper>
           <p>Content</p>
@@ -48,12 +48,12 @@ describe("LayoutWrapper", () => {
       );
 
       const topBarWindow = getWindow(container, "top");
-      fireEvent.click(topBarWindow);
+      fireEvent.pointerDown(topBarWindow);
 
       expect(topBarWindow).toHaveAttribute("data-active", "true");
     });
 
-    it("clicking main content window activates it", () => {
+    it("pointer down on main content window activates it", () => {
       const { container } = render(
         <LayoutWrapper>
           <p>Content</p>
@@ -61,12 +61,12 @@ describe("LayoutWrapper", () => {
       );
 
       const mainWindow = getWindow(container, "main");
-      fireEvent.click(mainWindow);
+      fireEvent.pointerDown(mainWindow);
 
       expect(mainWindow).toHaveAttribute("data-active", "true");
     });
 
-    it("clicking FooterBar activates it", () => {
+    it("pointer down on FooterBar activates it", () => {
       const { container } = render(
         <LayoutWrapper>
           <p>Content</p>
@@ -74,7 +74,7 @@ describe("LayoutWrapper", () => {
       );
 
       const footerWindow = getWindow(container, "footer");
-      fireEvent.click(footerWindow);
+      fireEvent.pointerDown(footerWindow);
 
       expect(footerWindow).toHaveAttribute("data-active", "true");
     });
@@ -90,20 +90,20 @@ describe("LayoutWrapper", () => {
       const mainWindow = getWindow(container, "main");
       const footerWindow = getWindow(container, "footer");
 
-      // Click TopBar
-      fireEvent.click(topBarWindow);
+      // Pointer down on TopBar
+      fireEvent.pointerDown(topBarWindow);
       expect(topBarWindow).toHaveAttribute("data-active", "true");
       expect(mainWindow).not.toHaveAttribute("data-active");
       expect(footerWindow).not.toHaveAttribute("data-active");
 
-      // Click main window - TopBar should deactivate
-      fireEvent.click(mainWindow);
+      // Pointer down on main window - TopBar should deactivate
+      fireEvent.pointerDown(mainWindow);
       expect(topBarWindow).not.toHaveAttribute("data-active");
       expect(mainWindow).toHaveAttribute("data-active", "true");
       expect(footerWindow).not.toHaveAttribute("data-active");
 
-      // Click footer - main should deactivate
-      fireEvent.click(footerWindow);
+      // Pointer down on footer - main should deactivate
+      fireEvent.pointerDown(footerWindow);
       expect(topBarWindow).not.toHaveAttribute("data-active");
       expect(mainWindow).not.toHaveAttribute("data-active");
       expect(footerWindow).toHaveAttribute("data-active", "true");

@@ -14,7 +14,7 @@ test.describe("Smoke Tests", () => {
   /**
    * Helper to check if viewport is mobile (below md breakpoint)
    */
-  async function isMobileViewport(page: import("@playwright/test").Page): Promise<boolean> {
+  function isMobileViewport(page: import("@playwright/test").Page): boolean {
     const viewport = page.viewportSize();
     return viewport ? viewport.width < MD_BREAKPOINT : false;
   }
@@ -23,7 +23,7 @@ test.describe("Smoke Tests", () => {
    * Helper to open mobile nav dropdown if on mobile viewport
    */
   async function openMobileNavIfNeeded(page: import("@playwright/test").Page): Promise<void> {
-    if (await isMobileViewport(page)) {
+    if (isMobileViewport(page)) {
       const navTrigger = page.getByRole("button", { name: /navigation menu/i });
       await navTrigger.click();
     }

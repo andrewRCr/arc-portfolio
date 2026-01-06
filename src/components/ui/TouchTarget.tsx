@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 interface TouchTargetProps {
   children: ReactNode;
@@ -14,9 +15,9 @@ interface TouchTargetProps {
  * Use this to wrap interactive elements that need accessible touch targets
  * without changing their visual appearance.
  */
-export function TouchTarget({ children, className = "" }: TouchTargetProps) {
+export function TouchTarget({ children, className }: TouchTargetProps) {
   return (
-    <div className={`min-h-11 min-w-11 flex items-center justify-center ${className}`} data-touch-target>
+    <div className={cn("flex items-center justify-center", className, "min-h-11 min-w-11")} data-touch-target>
       {children}
     </div>
   );

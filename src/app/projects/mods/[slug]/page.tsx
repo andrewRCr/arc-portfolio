@@ -44,9 +44,7 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
 
   return (
     <PageLayout>
-      <div className="p-4 md:p-8">
-        <ProjectDetail project={mod} currentTab={currentTab} from={from} />
-      </div>
+      <ProjectDetail project={mod} currentTab={currentTab} from={from} />
     </PageLayout>
   );
 }

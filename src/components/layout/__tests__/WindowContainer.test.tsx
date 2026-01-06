@@ -127,7 +127,7 @@ describe("WindowContainer", () => {
       expect(wrapper).toHaveAttribute("data-active", "true");
     });
 
-    it("calls onActivate callback when clicked", () => {
+    it("calls onActivate callback when pointer down", () => {
       const handleActivate = vi.fn();
       const { container } = render(
         <WindowContainer onActivate={handleActivate}>
@@ -136,7 +136,7 @@ describe("WindowContainer", () => {
       );
 
       const wrapper = container.firstChild as HTMLElement;
-      fireEvent.click(wrapper);
+      fireEvent.pointerDown(wrapper);
 
       expect(handleActivate).toHaveBeenCalledTimes(1);
     });

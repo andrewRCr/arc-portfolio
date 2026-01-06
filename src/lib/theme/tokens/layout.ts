@@ -119,8 +119,8 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   windowGap: 8,
   windowBorderWidth: 2,
   windowOpacity: 0.8,
-  topBarHeight: 42, // 28px content + 8px padding + 4px borders + 2px breathing room
-  footerHeight: 36, // 18px icons + 12px padding + 4px borders + 2px breathing room
+  topBarHeight: 48, // 44px touch target + 4px borders
+  footerHeight: 48, // 44px touch target + 4px borders
   navGapHalf: 190,
   navGapHalfMobile: 70,
   navHeight: 28,

@@ -40,8 +40,8 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
   }, []);
 
   // Manage environment preview data attribute (controls WindowContainer opacity via CSS)
-  // Default "false" = 100% opacity for pure color evaluation on dev pages
-  // When showEnvPreview enabled, user can toggle to see normal TWM opacity
+  // When showEnvPreview is disabled: dataset.envPreview = "false" → 100% opacity for pure color evaluation
+  // When showEnvPreview is enabled: dataset.envPreview reflects toggle state (default: "true" → normal TWM opacity)
   useEffect(() => {
     if (!mounted) return;
     document.documentElement.dataset.envPreview = showEnvPreview && envPreview ? "true" : "false";
@@ -91,13 +91,16 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
 
       {/* Jump links */}
       {jumpLinks.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-2 border-t border-border/50 pt-2 mt-3">
+        <nav
+          aria-label="Page sections"
+          className="flex flex-wrap justify-center gap-2 border-t border-border/50 pt-2 mt-3"
+        >
           {jumpLinks.map(({ id, label }) => (
             <Button key={id} variant="link" size="sm" onClick={() => scrollToSection(id)}>
               {label}
             </Button>
           ))}
-        </div>
+        </nav>
       )}
 
       {/* Bottom separator */}

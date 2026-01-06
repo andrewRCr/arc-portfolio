@@ -15,23 +15,7 @@ const ccc = new ColorContrastChecker();
  * @throws Error if input is not valid "R G B" format with 0-255 values
  */
 export function rgbToHex(rgb: string): string {
-  if (!rgb || typeof rgb !== "string") {
-    throw new Error(`Invalid RGB format: expected "R G B" string, got ${typeof rgb}`);
-  }
-
-  const parts = rgb.trim().split(/\s+/);
-  if (parts.length !== 3) {
-    throw new Error(`Invalid RGB format: expected 3 values, got ${parts.length} in "${rgb}"`);
-  }
-
-  const values = parts.map((p) => {
-    const n = Number(p);
-    if (!Number.isFinite(n) || n < 0 || n > 255 || !Number.isInteger(n)) {
-      throw new Error(`Invalid RGB value: "${p}" is not an integer 0-255 in "${rgb}"`);
-    }
-    return n;
-  });
-
+  const values = parseRgb(rgb);
   return (
     "#" +
     values

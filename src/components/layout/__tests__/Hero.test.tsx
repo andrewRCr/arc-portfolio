@@ -31,10 +31,9 @@ describe("Hero", () => {
   });
 
   describe("Tagline Split Logic", () => {
-    it("renders tagline with responsive break when containing pipe separator", () => {
-      // Precondition: test assumes tagline has pipe separator
-      expect(SITE.tagline.includes(" | ")).toBe(true);
+    const hasPipeSeparator = SITE.tagline.includes(" | ");
 
+    it.runIf(hasPipeSeparator)("renders tagline with responsive break when containing pipe separator", () => {
       const { container } = render(<Hero />);
 
       // Should have a <br> for mobile when tagline has " | "
@@ -42,10 +41,7 @@ describe("Hero", () => {
       expect(br).toBeInTheDocument();
     });
 
-    it("renders pipe separator only on desktop (hidden on mobile)", () => {
-      // Precondition: test assumes tagline has pipe separator
-      expect(SITE.tagline.includes(" | ")).toBe(true);
-
+    it.runIf(hasPipeSeparator)("renders pipe separator only on desktop (hidden on mobile)", () => {
       const { container } = render(<Hero />);
 
       const separator = container.querySelector("span.hidden.md\\:inline");

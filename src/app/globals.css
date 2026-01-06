@@ -127,7 +127,7 @@
   --ring: 235 104 75;
 
   /* Shadow tokens */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.20);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
 
@@ -187,7 +187,7 @@
   --ring: 235 104 75;
 
   /* Shadow tokens */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.20);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
 }
@@ -291,7 +291,7 @@
   --ring: 49 116 143;
 
   /* Shadow tokens */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.20);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
 }
@@ -395,7 +395,7 @@
   --ring: 184 187 38;
 
   /* Shadow tokens */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.20);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
 }

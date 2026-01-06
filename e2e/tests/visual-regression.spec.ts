@@ -1,4 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
+import { VIEWPORTS } from "../constants";
+import { PALETTE_STORAGE_KEY, MODE_STORAGE_KEY } from "@/config/storage";
 
 /**
  * Visual Regression Tests
@@ -49,25 +51,18 @@ test.beforeEach(async ({}, testInfo) => {
 
 const THEMES = ["remedy", "rose-pine", "gruvbox"] as const;
 const MODES = ["light", "dark"] as const;
-const VIEWPORTS = [
-  { name: "desktop", width: 1920, height: 1080 },
-  { name: "tablet", width: 768, height: 1024 },
-  { name: "mobile", width: 375, height: 667 },
-] as const;
-
-// Storage keys (must match app implementation)
-const THEME_STORAGE_KEY = "arc-portfolio-theme";
-const MODE_STORAGE_KEY = "theme"; // next-themes default key
+const VIEWPORT_NAMES = ["desktop", "tablet", "mobile"] as const;
 
 test.describe("Visual Regression Baselines", () => {
   for (const theme of THEMES) {
     for (const mode of MODES) {
-      for (const viewport of VIEWPORTS) {
-        const testName = `${theme}-${mode}-${viewport.name}`;
+      for (const viewportName of VIEWPORT_NAMES) {
+        const testName = `${theme}-${mode}-${viewportName}`;
+        const viewport = VIEWPORTS[viewportName];
 
         test(testName, async ({ page }) => {
           // Set viewport
-          await page.setViewportSize({ width: viewport.width, height: viewport.height });
+          await page.setViewportSize(viewport);
 
           // Set theme and mode in localStorage before navigation
           await page.addInitScript(
@@ -78,7 +73,7 @@ test.describe("Visual Regression Baselines", () => {
             {
               theme,
               mode,
-              themeKey: THEME_STORAGE_KEY,
+              themeKey: PALETTE_STORAGE_KEY,
               modeKey: MODE_STORAGE_KEY,
             }
           );
@@ -106,11 +101,10 @@ test.describe("Page-Specific Baselines", () => {
   const defaultSetup = {
     theme: "remedy" as const,
     mode: "light" as const,
-    viewport: { width: 1920, height: 1080 },
   };
 
   test.beforeEach(async ({ page }) => {
-    await page.setViewportSize(defaultSetup.viewport);
+    await page.setViewportSize(VIEWPORTS.desktop);
     await page.addInitScript(
       ({ theme, mode, themeKey, modeKey }) => {
         localStorage.setItem(themeKey, theme);
@@ -119,7 +113,7 @@ test.describe("Page-Specific Baselines", () => {
       {
         theme: defaultSetup.theme,
         mode: defaultSetup.mode,
-        themeKey: THEME_STORAGE_KEY,
+        themeKey: PALETTE_STORAGE_KEY,
         modeKey: MODE_STORAGE_KEY,
       }
     );

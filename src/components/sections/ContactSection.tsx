@@ -38,7 +38,7 @@ export function ContactSection() {
             {contact.socialLinks
               .filter((social) => social.icon !== "mail")
               .map((social) => {
-                const IconComponent = iconMap[social.icon];
+                const Icon = iconMap[social.icon];
                 return (
                   <a
                     key={social.platform}
@@ -47,7 +47,7 @@ export function ContactSection() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60"
                   >
-                    <IconComponent className="h-5 w-5 text-foreground" />
+                    <Icon className="h-5 w-5 text-foreground" />
                     <span className="font-medium text-foreground">{social.platform}</span>
                   </a>
                 );
