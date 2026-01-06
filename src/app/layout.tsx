@@ -52,6 +52,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Blocking script to set theme class before paint (FOUC prevention).
+            Creates unavoidable hydration mismatch on Safari dev mode - this is
+            the idiomatic pattern. See: github.com/vercel/next.js/issues/34610 */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body

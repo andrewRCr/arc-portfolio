@@ -13,17 +13,22 @@ project context, and behavioral guidance before beginning work.
 
 ```bash
 pwd
-# Expected: {{REPO_ROOT}} (repo root)
-# Or: relevant subdirectories if working in specific context
+# Expected: /home/andrew/dev/arc-portfolio (repo root)
 ```
 
-**Verify runtime status:**
+**Check dev server status:**
 
 ```bash
-# Project-specific verification (examples)
-# Docker: docker ps | grep {{PROJECT_NAME}} | wc -l
-# Venv: ls {{VENV_PATH}}/bin/ | grep -E "(ruff|pytest)" | wc -l
-# Services: Check project-specific services are running
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 2>/dev/null || echo "not running"
+# Expected: 200 if running, "not running" if not
+# Note: Dev server is optional for many tasks but required for visual testing
+```
+
+**Verify Node.js/npm available:**
+
+```bash
+node --version && npm --version
+# Expected: Node 18+ (LTS), npm 9+
 ```
 
 ### 2. Load AI Context (read in order)
@@ -41,7 +46,7 @@ more value in having complete context upfront than discovering missing rules mid
    - **Why full read needed**: Short, maintained to be lean, provides essential project context
 
 2. `.arc/active/CURRENT-SESSION.md` - **MUST READ IN FULL**
-   - Session Startup Protocol (environment expectations: working directory, Docker, venv, paths)
+   - Session Startup Protocol (environment expectations: working directory, dev server, paths)
    - Session Information (branch, task list, current task with line number, next action)
    - Last completed work and blockers
    - Session Context (detailed implementation notes)
@@ -107,11 +112,11 @@ large enough to warrant partial reading - but you must still read the overview a
 
 State your understanding to confirm successful initialization:
 
-- **Working directory**: Repository root (`{{REPO_ROOT}}/`)
-- **Runtime status**: Project-specific services running (per QUICK-REFERENCE.md)
-- **Tool availability**: Required tools available (per QUICK-REFERENCE.md)
+- **Working directory**: Repository root (`/home/andrew/dev/arc-portfolio/`)
+- **Dev server status**: Running at localhost:3000, or note if not running (required for visual testing)
+- **Tool availability**: Node.js/npm available in PATH
 - **Quality policy**: Zero-tolerance for linting violations, 100% test pass rate
-- **Reference versions**: Per DEVELOPMENT-RULES and QUICK-REFERENCE headers
+- **Reference versions**: DEVELOPMENT-RULES v1.1, QUICK-REFERENCE v1.3
 - **Documents read in full**: Confirm that AGENTS, CURRENT-SESSION, 3_process-task-loop, STRATEGY-INDEX,
   DEVELOPMENT-RULES, QUICK-REFERENCE, and agent-specific file were read completely (not skimmed)
 - **Task list context loaded**: Confirm that task list overview + current task section were read (from CURRENT-SESSION)
@@ -143,5 +148,5 @@ If documented state (CURRENT-SESSION.md) doesn't match reality (git status, task
 
 ---
 
-**Version**: 2025-11-11 (Added Current Task line number verification. Added context mismatch guidance. Streamlined
-CURRENT-SESSION references to focus on state not procedure.)
+**Version**: 2026-01-06 (Added arc-portfolio-specific environment verification: dev server check, Node.js/npm check,
+concrete paths and expected values.)
