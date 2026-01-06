@@ -46,8 +46,8 @@ const COLOR_VARS = [
 
 /** Jump links for in-page navigation */
 const JUMP_LINKS = [
-  { id: "css-variables", label: "Variables" },
   { id: "color-palette", label: "Colors" },
+  { id: "css-variables", label: "Variables" },
   { id: "buttons", label: "Buttons" },
   { id: "form-controls", label: "Forms" },
   { id: "feedback", label: "Feedback" },
@@ -105,8 +105,8 @@ export default function ThemeDebugPage() {
   return (
     <PageLayout header={<DevPageHeader title="Theme Debug" jumpLinks={JUMP_LINKS} showEnvPreview />}>
       <div className="space-y-8 p-8">
-        <CSSVariablesSection variables={variables} open={cssOpen} onOpenChange={setCssOpen} />
         <ColorPaletteSection />
+        <CSSVariablesSection variables={variables} open={cssOpen} onOpenChange={setCssOpen} />
         <ButtonsSection />
         <FormControlsSection />
         <FeedbackSection />

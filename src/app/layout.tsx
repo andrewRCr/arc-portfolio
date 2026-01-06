@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
-import { defaultTheme } from "@/data/themes";
+import { defaultPalette } from "@/data/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,10 +35,10 @@ export const metadata: Metadata = {
 const themeInitScript = `
 (function() {
   try {
-    var palette = localStorage.getItem('arc-portfolio-theme') || '${defaultTheme}';
+    var palette = localStorage.getItem('arc-portfolio-theme') || '${defaultPalette}';
     document.documentElement.classList.add(palette);
   } catch (e) {
-    document.documentElement.classList.add('${defaultTheme}');
+    document.documentElement.classList.add('${defaultPalette}');
   }
 })();
 `;

@@ -30,7 +30,7 @@ export function ThemeSwitcher() {
         id="theme-select"
         value={activeTheme}
         onChange={handleThemeChange}
-        className="rounded border border-border px-2 py-1 text-sm text-foreground transition-colors focus:bg-card hover:border-secondary/60  focus-visible:border-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        className="rounded border border-border px-2 py-1 text-sm text-foreground transition-colors focus:bg-card hover:border-secondary/60 focus-visible:border-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
       >
         {themeNames.map((themeName) => (
           <option key={themeName} value={themeName}>

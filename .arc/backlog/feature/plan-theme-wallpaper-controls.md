@@ -274,6 +274,10 @@ resolve instantly without waiting for React hydration.
 - **Control UI format**: Separate popover for each, or combined panel?
 - **Mobile approach**: Simplified control, skip wallpaper entirely, or drawer UI?
 - **Wallpaper compatibility**: Final tagging requires visual testing with all themes
+- **Per-theme window opacity**: During visual tuning, evaluate if different themes benefit from
+  different window opacity values (e.g., busier wallpapers → higher opacity). If needed, add
+  `windowOpacity?: number` to Theme interface and wire WindowContainer to read from theme context
+  with fallback to `DEFAULT_LAYOUT_TOKENS.windowOpacity`. Deferred from TWM Layout System cleanup.
 
 ## Risks & Mitigations
 

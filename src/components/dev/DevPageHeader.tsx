@@ -26,12 +26,12 @@ export interface DevPageHeaderProps {
  * - Optional Environment Preview toggle (for color evaluation pages)
  *
  * The Environment Preview toggle controls WindowContainer opacity:
- * - OFF (default): 100% opacity for pure color evaluation
- * - ON: Normal TWM opacity for representative view
+ * - ON (default): Normal TWM opacity for representative view
+ * - OFF: 100% opacity for pure color evaluation
  */
 export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevPageHeaderProps) {
   const [mounted, setMounted] = useState(false);
-  const [envPreview, setEnvPreview] = useState(false);
+  const [envPreview, setEnvPreview] = useState(true);
 
   // Avoid hydration mismatch
   useEffect(() => {
@@ -39,22 +39,19 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
     setMounted(true);
   }, []);
 
-  // Set default env preview state on mount (100% opacity for dev pages)
+  // Manage environment preview data attribute (controls WindowContainer opacity via CSS)
+  // Default "false" = 100% opacity for pure color evaluation on dev pages
+  // When showEnvPreview enabled, user can toggle to see normal TWM opacity
   useEffect(() => {
-    if (mounted) {
-      document.documentElement.dataset.envPreview = "false";
-    }
+    if (!mounted) return;
+    document.documentElement.dataset.envPreview = showEnvPreview && envPreview ? "true" : "false";
     return () => {
       delete document.documentElement.dataset.envPreview;
     };
-  }, [mounted]);
+  }, [mounted, showEnvPreview, envPreview]);
 
-  // Toggle environment preview via data attribute on html element
-  useEffect(() => {
-    if (mounted && showEnvPreview) {
-      document.documentElement.dataset.envPreview = envPreview ? "true" : "false";
-    }
-  }, [envPreview, showEnvPreview, mounted]);
+  // Visual offset so scrolled-to section isn't flush against container top
+  const SCROLL_TOP_OFFSET_PX = 16;
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -66,7 +63,7 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
         // Scroll within the container, not the window
         const containerRect = scrollContainer.getBoundingClientRect();
         const elementRect = element.getBoundingClientRect();
-        const offsetTop = elementRect.top - containerRect.top + scrollContainer.scrollTop - 16;
+        const offsetTop = elementRect.top - containerRect.top + scrollContainer.scrollTop - SCROLL_TOP_OFFSET_PX;
         scrollContainer.scrollTo({ top: offsetTop, behavior: "smooth" });
       }
     }

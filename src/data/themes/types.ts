@@ -13,8 +13,6 @@
  * @see https://ui.shadcn.com/docs/theming
  */
 
-import type { LayoutTokens } from "@/lib/theme";
-
 /**
  * Available accent color variants for theme customization.
  *
@@ -138,21 +136,6 @@ export interface ThemeColors {
 }
 
 /**
- * Per-theme layout token overrides.
- *
- * Allows themes to customize layout values (window gaps, opacity, etc.)
- * while falling back to DEFAULT_LAYOUT_TOKENS for unspecified values.
- *
- * @example
- * // Theme with tighter window gaps
- * layoutOverrides: {
- *   windowGap: 4,
- *   windowOpacity: 0.9
- * }
- */
-export type LayoutOverrides = Partial<LayoutTokens>;
-
-/**
  * Complete theme definition with light and dark color palettes.
  *
  * Each theme provides:
@@ -160,7 +143,6 @@ export type LayoutOverrides = Partial<LayoutTokens>;
  * - Light mode color palette
  * - Dark mode color palette
  * - Accent variant metadata (optional)
- * - Layout overrides (optional)
  */
 export interface Theme {
   /** Unique theme identifier (kebab-case) */
@@ -173,8 +155,6 @@ export interface Theme {
   readonly dark: ThemeColors;
   /** Accent variant configuration (optional) */
   readonly accentVariants?: AccentMetadata;
-  /** Per-theme layout token overrides (optional) */
-  readonly layoutOverrides?: LayoutOverrides;
 }
 
 /**

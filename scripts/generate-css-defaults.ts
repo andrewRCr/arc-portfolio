@@ -16,7 +16,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { themes, defaultTheme } from "../src/data/themes";
+import { themes, defaultPalette } from "../src/data/themes";
 import type { ThemeColors } from "../src/data/themes/types";
 import { DEFAULT_LAYOUT_TOKENS } from "../src/lib/theme/tokens/layout";
 
@@ -124,10 +124,10 @@ function generateThemeVariants(): string {
  * Update globals.css with generated theme defaults and variants.
  */
 function updateGlobalsCss(): void {
-  // Get the default theme's dark mode colors (dark mode is the preferred default)
-  const theme = themes[defaultTheme];
+  // Get the default palette's dark mode colors (dark mode is the preferred default)
+  const theme = themes[defaultPalette];
   if (!theme) {
-    console.error(`Error: Default theme "${defaultTheme}" not found in theme registry`);
+    console.error(`Error: Default palette "${defaultPalette}" not found in theme registry`);
     process.exit(1);
   }
 
@@ -150,7 +150,7 @@ function updateGlobalsCss(): void {
     const after = css.slice(endIndex);
 
     const generatedBlock = `${START_MARKER}
-  /* Source: themes["${defaultTheme}"].dark from src/data/themes */
+  /* Source: themes["${defaultPalette}"].dark from src/data/themes */
 ${themeCssVariables}
 
 ${layoutCssVariables}
@@ -200,7 +200,7 @@ ${VARIANTS_END_MARKER}`;
   // Write updated file
   fs.writeFileSync(GLOBALS_CSS_PATH, css, "utf-8");
   console.log(`Updated ${GLOBALS_CSS_PATH}:`);
-  console.log(`  - :root defaults from "${defaultTheme}" theme (dark mode)`);
+  console.log(`  - :root defaults from "${defaultPalette}" palette (dark mode)`);
   console.log(`  - ${themeCount * 2} theme class variants (${themeCount} themes × 2 modes)`);
 }
 

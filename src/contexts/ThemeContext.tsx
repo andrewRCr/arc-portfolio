@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { defaultTheme, themes, type ThemeName } from "@/data/themes";
+import { defaultPalette, themes, type ThemeName } from "@/data/themes";
 
 const STORAGE_KEY = "arc-portfolio-theme";
 
@@ -24,7 +24,7 @@ function getStoredTheme(): ThemeName | null {
 export function ThemeContextProvider({ children }: { children: React.ReactNode }) {
   // Initialize with stored theme (read synchronously to avoid race condition)
   const [activeTheme, setActiveTheme] = React.useState<ThemeName>(() => {
-    return getStoredTheme() ?? defaultTheme;
+    return getStoredTheme() ?? defaultPalette;
   });
 
   // Persist theme changes to localStorage

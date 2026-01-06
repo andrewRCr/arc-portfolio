@@ -32,23 +32,25 @@ describe("Hero", () => {
 
   describe("Tagline Split Logic", () => {
     it("renders tagline with responsive break when containing pipe separator", () => {
+      // Precondition: test assumes tagline has pipe separator
+      expect(SITE.tagline.includes(" | ")).toBe(true);
+
       const { container } = render(<Hero />);
 
-      // If tagline has " | ", should have a <br> for mobile
-      if (SITE.tagline.includes(" | ")) {
-        const br = container.querySelector("br.md\\:hidden");
-        expect(br).toBeInTheDocument();
-      }
+      // Should have a <br> for mobile when tagline has " | "
+      const br = container.querySelector("br.md\\:hidden");
+      expect(br).toBeInTheDocument();
     });
 
     it("renders pipe separator only on desktop (hidden on mobile)", () => {
+      // Precondition: test assumes tagline has pipe separator
+      expect(SITE.tagline.includes(" | ")).toBe(true);
+
       const { container } = render(<Hero />);
 
-      if (SITE.tagline.includes(" | ")) {
-        const separator = container.querySelector("span.hidden.md\\:inline");
-        expect(separator).toBeInTheDocument();
-        expect(separator).toHaveTextContent("|");
-      }
+      const separator = container.querySelector("span.hidden.md\\:inline");
+      expect(separator).toBeInTheDocument();
+      expect(separator).toHaveTextContent("|");
     });
   });
 

@@ -70,13 +70,27 @@ export function meetsAANormalText(rgb1: string, rgb2: string): boolean {
 /**
  * Parse RGB space-separated string to array of numbers.
  * Example: "251 241 199" → [251, 241, 199]
+ * @throws Error if input is not valid "R G B" format with 0-255 integer values
  */
 export function parseRgb(rgb: string): [number, number, number] {
-  const parts = rgb.trim().split(/\s+/).map(Number);
-  if (parts.length !== 3 || parts.some((n) => !Number.isFinite(n))) {
-    throw new Error(`Invalid RGB format: "${rgb}"`);
+  if (!rgb || typeof rgb !== "string") {
+    throw new Error(`Invalid RGB format: expected "R G B" string, got ${typeof rgb}`);
   }
-  return parts as [number, number, number];
+
+  const parts = rgb.trim().split(/\s+/);
+  if (parts.length !== 3) {
+    throw new Error(`Invalid RGB format: expected 3 values, got ${parts.length} in "${rgb}"`);
+  }
+
+  const values = parts.map((p) => {
+    const n = Number(p);
+    if (!Number.isFinite(n) || n < 0 || n > 255 || !Number.isInteger(n)) {
+      throw new Error(`Invalid RGB value: "${p}" is not an integer 0-255 in "${rgb}"`);
+    }
+    return n;
+  });
+
+  return values as [number, number, number];
 }
 
 /**
@@ -87,8 +101,16 @@ export function parseRgb(rgb: string): [number, number, number] {
  * @param fgAlpha - Foreground opacity (0-1)
  * @param bgRgb - Background color (RGB string)
  * @returns Composited color as RGB string
+ * @throws RangeError if fgAlpha is not a finite number between 0 and 1
  */
 export function alphaComposite(fgRgb: string, fgAlpha: number, bgRgb: string): string {
+  if (typeof fgAlpha !== "number" || !Number.isFinite(fgAlpha)) {
+    throw new TypeError(`Invalid alpha value: expected finite number, got ${fgAlpha}`);
+  }
+  if (fgAlpha < 0 || fgAlpha > 1) {
+    throw new RangeError(`Invalid alpha value: expected 0-1, got ${fgAlpha}`);
+  }
+
   const fg = parseRgb(fgRgb);
   const bg = parseRgb(bgRgb);
 

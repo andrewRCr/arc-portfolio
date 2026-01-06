@@ -52,7 +52,11 @@ describe("TopBar", () => {
       render(<TopBar />);
 
       const brandingLink = screen.getByRole("link", { name: new RegExp(SITE.handle, "i") });
-      expect(brandingLink).not.toBeDisabled();
+      // Links are focusable by default unless explicitly excluded with tabIndex="-1"
+      expect(brandingLink).not.toHaveAttribute("tabindex", "-1");
+      // Verify link can receive focus
+      brandingLink.focus();
+      expect(brandingLink).toHaveFocus();
     });
   });
 });
