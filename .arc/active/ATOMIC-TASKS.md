@@ -30,12 +30,9 @@
 
 ## Active
 
-<!-- Example structure:
-
-- [ ] {{Task name}}
-    - Problem: {{What issue this addresses}}
-    - Approach: {{How to solve it}}
-    - Files: `{{path/to/file.ext}}`
-    - Rationale: {{Why this matters}}
-
--->
+- [ ] Investigate iOS Safari OverlayScrollbars padding alignment issue
+    - **Context:** On iPhone 16, scrollbar `os-padding-axis` (vertical) doesn't align correctly with content
+    - **Symptoms:** Top padding inconsistent, bottom padding extends past content end
+    - **Possible cause:** Known iOS Safari issues with OverlayScrollbars, or app-specific CSS
+    - **Location:** `src/app/globals.css` (lines 514-527), ScrollShadow component integration
+    - **Acceptance:** Either fix alignment or document as known limitation with rationale

@@ -20,11 +20,12 @@ import type { ThemeRegistry } from "./types";
  *
  * Themes are identified by their `name` property (kebab-case).
  * Each theme includes light and dark mode color palettes.
+ * Order determines display order in ThemeSwitcher.
  */
 export const themes: ThemeRegistry = {
-  gruvbox: gruvboxTheme,
   remedy: remedyTheme,
   "rose-pine": rosePineTheme,
+  gruvbox: gruvboxTheme,
 };
 
 /**
@@ -34,10 +35,11 @@ export const themes: ThemeRegistry = {
 export type ThemeName = keyof typeof themes;
 
 /**
- * Default theme loaded on first visit.
- * Falls back to this theme if saved preference is invalid.
+ * Default palette loaded on first visit.
+ * Falls back to this palette if saved preference is invalid.
+ * (Named "palette" to distinguish from next-themes' defaultTheme prop which controls light/dark mode)
  */
-export const defaultTheme: ThemeName = "gruvbox";
+export const defaultPalette: ThemeName = "remedy";
 
 // Re-export types for external use
 export type { Theme, ThemeColors, AccentVariant, AccentMetadata } from "./types";

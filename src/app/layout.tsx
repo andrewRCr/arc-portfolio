@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navigation } from "@/components/layout/Navigation";
-import { AdaptiveHero } from "@/components/layout/AdaptiveHero";
-import { Footer } from "@/components/layout/Footer";
+import { SITE } from "@/config/site";
+import { PALETTE_STORAGE_KEY } from "@/config/storage";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
+import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
+import { defaultPalette } from "@/data/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,9 +20,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Andrew Creekmore - Portfolio",
-  description: "Portfolio showcasing full-stack development projects and technical expertise",
+  title: SITE.title,
+  description: SITE.metaDescription,
 };
+
+/**
+ * Blocking script to prevent FOUC (flash of unstyled content).
+ *
+ * Runs synchronously before paint to set the theme palette class on <html>.
+ * next-themes handles the light/dark mode class separately.
+ *
+ * Combined with CSS class variants (.remedy.dark, .rose-pine.light, etc.),
+ * this ensures correct theme colors render on first paint.
+ */
+const themeInitScript = `
+(function() {
+  try {
+    var palette = localStorage.getItem('${PALETTE_STORAGE_KEY}') || '${defaultPalette}';
+    document.documentElement.classList.add(palette);
+  } catch (e) {
+    document.documentElement.classList.add('${defaultPalette}');
+  }
+})();
+`;
 
 export default function RootLayout({
   children,
@@ -29,33 +51,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         style={{ backgroundColor: "rgb(var(--background))" }}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <ConsoleLoggerInit />
-          {/* TUI-style border frame wrapper */}
-          <div className="min-h-screen p-4 md:p-6 lg:p-8">
-            <div className="min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)] border-2 border-border rounded-lg flex flex-col relative">
-              {/* Navigation positioned at top with border break */}
-              {/* Note: top uses CSS variable for browser-specific offset (see globals.css) */}
-              <div className="absolute left-1/2 -translate-x-1/2 top-[var(--nav-offset)] bg-background px-8 z-10">
-                <Navigation />
-              </div>
-
-              {/* Adaptive Hero - switches between expanded (home) and compact (other pages) */}
-              <div className="pt-14">
-                <AdaptiveHero />
-              </div>
-
-              {/* Main content area */}
-              <main className="flex flex-col flex-1 px-6 pb-6">{children}</main>
-
-              {/* Footer at bottom of frame */}
-              <Footer />
-            </div>
-          </div>
+          <LayoutWrapper>
+            <ConditionalFrame>{children}</ConditionalFrame>
+          </LayoutWrapper>
         </ThemeProvider>
       </body>
     </html>

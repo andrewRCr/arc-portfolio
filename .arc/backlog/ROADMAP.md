@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2025-12-30
+**Last Updated:** 2026-01-01
 
 ---
 
@@ -27,32 +27,48 @@ Establish content baseline and design system infrastructure before visual design
 Transform placeholder styling into distinctive, polished design.
 
 3. **TWM Layout System**
-   - PRD: `.arc/backlog/feature/prd-twm-layout-system.md`
+   - PRD: `.arc/active/feature/prd-twm-layout-system.md`
    - Rationale: Core visual identity; affects all pages; foundational for polish work
-   - Scope: Three-window layout, theming architecture, responsive adaptation
+   - Scope: Three-window layout, wallpaper background, responsive adaptation
    - Dependencies: Content migration complete, design system foundation established
 
-4. **Visual Polish & Animations**
+4. **Theme & Wallpaper Control System**
+   - Plan: `.arc/backlog/feature/plan-theme-wallpaper-controls.md`
+   - Rationale: Polished theme/wallpaper selection UI; completes visual framework
+   - Scope: ThemePicker component, WallpaperPicker with theme-aware filtering,
+     per-theme wallpaper persistence, unified control UI
+   - Dependencies: TWM Layout System (provides wallpaper infrastructure)
+
+5. **Content Polish**
+   - Plan: `.arc/backlog/feature/plan-content-polish.md`
+   - Rationale: Pages need structural completion before animation polish
+   - Scope: Project detail pages (header, images, copy), Skills page reorganization,
+     About copy pass, Contact form + polish, Home skills logo grid
+   - Dependencies: Theme & Wallpaper Control System (styling framework complete)
+
+6. **Visual Polish**
+   - Plan: `.arc/backlog/feature/plan-twm-startup-animation.md` (primary)
+   - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md` (additional items)
+   - Rationale: Animation/transition layer after pages are structurally complete
+   - Scope: TWM startup animation, Framer Motion transitions, micro-interactions, loading states
+   - Dependencies: Content Polish (can't animate incomplete pages)
+
+### Phase C: Launch
+
+Production readiness and deployment.
+
+7. **Feature Flag System**
+   - Rationale: Unified infrastructure for dev-only content, incomplete projects, and future feature rollouts
+   - Scope: Centralized flag definitions, environment-based defaults (dev vs prod), type-safe API
+   - Consolidates: Dev pages visibility, mods tab gating, incomplete project hiding
+   - Enables: Deploy v1.0 without waiting for all projects; enable incrementally as completed
+
+8. **SEO & Meta Tags**
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
-   - Rationale: Refinement layer after layout system established
-   - Scope: Framer Motion, transitions, micro-interactions, loading states
-   - Dependencies: TWM Layout System (provides styling foundation)
+   - Rationale: Discoverability and social sharing
+   - Scope: Open Graph (social previews), structured data (search), sitemap, robots.txt
 
-### Phase C: Pre-Deployment
-
-Final features and deployment preparation.
-
-5. **Contact Form** (if needed for v1.0)
-   - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
-   - Rationale: Core portfolio functionality; email integration
-   - Scope: Form UI, validation, Zeptomail, rate limiting
-
-6. **SEO & Meta Tags**
-   - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
-   - Rationale: Required for production deployment
-   - Scope: Open Graph, structured data, sitemap, robots.txt
-
-7. **Deployment**
+9. **Deployment**
    - Rationale: Final step; requires all above complete
    - Scope: Vercel setup, domain transfer, production config
 
@@ -62,6 +78,8 @@ Final features and deployment preparation.
 
 Items that can wait until after initial deployment:
 
+- **Incomplete Projects** - CineXplorer, TaskFocus 2.0, ARC Framework, arc-portfolio detail page
+  (feature-flagged; enable as each project completes)
 - **Mod Portfolio Integration** - Feature flag ready, infrastructure exists
 - **Interactive Skills Filtering** - Plan exists (`plan-interactive-skills-filtering.md`)
 - **Dynamic NexusMods Stats** - API integration
@@ -73,13 +91,22 @@ Items that can wait until after initial deployment:
 ## Dependency Analysis
 
 ```
-Content Migration ──► Design System Foundation ──► TWM Layout System ──► Visual Polish
+Content Migration ──► Design System Foundation ──► TWM Layout System
                                                             │
                                                             ▼
-                                                      Contact Form (parallel possible)
+                                               Theme & Wallpaper Controls
                                                             │
                                                             ▼
-                                                      SEO & Meta Tags
+                                                      Content Polish
+                                                            │
+                                                            ▼
+                                                      Visual Polish
+                                                            │
+                                                            ▼
+                                                  Feature Flag System
+                                                            │
+                                                            ▼
+                                                    SEO & Meta Tags
                                                             │
                                                             ▼
                                                        Deployment
@@ -91,20 +118,22 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ### Included in v1.0
 
-| Item                       | Rationale              |
-|----------------------------|------------------------|
-| TWM Layout System          | Core visual identity   |
-| Basic theming (dark/light) | User preference        |
-| Responsive design          | Mobile users           |
-| All content pages          | Portfolio completeness |
+| Item                       | Rationale                                         |
+|----------------------------|---------------------------------------------------|
+| TWM Layout System          | Core visual identity                              |
+| Basic theming (dark/light) | User preference                                   |
+| Responsive design          | Mobile users                                      |
+| Feature flag system        | Enable incremental project/feature rollout        |
+| Completed project pages    | Portfolio showcase (projects ready at launch)     |
 
 ### Deferred Post-v1.0
 
-| Item                | Rationale              | When                  |
-|---------------------|------------------------|-----------------------|
-| Mod Portfolio       | Undecided on inclusion | After v1.0, if wanted |
-| Skills Filtering    | Enhancement, not core  | Post-launch           |
-| Advanced animations | Polish, not essential  | Iterative improvement |
+| Item                | Rationale                    | When                        |
+|---------------------|------------------------------|-----------------------------|
+| Incomplete Projects | Feature-flagged until ready  | Enable as each completes    |
+| Mod Portfolio       | Undecided on inclusion       | After v1.0, if wanted       |
+| Skills Filtering    | Enhancement, not core        | Post-launch                 |
+| Advanced animations | Polish, not essential        | Iterative improvement       |
 
 ### Skipped
 
@@ -118,16 +147,24 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Open Questions
 
-- Contact form: Required for v1.0 or can use mailto link initially?
 - Mod portfolio: Include in v1.0 or defer entirely?
 
 **Resolved:**
 
+- ~~Incomplete projects strategy~~: Feature-flagged; deploy v1.0 without waiting, enable incrementally (2026-01-01)
+- ~~Contact form placement~~: Included in Content Polish work unit (2026-01-01)
 - ~~Mods tab implementation~~: Deferred via feature flag (2025-12-26)
 
 ---
 
 ## Change Log
 
+- **2026-01-01**: Added Theme & Wallpaper Control System (B4), renumbered subsequent items. Broken out
+  from TWM Layout System Phase 5 after evaluation showed need for dedicated feature with state
+  management, persistence, and unified control UI.
+- **2026-01-01**: Added Feature Flag System (C7), renamed Phase C to "Launch", added incomplete projects
+  strategy (feature-flagged, enable incrementally post-v1.0), updated scoping decisions
+- **2026-01-01**: Added Content Polish (B5), renamed Visual Polish & Animations to Visual Polish (B6),
+  moved Contact Form into Content Polish scope, updated dependency diagram
 - **2025-12-30**: Added Design System Foundation to Phase A (Foundation), marked phase complete, updated numbering
 - **2025-12-26**: Initial roadmap created from PROJECT-STATUS and backlog audit

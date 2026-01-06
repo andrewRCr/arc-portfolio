@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { PageLayout } from "@/components/layout/PageLayout";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { projects } from "@/data/projects";
 
@@ -31,5 +32,9 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
   // Preserve tab state from query param, default to 'software'
   const currentTab = tab === "mods" ? "mods" : "software";
 
-  return <ProjectDetail project={project} currentTab={currentTab} from={from} />;
+  return (
+    <PageLayout>
+      <ProjectDetail project={project} currentTab={currentTab} from={from} />
+    </PageLayout>
+  );
 }

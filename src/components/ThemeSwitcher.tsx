@@ -23,14 +23,14 @@ export function ThemeSwitcher() {
 
   return (
     <div className="flex items-center gap-2">
-      <label htmlFor="theme-select" className="text-sm text-muted-foreground">
+      <label htmlFor="theme-select" className="pl-2 text-sm text-muted-foreground">
         Theme:
       </label>
       <select
         id="theme-select"
         value={activeTheme}
         onChange={handleThemeChange}
-        className="rounded border border-border bg-background px-2 py-1 text-sm text-foreground transition-colors hover:border-primary focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring"
+        className="rounded border border-border px-2 py-1 text-sm text-foreground transition-colors focus:bg-card hover:border-secondary/60 focus-visible:border-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
       >
         {themeNames.map((themeName) => (
           <option key={themeName} value={themeName}>

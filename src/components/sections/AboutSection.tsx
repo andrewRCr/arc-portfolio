@@ -33,7 +33,7 @@ function parseMarkdownLinks(text: string): React.ReactElement[] {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-primary hover:text-primary/80 underline"
+        className="text-accent hover:text-accent/80 underline"
       >
         {linkText}
       </a>
@@ -52,15 +52,15 @@ function parseMarkdownLinks(text: string): React.ReactElement[] {
 
 export function AboutSection() {
   return (
-    <section className="p-8">
-      <h2 className="mb-8 text-3xl font-bold">{about.heading}</h2>
-
-      <div className="space-y-4 text-foreground">
-        {about.paragraphs.map((paragraph, index) => (
-          <p key={index} className="leading-relaxed">
-            {parseMarkdownLinks(paragraph)}
-          </p>
-        ))}
+    <section className="px-0 md:px-4 py-2">
+      <div className="rounded-lg border border-border p-6">
+        <div className="space-y-4 text-foreground">
+          {about.paragraphs.map((paragraph, index) => (
+            <p key={index} className="leading-relaxed">
+              {parseMarkdownLinks(paragraph)}
+            </p>
+          ))}
+        </div>
       </div>
 
       {about.highlightedAchievements && about.highlightedAchievements.length > 0 && (
@@ -74,7 +74,7 @@ export function AboutSection() {
                   href={achievement.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-block text-xs text-primary hover:text-primary/80"
+                  className="mt-2 inline-block text-xs text-accent hover:text-accent/80 underline"
                 >
                   View →
                 </a>

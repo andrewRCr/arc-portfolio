@@ -16,7 +16,26 @@ create a PRD/plan in `.arc/active/technical/` and begin the standard workflow.
 
 ## Medium Priority
 
-*No medium priority items currently.*
+### Lighthouse Performance & Accessibility Baseline
+
+**Trigger:** Pre-deployment (part of SEO & Analytics work unit)
+
+**Context:** TWM Layout System deferred Lighthouse testing (Performance ≥90, Accessibility ≥95) to this
+phase. Current test coverage validates functionality and WCAG AA compliance, but doesn't measure
+Core Web Vitals (LCP, FID, CLS) or full Lighthouse scores.
+
+**Proposed work:**
+
+- Run Lighthouse CI against production build
+- Establish baseline scores for Performance, Accessibility, Best Practices, SEO
+- Document Core Web Vitals targets (LCP <2.5s, FID <100ms, CLS <0.1)
+- Consider integrating Lighthouse CI into GitHub Actions for regression detection
+
+**Why deferred:** Static Next.js portfolio with optimized images should perform well by default.
+Existing E2E tests, vitest-axe, and design review provide adequate quality assurance pre-deployment.
+Lighthouse adds value for ongoing monitoring, not blocking initial deployment.
+
+**Origin:** TWM Layout System feature completion (2026-01-05)
 
 ---
 
@@ -37,29 +56,6 @@ pair, but lacks equivalent tokens for success/warning/info states. Current accen
 - `info` + `info-foreground` (blue-based, WCAG AA compliant)
 
 **Why deferred:** No current app need. Add when building features requiring semantic status feedback.
-
-**Origin:** CodeRabbit PR #2 review (2025-12-30)
-
----
-
-### DevPageLayout Component Extraction
-
-**Trigger:** When adding a 3rd dev page (or touching these files for other reasons)
-
-**Context:** `theme-debug` and `typography` pages share identical patterns:
-
-- Dev-only NODE_ENV guard with wrapper pattern
-- Sticky header with title, theme selector, mode toggle, jump links
-- Consistent page layout structure
-
-**Proposed refactor:**
-
-- `DevPageGuard` or `withDevGuard` wrapper handling NODE_ENV check
-- `DevPageHeader` component with parameterized title and jump links
-- Shared layout structure
-
-**Why deferred:** Only 2 consumers currently - abstraction would be premature. Extract when
-the pattern is needed a 3rd time.
 
 **Origin:** CodeRabbit PR #2 review (2025-12-30)
 

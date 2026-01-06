@@ -75,3 +75,6 @@ Thumbs.db
 
 # Browser console logs (for AI debugging)
 .console-logs.txt
+
+# Wallpaper source files (large originals, not needed in repo)
+public/wallpaper/source/

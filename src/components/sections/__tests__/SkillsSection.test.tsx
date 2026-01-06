@@ -92,12 +92,8 @@ describe("SkillsSection - Behavior Tests", () => {
       expect(lists.length).toBe(EXPECTED_CATEGORIES);
     });
 
-    it("has a main heading for the section", () => {
-      render(<SkillsSection />);
-
-      const mainHeading = screen.getByRole("heading", { level: 2, name: /skills/i });
-      expect(mainHeading).toBeInTheDocument();
-    });
+    // Note: Main section heading is now provided by PageHeader at page level.
+    // SkillsSection focuses on rendering skill categories (h3 headings).
   });
 
   describe("Data Integration", () => {

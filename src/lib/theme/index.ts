@@ -8,7 +8,7 @@
  * import type { SemanticColorTokens, LayoutTokens } from '@/lib/theme';
  *
  * // Utilities
- * import { applyThemeColors, validateTheme } from '@/lib/theme';
+ * import { validateTheme, getContrastRatio } from '@/lib/theme';
  *
  * // Default values
  * import { DEFAULT_LAYOUT_TOKENS } from '@/lib/theme';
@@ -25,10 +25,10 @@ export type {
   DesignTokens,
 } from "./tokens";
 
-export { DEFAULT_LAYOUT_TOKENS, DEFAULT_SPACING_TOKENS } from "./tokens";
+export { DEFAULT_LAYOUT_TOKENS, DEFAULT_SPACING_TOKENS, WALLPAPER_GRADIENT, buildWallpaperGradient } from "./tokens";
 
-// Theme utilities
-export { applyThemeColors, getThemeColors } from "./utils";
+// Theme contrast utilities (used by theme tests)
+export { rgbToHex, getContrastRatio, meetsAANormalText, parseRgb, alphaComposite } from "./utils";
 
 // Theme validation
 export type { ValidationResult } from "./validation";

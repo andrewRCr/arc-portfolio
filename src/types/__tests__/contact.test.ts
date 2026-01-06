@@ -66,7 +66,7 @@ describe("Contact Interface", () => {
       socialLinks: [
         { platform: "GitHub", url: "https://github.com/user", icon: "github" },
         { platform: "LinkedIn", url: "https://linkedin.com/in/user", icon: "linkedin" },
-        { platform: "NexusMods", url: "https://nexusmods.com/user", icon: "package" },
+        { platform: "NexusMods", url: "https://nexusmods.com/user", icon: "nexusmods" },
       ],
     };
 

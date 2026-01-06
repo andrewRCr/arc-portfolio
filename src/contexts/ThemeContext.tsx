@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { defaultTheme, themes, type ThemeName } from "@/data/themes";
-
-const STORAGE_KEY = "arc-portfolio-theme";
+import { defaultPalette, themes, type ThemeName } from "@/data/themes";
+import { PALETTE_STORAGE_KEY } from "@/config/storage";
 
 interface ThemeContextValue {
   activeTheme: ThemeName;
@@ -14,7 +13,7 @@ const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefine
 
 function getStoredTheme(): ThemeName | null {
   if (typeof window === "undefined") return null;
-  const stored = localStorage.getItem(STORAGE_KEY);
+  const stored = localStorage.getItem(PALETTE_STORAGE_KEY);
   if (stored && stored in themes) {
     return stored as ThemeName;
   }
@@ -24,15 +23,28 @@ function getStoredTheme(): ThemeName | null {
 export function ThemeContextProvider({ children }: { children: React.ReactNode }) {
   // Initialize with stored theme (read synchronously to avoid race condition)
   const [activeTheme, setActiveTheme] = React.useState<ThemeName>(() => {
-    return getStoredTheme() ?? defaultTheme;
+    return getStoredTheme() ?? defaultPalette;
   });
 
   // Persist theme changes to localStorage
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, activeTheme);
+      localStorage.setItem(PALETTE_STORAGE_KEY, activeTheme);
     }
   }, [activeTheme]);
+
+  // Sync theme across tabs via storage event
+  // Note: storage event only fires when localStorage is changed by a DIFFERENT tab
+  React.useEffect(() => {
+    function handleStorageChange(event: StorageEvent) {
+      if (event.key === PALETTE_STORAGE_KEY && event.newValue && event.newValue in themes) {
+        setActiveTheme(event.newValue as ThemeName);
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return <ThemeContext.Provider value={{ activeTheme, setActiveTheme }}>{children}</ThemeContext.Provider>;
 }

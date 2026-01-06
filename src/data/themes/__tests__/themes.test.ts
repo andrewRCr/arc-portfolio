@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { themes, defaultTheme } from "../index";
+import { themes, defaultPalette } from "../index";
 import { validateTheme } from "@/lib/theme";
 
 describe("Theme Registry", () => {
@@ -26,9 +26,9 @@ describe("Theme Registry", () => {
     expect(themes["rose-pine"].label).toBe("Rosé Pine");
   });
 
-  it("should have valid default theme", () => {
-    expect(defaultTheme).toBeDefined();
-    expect(themes[defaultTheme]).toBeDefined();
+  it("should have valid default palette", () => {
+    expect(defaultPalette).toBeDefined();
+    expect(themes[defaultPalette]).toBeDefined();
   });
 });
 

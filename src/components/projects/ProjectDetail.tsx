@@ -28,7 +28,7 @@ function ExternalLink({ href, label, ariaLabel }: ExternalLinkProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+      className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-secondary/60 hover:text-secondary"
       aria-label={ariaLabel}
     >
       {label} →
@@ -53,7 +53,7 @@ export default function ProjectDetail({ project, currentTab = "software", from }
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-8">
+    <div className="mx-auto w-full max-w-4xl space-y-8 px-0 md:px-4">
       {/* Back Button */}
       <button
         onClick={handleBackClick}

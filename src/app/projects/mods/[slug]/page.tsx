@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { PageLayout } from "@/components/layout/PageLayout";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
@@ -41,5 +42,9 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
   // Preserve tab state from query param, default to 'mods' for mod pages
   const currentTab = tab === "software" ? "software" : "mods";
 
-  return <ProjectDetail project={mod} currentTab={currentTab} from={from} />;
+  return (
+    <PageLayout>
+      <ProjectDetail project={mod} currentTab={currentTab} from={from} />
+    </PageLayout>
+  );
 }

@@ -10,6 +10,8 @@ function escapeRegex(str: string): string {
 
 describe("ContactSection - Behavior Tests", () => {
   const emailPattern = new RegExp(escapeRegex(contact.email), "i");
+  // Filter out email since ContactSection shows it separately
+  const externalSocialLinks = contact.socialLinks.filter((link) => link.icon !== "mail");
 
   describe("Email Rendering", () => {
     it("renders email address", () => {
@@ -27,10 +29,10 @@ describe("ContactSection - Behavior Tests", () => {
   });
 
   describe("Social Links Rendering", () => {
-    it("renders all social platform links", () => {
+    it("renders all external social platform links", () => {
       render(<ContactSection />);
 
-      contact.socialLinks.forEach((link) => {
+      externalSocialLinks.forEach((link) => {
         expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
       });
     });
@@ -38,7 +40,7 @@ describe("ContactSection - Behavior Tests", () => {
     it("renders correct URLs for social links", () => {
       render(<ContactSection />);
 
-      contact.socialLinks.forEach((link) => {
+      externalSocialLinks.forEach((link) => {
         const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
         expect(element).toHaveAttribute("href", link.url);
       });
@@ -47,19 +49,19 @@ describe("ContactSection - Behavior Tests", () => {
     it("opens social links in new tab with security attributes", () => {
       render(<ContactSection />);
 
-      contact.socialLinks.forEach((link) => {
+      externalSocialLinks.forEach((link) => {
         const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
         expect(element).toHaveAttribute("target", "_blank");
         expect(element).toHaveAttribute("rel", "noopener noreferrer");
       });
     });
 
-    it("renders at least 3 social links", () => {
+    it("renders email link plus all external social links", () => {
       render(<ContactSection />);
 
       const links = screen.getAllByRole("link");
-      // Should have email link + social links
-      expect(links.length).toBeGreaterThanOrEqual(contact.socialLinks.length + 1);
+      // Should have exactly: 1 email link + external social links
+      expect(links.length).toBe(externalSocialLinks.length + 1);
     });
   });
 
@@ -70,13 +72,6 @@ describe("ContactSection - Behavior Tests", () => {
       const section = container.querySelector("section");
       expect(section).toBeInTheDocument();
     });
-
-    it("has a main heading for the section", () => {
-      render(<ContactSection />);
-
-      const mainHeading = screen.getByRole("heading", { level: 2, name: /contact/i });
-      expect(mainHeading).toBeInTheDocument();
-    });
   });
 
   describe("Data Integration", () => {
@@ -86,8 +81,8 @@ describe("ContactSection - Behavior Tests", () => {
       // Verify email from contact data
       expect(screen.getByText(emailPattern)).toBeInTheDocument();
 
-      // Verify all social platforms from contact data
-      contact.socialLinks.forEach((link) => {
+      // Verify external social platforms from contact data
+      externalSocialLinks.forEach((link) => {
         expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
       });
     });

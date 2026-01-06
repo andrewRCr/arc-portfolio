@@ -82,6 +82,10 @@ npm run build
 
 # Start production server (after build)
 npm run start
+
+# Regenerate CSS theme defaults (after modifying theme tokens)
+# Auto-runs on build, but run manually after editing scripts/generate-css-defaults.ts
+npm run generate:css-defaults
 ```
 
 ### Type Checking
@@ -226,6 +230,14 @@ npm test -- --testNamePattern="specific test name"
 
 # Lint specific markdown file (use --no-globs to avoid processing entire workspace)
 npx markdownlint-cli2 --fix --no-globs .arc/path/to/file.md
+```
+
+### Mobile Device Testing
+
+```bash
+# Expose local dev server via Cloudflare quick tunnel
+~/.local/bin/cloudflared tunnel --url http://localhost:3000
+# Generates random *.trycloudflare.com URL for mobile testing
 ```
 
 ### Development Workflow

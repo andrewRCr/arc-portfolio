@@ -106,6 +106,52 @@ describe("ProjectTabs - Behavior Tests", () => {
 
       expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
+
+    it("handles ArrowRight to move to next tab", async () => {
+      const user = userEvent.setup();
+      render(<ProjectTabs />);
+
+      const softwareTab = screen.getByRole("tab", { name: /software/i });
+      softwareTab.focus();
+      await user.keyboard("{ArrowRight}");
+
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+    });
+
+    it("handles ArrowLeft to move to previous tab (wraps)", async () => {
+      const user = userEvent.setup();
+      render(<ProjectTabs />);
+
+      const softwareTab = screen.getByRole("tab", { name: /software/i });
+      softwareTab.focus();
+      await user.keyboard("{ArrowLeft}");
+
+      // Wraps from first to last
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+    });
+
+    it("handles Home key to move to first tab", async () => {
+      const user = userEvent.setup();
+      mockNavigation.setSearchParams({ tab: "mods" });
+      render(<ProjectTabs />);
+
+      const modsTab = screen.getByRole("tab", { name: /mods/i });
+      modsTab.focus();
+      await user.keyboard("{Home}");
+
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+    });
+
+    it("handles End key to move to last tab", async () => {
+      const user = userEvent.setup();
+      render(<ProjectTabs />);
+
+      const softwareTab = screen.getByRole("tab", { name: /software/i });
+      softwareTab.focus();
+      await user.keyboard("{End}");
+
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+    });
   });
 
   describe("Query Parameter Handling", () => {

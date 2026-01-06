@@ -42,6 +42,7 @@
 
   /* Borders */
   --color-border: rgb(var(--border));
+  --color-border-strong: rgb(var(--border-strong));
   --color-input: rgb(var(--input));
   --color-ring: rgb(var(--ring));
 
@@ -78,30 +79,370 @@
 :root {
   --radius: 0.625rem;
 
-  /* Theme colors - Default to Gruvbox Light (will be overridden by ThemeProvider) */
+  /* AUTO-GENERATED THEME DEFAULTS - DO NOT EDIT MANUALLY */
+  /* Source: themes["remedy"].dark from src/data/themes */
+  /* Base colors */
+  --background: 53 43 42;
+  --foreground: 245 216 153;
+
+  /* Card colors */
+  --card: 61 50 49;
+  --card-foreground: 245 216 153;
+
+  /* Popover colors */
+  --popover: 61 50 49;
+  --popover-foreground: 245 216 153;
+
+  /* Primary colors */
+  --primary: 236 112 84;
+  --primary-foreground: 53 43 42;
+
+  /* Secondary colors */
+  --secondary: 240 198 116;
+  --secondary-foreground: 53 43 42;
+
+  /* Muted colors */
+  --muted: 61 50 49;
+  --muted-foreground: 171 155 124;
+
+  /* Accent colors */
+  --accent: 138 190 183;
+  --accent-foreground: 53 43 42;
+
+  /* Decorative accents */
+  --accent-red: 204 102 102;
+  --accent-orange: 235 104 75;
+  --accent-green: 181 189 104;
+  --accent-blue: 129 162 190;
+  --accent-purple: 178 148 187;
+
+  /* Destructive colors */
+  --destructive: 212 125 125;
+  --destructive-foreground: 53 43 42;
+
+  /* UI elements */
+  --border: 74 63 61;
+  --border-strong: 110 93 90;
+  --input: 61 50 49;
+  --ring: 235 104 75;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Layout tokens */
+  --content-padding-y: 28px;
+  --content-padding-x: 8px;
+  /* END AUTO-GENERATED THEME DEFAULTS */
+}
+
+/* AUTO-GENERATED THEME VARIANTS - DO NOT EDIT MANUALLY */
+/* Generated: 3 themes × 2 modes = 6 class variants */
+
+.remedy.dark {
+  /* Base colors */
+  --background: 53 43 42;
+  --foreground: 245 216 153;
+
+  /* Card colors */
+  --card: 61 50 49;
+  --card-foreground: 245 216 153;
+
+  /* Popover colors */
+  --popover: 61 50 49;
+  --popover-foreground: 245 216 153;
+
+  /* Primary colors */
+  --primary: 236 112 84;
+  --primary-foreground: 53 43 42;
+
+  /* Secondary colors */
+  --secondary: 240 198 116;
+  --secondary-foreground: 53 43 42;
+
+  /* Muted colors */
+  --muted: 61 50 49;
+  --muted-foreground: 171 155 124;
+
+  /* Accent colors */
+  --accent: 138 190 183;
+  --accent-foreground: 53 43 42;
+
+  /* Decorative accents */
+  --accent-red: 204 102 102;
+  --accent-orange: 235 104 75;
+  --accent-green: 181 189 104;
+  --accent-blue: 129 162 190;
+  --accent-purple: 178 148 187;
+
+  /* Destructive colors */
+  --destructive: 212 125 125;
+  --destructive-foreground: 53 43 42;
+
+  /* UI elements */
+  --border: 74 63 61;
+  --border-strong: 110 93 90;
+  --input: 61 50 49;
+  --ring: 235 104 75;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+}
+
+.remedy.light {
+  /* Base colors */
+  --background: 252 238 209;
+  --foreground: 92 77 46;
+
+  /* Card colors */
+  --card: 247 232 200;
+  --card-foreground: 92 77 46;
+
+  /* Popover colors */
+  --popover: 247 232 200;
+  --popover-foreground: 92 77 46;
+
+  /* Primary colors */
+  --primary: 235 104 75;
+  --primary-foreground: 40 42 46;
+
+  /* Secondary colors */
+  --secondary: 222 147 95;
+  --secondary-foreground: 40 42 46;
+
+  /* Muted colors */
+  --muted: 247 232 200;
+  --muted-foreground: 110 100 80;
+
+  /* Accent colors */
+  --accent: 110 152 147;
+  --accent-foreground: 40 42 46;
+
+  /* Decorative accents */
+  --accent-red: 165 66 66;
+  --accent-orange: 235 104 75;
+  --accent-green: 140 148 64;
+  --accent-blue: 95 129 157;
+  --accent-purple: 133 103 143;
+
+  /* Destructive colors */
+  --destructive: 165 66 66;
+  --destructive-foreground: 252 238 209;
+
+  /* UI elements */
+  --border: 229 217 188;
+  --border-strong: 201 190 170;
+  --input: 247 232 200;
+  --ring: 235 104 75;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(92, 77, 46, 0.08);
+  --shadow-md: 0 2px 8px rgba(92, 77, 46, 0.12);
+  --shadow-lg: 0 4px 16px rgba(92, 77, 46, 0.16);
+}
+
+.rose-pine.dark {
+  /* Base colors */
+  --background: 25 23 36;
+  --foreground: 224 222 244;
+
+  /* Card colors */
+  --card: 31 29 46;
+  --card-foreground: 224 222 244;
+
+  /* Popover colors */
+  --popover: 38 35 58;
+  --popover-foreground: 224 222 244;
+
+  /* Primary colors */
+  --primary: 80 137 160;
+  --primary-foreground: 25 23 36;
+
+  /* Secondary colors */
+  --secondary: 156 207 216;
+  --secondary-foreground: 25 23 36;
+
+  /* Muted colors */
+  --muted: 64 61 82;
+  --muted-foreground: 172 169 191;
+
+  /* Accent colors */
+  --accent: 235 188 186;
+  --accent-foreground: 25 23 36;
+
+  /* Decorative accents */
+  --accent-red: 235 111 146;
+  --accent-orange: 246 193 119;
+  --accent-green: 156 207 216;
+  --accent-blue: 49 116 143;
+  --accent-purple: 196 167 231;
+
+  /* Destructive colors */
+  --destructive: 235 111 146;
+  --destructive-foreground: 25 23 36;
+
+  /* UI elements */
+  --border: 64 61 82;
+  --border-strong: 82 79 103;
+  --input: 31 29 46;
+  --ring: 49 116 143;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+}
+
+.rose-pine.light {
+  /* Base colors */
+  --background: 250 244 237;
+  --foreground: 87 82 121;
+
+  /* Card colors */
+  --card: 255 250 243;
+  --card-foreground: 87 82 121;
+
+  /* Popover colors */
+  --popover: 242 233 225;
+  --popover-foreground: 87 82 121;
+
+  /* Primary colors */
+  --primary: 40 105 131;
+  --primary-foreground: 250 244 237;
+
+  /* Secondary colors */
+  --secondary: 69 118 127;
+  --secondary-foreground: 250 244 237;
+
+  /* Muted colors */
+  --muted: 223 218 217;
+  --muted-foreground: 85 82 103;
+
+  /* Accent colors */
+  --accent: 151 91 88;
+  --accent-foreground: 250 244 237;
+
+  /* Decorative accents */
+  --accent-red: 180 99 122;
+  --accent-orange: 234 157 52;
+  --accent-green: 86 148 159;
+  --accent-blue: 40 105 131;
+  --accent-purple: 144 122 169;
+
+  /* Destructive colors */
+  --destructive: 162 89 110;
+  --destructive-foreground: 250 244 237;
+
+  /* UI elements */
+  --border: 223 218 217;
+  --border-strong: 206 202 205;
+  --input: 255 250 243;
+  --ring: 40 105 131;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(87, 82, 121, 0.08);
+  --shadow-md: 0 2px 8px rgba(87, 82, 121, 0.12);
+  --shadow-lg: 0 4px 16px rgba(87, 82, 121, 0.16);
+}
+
+.gruvbox.dark {
+  /* Base colors */
+  --background: 40 40 40;
+  --foreground: 235 219 178;
+
+  /* Card colors */
+  --card: 50 48 47;
+  --card-foreground: 235 219 178;
+
+  /* Popover colors */
+  --popover: 50 48 47;
+  --popover-foreground: 235 219 178;
+
+  /* Primary colors */
+  --primary: 184 187 38;
+  --primary-foreground: 40 40 40;
+
+  /* Secondary colors */
+  --secondary: 250 189 47;
+  --secondary-foreground: 40 40 40;
+
+  /* Muted colors */
+  --muted: 60 56 54;
+  --muted-foreground: 189 174 147;
+
+  /* Accent colors */
+  --accent: 142 192 124;
+  --accent-foreground: 40 40 40;
+
+  /* Decorative accents */
+  --accent-red: 251 73 52;
+  --accent-orange: 254 128 25;
+  --accent-green: 184 187 38;
+  --accent-blue: 131 165 152;
+  --accent-purple: 211 134 155;
+
+  /* Destructive colors */
+  --destructive: 251 73 52;
+  --destructive-foreground: 29 32 33;
+
+  /* UI elements */
+  --border: 80 73 69;
+  --border-strong: 102 92 84;
+  --input: 80 73 69;
+  --ring: 184 187 38;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+}
+
+.gruvbox.light {
+  /* Base colors */
   --background: 251 241 199;
   --foreground: 60 56 54;
+
+  /* Card colors */
   --card: 249 245 215;
   --card-foreground: 60 56 54;
+
+  /* Popover colors */
   --popover: 249 245 215;
   --popover-foreground: 60 56 54;
-  --primary: 121 116 14;
+
+  /* Primary colors */
+  --primary: 115 110 13;
   --primary-foreground: 251 241 199;
+
+  /* Secondary colors */
   --secondary: 175 58 3;
   --secondary-foreground: 251 241 199;
+
+  /* Muted colors */
   --muted: 235 219 178;
   --muted-foreground: 102 92 84;
+
+  /* Accent colors */
   --accent: 104 157 106;
-  --accent-foreground: 60 56 54;
-  /* Decorative accents - no foreground pairs */
+  --accent-foreground: 40 40 40;
+
+  /* Decorative accents */
   --accent-red: 157 0 6;
   --accent-orange: 175 58 3;
   --accent-green: 121 116 14;
   --accent-blue: 7 102 120;
   --accent-purple: 143 63 113;
+
+  /* Destructive colors */
   --destructive: 157 0 6;
   --destructive-foreground: 251 241 199;
+
+  /* UI elements */
   --border: 213 196 161;
+  --border-strong: 189 174 147;
   --input: 213 196 161;
   --ring: 121 116 14;
 
@@ -109,25 +450,78 @@
   --shadow-sm: 0 1px 2px rgba(60, 56, 54, 0.08);
   --shadow-md: 0 2px 8px rgba(60, 56, 54, 0.12);
   --shadow-lg: 0 4px 16px rgba(60, 56, 54, 0.16);
-
-  /* HACK: Browser-specific navigation offset for vertical alignment.
-     Chromium and Firefox render font metrics differently, causing nav misalignment.
-     TODO: Address root cause in twm-layout-system (normalize layout, remove hack). */
-  --nav-offset: -15px;
 }
 
-/* Firefox-specific override */
-@supports (-moz-appearance: none) {
-  :root {
-    --nav-offset: -17px;
-  }
-}
+/* END AUTO-GENERATED THEME VARIANTS */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html,
+  body {
+    @apply overflow-hidden;
+  }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* TWM Window Container background opacity
+   Token value injected via --window-bg-opacity from WindowContainer component */
+[data-window-container] {
+  background-color: rgb(var(--background) / var(--window-bg-opacity));
+}
+
+/* Environment Preview toggle for dev pages - when OFF, use full opacity */
+html[data-env-preview="false"] [data-window-container] {
+  --window-bg-opacity: 1 !important;
+}
+
+/* Scroll shadow affordance gradients
+   CSS-only implementation avoids hydration mismatches from useTheme() */
+[data-scroll-shadow="top"] {
+  background-image: radial-gradient(farthest-side at 50% 0%, rgba(0, 0, 0, 0.15) 0%, transparent 100%);
+}
+
+[data-scroll-shadow="bottom"] {
+  background-image: radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.15) 0%, transparent 100%);
+}
+
+/* Dark mode: higher opacity for visibility on dark backgrounds */
+.dark [data-scroll-shadow="top"] {
+  background-image: radial-gradient(farthest-side at 50% 0%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+}
+
+.dark [data-scroll-shadow="bottom"] {
+  background-image: radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+}
+
+/* TWM Window Container border highlight
+   Desktop: hover effect | Touch devices: active (tapped) effect */
+@media (hover: hover) {
+  [data-window-container]:hover {
+    border-color: rgb(var(--primary));
+  }
+}
+
+@media (hover: none) {
+  [data-window-container][data-active="true"] {
+    border-color: rgb(var(--primary));
+  }
+}
+
+/* ==========================================================================
+   OverlayScrollbars Theme Overrides
+   Customize the built-in os-theme-dark with project colors
+   ========================================================================== */
+
+/* Override built-in theme with our styling */
+.os-theme-dark.os-scrollbar {
+  --os-size: 10px;
+  --os-padding-perpendicular: 4px;
+  --os-padding-axis: var(--content-padding-y);
+  --os-handle-bg: rgb(var(--border-strong) / 0.5);
+  --os-handle-bg-hover: rgb(var(--border-strong) / 0.7);
+  --os-handle-bg-active: rgb(var(--muted-foreground));
 }

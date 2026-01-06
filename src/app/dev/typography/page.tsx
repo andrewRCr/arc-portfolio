@@ -1,14 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { notFound } from "next/navigation";
-import { useTheme } from "next-themes";
-import { useThemeContext } from "@/contexts/ThemeContext";
-import { themes, type ThemeName } from "@/data/themes";
-import { Button } from "@/components/ui/button";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { Separator } from "@/components/ui/separator";
+
+/** Jump links for in-page navigation */
+const JUMP_LINKS = [
+  { id: "headings", label: "Headings" },
+  { id: "body-text", label: "Body" },
+  { id: "font-sizes", label: "Sizes" },
+  { id: "font-weights", label: "Weights" },
+  { id: "line-heights", label: "Line Heights" },
+  { id: "text-colors", label: "Colors" },
+];
 
 /**
  * Typography Debug Page
@@ -16,20 +22,9 @@ import { Separator } from "@/components/ui/separator";
  * Development-only page for testing typography across themes.
  * Separated from theme-debug for focused typography inspection.
  *
- * Route: /dev/typography (only accessible in development)
+ * Route: /dev/typography (only accessible in development - enforced by dev layout)
  */
 export default function TypographyPage() {
-  // Gate to development mode only - wrapper ensures hooks in content are unconditional
-  if (process.env.NODE_ENV !== "development") {
-    notFound();
-  }
-  return <TypographyContent />;
-}
-
-/** Inner component with hooks - always called unconditionally */
-function TypographyContent() {
-  const { theme: colorMode } = useTheme();
-  const { activeTheme, setActiveTheme } = useThemeContext();
   const [mounted, setMounted] = useState(false);
 
   // Avoid hydration mismatch
@@ -38,80 +33,17 @@ function TypographyContent() {
     setMounted(true);
   }, []);
 
-  const themeNames = Object.keys(themes) as ThemeName[];
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const headerOffset = 120;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-    }
-  };
-
   if (!mounted) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-full items-center justify-center">
         <p className="text-muted-foreground">Loading typography...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-10 mt-3 border-b border-border px-6 py-3 backdrop-blur-sm">
-        <div className="mx-auto max-w-4xl space-y-3">
-          {/* Top row: Title and controls */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <h1 className="text-xl font-bold">Typography</h1>
-
-            {/* Current state */}
-            <span className="text-sm text-muted-foreground">
-              {themes[activeTheme].label} · {colorMode}
-            </span>
-
-            {/* Controls */}
-            <div className="flex items-center gap-2">
-              {/* Theme selector */}
-              <select
-                value={activeTheme}
-                onChange={(e) => setActiveTheme(e.target.value as ThemeName)}
-                className="rounded border border-border bg-background px-2 py-1 text-sm transition-colors hover:border-primary focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring"
-              >
-                {themeNames.map((themeName) => (
-                  <option key={themeName} value={themeName}>
-                    {themes[themeName].label}
-                  </option>
-                ))}
-              </select>
-
-              {/* Mode toggle */}
-              <ThemeToggle />
-            </div>
-          </div>
-
-          {/* Jump links */}
-          <div className="flex flex-wrap justify-center gap-2 border-t border-border/50 pt-2">
-            {[
-              { id: "headings", label: "Headings" },
-              { id: "body-text", label: "Body" },
-              { id: "font-sizes", label: "Sizes" },
-              { id: "font-weights", label: "Weights" },
-              { id: "line-heights", label: "Line Heights" },
-              { id: "text-colors", label: "Colors" },
-            ].map(({ id, label }) => (
-              <Button key={id} variant="link" size="sm" onClick={() => scrollToSection(id)}>
-                {label}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="mx-auto max-w-4xl space-y-8 p-8">
+    <PageLayout header={<DevPageHeader title="Typography" jumpLinks={JUMP_LINKS} showEnvPreview />}>
+      <div className="space-y-8">
         {/* Headings */}
         <Card id="headings">
           <CardHeader>
@@ -244,6 +176,6 @@ function TypographyContent() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 }

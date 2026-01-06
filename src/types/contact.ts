@@ -9,7 +9,7 @@
  * Supported icon identifiers for social links.
  * Must match keys in ContactSection's iconMap.
  */
-export type SocialIcon = "github" | "linkedin" | "package";
+export type SocialIcon = "mail" | "github" | "linkedin" | "nexusmods";
 
 /**
  * Social media link entry

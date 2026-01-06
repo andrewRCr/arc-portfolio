@@ -1,0 +1,56 @@
+/**
+ * Shared mock for next-themes
+ *
+ * Provides configurable mock for useTheme hook.
+ * Import and use vi.mock() with this in your test files.
+ *
+ * Usage:
+ *   import { createNextThemesMock, mockNextThemes } from "@tests/mocks/next-themes";
+ *
+ *   vi.mock("next-themes", () => createNextThemesMock());
+ *
+ *   beforeEach(() => {
+ *     mockNextThemes.reset();
+ *   });
+ *
+ *   // In tests:
+ *   mockNextThemes.setTheme("light");
+ */
+
+import type { ReactNode } from "react";
+import { vi } from "vitest";
+
+// Internal state
+let _theme = "dark";
+let _resolvedTheme = "dark";
+
+export const mockNextThemes = {
+  /** Spy for setTheme - exposed via useTheme().setTheme */
+  setTheme: vi.fn((theme: string) => {
+    _theme = theme;
+    _resolvedTheme = theme;
+  }),
+
+  /** Reset to default state and clear spy call history */
+  reset() {
+    _theme = "dark";
+    _resolvedTheme = "dark";
+    mockNextThemes.setTheme.mockClear();
+  },
+};
+
+/**
+ * Creates the mock object for vi.mock("next-themes", () => createNextThemesMock())
+ */
+export function createNextThemesMock() {
+  return {
+    useTheme: () => ({
+      theme: _theme,
+      resolvedTheme: _resolvedTheme,
+      setTheme: mockNextThemes.setTheme,
+      themes: ["light", "dark", "system"],
+      systemTheme: "dark",
+    }),
+    ThemeProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
+  };
+}

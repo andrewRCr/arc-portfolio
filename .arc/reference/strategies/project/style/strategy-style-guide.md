@@ -1,9 +1,9 @@
 # Strategy: Style Guide
 
-**Version:** 1.2 | **Updated:** 2025-12-29
+**Version:** 1.4 | **Updated:** 2026-01-05
 
 This document outlines the style guide for arc-portfolio, including design token conventions, the
-shadow-based elevation model, and visual guidelines.
+shadow-based elevation model, TWM layout system, and visual guidelines.
 
 ## Table of Contents
 
@@ -11,10 +11,12 @@ shadow-based elevation model, and visual guidelines.
 2. [Semantic vs Decorative Tokens](#semantic-vs-decorative-tokens)
 3. [Surface Type Semantics](#surface-type-semantics)
 4. [Shadow-Based Elevation](#shadow-based-elevation)
-5. [Interactive States](#interactive-states)
-6. [Button Variants](#button-variants)
-7. [Focus Indicator Strategy](#focus-indicator-strategy)
-8. [Extending the Token System](#extending-the-token-system)
+5. [TWM Layout System](#twm-layout-system)
+6. [Interactive States](#interactive-states)
+7. [Button Variants](#button-variants)
+8. [Focus Indicator Strategy](#focus-indicator-strategy)
+9. [shadcn/ui Component Usage](#shadcnui-component-usage)
+10. [Extending the Token System](#extending-the-token-system)
 
 ---
 
@@ -62,12 +64,12 @@ and enables flexible theming.
 
 Use these when the color choice communicates **what something does** or **what state it's in**:
 
-| Token         | Meaning                                     | Example Usage                     |
-|---------------|---------------------------------------------|-----------------------------------|
-| `primary`     | This is the main action                     | Submit buttons, key CTAs          |
-| `secondary`   | This is an alternative action               | Cancel buttons, secondary options |
-| `destructive` | This action is dangerous or indicates error | Delete buttons, error messages    |
-| `muted`       | This content is deemphasized                | Disabled states, help text        |
+| Token         | Meaning                                     | Example Usage                  |
+|---------------|---------------------------------------------|--------------------------------|
+| `primary`     | This is the main action                     | Submit buttons, key CTAs       |
+| `secondary`   | Interactive feedback for actions            | Hover borders, active states   |
+| `destructive` | This action is dangerous or indicates error | Delete buttons, error messages |
+| `muted`       | This content is deemphasized                | Disabled states, help text     |
 
 ### Decorative Tokens (Palette Access)
 
@@ -147,12 +149,12 @@ extension.
 
 ### Action Tokens
 
-| Token         | Semantic Meaning        | Usage                                      |
-|---------------|-------------------------|--------------------------------------------|
-| `primary`     | Main call-to-action     | Submit buttons, key links, primary actions |
-| `secondary`   | Supporting actions      | Cancel buttons, alternative options        |
-| `accent`      | Highlights and emphasis | Active states, selected items, callouts    |
-| `destructive` | Danger/error states     | Delete buttons, error messages             |
+| Token         | Semantic Meaning     | Usage                                     |
+|---------------|----------------------|-------------------------------------------|
+| `primary`     | Main call-to-action  | Submit buttons, key links, frame hover    |
+| `secondary`   | Interactive feedback | Hover borders, nav active, gradient       |
+| `accent`      | Decorative emphasis  | Callouts, highlights, special features    |
+| `destructive` | Danger/error states  | Delete buttons, error messages            |
 
 ### Muted Token
 
@@ -220,6 +222,138 @@ decision, not a system requirement.
 
 ---
 
+## TWM Layout System
+
+arc-portfolio uses a **Tiling Window Manager (TWM)** aesthetic with a three-window layout structure.
+This section documents the layout tokens, window containers, and responsive behavior.
+
+### Layout Overview
+
+The layout consists of three stacked windows over a wallpaper background:
+
+```
+┌─────────────────────────────────────────┐
+│              TopBar (header)            │  ← Fixed height
+├─────────────────────────────────────────┤
+│                                         │
+│           Main Content                  │  ← Flexible, scrollable
+│                                         │
+├─────────────────────────────────────────┤
+│              FooterBar                  │  ← Fixed height
+└─────────────────────────────────────────┘
+```
+
+Windows are separated by consistent **gaps** that reveal the wallpaper background behind.
+
+### Layout Tokens
+
+Layout tokens are defined in `src/lib/theme/tokens/layout.ts` and control window appearance:
+
+| Token                   | Default | Purpose                                    |
+| ----------------------- | ------- | ------------------------------------------ |
+| `windowGap`             | 8px     | Gap between windows and from viewport edge |
+| `windowBorderWidth`     | 2px     | Border width for window containers         |
+| `windowOpacity`         | 0.8     | Background opacity for semi-transparency   |
+| `topBarHeight`          | 42px    | Fixed height for header window             |
+| `footerHeight`          | 36px    | Fixed height for footer window             |
+| `contentMaxWidth`       | 1152px  | Max width for main page content            |
+| `topBarContentMaxWidth` | 1200px  | Max width for TopBar inner content         |
+
+Additional tokens control navigation gap positioning in the TUI frame border:
+
+- `navGapHalf`, `navGapHalfMobile`, `navHeight`, `navGapDepth`
+
+### WindowContainer Component
+
+`WindowContainer` is the reusable wrapper for TWM windows:
+
+```tsx
+<WindowContainer className="p-4">
+  <h1>Window Content</h1>
+</WindowContainer>
+```
+
+**Styling characteristics:**
+
+- Border width from `windowBorderWidth` token (2px default)
+- Semi-transparent background via `windowOpacity` token (80% default)
+- `border-border-strong` color (stronger than standard border)
+- `backdrop-blur-lg` for depth effect through wallpaper
+- Square corners (no border-radius) for TWM aesthetic
+- Hover state: border changes to primary color (desktop)
+- Active state: touch devices use `isActive` prop for highlight
+
+### Gap System
+
+Windows use consistent gaps defined by `windowGap`:
+
+```tsx
+// LayoutWrapper applies gaps via inline styles
+<div style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}>
+```
+
+The gap serves two purposes:
+
+1. **Visual separation** between windows
+2. **Wallpaper visibility** through the gaps (depth cue)
+
+### Transparency and Layering
+
+The TWM layout uses transparency for depth perception:
+
+| Layer              | Opacity | Purpose                               |
+| ------------------ | ------- | ------------------------------------- |
+| Wallpaper          | 100%    | Full opacity background               |
+| Window backgrounds | 80%     | Semi-transparent, wallpaper visible   |
+| Content            | 100%    | Full opacity for readability          |
+
+The `backdrop-blur-lg` on windows creates a frosted glass effect, ensuring content remains
+readable while maintaining the layered aesthetic.
+
+**Why 80% opacity?** Higher values (85-90%) make the wallpaper less visible. Lower values
+compromise text readability. 80% balances both concerns.
+
+### Responsive Breakpoints
+
+The layout uses Tailwind's default breakpoints:
+
+| Breakpoint | Width  | Viewport   | Layout Adaptations                    |
+| ---------- | ------ | ---------- | ------------------------------------- |
+| Default    | < 640  | Phone      | Single-column, dropdown nav           |
+| `sm`       | 640px  | Small      | Minor spacing adjustments             |
+| `md`       | 768px  | Tablet     | Horizontal nav, larger touch targets  |
+| `lg`       | 1024px | Desktop    | Full layout, hover states             |
+| `xl`       | 1280px | Wide       | Content max-width constraint applies  |
+
+**Key responsive behaviors:**
+
+- **Phone**: Navigation collapses to dropdown, windows fill viewport width
+- **Tablet**: Horizontal navigation, 44×44px touch targets enforced
+- **Desktop**: Full hover effects, standard interaction patterns
+
+### LayoutWrapper Usage
+
+`LayoutWrapper` is the top-level layout component:
+
+```tsx
+// In root layout or page wrapper
+<LayoutWrapper>
+  <PageLayout title="Projects">
+    {/* Page content */}
+  </PageLayout>
+</LayoutWrapper>
+```
+
+**Components:**
+
+- `LayoutWrapper` - Orchestrates three-window structure
+- `WindowContainer` - Reusable window wrapper
+- `TopBar` - Header with branding and theme controls
+- `FooterBar` - Footer with social links
+- `WallpaperBackground` - Full-viewport background image
+
+---
+
 ## Interactive States
 
 Interactive states use **opacity modifiers**, not separate color tokens.
@@ -252,6 +386,24 @@ Interactive states use **opacity modifiers**, not separate color tokens.
 | Active   | -20%          | `active:bg-primary/80` |
 | Disabled | 50% overall   | `disabled:opacity-50`  |
 
+### Border Hover Pattern
+
+For bordered elements (cards, outline buttons, social links), use `secondary` with 60% opacity:
+
+```tsx
+// Standard border hover (cards, outline buttons)
+<div className="border border-border hover:border-secondary/60">
+
+// Nav active state uses background with 20% opacity
+<span className="bg-secondary/20">
+```
+
+**Why secondary/60?**
+
+- Consistent with nav active pattern (`bg-secondary/20`)
+- Softer than full-strength secondary in strong theme combos
+- Border-only is cleaner than border + background hover
+
 ---
 
 ## Button Variants
@@ -269,7 +421,7 @@ Following shadcn/ui conventions:
 | destructive | `bg-destructive` | `destructive-foreground`  | `hover:bg-destructive/90` | Delete, dangerous actions  |
 | outline     | `border-border`  | `foreground`              | `hover:bg-accent`         | Subtle actions, social     |
 | ghost       | transparent      | `foreground`              | `hover:bg-accent`         | Back buttons, subtle links |
-| link        | transparent      | `primary`                 | `hover:underline`         | Inline text links          |
+| link        | transparent      | `accent`                  | `hover:underline`         | Inline text links          |
 
 ### Sizing Classes
 
@@ -288,7 +440,7 @@ Following shadcn/ui conventions:
 </button>
 
 // Outline button (social links, subtle actions)
-<a className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary hover:bg-accent/10">
+<a className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60">
   <Icon className="h-5 w-5" />
   <span className="font-medium">Platform</span>
 </a>

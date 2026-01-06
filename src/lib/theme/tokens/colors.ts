@@ -48,15 +48,16 @@
  * }
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Intentionally empty placeholder for future extensions
 export interface SemanticColorTokens {
-  // No custom tokens currently defined.
-  // shadcn/ui conventions (card, popover, border, etc.) are sufficient.
-  // Add tokens here when concrete use cases arise.
+  /**
+   * High-contrast border for prominent UI elements.
+   * Used for window frames (WindowContainer) and TUI frame (ConditionalFrame).
+   * Darker than `border` in light mode, lighter in dark mode.
+   */
+  "border-strong": string;
 }
 
 /**
  * All semantic color token names for type-safe token access.
- * Currently empty - will be populated when tokens are added.
  */
 export type SemanticColorTokenName = keyof SemanticColorTokens;

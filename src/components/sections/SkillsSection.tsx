@@ -2,15 +2,14 @@
  * SkillsSection - Modular component for displaying categorized technical skills
  *
  * Renders skills data organized by category (Languages, Frontend, Backend, etc.)
+ * Used with PageLayout + PageHeader for consistent page structure.
  */
 
 import { skills } from "@/data/skills";
 
 export function SkillsSection() {
   return (
-    <section className="p-8">
-      <h2 className="mb-8 text-3xl font-bold">Skills & Technologies</h2>
-
+    <section className="px-0 md:px-4">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {Object.entries(skills).map(([category, skillList]) => (
           <div key={category} className="rounded-lg border border-border p-4">
