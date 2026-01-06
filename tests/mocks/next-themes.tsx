@@ -17,6 +17,7 @@
  *   mockNextThemes.setTheme("light");
  */
 
+import type { ReactNode } from "react";
 import { vi } from "vitest";
 
 // Internal state
@@ -50,6 +51,6 @@ export function createNextThemesMock() {
       themes: ["light", "dark", "system"],
       systemTheme: "dark",
     }),
-    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+    ThemeProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
   };
 }

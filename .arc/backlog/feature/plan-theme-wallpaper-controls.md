@@ -280,6 +280,8 @@ resolve instantly without waiting for React hydration.
   different window opacity values (e.g., busier wallpapers → higher opacity). If needed, add
   `windowOpacity?: number` to Theme interface and wire WindowContainer to read from theme context
   with fallback to `DEFAULT_LAYOUT_TOKENS.windowOpacity`. Deferred from TWM Layout System cleanup.
+  **A11y note**: Test contrast ratios across wallpaper/theme/opacity combinations to maintain WCAG
+  compliance - establish minimum opacity threshold that preserves text readability.
 
 ## Risks & Mitigations
 

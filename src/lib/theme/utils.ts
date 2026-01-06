@@ -85,7 +85,8 @@ export function parseRgb(rgb: string): [number, number, number] {
  * @param fgAlpha - Foreground opacity (0-1)
  * @param bgRgb - Background color (RGB string)
  * @returns Composited color as RGB string
- * @throws RangeError if fgAlpha is not a finite number between 0 and 1
+ * @throws TypeError if fgAlpha is not a finite number
+ * @throws RangeError if fgAlpha is not between 0 and 1
  */
 export function alphaComposite(fgRgb: string, fgAlpha: number, bgRgb: string): string {
   if (typeof fgAlpha !== "number" || !Number.isFinite(fgAlpha)) {

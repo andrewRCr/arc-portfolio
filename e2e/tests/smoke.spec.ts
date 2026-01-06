@@ -40,7 +40,7 @@ test.describe("Smoke Tests", () => {
     await expect(mainNav).toBeVisible();
 
     // On mobile, nav links are in dropdown; on desktop, they're visible
-    if (await isMobileViewport(page)) {
+    if (isMobileViewport(page)) {
       // Mobile: verify dropdown trigger is present
       await expect(page.getByRole("button", { name: /navigation menu/i })).toBeVisible();
     } else {
@@ -63,7 +63,7 @@ test.describe("Smoke Tests", () => {
       { name: "HOME", expectedPath: "/" },
     ];
 
-    const isMobile = await isMobileViewport(page);
+    const isMobile = isMobileViewport(page);
 
     for (const { name, expectedPath } of navTests) {
       // Start from homepage each iteration to avoid inter-test coupling
