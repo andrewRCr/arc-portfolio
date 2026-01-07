@@ -294,21 +294,9 @@ export function SwatchPrototype() {
           <br />
           <span className="text-destructive">Issue: Remedy&apos;s orange primary not shown</span>
         </p>
-        <ThemeSwatchBlock
-          name="Remedy"
-          darkSwatch={remedyDarkAnsi}
-          lightSwatch={remedyLightAnsi}
-        />
-        <ThemeSwatchBlock
-          name="Gruvbox"
-          darkSwatch={gruvboxDarkAnsi}
-          lightSwatch={gruvboxLightAnsi}
-        />
-        <ThemeSwatchBlock
-          name="Rose Pine"
-          darkSwatch={rosePineDarkAnsi}
-          lightSwatch={rosePineLightAnsi}
-        />
+        <ThemeSwatchBlock name="Remedy" darkSwatch={remedyDarkAnsi} lightSwatch={remedyLightAnsi} />
+        <ThemeSwatchBlock name="Gruvbox" darkSwatch={gruvboxDarkAnsi} lightSwatch={gruvboxLightAnsi} />
+        <ThemeSwatchBlock name="Rose Pine" darkSwatch={rosePineDarkAnsi} lightSwatch={rosePineLightAnsi} />
       </div>
 
       {/* ===== APPROACH B: Weighted (Semantic) ===== */}
@@ -321,21 +309,9 @@ export function SwatchPrototype() {
           {" | "}
           <span className="text-destructive">Con: No natural progression</span>
         </p>
-        <ThemeSwatchBlock
-          name="Remedy"
-          darkSwatch={remedyDarkWeighted}
-          lightSwatch={remedyLightWeighted}
-        />
-        <ThemeSwatchBlock
-          name="Gruvbox"
-          darkSwatch={gruvboxDarkWeighted}
-          lightSwatch={gruvboxLightWeighted}
-        />
-        <ThemeSwatchBlock
-          name="Rose Pine"
-          darkSwatch={rosePineDarkWeighted}
-          lightSwatch={rosePineLightWeighted}
-        />
+        <ThemeSwatchBlock name="Remedy" darkSwatch={remedyDarkWeighted} lightSwatch={remedyLightWeighted} />
+        <ThemeSwatchBlock name="Gruvbox" darkSwatch={gruvboxDarkWeighted} lightSwatch={gruvboxLightWeighted} />
+        <ThemeSwatchBlock name="Rose Pine" darkSwatch={rosePineDarkWeighted} lightSwatch={rosePineLightWeighted} />
       </div>
 
       {/* ===== APPROACH C: Hybrid - ANSI order but with muted anchoring ===== */}
@@ -375,21 +351,9 @@ export function SwatchPrototype() {
           {" | "}
           Remedy: red/green/purple, Gruvbox: red/blue/purple, Rose Pine: red/orange/purple
         </p>
-        <ThemeSwatchBlock
-          name="Remedy"
-          darkSwatch={remedyDarkDedup}
-          lightSwatch={remedyLightDedup}
-        />
-        <ThemeSwatchBlock
-          name="Gruvbox"
-          darkSwatch={gruvboxDarkDedup}
-          lightSwatch={gruvboxLightDedup}
-        />
-        <ThemeSwatchBlock
-          name="Rose Pine"
-          darkSwatch={rosePineDarkDedup}
-          lightSwatch={rosePineLightDedup}
-        />
+        <ThemeSwatchBlock name="Remedy" darkSwatch={remedyDarkDedup} lightSwatch={remedyLightDedup} />
+        <ThemeSwatchBlock name="Gruvbox" darkSwatch={gruvboxDarkDedup} lightSwatch={gruvboxLightDedup} />
+        <ThemeSwatchBlock name="Rose Pine" darkSwatch={rosePineDarkDedup} lightSwatch={rosePineLightDedup} />
       </div>
 
       {/* ===== Size Comparison ===== */}
@@ -418,8 +382,8 @@ export function SwatchPrototype() {
       <div className="text-sm text-muted-foreground mt-8 space-y-2">
         <p>Hover over squares to see position index and hex value.</p>
         <p>
-          <strong>Note:</strong> In the actual control, only one row would show at a time,
-          changing when light/dark mode is toggled.
+          <strong>Note:</strong> In the actual control, only one row would show at a time, changing when light/dark mode
+          is toggled.
         </p>
         <p>
           <strong>Decision needed:</strong> Prioritize terminal aesthetic (A/C) or UI representation (B)?
