@@ -5,6 +5,7 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import type { SocialIcon } from "@/types/contact";
 import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
 import { WindowContainer } from "./WindowContainer";
+import { TouchTarget } from "@/components/ui/TouchTarget";
 
 /** Icon component type that accepts size prop */
 type IconComponent = LucideIcon | typeof NexusModsIcon;
@@ -56,21 +57,22 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps) {
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}
       >
         {/* Social Links */}
-        <nav aria-label="Social links" className="flex items-center gap-3">
+        <nav aria-label="Social links" className="flex items-center gap-1">
           {contact.socialLinks.map((link) => {
             const Icon = iconMap[link.icon];
             const isExternal = !link.url.startsWith("mailto:");
             return (
-              <a
-                key={link.platform}
-                href={link.url}
-                {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
-                aria-label={link.platform}
-                title={link.platform}
-                className="min-h-11 min-w-11 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Icon size={18} aria-hidden="true" />
-              </a>
+              <TouchTarget key={link.platform}>
+                <a
+                  href={link.url}
+                  {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
+                  aria-label={link.platform}
+                  title={link.platform}
+                  className="flex items-center justify-center size-7 rounded-md border border-transparent hover:border-foreground/60 text-muted-foreground hover:text-foreground transition-all"
+                >
+                  <Icon size={16} aria-hidden="true" />
+                </a>
+              </TouchTarget>
             );
           })}
         </nav>

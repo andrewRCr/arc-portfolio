@@ -55,7 +55,7 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
   );
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className={cn("flex flex-col items-center gap-2", className)}>
       {/* Thumbnail Preview */}
       <div
         data-testid="wallpaper-preview"
@@ -64,7 +64,7 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
         className={cn(
           "relative w-[200px] min-w-[200px] h-[150px] min-h-[150px]",
           "rounded-md overflow-hidden",
-          "focus:outline-none focus:ring-2 focus:ring-ring",
+          "outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]",
           "bg-muted"
         )}
       >
@@ -88,15 +88,18 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
       <div className="flex items-center justify-between gap-2">
         <button
           type="button"
-          onClick={goToPrev}
+          onClick={(e) => {
+            goToPrev();
+            e.currentTarget.blur();
+          }}
           aria-label="Previous wallpaper"
           className={cn(
-            "p-1.5 rounded-md",
-            "hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring",
-            "transition-colors"
+            "group p-1.5 rounded-md",
+            "border border-transparent hover:border-foreground/60 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+            "transition-all"
           )}
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </button>
 
         {/* Position Indicator */}
@@ -106,15 +109,18 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
 
         <button
           type="button"
-          onClick={goToNext}
+          onClick={(e) => {
+            goToNext();
+            e.currentTarget.blur();
+          }}
           aria-label="Next wallpaper"
           className={cn(
-            "p-1.5 rounded-md",
-            "hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring",
-            "transition-colors"
+            "group p-1.5 rounded-md",
+            "border border-transparent hover:border-foreground/60 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+            "transition-all"
           )}
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </button>
       </div>
     </div>

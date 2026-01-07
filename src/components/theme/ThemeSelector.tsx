@@ -86,13 +86,17 @@ export function ThemeSelector({ selectedTheme, onSelect, className }: ThemeSelec
             role="option"
             aria-selected={isSelected}
             tabIndex={-1}
-            onClick={() => onSelect(themeName)}
+            onClick={(e) => {
+              onSelect(themeName);
+              // Blur to release focus - prevents double-click-to-close issue with popover
+              e.currentTarget.blur();
+            }}
             onKeyDown={(e) => handleKeyDown(e, index)}
             className={cn(
               "flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer",
               "transition-colors duration-150",
-              "hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring",
-              isSelected && "bg-muted/80 ring-1 ring-border"
+              "border border-transparent hover:border-foreground/60 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+              isSelected && "bg-background border-primary/60 ring-1 ring-primary/30"
             )}
           >
             <ThemeSwatch colors={swatchColors} size={20} />

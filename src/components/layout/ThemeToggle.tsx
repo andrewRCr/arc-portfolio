@@ -28,7 +28,13 @@ export function ThemeToggle() {
     // Before hydration: render both icons, CSS shows correct one based on html.dark class
     // This prevents FOUC since blocking script already set the theme class
     return (
-      <Button variant="outline" size="icon-xs" disabled aria-label="Toggle color mode">
+      <Button
+        variant="outline"
+        size="icon-xs"
+        disabled
+        aria-label="Toggle color mode"
+        className="border-transparent text-muted-foreground"
+      >
         {/* Show Moon in dark mode, Sun in light mode - CSS controlled */}
         <Moon className="hidden dark:block h-3.5 w-3.5" />
         <Sun className="block dark:hidden h-3.5 w-3.5" />
@@ -42,6 +48,7 @@ export function ThemeToggle() {
       size="icon-xs"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
+      className="border-transparent hover:border-foreground/60 text-muted-foreground hover:text-foreground"
     >
       {theme === "dark" ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5" />}
     </Button>

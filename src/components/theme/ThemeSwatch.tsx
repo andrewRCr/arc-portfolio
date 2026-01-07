@@ -19,7 +19,7 @@ export interface ThemeSwatchProps {
 
 export function ThemeSwatch({ colors, size = 16, className }: ThemeSwatchProps) {
   return (
-    <div data-testid="theme-swatch" aria-hidden="true" className={cn("flex gap-0.5", className)}>
+    <div data-testid="theme-swatch" aria-hidden="true" className={cn("flex", className)}>
       {colors.slice(0, 8).map((color, index) => (
         <div
           key={index}
@@ -29,7 +29,6 @@ export function ThemeSwatch({ colors, size = 16, className }: ThemeSwatchProps) 
             width: `${size}px`,
             height: `${size}px`,
           }}
-          className="rounded-[2px]"
         />
       ))}
     </div>
