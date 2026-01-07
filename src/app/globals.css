@@ -497,6 +497,19 @@ html[data-env-preview="false"] [data-window-container] {
   background-image: radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
 }
 
+/* TWM Navigation gap - responsive via CSS, no JS needed (prevents hydration flash)
+   Mobile: narrower gap for collapsed dropdown nav
+   Desktop: wider gap for horizontal nav links */
+:root {
+  --nav-gap-half: 70px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --nav-gap-half: 190px;
+  }
+}
+
 /* TWM Window Container border highlight
    Desktop: hover effect | Touch devices: active (tapped) effect */
 @media (hover: hover) {
