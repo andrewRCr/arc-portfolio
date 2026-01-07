@@ -299,66 +299,42 @@ neofetch-inspired color swatch grid.
         - 2 tests pass trivially (dropdown closed by default, stub has no a11y issues)
         - Failures show correct expectations: missing swatch, chevron, trigger button, etc.
 
-- [ ] **5.2 Implement ThemeControl component**
+- [x] **5.2 Implement ThemeControl component**
+    - Used Radix Popover (shadcn/ui) for dropdown with automatic outside click and Escape handling
+    - Composed ThemeSelector, WallpaperPicker, and inline mode toggle with visual separators
+    - Keyboard navigation inherited from child components
+    - All 12 ThemeControl tests pass, 671 total tests pass
 
-    - [ ] **5.2.a Create `src/components/theme/ThemeControl.tsx`**
-        - State: `isOpen` for dropdown visibility
-        - Collapsed: ThemeSwatch + chevron icon, no border
-        - Use Popover from shadcn/ui or custom dropdown
-        - Position dropdown below trigger
+- [x] **5.3 Integrate ThemeControl into TopBar**
+    - Replaced ThemeSwitcher and WallpaperSwitcher imports with ThemeControl
+    - Kept ThemeToggle as separate quick-access control
+    - Updated TopBar tests (changed testid to `theme-controls`, added ThemeControl render test)
+    - All 7 TopBar tests pass, 672 total tests pass, all quality gates pass
 
-    - [ ] **5.2.b Add dropdown panel content**
-        - Section: ThemeSelector
-        - Section: Light/dark toggle (reuse ThemeToggle or inline)
-        - Section: WallpaperPicker
-        - Visual separators between sections
+- [x] **5.4 Desktop ThemeControl visual polish**
+    - **(a)+(f)** Fixed hydration mismatch with `mounted` state pattern
+    - **(b)** Removed gap/rounded corners from ThemeSwatch (flush squares)
+    - **(c)** Reverted Remedy muted token change (not needed with border-based hover)
+    - **(d)** Centered wallpaper thumbnail in WallpaperPicker
+    - **(g)** Changed focus handling to `focus-visible:` (keyboard-only, no click flash)
+    - **(h)** Border-based hover pattern: transparent at rest, `border-foreground/60` on hover
+    - **(i)** Updated Button outline variant globally (secondary → foreground, cards excepted)
+    - **(j)** ThemeSelector selected: `bg-background` for swatch visibility against popover
+    - **(k)** Icon color pattern: `text-muted-foreground` → `text-foreground` on hover
+    - **(incidental)** Footer social links: updated to match TopBar pattern with TouchTarget wrapper
+    - All 672 tests pass, all quality gates pass
 
-    - [ ] **5.2.c Wire up state management**
-        - Theme selection updates ThemeContext
-        - Mode toggle uses next-themes
-        - Wallpaper selection updates WallpaperContext
+- [ ] **5.5 Remove prototype components**
 
-    - [ ] **5.2.d Add close behaviors**
-        - Outside click detection
-        - Escape key handler
-        - Close after selection (optional, may keep open)
+    - [ ] **5.5.a Delete `src/components/ThemeSwitcher.tsx`**
 
-    - [ ] **5.2.e Add keyboard navigation**
-        - Tab through sections
-        - Arrow keys within sections
-        - Focus trap when open
+    - [ ] **5.5.b Delete `src/components/WallpaperSwitcher.tsx`**
 
-    - [ ] **5.2.f Run ThemeControl tests - should now PASS**
+    - [ ] **5.5.c Remove any remaining imports/references**
 
-    - [ ] **5.2.g Run quality gates**
+    - [ ] **5.5.d Run full test suite - should PASS**
 
-- [ ] **5.3 Integrate ThemeControl into TopBar**
-
-    - [ ] **5.3.a Update `src/components/layout/TopBar.tsx`**
-        - Remove `ThemeSwitcher` import and usage
-        - Remove `WallpaperSwitcher` import and usage
-        - Keep `ThemeToggle` separate (desktop only)
-        - Add `ThemeControl` in theme controls section
-
-    - [ ] **5.3.b Update TopBar tests**
-        - Update expectations for new component structure
-        - Test ThemeControl renders in TopBar
-
-    - [ ] **5.3.c Run TopBar tests - should PASS**
-
-    - [ ] **5.3.d Run quality gates**
-
-- [ ] **5.4 Remove prototype components**
-
-    - [ ] **5.4.a Delete `src/components/ThemeSwitcher.tsx`**
-
-    - [ ] **5.4.b Delete `src/components/WallpaperSwitcher.tsx`**
-
-    - [ ] **5.4.c Remove any remaining imports/references**
-
-    - [ ] **5.4.d Run full test suite - should PASS**
-
-    - [ ] **5.4.e Run quality gates**
+    - [ ] **5.5.e Run quality gates**
 
 ### **Phase 6:** Mobile Adaptation
 
