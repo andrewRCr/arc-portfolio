@@ -52,12 +52,7 @@ export function WallpaperBackground({ imageSrc }: WallpaperBackgroundProps) {
     : { background: buildWallpaperGradient() };
 
   return (
-    <div
-      className="fixed inset-0 z-[-1]"
-      style={backgroundStyle}
-      aria-hidden="true"
-      data-testid="wallpaper-background"
-    >
+    <div className="fixed inset-0 z-[-1]" style={backgroundStyle} aria-hidden="true" data-testid="wallpaper-background">
       {imageSrc && (
         <Image
           src={imageSrc}

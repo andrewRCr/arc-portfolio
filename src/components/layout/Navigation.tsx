@@ -35,11 +35,7 @@ export function Navigation() {
   const { navHeight } = DEFAULT_LAYOUT_TOKENS;
 
   const desktopNav = (
-    <nav
-      aria-label="Main navigation"
-      className="flex items-center"
-      style={{ minHeight: navHeight }}
-    >
+    <nav aria-label="Main navigation" className="flex items-center" style={{ minHeight: navHeight }}>
       <ul className="flex gap-1 list-none items-center">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.href);

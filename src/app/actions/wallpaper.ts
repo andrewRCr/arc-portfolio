@@ -21,10 +21,7 @@ const COOKIE_OPTIONS = {
 /**
  * Set the user's wallpaper preference cookie.
  */
-export async function syncWallpaperToCookie(
-  palette: string,
-  wallpaper: string
-): Promise<void> {
+export async function syncWallpaperToCookie(palette: string, wallpaper: string): Promise<void> {
   const cookieStore = await cookies();
 
   // Decode existing prefs (cookie value may be URL-encoded)

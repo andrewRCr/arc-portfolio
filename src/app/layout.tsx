@@ -3,12 +3,7 @@ import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/config/site";
-import {
-  PALETTE_STORAGE_KEY,
-  PALETTE_COOKIE_NAME,
-  WALLPAPER_PREFS_STORAGE_KEY,
-  WALLPAPER_COOKIE_NAME,
-} from "@/config/storage";
+import { PALETTE_STORAGE_KEY, PALETTE_COOKIE_NAME, WALLPAPER_COOKIE_NAME } from "@/config/storage";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
@@ -33,28 +28,22 @@ export const metadata: Metadata = {
 /**
  * Blocking script to prevent FOUC (flash of unstyled content).
  *
- * Runs synchronously before paint to set:
- * 1. Theme palette class on <html> (e.g., "remedy", "rose-pine")
- * 2. Wallpaper data attribute for per-theme wallpaper persistence
- *
- * next-themes handles the light/dark mode class separately.
+ * Runs synchronously before paint to set theme palette class on <html>
+ * (e.g., "remedy", "rose-pine"). next-themes handles light/dark mode separately.
  *
  * Combined with CSS class variants (.remedy.dark, .rose-pine.light, etc.),
  * this ensures correct theme colors render on first paint.
+ *
+ * Note: Wallpaper preference is handled server-side via cookies (not blocking script)
+ * because WallpaperBackground receives serverWallpaper as a prop.
  */
 const themeInitScript = `
 (function() {
   try {
     var palette = localStorage.getItem('${PALETTE_STORAGE_KEY}') || '${defaultPalette}';
     document.documentElement.classList.add(palette);
-
-    // Set wallpaper for current palette (WallpaperContext reads this)
-    var wallpaperPrefs = JSON.parse(localStorage.getItem('${WALLPAPER_PREFS_STORAGE_KEY}') || '{}');
-    var wallpaper = wallpaperPrefs[palette] || 'gradient';
-    document.documentElement.dataset.wallpaper = wallpaper;
   } catch (e) {
     document.documentElement.classList.add('${defaultPalette}');
-    document.documentElement.dataset.wallpaper = 'gradient';
   }
 })();
 `;

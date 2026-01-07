@@ -118,9 +118,7 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
         setPreferences(prefs);
       } else {
         // Saved preference is no longer valid, fall back to server/default
-        const updated = serverWallpaper
-          ? { ...prefs, [activeTheme]: serverWallpaper as WallpaperId }
-          : prefs;
+        const updated = serverWallpaper ? { ...prefs, [activeTheme]: serverWallpaper as WallpaperId } : prefs;
         setPreferences(updated);
         savePreferences(updated);
       }
