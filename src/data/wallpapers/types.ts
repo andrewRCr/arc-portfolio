@@ -2,6 +2,7 @@
  * Wallpaper System Type Definitions
  *
  * Defines type-safe interfaces for wallpaper options and theme compatibility.
+ * Note: WallpaperId is derived from WALLPAPER_OPTIONS in index.ts to avoid circular imports.
  */
 
 import type { ThemeName } from "@/data/themes";
@@ -24,9 +25,3 @@ export interface WallpaperOption {
   /** Which themes this wallpaper works well with */
   readonly compatibleThemes: WallpaperCompatibility;
 }
-
-/**
- * Type-safe wallpaper ID derived from registry.
- * Use for type-safe wallpaper selection.
- */
-export type WallpaperId = string;

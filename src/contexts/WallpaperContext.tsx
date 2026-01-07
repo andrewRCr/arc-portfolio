@@ -1,16 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { WALLPAPER_OPTIONS } from "@/data/wallpapers";
+import { WALLPAPER_OPTIONS, isWallpaperCompatible, type WallpaperId } from "@/data/wallpapers";
 import { themes, type ThemeName } from "@/data/themes";
 import { useThemeContext } from "./ThemeContext";
 import { WALLPAPER_PREFS_STORAGE_KEY } from "@/config/storage";
 
-// Re-export for backward compatibility with existing imports
-export { WALLPAPER_OPTIONS };
+// Re-export for consumers that need these
+export type { WallpaperId };
 
-// WallpaperId derived from registry for type-safe selection
-export type WallpaperId = (typeof WALLPAPER_OPTIONS)[number]["id"];
+interface WallpaperContextProviderProps {
+  children: React.ReactNode;
+  /** Server-rendered wallpaper ID from cookie (prevents FOUC) */
+  serverWallpaper?: string;
+}
 
 // Per-theme wallpaper preferences shape
 interface WallpaperPreferences {
@@ -26,17 +29,6 @@ interface WallpaperContextValue {
 const WallpaperContext = React.createContext<WallpaperContextValue | undefined>(undefined);
 
 /**
- * Check if a wallpaper is compatible with a given theme.
- */
-function isWallpaperCompatible(wallpaperId: WallpaperId, themeName: ThemeName): boolean {
-  const wallpaper = WALLPAPER_OPTIONS.find((w) => w.id === wallpaperId);
-  if (!wallpaper) return false;
-
-  if (wallpaper.compatibleThemes === "universal") return true;
-  return wallpaper.compatibleThemes.includes(themeName);
-}
-
-/**
  * Get wallpaper for a theme, checking saved preference and compatibility.
  */
 function getWallpaperForTheme(themeName: ThemeName, prefs: WallpaperPreferences): WallpaperId {
@@ -48,7 +40,8 @@ function getWallpaperForTheme(themeName: ThemeName, prefs: WallpaperPreferences)
   if (!savedWallpaper) return defaultWallpaper;
 
   // If saved wallpaper is compatible, use it
-  if (isWallpaperCompatible(savedWallpaper, themeName)) return savedWallpaper;
+  const wallpaper = WALLPAPER_OPTIONS.find((w) => w.id === savedWallpaper);
+  if (wallpaper && isWallpaperCompatible(wallpaper, themeName)) return savedWallpaper;
 
   // Otherwise fall back to theme default
   return defaultWallpaper;
@@ -75,7 +68,22 @@ function savePreferences(prefs: WallpaperPreferences): void {
   localStorage.setItem(WALLPAPER_PREFS_STORAGE_KEY, JSON.stringify(prefs));
 }
 
-export function WallpaperContextProvider({ children }: { children: React.ReactNode }) {
+/**
+ * Sync wallpaper preference to cookie via API (for SSR).
+ */
+async function syncWallpaperCookie(palette: string, wallpaper: string): Promise<void> {
+  try {
+    await fetch("/api/preferences/wallpaper", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ palette, wallpaper }),
+    });
+  } catch {
+    // Silent fail - cookie sync is best-effort
+  }
+}
+
+export function WallpaperContextProvider({ children, serverWallpaper }: WallpaperContextProviderProps) {
   const { activeTheme } = useThemeContext();
 
   // Track preferences in state (loaded from localStorage on mount)
@@ -84,21 +92,39 @@ export function WallpaperContextProvider({ children }: { children: React.ReactNo
   // Track previous theme to detect changes
   const prevThemeRef = React.useRef<ThemeName>(activeTheme);
 
-  // Current wallpaper based on active theme and preferences
-  const [activeWallpaper, setActiveWallpaperInternal] = React.useState<WallpaperId>(() =>
-    getWallpaperForTheme(activeTheme, loadPreferences())
-  );
+  // Current wallpaper - use server-provided value for SSR consistency
+  // Fall back to localStorage preference or theme default
+  const [activeWallpaper, setActiveWallpaperInternal] = React.useState<WallpaperId>(() => {
+    // Server and initial client render use serverWallpaper to match
+    if (serverWallpaper) return serverWallpaper as WallpaperId;
+    return "gradient";
+  });
 
-  // When theme changes, restore that theme's preferred wallpaper
+  // After hydration, sync with localStorage preferences (may differ from cookie)
+  const [isHydrated, setIsHydrated] = React.useState(false);
   React.useEffect(() => {
+    const prefs = loadPreferences();
+    setPreferences(prefs);
+    const correctWallpaper = getWallpaperForTheme(activeTheme, prefs);
+    if (correctWallpaper !== activeWallpaper) {
+      setActiveWallpaperInternal(correctWallpaper);
+    }
+    setIsHydrated(true);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // When theme changes (after hydration), restore that theme's preferred wallpaper
+  React.useEffect(() => {
+    if (!isHydrated) return;
     if (prevThemeRef.current !== activeTheme) {
       prevThemeRef.current = activeTheme;
       const newWallpaper = getWallpaperForTheme(activeTheme, preferences);
       setActiveWallpaperInternal(newWallpaper);
+      // Sync to cookie for next SSR
+      syncWallpaperCookie(activeTheme, newWallpaper);
     }
-  }, [activeTheme, preferences]);
+  }, [activeTheme, preferences, isHydrated]);
 
-  // Wrapped setter that also saves preference
+  // Wrapped setter that saves to localStorage and syncs to cookie
   const setActiveWallpaper = React.useCallback(
     (id: WallpaperId) => {
       setActiveWallpaperInternal(id);
@@ -107,6 +133,8 @@ export function WallpaperContextProvider({ children }: { children: React.ReactNo
         savePreferences(updated);
         return updated;
       });
+      // Sync to cookie for next SSR
+      syncWallpaperCookie(activeTheme, id);
     },
     [activeTheme]
   );

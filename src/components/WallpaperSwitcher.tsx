@@ -1,6 +1,7 @@
 "use client";
 
-import { useWallpaperContext, WALLPAPER_OPTIONS, type WallpaperId } from "@/contexts/WallpaperContext";
+import { useWallpaperContext, type WallpaperId } from "@/contexts/WallpaperContext";
+import { WALLPAPER_OPTIONS } from "@/data/wallpapers";
 
 /**
  * WallpaperSwitcher

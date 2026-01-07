@@ -88,98 +88,162 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 3:** Theme Selector Panel
 
-- [ ] **3.1 Write tests for ThemeSelector component**
+- [x] **3.1 Write tests for ThemeSelector component**
 
-    - [ ] **3.1.a Create test file `src/components/theme/__tests__/ThemeSelector.test.tsx`**
-        - Test: Renders all available themes from registry
-        - Test: Each theme shows name label
-        - Test: Each theme shows ThemeSwatch preview
-        - Test: Current theme has visual selection indicator
-        - Test: Clicking theme calls `onSelect` with theme name
-        - Test: Keyboard navigation (arrow keys, Enter)
-        - Test: No accessibility violations
-        - Expect tests to FAIL initially
+    - [x] **3.1.a Create test file `src/components/theme/__tests__/ThemeSelector.test.tsx`**
+        - 16 tests across 5 describe blocks: Rendering (4), Selection (2), Keyboard Navigation (6), ARIA Roles (3),
+        Accessibility (1)
+        - Tests use listbox/option ARIA pattern, userEvent for interactions
 
-    - [ ] **3.1.b Run tests and verify failure messages**
+    - [x] **3.1.b Run tests and verify failure messages**
+        - Tests failed as expected before implementation
 
-- [ ] **3.2 Implement ThemeSelector component**
+- [x] **3.2 Implement ThemeSelector component**
 
-    - [ ] **3.2.a Create `src/components/theme/ThemeSelector.tsx`**
-        - Props: `selectedTheme: ThemeName`, `onSelect: (theme: ThemeName) => void`
-        - Map over theme registry to render options
-        - Each option: theme label + ThemeSwatch (larger size, e.g., 20px)
-        - Visual indicator for selected theme (border, background, checkmark)
-        - ARIA: `role="listbox"`, `role="option"`, `aria-selected`
+    - [x] **3.2.a Create `src/components/theme/ThemeSelector.tsx`**
+        - Props: `selectedTheme`, `onSelect`, `className`
+        - Maps over theme registry with listbox/option ARIA roles
+        - Shows ThemeSwatch (20px) + label for each theme
+        - Visual indicator: `bg-muted/80 ring-1 ring-border` on selected
 
-    - [ ] **3.2.b Add keyboard navigation**
-        - Arrow up/down to move focus
-        - Enter/Space to select
-        - Focus management with `useRef`
+    - [x] **3.2.b Add keyboard navigation**
+        - ArrowUp/Down with wrapping via `useRef` array
+        - Enter/Space to select focused option
+        - Listbox receives ArrowDown to focus first option
 
-    - [ ] **3.2.c Run ThemeSelector tests - should now PASS**
+    - [x] **3.2.c Run ThemeSelector tests - all 16 pass**
 
-    - [ ] **3.2.d Run quality gates**
+    - [x] **3.2.d Run quality gates**
+        - Type check: pass, Lint: pass, 24 theme tests pass
 
 ### **Phase 4:** Wallpaper Picker Panel
 
-- [ ] **4.1 Write tests for useCompatibleWallpapers hook**
+- [x] **4.1 Write tests for useCompatibleWallpapers hook**
 
-    - [ ] **4.1.a Create test file `src/hooks/__tests__/useCompatibleWallpapers.test.ts`**
-        - Test: Returns only wallpapers compatible with current theme
-        - Test: Always includes "universal" wallpapers
-        - Test: Gradient option always first in list
-        - Test: Updates when theme changes
-        - Expect tests to FAIL initially
+    - [x] **4.1.a Create test file `src/hooks/__tests__/useCompatibleWallpapers.test.ts`**
+        - 8 tests: filtering by theme, universal wallpapers, gradient position, theme changes, multi-theme
 
-    - [ ] **4.1.b Run tests and verify failure messages**
+    - [x] **4.1.b Run tests and verify failure messages**
+        - Tests failed as expected before implementation
 
-- [ ] **4.2 Implement useCompatibleWallpapers hook**
+- [x] **4.2 Implement useCompatibleWallpapers hook**
 
-    - [ ] **4.2.a Create `src/hooks/useCompatibleWallpapers.ts`**
-        - Read `activeTheme` from context
-        - Filter `WALLPAPER_OPTIONS` by compatibility
-        - Ensure gradient is first (fixed position)
-        - Memoize result
+    - [x] **4.2.a Create `src/hooks/useCompatibleWallpapers.ts`**
+        - Filters WALLPAPER_OPTIONS by theme compatibility
+        - Returns universal + theme-specific wallpapers
+        - Memoized via useMemo
 
-    - [ ] **4.2.b Run useCompatibleWallpapers tests - should now PASS**
+    - [x] **4.2.b Run useCompatibleWallpapers tests - all 8 pass**
 
-    - [ ] **4.2.c Run quality gates**
+    - [x] **4.2.c Run quality gates - lint pass**
 
-- [ ] **4.3 Write tests for WallpaperPicker component**
+- [x] **4.3 Write tests for WallpaperPicker component**
 
-    - [ ] **4.3.a Create test file `src/components/theme/__tests__/WallpaperPicker.test.tsx`**
-        - Test: Shows thumbnail of current wallpaper (or gradient indicator)
-        - Test: Navigation controls (prev/next) visible
-        - Test: Clicking prev/next cycles through compatible wallpapers
-        - Test: Gradient shows as "None" or gradient preview
-        - Test: Thumbnail minimum size ~200×150
-        - Test: Calls `onSelect` when wallpaper selected
-        - Test: No accessibility violations
-        - Expect tests to FAIL initially
+    - [x] **4.3.a Create test file `src/components/theme/__tests__/WallpaperPicker.test.tsx`**
+        - 16 tests: thumbnail display, navigation, keyboard support, counter, accessibility
 
-    - [ ] **4.3.b Run tests and verify failure messages**
+    - [x] **4.3.b Run tests and verify failure messages**
+        - Tests failed as expected before implementation
 
-- [ ] **4.4 Implement WallpaperPicker component**
+- [x] **4.4 Implement WallpaperPicker component**
 
-    - [ ] **4.4.a Create `src/components/theme/WallpaperPicker.tsx`**
-        - Props: `selectedWallpaper: WallpaperId`, `onSelect: (id: WallpaperId) => void`
-        - Use `useCompatibleWallpapers()` for filtered list
-        - Display current wallpaper thumbnail (Next.js Image, lazy load)
-        - Gradient option: show gradient preview or "None" label
-        - Navigation: prev/next buttons with icons
+    - [x] **4.4.a Create `src/components/theme/WallpaperPicker.tsx`**
+        - Carousel-style picker with useCompatibleWallpapers hook
+        - Shows gradient preview or Next.js Image thumbnail
+        - Prev/next buttons with ChevronLeft/Right icons
 
-    - [ ] **4.4.b Add thumbnail sizing and aspect ratio**
-        - Minimum 200×150px
-        - Maintain aspect ratio
-        - Object-cover for images
+    - [x] **4.4.b Add thumbnail sizing and aspect ratio**
+        - 200×150px preview area with object-cover
 
-    - [ ] **4.4.c Add keyboard support**
-        - Left/Right arrows for prev/next
-        - Focus indicator on thumbnail area
+    - [x] **4.4.c Add keyboard support**
+        - ArrowLeft/Right for navigation, tabIndex="0" on preview
 
-    - [ ] **4.4.d Run WallpaperPicker tests - should now PASS**
+    - [x] **4.4.d Run WallpaperPicker tests - all 16 pass**
 
-    - [ ] **4.4.e Run quality gates**
+    - [x] **4.4.e Run quality gates**
+        - Type check: pass, Lint: pass, 72 theme/hooks tests pass
+
+### **Phase 4.5:** Infrastructure Remediation (FOUC & Performance)
+
+**Goal:** Resolve FOUC (Flash of Unstyled Content) and wallpaper change sluggishness before Phase 5 integration.
+
+**Background:** Components from Phases 3-4 work correctly, but underlying infrastructure has issues:
+
+- FOUC occurs because server can't read palette from localStorage (only cookies)
+- Partial cookie-based SSR attempt is incomplete (server uses default palette, not user's)
+- Wallpaper changes feel sluggish (needs investigation)
+- Orphaned code: `data-wallpaper` attribute set by blocking script but never consumed
+
+**Architecture Decision:** Cookie-first pattern (validated via external research)
+
+- Cookie = SSR source of truth (server-readable)
+- localStorage = Client cache (fast reads, offline support)
+- Blocking script = Instant CSS class application (keep existing pattern)
+
+- [ ] **4.5.a Implement cookie-first palette architecture**
+
+    - [ ] **4.5.a.1 Add palette cookie constant to `src/config/storage.ts`**
+        - `PALETTE_COOKIE_NAME = "arc-portfolio-palette"`
+        - Keep existing `PALETTE_STORAGE_KEY` for localStorage
+
+    - [ ] **4.5.a.2 Create Server Action for palette preference sync**
+        - Create `src/app/actions/preferences.ts` (or extend existing API route)
+        - Action: `updatePalettePreference(palette: string)` sets cookie
+        - Consider combining with wallpaper sync for single round-trip
+
+    - [ ] **4.5.a.3 Update `ThemeContext.tsx` for cookie-first pattern**
+        - On mount: `useEffect` syncs localStorage → cookie via Server Action
+        - On change: Update both localStorage (immediate) and cookie (async)
+        - Cookie sync is fire-and-forget (no await blocking UI)
+
+    - [ ] **4.5.a.4 Update `layout.tsx` to read palette cookie**
+        - Read `PALETTE_COOKIE_NAME` alongside wallpaper cookie
+        - Determine wallpaper for user's actual palette (not default)
+        - Pass both `serverPalette` and `serverWallpaper` to ThemeProvider
+
+- [ ] **4.5.b Refactor WallpaperContext for correct SSR**
+
+    - [ ] **4.5.b.1 Update `WallpaperContextProvider` props**
+        - Accept `serverPalette` in addition to `serverWallpaper`
+        - Use server values for initial render (matches what server rendered)
+
+    - [ ] **4.5.b.2 Simplify hydration sync logic**
+        - Remove complex hydration state tracking if no longer needed
+        - `useEffect` on mount: check if localStorage differs from cookie
+        - If drift detected: sync to cookie via Server Action
+
+    - [ ] **4.5.b.3 Ensure wallpaper changes are snappy**
+        - Verify `setActiveWallpaper` updates state immediately
+        - Cookie sync must be fire-and-forget (currently `syncWallpaperCookie` not awaited - verify)
+        - Profile if sluggishness persists
+
+- [ ] **4.5.c Clean up orphaned/legacy code**
+
+    - [ ] **4.5.c.1 Remove unused `data-wallpaper` attribute from blocking script**
+        - Currently set but never read by React components
+        - Either remove, or refactor WallpaperBackground to use it (evaluate)
+
+    - [ ] **4.5.c.2 Document legacy localStorage keys for user cleanup**
+        - `arc-portfolio-wallpaper` (old key, replaced by `arc-portfolio-wallpaper-prefs`)
+        - `arc-portfolio-theme` (old key, replaced by `arc-portfolio-palette`)
+        - Add migration note or cleanup utility (optional)
+
+- [ ] **4.5.d Verify FOUC resolution**
+
+    - [ ] **4.5.d.1 Test fresh visit (no cookies, no localStorage)**
+        - Should render default palette + default wallpaper
+        - No flash on first paint
+
+    - [ ] **4.5.d.2 Test return visit (cookies set)**
+        - Should render user's palette + wallpaper immediately
+        - No flash, no hydration mismatch
+
+    - [ ] **4.5.d.3 Test cross-tab sync**
+        - Change palette in one tab
+        - Other tab should reflect change (via localStorage storage event)
+
+    - [ ] **4.5.d.4 Run full quality gates**
+        - All tests pass, type check, lint, build
 
 ### **Phase 5:** Combined Control (Desktop)
 

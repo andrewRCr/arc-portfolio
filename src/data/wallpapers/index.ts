@@ -8,7 +8,8 @@
  * Determined via visual testing against all theme/mode combinations.
  */
 
-import type { WallpaperOption, WallpaperCompatibility, WallpaperId } from "./types";
+import type { ThemeName } from "@/data/themes";
+import type { WallpaperOption, WallpaperCompatibility } from "./types";
 
 /**
  * All available wallpaper options.
@@ -126,5 +127,32 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
   },
 ] as const;
 
+/**
+ * Type-safe wallpaper ID derived from registry.
+ */
+export type WallpaperId = (typeof WALLPAPER_OPTIONS)[number]["id"];
+
+/**
+ * Check if a wallpaper is compatible with a given theme.
+ *
+ * @param wallpaper - The wallpaper option to check
+ * @param themeName - The theme to check compatibility against
+ * @returns true if the wallpaper works with the theme
+ */
+export function isWallpaperCompatible(wallpaper: WallpaperOption, themeName: ThemeName): boolean {
+  if (wallpaper.compatibleThemes === "universal") return true;
+  return wallpaper.compatibleThemes.includes(themeName);
+}
+
+/**
+ * Get all wallpapers compatible with a given theme.
+ *
+ * @param themeName - The theme to filter by
+ * @returns Array of compatible wallpaper options (gradient always first due to registry order)
+ */
+export function getCompatibleWallpapers(themeName: ThemeName): WallpaperOption[] {
+  return WALLPAPER_OPTIONS.filter((wallpaper) => isWallpaperCompatible(wallpaper, themeName));
+}
+
 // Re-export types for external use
-export type { WallpaperOption, WallpaperCompatibility, WallpaperId };
+export type { WallpaperOption, WallpaperCompatibility };

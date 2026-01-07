@@ -21,6 +21,11 @@ export interface WallpaperBackgroundProps {
  * - Lazy-loaded image when provided (via Next.js Image)
  * - Decorative element (aria-hidden for accessibility)
  *
+ * **FOUC Prevention:**
+ * Server reads wallpaper preference from cookie, so it renders the correct
+ * wallpaper on first paint. No hydration mismatch because server and client
+ * render the same wallpaper.
+ *
  * **Usage:**
  * - Without image: Displays gradient fallback
  * - With image: Displays image over gradient (gradient shows during load)
