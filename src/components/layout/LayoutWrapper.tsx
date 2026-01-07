@@ -56,7 +56,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <div
         className="h-dvh flex flex-col"
         style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}
-        onClick={() => setActiveWindow(null)}
+        onPointerDown={() => setActiveWindow(null)}
       >
         {/* Top bar - fixed height */}
         <TopBar isActive={activeWindow === "top"} onActivate={() => setActiveWindow("top")} />
