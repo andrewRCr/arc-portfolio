@@ -138,7 +138,7 @@ export interface ThemeColors {
 /**
  * Swatch color arrays for neofetch-inspired theme preview grid.
  *
- * **Approach D Slot Mapping (Deduplicated Weighted):**
+ * **Slot Mapping (Deduplicated, weighted):**
  * - Position 0: Muted background
  * - Position 1: Primary accent
  * - Position 2: Secondary accent

@@ -2,8 +2,8 @@
  * Swatch Color Tests
  *
  * Validates theme swatch color metadata for the neofetch-inspired color grid.
- * Swatch colors follow "Approach D: Deduplicated Weighted" - 8 visually distinct
- * colors per mode representing theme character.
+ * Swatch colors are semantic-weighted (prioritizing UI-dominant colors like primary,
+ * secondary, accent) and diversified (no duplicate colors within a mode).
  *
  * Slot mapping: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
  */
@@ -50,7 +50,7 @@ describe("Theme Swatch Colors", () => {
     });
   });
 
-  describe("Uniqueness (Approach D deduplication)", () => {
+  describe("Uniqueness (diversified - no duplicates)", () => {
     it("all swatch colors within each mode should be unique", () => {
       Object.entries(themes).forEach(([name, theme]) => {
         const lightColors = theme.swatchColors?.light ?? [];

@@ -138,7 +138,7 @@ export const rosePineTheme: Theme = {
   // Default wallpaper for this theme
   defaultWallpaper: "gradient",
 
-  // Swatch colors for theme preview grid (Approach D: Deduplicated Weighted)
+  // Swatch colors for theme preview grid (semantic-weighted, diversified)
   // Slots: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
   swatchColors: {
     light: [
