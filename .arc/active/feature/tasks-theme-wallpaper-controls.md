@@ -35,103 +35,34 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 1:** Data Model & Infrastructure Extensions
 
-- [ ] **1.1 Write tests for swatch color metadata**
+- [x] **1.1 Write tests for swatch color metadata**
+    - Created `src/data/themes/__tests__/swatch-colors.test.ts` with structural validation
+    - Tests verify: 8 colors per mode, valid hex format, uniqueness (Approach D deduplication)
 
-    **Goal:** Validate theme swatch color structure before implementation.
+- [x] **1.2 Extend theme type definitions and add swatch metadata**
+    - Added `SwatchColors` interface to `types.ts` with JSDoc documenting Approach D slots
+    - Added `swatchColors` to all theme definitions referencing palette values (single source of truth)
+    - All swatch tests pass, quality gates pass
 
-    - [ ] **1.1.a Create test file `src/data/themes/__tests__/swatch-colors.test.ts`**
-        - Test: Each theme has `swatchColors.light` array of 8 strings
-        - Test: Each theme has `swatchColors.dark` array of 8 strings
-        - Test: All swatch colors are valid hex format (`#RRGGBB`)
-        - Test: Swatch colors match expected Approach D mapping
-        - Expect tests to FAIL initially
+- [x] **1.3 Write tests for wallpaper compatibility metadata**
+    - Created `src/data/wallpapers/__tests__/wallpapers.test.ts`
+    - Tests verify: compatibleThemes property, valid theme references, gradient option
 
-    - [ ] **1.1.b Run tests and verify failure messages**
+- [x] **1.4 Extract wallpaper data to dedicated module**
+    - Created `src/data/wallpapers/types.ts` with `WallpaperOption`, `WallpaperCompatibility`
+    - Created `src/data/wallpapers/index.ts` with compatibility tags from notes matrix
+    - Updated `WallpaperContext.tsx` to import from new module (backward-compatible re-export)
+    - All wallpaper tests pass, quality gates pass
 
-- [ ] **1.2 Extend theme type definitions and add swatch metadata**
+- [x] **1.5 Write tests for per-theme wallpaper preferences**
+    - Created `src/contexts/__tests__/WallpaperContext.test.tsx`
+    - Tests verify: localStorage persistence, theme-switch restore, compatibility fallback
 
-    - [ ] **1.2.a Update `Theme` interface in `src/data/themes/types.ts`**
-        - Add `swatchColors: { light: string[]; dark: string[] }`
-        - Document Approach D slot mapping in JSDoc
-
-    - [ ] **1.2.b Add `swatchColors` to Remedy theme definition**
-        - Light: muted, orange, yellow, cyan, red, green, purple, foreground
-        - Dark: corresponding bright variants
-        - Use hex values from palette files
-
-    - [ ] **1.2.c Add `swatchColors` to Gruvbox theme definition**
-        - Light: muted, faded_green, faded_orange, aqua, red, blue, purple, foreground
-        - Dark: corresponding bright variants
-
-    - [ ] **1.2.d Add `swatchColors` to Rose Pine theme definition**
-        - Light: muted, pine, foam, rose, love, gold, iris, foreground
-        - Dark: corresponding Main variants
-
-    - [ ] **1.2.e Run swatch color tests - should now PASS**
-
-    - [ ] **1.2.f Run quality gates (type check, lint)**
-
-- [ ] **1.3 Write tests for wallpaper compatibility metadata**
-
-    - [ ] **1.3.a Create test file `src/data/wallpapers/__tests__/wallpapers.test.ts`**
-        - Test: Each wallpaper has `compatibleThemes` property
-        - Test: `compatibleThemes` is array of theme names or `"universal"`
-        - Test: All referenced theme names exist in registry
-        - Test: Gradient option exists with `src: undefined`
-        - Expect tests to FAIL initially
-
-    - [ ] **1.3.b Run tests and verify failure messages**
-
-- [ ] **1.4 Extract wallpaper data to dedicated module**
-
-    - [ ] **1.4.a Create `src/data/wallpapers/index.ts`**
-        - Move `WALLPAPER_OPTIONS` from `WallpaperContext.tsx`
-        - Add `WallpaperOption` interface with `compatibleThemes`
-        - Add compatibility tags per plan document inventory
-
-    - [ ] **1.4.b Create `src/data/wallpapers/types.ts`**
-        - Define `WallpaperId` type
-        - Define `WallpaperOption` interface
-        - Define `WallpaperCompatibility` type (`ThemeName[] | "universal"`)
-
-    - [ ] **1.4.c Update `WallpaperContext.tsx` to import from new module**
-        - Remove inline `WALLPAPER_OPTIONS`
-        - Import from `@/data/wallpapers`
-
-    - [ ] **1.4.d Run wallpaper tests - should now PASS**
-
-    - [ ] **1.4.e Run quality gates**
-
-- [ ] **1.5 Write tests for per-theme wallpaper preferences**
-
-    - [ ] **1.5.a Add tests to `src/contexts/__tests__/WallpaperContext.test.tsx`**
-        - Test: Preferences persist to localStorage key `arc-portfolio-wallpaper-prefs`
-        - Test: Switching themes restores that theme's last wallpaper
-        - Test: New theme with no saved preference uses theme's default
-        - Test: Incompatible wallpaper falls back to theme default
-        - Expect tests to FAIL initially
-
-    - [ ] **1.5.b Run tests and verify failure messages**
-
-- [ ] **1.6 Implement per-theme wallpaper preferences**
-
-    - [ ] **1.6.a Add storage key to `src/config/storage.ts`**
-        - Add `WALLPAPER_PREFS_STORAGE_KEY = "arc-portfolio-wallpaper-prefs"`
-
-    - [ ] **1.6.b Add `defaultWallpaper` to each theme definition**
-        - Remedy: `"gradient"` (or theme-appropriate default)
-        - Gruvbox: `"gradient"`
-        - Rose Pine: `"gradient"`
-
-    - [ ] **1.6.c Update `WallpaperContext` with preference logic**
-        - Load preferences from localStorage on mount
-        - Save preference when wallpaper changes (keyed by active theme)
-        - Listen for theme changes and restore saved preference
-        - Fall back to theme default if saved wallpaper incompatible
-
-    - [ ] **1.6.d Run preference tests - should now PASS**
-
-    - [ ] **1.6.e Run quality gates**
+- [x] **1.6 Implement per-theme wallpaper preferences**
+    - Added `WALLPAPER_PREFS_STORAGE_KEY` to `config/storage.ts`
+    - Added `defaultWallpaper: "gradient"` to all theme definitions
+    - Updated `WallpaperContext` with preference logic: load/save per-theme, compatibility check
+    - All preference tests pass, quality gates pass (607 total tests)
 
 ### **Phase 2:** ThemeSwatch Component
 
@@ -502,9 +433,11 @@ neofetch-inspired color swatch grid.
 
 - [ ] **7.6 Cleanup**
 
-    - [ ] **7.6.a Delete prototype swatch page**
+    - [ ] **7.6.a Delete prototype files and remove backward-compat shims**
         - Remove `src/app/dev/swatch-prototype/page.tsx`
         - Remove `src/components/dev/SwatchPrototype.tsx`
+        - Update `WallpaperSwitcher.tsx` to import `WALLPAPER_OPTIONS` from `@/data/wallpapers`
+        - Remove re-export from `WallpaperContext.tsx` (line: `export { WALLPAPER_OPTIONS }`)
 
     - [ ] **7.6.b Verify no dead code**
         - Check for unused imports
