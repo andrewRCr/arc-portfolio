@@ -284,21 +284,20 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 5:** Combined Control (Desktop)
 
-- [ ] **5.1 Write tests for ThemeControl component**
+- [x] **5.1 Write tests for ThemeControl component**
 
-    - [ ] **5.1.a Create test file `src/components/theme/__tests__/ThemeControl.test.tsx`**
-        - Test: Collapsed state shows ThemeSwatch (16px)
-        - Test: Collapsed state has chevron indicator
-        - Test: Clicking collapsed state opens dropdown
-        - Test: Expanded state shows ThemeSelector
-        - Test: Expanded state shows WallpaperPicker
-        - Test: Expanded state shows light/dark toggle
-        - Test: Closes on outside click
-        - Test: Closes on Escape key
-        - Test: No accessibility violations
-        - Expect tests to FAIL initially
+    - [x] **5.1.a Create test file `src/components/theme/__tests__/ThemeControl.test.tsx`**
+        - 12 tests across 4 describe blocks: Collapsed State (3), Opening/Closing (3), Expanded State Content (3),
+        Accessibility (3)
+        - Tests collapsed swatch + chevron, dropdown open/close behavior, content visibility
+        - Mocks ThemeContext, WallpaperContext, next-themes, useThemeSwatch, useCompatibleWallpapers
+        - Created minimal stub `ThemeControl.tsx` to allow tests to run
+        - Added export to `src/components/theme/index.ts`
 
-    - [ ] **5.1.b Run tests and verify failure messages**
+    - [x] **5.1.b Run tests and verify failure messages**
+        - 10 tests fail as expected (stub doesn't implement real functionality)
+        - 2 tests pass trivially (dropdown closed by default, stub has no a11y issues)
+        - Failures show correct expectations: missing swatch, chevron, trigger button, etc.
 
 - [ ] **5.2 Implement ThemeControl component**
 
