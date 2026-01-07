@@ -3,7 +3,12 @@ import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/config/site";
-import { PALETTE_STORAGE_KEY, WALLPAPER_PREFS_STORAGE_KEY, WALLPAPER_COOKIE_NAME } from "@/config/storage";
+import {
+  PALETTE_STORAGE_KEY,
+  PALETTE_COOKIE_NAME,
+  WALLPAPER_PREFS_STORAGE_KEY,
+  WALLPAPER_COOKIE_NAME,
+} from "@/config/storage";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
@@ -59,20 +64,25 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Read wallpaper preference from cookie for SSR (prevents FOUC)
+  // Read preferences from cookies for SSR (prevents FOUC)
   const cookieStore = await cookies();
+  const paletteCookie = cookieStore.get(PALETTE_COOKIE_NAME)?.value;
   const wallpaperCookie = cookieStore.get(WALLPAPER_COOKIE_NAME)?.value;
 
-  // Parse wallpaper prefs and get wallpaper for default palette
-  // (blocking script will sync with actual palette on client)
-  let serverWallpaper = "gradient";
+  // Determine server palette (cookie or default)
+  const serverPalette = paletteCookie && paletteCookie in themes ? paletteCookie : defaultPalette;
+
+  // Determine server wallpaper for the user's palette
+  let serverWallpaper = themes[serverPalette as keyof typeof themes]?.defaultWallpaper ?? "gradient";
   if (wallpaperCookie) {
     try {
-      const prefs = JSON.parse(wallpaperCookie);
-      // Use default palette's wallpaper since we can't know client's palette on server
-      serverWallpaper = prefs[defaultPalette] || themes[defaultPalette]?.defaultWallpaper || "gradient";
+      // Cookie value may be URL-encoded, decode before parsing
+      const decoded = decodeURIComponent(wallpaperCookie);
+      const prefs = JSON.parse(decoded);
+      // Use the user's actual palette (from cookie) to look up their wallpaper
+      serverWallpaper = prefs[serverPalette] || serverWallpaper;
     } catch {
-      // Invalid JSON, use default
+      // Invalid JSON, use theme default
     }
   }
 
@@ -92,6 +102,7 @@ export default async function RootLayout({
           attribute="class"
           defaultTheme="dark"
           disableTransitionOnChange
+          serverPalette={serverPalette}
           serverWallpaper={serverWallpaper}
         >
           <ConsoleLoggerInit />

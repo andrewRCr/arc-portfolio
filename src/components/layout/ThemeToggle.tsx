@@ -11,6 +11,10 @@ import { Button } from "@/components/ui/button";
  * Icon button to toggle between light and dark color modes.
  * Shows the current mode (sun for light, moon for dark).
  * Uses next-themes for theme management with localStorage persistence.
+ *
+ * FOUC Prevention: Before hydration, renders both icons with CSS-based visibility
+ * using the theme class that next-themes' blocking script sets on <html>.
+ * This ensures the correct icon shows immediately without waiting for JS.
  */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -21,9 +25,13 @@ export function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
+    // Before hydration: render both icons, CSS shows correct one based on html.dark class
+    // This prevents FOUC since blocking script already set the theme class
     return (
       <Button variant="outline" size="icon-xs" disabled aria-label="Toggle color mode">
-        <Sun className="h-3.5 w-3.5" />
+        {/* Show Moon in dark mode, Sun in light mode - CSS controlled */}
+        <Moon className="hidden dark:block h-3.5 w-3.5" />
+        <Sun className="block dark:hidden h-3.5 w-3.5" />
       </Button>
     );
   }

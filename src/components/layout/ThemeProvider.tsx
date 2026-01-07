@@ -7,6 +7,8 @@ import { ThemeContextProvider, useThemeContext } from "@/contexts/ThemeContext";
 import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider> & {
+  /** Server-rendered palette from cookie (prevents FOUC) */
+  serverPalette?: string;
   /** Server-rendered wallpaper ID from cookie (prevents FOUC) */
   serverWallpaper?: string;
 };
@@ -43,9 +45,9 @@ function ThemePaletteSync() {
   return null;
 }
 
-export function ThemeProvider({ children, serverWallpaper, ...props }: ThemeProviderProps) {
+export function ThemeProvider({ children, serverPalette, serverWallpaper, ...props }: ThemeProviderProps) {
   return (
-    <ThemeContextProvider>
+    <ThemeContextProvider serverPalette={serverPalette}>
       <WallpaperContextProvider serverWallpaper={serverWallpaper}>
         <NextThemesProvider {...props}>
           <ThemePaletteSync />

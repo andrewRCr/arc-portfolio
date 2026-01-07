@@ -19,9 +19,16 @@ export async function POST(request: Request) {
 
     const cookieStore = await cookies();
 
-    // Store as JSON object keyed by palette (same structure as localStorage)
-    const existingPrefs = cookieStore.get(WALLPAPER_COOKIE_NAME)?.value;
-    const prefs = existingPrefs ? JSON.parse(existingPrefs) : {};
+    // Decode existing prefs (cookie value may be URL-encoded)
+    const existingValue = cookieStore.get(WALLPAPER_COOKIE_NAME)?.value;
+    let prefs: Record<string, string> = {};
+    if (existingValue) {
+      try {
+        prefs = JSON.parse(decodeURIComponent(existingValue));
+      } catch {
+        // Invalid JSON, start fresh
+      }
+    }
     prefs[palette] = wallpaper;
 
     cookieStore.set(WALLPAPER_COOKIE_NAME, JSON.stringify(prefs), {
