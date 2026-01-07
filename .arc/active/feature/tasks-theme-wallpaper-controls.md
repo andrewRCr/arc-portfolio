@@ -396,20 +396,22 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 7:** Integration, Polish & Quality Gates
 
-- [ ] **7.1 Implement FOUC prevention**
+- [ ] **7.1 Generate wallpaper thumbnails for picker performance**
 
-    - [ ] **7.1.a Audit mode-dependent elements**
-        - Identify any elements that flash on initial load
-        - Check ThemeToggle icons, swatch rendering
+    - [ ] **7.1.a Create thumbnail generation script**
+        - Script to generate 200×150 WebP thumbnails from full wallpapers
+        - Output to `public/images/wallpapers/thumbnails/`
+        - Target ~10-15KB per thumbnail
 
-    - [ ] **7.1.b Apply CSS class visibility pattern**
-        - Use `dark:hidden` / `hidden dark:block` for mode icons
-        - Ensure swatch renders with correct colors immediately
+    - [ ] **7.1.b Update wallpaper data model**
+        - Add `thumbnailSrc` field to `WallpaperOption` type
+        - Update wallpaper definitions with thumbnail paths
 
-    - [ ] **7.1.c Verify no FOUC in E2E tests**
-        - Test initial page load in light mode
-        - Test initial page load in dark mode
-        - Test with persisted preferences
+    - [ ] **7.1.c Update WallpaperPicker to use thumbnails**
+        - Use `thumbnailSrc` in picker preview
+        - Keep full `src` for actual wallpaper display
+
+    - [ ] **7.1.d Run quality gates**
 
 - [ ] **7.2 Accessibility audit**
 
