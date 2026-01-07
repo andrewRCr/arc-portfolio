@@ -24,12 +24,19 @@ describe("TopBar", () => {
     });
   });
 
-  describe("Theme Controls Placeholder", () => {
-    it("has placeholder element for theme controls", () => {
+  describe("Theme Controls", () => {
+    it("has theme controls area", () => {
       render(<TopBar />);
 
-      // Theme controls area should exist (identified by data attribute for future integration)
-      expect(screen.getByTestId("theme-controls-placeholder")).toBeInTheDocument();
+      // Theme controls area should exist
+      expect(screen.getByTestId("theme-controls")).toBeInTheDocument();
+    });
+
+    it("renders ThemeControl component", () => {
+      render(<TopBar />);
+
+      // ThemeControl renders the swatch trigger
+      expect(screen.getByTestId("theme-swatch")).toBeInTheDocument();
     });
   });
 

@@ -3,8 +3,7 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { SITE } from "@/config/site";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
-import { ThemeSwitcher } from "../ThemeSwitcher";
-import { WallpaperSwitcher } from "../WallpaperSwitcher";
+import { ThemeControl } from "../theme";
 import { TouchTarget } from "../ui/TouchTarget";
 
 export interface TopBarProps {
@@ -20,7 +19,7 @@ export interface TopBarProps {
  * Minimal header bar for the TWM (Tiling Window Manager) layout.
  * Features:
  * - Logo/branding on the left (links to home)
- * - Theme controls on the right (ThemeSwitcher + ThemeToggle)
+ * - Theme controls on the right (ThemeControl dropdown + ThemeToggle)
  * - Wrapped in WindowContainer for consistent TWM styling
  *
  * @example
@@ -48,13 +47,10 @@ export function TopBar({ isActive, onActivate }: TopBarProps) {
           <span className="text-primary font-mono">&gt;_</span>
         </div>
 
-        {/* Theme controls - temporary until ThemePicker is implemented */}
-        <div data-testid="theme-controls-placeholder" className="flex items-center">
+        {/* Theme controls */}
+        <div data-testid="theme-controls" className="flex items-center gap-1">
           <TouchTarget>
-            <WallpaperSwitcher />
-          </TouchTarget>
-          <TouchTarget>
-            <ThemeSwitcher />
+            <ThemeControl />
           </TouchTarget>
           <TouchTarget>
             <ThemeToggle />
