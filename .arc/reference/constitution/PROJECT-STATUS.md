@@ -25,12 +25,12 @@ contemporary web development practices.
 
 **Currently Active:**
 
-- None - ready for next priority
+- Theme & Wallpaper Control System (feature) - Polished theme/wallpaper selection UI
+    - [Task List](../../active/feature/tasks-theme-wallpaper-controls.md)
 
 **Next Priority:**
 
-- Theme & Wallpaper Control System (feature) - Polished theme/wallpaper selection UI
-    - [Plan](../../backlog/feature/plan-theme-wallpaper-controls.md)
+- Visual Polish & Animations (feature) - Framer Motion integration, page transitions
 
 ---
 
@@ -39,11 +39,6 @@ contemporary web development practices.
 ### Feature Development
 
 *High Priority:*
-
-- **Theme & Wallpaper Control System** - Polished theme/wallpaper selection UI
-    - [Plan](../../backlog/feature/plan-theme-wallpaper-controls.md)
-
-*Medium Priority:*
 
 - **Visual Polish & Animations** - Framer Motion integration, page transitions, micro-interactions
     - [Backlog](../../backlog/feature/BACKLOG-FEATURE.md)
