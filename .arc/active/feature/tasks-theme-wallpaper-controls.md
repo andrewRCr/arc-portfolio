@@ -180,53 +180,85 @@ neofetch-inspired color swatch grid.
 - localStorage = Client cache (fast reads, offline support)
 - Blocking script = Instant CSS class application (keep existing pattern)
 
-- [ ] **4.5.a Implement cookie-first palette architecture**
+- [x] **4.5.a Implement cookie-first palette architecture**
 
-    - [ ] **4.5.a.1 Add palette cookie constant to `src/config/storage.ts`**
-        - `PALETTE_COOKIE_NAME = "arc-portfolio-palette"`
-        - Keep existing `PALETTE_STORAGE_KEY` for localStorage
+    - [x] **4.5.a.1 Add palette cookie constant to `src/config/storage.ts`**
+        - Added `PALETTE_COOKIE_NAME = "arc-portfolio-palette"`
+        - Updated docstring to reflect dual storage (cookies + localStorage)
 
-    - [ ] **4.5.a.2 Create Server Action for palette preference sync**
-        - Create `src/app/actions/preferences.ts` (or extend existing API route)
-        - Action: `updatePalettePreference(palette: string)` sets cookie
-        - Consider combining with wallpaper sync for single round-trip
+    - [x] **4.5.a.2 Create Server Action for palette preference sync**
+        - Created `src/app/actions/preferences.ts` with `setPalettePreference`, `setWallpaperPreference`, `setPreferences`
+        - Shared cookie options, 1-year expiry, accessible on client
 
-    - [ ] **4.5.a.3 Update `ThemeContext.tsx` for cookie-first pattern**
-        - On mount: `useEffect` syncs localStorage → cookie via Server Action
-        - On change: Update both localStorage (immediate) and cookie (async)
-        - Cookie sync is fire-and-forget (no await blocking UI)
+    - [x] **4.5.a.3 Update `ThemeContext.tsx` for cookie-first pattern**
+        - Added `serverPalette` prop for SSR consistency
+        - On mount: syncs localStorage → cookie via Server Action
+        - On change: localStorage immediate, cookie async (fire-and-forget)
+        - Cross-tab sync also updates cookie
 
-    - [ ] **4.5.a.4 Update `layout.tsx` to read palette cookie**
-        - Read `PALETTE_COOKIE_NAME` alongside wallpaper cookie
-        - Determine wallpaper for user's actual palette (not default)
-        - Pass both `serverPalette` and `serverWallpaper` to ThemeProvider
+    - [x] **4.5.a.4 Update `layout.tsx` to read palette cookie**
+        - Reads `PALETTE_COOKIE_NAME` alongside wallpaper cookie
+        - Uses user's actual palette to look up their wallpaper
+        - Passes `serverPalette` and `serverWallpaper` to ThemeProvider
 
-- [ ] **4.5.b Refactor WallpaperContext for correct SSR**
+- [x] **4.5.b Refactor WallpaperContext for correct SSR**
 
-    - [ ] **4.5.b.1 Update `WallpaperContextProvider` props**
-        - Accept `serverPalette` in addition to `serverWallpaper`
-        - Use server values for initial render (matches what server rendered)
+    - [x] **4.5.b.1 Switch wallpaper cookie sync to Server Action**
+        - Created `src/app/actions/wallpaper.ts` (separate file required due to Turbopack issue)
+        - WallpaperContext now uses `syncWallpaperToCookie` Server Action
+        - Note: Importing from shared `preferences.ts` caused module resolution errors
 
-    - [ ] **4.5.b.2 Simplify hydration sync logic**
-        - Remove complex hydration state tracking if no longer needed
-        - `useEffect` on mount: check if localStorage differs from cookie
-        - If drift detected: sync to cookie via Server Action
+    - [x] **4.5.b.2 Fix URL-encoded cookie parsing**
+        - Cookie values were URL-encoded (`%7B%22...%7D`)
+        - Added `decodeURIComponent()` before `JSON.parse()` in:
+            - `layout.tsx` (server-side reading)
+            - `wallpaper.ts` Server Action
+            - `preferences.ts` Server Action
+            - `route.ts` API route
 
-    - [ ] **4.5.b.3 Ensure wallpaper changes are snappy**
-        - Verify `setActiveWallpaper` updates state immediately
-        - Cookie sync must be fire-and-forget (currently `syncWallpaperCookie` not awaited - verify)
-        - Profile if sluggishness persists
+    - [x] **4.5.b.3 Change wallpaper image to priority loading**
+        - Changed `<Image loading="lazy">` to `<Image priority>` in WallpaperBackground
+        - Intended to preload image and eliminate gradient→image flash
 
-- [ ] **4.5.c Clean up orphaned/legacy code**
+    - [x] **4.5.b.4 RESOLVED: Image loading flash**
+        - **Root cause**: Image loading timing - gradient renders immediately, image loads async
+        - **Solution**: Fade-in transition from flat theme background color
+            - WallpaperBackground shows `rgb(var(--background))` instead of gradient during load
+            - Image starts at `opacity-0`, fades to `opacity-100` on `onLoad` event
+            - 500ms CSS transition creates intentional reveal effect
+            - Theme background color is FOUC-free (blocking script sets palette class)
+        - **Also fixed**: Wallpaper persistence race condition
+            - Hydration effect was overriding server wallpaper with stale localStorage
+            - Theme change effect now reads directly from localStorage (avoids stale React state)
+            - Cookie/localStorage sync on mismatch during hydration
 
-    - [ ] **4.5.c.1 Remove unused `data-wallpaper` attribute from blocking script**
+- [ ] **4.5.c Clean up orphaned/legacy code & FOUC prevention patterns**
+
+    - [x] **4.5.c.1 Fix ThemeToggle icon FOUC**
+        - Was showing Sun icon during hydration regardless of actual theme
+        - Fixed: render both icons with CSS visibility (`dark:block`/`dark:hidden`)
+        - Works because next-themes blocking script sets `dark` class on `<html>`
+
+    - [x] **4.5.c.2 Fix Navigation component FOUC**
+        - Was using `useMediaQuery` (returns false on server) → flash on mobile
+        - Created `ResponsiveSwitch` component (`src/components/ui/ResponsiveSwitch.tsx`)
+        - Renders both mobile and desktop content, CSS media queries control visibility
+        - Pattern: `<ResponsiveSwitch mobile={...} desktop={...} />`
+        - Navigation refactored to use ResponsiveSwitch
+
+    - [x] **4.5.c.3 Fix TUI frame gap FOUC**
+        - ConditionalFrame `navGapHalf` was using `useMediaQuery` → gap width flash
+        - Added CSS variable `--nav-gap-half` in globals.css with media query
+        - Mobile: 70px, Desktop: 190px (matches layout tokens)
+        - ConditionalFrame now uses `var(--nav-gap-half)` in clip-path
+
+    - [ ] **4.5.c.4 Remove unused `data-wallpaper` attribute from blocking script**
         - Currently set but never read by React components
         - Either remove, or refactor WallpaperBackground to use it (evaluate)
 
-    - [ ] **4.5.c.2 Document legacy localStorage keys for user cleanup**
+    - [ ] **4.5.c.5 Remove unused legacy localStorage keys**
         - `arc-portfolio-wallpaper` (old key, replaced by `arc-portfolio-wallpaper-prefs`)
         - `arc-portfolio-theme` (old key, replaced by `arc-portfolio-palette`)
-        - Add migration note or cleanup utility (optional)
 
 - [ ] **4.5.d Verify FOUC resolution**
 
