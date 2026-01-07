@@ -5,6 +5,7 @@ import { WALLPAPER_OPTIONS, isWallpaperCompatible, type WallpaperId } from "@/da
 import { themes, type ThemeName } from "@/data/themes";
 import { useThemeContext } from "./ThemeContext";
 import { WALLPAPER_PREFS_STORAGE_KEY } from "@/config/storage";
+import { syncWallpaperToCookie } from "@/app/actions/wallpaper";
 
 // Re-export for consumers that need these
 export type { WallpaperId };
@@ -69,18 +70,16 @@ function savePreferences(prefs: WallpaperPreferences): void {
 }
 
 /**
- * Sync wallpaper preference to cookie via API (for SSR).
+ * Sync wallpaper preference to cookie (fire-and-forget).
+ * Logs errors in development for debugging.
  */
-async function syncWallpaperCookie(palette: string, wallpaper: string): Promise<void> {
-  try {
-    await fetch("/api/preferences/wallpaper", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ palette, wallpaper }),
-    });
-  } catch {
-    // Silent fail - cookie sync is best-effort
-  }
+function syncWallpaperCookie(palette: string, wallpaper: string): void {
+  syncWallpaperToCookie(palette, wallpaper).catch((error) => {
+    // Log in development to help debug cookie sync issues
+    if (process.env.NODE_ENV === "development") {
+      console.error("[WallpaperContext] Failed to sync cookie:", error);
+    }
+  });
 }
 
 export function WallpaperContextProvider({ children, serverWallpaper }: WallpaperContextProviderProps) {
@@ -100,29 +99,61 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
     return "gradient";
   });
 
-  // After hydration, sync with localStorage preferences (may differ from cookie)
+  // After hydration, reconcile localStorage with server-provided cookie value
   const [isHydrated, setIsHydrated] = React.useState(false);
   React.useEffect(() => {
     const prefs = loadPreferences();
-    setPreferences(prefs);
-    const correctWallpaper = getWallpaperForTheme(activeTheme, prefs);
-    if (correctWallpaper !== activeWallpaper) {
-      setActiveWallpaperInternal(correctWallpaper);
+    const localPref = prefs[activeTheme];
+
+    if (localPref) {
+      // localStorage has explicit preference for this theme
+      // Verify it's still valid (compatible), then use it
+      const wallpaper = WALLPAPER_OPTIONS.find((w) => w.id === localPref);
+      if (wallpaper && isWallpaperCompatible(wallpaper, activeTheme)) {
+        if (localPref !== activeWallpaper) {
+          // localStorage differs from cookie - use localStorage and sync cookie
+          setActiveWallpaperInternal(localPref);
+          syncWallpaperCookie(activeTheme, localPref);
+        }
+        setPreferences(prefs);
+      } else {
+        // Saved preference is no longer valid, fall back to server/default
+        const updated = serverWallpaper
+          ? { ...prefs, [activeTheme]: serverWallpaper as WallpaperId }
+          : prefs;
+        setPreferences(updated);
+        savePreferences(updated);
+      }
+    } else if (serverWallpaper && serverWallpaper !== "gradient") {
+      // localStorage empty for this theme but cookie has preference
+      // Sync localStorage from cookie to keep them consistent
+      const updated = { ...prefs, [activeTheme]: serverWallpaper as WallpaperId };
+      setPreferences(updated);
+      savePreferences(updated);
+      // activeWallpaper already has serverWallpaper, no change needed
+    } else {
+      // Both empty, use defaults
+      setPreferences(prefs);
     }
+
     setIsHydrated(true);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // When theme changes (after hydration), restore that theme's preferred wallpaper
+  // NOTE: We read directly from localStorage to avoid stale React state during rapid changes
   React.useEffect(() => {
     if (!isHydrated) return;
     if (prevThemeRef.current !== activeTheme) {
       prevThemeRef.current = activeTheme;
-      const newWallpaper = getWallpaperForTheme(activeTheme, preferences);
+      // Read fresh from localStorage to avoid stale state race conditions
+      const freshPrefs = loadPreferences();
+      const newWallpaper = getWallpaperForTheme(activeTheme, freshPrefs);
       setActiveWallpaperInternal(newWallpaper);
+      setPreferences(freshPrefs); // Keep state in sync
       // Sync to cookie for next SSR
       syncWallpaperCookie(activeTheme, newWallpaper);
     }
-  }, [activeTheme, preferences, isHydrated]);
+  }, [activeTheme, isHydrated]); // Removed preferences from deps - read from localStorage instead
 
   // Wrapped setter that saves to localStorage and syncs to cookie
   const setActiveWallpaper = React.useCallback(

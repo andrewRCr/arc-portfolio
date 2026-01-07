@@ -65,11 +65,13 @@ describe("WallpaperBackground", () => {
       expect(img?.getAttribute("src")).toContain("test.webp");
     });
 
-    it("image has lazy loading attribute", () => {
+    it("image does not have lazy loading (uses priority)", () => {
       const { container } = render(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
 
       const img = container.querySelector("img");
-      expect(img).toHaveAttribute("loading", "lazy");
+      // Priority images should not have loading="lazy"
+      // Note: fetchpriority="high" is added at runtime by Next.js, not in test mock
+      expect(img).not.toHaveAttribute("loading", "lazy");
     });
 
     it("image has object-cover for full coverage", () => {

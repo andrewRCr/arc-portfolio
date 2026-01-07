@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { buildWallpaperGradient } from "@/lib/theme";
 
@@ -18,36 +21,54 @@ export interface WallpaperBackgroundProps {
  * **Features:**
  * - Fixed positioning behind all content
  * - Theme-aware gradient fallback (uses CSS custom properties)
- * - Lazy-loaded image when provided (via Next.js Image)
+ * - Priority-loaded image when provided (via Next.js Image)
+ * - Smooth fade-in transition when image loads
  * - Decorative element (aria-hidden for accessibility)
  *
- * **FOUC Prevention:**
- * Server reads wallpaper preference from cookie, so it renders the correct
- * wallpaper on first paint. No hydration mismatch because server and client
- * render the same wallpaper.
+ * **Loading Behavior:**
+ * - Gradient mode: Shows theme-aware gradient immediately
+ * - Image mode: Shows flat theme background color, then fades in image when loaded
  *
- * **Usage:**
- * - Without image: Displays gradient fallback
- * - With image: Displays image over gradient (gradient shows during load)
+ * **FOUC Prevention:**
+ * Server reads wallpaper preference from cookie. The body already has
+ * `backgroundColor: rgb(var(--background))` and the blocking script sets
+ * the theme class, so the correct background color renders on first paint.
  *
  * @example
  * ```tsx
  * // Gradient only
  * <WallpaperBackground />
  *
- * // With wallpaper image
- * <WallpaperBackground imageSrc="/images/wallpaper/abstract.webp" />
+ * // With wallpaper image (fades in when loaded)
+ * <WallpaperBackground imageSrc="/wallpaper/optimized/example.webp" />
  * ```
  */
 export function WallpaperBackground({ imageSrc }: WallpaperBackgroundProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Gradient mode: show gradient. Image mode: flat background (image fades in on top)
+  const backgroundStyle = imageSrc
+    ? { backgroundColor: "rgb(var(--background))" }
+    : { background: buildWallpaperGradient() };
+
   return (
     <div
       className="fixed inset-0 z-[-1]"
-      style={{ background: buildWallpaperGradient() }}
+      style={backgroundStyle}
       aria-hidden="true"
       data-testid="wallpaper-background"
     >
-      {imageSrc && <Image src={imageSrc} alt="" fill loading="lazy" className="object-cover" sizes="100vw" />}
+      {imageSrc && (
+        <Image
+          src={imageSrc}
+          alt=""
+          fill
+          priority
+          className={`object-cover transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+          sizes="100vw"
+          onLoad={() => setIsLoaded(true)}
+        />
+      )}
     </div>
   );
 }
