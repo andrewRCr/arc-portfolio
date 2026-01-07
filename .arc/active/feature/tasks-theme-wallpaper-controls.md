@@ -163,22 +163,22 @@ neofetch-inspired color swatch grid.
     - [x] **4.4.e Run quality gates**
         - Type check: pass, Lint: pass, 72 theme/hooks tests pass
 
-### **Phase 4.5:** Infrastructure Remediation (FOUC & Performance)
+### **Phase 4.5:** Infrastructure Remediation (FOUC Prevention)
 
-**Goal:** Resolve FOUC (Flash of Unstyled Content) and wallpaper change sluggishness before Phase 5 integration.
+**Goal:** Resolve FOUC (Flash of Unstyled Content) before Phase 5 integration.
 
-**Background:** Components from Phases 3-4 work correctly, but underlying infrastructure has issues:
+**Background:** Components from Phases 3-4 work correctly, but underlying infrastructure had FOUC issues:
 
-- FOUC occurs because server can't read palette from localStorage (only cookies)
-- Partial cookie-based SSR attempt is incomplete (server uses default palette, not user's)
-- Wallpaper changes feel sluggish (needs investigation)
-- Orphaned code: `data-wallpaper` attribute set by blocking script but never consumed
+- Server couldn't read palette from localStorage → cookie-first architecture needed
+- Partial cookie-based SSR was incomplete → full cookie-first implementation
+- Various component-level FOUC sources → CSS-first rendering patterns
 
 **Architecture Decision:** Cookie-first pattern (validated via external research)
 
 - Cookie = SSR source of truth (server-readable)
 - localStorage = Client cache (fast reads, offline support)
-- Blocking script = Instant CSS class application (keep existing pattern)
+- Blocking script = Instant CSS class application (palette only)
+- CSS visibility/media queries for component-level FOUC prevention
 
 - [x] **4.5.a Implement cookie-first palette architecture**
 
@@ -232,7 +232,7 @@ neofetch-inspired color swatch grid.
             - Theme change effect now reads directly from localStorage (avoids stale React state)
             - Cookie/localStorage sync on mismatch during hydration
 
-- [ ] **4.5.c Clean up orphaned/legacy code & FOUC prevention patterns**
+- [x] **4.5.c Clean up orphaned/legacy code & FOUC prevention patterns**
 
     - [x] **4.5.c.1 Fix ThemeToggle icon FOUC**
         - Was showing Sun icon during hydration regardless of actual theme
@@ -252,30 +252,35 @@ neofetch-inspired color swatch grid.
         - Mobile: 70px, Desktop: 190px (matches layout tokens)
         - ConditionalFrame now uses `var(--nav-gap-half)` in clip-path
 
-    - [ ] **4.5.c.4 Remove unused `data-wallpaper` attribute from blocking script**
-        - Currently set but never read by React components
-        - Either remove, or refactor WallpaperBackground to use it (evaluate)
+    - [x] **4.5.c.4 Remove orphaned code from intermediate implementations**
+        - Removed `data-wallpaper` attribute from blocking script (was set but never read)
+        - Removed dead API route `src/app/api/preferences/wallpaper/route.ts` (replaced by Server Action)
+        - Removed dead functions from `preferences.ts` (`setWallpaperPreference`, `setPreferences`)
+        - Removed unused import `WALLPAPER_PREFS_STORAGE_KEY` from layout.tsx
+        - Updated JSDoc comments to accurately reflect current architecture
 
-    - [ ] **4.5.c.5 Remove unused legacy localStorage keys**
-        - `arc-portfolio-wallpaper` (old key, replaced by `arc-portfolio-wallpaper-prefs`)
-        - `arc-portfolio-theme` (old key, replaced by `arc-portfolio-palette`)
+    - [x] **4.5.c.5 Verify no legacy localStorage keys in codebase** (N/A - already clean)
+        - Confirmed: no code references old key names (`arc-portfolio-theme`, `arc-portfolio-wallpaper`)
+        - Current keys are `arc-portfolio-palette` (palette) and `arc-portfolio-wallpaper-prefs` (wallpaper)
+        - Note: `arc-portfolio-wallpaper` is the cookie name (distinct from localStorage key)
 
-- [ ] **4.5.d Verify FOUC resolution**
+- [x] **4.5.d Verify FOUC resolution**
 
-    - [ ] **4.5.d.1 Test fresh visit (no cookies, no localStorage)**
-        - Should render default palette + default wallpaper
+    - [x] **4.5.d.1 Test fresh visit (no cookies, no localStorage)** - Verified manually
+        - Default palette (remedy) + default wallpaper (gradient) render correctly
         - No flash on first paint
 
-    - [ ] **4.5.d.2 Test return visit (cookies set)**
-        - Should render user's palette + wallpaper immediately
+    - [x] **4.5.d.2 Test return visit (cookies set)** - Verified manually
+        - User's palette + wallpaper render immediately from cookies
         - No flash, no hydration mismatch
 
-    - [ ] **4.5.d.3 Test cross-tab sync**
-        - Change palette in one tab
-        - Other tab should reflect change (via localStorage storage event)
+    - [x] **4.5.d.3 Test cross-tab sync** - Verified manually
+        - Palette/wallpaper changes propagate via localStorage storage event
+        - Cookie also synced for SSR consistency
 
-    - [ ] **4.5.d.4 Run full quality gates**
-        - All tests pass, type check, lint, build
+    - [x] **4.5.d.4 Run full quality gates** - All pass
+        - Type check: pass, Lint: 0 errors, Format: pass, Markdown lint: pass
+        - Build: success, Tests: 659 pass
 
 ### **Phase 5:** Combined Control (Desktop)
 
