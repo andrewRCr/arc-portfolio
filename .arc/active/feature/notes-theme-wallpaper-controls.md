@@ -58,7 +58,7 @@ testing against all theme/mode combinations during Task 3.5.c.
 
 ---
 
-## Swatch Color Mapping (Approach D)
+## Swatch Color Mapping (Semantic-Weighted, Diversified)
 
 Determined via prototype evaluation at `/dev/swatch-prototype`.
 
@@ -73,5 +73,6 @@ Determined via prototype evaluation at `/dev/swatch-prototype`.
 | 6        | Other-3    | purple     | purple        | iris (purple) |
 | 7        | Foreground | foreground | foreground    | text          |
 
-**Rationale:** Approach D ("Deduplicated Weighted") ensures 8 visually distinct colors per theme
+**Rationale:** Semantic-weighted selection prioritizes UI-dominant colors (muted, primary,
+secondary, accent, foreground). Diversification ensures 8 visually distinct colors per theme
 by selecting "other" colors (positions 4-6) that don't duplicate primary/secondary/accent.

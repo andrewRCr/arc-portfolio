@@ -15,7 +15,7 @@ neofetch-inspired color swatch grid.
 
 ### Will Do
 
-- Implement 8-color swatch grid (Approach D: deduplicated weighted)
+- Implement 8-color swatch grid (semantic-weighted, diversified)
 - Build combined dropdown control for desktop
 - Build drawer/sheet UI for mobile
 - Add wallpaper compatibility tagging and per-theme persistence
@@ -37,10 +37,10 @@ neofetch-inspired color swatch grid.
 
 - [x] **1.1 Write tests for swatch color metadata**
     - Created `src/data/themes/__tests__/swatch-colors.test.ts` with structural validation
-    - Tests verify: 8 colors per mode, valid hex format, uniqueness (Approach D deduplication)
+    - Tests verify: 8 colors per mode, valid hex format, uniqueness (diversified)
 
 - [x] **1.2 Extend theme type definitions and add swatch metadata**
-    - Added `SwatchColors` interface to `types.ts` with JSDoc documenting Approach D slots
+    - Added `SwatchColors` interface to `types.ts` with JSDoc documenting slot mapping
     - Added `swatchColors` to all theme definitions referencing palette values (single source of truth)
     - All swatch tests pass, quality gates pass
 
@@ -66,59 +66,25 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 2:** ThemeSwatch Component
 
-- [ ] **2.1 Write tests for ThemeSwatch component**
+- [x] **2.1 Write tests for ThemeSwatch component**
+    - Created `src/components/theme/__tests__/ThemeSwatch.test.tsx` (8 tests)
+    - Tests: 8 squares, correct colors, size variants (16/20/24/32), aria-hidden, a11y
+    - Tests fail as expected (component not yet implemented)
 
-    **Goal:** Establish behavior expectations before building component.
+- [x] **2.2 Implement ThemeSwatch component**
+    - Created `src/components/theme/ThemeSwatch.tsx` with props: colors, size, className
+    - Created barrel export `src/components/theme/index.ts`
+    - All 8 tests pass, quality gates pass
 
-    - [ ] **2.1.a Create test file `src/components/theme/__tests__/ThemeSwatch.test.tsx`**
-        - Test: Renders 8 color squares
-        - Test: Each square has correct background color from swatch array
-        - Test: Supports `size` prop (16, 20, 24, 32)
-        - Test: Default size is 16px
-        - Test: Has appropriate `aria-hidden` (decorative)
-        - Test: No accessibility violations
-        - Expect tests to FAIL initially
+- [x] **2.3 Write tests for useThemeSwatch hook**
+    - Created `src/hooks/__tests__/useThemeSwatch.test.ts` (5 tests)
+    - Tests: returns colors, light/dark mode, theme changes, mode changes
+    - Tests fail as expected (hook not yet implemented)
 
-    - [ ] **2.1.b Run tests and verify failure messages**
-
-- [ ] **2.2 Implement ThemeSwatch component**
-
-    - [ ] **2.2.a Create `src/components/theme/ThemeSwatch.tsx`**
-        - Props: `colors: string[]`, `size?: number`, `className?: string`
-        - Render horizontal flex container with 8 squares
-        - Apply `backgroundColor` from colors array
-        - Support size variants via inline style or size classes
-        - Add `aria-hidden="true"` (decorative element)
-
-    - [ ] **2.2.b Create barrel export `src/components/theme/index.ts`**
-
-    - [ ] **2.2.c Run ThemeSwatch tests - should now PASS**
-
-    - [ ] **2.2.d Run quality gates**
-
-- [ ] **2.3 Write tests for useThemeSwatch hook**
-
-    - [ ] **2.3.a Create test file `src/hooks/__tests__/useThemeSwatch.test.ts`**
-        - Test: Returns current theme's swatch colors
-        - Test: Returns light swatch when mode is light
-        - Test: Returns dark swatch when mode is dark
-        - Test: Updates when theme changes
-        - Test: Updates when mode changes
-        - Expect tests to FAIL initially
-
-    - [ ] **2.3.b Run tests and verify failure messages**
-
-- [ ] **2.4 Implement useThemeSwatch hook**
-
-    - [ ] **2.4.a Create `src/hooks/useThemeSwatch.ts`**
-        - Read `activeTheme` from `useThemeContext()`
-        - Read `resolvedTheme` from `useTheme()` (next-themes)
-        - Look up theme definition from registry
-        - Return appropriate swatch array (light or dark)
-
-    - [ ] **2.4.b Run useThemeSwatch tests - should now PASS**
-
-    - [ ] **2.4.c Run quality gates**
+- [x] **2.4 Implement useThemeSwatch hook**
+    - Created `src/hooks/useThemeSwatch.ts`
+    - Reads activeTheme + resolvedTheme, returns appropriate swatch array
+    - All 5 tests pass, quality gates pass
 
 ### **Phase 3:** Theme Selector Panel
 
@@ -447,7 +413,7 @@ neofetch-inspired color swatch grid.
 
 ## Implementation Notes
 
-### Swatch Color Mapping (Approach D)
+### Swatch Color Mapping (Semantic-Weighted, Diversified)
 
 | Position | Slot       | Remedy     | Gruvbox       | Rose Pine     |
 |----------|------------|------------|---------------|---------------|

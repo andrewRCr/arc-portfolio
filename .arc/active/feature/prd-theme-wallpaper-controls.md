@@ -40,7 +40,7 @@ interaction target, with wallpaper selection integrated into the same panel.
 ### FR1: Color Swatch Grid
 
 1.1. Display an 8-color horizontal grid representing the active theme
-1.2. Use "Approach D: Deduplicated Weighted" color selection:
+1.2. Use semantic-weighted, diversified color selection:
     - Position 0: Muted background
     - Position 1: Primary
     - Position 2: Secondary
@@ -123,9 +123,9 @@ interaction target, with wallpaper selection integrated into the same panel.
 
 ## Design Considerations
 
-### Swatch Color Mapping (Approach D)
+### Swatch Color Mapping
 
-Per-theme "other" colors (positions 4-6) to ensure no duplicates:
+Per-theme "other" colors (positions 4-6) to ensure diversification (no duplicates):
 
 | Theme     | Primary | Secondary | Accent | Others (4-6)                          |
 |-----------|---------|-----------|--------|---------------------------------------|
@@ -135,7 +135,7 @@ Per-theme "other" colors (positions 4-6) to ensure no duplicates:
 
 ### Visual Reference
 
-Prototype available at `/dev/swatch-prototype` showing all approaches evaluated. Approach D selected.
+Prototype available at `/dev/swatch-prototype` showing approaches evaluated during planning.
 
 ### FOUC Prevention
 
@@ -214,5 +214,5 @@ interface WallpaperPreferences {
 
 ## References
 
-- Swatch prototype: `/dev/swatch-prototype` (Approach D selected)
+- Swatch prototype: `/dev/swatch-prototype` (planning reference)
 - FOUC prevention: TWM Layout System implementation notes
