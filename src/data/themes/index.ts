@@ -42,4 +42,4 @@ export type ThemeName = keyof typeof themes;
 export const defaultPalette: ThemeName = "remedy";
 
 // Re-export types for external use
-export type { Theme, ThemeColors, AccentVariant, AccentMetadata } from "./types";
+export type { Theme, ThemeColors, AccentVariant, AccentMetadata, SwatchColors } from "./types";

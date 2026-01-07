@@ -135,6 +135,34 @@ export const rosePineTheme: Theme = {
     "shadow-lg": "0 4px 16px rgba(0, 0, 0, 0.32)",
   },
 
+  // Default wallpaper for this theme
+  defaultWallpaper: "gradient",
+
+  // Swatch colors for theme preview grid (Approach D: Deduplicated Weighted)
+  // Slots: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
+  swatchColors: {
+    light: [
+      rosePineDawn.highlight_med, // 0: Muted
+      rosePineDawn.pine, // 1: Primary (teal)
+      rosePineDawn.foam, // 2: Secondary (cyan)
+      rosePineDawn.rose, // 3: Accent (mauve)
+      rosePineDawn.love, // 4: Other-1 (red)
+      rosePineDawn.gold, // 5: Other-2 (orange)
+      rosePineDawn.iris, // 6: Other-3 (purple)
+      rosePineDawn.text, // 7: Foreground
+    ],
+    dark: [
+      rosePineMain.highlight_med, // 0: Muted
+      rosePineMain.pine, // 1: Primary (teal)
+      rosePineMain.foam, // 2: Secondary (cyan)
+      rosePineMain.rose, // 3: Accent (mauve)
+      rosePineMain.love, // 4: Other-1 (red)
+      rosePineMain.gold, // 5: Other-2 (orange)
+      rosePineMain.iris, // 6: Other-3 (purple)
+      rosePineMain.text, // 7: Foreground
+    ],
+  },
+
   accentVariants: {
     default: "red", // Rose Pine signature is rose/love (mauve-red)
     available: ["red", "orange", "green", "blue", "purple"],

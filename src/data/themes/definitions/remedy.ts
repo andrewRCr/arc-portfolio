@@ -137,6 +137,34 @@ export const remedyTheme: Theme = {
     "shadow-lg": "0 4px 16px rgba(0, 0, 0, 0.32)",
   },
 
+  // Default wallpaper for this theme
+  defaultWallpaper: "gradient",
+
+  // Swatch colors for theme preview grid (Approach D: Deduplicated Weighted)
+  // Slots: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
+  swatchColors: {
+    light: [
+      remedyBright.baseCode, // 0: Muted
+      remedyAccents.normal.orange, // 1: Primary
+      remedyAccents.normal.yellow, // 2: Secondary
+      remedyAccents.normal.cyan, // 3: Accent
+      remedyAccents.normal.red, // 4: Other-1
+      remedyAccents.normal.green, // 5: Other-2
+      remedyAccents.normal.magenta, // 6: Other-3 (purple)
+      remedyBright.foreground, // 7: Foreground
+    ],
+    dark: [
+      remedyDark.baseCode, // 0: Muted
+      remedyAccents.bright.orange, // 1: Primary
+      remedyAccents.bright.yellow, // 2: Secondary
+      remedyAccents.bright.cyan, // 3: Accent
+      remedyAccents.bright.red, // 4: Other-1
+      remedyAccents.bright.green, // 5: Other-2
+      remedyAccents.bright.magenta, // 6: Other-3 (purple)
+      remedyDark.foreground, // 7: Foreground
+    ],
+  },
+
   accentVariants: {
     // "green" in Remedy palette is actually a teal/cyan shade - provides cool contrast to warm orange primary
     default: "green",

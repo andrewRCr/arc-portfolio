@@ -135,6 +135,34 @@ export const gruvboxTheme: Theme = {
     "shadow-lg": "0 4px 16px rgba(0, 0, 0, 0.32)",
   },
 
+  // Default wallpaper for this theme
+  defaultWallpaper: "gradient",
+
+  // Swatch colors for theme preview grid (Approach D: Deduplicated Weighted)
+  // Slots: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
+  swatchColors: {
+    light: [
+      p.light1, // 0: Muted
+      p.faded_green, // 1: Primary (visually lime)
+      p.faded_orange, // 2: Secondary
+      p.faded_aqua, // 3: Accent (visually mint)
+      p.faded_red, // 4: Other-1
+      p.faded_blue, // 5: Other-2 (visually teal)
+      p.faded_purple, // 6: Other-3
+      p.dark1, // 7: Foreground
+    ],
+    dark: [
+      p.dark1, // 0: Muted
+      p.bright_green, // 1: Primary (visually lime)
+      p.bright_orange, // 2: Secondary
+      p.bright_aqua, // 3: Accent (visually mint)
+      p.bright_red, // 4: Other-1
+      p.bright_blue, // 5: Other-2 (visually teal)
+      p.bright_purple, // 6: Other-3
+      p.light1, // 7: Foreground
+    ],
+  },
+
   accentVariants: {
     // Variant names map to accent-{name} tokens. "green" = accent-green (lime/yellow-green).
     // Base "accent" token uses Gruvbox "aqua" (mint) - see accent token definitions above.

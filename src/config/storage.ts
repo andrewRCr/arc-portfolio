@@ -15,3 +15,6 @@ export const PALETTE_STORAGE_KEY = "arc-portfolio-palette";
  * Exported for E2E tests that need to set localStorage before navigation.
  */
 export const MODE_STORAGE_KEY = "theme";
+
+/** Per-theme wallpaper preferences (keyed by theme name) */
+export const WALLPAPER_PREFS_STORAGE_KEY = "arc-portfolio-wallpaper-prefs";

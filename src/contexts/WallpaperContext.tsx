@@ -1,33 +1,21 @@
 "use client";
 
 import * as React from "react";
+import { WALLPAPER_OPTIONS } from "@/data/wallpapers";
+import { themes, type ThemeName } from "@/data/themes";
+import { useThemeContext } from "./ThemeContext";
+import { WALLPAPER_PREFS_STORAGE_KEY } from "@/config/storage";
 
-// Available wallpapers for testing
-// id/label derived from photographer name
-export const WALLPAPER_OPTIONS = [
-  { id: "gradient", src: undefined },
-  { id: "andrii-butko", src: "/wallpaper/optimized/andrii-butko-7hRB34KdiIs.webp" },
-  { id: "anne-nygard", src: "/wallpaper/optimized/anne-nygard-K6FlqZs4Dec.webp" },
-  { id: "bernd-dittrich", src: "/wallpaper/optimized/bernd-dittrich-JjJ8HdGCLvw.webp" },
-  { id: "dzo", src: "/wallpaper/optimized/dzo-rXCSu_BKfRE.webp" },
-  { id: "gabriela-fechet", src: "/wallpaper/optimized/gabriela-fechet-2PCqWxuucg0.webp" },
-  { id: "gareth-david", src: "/wallpaper/optimized/gareth-david-v3i1bZ-C13E.webp" },
-  { id: "hamed-sadighi", src: "/wallpaper/optimized/hamed-sadighi-hvsj2ErGMog.webp" },
-  { id: "jason-leung", src: "/wallpaper/optimized/jason-leung-IGLNYCWJUGI.webp" },
-  { id: "jose-ignacio-pompe", src: "/wallpaper/optimized/jose-ignacio-pompe-H1rnAtovsnA.webp" },
-  { id: "josh-withers", src: "/wallpaper/optimized/josh-withers-yEjlrUymkN4.webp" },
-  { id: "karolis-milisauskas", src: "/wallpaper/optimized/karolis-milisauskas-gg11yRbK4hk.webp" },
-  { id: "kristaps-ungurs", src: "/wallpaper/optimized/kristaps-ungurs-VByRsW7uU5M.webp" },
-  { id: "maxim-tolchinskiy", src: "/wallpaper/optimized/maxim-tolchinskiy-zwMhwQzYGhc.webp" },
-  { id: "olga-safronova", src: "/wallpaper/optimized/olga-safronova-duqq9Hm14s8.webp" },
-  { id: "ryan-searle", src: "/wallpaper/optimized/ryan-searle-6b7OGXmF2xY.webp" },
-  { id: "sander-traa", src: "/wallpaper/optimized/sander-traa-DEGn08l15vQ.webp" },
-  { id: "simone-hutsch", src: "/wallpaper/optimized/simone-hutsch-qp49aKqexrI.webp" },
-  { id: "sixteen-miles-out", src: "/wallpaper/optimized/sixteen-miles-out-NCuUExTUN4o.webp" },
-  { id: "venti-views", src: "/wallpaper/optimized/venti-views-dI3Ho4afHK4.webp" },
-] as const;
+// Re-export for backward compatibility with existing imports
+export { WALLPAPER_OPTIONS };
 
+// WallpaperId derived from registry for type-safe selection
 export type WallpaperId = (typeof WALLPAPER_OPTIONS)[number]["id"];
+
+// Per-theme wallpaper preferences shape
+interface WallpaperPreferences {
+  [themeName: string]: WallpaperId;
+}
 
 interface WallpaperContextValue {
   activeWallpaper: WallpaperId;
@@ -37,8 +25,91 @@ interface WallpaperContextValue {
 
 const WallpaperContext = React.createContext<WallpaperContextValue | undefined>(undefined);
 
+/**
+ * Check if a wallpaper is compatible with a given theme.
+ */
+function isWallpaperCompatible(wallpaperId: WallpaperId, themeName: ThemeName): boolean {
+  const wallpaper = WALLPAPER_OPTIONS.find((w) => w.id === wallpaperId);
+  if (!wallpaper) return false;
+
+  if (wallpaper.compatibleThemes === "universal") return true;
+  return wallpaper.compatibleThemes.includes(themeName);
+}
+
+/**
+ * Get wallpaper for a theme, checking saved preference and compatibility.
+ */
+function getWallpaperForTheme(themeName: ThemeName, prefs: WallpaperPreferences): WallpaperId {
+  const savedWallpaper = prefs[themeName];
+  const theme = themes[themeName];
+  const defaultWallpaper = (theme?.defaultWallpaper ?? "gradient") as WallpaperId;
+
+  // If no saved preference, use theme default
+  if (!savedWallpaper) return defaultWallpaper;
+
+  // If saved wallpaper is compatible, use it
+  if (isWallpaperCompatible(savedWallpaper, themeName)) return savedWallpaper;
+
+  // Otherwise fall back to theme default
+  return defaultWallpaper;
+}
+
+/**
+ * Load preferences from localStorage.
+ */
+function loadPreferences(): WallpaperPreferences {
+  if (typeof window === "undefined") return {};
+  try {
+    const stored = localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Save preferences to localStorage.
+ */
+function savePreferences(prefs: WallpaperPreferences): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(WALLPAPER_PREFS_STORAGE_KEY, JSON.stringify(prefs));
+}
+
 export function WallpaperContextProvider({ children }: { children: React.ReactNode }) {
-  const [activeWallpaper, setActiveWallpaper] = React.useState<WallpaperId>("gradient");
+  const { activeTheme } = useThemeContext();
+
+  // Track preferences in state (loaded from localStorage on mount)
+  const [preferences, setPreferences] = React.useState<WallpaperPreferences>(() => loadPreferences());
+
+  // Track previous theme to detect changes
+  const prevThemeRef = React.useRef<ThemeName>(activeTheme);
+
+  // Current wallpaper based on active theme and preferences
+  const [activeWallpaper, setActiveWallpaperInternal] = React.useState<WallpaperId>(() =>
+    getWallpaperForTheme(activeTheme, loadPreferences())
+  );
+
+  // When theme changes, restore that theme's preferred wallpaper
+  React.useEffect(() => {
+    if (prevThemeRef.current !== activeTheme) {
+      prevThemeRef.current = activeTheme;
+      const newWallpaper = getWallpaperForTheme(activeTheme, preferences);
+      setActiveWallpaperInternal(newWallpaper);
+    }
+  }, [activeTheme, preferences]);
+
+  // Wrapped setter that also saves preference
+  const setActiveWallpaper = React.useCallback(
+    (id: WallpaperId) => {
+      setActiveWallpaperInternal(id);
+      setPreferences((prev) => {
+        const updated = { ...prev, [activeTheme]: id };
+        savePreferences(updated);
+        return updated;
+      });
+    },
+    [activeTheme]
+  );
 
   const wallpaperSrc = React.useMemo(() => {
     const option = WALLPAPER_OPTIONS.find((o) => o.id === activeWallpaper);

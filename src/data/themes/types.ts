@@ -136,12 +136,34 @@ export interface ThemeColors {
 }
 
 /**
+ * Swatch color arrays for neofetch-inspired theme preview grid.
+ *
+ * **Approach D Slot Mapping (Deduplicated Weighted):**
+ * - Position 0: Muted background
+ * - Position 1: Primary accent
+ * - Position 2: Secondary accent
+ * - Position 3: Default accent
+ * - Positions 4-6: Three unique "other" colors (per-theme, avoiding P/S/A duplicates)
+ * - Position 7: Foreground
+ *
+ * Each theme maps these slots to its palette's characteristic colors.
+ */
+export interface SwatchColors {
+  /** 8 hex colors for light mode swatch display */
+  readonly light: readonly string[];
+  /** 8 hex colors for dark mode swatch display */
+  readonly dark: readonly string[];
+}
+
+/**
  * Complete theme definition with light and dark color palettes.
  *
  * Each theme provides:
  * - Name and display label
  * - Light mode color palette
  * - Dark mode color palette
+ * - Swatch colors for visual theme preview
+ * - Default wallpaper for new users
  * - Accent variant metadata (optional)
  */
 export interface Theme {
@@ -153,6 +175,10 @@ export interface Theme {
   readonly light: ThemeColors;
   /** Dark mode color palette */
   readonly dark: ThemeColors;
+  /** 8-color swatch arrays for theme preview grid */
+  readonly swatchColors: SwatchColors;
+  /** Default wallpaper ID for this theme (used when no preference saved) */
+  readonly defaultWallpaper: string;
   /** Accent variant configuration (optional) */
   readonly accentVariants?: AccentMetadata;
 }
