@@ -373,17 +373,10 @@ neofetch-inspired color swatch grid.
         - Updated ConditionalFrame test for 1120px maxWidth
         - All 689 tests pass
 
-- [ ] **5.6 Remove prototype components**
-
-    - [ ] **5.6.a Delete `src/components/ThemeSwitcher.tsx`**
-
-    - [ ] **5.6.b Delete `src/components/WallpaperSwitcher.tsx`**
-
-    - [ ] **5.6.c Remove any remaining imports/references**
-
-    - [ ] **5.6.d Run full test suite - should PASS**
-
-    - [ ] **5.6.e Run quality gates**
+- [x] **5.6 Remove prototype components**
+    - Deleted `ThemeSwitcher.tsx` and `WallpaperSwitcher.tsx`
+    - Updated comment in `themes/index.ts` to reference ThemeSelector
+    - 689 tests pass, all quality gates pass
 
 ### **Phase 6:** Mobile Adaptation
 
