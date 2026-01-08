@@ -20,7 +20,7 @@ import type { ThemeRegistry } from "./types";
  *
  * Themes are identified by their `name` property (kebab-case).
  * Each theme includes light and dark mode color palettes.
- * Order determines display order in ThemeSwitcher.
+ * Order determines display order in ThemeSelector.
  */
 export const themes: ThemeRegistry = {
   remedy: remedyTheme,
