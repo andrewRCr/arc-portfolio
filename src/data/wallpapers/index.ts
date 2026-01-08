@@ -23,43 +23,15 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
 
   // Universal wallpapers (work with all themes)
   {
-    id: "venti-views",
-    src: "/wallpaper/optimized/venti-views-dI3Ho4afHK4.webp",
+    id: "jr-korpa-4",
+    src: "/wallpaper/optimized/jr-korpa-4.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-4.webp",
     compatibleThemes: "universal",
   },
   {
-    id: "gabriela-fechet",
-    src: "/wallpaper/optimized/gabriela-fechet-2PCqWxuucg0.webp",
-    compatibleThemes: "universal",
-  },
-  {
-    id: "hamed-sadighi",
-    src: "/wallpaper/optimized/hamed-sadighi-hvsj2ErGMog.webp",
-    compatibleThemes: "universal",
-  },
-  {
-    id: "karolis-milisauskas",
-    src: "/wallpaper/optimized/karolis-milisauskas-gg11yRbK4hk.webp",
-    compatibleThemes: "universal",
-  },
-  {
-    id: "maxim-tolchinskiy",
-    src: "/wallpaper/optimized/maxim-tolchinskiy-zwMhwQzYGhc.webp",
-    compatibleThemes: "universal",
-  },
-  {
-    id: "olga-safronova",
-    src: "/wallpaper/optimized/olga-safronova-duqq9Hm14s8.webp",
-    compatibleThemes: "universal",
-  },
-  {
-    id: "ryan-searle",
-    src: "/wallpaper/optimized/ryan-searle-6b7OGXmF2xY.webp",
-    compatibleThemes: "universal",
-  },
-  {
-    id: "sander-traa",
-    src: "/wallpaper/optimized/sander-traa-DEGn08l15vQ.webp",
+    id: "jr-korpa-5",
+    src: "/wallpaper/optimized/jr-korpa-5.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-5.webp",
     compatibleThemes: "universal",
   },
 
@@ -70,8 +42,14 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["remedy"],
   },
   {
-    id: "gareth-david",
-    src: "/wallpaper/optimized/gareth-david-v3i1bZ-C13E.webp",
+    id: "karolis-milisauskas",
+    src: "/wallpaper/optimized/karolis-milisauskas-gg11yRbK4hk.webp",
+    compatibleThemes: ["remedy"],
+  },
+  {
+    id: "hamed-sadighi",
+    src: "/wallpaper/optimized/hamed-sadighi-hvsj2ErGMog.webp",
+    srcHiRes: "/wallpaper/optimized-1440/hamed-sadighi-hvsj2ErGMog.webp",
     compatibleThemes: ["remedy"],
   },
   {
@@ -84,24 +62,92 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     src: "/wallpaper/optimized/kristaps-ungurs-VByRsW7uU5M.webp",
     compatibleThemes: ["remedy"],
   },
-
-  // Multi-theme compatible (Remedy + Rose Pine)
   {
-    id: "sixteen-miles-out",
-    src: "/wallpaper/optimized/sixteen-miles-out-NCuUExTUN4o.webp",
-    compatibleThemes: ["remedy", "rose-pine"],
+    id: "sander-traa",
+    src: "/wallpaper/optimized/sander-traa-DEGn08l15vQ.webp",
+    compatibleThemes: ["remedy"],
+  },
+  {
+    id: "venti-views",
+    src: "/wallpaper/optimized/venti-views-dI3Ho4afHK4.webp",
+    compatibleThemes: ["remedy"],
+  },
+  {
+    id: "jr-korpa-6",
+    src: "/wallpaper/optimized/jr-korpa-6.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-6.webp",
+    compatibleThemes: ["remedy"],
+  },
+
+  // Multi-theme compatible (Remedy + Gruvbox)
+  {
+    id: "olga-safronova",
+    src: "/wallpaper/optimized/olga-safronova-duqq9Hm14s8.webp",
+    compatibleThemes: ["remedy", "gruvbox"],
   },
 
   // Rose Pine-compatible wallpapers
   {
-    id: "dzo",
-    src: "/wallpaper/optimized/dzo-rXCSu_BKfRE.webp",
+    id: "jr-korpa-2",
+    src: "/wallpaper/optimized/jr-korpa-2.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-2.webp",
     compatibleThemes: ["rose-pine"],
   },
   {
-    id: "simone-hutsch",
-    src: "/wallpaper/optimized/simone-hutsch-qp49aKqexrI.webp",
+    id: "jr-korpa-3",
+    src: "/wallpaper/optimized/jr-korpa-3.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-3.webp",
     compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "kevin-grieve",
+    src: "/wallpaper/optimized/kevin-grieve.webp",
+    srcHiRes: "/wallpaper/optimized-1440/kevin-grieve.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "linus-belanger",
+    src: "/wallpaper/optimized/linus-belanger.webp",
+    srcHiRes: "/wallpaper/optimized-1440/linus-belanger.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "wolfgang-hasselmann",
+    src: "/wallpaper/optimized/wolfgang-hasselmann.webp",
+    srcHiRes: "/wallpaper/optimized-1440/wolfgang-hasselmann.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "wolfgang-hasselmann-2",
+    src: "/wallpaper/optimized/wolfgang-hasselmann-2.webp",
+    srcHiRes: "/wallpaper/optimized-1440/wolfgang-hasselmann-2.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "jr-korpa-7",
+    src: "/wallpaper/optimized/jr-korpa-7.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-7.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "jr-korpa-8",
+    src: "/wallpaper/optimized/jr-korpa-8.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-8.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "robert-clark",
+    src: "/wallpaper/optimized/robert-clark.webp",
+    srcHiRes: "/wallpaper/optimized-1440/robert-clark.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+
+  // Multi-theme compatible (Rose Pine + Gruvbox)
+  {
+    id: "seele-an",
+    src: "/wallpaper/optimized/seele-an.webp",
+    srcHiRes: "/wallpaper/optimized-1440/seele-an.webp",
+    compatibleThemes: ["rose-pine", "gruvbox"],
   },
 
   // Gruvbox-compatible wallpapers
@@ -113,16 +159,31 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
   {
     id: "bernd-dittrich",
     src: "/wallpaper/optimized/bernd-dittrich-JjJ8HdGCLvw.webp",
+    srcHiRes: "/wallpaper/optimized-1440/bernd-dittrich-JjJ8HdGCLvw.webp",
     compatibleThemes: ["gruvbox"],
   },
   {
-    id: "jose-ignacio-pompe",
-    src: "/wallpaper/optimized/jose-ignacio-pompe-H1rnAtovsnA.webp",
+    id: "brandon-cormier",
+    src: "/wallpaper/optimized/brandon-cormier.webp",
+    srcHiRes: "/wallpaper/optimized-1440/brandon-cormier.webp",
     compatibleThemes: ["gruvbox"],
   },
   {
-    id: "josh-withers",
-    src: "/wallpaper/optimized/josh-withers-yEjlrUymkN4.webp",
+    id: "c-shi",
+    src: "/wallpaper/optimized/c-shi.webp",
+    srcHiRes: "/wallpaper/optimized-1440/c-shi.webp",
+    compatibleThemes: ["gruvbox"],
+  },
+  {
+    id: "jr-korpa-1",
+    src: "/wallpaper/optimized/jr-korpa-1.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-1.webp",
+    compatibleThemes: ["gruvbox"],
+  },
+  {
+    id: "tuaans",
+    src: "/wallpaper/optimized/tuaans.webp",
+    srcHiRes: "/wallpaper/optimized-1440/tuaans.webp",
     compatibleThemes: ["gruvbox"],
   },
 ] as const;
