@@ -20,6 +20,22 @@ export interface WallpaperPickerProps {
   className?: string;
 }
 
+/**
+ * Format wallpaper ID into display name.
+ * Removes hyphens, capitalizes words, handles numbered suffixes.
+ * e.g., "jr-korpa-1" -> "Jr Korpa", "kevin-grieve" -> "Kevin Grieve"
+ */
+export function formatAttribution(id: string): string {
+  if (id === "gradient") return "Gradient";
+  // Remove trailing numbers (e.g., "jr-korpa-1" -> "jr-korpa")
+  const baseName = id.replace(/-\d+$/, "");
+  // Replace hyphens with spaces and capitalize each word
+  return baseName
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export function WallpaperPicker({ selectedWallpaper, onSelect, className }: WallpaperPickerProps) {
   const wallpapers = useCompatibleWallpapers();
 
@@ -123,6 +139,11 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
           <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </button>
       </div>
+
+      {/* Attribution */}
+      <span className="text-xs text-muted-foreground italic -mt-1">
+        {formatAttribution(currentWallpaper?.id ?? "gradient")}
+      </span>
     </div>
   );
 }
