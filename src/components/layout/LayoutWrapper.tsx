@@ -43,7 +43,7 @@ export interface LayoutWrapperProps {
  */
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const { windowGap, windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
-  const { wallpaperSrc } = useWallpaperContext();
+  const { wallpaperSrc, wallpaperSrcHiRes } = useWallpaperContext();
   const { layoutMode } = useLayoutPreferences();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
 
@@ -53,7 +53,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
     <>
       {/* Background layer */}
-      <WallpaperBackground imageSrc={wallpaperSrc} />
+      <WallpaperBackground imageSrc={wallpaperSrc} imageSrcHiRes={wallpaperSrcHiRes} />
 
       {/* Three-window layout - fixed viewport, content scrolls inside */}
       {/* h-dvh uses dynamic viewport height, accounting for mobile browser chrome */}

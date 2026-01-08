@@ -20,8 +20,10 @@ export type WallpaperCompatibility = "universal" | ThemeName[];
 export interface WallpaperOption {
   /** Unique wallpaper identifier (kebab-case, typically photographer name) */
   readonly id: string;
-  /** Path to wallpaper image, or undefined for gradient option */
+  /** Path to wallpaper image (1080p), or undefined for gradient option */
   readonly src: string | undefined;
+  /** Path to high-res wallpaper image (1440p), for large viewports */
+  readonly srcHiRes?: string | undefined;
   /** Which themes this wallpaper works well with */
   readonly compatibleThemes: WallpaperCompatibility;
 }

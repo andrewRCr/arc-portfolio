@@ -25,6 +25,9 @@ interface WallpaperContextValue {
   activeWallpaper: WallpaperId;
   setActiveWallpaper: (id: WallpaperId) => void;
   wallpaperSrc: string | undefined;
+  wallpaperSrcHiRes: string | undefined;
+  /** Dev-only: Override wallpaperSrc with arbitrary path (for testing candidates) */
+  setDevOverrideSrc?: (src: string | null) => void;
 }
 
 const WallpaperContext = React.createContext<WallpaperContextValue | undefined>(undefined);
@@ -85,9 +88,6 @@ function syncWallpaperCookie(palette: string, wallpaper: string): void {
 export function WallpaperContextProvider({ children, serverWallpaper }: WallpaperContextProviderProps) {
   const { activeTheme } = useThemeContext();
 
-  // Track preferences in state (loaded from localStorage on mount)
-  const [preferences, setPreferences] = React.useState<WallpaperPreferences>(() => loadPreferences());
-
   // Track previous theme to detect changes
   const prevThemeRef = React.useRef<ThemeName>(activeTheme);
 
@@ -115,30 +115,25 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
           setActiveWallpaperInternal(localPref);
           syncWallpaperCookie(activeTheme, localPref);
         }
-        setPreferences(prefs);
       } else {
         // Saved preference is no longer valid, fall back to server/default
-        const updated = serverWallpaper ? { ...prefs, [activeTheme]: serverWallpaper as WallpaperId } : prefs;
-        setPreferences(updated);
-        savePreferences(updated);
+        if (serverWallpaper) {
+          const updated = { ...prefs, [activeTheme]: serverWallpaper as WallpaperId };
+          savePreferences(updated);
+        }
       }
     } else if (serverWallpaper && serverWallpaper !== "gradient") {
       // localStorage empty for this theme but cookie has preference
       // Sync localStorage from cookie to keep them consistent
       const updated = { ...prefs, [activeTheme]: serverWallpaper as WallpaperId };
-      setPreferences(updated);
       savePreferences(updated);
       // activeWallpaper already has serverWallpaper, no change needed
-    } else {
-      // Both empty, use defaults
-      setPreferences(prefs);
     }
 
     setIsHydrated(true);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // When theme changes (after hydration), restore that theme's preferred wallpaper
-  // NOTE: We read directly from localStorage to avoid stale React state during rapid changes
   React.useEffect(() => {
     if (!isHydrated) return;
     if (prevThemeRef.current !== activeTheme) {
@@ -147,34 +142,46 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
       const freshPrefs = loadPreferences();
       const newWallpaper = getWallpaperForTheme(activeTheme, freshPrefs);
       setActiveWallpaperInternal(newWallpaper);
-      setPreferences(freshPrefs); // Keep state in sync
       // Sync to cookie for next SSR
       syncWallpaperCookie(activeTheme, newWallpaper);
     }
-  }, [activeTheme, isHydrated]); // Removed preferences from deps - read from localStorage instead
+  }, [activeTheme, isHydrated]);
 
   // Wrapped setter that saves to localStorage and syncs to cookie
   const setActiveWallpaper = React.useCallback(
     (id: WallpaperId) => {
       setActiveWallpaperInternal(id);
-      setPreferences((prev) => {
-        const updated = { ...prev, [activeTheme]: id };
-        savePreferences(updated);
-        return updated;
-      });
+      // Update localStorage
+      const prefs = loadPreferences();
+      const updated = { ...prefs, [activeTheme]: id };
+      savePreferences(updated);
       // Sync to cookie for next SSR
       syncWallpaperCookie(activeTheme, id);
     },
     [activeTheme]
   );
 
+  // Dev-only override for testing wallpaper candidates
+  const [devOverrideSrc, setDevOverrideSrc] = React.useState<string | null>(null);
+
   const wallpaperSrc = React.useMemo(() => {
+    // Dev override takes precedence
+    if (devOverrideSrc) return devOverrideSrc;
     const option = WALLPAPER_OPTIONS.find((o) => o.id === activeWallpaper);
     return option?.src;
-  }, [activeWallpaper]);
+  }, [activeWallpaper, devOverrideSrc]);
+
+  const wallpaperSrcHiRes = React.useMemo(() => {
+    // No hi-res for dev override
+    if (devOverrideSrc) return undefined;
+    const option = WALLPAPER_OPTIONS.find((o) => o.id === activeWallpaper);
+    return option?.srcHiRes;
+  }, [activeWallpaper, devOverrideSrc]);
 
   return (
-    <WallpaperContext.Provider value={{ activeWallpaper, setActiveWallpaper, wallpaperSrc }}>
+    <WallpaperContext.Provider
+      value={{ activeWallpaper, setActiveWallpaper, wallpaperSrc, wallpaperSrcHiRes, setDevOverrideSrc }}
+    >
       {children}
     </WallpaperContext.Provider>
   );

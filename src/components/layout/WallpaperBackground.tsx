@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { buildWallpaperGradient } from "@/lib/theme";
 
 /**
  * Props for the WallpaperBackground component.
  */
 export interface WallpaperBackgroundProps {
-  /** Optional path to wallpaper image (WebP recommended) */
+  /** Optional path to wallpaper image - 1080p (WebP recommended) */
   imageSrc?: string;
+  /** Optional path to high-res wallpaper image - 1440p (for large viewports) */
+  imageSrcHiRes?: string;
 }
 
 /**
@@ -43,7 +44,7 @@ export interface WallpaperBackgroundProps {
  * <WallpaperBackground imageSrc="/wallpaper/optimized/example.webp" />
  * ```
  */
-export function WallpaperBackground({ imageSrc }: WallpaperBackgroundProps) {
+export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgroundProps) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Gradient mode: show gradient. Image mode: flat background (image fades in on top)
@@ -51,17 +52,23 @@ export function WallpaperBackground({ imageSrc }: WallpaperBackgroundProps) {
     ? { backgroundColor: "rgb(var(--background))" }
     : { background: buildWallpaperGradient() };
 
+  // Build srcSet if hi-res version available
+  const srcSet = imageSrcHiRes ? `${imageSrc} 1920w, ${imageSrcHiRes} 2560w` : undefined;
+
   return (
     <div className="fixed inset-0 z-[-1]" style={backgroundStyle} aria-hidden="true" data-testid="wallpaper-background">
       {imageSrc && (
-        <Image
+        /* eslint-disable-next-line @next/next/no-img-element -- Using native img for srcSet with separate files */
+        <img
           src={imageSrc}
-          alt=""
-          fill
-          priority
-          className={`object-cover transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+          srcSet={srcSet}
           sizes="100vw"
+          alt=""
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
           onLoad={() => setIsLoaded(true)}
+          // Eager load for background wallpaper
+          loading="eager"
+          decoding="async"
         />
       )}
     </div>
