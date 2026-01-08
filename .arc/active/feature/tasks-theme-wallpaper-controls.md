@@ -378,12 +378,90 @@ neofetch-inspired color swatch grid.
     - Updated comment in `themes/index.ts` to reference ThemeSelector
     - 689 tests pass, all quality gates pass
 
-### **Phase 6:** Mobile Adaptation
+### **Phase 6:** Wallpaper & Theme Refinement
 
-- [ ] **6.1 Write tests for ThemeControlDrawer component**
+- [x] **6.1 Wallpaper content pass**
 
-    - [ ] **6.1.a Create test file `src/components/theme/__tests__/ThemeControlDrawer.test.tsx`**
-        - Test: Renders as full-screen sheet/drawer on mobile viewport
+    - [x] **6.1.a Review and refine wallpaper set**
+        - Removed 9 low-quality wallpapers from previous session
+        - Adjusted compatibility: venti-views→Remedy, hamed-sadighi→Remedy, etc.
+        - Rotated hamed-sadighi (90° left), bernd-dittrich (90° right) from source
+
+    - [x] **6.1.b Fill gaps in theme-specific wallpapers**
+        - Added 10 new wallpapers across sessions (jr-korpa-4 through jr-korpa-8, etc.)
+        - Rose Pine now has 9 dedicated options (was 2)
+        - All themes have adequate coverage (8-10 each)
+
+    - [x] **6.1.c Update wallpaper data with finalized set**
+        - Registry updated with 28 total wallpapers (was ~20)
+        - 2 universal, 9 Remedy, 9 Rose Pine, 8 Gruvbox (some shared)
+        - All have srcHiRes for 1440p support
+
+- [ ] **6.2 Expand theme palette (3→6 themes)**
+
+    - [ ] **6.2.a Research and select 3 new themes**
+        - Criteria: distinct from existing (color variety), community recognition, personal preference
+        - Candidates to evaluate: Synthwave '84, Halcyon, Doki, Catppuccin, Horizon, etc.
+        - Goal: fill color gaps (yellow-dominant, red-dominant, etc.)
+
+    - [ ] **6.2.b Implement new theme definitions**
+        - Create palette files in `src/data/themes/palettes/`
+        - Create definition files in `src/data/themes/definitions/`
+        - Ensure all required tokens are defined
+
+    - [ ] **6.2.c Source wallpapers for new themes**
+        - Find compatible wallpapers for each new theme
+        - Process to 1080p and 1440p WebP
+        - Update wallpaper registry with new entries
+
+    - [ ] **6.2.d Run quality gates**
+
+- [ ] **6.3 Generate wallpaper thumbnails**
+
+    - [ ] **6.3.a Create thumbnail generation script**
+        - Script to generate 200×150 WebP thumbnails from full wallpapers
+        - Output to `public/images/wallpapers/thumbnails/`
+        - Target ~10-15KB per thumbnail
+
+    - [ ] **6.3.b Update wallpaper data model**
+        - Add `thumbnailSrc` field to `WallpaperOption` type
+        - Update wallpaper definitions with thumbnail paths
+
+    - [ ] **6.3.c Update WallpaperPicker to use thumbnails**
+        - Use `thumbnailSrc` in picker preview
+        - Keep full `src` for actual wallpaper display
+
+    - [ ] **6.3.d Run quality gates**
+
+- [x] **6.4 Serve higher-resolution wallpapers at large viewports** _(done early to facilitate 6.1 testing)_
+
+    - [x] **6.4.a Generate 1440p WebP versions of wallpapers**
+        - Created `public/wallpaper/optimized-1440/` with 2560x1440 versions
+        - 12 wallpapers have 1440p versions (new candidates + rotated originals)
+
+    - [x] **6.4.b Update WallpaperBackground to use responsive images**
+        - Switched from Next.js Image to native `<img>` with srcset
+        - srcset: `1920w` (1080p) and `2560w` (1440p)
+        - Browser auto-selects based on viewport width
+
+    - [x] **6.4.c Update wallpaper data model if needed**
+        - Added `srcHiRes?: string` field to `WallpaperOption` type
+        - Added `wallpaperSrcHiRes` to WallpaperContext
+        - Updated LayoutWrapper to pass srcHiRes to WallpaperBackground
+
+    - [x] **6.4.d Run quality gates**
+        - Fixed failing test: Created `getWallpaperByTrait()` helper for resilient test lookups
+        - Added 3 srcHiRes tests to WallpaperContext (9 total)
+        - Added 4 responsive image tests to WallpaperBackground (17 total)
+        - Added 5 formatAttribution tests to WallpaperPicker (21 total)
+        - Type check: PASS, Lint: PASS, Build: PASS, 701 tests pass
+
+### **Phase 7:** Mobile Adaptation
+
+- [ ] **7.1 Write tests for ThemeControlDrawer component**
+
+    - [ ] **7.1.a Create test file `src/components/theme/__tests__/ThemeControlDrawer.test.tsx`**
+        - Test: Renders as bottom sheet/drawer on mobile viewport
         - Test: Contains ThemeSelector
         - Test: Contains WallpaperPicker
         - Test: Contains light/dark toggle (inside drawer)
@@ -392,157 +470,128 @@ neofetch-inspired color swatch grid.
         - Test: No accessibility violations
         - Expect tests to FAIL initially
 
-    - [ ] **6.1.b Run tests and verify failure messages**
+    - [ ] **7.1.b Run tests and verify failure messages**
 
-- [ ] **6.2 Implement ThemeControlDrawer component**
+- [ ] **7.2 Implement ThemeControlDrawer component**
 
-    - [ ] **6.2.a Create `src/components/theme/ThemeControlDrawer.tsx`**
-        - Use Sheet from shadcn/ui or custom drawer
-        - Full height on phone viewports
+    - [ ] **7.2.a Create `src/components/theme/ThemeControlDrawer.tsx`**
+        - Use Sheet from shadcn/ui (bottom sheet)
         - Close button in header
         - Scrollable content area
 
-    - [ ] **6.2.b Add drawer content sections**
+    - [ ] **7.2.b Add drawer content sections**
         - Light/dark toggle at top (prominent)
         - ThemeSelector section
         - WallpaperPicker section
         - Adequate spacing for touch
 
-    - [ ] **6.2.c Ensure touch targets**
+    - [ ] **7.2.c Ensure touch targets**
         - Wrap interactive elements with TouchTarget
         - Verify 44×44px minimum
 
-    - [ ] **6.2.d Run ThemeControlDrawer tests - should now PASS**
+    - [ ] **7.2.d Run ThemeControlDrawer tests - should now PASS**
 
-    - [ ] **6.2.e Run quality gates**
+    - [ ] **7.2.e Run quality gates**
 
-- [ ] **6.3 Add responsive switching between dropdown and drawer**
+- [ ] **7.3 Add responsive switching between dropdown and drawer**
 
-    - [ ] **6.3.a Update ThemeControl for responsive behavior**
+    - [ ] **7.3.a Update ThemeControl for responsive behavior**
         - Use media query or `useMediaQuery` hook
-        - Desktop: render dropdown (existing)
+        - Desktop: render popover (existing)
         - Mobile: render drawer trigger + ThemeControlDrawer
+        - Same swatch trigger works for both (confirmed fits on mobile)
 
-    - [ ] **6.3.b Determine mobile collapsed indicator**
-        - Option A: Same swatch at 16px if fits
-        - Option B: Simplified icon (palette/hamburger)
-        - Implement chosen approach
-
-    - [ ] **6.3.c Hide separate ThemeToggle on mobile**
+    - [ ] **7.3.b Hide separate ThemeToggle on mobile**
         - Toggle is inside drawer, not in TopBar
         - Use CSS or conditional rendering
 
-    - [ ] **6.3.d Run responsive tests (E2E)**
+    - [ ] **7.3.c Run responsive tests (E2E)**
 
-    - [ ] **6.3.e Run quality gates**
+    - [ ] **7.3.d Run quality gates**
 
-### **Phase 7:** Integration, Polish & Quality Gates
+### **Phase 8:** Integration, Polish & Quality Gates
 
-- [ ] **7.1 Generate wallpaper thumbnails for picker performance**
+- [ ] **8.1 Accessibility audit**
 
-    - [ ] **7.1.a Create thumbnail generation script**
-        - Script to generate 200×150 WebP thumbnails from full wallpapers
-        - Output to `public/images/wallpapers/thumbnails/`
-        - Target ~10-15KB per thumbnail
-
-    - [ ] **7.1.b Update wallpaper data model**
-        - Add `thumbnailSrc` field to `WallpaperOption` type
-        - Update wallpaper definitions with thumbnail paths
-
-    - [ ] **7.1.c Update WallpaperPicker to use thumbnails**
-        - Use `thumbnailSrc` in picker preview
-        - Keep full `src` for actual wallpaper display
-
-    - [ ] **7.1.d Run quality gates**
-
-- [ ] **7.2 Serve higher-resolution wallpapers at large viewports**
-
-    - [ ] **7.2.a Generate 1440p WebP versions of wallpapers**
-        - Create versions alongside existing 1080p
-        - Target reasonable file size (WebP efficient at higher res)
-
-    - [ ] **7.2.b Update WallpaperBackground to use responsive images**
-        - Add `srcset` with 1080p and 1440p variants
-        - Serve 1440p only on viewports wide enough to show exposed wallpaper margins
-        - Mobile/tablet continues to get 1080p (fully covered by content anyway)
-
-    - [ ] **7.2.c Update wallpaper data model if needed**
-        - Add `srcHiRes` field or derive path convention
-        - Keep backward compatible
-
-    - [ ] **7.2.d Run quality gates**
-
-- [ ] **7.3 Accessibility audit**
-
-    - [ ] **7.3.a Run axe on all new components**
+    - [ ] **8.1.a Run axe on all new components**
         - ThemeSwatch, ThemeSelector, WallpaperPicker
         - ThemeControl, ThemeControlDrawer
 
-    - [ ] **7.3.b Verify keyboard navigation flow**
+    - [ ] **8.1.b Verify keyboard navigation flow**
         - Tab order logical
         - All controls reachable
         - Focus visible at all times
 
-    - [ ] **7.3.c Add screen reader announcements**
+    - [ ] **8.1.c Add screen reader announcements**
         - Announce theme/wallpaper changes
         - Use `aria-live` regions if needed
 
-    - [ ] **7.3.d Fix any violations found**
+    - [ ] **8.1.d Fix any violations found**
 
-- [ ] **7.4 E2E tests for state persistence**
+- [ ] **8.2 E2E tests for state persistence**
 
-    - [ ] **7.4.a Create E2E test file `e2e/tests/theme-controls.spec.ts`**
+    - [ ] **8.2.a Create E2E test file `e2e/tests/theme-controls.spec.ts`**
         - Test: Theme selection persists across page reload
         - Test: Mode (light/dark) persists across reload
         - Test: Per-theme wallpaper preference persists
         - Test: Switching themes restores that theme's wallpaper
         - Test: Incompatible wallpaper falls back correctly
 
-    - [ ] **7.4.b Run E2E tests - should PASS**
+    - [ ] **8.2.b Run E2E tests - should PASS**
 
-- [ ] **7.5 Manual testing**
+- [ ] **8.3 Manual testing**
 
-    - [ ] **7.5.a Test desktop flow**
+    - [ ] **8.3.a Test desktop flow**
         - Open dropdown, select themes, verify swatch updates
         - Toggle light/dark, verify swatch updates
         - Select wallpapers, verify background updates
         - Test keyboard navigation end-to-end
 
-    - [ ] **7.5.b Test mobile flow**
-        - Open drawer, verify full-screen
+    - [ ] **8.3.b Test mobile flow**
+        - Open drawer, verify bottom sheet behavior
         - All controls accessible and touch-friendly
         - Toggle inside drawer works
         - Close drawer, verify state persisted
 
-    - [ ] **7.5.c Test cross-session persistence**
+    - [ ] **8.3.c Test cross-session persistence**
         - Set theme + wallpaper, close browser, reopen
         - Verify selections restored
 
-- [ ] **7.6 Final quality gates**
+- [ ] **8.4 Update style strategy documentation**
 
-    - [ ] **7.6.a Run full test suite**
+    - [ ] **8.4.a Review and update visual design principles**
+        - Ensure `strategy-visual-design-principles.md` reflects final patterns
+        - Document any new spacing, layout, or component patterns established
+
+    - [ ] **8.4.b Update style guide if needed**
+        - Ensure `strategy-style-guide.md` aligns with implemented theming system
+
+- [ ] **8.5 Final quality gates**
+
+    - [ ] **8.5.a Run full test suite**
         - All unit tests pass
         - All integration tests pass
         - All E2E tests pass
 
-    - [ ] **7.6.b Run linting**
+    - [ ] **8.5.b Run linting**
         - ESLint: 0 violations
 
-    - [ ] **7.6.c Run type checking**
+    - [ ] **8.5.c Run type checking**
         - TypeScript: 0 errors
 
-    - [ ] **7.6.d Run markdown linting**
+    - [ ] **8.5.d Run markdown linting**
         - markdownlint: 0 violations
 
-- [ ] **7.7 Cleanup**
+- [ ] **8.6 Cleanup**
 
-    - [ ] **7.7.a Delete prototype files and remove backward-compat shims**
+    - [ ] **8.6.a Delete remaining prototype files**
         - Remove `src/app/dev/swatch-prototype/page.tsx`
         - Remove `src/components/dev/SwatchPrototype.tsx`
-        - Update `WallpaperSwitcher.tsx` to import `WALLPAPER_OPTIONS` from `@/data/wallpapers`
+
+    - [ ] **8.6.b Remove backward-compat shims**
         - Remove re-export from `WallpaperContext.tsx` (line: `export { WALLPAPER_OPTIONS }`)
 
-    - [ ] **7.7.b Verify no dead code**
+    - [ ] **8.6.c Verify no dead code**
         - Check for unused imports
         - Check for orphaned files
 
