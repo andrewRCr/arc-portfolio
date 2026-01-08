@@ -39,7 +39,7 @@ export function TopBar({ isActive, onActivate }: TopBarProps) {
       >
         {/* Branding - links to home */}
         <div className="flex items-center gap-3">
-          <TouchTarget className="-ml-1">
+          <TouchTarget align="start">
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
             </Link>
@@ -52,7 +52,7 @@ export function TopBar({ isActive, onActivate }: TopBarProps) {
           <TouchTarget>
             <ThemeControl />
           </TouchTarget>
-          <TouchTarget className="-mr-3">
+          <TouchTarget align="end">
             <ThemeToggle />
           </TouchTarget>
         </div>

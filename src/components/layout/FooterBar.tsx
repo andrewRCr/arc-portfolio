@@ -63,7 +63,7 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps) {
             const isExternal = !link.url.startsWith("mailto:");
             const isFirst = index === 0;
             return (
-              <TouchTarget key={link.platform} className={isFirst ? "-ml-3" : undefined}>
+              <TouchTarget key={link.platform} align={isFirst ? "start" : "center"}>
                 <a
                   href={link.url}
                   {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}

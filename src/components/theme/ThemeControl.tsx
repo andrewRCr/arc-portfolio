@@ -158,12 +158,15 @@ export function ThemeControl() {
           className="group flex items-center gap-1 px-1.5 h-7 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
         >
           <ThemeSwatch colors={swatchColors} size={16} />
-          <ChevronDown data-testid="theme-control-chevron" className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" />
+          <ChevronDown
+            data-testid="theme-control-chevron"
+            className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors"
+          />
         </button>
       </PopoverTrigger>
 
       <PopoverContent align="end" className="w-auto p-3">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           {/* Theme Selector Section */}
           <div>
             <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Theme</h3>
@@ -171,13 +174,13 @@ export function ThemeControl() {
           </div>
 
           {/* Wallpaper Picker Section */}
-          <div className="border-t border-border pt-3">
+          <div>
             <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Wallpaper</h3>
             <WallpaperPicker selectedWallpaper={activeWallpaper} onSelect={setActiveWallpaper} />
           </div>
 
           {/* Mode Toggle, Layout Toggle & Reset */}
-          <div className="border-t border-border pt-3 flex justify-center gap-2">
+          <div className="flex justify-center gap-2">
             <Button
               variant="outline"
               size="sm"

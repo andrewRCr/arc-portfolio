@@ -55,7 +55,7 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
   );
 
   return (
-    <div className={cn("flex flex-col items-center gap-2", className)}>
+    <div className={cn("flex flex-col items-center gap-2 pt-1", className)}>
       {/* Thumbnail Preview */}
       <div
         data-testid="wallpaper-preview"
