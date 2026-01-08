@@ -89,6 +89,9 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps) {
               <Link href="/dev/typography" className="text-accent hover:text-accent/80 transition-colors">
                 [type]
               </Link>
+              <Link href="/dev/wallpaper-test" className="text-accent hover:text-accent/80 transition-colors">
+                [wallpaper]
+              </Link>
             </nav>
           )}
 
