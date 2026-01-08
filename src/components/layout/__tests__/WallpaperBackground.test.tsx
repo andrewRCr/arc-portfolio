@@ -83,6 +83,44 @@ describe("WallpaperBackground", () => {
     });
   });
 
+  describe("Responsive Images", () => {
+    it("renders img with srcset when imageSrcHiRes provided", () => {
+      const { container } = render(
+        <WallpaperBackground imageSrc="/wallpaper/test.webp" imageSrcHiRes="/wallpaper/test-1440.webp" />
+      );
+
+      const img = container.querySelector("img");
+      expect(img).toHaveAttribute("srcset");
+    });
+
+    it("renders img without srcset when only imageSrc provided", () => {
+      const { container } = render(<WallpaperBackground imageSrc="/wallpaper/test.webp" />);
+
+      const img = container.querySelector("img");
+      expect(img).not.toHaveAttribute("srcset");
+    });
+
+    it("srcset contains correct width descriptors (1920w, 2560w)", () => {
+      const { container } = render(
+        <WallpaperBackground imageSrc="/wallpaper/test.webp" imageSrcHiRes="/wallpaper/test-1440.webp" />
+      );
+
+      const img = container.querySelector("img");
+      const srcset = img?.getAttribute("srcset") ?? "";
+      expect(srcset).toContain("/wallpaper/test.webp 1920w");
+      expect(srcset).toContain("/wallpaper/test-1440.webp 2560w");
+    });
+
+    it("sets sizes attribute for responsive selection", () => {
+      const { container } = render(
+        <WallpaperBackground imageSrc="/wallpaper/test.webp" imageSrcHiRes="/wallpaper/test-1440.webp" />
+      );
+
+      const img = container.querySelector("img");
+      expect(img).toHaveAttribute("sizes", "100vw");
+    });
+  });
+
   describe("Accessibility", () => {
     it("has no accessibility violations (gradient only)", async () => {
       const results = await checkA11y(<WallpaperBackground />);

@@ -9,7 +9,7 @@ import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { checkA11y } from "@tests/test-utils";
-import { WallpaperPicker } from "../WallpaperPicker";
+import { WallpaperPicker, formatAttribution } from "../WallpaperPicker";
 
 // Mock useCompatibleWallpapers hook
 const mockWallpapers = [
@@ -207,5 +207,29 @@ describe("WallpaperPicker", () => {
       const preview = screen.getByTestId("wallpaper-preview");
       expect(preview).toHaveAttribute("tabIndex", "0");
     });
+  });
+});
+
+describe("formatAttribution", () => {
+  it("returns 'Gradient' for gradient id", () => {
+    expect(formatAttribution("gradient")).toBe("Gradient");
+  });
+
+  it("formats hyphenated names with capitalized words", () => {
+    expect(formatAttribution("kevin-grieve")).toBe("Kevin Grieve");
+  });
+
+  it("strips trailing numbers from photographer names", () => {
+    expect(formatAttribution("jr-korpa-1")).toBe("Jr Korpa");
+    expect(formatAttribution("jr-korpa-2")).toBe("Jr Korpa");
+    expect(formatAttribution("jr-korpa-3")).toBe("Jr Korpa");
+  });
+
+  it("handles simple hyphenated names", () => {
+    expect(formatAttribution("anne-nygard")).toBe("Anne Nygard");
+  });
+
+  it("handles multi-part names", () => {
+    expect(formatAttribution("jose-ignacio-pompe")).toBe("Jose Ignacio Pompe");
   });
 });
