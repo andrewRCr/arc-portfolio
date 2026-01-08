@@ -28,18 +28,18 @@ export interface TopBarProps {
  * ```
  */
 export function TopBar({ isActive, onActivate }: TopBarProps) {
-  const { windowBorderWidth, topBarContentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
+  const { windowBorderWidth, contentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
 
   return (
     <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate}>
       <header
         className="flex items-center justify-between px-4 mx-auto w-full"
-        style={{ height: innerHeight, maxWidth: topBarContentMaxWidth }}
+        style={{ height: innerHeight, maxWidth: contentMaxWidth }}
       >
         {/* Branding - links to home */}
         <div className="flex items-center gap-3">
-          <TouchTarget>
+          <TouchTarget className="-ml-1">
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
             </Link>
@@ -52,7 +52,7 @@ export function TopBar({ isActive, onActivate }: TopBarProps) {
           <TouchTarget>
             <ThemeControl />
           </TouchTarget>
-          <TouchTarget>
+          <TouchTarget className="-mr-3">
             <ThemeToggle />
           </TouchTarget>
         </div>

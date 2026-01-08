@@ -56,11 +56,11 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   )`;
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:p-6">
+    <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:py-6 md:px-6">
       <div
         data-testid="content-wrapper"
         className="relative rounded-lg flex flex-col flex-1 min-h-0 mx-auto w-full"
-        style={{ maxWidth: contentMaxWidth }}
+        style={{ maxWidth: 1120 }}
       >
         {/* TUI frame border - clip-path creates gap for Navigation */}
         <div

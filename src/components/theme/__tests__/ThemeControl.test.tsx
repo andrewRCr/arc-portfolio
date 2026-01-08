@@ -32,6 +32,16 @@ vi.mock("@/contexts/WallpaperContext", () => ({
   WallpaperContextProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
+// Mock LayoutPreferencesContext
+const mockSetLayoutMode = vi.fn();
+vi.mock("@/contexts/LayoutPreferencesContext", () => ({
+  useLayoutPreferences: () => ({
+    layoutMode: "boxed",
+    setLayoutMode: mockSetLayoutMode,
+  }),
+  LayoutPreferencesContextProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 // Mock next-themes
 const mockSetTheme = vi.fn();
 vi.mock("next-themes", () => ({
@@ -202,6 +212,152 @@ describe("ThemeControl", () => {
 
       const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
       expect(trigger).toHaveAccessibleName();
+    });
+  });
+
+  describe("Layout Toggle", () => {
+    it("shows layout toggle button when open", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      // Should have a layout toggle button showing current state
+      expect(screen.getByRole("button", { name: /layout.*boxed|layout.*full/i })).toBeInTheDocument();
+    });
+
+    it("displays current layout mode (Boxed)", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      // Mock returns "boxed" as default
+      expect(screen.getByRole("button", { name: /layout.*boxed/i })).toBeInTheDocument();
+      expect(screen.getByText("Boxed")).toBeInTheDocument();
+    });
+
+    it("calls setLayoutMode when clicked (wide viewport)", async () => {
+      // Mock wide viewport so button is enabled
+      const originalInnerWidth = window.innerWidth;
+      Object.defineProperty(window, "innerWidth", { value: 1500, writable: true });
+
+      const user = userEvent.setup();
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      const layoutButton = screen.getByRole("button", { name: /layout.*boxed/i });
+      await user.click(layoutButton);
+
+      // Should toggle from boxed to full
+      expect(mockSetLayoutMode).toHaveBeenCalledWith("full");
+
+      // Restore
+      Object.defineProperty(window, "innerWidth", { value: originalInnerWidth, writable: true });
+    });
+
+    it("layout toggle is disabled on narrow viewports", async () => {
+      // Mock narrow viewport
+      const originalInnerWidth = window.innerWidth;
+      Object.defineProperty(window, "innerWidth", { value: 800, writable: true });
+
+      const user = userEvent.setup();
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      const layoutButton = screen.getByRole("button", { name: /layout.*boxed/i });
+      expect(layoutButton).toBeDisabled();
+
+      // Restore
+      Object.defineProperty(window, "innerWidth", { value: originalInnerWidth, writable: true });
+    });
+  });
+
+  describe("Reset Button", () => {
+    it("shows reset button when open", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      expect(screen.getByRole("button", { name: /reset.*defaults/i })).toBeInTheDocument();
+    });
+
+    it("clears localStorage when clicked", async () => {
+      const user = userEvent.setup();
+
+      // Set some values in localStorage
+      localStorage.setItem("arc-portfolio-palette", "gruvbox");
+      localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"gruvbox":"mountains"}');
+      localStorage.setItem("arc-portfolio-layout-mode", "full");
+
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset.*defaults/i });
+      await user.click(resetButton);
+
+      // localStorage should be cleared
+      expect(localStorage.getItem("arc-portfolio-palette")).toBeNull();
+      expect(localStorage.getItem("arc-portfolio-wallpaper-prefs")).toBeNull();
+      expect(localStorage.getItem("arc-portfolio-layout-mode")).toBeNull();
+    });
+
+    it("resets theme to default palette", async () => {
+      const user = userEvent.setup();
+      // Set a wallpaper pref so reset button is enabled
+      localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"remedy":"mountains"}');
+
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset.*defaults/i });
+      await user.click(resetButton);
+
+      // Should call setActiveTheme with default palette (remedy)
+      expect(mockSetActiveTheme).toHaveBeenCalledWith("remedy");
+    });
+
+    it("resets layout mode to default (boxed)", async () => {
+      const user = userEvent.setup();
+      // Set a wallpaper pref so reset button is enabled
+      localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"remedy":"mountains"}');
+
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset.*defaults/i });
+      await user.click(resetButton);
+
+      // Should call setLayoutMode with default (boxed)
+      expect(mockSetLayoutMode).toHaveBeenCalledWith("boxed");
+    });
+
+    it("reset button is disabled when no custom preferences", async () => {
+      const user = userEvent.setup();
+      // Clear localStorage - no custom prefs
+      localStorage.clear();
+
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset.*defaults/i });
+      expect(resetButton).toBeDisabled();
     });
   });
 });

@@ -58,11 +58,12 @@ export function FooterBar({ isActive, onActivate }: FooterBarProps) {
       >
         {/* Social Links */}
         <nav aria-label="Social links" className="flex items-center gap-1">
-          {contact.socialLinks.map((link) => {
+          {contact.socialLinks.map((link, index) => {
             const Icon = iconMap[link.icon];
             const isExternal = !link.url.startsWith("mailto:");
+            const isFirst = index === 0;
             return (
-              <TouchTarget key={link.platform}>
+              <TouchTarget key={link.platform} className={isFirst ? "-ml-3" : undefined}>
                 <a
                   href={link.url}
                   {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}

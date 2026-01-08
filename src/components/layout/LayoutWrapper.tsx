@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
 import { WindowContainer } from "./WindowContainer";
@@ -41,9 +42,13 @@ export interface LayoutWrapperProps {
  * ```
  */
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
-  const { windowGap } = DEFAULT_LAYOUT_TOKENS;
+  const { windowGap, windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const { wallpaperSrc } = useWallpaperContext();
+  const { layoutMode } = useLayoutPreferences();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
+
+  // Apply max-width only in "boxed" mode
+  const containerMaxWidth = layoutMode === "boxed" ? windowContainerMaxWidth : undefined;
 
   return (
     <>
@@ -54,8 +59,8 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       {/* h-dvh uses dynamic viewport height, accounting for mobile browser chrome */}
       {/* Clicking gap areas (outside windows) resets active state */}
       <div
-        className="h-dvh flex flex-col"
-        style={{ padding: `${windowGap}px`, gap: `${windowGap}px` }}
+        className="mx-auto h-dvh w-full flex flex-col"
+        style={{ padding: `${windowGap}px`, gap: `${windowGap}px`, maxWidth: containerMaxWidth }}
         onPointerDown={() => setActiveWindow(null)}
       >
         {/* Top bar - fixed height */}

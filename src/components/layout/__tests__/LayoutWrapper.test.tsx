@@ -1,7 +1,15 @@
 import { screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, checkA11y } from "@tests/test-utils";
 import { LayoutWrapper } from "../LayoutWrapper";
+
+// Mock LayoutPreferencesContext (used by LayoutWrapper and ThemeControl)
+vi.mock("@/contexts/LayoutPreferencesContext", () => ({
+  useLayoutPreferences: () => ({
+    layoutMode: "boxed",
+    setLayoutMode: vi.fn(),
+  }),
+}));
 
 describe("LayoutWrapper", () => {
   describe("Three-Window Structure", () => {

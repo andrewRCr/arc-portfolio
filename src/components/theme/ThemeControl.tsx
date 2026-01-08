@@ -4,36 +4,69 @@
  * Combined theme/wallpaper control dropdown for the TopBar.
  * Shows a compact swatch trigger that expands to reveal:
  * - ThemeSelector (palette selection)
- * - Light/dark mode toggle
  * - WallpaperPicker (wallpaper carousel)
+ * - Light/dark mode toggle with reset button
  */
 
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, Sun, Moon } from "lucide-react";
+import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
+import { useLayoutPreferences, type LayoutMode } from "@/contexts/LayoutPreferencesContext";
 import { useThemeSwatch } from "@/hooks/useThemeSwatch";
+import { defaultPalette } from "@/data/themes";
+import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import {
+  PALETTE_STORAGE_KEY,
+  PALETTE_COOKIE_NAME,
+  WALLPAPER_PREFS_STORAGE_KEY,
+  WALLPAPER_COOKIE_NAME,
+  LAYOUT_MODE_STORAGE_KEY,
+  LAYOUT_MODE_COOKIE_NAME,
+} from "@/config/storage";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { ThemeSelector } from "./ThemeSelector";
 import { WallpaperPicker } from "./WallpaperPicker";
 
+/** Default layout mode when resetting */
+const DEFAULT_LAYOUT_MODE: LayoutMode = "boxed";
+
 export function ThemeControl() {
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(0);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const { activeTheme, setActiveTheme } = useThemeContext();
   const { activeWallpaper, setActiveWallpaper } = useWallpaperContext();
+  const { layoutMode, setLayoutMode } = useLayoutPreferences();
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
+  const { windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
   // Avoid hydration mismatch - theme colors differ between server and client
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern
-  useEffect(() => setMounted(true), []);
+  // Also track viewport width for layout mode button availability
+  useEffect(() => {
+    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect -- Intentional hydration pattern
+    setViewportWidth(window.innerWidth);
+
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Layout mode toggle is only meaningful on wide viewports
+  const isLayoutToggleEnabled = viewportWidth > windowContainerMaxWidth;
+
+  // Reset is only meaningful if there are custom preferences
+  const hasCustomPreferences =
+    activeTheme !== defaultPalette ||
+    layoutMode !== DEFAULT_LAYOUT_MODE ||
+    (typeof window !== "undefined" && localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY) !== null);
 
   // Workaround for Radix bug #2782: after interacting inside a Popover,
   // the first outside click is swallowed. This listener ensures single-click close.
@@ -58,6 +91,41 @@ export function ThemeControl() {
 
   const toggleMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  /**
+   * Delete a cookie by name (client-side).
+   * Sets expiry to the past to remove it.
+   */
+  const deleteCookie = (name: string) => {
+    document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  };
+
+  /**
+   * Reset all theme/wallpaper/layout preferences to defaults.
+   * Clears localStorage and cookies, resets state to defaults.
+   * Note: Wallpaper resets automatically via WallpaperContext's theme-change effect
+   * (reads empty prefs from localStorage and falls back to theme default).
+   */
+  const resetToDefaults = () => {
+    // Clear localStorage
+    localStorage.removeItem(PALETTE_STORAGE_KEY);
+    localStorage.removeItem(WALLPAPER_PREFS_STORAGE_KEY);
+    localStorage.removeItem(LAYOUT_MODE_STORAGE_KEY);
+
+    // Clear cookies
+    deleteCookie(PALETTE_COOKIE_NAME);
+    deleteCookie(WALLPAPER_COOKIE_NAME);
+    deleteCookie(LAYOUT_MODE_COOKIE_NAME);
+
+    // Reset state to defaults
+    // Wallpaper resets automatically when theme changes (context reads cleared prefs)
+    setActiveTheme(defaultPalette);
+    setLayoutMode(DEFAULT_LAYOUT_MODE);
+  };
+
+  const toggleLayoutMode = () => {
+    setLayoutMode(layoutMode === "full" ? "boxed" : "full");
   };
 
   // Before hydration: render placeholder to avoid color mismatch
@@ -102,9 +170,14 @@ export function ThemeControl() {
             <ThemeSelector selectedTheme={activeTheme} onSelect={setActiveTheme} />
           </div>
 
-          {/* Light/Dark Mode Toggle */}
+          {/* Wallpaper Picker Section */}
           <div className="border-t border-border pt-3">
-            <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Mode</h3>
+            <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Wallpaper</h3>
+            <WallpaperPicker selectedWallpaper={activeWallpaper} onSelect={setActiveWallpaper} />
+          </div>
+
+          {/* Mode Toggle, Layout Toggle & Reset */}
+          <div className="border-t border-border pt-3 flex justify-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -113,26 +186,58 @@ export function ThemeControl() {
                 e.currentTarget.blur();
               }}
               aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              className="w-full justify-start gap-2"
+              className="gap-2"
             >
               {theme === "dark" ? (
                 <>
                   <Moon className="h-4 w-4" />
-                  <span>Dark mode</span>
+                  <span>Dark</span>
                 </>
               ) : (
                 <>
                   <Sun className="h-4 w-4" />
-                  <span>Light mode</span>
+                  <span>Light</span>
                 </>
               )}
             </Button>
-          </div>
-
-          {/* Wallpaper Picker Section */}
-          <div className="border-t border-border pt-3">
-            <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Wallpaper</h3>
-            <WallpaperPicker selectedWallpaper={activeWallpaper} onSelect={setActiveWallpaper} />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={(e) => {
+                toggleLayoutMode();
+                e.currentTarget.blur();
+              }}
+              disabled={!isLayoutToggleEnabled}
+              aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "full" ? "boxed" : "full"} layout`}
+              title={!isLayoutToggleEnabled ? "Viewport too narrow for layout toggle" : undefined}
+              className="min-w-[5.25rem] gap-2"
+            >
+              {layoutMode === "full" ? (
+                <>
+                  <Maximize2 className="h-4 w-4" />
+                  <span>Full</span>
+                </>
+              ) : (
+                <>
+                  <Square className="h-4 w-4" />
+                  <span>Boxed</span>
+                </>
+              )}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={(e) => {
+                resetToDefaults();
+                e.currentTarget.blur();
+              }}
+              aria-label="Reset all preferences to defaults"
+              disabled={!hasCustomPreferences}
+              className="gap-2"
+            >
+              <RotateCcw className="h-4 w-4" />
+              <span>Reset</span>
+            </Button>
           </div>
         </div>
       </PopoverContent>

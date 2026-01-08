@@ -3,7 +3,12 @@ import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/config/site";
-import { PALETTE_STORAGE_KEY, PALETTE_COOKIE_NAME, WALLPAPER_COOKIE_NAME } from "@/config/storage";
+import {
+  PALETTE_STORAGE_KEY,
+  PALETTE_COOKIE_NAME,
+  WALLPAPER_COOKIE_NAME,
+  LAYOUT_MODE_COOKIE_NAME,
+} from "@/config/storage";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
@@ -57,6 +62,7 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const paletteCookie = cookieStore.get(PALETTE_COOKIE_NAME)?.value;
   const wallpaperCookie = cookieStore.get(WALLPAPER_COOKIE_NAME)?.value;
+  const layoutModeCookie = cookieStore.get(LAYOUT_MODE_COOKIE_NAME)?.value;
 
   // Determine server palette (cookie or default)
   const serverPalette = paletteCookie && paletteCookie in themes ? paletteCookie : defaultPalette;
@@ -93,6 +99,7 @@ export default async function RootLayout({
           disableTransitionOnChange
           serverPalette={serverPalette}
           serverWallpaper={serverWallpaper}
+          serverLayoutMode={layoutModeCookie}
         >
           <ConsoleLoggerInit />
           <LayoutWrapper>

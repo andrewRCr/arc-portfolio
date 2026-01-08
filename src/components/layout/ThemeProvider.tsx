@@ -5,12 +5,15 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeName } from "@/data/themes";
 import { ThemeContextProvider, useThemeContext } from "@/contexts/ThemeContext";
 import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
+import { LayoutPreferencesContextProvider } from "@/contexts/LayoutPreferencesContext";
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider> & {
   /** Server-rendered palette from cookie (prevents FOUC) */
   serverPalette?: string;
   /** Server-rendered wallpaper ID from cookie (prevents FOUC) */
   serverWallpaper?: string;
+  /** Server-rendered layout mode from cookie (prevents layout shift) */
+  serverLayoutMode?: string;
 };
 
 /**
@@ -45,14 +48,22 @@ function ThemePaletteSync() {
   return null;
 }
 
-export function ThemeProvider({ children, serverPalette, serverWallpaper, ...props }: ThemeProviderProps) {
+export function ThemeProvider({
+  children,
+  serverPalette,
+  serverWallpaper,
+  serverLayoutMode,
+  ...props
+}: ThemeProviderProps) {
   return (
     <ThemeContextProvider serverPalette={serverPalette}>
       <WallpaperContextProvider serverWallpaper={serverWallpaper}>
-        <NextThemesProvider {...props}>
-          <ThemePaletteSync />
-          {children}
-        </NextThemesProvider>
+        <LayoutPreferencesContextProvider serverLayoutMode={serverLayoutMode}>
+          <NextThemesProvider {...props}>
+            <ThemePaletteSync />
+            {children}
+          </NextThemesProvider>
+        </LayoutPreferencesContextProvider>
       </WallpaperContextProvider>
     </ThemeContextProvider>
   );

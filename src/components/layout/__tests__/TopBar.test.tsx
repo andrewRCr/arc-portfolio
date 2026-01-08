@@ -7,6 +7,14 @@ import { TopBar } from "../TopBar";
 
 vi.mock("next-themes", () => createNextThemesMock());
 
+// Mock LayoutPreferencesContext (required by ThemeControl)
+vi.mock("@/contexts/LayoutPreferencesContext", () => ({
+  useLayoutPreferences: () => ({
+    layoutMode: "boxed",
+    setLayoutMode: vi.fn(),
+  }),
+}));
+
 describe("TopBar", () => {
   describe("Branding", () => {
     it("renders site handle from config", () => {
