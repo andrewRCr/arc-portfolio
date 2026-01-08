@@ -324,17 +324,66 @@ neofetch-inspired color swatch grid.
     - **(incidental)** Footer social links: updated to match TopBar pattern with TouchTarget wrapper
     - All 672 tests pass, all quality gates pass
 
-- [ ] **5.5 Remove prototype components**
+- [x] **5.5 Layout mode toggle and additional visual polish**
 
-    - [ ] **5.5.a Delete `src/components/ThemeSwitcher.tsx`**
+    - [x] **5.5.a Add `windowContainerMaxWidth` layout token**
+        - Added to `layout.ts` (1200px default)
+        - Constrains three-window column to reveal wallpaper margins at large viewports
 
-    - [ ] **5.5.b Delete `src/components/WallpaperSwitcher.tsx`**
+    - [x] **5.5.b Implement LayoutPreferencesContext**
+        - New context for layout mode state ("full" | "boxed")
+        - Server action for cookie persistence (`layout-preferences.ts`)
+        - localStorage + cookie sync pattern (matches theme/wallpaper contexts)
+        - Default: "boxed"
 
-    - [ ] **5.5.c Remove any remaining imports/references**
+    - [x] **5.5.c Wire layout mode into LayoutWrapper**
+        - Conditionally applies `maxWidth` based on layoutMode
+        - "boxed": constrained to `windowContainerMaxWidth`
+        - "full": no max-width constraint
 
-    - [ ] **5.5.d Run full test suite - should PASS**
+    - [x] **5.5.d Add layout toggle to ThemeControl**
+        - Full/Boxed button with Maximize2/Square icons
+        - Viewport-aware: disabled when viewport ≤ `windowContainerMaxWidth`
+        - Shows current state (not target)
 
-    - [ ] **5.5.e Run quality gates**
+    - [x] **5.5.e Add reset button to ThemeControl**
+        - Clears all preferences (theme, wallpaper, layout mode)
+        - Resets to defaults (remedy theme, gradient wallpaper, boxed layout)
+        - RotateCcw icon
+
+    - [x] **5.5.f Reorder ThemeControl sections**
+        - Order: Theme → Wallpaper → Mode/Layout/Reset row
+        - Removed "Mode" section header
+        - Shortened button labels ("Dark"/"Light" instead of "Dark mode"/"Light mode")
+        - Centered button row
+
+    - [x] **5.5.g Fix layout shift issues**
+        - TopBar: changed from `topBarContentMaxWidth` (1200) to `contentMaxWidth` (1152)
+        - ConditionalFrame: hardcoded TUI frame to 1120px (allows centering with padding)
+        - Consistent centering in both boxed and full modes
+
+    - [x] **5.5.h UI polish**
+        - Layout toggle button: fixed width (`min-w-[5.25rem]`) to prevent shift between "Full"/"Boxed"
+        - Reset button: disabled when no custom preferences exist
+
+    - [x] **5.5.i Add tests for new functionality**
+        - LayoutPreferencesContext: 6 tests (default state, persistence, error handling)
+        - ThemeControl layout toggle: 4 tests (display, click, viewport-aware disabling)
+        - ThemeControl reset: 5 tests (localStorage clearing, state resets, disabled state)
+        - Updated ConditionalFrame test for 1120px maxWidth
+        - All 689 tests pass
+
+- [ ] **5.6 Remove prototype components**
+
+    - [ ] **5.6.a Delete `src/components/ThemeSwitcher.tsx`**
+
+    - [ ] **5.6.b Delete `src/components/WallpaperSwitcher.tsx`**
+
+    - [ ] **5.6.c Remove any remaining imports/references**
+
+    - [ ] **5.6.d Run full test suite - should PASS**
+
+    - [ ] **5.6.e Run quality gates**
 
 ### **Phase 6:** Mobile Adaptation
 
@@ -413,77 +462,94 @@ neofetch-inspired color swatch grid.
 
     - [ ] **7.1.d Run quality gates**
 
-- [ ] **7.2 Accessibility audit**
+- [ ] **7.2 Serve higher-resolution wallpapers at large viewports**
 
-    - [ ] **7.2.a Run axe on all new components**
+    - [ ] **7.2.a Generate 1440p WebP versions of wallpapers**
+        - Create versions alongside existing 1080p
+        - Target reasonable file size (WebP efficient at higher res)
+
+    - [ ] **7.2.b Update WallpaperBackground to use responsive images**
+        - Add `srcset` with 1080p and 1440p variants
+        - Serve 1440p only on viewports wide enough to show exposed wallpaper margins
+        - Mobile/tablet continues to get 1080p (fully covered by content anyway)
+
+    - [ ] **7.2.c Update wallpaper data model if needed**
+        - Add `srcHiRes` field or derive path convention
+        - Keep backward compatible
+
+    - [ ] **7.2.d Run quality gates**
+
+- [ ] **7.3 Accessibility audit**
+
+    - [ ] **7.3.a Run axe on all new components**
         - ThemeSwatch, ThemeSelector, WallpaperPicker
         - ThemeControl, ThemeControlDrawer
 
-    - [ ] **7.2.b Verify keyboard navigation flow**
+    - [ ] **7.3.b Verify keyboard navigation flow**
         - Tab order logical
         - All controls reachable
         - Focus visible at all times
 
-    - [ ] **7.2.c Add screen reader announcements**
+    - [ ] **7.3.c Add screen reader announcements**
         - Announce theme/wallpaper changes
         - Use `aria-live` regions if needed
 
-    - [ ] **7.2.d Fix any violations found**
+    - [ ] **7.3.d Fix any violations found**
 
-- [ ] **7.3 E2E tests for state persistence**
+- [ ] **7.4 E2E tests for state persistence**
 
-    - [ ] **7.3.a Create E2E test file `e2e/tests/theme-controls.spec.ts`**
+    - [ ] **7.4.a Create E2E test file `e2e/tests/theme-controls.spec.ts`**
         - Test: Theme selection persists across page reload
         - Test: Mode (light/dark) persists across reload
         - Test: Per-theme wallpaper preference persists
         - Test: Switching themes restores that theme's wallpaper
         - Test: Incompatible wallpaper falls back correctly
 
-    - [ ] **7.3.b Run E2E tests - should PASS**
+    - [ ] **7.4.b Run E2E tests - should PASS**
 
-- [ ] **7.4 Manual testing**
+- [ ] **7.5 Manual testing**
 
-    - [ ] **7.4.a Test desktop flow**
+    - [ ] **7.5.a Test desktop flow**
         - Open dropdown, select themes, verify swatch updates
         - Toggle light/dark, verify swatch updates
         - Select wallpapers, verify background updates
         - Test keyboard navigation end-to-end
 
-    - [ ] **7.4.b Test mobile flow**
+    - [ ] **7.5.b Test mobile flow**
         - Open drawer, verify full-screen
         - All controls accessible and touch-friendly
         - Toggle inside drawer works
         - Close drawer, verify state persisted
 
-    - [ ] **7.4.c Test cross-session persistence**
+    - [ ] **7.5.c Test cross-session persistence**
         - Set theme + wallpaper, close browser, reopen
         - Verify selections restored
 
-- [ ] **7.5 Final quality gates**
+- [ ] **7.6 Final quality gates**
 
-    - [ ] **7.5.a Run full test suite**
+    - [ ] **7.6.a Run full test suite**
         - All unit tests pass
         - All integration tests pass
         - All E2E tests pass
 
-    - [ ] **7.5.b Run linting**
+    - [ ] **7.6.b Run linting**
         - ESLint: 0 violations
 
-    - [ ] **7.5.c Run type checking**
+    - [ ] **7.6.c Run type checking**
         - TypeScript: 0 errors
 
-    - [ ] **7.5.d Run markdown linting**
+    - [ ] **7.6.d Run markdown linting**
         - markdownlint: 0 violations
 
-- [ ] **7.6 Cleanup**
+- [ ] **7.7 Cleanup**
 
-    - [ ] **7.6.a Delete prototype files and remove backward-compat shims**
+    - [ ] **7.7.a Delete prototype files and remove backward-compat shims**
         - Remove `src/app/dev/swatch-prototype/page.tsx`
         - Remove `src/components/dev/SwatchPrototype.tsx`
         - Update `WallpaperSwitcher.tsx` to import `WALLPAPER_OPTIONS` from `@/data/wallpapers`
         - Remove re-export from `WallpaperContext.tsx` (line: `export { WALLPAPER_OPTIONS }`)
 
-    - [ ] **7.6.b Verify no dead code**
+    - [ ] **7.7.b Verify no dead code**
         - Check for unused imports
         - Check for orphaned files
 
