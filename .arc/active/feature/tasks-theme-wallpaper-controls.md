@@ -440,22 +440,25 @@ neofetch-inspired color swatch grid.
         - Build: PASS
         - Tests: 825 pass (17 WallpaperContext, 29 WallpaperPicker, 21 ThemeControl)
 
-- [ ] **6.4 Generate wallpaper thumbnails**
+- [x] **6.4 Generate wallpaper thumbnails**
 
-    - [ ] **6.4.a Create thumbnail generation script**
-        - Script to generate 200×150 WebP thumbnails from full wallpapers
-        - Output to `public/images/wallpapers/thumbnails/`
-        - Target ~10-15KB per thumbnail
+    - [x] **6.4.a Create thumbnail generation script**
+        - Created `scripts/generate-wallpaper-thumbnails.ts` using ImageMagick
+        - Generates 200×150 WebP thumbnails with center-crop strategy
+        - Output to `public/wallpaper/thumbnails/` (follows existing convention)
+        - Added `npm run generate:thumbnails` script
+        - 41 thumbnails generated, avg 10KB each (409KB total)
 
-    - [ ] **6.4.b Update wallpaper data model**
-        - Add `thumbnailSrc` field to `WallpaperOption` type
-        - Update wallpaper definitions with thumbnail paths
+    - [x] **6.4.b Update wallpaper data model**
+        - Added `thumbnailSrc?: string` field to `WallpaperOption` type
+        - Added `thumbnailSrc` paths to all 40 wallpaper definitions
 
-    - [ ] **6.4.c Update WallpaperPicker to use thumbnails**
-        - Use `thumbnailSrc` in picker preview
-        - Keep full `src` for actual wallpaper display
+    - [x] **6.4.c Update WallpaperPicker to use thumbnails**
+        - Uses `thumbnailSrc ?? src` for preview image (fallback if no thumbnail)
+        - Full `src` still used for actual wallpaper display (in WallpaperBackground)
 
-    - [ ] **6.4.d Run quality gates**
+    - [x] **6.4.d Run quality gates**
+        - Type check: PASS, Lint: PASS (0 errors), Build: PASS, 821 tests pass
 
 - [x] **6.5 Serve higher-resolution wallpapers at large viewports** _(done early to facilitate 6.1 testing)_
 
@@ -608,9 +611,10 @@ neofetch-inspired color swatch grid.
 
 - [ ] **8.6 Cleanup**
 
-    - [ ] **8.6.a Delete remaining prototype files**
-        - Remove `src/app/dev/swatch-prototype/page.tsx`
-        - Remove `src/components/dev/SwatchPrototype.tsx`
+    - [x] **8.6.a Delete remaining prototype files**
+        - Removed `src/app/dev/swatch-prototype/page.tsx`
+        - Removed `src/components/dev/SwatchPrototype.tsx`
+        - Also fixed unused `screen` import in `Navigation.test.tsx`
 
     - [ ] **8.6.b Remove backward-compat shims**
         - Remove re-export from `WallpaperContext.tsx` (line: `export { WALLPAPER_OPTIONS }`)
