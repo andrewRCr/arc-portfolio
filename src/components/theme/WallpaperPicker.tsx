@@ -24,14 +24,33 @@ export interface WallpaperPickerProps {
 }
 
 /**
+ * Attribution overrides for photographers whose names differ from
+ * what we can derive from filenames (special characters, capitalization).
+ * Key is the base name (without number suffix).
+ */
+const ATTRIBUTION_OVERRIDES: Record<string, string> = {
+  "anne-nygard": "Anne Nygård",
+  "buddy-an": "Buddy AN",
+  "c-shi": "C. Shi",
+  flyd: "FlyD",
+  "hector-j-rivas": "Hector J. Rivas",
+  "karolis-milisauskas": "Karolis Milišauskas",
+};
+
+/**
  * Format wallpaper ID into display name.
- * Removes hyphens, capitalizes words, handles numbered suffixes.
- * e.g., "jr-korpa-1" -> "Jr Korpa", "kevin-grieve" -> "Kevin Grieve"
+ * Checks overrides first, then derives from ID by removing number suffixes,
+ * replacing hyphens with spaces, and capitalizing words.
+ * e.g., "jr-korpa-1" -> "Jr Korpa", "buddy-an-2" -> "Buddy AN" (override)
  */
 export function formatAttribution(id: string): string {
   if (id === "gradient") return "Gradient";
   // Remove trailing numbers (e.g., "jr-korpa-1" -> "jr-korpa")
   const baseName = id.replace(/-\d+$/, "");
+  // Check for override first
+  if (ATTRIBUTION_OVERRIDES[baseName]) {
+    return ATTRIBUTION_OVERRIDES[baseName];
+  }
   // Replace hyphens with spaces and capitalize each word
   return baseName
     .split("-")

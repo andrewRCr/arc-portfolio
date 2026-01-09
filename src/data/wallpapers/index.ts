@@ -80,20 +80,6 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["rose-pine"],
   },
   {
-    id: "jr-korpa-8",
-    src: "/wallpaper/optimized/jr-korpa-8.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-8.webp",
-    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-8.webp",
-    compatibleThemes: ["rose-pine"],
-  },
-  {
-    id: "jr-korpa-7",
-    src: "/wallpaper/optimized/jr-korpa-7.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-7.webp",
-    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-7.webp",
-    compatibleThemes: ["rose-pine"],
-  },
-  {
     id: "pawel-czerwinski-2",
     src: "/wallpaper/optimized/pawel-czerwinski-2.webp",
     thumbnailSrc: "/wallpaper/thumbnails/pawel-czerwinski-2.webp",
@@ -112,6 +98,20 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     src: "/wallpaper/optimized/ernest-brillo.webp",
     thumbnailSrc: "/wallpaper/thumbnails/ernest-brillo.webp",
     srcHiRes: "/wallpaper/optimized-1440/ernest-brillo.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "jr-korpa-8",
+    src: "/wallpaper/optimized/jr-korpa-8.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-8.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-8.webp",
+    compatibleThemes: ["rose-pine"],
+  },
+  {
+    id: "wolfgang-hasselmann-6",
+    src: "/wallpaper/optimized/wolfgang-hasselmann-6.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/wolfgang-hasselmann-6.webp",
+    srcHiRes: "/wallpaper/optimized-1440/wolfgang-hasselmann-6.webp",
     compatibleThemes: ["rose-pine"],
   },
 

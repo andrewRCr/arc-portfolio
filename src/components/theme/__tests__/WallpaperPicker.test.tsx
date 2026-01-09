@@ -267,10 +267,30 @@ describe("formatAttribution", () => {
   });
 
   it("handles simple hyphenated names", () => {
-    expect(formatAttribution("anne-nygard")).toBe("Anne Nygard");
+    expect(formatAttribution("sander-traa")).toBe("Sander Traa");
   });
 
   it("handles multi-part names", () => {
     expect(formatAttribution("jose-ignacio-pompe")).toBe("Jose Ignacio Pompe");
+  });
+
+  it("uses attribution overrides for special characters", () => {
+    expect(formatAttribution("anne-nygard")).toBe("Anne Nygård");
+    expect(formatAttribution("karolis-milisauskas")).toBe("Karolis Milišauskas");
+  });
+
+  it("uses attribution overrides for capitalization", () => {
+    expect(formatAttribution("buddy-an")).toBe("Buddy AN");
+    expect(formatAttribution("flyd")).toBe("FlyD");
+  });
+
+  it("uses attribution overrides for punctuation", () => {
+    expect(formatAttribution("c-shi")).toBe("C. Shi");
+    expect(formatAttribution("hector-j-rivas")).toBe("Hector J. Rivas");
+  });
+
+  it("applies overrides to numbered variants", () => {
+    expect(formatAttribution("buddy-an-2")).toBe("Buddy AN");
+    expect(formatAttribution("buddy-an-3")).toBe("Buddy AN");
   });
 });
