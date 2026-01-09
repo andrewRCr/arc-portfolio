@@ -406,40 +406,74 @@ neofetch-inspired color swatch grid.
     - Sourced wallpapers for all themes (41 total + gradient)
     - Quality gates pass (809 tests)
 
-- [ ] **6.3 Generate wallpaper thumbnails**
+- [x] **6.3 Add wallpaper enable/disable toggle**
 
-    - [ ] **6.3.a Create thumbnail generation script**
+    **Goal:** Separate "no wallpaper" (gradient) from wallpaper selection with explicit on/off control.
+
+    - [x] **6.3.a Write tests for wallpaper enabled state**
+        - Added 8 tests in new "Wallpaper Enabled Toggle" describe block
+        - Tests: default state, disabling wallpaper, per-theme persistence, dev override precedence
+        - Tests FAIL as expected (7 failures - `isWallpaperEnabled`/`setWallpaperEnabled` not yet implemented)
+
+    - [x] **6.3.b Update `WallpaperContext` with enabled state logic**
+        - Added `isWallpaperEnabled` and `setWallpaperEnabled` to context
+        - Extended storage shape with `normalizePreference()` for migration
+        - Updated `wallpaperSrc` derivation: `devOverrideSrc > !enabled > activeWallpaper`
+        - All 17 WallpaperContext tests pass, 817 total tests pass
+
+    - [x] **6.3.c Update `WallpaperPicker` with toggle Switch**
+        - Added Switch above thumbnail with `aria-label="Enable wallpaper"`
+        - Added `isEnabled` and `onToggleEnabled` props, wired in ThemeControl
+        - Dims preview, navigation, attribution when disabled; disables buttons
+        - Added 8 new tests for toggle behavior, 29 WallpaperPicker tests pass
+
+    - [x] **6.3.d Remove gradient from selectable wallpapers**
+        - Filtered gradient out in `getCompatibleWallpapers` (keeps type safety)
+        - Updated all 6 theme `defaultWallpaper` values to actual wallpaper IDs:
+            - remedy → karolis-milisauskas, rose-pine → jr-korpa-2, gruvbox → brandon-cormier
+            - ayu → liana-s, rouge → wolfgang-hasselmann-3, mariana → diana-prundeanu
+        - Updated WallpaperContext tests for new default values
+
+    - [x] **6.3.e Run quality gates**
+        - Type check: PASS
+        - Lint: PASS (7 pre-existing warnings, 0 errors)
+        - Build: PASS
+        - Tests: 825 pass (17 WallpaperContext, 29 WallpaperPicker, 21 ThemeControl)
+
+- [ ] **6.4 Generate wallpaper thumbnails**
+
+    - [ ] **6.4.a Create thumbnail generation script**
         - Script to generate 200×150 WebP thumbnails from full wallpapers
         - Output to `public/images/wallpapers/thumbnails/`
         - Target ~10-15KB per thumbnail
 
-    - [ ] **6.3.b Update wallpaper data model**
+    - [ ] **6.4.b Update wallpaper data model**
         - Add `thumbnailSrc` field to `WallpaperOption` type
         - Update wallpaper definitions with thumbnail paths
 
-    - [ ] **6.3.c Update WallpaperPicker to use thumbnails**
+    - [ ] **6.4.c Update WallpaperPicker to use thumbnails**
         - Use `thumbnailSrc` in picker preview
         - Keep full `src` for actual wallpaper display
 
-    - [ ] **6.3.d Run quality gates**
+    - [ ] **6.4.d Run quality gates**
 
-- [x] **6.4 Serve higher-resolution wallpapers at large viewports** _(done early to facilitate 6.1 testing)_
+- [x] **6.5 Serve higher-resolution wallpapers at large viewports** _(done early to facilitate 6.1 testing)_
 
-    - [x] **6.4.a Generate 1440p WebP versions of wallpapers**
+    - [x] **6.5.a Generate 1440p WebP versions of wallpapers**
         - Created `public/wallpaper/optimized-1440/` with 2560x1440 versions
         - 12 wallpapers have 1440p versions (new candidates + rotated originals)
 
-    - [x] **6.4.b Update WallpaperBackground to use responsive images**
+    - [x] **6.5.b Update WallpaperBackground to use responsive images**
         - Switched from Next.js Image to native `<img>` with srcset
         - srcset: `1920w` (1080p) and `2560w` (1440p)
         - Browser auto-selects based on viewport width
 
-    - [x] **6.4.c Update wallpaper data model if needed**
+    - [x] **6.5.c Update wallpaper data model if needed**
         - Added `srcHiRes?: string` field to `WallpaperOption` type
         - Added `wallpaperSrcHiRes` to WallpaperContext
         - Updated LayoutWrapper to pass srcHiRes to WallpaperBackground
 
-    - [x] **6.4.d Run quality gates**
+    - [x] **6.5.d Run quality gates**
         - Fixed failing test: Created `getWallpaperByTrait()` helper for resilient test lookups
         - Added 3 srcHiRes tests to WallpaperContext (9 total)
         - Added 4 responsive image tests to WallpaperBackground (17 total)
