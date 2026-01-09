@@ -35,6 +35,7 @@ describe("WallpaperPicker", () => {
   const defaultProps = {
     selectedWallpaper: "gradient",
     onSelect: vi.fn(),
+    isEnabled: true,
   };
 
   beforeEach(() => {
@@ -201,11 +202,52 @@ describe("WallpaperPicker", () => {
       expect(nextButton).toHaveAccessibleName();
     });
 
-    it("preview area is focusable for keyboard navigation", () => {
-      render(<WallpaperPicker {...defaultProps} />);
+    it("preview area is focusable when enabled", () => {
+      render(<WallpaperPicker {...defaultProps} isEnabled={true} />);
 
       const preview = screen.getByTestId("wallpaper-preview");
       expect(preview).toHaveAttribute("tabIndex", "0");
+    });
+
+    it("preview area is not focusable when disabled", () => {
+      render(<WallpaperPicker {...defaultProps} isEnabled={false} />);
+
+      const preview = screen.getByTestId("wallpaper-preview");
+      expect(preview).toHaveAttribute("tabIndex", "-1");
+    });
+
+  });
+
+  describe("Disabled State", () => {
+    it("dims controls when disabled", () => {
+      render(<WallpaperPicker {...defaultProps} isEnabled={false} />);
+
+      const preview = screen.getByTestId("wallpaper-preview");
+      expect(preview.className).toMatch(/opacity-40/);
+    });
+
+    it("disables navigation buttons when disabled", () => {
+      render(<WallpaperPicker {...defaultProps} isEnabled={false} />);
+
+      const prevButton = screen.getByRole("button", { name: /previous/i });
+      const nextButton = screen.getByRole("button", { name: /next/i });
+
+      expect(prevButton).toBeDisabled();
+      expect(nextButton).toBeDisabled();
+    });
+
+    it("prevents keyboard navigation when disabled", async () => {
+      const onSelect = vi.fn();
+      const user = userEvent.setup();
+
+      render(<WallpaperPicker {...defaultProps} isEnabled={false} onSelect={onSelect} />);
+
+      const preview = screen.getByTestId("wallpaper-preview");
+      preview.focus();
+      await user.keyboard("{ArrowRight}");
+
+      // onSelect should NOT be called when disabled
+      expect(onSelect).not.toHaveBeenCalled();
     });
   });
 });

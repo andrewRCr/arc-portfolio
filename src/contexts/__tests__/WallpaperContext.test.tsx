@@ -44,7 +44,15 @@ function getWallpaperByTrait(trait: WallpaperTrait): string {
 
 // Test component that exposes context values
 function TestConsumer() {
-  const { activeWallpaper, setActiveWallpaper, wallpaperSrcHiRes, setDevOverrideSrc } = useWallpaperContext();
+  const {
+    activeWallpaper,
+    setActiveWallpaper,
+    wallpaperSrc,
+    wallpaperSrcHiRes,
+    setDevOverrideSrc,
+    isWallpaperEnabled,
+    setWallpaperEnabled,
+  } = useWallpaperContext();
   const { activeTheme, setActiveTheme } = useThemeContext();
 
   // Get wallpaper IDs dynamically for test buttons
@@ -55,7 +63,9 @@ function TestConsumer() {
     <div>
       <span data-testid="active-wallpaper">{activeWallpaper}</span>
       <span data-testid="active-theme">{activeTheme}</span>
+      <span data-testid="wallpaper-src">{wallpaperSrc ?? "undefined"}</span>
       <span data-testid="wallpaper-src-hires">{wallpaperSrcHiRes ?? "undefined"}</span>
+      <span data-testid="wallpaper-enabled">{isWallpaperEnabled ? "true" : "false"}</span>
       <button onClick={() => setActiveWallpaper("karolis-milisauskas")}>Set Karolis</button>
       <button onClick={() => setActiveWallpaper("anne-nygard")}>Set Anne Nygard</button>
       <button onClick={() => setActiveWallpaper(remedyWallpaper as WallpaperId)}>Set Remedy Wallpaper</button>
@@ -65,6 +75,8 @@ function TestConsumer() {
       <button onClick={() => setActiveTheme("remedy")}>Switch to Remedy</button>
       <button onClick={() => setDevOverrideSrc?.("/test/override.webp")}>Set Dev Override</button>
       <button onClick={() => setDevOverrideSrc?.(null)}>Clear Dev Override</button>
+      <button onClick={() => setWallpaperEnabled(false)}>Disable Wallpaper</button>
+      <button onClick={() => setWallpaperEnabled(true)}>Enable Wallpaper</button>
     </div>
   );
 }
@@ -102,7 +114,9 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
       expect(stored).toBeDefined();
 
       const prefs = JSON.parse(stored!);
-      expect(prefs.remedy).toBe("karolis-milisauskas");
+      // Storage format is { wallpaper, enabled }
+      expect(prefs.remedy.wallpaper).toBe("karolis-milisauskas");
+      expect(prefs.remedy.enabled).toBe(true);
     });
 
     it("should use correct localStorage key", () => {
@@ -154,8 +168,8 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
         screen.getByText("Switch to Gruvbox").click();
       });
 
-      // Should use theme's default wallpaper (gradient)
-      expect(screen.getByTestId("active-wallpaper").textContent).toBe("gradient");
+      // Should use theme's default wallpaper (gruvbox default is "brandon-cormier")
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe("brandon-cormier");
     });
   });
 
@@ -177,8 +191,9 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
         screen.getByText("Switch to Gruvbox").click();
       });
 
-      // Should fall back to gradient (theme default) since anne-nygard is incompatible
-      expect(screen.getByTestId("active-wallpaper").textContent).toBe("gradient");
+      // Should fall back to theme default since anne-nygard is incompatible
+      // Gruvbox default is "brandon-cormier"
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe("brandon-cormier");
     });
 
     it("should allow universal wallpapers on any theme", async () => {
@@ -274,5 +289,192 @@ describe("WallpaperContext - High Resolution Support", () => {
 
     // srcHiRes should now be undefined (dev override disables hi-res)
     expect(screen.getByTestId("wallpaper-src-hires").textContent).toBe("undefined");
+  });
+});
+
+describe("WallpaperContext - Wallpaper Enabled Toggle", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.clearAllMocks();
+  });
+
+  describe("Default State", () => {
+    it("should default isWallpaperEnabled to true", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("true");
+    });
+
+    it("should have wallpaperSrc defined when enabled", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      // Set an actual wallpaper (not gradient)
+      await act(async () => {
+        screen.getByText("Set Karolis").click();
+      });
+
+      // wallpaperSrc should be defined
+      expect(screen.getByTestId("wallpaper-src").textContent).not.toBe("undefined");
+      expect(screen.getByTestId("wallpaper-src").textContent).toContain("/wallpaper/");
+    });
+  });
+
+  describe("Disabling Wallpaper", () => {
+    it("should return undefined for wallpaperSrc when disabled", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      // Set a wallpaper first
+      await act(async () => {
+        screen.getByText("Set Karolis").click();
+      });
+      expect(screen.getByTestId("wallpaper-src").textContent).not.toBe("undefined");
+
+      // Disable wallpaper
+      await act(async () => {
+        screen.getByText("Disable Wallpaper").click();
+      });
+
+      // wallpaperSrc should now be undefined (shows gradient)
+      expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("false");
+      expect(screen.getByTestId("wallpaper-src").textContent).toBe("undefined");
+    });
+
+    it("should preserve activeWallpaper selection when disabled", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      // Set a wallpaper
+      await act(async () => {
+        screen.getByText("Set Karolis").click();
+      });
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe("karolis-milisauskas");
+
+      // Disable wallpaper
+      await act(async () => {
+        screen.getByText("Disable Wallpaper").click();
+      });
+
+      // activeWallpaper should still be the selected one (not reset)
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe("karolis-milisauskas");
+      // But wallpaperSrc should be undefined
+      expect(screen.getByTestId("wallpaper-src").textContent).toBe("undefined");
+    });
+
+    it("should restore wallpaperSrc when re-enabled", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      // Set a wallpaper
+      await act(async () => {
+        screen.getByText("Set Karolis").click();
+      });
+      const originalSrc = screen.getByTestId("wallpaper-src").textContent;
+
+      // Disable then re-enable
+      await act(async () => {
+        screen.getByText("Disable Wallpaper").click();
+      });
+      expect(screen.getByTestId("wallpaper-src").textContent).toBe("undefined");
+
+      await act(async () => {
+        screen.getByText("Enable Wallpaper").click();
+      });
+
+      // Should restore the original wallpaper
+      expect(screen.getByTestId("wallpaper-src").textContent).toBe(originalSrc);
+    });
+  });
+
+  describe("Per-Theme Persistence", () => {
+    it("should persist enabled state per-theme in localStorage", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      // Disable wallpaper on remedy (default theme)
+      await act(async () => {
+        screen.getByText("Disable Wallpaper").click();
+      });
+
+      // Verify localStorage was updated
+      const stored = localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY);
+      expect(stored).toBeDefined();
+
+      const prefs = JSON.parse(stored!);
+      expect(prefs.remedy.enabled).toBe(false);
+    });
+
+    it("should restore enabled state when switching back to a theme", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      // Disable wallpaper on remedy
+      await act(async () => {
+        screen.getByText("Disable Wallpaper").click();
+      });
+      expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("false");
+
+      // Switch to gruvbox (should be enabled by default)
+      await act(async () => {
+        screen.getByText("Switch to Gruvbox").click();
+      });
+      expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("true");
+
+      // Switch back to remedy - should restore disabled state
+      await act(async () => {
+        screen.getByText("Switch to Remedy").click();
+      });
+      expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("false");
+    });
+  });
+
+  describe("Dev Override Precedence", () => {
+    it("should show devOverrideSrc even when wallpaper is disabled", async () => {
+      render(
+        <TestWrapper>
+          <TestConsumer />
+        </TestWrapper>
+      );
+
+      // Set a wallpaper and disable it
+      await act(async () => {
+        screen.getByText("Set Karolis").click();
+      });
+      await act(async () => {
+        screen.getByText("Disable Wallpaper").click();
+      });
+      expect(screen.getByTestId("wallpaper-src").textContent).toBe("undefined");
+
+      // Set dev override - should take precedence
+      await act(async () => {
+        screen.getByText("Set Dev Override").click();
+      });
+
+      // wallpaperSrc should now show the dev override (not undefined)
+      expect(screen.getByTestId("wallpaper-src").textContent).toBe("/test/override.webp");
+    });
   });
 });

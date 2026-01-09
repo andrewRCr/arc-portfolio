@@ -304,13 +304,15 @@ export function isWallpaperCompatible(wallpaper: WallpaperOption, themeName: The
 }
 
 /**
- * Get all wallpapers compatible with a given theme.
+ * Get all wallpapers compatible with a given theme (excludes gradient).
  *
  * @param themeName - The theme to filter by
- * @returns Array of compatible wallpaper options (gradient always first due to registry order)
+ * @returns Array of compatible wallpaper options (excludes gradient)
  */
 export function getCompatibleWallpapers(themeName: ThemeName): WallpaperOption[] {
-  return WALLPAPER_OPTIONS.filter((wallpaper) => isWallpaperCompatible(wallpaper, themeName));
+  return WALLPAPER_OPTIONS.filter(
+    (wallpaper) => wallpaper.id !== "gradient" && isWallpaperCompatible(wallpaper, themeName)
+  );
 }
 
 // Re-export types for external use

@@ -15,6 +15,7 @@ import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-rea
 import { useTheme } from "next-themes";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences, type LayoutMode } from "@/contexts/LayoutPreferencesContext";
@@ -42,7 +43,7 @@ export function ThemeControl() {
   const [viewportWidth, setViewportWidth] = useState(0);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const { activeTheme, setActiveTheme } = useThemeContext();
-  const { activeWallpaper, setActiveWallpaper } = useWallpaperContext();
+  const { activeWallpaper, setActiveWallpaper, isWallpaperEnabled, setWallpaperEnabled } = useWallpaperContext();
   const { layoutMode, setLayoutMode } = useLayoutPreferences();
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
@@ -175,8 +176,20 @@ export function ThemeControl() {
 
           {/* Wallpaper Picker Section */}
           <div>
-            <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Wallpaper</h3>
-            <WallpaperPicker selectedWallpaper={activeWallpaper} onSelect={setActiveWallpaper} />
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Wallpaper</h3>
+              <Switch
+                checked={isWallpaperEnabled}
+                onCheckedChange={setWallpaperEnabled}
+                aria-label="Enable wallpaper"
+                data-testid="wallpaper-toggle"
+              />
+            </div>
+            <WallpaperPicker
+              selectedWallpaper={activeWallpaper}
+              onSelect={setActiveWallpaper}
+              isEnabled={isWallpaperEnabled}
+            />
           </div>
 
           {/* Mode Toggle, Layout Toggle & Reset */}

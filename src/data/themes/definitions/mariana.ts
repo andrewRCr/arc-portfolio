@@ -136,7 +136,7 @@ export const marianaTheme: Theme = {
   },
 
   // Default wallpaper for this theme
-  defaultWallpaper: "gradient",
+  defaultWallpaper: "diana-prundeanu",
 
   // Swatch colors for theme preview grid (semantic-weighted, diversified)
   // Slots: 0=Muted, 1=Primary, 2=Accent, 3=Secondary, 4-6=Others, 7=Foreground

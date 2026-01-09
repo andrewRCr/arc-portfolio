@@ -3,6 +3,7 @@
  *
  * Carousel-style wallpaper picker with prev/next navigation
  * and thumbnail preview. Only shows wallpapers compatible with current theme.
+ * Includes an enable/disable toggle to show gradient instead of wallpaper.
  */
 
 import { useCallback, KeyboardEvent } from "react";
@@ -16,6 +17,8 @@ export interface WallpaperPickerProps {
   selectedWallpaper: string;
   /** Callback when a wallpaper is selected */
   onSelect: (wallpaperId: string) => void;
+  /** Whether wallpaper display is enabled (false dims controls) */
+  isEnabled?: boolean;
   /** Additional CSS classes */
   className?: string;
 }
@@ -36,7 +39,12 @@ export function formatAttribution(id: string): string {
     .join(" ");
 }
 
-export function WallpaperPicker({ selectedWallpaper, onSelect, className }: WallpaperPickerProps) {
+export function WallpaperPicker({
+  selectedWallpaper,
+  onSelect,
+  isEnabled = true,
+  className,
+}: WallpaperPickerProps) {
   const wallpapers = useCompatibleWallpapers();
 
   // Find current index
@@ -75,13 +83,14 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
       {/* Thumbnail Preview */}
       <div
         data-testid="wallpaper-preview"
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
+        tabIndex={isEnabled ? 0 : -1}
+        onKeyDown={isEnabled ? handleKeyDown : undefined}
         className={cn(
           "relative w-[200px] min-w-[200px] h-[150px] min-h-[150px]",
           "rounded-md overflow-hidden",
           "outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-          "bg-muted"
+          "bg-muted transition-opacity",
+          !isEnabled && "opacity-40 pointer-events-none"
         )}
       >
         {currentWallpaper?.id === "gradient" || !currentWallpaper?.src ? (
@@ -101,18 +110,24 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
       </div>
 
       {/* Navigation Controls */}
-      <div className="flex items-center justify-between gap-2">
+      <div
+        className={cn(
+          "flex items-center gap-2 transition-opacity",
+          !isEnabled && "opacity-40 pointer-events-none"
+        )}
+      >
         <button
           type="button"
           onClick={(e) => {
             goToPrev();
             e.currentTarget.blur();
           }}
+          disabled={!isEnabled}
           aria-label="Previous wallpaper"
           className={cn(
             "group p-1.5 rounded-md",
             "border border-transparent hover:border-foreground/60 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-            "transition-all"
+            "transition-all disabled:cursor-not-allowed"
           )}
         >
           <ChevronLeft className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -129,11 +144,12 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
             goToNext();
             e.currentTarget.blur();
           }}
+          disabled={!isEnabled}
           aria-label="Next wallpaper"
           className={cn(
             "group p-1.5 rounded-md",
             "border border-transparent hover:border-foreground/60 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-            "transition-all"
+            "transition-all disabled:cursor-not-allowed"
           )}
         >
           <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -141,7 +157,12 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, className }: Wall
       </div>
 
       {/* Attribution */}
-      <span className="text-xs text-muted-foreground italic -mt-1">
+      <span
+        className={cn(
+          "text-xs text-muted-foreground italic -mt-1 transition-opacity",
+          !isEnabled && "opacity-40"
+        )}
+      >
         {formatAttribution(currentWallpaper?.id ?? "gradient")}
       </span>
     </div>
