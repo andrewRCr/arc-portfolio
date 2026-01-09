@@ -138,7 +138,7 @@
 }
 
 /* AUTO-GENERATED THEME VARIANTS - DO NOT EDIT MANUALLY */
-/* Generated: 3 themes × 2 modes = 6 class variants */
+/* Generated: 6 themes × 2 modes = 12 class variants */
 
 .remedy.dark {
   /* Base colors */
@@ -450,6 +450,318 @@
   --shadow-sm: 0 1px 2px rgba(60, 56, 54, 0.08);
   --shadow-md: 0 2px 8px rgba(60, 56, 54, 0.12);
   --shadow-lg: 0 4px 16px rgba(60, 56, 54, 0.16);
+}
+
+.ayu.dark {
+  /* Base colors */
+  --background: 31 36 48;
+  --foreground: 204 202 194;
+
+  /* Card colors */
+  --card: 40 46 59;
+  --card-foreground: 204 202 194;
+
+  /* Popover colors */
+  --popover: 40 46 59;
+  --popover-foreground: 204 202 194;
+
+  /* Primary colors */
+  --primary: 255 204 102;
+  --primary-foreground: 23 27 36;
+
+  /* Secondary colors */
+  --secondary: 92 207 230;
+  --secondary-foreground: 23 27 36;
+
+  /* Muted colors */
+  --muted: 40 46 59;
+  --muted-foreground: 141 149 163;
+
+  /* Accent colors */
+  --accent: 255 173 102;
+  --accent-foreground: 23 27 36;
+
+  /* Decorative accents */
+  --accent-red: 242 135 121;
+  --accent-orange: 255 173 102;
+  --accent-green: 213 255 128;
+  --accent-blue: 115 208 255;
+  --accent-purple: 223 191 255;
+
+  /* Destructive colors */
+  --destructive: 255 102 102;
+  --destructive-foreground: 23 27 36;
+
+  /* UI elements */
+  --border: 69 75 92;
+  --border-strong: 85 91 108;
+  --input: 40 46 59;
+  --ring: 255 204 102;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+}
+
+.ayu.light {
+  /* Base colors */
+  --background: 252 252 252;
+  --foreground: 92 97 102;
+
+  /* Card colors */
+  --card: 248 249 250;
+  --card-foreground: 92 97 102;
+
+  /* Popover colors */
+  --popover: 248 249 250;
+  --popover-foreground: 92 97 102;
+
+  /* Primary colors */
+  --primary: 242 151 24;
+  --primary-foreground: 23 27 36;
+
+  /* Secondary colors */
+  --secondary: 85 180 212;
+  --secondary-foreground: 23 27 36;
+
+  /* Muted colors */
+  --muted: 248 249 250;
+  --muted-foreground: 104 114 127;
+
+  /* Accent colors */
+  --accent: 255 126 51;
+  --accent-foreground: 23 27 36;
+
+  /* Decorative accents */
+  --accent-red: 240 113 113;
+  --accent-orange: 255 126 51;
+  --accent-green: 134 179 0;
+  --accent-blue: 57 158 230;
+  --accent-purple: 163 122 204;
+
+  /* Destructive colors */
+  --destructive: 196 68 68;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 224 224 224;
+  --border-strong: 208 208 208;
+  --input: 248 249 250;
+  --ring: 242 151 24;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(92, 97, 102, 0.08);
+  --shadow-md: 0 2px 8px rgba(92, 97, 102, 0.12);
+  --shadow-lg: 0 4px 16px rgba(92, 97, 102, 0.16);
+}
+
+.rouge.dark {
+  /* Base colors */
+  --background: 23 32 48;
+  --foreground: 187 187 187;
+
+  /* Card colors */
+  --card: 30 42 61;
+  --card-foreground: 187 187 187;
+
+  /* Popover colors */
+  --popover: 41 58 87;
+  --popover-foreground: 187 187 187;
+
+  /* Primary colors */
+  --primary: 198 121 126;
+  --primary-foreground: 23 32 48;
+
+  /* Secondary colors */
+  --secondary: 126 178 201;
+  --secondary-foreground: 23 32 48;
+
+  /* Muted colors */
+  --muted: 30 42 61;
+  --muted-foreground: 167 172 185;
+
+  /* Accent colors */
+  --accent: 234 190 154;
+  --accent-foreground: 23 32 48;
+
+  /* Decorative accents */
+  --accent-red: 198 121 126;
+  --accent-orange: 234 190 154;
+  --accent-green: 163 176 154;
+  --accent-blue: 126 178 201;
+  --accent-purple: 177 139 177;
+
+  /* Destructive colors */
+  --destructive: 184 77 85;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 74 85 104;
+  --border-strong: 117 128 149;
+  --input: 30 42 61;
+  --ring: 198 121 126;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+}
+
+.rouge.light {
+  /* Base colors */
+  --background: 248 246 244;
+  --foreground: 45 55 72;
+
+  /* Card colors */
+  --card: 255 255 255;
+  --card-foreground: 45 55 72;
+
+  /* Popover colors */
+  --popover: 255 255 255;
+  --popover-foreground: 45 55 72;
+
+  /* Primary colors */
+  --primary: 156 74 80;
+  --primary-foreground: 255 255 255;
+
+  /* Secondary colors */
+  --secondary: 74 122 143;
+  --secondary-foreground: 255 255 255;
+
+  /* Muted colors */
+  --muted: 232 228 224;
+  --muted-foreground: 90 103 113;
+
+  /* Accent colors */
+  --accent: 146 109 61;
+  --accent-foreground: 255 255 255;
+
+  /* Decorative accents */
+  --accent-red: 156 74 80;
+  --accent-orange: 154 115 64;
+  --accent-green: 74 103 65;
+  --accent-blue: 74 122 143;
+  --accent-purple: 124 90 124;
+
+  /* Destructive colors */
+  --destructive: 163 61 68;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 209 213 219;
+  --border-strong: 156 163 175;
+  --input: 255 255 255;
+  --ring: 156 74 80;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(45, 55, 72, 0.08);
+  --shadow-md: 0 2px 8px rgba(45, 55, 72, 0.12);
+  --shadow-lg: 0 4px 16px rgba(45, 55, 72, 0.16);
+}
+
+.mariana.dark {
+  /* Base colors */
+  --background: 48 56 65;
+  --foreground: 216 222 233;
+
+  /* Card colors */
+  --card: 52 61 70;
+  --card-foreground: 216 222 233;
+
+  /* Popover colors */
+  --popover: 62 72 82;
+  --popover-foreground: 216 222 233;
+
+  /* Primary colors */
+  --primary: 92 153 214;
+  --primary-foreground: 30 37 44;
+
+  /* Secondary colors */
+  --secondary: 249 174 88;
+  --secondary-foreground: 30 37 44;
+
+  /* Muted colors */
+  --muted: 52 61 70;
+  --muted-foreground: 165 173 182;
+
+  /* Accent colors */
+  --accent: 95 180 180;
+  --accent-foreground: 30 37 44;
+
+  /* Decorative accents */
+  --accent-red: 236 95 102;
+  --accent-orange: 249 123 88;
+  --accent-green: 153 199 148;
+  --accent-blue: 92 153 214;
+  --accent-purple: 198 149 198;
+
+  /* Destructive colors */
+  --destructive: 236 95 102;
+  --destructive-foreground: 30 37 44;
+
+  /* UI elements */
+  --border: 75 85 97;
+  --border-strong: 90 101 114;
+  --input: 52 61 70;
+  --ring: 92 153 214;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+}
+
+.mariana.light {
+  /* Base colors */
+  --background: 247 249 251;
+  --foreground: 48 56 65;
+
+  /* Card colors */
+  --card: 255 255 255;
+  --card-foreground: 48 56 65;
+
+  /* Popover colors */
+  --popover: 255 255 255;
+  --popover-foreground: 48 56 65;
+
+  /* Primary colors */
+  --primary: 46 107 165;
+  --primary-foreground: 255 255 255;
+
+  /* Secondary colors */
+  --secondary: 138 92 33;
+  --secondary-foreground: 255 255 255;
+
+  /* Muted colors */
+  --muted: 238 241 245;
+  --muted-foreground: 90 101 117;
+
+  /* Accent colors */
+  --accent: 42 115 115;
+  --accent-foreground: 255 255 255;
+
+  /* Decorative accents */
+  --accent-red: 201 64 72;
+  --accent-orange: 196 96 46;
+  --accent-green: 90 154 90;
+  --accent-blue: 58 127 194;
+  --accent-purple: 154 90 154;
+
+  /* Destructive colors */
+  --destructive: 201 64 72;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 220 225 232;
+  --border-strong: 197 205 214;
+  --input: 255 255 255;
+  --ring: 58 127 194;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(48, 56, 65, 0.08);
+  --shadow-md: 0 2px 8px rgba(48, 56, 65, 0.12);
+  --shadow-lg: 0 4px 16px rgba(48, 56, 65, 0.16);
 }
 
 /* END AUTO-GENERATED THEME VARIANTS */

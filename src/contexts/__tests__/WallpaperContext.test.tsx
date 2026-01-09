@@ -56,7 +56,7 @@ function TestConsumer() {
       <span data-testid="active-wallpaper">{activeWallpaper}</span>
       <span data-testid="active-theme">{activeTheme}</span>
       <span data-testid="wallpaper-src-hires">{wallpaperSrcHiRes ?? "undefined"}</span>
-      <button onClick={() => setActiveWallpaper("venti-views")}>Set Venti Views</button>
+      <button onClick={() => setActiveWallpaper("karolis-milisauskas")}>Set Karolis</button>
       <button onClick={() => setActiveWallpaper("anne-nygard")}>Set Anne Nygard</button>
       <button onClick={() => setActiveWallpaper(remedyWallpaper as WallpaperId)}>Set Remedy Wallpaper</button>
       <button onClick={() => setActiveWallpaper(hiResWallpaper as WallpaperId)}>Set HiRes Wallpaper</button>
@@ -94,7 +94,7 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
 
       // Change wallpaper
       await act(async () => {
-        screen.getByText("Set Venti Views").click();
+        screen.getByText("Set Karolis").click();
       });
 
       // Verify localStorage was updated
@@ -102,7 +102,7 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
       expect(stored).toBeDefined();
 
       const prefs = JSON.parse(stored!);
-      expect(prefs.remedy).toBe("venti-views");
+      expect(prefs.remedy).toBe("karolis-milisauskas");
     });
 
     it("should use correct localStorage key", () => {
@@ -120,9 +120,9 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
 
       // Set wallpaper on remedy (default theme)
       await act(async () => {
-        screen.getByText("Set Venti Views").click();
+        screen.getByText("Set Karolis").click();
       });
-      expect(screen.getByTestId("active-wallpaper").textContent).toBe("venti-views");
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe("karolis-milisauskas");
 
       // Switch to gruvbox
       await act(async () => {
@@ -134,12 +134,12 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
         screen.getByText("Set Anne Nygard").click();
       });
 
-      // Switch back to remedy - should restore venti-views
+      // Switch back to remedy - should restore karolis-milisauskas
       await act(async () => {
         screen.getByText("Switch to Remedy").click();
       });
 
-      expect(screen.getByTestId("active-wallpaper").textContent).toBe("venti-views");
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe("karolis-milisauskas");
     });
 
     it("should use theme default when no saved preference exists", async () => {

@@ -147,6 +147,29 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
     }
   }, [activeTheme, isHydrated]);
 
+  // Sync wallpaper across tabs via storage event
+  // Note: storage event only fires when localStorage is changed by a DIFFERENT tab
+  React.useEffect(() => {
+    function handleStorageChange(event: StorageEvent) {
+      if (event.key === WALLPAPER_PREFS_STORAGE_KEY && event.newValue) {
+        try {
+          const newPrefs: WallpaperPreferences = JSON.parse(event.newValue);
+          const newWallpaper = getWallpaperForTheme(activeTheme, newPrefs);
+          if (newWallpaper !== activeWallpaper) {
+            setActiveWallpaperInternal(newWallpaper);
+            // Also sync to cookie so SSR stays consistent
+            syncWallpaperCookie(activeTheme, newWallpaper);
+          }
+        } catch {
+          // Invalid JSON, ignore
+        }
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [activeTheme, activeWallpaper]);
+
   // Wrapped setter that saves to localStorage and syncs to cookie
   const setActiveWallpaper = React.useCallback(
     (id: WallpaperId) => {

@@ -10,9 +10,12 @@
  * 3. Import and add to registry below
  */
 
+import { ayuTheme } from "./definitions/ayu";
 import { gruvboxTheme } from "./definitions/gruvbox";
+import { marianaTheme } from "./definitions/mariana";
 import { remedyTheme } from "./definitions/remedy";
 import { rosePineTheme } from "./definitions/rose-pine";
+import { rougeTheme } from "./definitions/rouge";
 import type { ThemeRegistry } from "./types";
 
 /**
@@ -26,6 +29,9 @@ export const themes: ThemeRegistry = {
   remedy: remedyTheme,
   "rose-pine": rosePineTheme,
   gruvbox: gruvboxTheme,
+  ayu: ayuTheme,
+  rouge: rougeTheme,
+  mariana: marianaTheme,
 };
 
 /**

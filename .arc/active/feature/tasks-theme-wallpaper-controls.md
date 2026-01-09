@@ -397,24 +397,14 @@ neofetch-inspired color swatch grid.
         - 2 universal, 9 Remedy, 9 Rose Pine, 8 Gruvbox (some shared)
         - All have srcHiRes for 1440p support
 
-- [ ] **6.2 Expand theme palette (3→6 themes)**
-
-    - [ ] **6.2.a Research and select 3 new themes**
-        - Criteria: distinct from existing (color variety), community recognition, personal preference
-        - Candidates to evaluate: Synthwave '84, Halcyon, Doki, Catppuccin, Horizon, etc.
-        - Goal: fill color gaps (yellow-dominant, red-dominant, etc.)
-
-    - [ ] **6.2.b Implement new theme definitions**
-        - Create palette files in `src/data/themes/palettes/`
-        - Create definition files in `src/data/themes/definitions/`
-        - Ensure all required tokens are defined
-
-    - [ ] **6.2.c Source wallpapers for new themes**
-        - Find compatible wallpapers for each new theme
-        - Process to 1080p and 1440p WebP
-        - Update wallpaper registry with new entries
-
-    - [ ] **6.2.d Run quality gates**
+- [x] **6.2 Expand theme palette and refine semantic tokens**
+    - Finalized 6-theme lineup: Remedy, Rose Pine, Gruvbox, Ayu, Rouge, Mariana
+    - Added Ayu, Rouge, Mariana themes (palettes + definitions)
+    - Fixed swatch position ordering: accent now at position 2 (reflects dominant usage)
+    - Standardized documentation: accent is "main interactive color", secondary is "subtle"
+    - Added cross-tab sync for wallpaper changes (was missing, themes already had it)
+    - Sourced wallpapers for all themes (41 total + gradient)
+    - Quality gates pass (809 tests)
 
 - [ ] **6.3 Generate wallpaper thumbnails**
 

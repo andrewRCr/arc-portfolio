@@ -4,11 +4,11 @@
  * Maps Remedy palette colors to shadcn/ui semantic roles.
  * Supports light ("bright") and dark modes with orange as signature accent.
  *
- * **Semantic Mapping (from VS Code theme ui.ts):**
- * - Primary action: Orange (accent, button.primary)
- * - Secondary action: Yellow (button.secondary)
- * - Default accent: Cyan (distinct from orange primary)
- * - Destructive: Red (icon.error)
+ * **Semantic Mapping (derived from VS Code theme ui.ts):**
+ * - Primary: Orange (Remedy's signature color)
+ * - Secondary: Yellow (subtle - used sparingly)
+ * - Default accent: Cyan (main interactive color - links, focus, highlights)
+ * - Destructive: Red
  *
  * **Surface Type Mapping:**
  * Remedy uses slightly lightened base for code areas. We follow shadcn
@@ -141,13 +141,14 @@ export const remedyTheme: Theme = {
   defaultWallpaper: "gradient",
 
   // Swatch colors for theme preview grid (semantic-weighted, diversified)
-  // Slots: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
+  // Slots: 0=Muted, 1=Primary, 2=Accent, 3=Secondary, 4-6=Others, 7=Foreground
+  // Note: Accent at position 2 reflects its role as the dominant interactive color
   swatchColors: {
     light: [
       remedyBright.baseCode, // 0: Muted
       remedyAccents.normal.orange, // 1: Primary
-      remedyAccents.normal.yellow, // 2: Secondary
-      remedyAccents.normal.cyan, // 3: Accent
+      remedyAccents.normal.cyan, // 2: Accent (main interactive color)
+      remedyAccents.normal.yellow, // 3: Secondary (subtle)
       remedyAccents.normal.red, // 4: Other-1
       remedyAccents.normal.green, // 5: Other-2
       remedyAccents.normal.magenta, // 6: Other-3 (purple)
@@ -156,8 +157,8 @@ export const remedyTheme: Theme = {
     dark: [
       remedyDark.baseCode, // 0: Muted
       remedyAccents.bright.orange, // 1: Primary
-      remedyAccents.bright.yellow, // 2: Secondary
-      remedyAccents.bright.cyan, // 3: Accent
+      remedyAccents.bright.cyan, // 2: Accent (main interactive color)
+      remedyAccents.bright.yellow, // 3: Secondary (subtle)
       remedyAccents.bright.red, // 4: Other-1
       remedyAccents.bright.green, // 5: Other-2
       remedyAccents.bright.magenta, // 6: Other-3 (purple)

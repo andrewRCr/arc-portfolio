@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { themes } from "@/data/themes";
+import { useThemeContext } from "@/contexts/ThemeContext";
 import { buildWallpaperGradient } from "@/lib/theme";
 
 /**
@@ -22,6 +24,7 @@ export interface WallpaperBackgroundProps {
  * **Features:**
  * - Fixed positioning behind all content
  * - Theme-aware gradient fallback (uses CSS custom properties)
+ * - Supports custom gradient stops per theme (for neutral themes like Mariana)
  * - Priority-loaded image when provided (via Next.js Image)
  * - Smooth fade-in transition when image loads
  * - Decorative element (aria-hidden for accessibility)
@@ -46,11 +49,16 @@ export interface WallpaperBackgroundProps {
  */
 export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgroundProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const { activeTheme } = useThemeContext();
+
+  // Get custom gradient stops from theme config (if defined)
+  const themeConfig = themes[activeTheme];
+  const customGradientStops = themeConfig?.gradientStops;
 
   // Gradient mode: show gradient. Image mode: flat background (image fades in on top)
   const backgroundStyle = imageSrc
     ? { backgroundColor: "rgb(var(--background))" }
-    : { background: buildWallpaperGradient() };
+    : { background: buildWallpaperGradient(customGradientStops) };
 
   // Build srcSet if hi-res version available
   const srcSet = imageSrcHiRes ? `${imageSrc} 1920w, ${imageSrcHiRes} 2560w` : undefined;

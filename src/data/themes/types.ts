@@ -74,7 +74,7 @@ export interface ThemeColors {
   "primary-foreground": string;
 
   // Secondary colors
-  /** Secondary action elements */
+  /** Subtle backgrounds, less prominent actions (used sparingly in UI) */
   secondary: string;
   /** Text on secondary backgrounds */
   "secondary-foreground": string;
@@ -86,7 +86,7 @@ export interface ThemeColors {
   "muted-foreground": string;
 
   // Default accent colors
-  /** Highlighted elements, callouts */
+  /** Main interactive color: links, focus states, highlights (the "workhorse" outside primary) */
   accent: string;
   /** Text on accent backgrounds */
   "accent-foreground": string;
@@ -138,13 +138,17 @@ export interface ThemeColors {
 /**
  * Swatch color arrays for neofetch-inspired theme preview grid.
  *
- * **Slot Mapping (Deduplicated, weighted):**
+ * **Slot Mapping (Weighted by visual dominance):**
  * - Position 0: Muted background
- * - Position 1: Primary accent
- * - Position 2: Secondary accent
- * - Position 3: Default accent
+ * - Position 1: Primary (signature color)
+ * - Position 2: Accent (main interactive color - links, focus, highlights)
+ * - Position 3: Secondary (subtle, used sparingly)
  * - Positions 4-6: Three unique "other" colors (per-theme, avoiding P/S/A duplicates)
  * - Position 7: Foreground
+ *
+ * Note: Accent appears before Secondary because it's the dominant interactive color
+ * in the UI (following shadcn/Material Design conventions where accent/tertiary
+ * is the workhorse color for links, focus states, and highlights).
  *
  * Each theme maps these slots to its palette's characteristic colors.
  */
@@ -153,6 +157,16 @@ export interface SwatchColors {
   readonly light: readonly string[];
   /** 8 hex colors for dark mode swatch display */
   readonly dark: readonly string[];
+}
+
+/**
+ * Gradient stop definition for wallpaper fallback.
+ */
+export interface GradientStop {
+  /** Theme color token to use */
+  readonly token: keyof ThemeColors;
+  /** CSS gradient position (e.g., "0%", "50%", "100%") */
+  readonly position: string;
 }
 
 /**
@@ -165,6 +179,7 @@ export interface SwatchColors {
  * - Swatch colors for visual theme preview
  * - Default wallpaper for new users
  * - Accent variant metadata (optional)
+ * - Custom gradient stops (optional)
  */
 export interface Theme {
   /** Unique theme identifier (kebab-case) */
@@ -181,6 +196,8 @@ export interface Theme {
   readonly defaultWallpaper: string;
   /** Accent variant configuration (optional) */
   readonly accentVariants?: AccentMetadata;
+  /** Custom gradient stops for wallpaper fallback (optional, defaults to accent→background→secondary) */
+  readonly gradientStops?: readonly GradientStop[];
 }
 
 /**

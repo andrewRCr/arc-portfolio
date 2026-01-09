@@ -4,6 +4,12 @@
  * Maps Rosé Pine palette colors to shadcn/ui semantic roles.
  * Uses Main variant for dark mode, Dawn variant for light mode.
  *
+ * **Semantic Mapping:**
+ * - Primary: Pine (teal - Rose Pine's signature)
+ * - Secondary: Foam (cyan - subtle, used sparingly)
+ * - Default accent: Rose (mauve - main interactive color)
+ * - Destructive: Love (red)
+ *
  * **Surface Type Mapping:**
  * Rose Pine's official palette defines distinct surface levels:
  * - `surface`: "Secondary background (cards, panels)" → maps to `card`
@@ -139,13 +145,14 @@ export const rosePineTheme: Theme = {
   defaultWallpaper: "gradient",
 
   // Swatch colors for theme preview grid (semantic-weighted, diversified)
-  // Slots: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
+  // Slots: 0=Muted, 1=Primary, 2=Accent, 3=Secondary, 4-6=Others, 7=Foreground
+  // Note: Accent at position 2 reflects its role as the dominant interactive color
   swatchColors: {
     light: [
       rosePineDawn.highlight_med, // 0: Muted
       rosePineDawn.pine, // 1: Primary (teal)
-      rosePineDawn.foam, // 2: Secondary (cyan)
-      rosePineDawn.rose, // 3: Accent (mauve)
+      rosePineDawn.rose, // 2: Accent (mauve, main interactive color)
+      rosePineDawn.foam, // 3: Secondary (cyan, subtle)
       rosePineDawn.love, // 4: Other-1 (red)
       rosePineDawn.gold, // 5: Other-2 (orange)
       rosePineDawn.iris, // 6: Other-3 (purple)
@@ -154,8 +161,8 @@ export const rosePineTheme: Theme = {
     dark: [
       rosePineMain.highlight_med, // 0: Muted
       rosePineMain.pine, // 1: Primary (teal)
-      rosePineMain.foam, // 2: Secondary (cyan)
-      rosePineMain.rose, // 3: Accent (mauve)
+      rosePineMain.rose, // 2: Accent (mauve, main interactive color)
+      rosePineMain.foam, // 3: Secondary (cyan, subtle)
       rosePineMain.love, // 4: Other-1 (red)
       rosePineMain.gold, // 5: Other-2 (orange)
       rosePineMain.iris, // 6: Other-3 (purple)
