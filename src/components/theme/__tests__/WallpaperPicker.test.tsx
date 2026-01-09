@@ -215,7 +215,6 @@ describe("WallpaperPicker", () => {
       const preview = screen.getByTestId("wallpaper-preview");
       expect(preview).toHaveAttribute("tabIndex", "-1");
     });
-
   });
 
   describe("Disabled State", () => {
