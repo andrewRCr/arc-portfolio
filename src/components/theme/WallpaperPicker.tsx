@@ -39,12 +39,7 @@ export function formatAttribution(id: string): string {
     .join(" ");
 }
 
-export function WallpaperPicker({
-  selectedWallpaper,
-  onSelect,
-  isEnabled = true,
-  className,
-}: WallpaperPickerProps) {
+export function WallpaperPicker({ selectedWallpaper, onSelect, isEnabled = true, className }: WallpaperPickerProps) {
   const wallpapers = useCompatibleWallpapers();
 
   // Find current index
@@ -100,7 +95,7 @@ export function WallpaperPicker({
           />
         ) : (
           <Image
-            src={currentWallpaper.src}
+            src={currentWallpaper.thumbnailSrc ?? currentWallpaper.src}
             alt={`Wallpaper: ${currentWallpaper.id}`}
             fill
             className="object-cover"
@@ -110,12 +105,7 @@ export function WallpaperPicker({
       </div>
 
       {/* Navigation Controls */}
-      <div
-        className={cn(
-          "flex items-center gap-2 transition-opacity",
-          !isEnabled && "opacity-40 pointer-events-none"
-        )}
-      >
+      <div className={cn("flex items-center gap-2 transition-opacity", !isEnabled && "opacity-40 pointer-events-none")}>
         <button
           type="button"
           onClick={(e) => {
@@ -157,12 +147,7 @@ export function WallpaperPicker({
       </div>
 
       {/* Attribution */}
-      <span
-        className={cn(
-          "text-xs text-muted-foreground italic -mt-1 transition-opacity",
-          !isEnabled && "opacity-40"
-        )}
-      >
+      <span className={cn("text-xs text-muted-foreground italic -mt-1 transition-opacity", !isEnabled && "opacity-40")}>
         {formatAttribution(currentWallpaper?.id ?? "gradient")}
       </span>
     </div>
