@@ -273,6 +273,56 @@ describe("ThemeControlDrawer", () => {
     });
   });
 
+  describe("Reset Button", () => {
+    it("resets layout mode to boxed", async () => {
+      const user = userEvent.setup();
+      // Set a wallpaper pref so reset button is enabled
+      localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"remedy":"mountains"}');
+
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset/i });
+      await user.click(resetButton);
+
+      expect(mockSetLayoutMode).toHaveBeenCalledWith("boxed");
+    });
+
+    it("resets light/dark mode to dark", async () => {
+      const user = userEvent.setup();
+      // Set a wallpaper pref so reset button is enabled
+      localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"remedy":"mountains"}');
+
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset/i });
+      await user.click(resetButton);
+
+      expect(mockSetTheme).toHaveBeenCalledWith("dark");
+    });
+
+    it("clears layout mode from localStorage", async () => {
+      const user = userEvent.setup();
+      localStorage.setItem("arc-portfolio-layout-mode", "full");
+      localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"remedy":"mountains"}');
+
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset/i });
+      await user.click(resetButton);
+
+      expect(localStorage.getItem("arc-portfolio-layout-mode")).toBeNull();
+    });
+  });
+
   describe("Accessibility", () => {
     it("has no accessibility violations when closed", async () => {
       const results = await checkA11y(<ThemeControlDrawer />);

@@ -348,6 +348,23 @@ describe("ThemeControl", () => {
       expect(mockSetLayoutMode).toHaveBeenCalledWith("boxed");
     });
 
+    it("resets light/dark mode to dark", async () => {
+      const user = userEvent.setup();
+      // Set a wallpaper pref so reset button is enabled
+      localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"remedy":"mountains"}');
+
+      render(<ThemeControl />);
+
+      const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
+      await user.click(trigger);
+
+      const resetButton = screen.getByRole("button", { name: /reset.*defaults/i });
+      await user.click(resetButton);
+
+      // Should call setTheme with default (dark)
+      expect(mockSetTheme).toHaveBeenCalledWith("dark");
+    });
+
     it("reset button is disabled when no custom preferences", async () => {
       const user = userEvent.setup();
       // Clear localStorage - no custom prefs

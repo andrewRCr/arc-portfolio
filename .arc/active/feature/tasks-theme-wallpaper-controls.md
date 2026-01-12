@@ -540,20 +540,26 @@ neofetch-inspired color swatch grid.
 
 - [ ] **8.1 Accessibility audit**
 
-    - [ ] **8.1.a Run axe on all new components**
-        - ThemeSwatch, ThemeSelector, WallpaperPicker
-        - ThemeControl, ThemeControlDrawer
+    - [ ] **8.1.a Verify axe coverage on all new components** (already done - confirm passing)
+        - ThemeSwatch, ThemeSelector, WallpaperPicker, ThemeControl, ThemeControlDrawer
 
-    - [ ] **8.1.b Verify keyboard navigation flow**
-        - Tab order logical
-        - All controls reachable
-        - Focus visible at all times
+    - [ ] **8.1.b Add reduced motion support**
+        - Audit animations in Sheet, Popover transitions
+        - Add `motion-reduce:` variants or `prefers-reduced-motion` media query
+        - Test respects user preference
 
-    - [ ] **8.1.c Add screen reader announcements**
-        - Announce theme/wallpaper changes
-        - Use `aria-live` regions if needed
+    - [ ] **8.1.c Add screen reader announcements for state changes**
+        - Announce theme selection changes
+        - Announce wallpaper changes
+        - Announce mode (light/dark) changes
+        - Use `aria-live="polite"` region
 
-    - [ ] **8.1.d Fix any violations found**
+    - [ ] **8.1.d Verify keyboard navigation flow**
+        - Tab order logical through all controls
+        - Focus returns to trigger when popover/drawer closes
+        - Focus trapped within open popover/drawer
+
+    - [ ] **8.1.e Fix any violations found**
 
 - [ ] **8.2 E2E tests for state persistence**
 

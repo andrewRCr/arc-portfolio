@@ -67,6 +67,7 @@ export function ThemeControl() {
   const hasCustomPreferences =
     activeTheme !== defaultPalette ||
     layoutMode !== DEFAULT_LAYOUT_MODE ||
+    theme !== "dark" ||
     (typeof window !== "undefined" && localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY) !== null);
 
   // Workaround for Radix bug #2782: after interacting inside a Popover,
@@ -123,6 +124,7 @@ export function ThemeControl() {
     // Wallpaper resets automatically when theme changes (context reads cleared prefs)
     setActiveTheme(defaultPalette);
     setLayoutMode(DEFAULT_LAYOUT_MODE);
+    setTheme("dark");
   };
 
   const toggleLayoutMode = () => {

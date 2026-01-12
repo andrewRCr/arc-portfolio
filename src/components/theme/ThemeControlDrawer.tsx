@@ -28,6 +28,8 @@ import {
   PALETTE_COOKIE_NAME,
   WALLPAPER_PREFS_STORAGE_KEY,
   WALLPAPER_COOKIE_NAME,
+  LAYOUT_MODE_STORAGE_KEY,
+  LAYOUT_MODE_COOKIE_NAME,
 } from "@/config/storage";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { ThemeSelector } from "./ThemeSelector";
@@ -50,6 +52,8 @@ export function ThemeControlDrawer() {
   // Reset is only meaningful if there are custom preferences
   const hasCustomPreferences =
     activeTheme !== defaultPalette ||
+    layoutMode !== "boxed" ||
+    theme !== "dark" ||
     (typeof window !== "undefined" && localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY) !== null);
 
   const toggleMode = () => {
@@ -65,11 +69,20 @@ export function ThemeControlDrawer() {
   };
 
   const resetToDefaults = () => {
+    // Clear localStorage
     localStorage.removeItem(PALETTE_STORAGE_KEY);
     localStorage.removeItem(WALLPAPER_PREFS_STORAGE_KEY);
+    localStorage.removeItem(LAYOUT_MODE_STORAGE_KEY);
+
+    // Clear cookies
     deleteCookie(PALETTE_COOKIE_NAME);
     deleteCookie(WALLPAPER_COOKIE_NAME);
+    deleteCookie(LAYOUT_MODE_COOKIE_NAME);
+
+    // Reset state to defaults
     setActiveTheme(defaultPalette);
+    setLayoutMode("boxed");
+    setTheme("dark");
   };
 
   // Before hydration: render placeholder
