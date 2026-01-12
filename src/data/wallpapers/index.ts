@@ -140,12 +140,6 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["gruvbox"],
   },
   {
-    id: "andrii-butko",
-    src: "/wallpaper/optimized/andrii-butko-7hRB34KdiIs.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/andrii-butko-7hRB34KdiIs.webp",
-    compatibleThemes: ["gruvbox"],
-  },
-  {
     id: "tuaans",
     src: "/wallpaper/optimized/tuaans.webp",
     thumbnailSrc: "/wallpaper/thumbnails/tuaans.webp",

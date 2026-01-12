@@ -43,12 +43,11 @@ testing against all theme/mode combinations during Task 3.5.c.
 
 ### Gruvbox Theme
 
-| ID                 | Notes     |
-| ------------------ | --------- |
-| josh-withers       |           |
-| bernd-dittrich     | Forest    |
-| andrii-butko       | Mountains |
-| jose-ignacio-pompe |           |
+| ID                 | Notes  |
+| ------------------ | ------ |
+| josh-withers       |        |
+| bernd-dittrich     | Forest |
+| jose-ignacio-pompe |        |
 
 **Notes:**
 
