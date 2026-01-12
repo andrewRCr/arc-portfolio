@@ -191,7 +191,7 @@ export function ThemeControlDrawer() {
                 e.currentTarget.blur();
               }}
               aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "full" ? "boxed" : "full"} layout`}
-              className="gap-2 min-h-11 min-w-11 px-4"
+              className="gap-2 min-h-11 min-w-[5.25rem] px-4"
             >
               {layoutMode === "full" ? (
                 <>

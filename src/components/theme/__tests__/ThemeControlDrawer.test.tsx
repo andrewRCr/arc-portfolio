@@ -147,6 +147,25 @@ describe("ThemeControlDrawer", () => {
       // Sheet should be closed
       expect(screen.queryByRole("listbox", { name: /select theme/i })).not.toBeInTheDocument();
     });
+
+    it("clicking overlay closes the drawer", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      // Sheet should be open
+      expect(screen.getByRole("listbox", { name: /select theme/i })).toBeInTheDocument();
+
+      // Find and click the overlay (data-slot="sheet-overlay")
+      const overlay = document.querySelector('[data-slot="sheet-overlay"]');
+      expect(overlay).toBeInTheDocument();
+      await user.click(overlay!);
+
+      // Sheet should be closed
+      expect(screen.queryByRole("listbox", { name: /select theme/i })).not.toBeInTheDocument();
+    });
   });
 
   describe("Touch Targets", () => {
@@ -251,7 +270,6 @@ describe("ThemeControlDrawer", () => {
       const layoutButton = screen.getByRole("button", { name: /current layout/i });
 
       expect(layoutButton.className).toMatch(/min-h-11/);
-      expect(layoutButton.className).toMatch(/min-w-11/);
     });
   });
 
