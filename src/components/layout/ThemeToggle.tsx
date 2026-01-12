@@ -1,9 +1,9 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 /**
  * ThemeToggle Component
@@ -18,11 +18,7 @@ import { Button } from "@/components/ui/button";
  */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Avoid hydration mismatch by only rendering after mount
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern
-  useEffect(() => setMounted(true), []);
+  const mounted = useHasMounted();
 
   if (!mounted) {
     // Before hydration: render both icons, CSS shows correct one based on html.dark class

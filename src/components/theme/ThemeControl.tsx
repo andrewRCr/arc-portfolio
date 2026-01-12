@@ -12,6 +12,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-react";
+import { useHasMounted } from "@/hooks/useHasMounted";
 import { useTheme } from "next-themes";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -38,7 +39,7 @@ import { WallpaperPicker } from "./WallpaperPicker";
 const DEFAULT_LAYOUT_MODE: LayoutMode = "boxed";
 
 export function ThemeControl() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
   const [open, setOpen] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(0);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -49,10 +50,9 @@ export function ThemeControl() {
   const swatchColors = useThemeSwatch();
   const { windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
-  // Avoid hydration mismatch - theme colors differ between server and client
-  // Also track viewport width for layout mode button availability
+  // Track viewport width for layout mode button availability
   useEffect(() => {
-    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect -- Intentional hydration pattern
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Sync with external browser state (window dimensions)
     setViewportWidth(window.innerWidth);
 
     const handleResize = () => setViewportWidth(window.innerWidth);

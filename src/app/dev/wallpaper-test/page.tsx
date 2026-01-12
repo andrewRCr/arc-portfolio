@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useTheme } from "next-themes";
+import { useHasMounted } from "@/hooks/useHasMounted";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,7 +28,7 @@ export default function WallpaperTestPage() {
   const { activeTheme, setActiveTheme } = useThemeContext();
   const { setDevOverrideSrc } = useWallpaperContext();
 
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
   const [optimizedFiles, setOptimizedFiles] = useState<string[]>([]);
   const [candidateFiles, setCandidateFiles] = useState<string[]>([]);
   const [selectedSource, setSelectedSource] = useState<WallpaperSource>("none");
@@ -35,7 +36,6 @@ export default function WallpaperTestPage() {
 
   // Fetch wallpaper files from API
   useEffect(() => {
-    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect -- Intentional hydration pattern
     fetch("/api/dev/wallpapers")
       .then((res) => res.json())
       .then((data) => {

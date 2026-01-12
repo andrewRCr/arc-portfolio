@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { themes } from "@/data/themes";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { buildWallpaperGradient } from "@/lib/theme";
@@ -51,6 +51,14 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgr
   const [isLoaded, setIsLoaded] = useState(false);
   const { activeTheme } = useThemeContext();
 
+  // Callback ref handles SSR race condition: image may load from cache before React hydrates
+  // and attaches onLoad handler. Callback refs fire synchronously when DOM mounts.
+  const imgRef = useCallback((node: HTMLImageElement | null) => {
+    if (node?.complete && node?.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, []);
+
   // Get custom gradient stops from theme config (if defined)
   const themeConfig = themes[activeTheme];
   const customGradientStops = themeConfig?.gradientStops;
@@ -68,6 +76,7 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgr
       {imageSrc && (
         /* eslint-disable-next-line @next/next/no-img-element -- Using native img for srcSet with separate files */
         <img
+          ref={imgRef}
           src={imageSrc}
           srcSet={srcSet}
           sizes="100vw"

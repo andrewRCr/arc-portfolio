@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { useHasMounted } from "@/hooks/useHasMounted";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -25,13 +25,7 @@ const JUMP_LINKS = [
  * Route: /dev/typography (only accessible in development - enforced by dev layout)
  */
 export default function TypographyPage() {
-  const [mounted, setMounted] = useState(false);
-
-  // Avoid hydration mismatch
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern
-    setMounted(true);
-  }, []);
+  const mounted = useHasMounted();
 
   if (!mounted) {
     return (

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { useHasMounted } from "@/hooks/useHasMounted";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
@@ -67,15 +68,9 @@ const JUMP_LINKS = [
 export default function ThemeDebugPage() {
   const { theme: colorMode } = useTheme();
   const { activeTheme } = useThemeContext();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
   const [variables, setVariables] = useState<Record<string, string>>({});
   const [cssOpen, setCssOpen] = useState(false);
-
-  // Avoid hydration mismatch
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern
-    setMounted(true);
-  }, []);
 
   // Read CSS variables from DOM
   useEffect(() => {
