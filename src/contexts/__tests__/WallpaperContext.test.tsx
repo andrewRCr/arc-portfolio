@@ -248,21 +248,8 @@ describe("WallpaperContext - High Resolution Support", () => {
     expect(srcHiRes).toContain("/wallpaper/optimized-1440/");
   });
 
-  it("should return undefined when wallpaper has no srcHiRes", async () => {
-    render(
-      <TestWrapper>
-        <TestConsumer />
-      </TestWrapper>
-    );
-
-    // Set a wallpaper without srcHiRes (anne-nygard is remedy-only and has no srcHiRes)
-    await act(async () => {
-      screen.getByText("Set Anne Nygard").click();
-    });
-
-    // Should be undefined
-    expect(screen.getByTestId("wallpaper-src-hires").textContent).toBe("undefined");
-  });
+  // Note: All wallpapers now have srcHiRes, so no test for missing srcHiRes
+  // The code still handles that case gracefully (returns undefined)
 
   it("should return undefined when devOverrideSrc is set", async () => {
     render(

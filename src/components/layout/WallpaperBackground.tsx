@@ -44,7 +44,7 @@ export interface WallpaperBackgroundProps {
  * <WallpaperBackground />
  *
  * // With wallpaper image (fades in when loaded)
- * <WallpaperBackground imageSrc="/wallpaper/optimized/example.webp" />
+ * <WallpaperBackground imageSrc="/wallpaper/optimized-1080/example.webp" />
  * ```
  */
 export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgroundProps) {

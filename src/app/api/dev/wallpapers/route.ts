@@ -6,7 +6,7 @@ import { join } from "path";
  * GET /api/dev/wallpapers
  *
  * Returns list of wallpaper files from both directories:
- * - /public/wallpaper/optimized/ (approved wallpapers)
+ * - /public/wallpaper/optimized-1080/ (approved wallpapers)
  * - /public/wallpaper/candidates/ (new candidates for testing)
  *
  * Development-only API for the wallpaper test page.
