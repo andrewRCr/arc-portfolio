@@ -14,10 +14,12 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-react";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useResetPreferences } from "@/hooks/useResetPreferences";
+import { usePreferenceAnnouncements } from "@/hooks/usePreferenceAnnouncements";
 import { useTheme } from "next-themes";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { ScreenReaderAnnounce } from "@/components/ui/screen-reader-announce";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
@@ -40,6 +42,12 @@ export function ThemeControl() {
   const swatchColors = useThemeSwatch();
   const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
   const { windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
+  const announcement = usePreferenceAnnouncements({
+    activeTheme,
+    activeWallpaper,
+    mode: theme,
+    layoutMode,
+  });
 
   // Track viewport width for layout mode button availability
   useEffect(() => {
@@ -89,8 +97,10 @@ export function ThemeControl() {
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <>
+      <ScreenReaderAnnounce message={announcement} />
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
         <button
           ref={triggerRef}
           type="button"
@@ -196,6 +206,7 @@ export function ThemeControl() {
           </div>
         </div>
       </PopoverContent>
-    </Popover>
+      </Popover>
+    </>
   );
 }

@@ -16,8 +16,10 @@ import { useTheme } from "next-themes";
 import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { ScreenReaderAnnounce } from "@/components/ui/screen-reader-announce";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useResetPreferences } from "@/hooks/useResetPreferences";
+import { usePreferenceAnnouncements } from "@/hooks/usePreferenceAnnouncements";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
@@ -37,6 +39,12 @@ export function ThemeControlDrawer() {
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
   const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
+  const announcement = usePreferenceAnnouncements({
+    activeTheme,
+    activeWallpaper,
+    mode: theme,
+    layoutMode,
+  });
 
   // Sync local open state to context so LayoutWrapper can coordinate UI
   useEffect(() => {
@@ -57,12 +65,14 @@ export function ThemeControlDrawer() {
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <button
-          type="button"
-          aria-label="Open theme settings"
-          className="group flex items-center justify-center gap-1 min-h-11 min-w-11 px-2 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
+    <>
+      <ScreenReaderAnnounce message={announcement} />
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <button
+            type="button"
+            aria-label="Open theme settings"
+            className="group flex items-center justify-center gap-1 min-h-11 min-w-11 px-2 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
         >
           <ThemeSwatch colors={swatchColors} size={16} />
           <ChevronDown className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -186,6 +196,7 @@ export function ThemeControlDrawer() {
           </div>
         </div>
       </SheetContent>
-    </Sheet>
+      </Sheet>
+    </>
   );
 }

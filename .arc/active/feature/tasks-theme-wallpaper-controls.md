@@ -581,39 +581,36 @@ neofetch-inspired color swatch grid.
         - Both hooks excellent: single purpose, proper memoization, clean interfaces
 
     - [x] **8.2.d Fix identified issues**
-        - Created `lib/storage-utils.ts` with `deleteCookie` function
+        - Added `deleteCookie` to `lib/utils.ts` (consolidated with `cn()`)
         - Created `hooks/useResetPreferences.ts` with shared reset logic
         - Created `components/theme/ThemeControlPlaceholder.tsx` with `isMobile` prop
         - Updated ThemeControl and ThemeControlDrawer to use extracted code
-        - All 862 tests pass
 
     - [x] **8.2.e Run quality gates**
-        - Type-check: passed
-        - Lint: passed
-        - Tests: 862 passed
+        - All passed (type-check, lint, 862 tests)
 
-- [ ] **8.3 Accessibility audit**
+- [x] **8.3 Accessibility audit**
 
-    - [ ] **8.3.a Verify axe coverage on all new components** (already done - confirm passing)
-        - ThemeSwatch, ThemeSelector, WallpaperPicker, ThemeControl, ThemeControlDrawer
+    - [x] **8.3.a Verify axe coverage on all new components**
+        - All 5 components have axe tests, all passing
 
-    - [ ] **8.3.b Add reduced motion support**
-        - Audit animations in Sheet, Popover transitions
-        - Add `motion-reduce:` variants or `prefers-reduced-motion` media query
-        - Test respects user preference
+    - [x] **8.3.b Add reduced motion support**
+        - Added `motion-reduce:animate-none` to Sheet overlay and content
+        - Added `motion-reduce:transition-none` to Sheet content
+        - Added `motion-reduce:animate-none` to Popover content
 
-    - [ ] **8.3.c Add screen reader announcements for state changes**
-        - Announce theme selection changes
-        - Announce wallpaper changes
-        - Announce mode (light/dark) changes
-        - Use `aria-live="polite"` region
+    - [x] **8.3.c Add screen reader announcements for state changes**
+        - Created `components/ui/screen-reader-announce.tsx` (aria-live region)
+        - Created `hooks/usePreferenceAnnouncements.ts` (tracks changes, generates messages)
+        - Announces theme, wallpaper, mode, and layout changes
 
-    - [ ] **8.3.d Verify keyboard navigation flow**
-        - Tab order logical through all controls
-        - Focus returns to trigger when popover/drawer closes
-        - Focus trapped within open popover/drawer
+    - [x] **8.3.d Verify keyboard navigation flow**
+        - Tab order logical (trigger → ThemeSelector → toggle → WallpaperPicker → buttons)
+        - Focus trap/return handled by Radix Popover/Sheet primitives
+        - 7 keyboard navigation tests passing
 
-    - [ ] **8.3.e Fix any violations found**
+    - [x] **8.3.e Fix any violations found**
+        - No violations found; all accessibility features working
 
 - [ ] **8.4 E2E tests for state persistence**
 
