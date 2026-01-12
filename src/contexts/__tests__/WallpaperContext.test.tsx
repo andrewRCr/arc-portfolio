@@ -89,6 +89,25 @@ function TestWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
+describe("WallpaperContext - Error Handling", () => {
+  it("throws error when useWallpaperContext is used outside provider", () => {
+    // Suppress console.error for this test
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    // Component that uses the hook outside provider
+    function InvalidConsumer() {
+      useWallpaperContext();
+      return null;
+    }
+
+    expect(() => render(<InvalidConsumer />)).toThrow(
+      "useWallpaperContext must be used within a WallpaperContextProvider"
+    );
+
+    consoleSpy.mockRestore();
+  });
+});
+
 describe("WallpaperContext - Per-Theme Preferences", () => {
   beforeEach(() => {
     // Clear localStorage before each test

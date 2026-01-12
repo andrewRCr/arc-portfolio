@@ -538,30 +538,35 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 8:** Integration, Polish & Quality Gates
 
-- [ ] **8.1 Test Coverage Gap Analysis**
+- [x] **8.1 Test Coverage Gap Analysis**
 
-    Goal: Ensure adequate test coverage before code quality refactoring
+    **Goal:** Ensure adequate test coverage before code quality refactoring
 
-    - [ ] **8.1.a Run coverage report for theme/wallpaper components**
-        - Components: ThemeControl, ThemeControlDrawer, ThemeSelector, WallpaperPicker, ThemeSwatch
-        - Contexts: ThemeContext, WallpaperContext, LayoutPreferencesContext
-        - Hooks: useThemeSwatch
+    - [x] **8.1.a Run coverage report for theme/wallpaper components**
+        - Installed `@vitest/coverage-v8` (was missing)
+        - Initial coverage: 91.33% stmts, 86.5% branch, 82.97% funcs
 
-    - [ ] **8.1.b Identify coverage gaps (uncovered branches, edge cases)**
-        - Focus on behavior coverage, not just line coverage
-        - Document gaps found
+    - [x] **8.1.b Identify coverage gaps (uncovered branches, edge cases)**
+        - ThemeContext: 55% branch (hydration, cross-tab sync, error throws)
+        - WallpaperContext: 75% stmts (storage sync, error throws)
+        - useThemeSwatch: 80% branch (invalid theme fallback)
+        - Context error throws and hydration edge cases prioritized
 
-    - [ ] **8.1.c Add missing tests for identified gaps**
-        - Priority: Components with complex state/interactions
-        - Ensure edge cases covered (error states, boundary conditions)
+    - [x] **8.1.c Add missing tests for identified gaps**
+        - Created `ThemeContext.test.tsx` (9 tests): error throws, hydration, persistence
+        - Added error throw test to `WallpaperContext.test.tsx`
+        - Added fallback test to `useThemeSwatch.test.ts`
+        - 11 new tests added (851 → 862 total)
 
-    - [ ] **8.1.d Verify coverage targets met**
-        - Run final coverage report
-        - Document coverage metrics achieved
+    - [x] **8.1.d Verify coverage targets met**
+        - Final coverage: 92.66% stmts (+1.33%), 91.3% branch (+4.8%)
+        - ThemeContext: 91.22% stmts (+14%), 95.45% branch (+40%)
+        - useThemeSwatch: 100% stmts/branch (full coverage)
+        - Remaining gaps: cross-tab storage events (better for E2E)
 
 - [ ] **8.2 Code Quality Audit (SRP, SOLID, DRY)**
 
-    Goal: Large-scale review now that features are finalized
+    **Goal:** Large-scale review now that features are finalized
 
     - [ ] **8.2.a Audit ThemeControl and ThemeControlDrawer**
         - Single Responsibility: Is each component doing one thing well?

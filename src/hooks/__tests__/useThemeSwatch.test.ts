@@ -113,4 +113,15 @@ describe("useThemeSwatch", () => {
       expect(result.current[0]).toBe("#3D3231");
     });
   });
+
+  describe("Fallback Behavior", () => {
+    it("returns empty array when theme has no swatch colors", () => {
+      // Set to a theme that doesn't exist in our mock
+      mockActiveTheme.mockReturnValue("nonexistent-theme");
+
+      const { result } = renderHook(() => useThemeSwatch());
+
+      expect(result.current).toEqual([]);
+    });
+  });
 });
