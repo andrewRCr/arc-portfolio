@@ -13,30 +13,20 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-react";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { useResetPreferences } from "@/hooks/useResetPreferences";
 import { useTheme } from "next-themes";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
-import { useLayoutPreferences, type LayoutMode } from "@/contexts/LayoutPreferencesContext";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { useThemeSwatch } from "@/hooks/useThemeSwatch";
-import { defaultPalette } from "@/data/themes";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import {
-  PALETTE_STORAGE_KEY,
-  PALETTE_COOKIE_NAME,
-  WALLPAPER_PREFS_STORAGE_KEY,
-  WALLPAPER_COOKIE_NAME,
-  LAYOUT_MODE_STORAGE_KEY,
-  LAYOUT_MODE_COOKIE_NAME,
-} from "@/config/storage";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { ThemeSelector } from "./ThemeSelector";
 import { WallpaperPicker } from "./WallpaperPicker";
-
-/** Default layout mode when resetting */
-const DEFAULT_LAYOUT_MODE: LayoutMode = "boxed";
+import { ThemeControlPlaceholder } from "./ThemeControlPlaceholder";
 
 export function ThemeControl() {
   const mounted = useHasMounted();
@@ -48,6 +38,7 @@ export function ThemeControl() {
   const { layoutMode, setLayoutMode } = useLayoutPreferences();
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
+  const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
   const { windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
   // Track viewport width for layout mode button availability
@@ -62,13 +53,6 @@ export function ThemeControl() {
 
   // Layout mode toggle is only meaningful on wide viewports
   const isLayoutToggleEnabled = viewportWidth > windowContainerMaxWidth;
-
-  // Reset is only meaningful if there are custom preferences
-  const hasCustomPreferences =
-    activeTheme !== defaultPalette ||
-    layoutMode !== DEFAULT_LAYOUT_MODE ||
-    theme !== "dark" ||
-    (typeof window !== "undefined" && localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY) !== null);
 
   // Workaround for Radix bug #2782: after interacting inside a Popover,
   // the first outside click is swallowed. This listener ensures single-click close.
@@ -95,60 +79,13 @@ export function ThemeControl() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  /**
-   * Delete a cookie by name (client-side).
-   * Sets expiry to the past to remove it.
-   */
-  const deleteCookie = (name: string) => {
-    document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-  };
-
-  /**
-   * Reset all theme/wallpaper/layout preferences to defaults.
-   * Clears localStorage and cookies, resets state to defaults.
-   * Note: Wallpaper resets automatically via WallpaperContext's theme-change effect
-   * (reads empty prefs from localStorage and falls back to theme default).
-   */
-  const resetToDefaults = () => {
-    // Clear localStorage
-    localStorage.removeItem(PALETTE_STORAGE_KEY);
-    localStorage.removeItem(WALLPAPER_PREFS_STORAGE_KEY);
-    localStorage.removeItem(LAYOUT_MODE_STORAGE_KEY);
-
-    // Clear cookies
-    deleteCookie(PALETTE_COOKIE_NAME);
-    deleteCookie(WALLPAPER_COOKIE_NAME);
-    deleteCookie(LAYOUT_MODE_COOKIE_NAME);
-
-    // Reset state to defaults
-    // Wallpaper resets automatically when theme changes (context reads cleared prefs)
-    setActiveTheme(defaultPalette);
-    setLayoutMode(DEFAULT_LAYOUT_MODE);
-    setTheme("dark");
-  };
-
   const toggleLayoutMode = () => {
     setLayoutMode(layoutMode === "wide" ? "boxed" : "wide");
   };
 
-  // Before hydration: render placeholder to avoid color mismatch
+  // Before hydration: render placeholder to avoid layout shift and color mismatch
   if (!mounted) {
-    return (
-      <button
-        type="button"
-        aria-label="Open theme settings"
-        disabled
-        className="flex items-center gap-1 px-1.5 h-7 rounded-md border border-border transition-all"
-      >
-        {/* Placeholder swatch - 8 blocks at 16px with no gap */}
-        <div data-testid="theme-swatch" aria-hidden="true" className="flex">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} data-testid="swatch-square" className="bg-muted" style={{ width: "16px", height: "16px" }} />
-          ))}
-        </div>
-        <ChevronDown data-testid="theme-control-chevron" className="w-3 h-3 text-muted-foreground" />
-      </button>
-    );
+    return <ThemeControlPlaceholder />;
   }
 
   return (

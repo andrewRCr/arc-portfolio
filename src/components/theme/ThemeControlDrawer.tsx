@@ -17,23 +17,16 @@ import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetClose } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { useResetPreferences } from "@/hooks/useResetPreferences";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { useThemeSwatch } from "@/hooks/useThemeSwatch";
-import { defaultPalette } from "@/data/themes";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import {
-  PALETTE_STORAGE_KEY,
-  PALETTE_COOKIE_NAME,
-  WALLPAPER_PREFS_STORAGE_KEY,
-  WALLPAPER_COOKIE_NAME,
-  LAYOUT_MODE_STORAGE_KEY,
-  LAYOUT_MODE_COOKIE_NAME,
-} from "@/config/storage";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { ThemeSelector } from "./ThemeSelector";
 import { WallpaperPicker } from "./WallpaperPicker";
+import { ThemeControlPlaceholder } from "./ThemeControlPlaceholder";
 
 export function ThemeControlDrawer() {
   const mounted = useHasMounted();
@@ -43,18 +36,12 @@ export function ThemeControlDrawer() {
   const { layoutMode, setLayoutMode, setDrawerOpen } = useLayoutPreferences();
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
+  const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
 
   // Sync local open state to context so LayoutWrapper can coordinate UI
   useEffect(() => {
     setDrawerOpen(open);
   }, [open, setDrawerOpen]);
-
-  // Reset is only meaningful if there are custom preferences
-  const hasCustomPreferences =
-    activeTheme !== defaultPalette ||
-    layoutMode !== "boxed" ||
-    theme !== "dark" ||
-    (typeof window !== "undefined" && localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY) !== null);
 
   const toggleMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -64,44 +51,9 @@ export function ThemeControlDrawer() {
     setLayoutMode(layoutMode === "full" ? "boxed" : "full");
   };
 
-  const deleteCookie = (name: string) => {
-    document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-  };
-
-  const resetToDefaults = () => {
-    // Clear localStorage
-    localStorage.removeItem(PALETTE_STORAGE_KEY);
-    localStorage.removeItem(WALLPAPER_PREFS_STORAGE_KEY);
-    localStorage.removeItem(LAYOUT_MODE_STORAGE_KEY);
-
-    // Clear cookies
-    deleteCookie(PALETTE_COOKIE_NAME);
-    deleteCookie(WALLPAPER_COOKIE_NAME);
-    deleteCookie(LAYOUT_MODE_COOKIE_NAME);
-
-    // Reset state to defaults
-    setActiveTheme(defaultPalette);
-    setLayoutMode("boxed");
-    setTheme("dark");
-  };
-
-  // Before hydration: render placeholder
+  // Before hydration: render placeholder to avoid layout shift and color mismatch
   if (!mounted) {
-    return (
-      <button
-        type="button"
-        aria-label="Open theme settings"
-        disabled
-        className="flex items-center justify-center gap-1 min-h-11 min-w-11 px-2 rounded-md border border-border transition-all"
-      >
-        <div data-testid="theme-swatch" aria-hidden="true" className="flex">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} data-testid="swatch-square" className="bg-muted" style={{ width: "16px", height: "16px" }} />
-          ))}
-        </div>
-        <ChevronDown className="w-3 h-3 text-muted-foreground" />
-      </button>
-    );
+    return <ThemeControlPlaceholder isMobile />;
   }
 
   return (

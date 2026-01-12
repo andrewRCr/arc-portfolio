@@ -564,29 +564,33 @@ neofetch-inspired color swatch grid.
         - useThemeSwatch: 100% stmts/branch (full coverage)
         - Remaining gaps: cross-tab storage events (better for E2E)
 
-- [ ] **8.2 Code Quality Audit (SRP, SOLID, DRY)**
+- [x] **8.2 Code Quality Audit (SOLID, DRY)**
 
     **Goal:** Large-scale review now that features are finalized
 
-    - [ ] **8.2.a Audit ThemeControl and ThemeControlDrawer**
-        - Single Responsibility: Is each component doing one thing well?
-        - DRY: Any duplicated logic between desktop/mobile variants?
-        - Extract shared logic to hooks/utilities if needed
+    - [x] **8.2.a Audit ThemeControl and ThemeControlDrawer**
+        - Found DRY violations: `deleteCookie`, `resetToDefaults`, `hasCustomPreferences`, placeholder JSX
+        - SRP acceptable for "smart" components; shared logic needed extraction
 
-    - [ ] **8.2.b Audit context providers**
-        - ThemeContext, WallpaperContext, LayoutPreferencesContext
-        - Clean interfaces, proper separation of concerns
-        - Any unnecessary coupling?
+    - [x] **8.2.b Audit context providers**
+        - ThemeContext, WallpaperContext, LayoutPreferencesContext all clean
+        - Consistent patterns across all three (server value → hydration → storage sync)
+        - No unnecessary coupling identified
 
-    - [ ] **8.2.c Audit hooks (useThemeSwatch, etc.)**
-        - Proper abstraction level
-        - Reusability
+    - [x] **8.2.c Audit hooks (useThemeSwatch, useCompatibleWallpapers)**
+        - Both hooks excellent: single purpose, proper memoization, clean interfaces
 
-    - [ ] **8.2.d Fix identified issues**
-        - Refactor as needed, guided by test suite
-        - Run tests after each change to catch regressions
+    - [x] **8.2.d Fix identified issues**
+        - Created `lib/storage-utils.ts` with `deleteCookie` function
+        - Created `hooks/useResetPreferences.ts` with shared reset logic
+        - Created `components/theme/ThemeControlPlaceholder.tsx` with `isMobile` prop
+        - Updated ThemeControl and ThemeControlDrawer to use extracted code
+        - All 862 tests pass
 
-    - [ ] **8.2.e Run quality gates**
+    - [x] **8.2.e Run quality gates**
+        - Type-check: passed
+        - Lint: passed
+        - Tests: 862 passed
 
 - [ ] **8.3 Accessibility audit**
 
