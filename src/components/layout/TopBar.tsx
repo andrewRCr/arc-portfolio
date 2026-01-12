@@ -3,8 +3,9 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { SITE } from "@/config/site";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
-import { ThemeControl } from "../theme";
+import { ThemeControl, ThemeControlDrawer } from "../theme";
 import { TouchTarget } from "../ui/TouchTarget";
+import { ResponsiveSwitch } from "../ui/ResponsiveSwitch";
 
 export interface TopBarProps {
   /** Whether this window is currently active (for touch devices) */
@@ -47,14 +48,23 @@ export function TopBar({ isActive, onActivate }: TopBarProps) {
           <span className="text-primary font-mono">&gt;_</span>
         </div>
 
-        {/* Theme controls */}
-        <div data-testid="theme-controls" className="flex items-center gap-1">
-          <TouchTarget>
-            <ThemeControl />
-          </TouchTarget>
-          <TouchTarget align="end">
-            <ThemeToggle />
-          </TouchTarget>
+        {/* Theme controls - responsive: drawer on mobile, popover + toggle on desktop */}
+        <div data-testid="theme-controls" className="flex items-center">
+          <ResponsiveSwitch
+            display="flex"
+            className="items-center gap-1"
+            mobile={<ThemeControlDrawer />}
+            desktop={
+              <>
+                <TouchTarget>
+                  <ThemeControl />
+                </TouchTarget>
+                <TouchTarget align="end">
+                  <ThemeToggle />
+                </TouchTarget>
+              </>
+            }
+          />
         </div>
       </header>
     </WindowContainer>

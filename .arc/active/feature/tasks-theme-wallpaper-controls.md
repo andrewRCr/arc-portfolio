@@ -485,56 +485,46 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 7:** Mobile Adaptation
 
-- [ ] **7.1 Write tests for ThemeControlDrawer component**
+- [x] **7.1 Write tests for ThemeControlDrawer component**
+    - Created `src/components/theme/__tests__/ThemeControlDrawer.test.tsx` (11 tests)
+    - Tests: bottom sheet, ThemeSelector/WallpaperPicker, toggle, close, touch targets, a11y
+    - Tests initially failed as expected (TDD)
 
-    - [ ] **7.1.a Create test file `src/components/theme/__tests__/ThemeControlDrawer.test.tsx`**
-        - Test: Renders as bottom sheet/drawer on mobile viewport
-        - Test: Contains ThemeSelector
-        - Test: Contains WallpaperPicker
-        - Test: Contains light/dark toggle (inside drawer)
-        - Test: Close button visible and functional
-        - Test: Touch targets minimum 44×44px
-        - Test: No accessibility violations
-        - Expect tests to FAIL initially
+- [x] **7.2 Implement ThemeControlDrawer component**
+    - Created `src/components/theme/ThemeControlDrawer.tsx` using Sheet from shadcn/ui
+    - Mirrors desktop ThemeControl layout: Theme section, Wallpaper section (with enable toggle), Light/Dark + Reset buttons
+    - Omits layout mode toggle (not meaningful on mobile)
+    - Touch-friendly: min-h-11 min-w-11 (44px) on interactive elements
+    - All 11 tests pass
 
-    - [ ] **7.1.b Run tests and verify failure messages**
+- [x] **7.3 Add responsive switching between dropdown and drawer**
+    - Updated TopBar to use ResponsiveSwitch component (CSS-based, no hydration flash)
+    - Desktop (≥768px): ThemeControl popover + separate ThemeToggle
+    - Mobile (<768px): ThemeControlDrawer (toggle inside drawer)
+    - Updated TopBar test to handle multiple swatches in DOM
+    - Quality gates: Type check PASS, Lint PASS, Format PASS, Build PASS, 835 tests pass
 
-- [ ] **7.2 Implement ThemeControlDrawer component**
+- [ ] **7.4 (Optional) Add fullscreen overlay layout mode for mobile**
+    - Exploration confirmed: feasible with toggles, no separate layout needed
+    - Single fullscreen container as wallpaper overlay (no visible borders/gaps)
+    - Hides TopBar/FooterBar, main content fills viewport
 
-    - [ ] **7.2.a Create `src/components/theme/ThemeControlDrawer.tsx`**
-        - Use Sheet from shadcn/ui (bottom sheet)
-        - Close button in header
-        - Scrollable content area
+    - [ ] **7.4.a Add "fullscreen" to LayoutMode type**
+        - Update `src/contexts/LayoutPreferencesContext.tsx`
+        - Add third mode: `"full" | "boxed" | "fullscreen"`
 
-    - [ ] **7.2.b Add drawer content sections**
-        - Light/dark toggle at top (prominent)
-        - ThemeSelector section
-        - WallpaperPicker section
-        - Adequate spacing for touch
+    - [ ] **7.4.b Update LayoutWrapper for fullscreen mode**
+        - Conditionally set `padding: 0` and `gap: 0` when fullscreen
+        - Conditionally hide TopBar and FooterBar
+        - Main WindowContainer fills viewport
 
-    - [ ] **7.2.c Ensure touch targets**
-        - Wrap interactive elements with TouchTarget
-        - Verify 44×44px minimum
+    - [ ] **7.4.c Add fullscreen toggle to ThemeControlDrawer**
+        - Button to toggle between normal and fullscreen modes
+        - Only visible on mobile (where it's meaningful)
 
-    - [ ] **7.2.d Run ThemeControlDrawer tests - should now PASS**
+    - [ ] **7.4.d Write tests for fullscreen mode**
 
-    - [ ] **7.2.e Run quality gates**
-
-- [ ] **7.3 Add responsive switching between dropdown and drawer**
-
-    - [ ] **7.3.a Update ThemeControl for responsive behavior**
-        - Use media query or `useMediaQuery` hook
-        - Desktop: render popover (existing)
-        - Mobile: render drawer trigger + ThemeControlDrawer
-        - Same swatch trigger works for both (confirmed fits on mobile)
-
-    - [ ] **7.3.b Hide separate ThemeToggle on mobile**
-        - Toggle is inside drawer, not in TopBar
-        - Use CSS or conditional rendering
-
-    - [ ] **7.3.c Run responsive tests (E2E)**
-
-    - [ ] **7.3.d Run quality gates**
+    - [ ] **7.4.e Run quality gates**
 
 ### **Phase 8:** Integration, Polish & Quality Gates
 

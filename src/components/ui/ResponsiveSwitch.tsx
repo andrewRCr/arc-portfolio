@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
 
+/** Supported display types for wrapper elements */
+type DisplayType = "block" | "flex" | "inline-flex";
+
 /**
  * Props for the ResponsiveSwitch component.
  */
@@ -10,7 +13,16 @@ export interface ResponsiveSwitchProps {
   desktop: ReactNode;
   /** Optional class name for the wrapper divs */
   className?: string;
+  /** Display type for wrappers when visible. Defaults to "block". Use "flex" for flex layouts. */
+  display?: DisplayType;
 }
+
+/** Maps display type to Tailwind classes for mobile (visible) and desktop (hidden→visible) */
+const displayClasses: Record<DisplayType, { mobile: string; desktop: string }> = {
+  block: { mobile: "block", desktop: "md:block" },
+  flex: { mobile: "flex", desktop: "md:flex" },
+  "inline-flex": { mobile: "inline-flex", desktop: "md:inline-flex" },
+};
 
 /**
  * ResponsiveSwitch Component
@@ -30,20 +42,31 @@ export interface ResponsiveSwitchProps {
  *
  * @example
  * ```tsx
+ * // Default block display
  * <ResponsiveSwitch
  *   mobile={<MobileNavigation />}
  *   desktop={<DesktopNavigation />}
  * />
+ *
+ * // Flex display for flex layouts
+ * <ResponsiveSwitch
+ *   display="flex"
+ *   className="items-center gap-2"
+ *   mobile={<MobileControls />}
+ *   desktop={<DesktopControls />}
+ * />
  * ```
  */
-export function ResponsiveSwitch({ mobile, desktop, className }: ResponsiveSwitchProps) {
+export function ResponsiveSwitch({ mobile, desktop, className, display = "block" }: ResponsiveSwitchProps) {
+  const classes = displayClasses[display];
+
   return (
     <>
       {/* Mobile content - visible below md breakpoint */}
-      <div className={`block md:hidden ${className ?? ""}`}>{mobile}</div>
+      <div className={`${classes.mobile} md:hidden ${className ?? ""}`}>{mobile}</div>
 
       {/* Desktop content - visible at md breakpoint and above */}
-      <div className={`hidden md:block ${className ?? ""}`}>{desktop}</div>
+      <div className={`hidden ${classes.desktop} ${className ?? ""}`}>{desktop}</div>
     </>
   );
 }

@@ -44,7 +44,9 @@ describe("TopBar", () => {
       render(<TopBar />);
 
       // ThemeControl renders the swatch trigger
-      expect(screen.getByTestId("theme-swatch")).toBeInTheDocument();
+      // ResponsiveSwitch renders both mobile (drawer) and desktop (popover) in DOM
+      const swatches = screen.getAllByTestId("theme-swatch");
+      expect(swatches.length).toBeGreaterThanOrEqual(1);
     });
   });
 
