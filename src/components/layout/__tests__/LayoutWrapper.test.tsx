@@ -231,5 +231,17 @@ describe("LayoutWrapper", () => {
 
       expect(screen.getByText("Main content")).toBeInTheDocument();
     });
+
+    it("automatically activates main window when entering fullscreen mode", () => {
+      const { container } = render(
+        <LayoutWrapper>
+          <p>Content</p>
+        </LayoutWrapper>
+      );
+
+      // In fullscreen mode, the main window should be auto-activated
+      const mainWindow = container.querySelector('[data-window-id="main"]');
+      expect(mainWindow).toHaveAttribute("data-active", "true");
+    });
   });
 });

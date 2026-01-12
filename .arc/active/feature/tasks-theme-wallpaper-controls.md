@@ -538,94 +538,139 @@ neofetch-inspired color swatch grid.
 
 ### **Phase 8:** Integration, Polish & Quality Gates
 
-- [ ] **8.1 Accessibility audit**
+- [ ] **8.1 Test Coverage Gap Analysis**
 
-    - [ ] **8.1.a Verify axe coverage on all new components** (already done - confirm passing)
+    Goal: Ensure adequate test coverage before code quality refactoring
+
+    - [ ] **8.1.a Run coverage report for theme/wallpaper components**
+        - Components: ThemeControl, ThemeControlDrawer, ThemeSelector, WallpaperPicker, ThemeSwatch
+        - Contexts: ThemeContext, WallpaperContext, LayoutPreferencesContext
+        - Hooks: useThemeSwatch
+
+    - [ ] **8.1.b Identify coverage gaps (uncovered branches, edge cases)**
+        - Focus on behavior coverage, not just line coverage
+        - Document gaps found
+
+    - [ ] **8.1.c Add missing tests for identified gaps**
+        - Priority: Components with complex state/interactions
+        - Ensure edge cases covered (error states, boundary conditions)
+
+    - [ ] **8.1.d Verify coverage targets met**
+        - Run final coverage report
+        - Document coverage metrics achieved
+
+- [ ] **8.2 Code Quality Audit (SRP, SOLID, DRY)**
+
+    Goal: Large-scale review now that features are finalized
+
+    - [ ] **8.2.a Audit ThemeControl and ThemeControlDrawer**
+        - Single Responsibility: Is each component doing one thing well?
+        - DRY: Any duplicated logic between desktop/mobile variants?
+        - Extract shared logic to hooks/utilities if needed
+
+    - [ ] **8.2.b Audit context providers**
+        - ThemeContext, WallpaperContext, LayoutPreferencesContext
+        - Clean interfaces, proper separation of concerns
+        - Any unnecessary coupling?
+
+    - [ ] **8.2.c Audit hooks (useThemeSwatch, etc.)**
+        - Proper abstraction level
+        - Reusability
+
+    - [ ] **8.2.d Fix identified issues**
+        - Refactor as needed, guided by test suite
+        - Run tests after each change to catch regressions
+
+    - [ ] **8.2.e Run quality gates**
+
+- [ ] **8.3 Accessibility audit**
+
+    - [ ] **8.3.a Verify axe coverage on all new components** (already done - confirm passing)
         - ThemeSwatch, ThemeSelector, WallpaperPicker, ThemeControl, ThemeControlDrawer
 
-    - [ ] **8.1.b Add reduced motion support**
+    - [ ] **8.3.b Add reduced motion support**
         - Audit animations in Sheet, Popover transitions
         - Add `motion-reduce:` variants or `prefers-reduced-motion` media query
         - Test respects user preference
 
-    - [ ] **8.1.c Add screen reader announcements for state changes**
+    - [ ] **8.3.c Add screen reader announcements for state changes**
         - Announce theme selection changes
         - Announce wallpaper changes
         - Announce mode (light/dark) changes
         - Use `aria-live="polite"` region
 
-    - [ ] **8.1.d Verify keyboard navigation flow**
+    - [ ] **8.3.d Verify keyboard navigation flow**
         - Tab order logical through all controls
         - Focus returns to trigger when popover/drawer closes
         - Focus trapped within open popover/drawer
 
-    - [ ] **8.1.e Fix any violations found**
+    - [ ] **8.3.e Fix any violations found**
 
-- [ ] **8.2 E2E tests for state persistence**
+- [ ] **8.4 E2E tests for state persistence**
 
-    - [ ] **8.2.a Create E2E test file `e2e/tests/theme-controls.spec.ts`**
+    - [ ] **8.4.a Create E2E test file `e2e/tests/theme-controls.spec.ts`**
         - Test: Theme selection persists across page reload
         - Test: Mode (light/dark) persists across reload
         - Test: Per-theme wallpaper preference persists
         - Test: Switching themes restores that theme's wallpaper
         - Test: Incompatible wallpaper falls back correctly
 
-    - [ ] **8.2.b Run E2E tests - should PASS**
+    - [ ] **8.4.b Run E2E tests - should PASS**
 
-- [ ] **8.3 Manual testing**
+- [ ] **8.5 Manual testing**
 
-    - [ ] **8.3.a Test desktop flow**
+    - [ ] **8.5.a Test desktop flow**
         - Open dropdown, select themes, verify swatch updates
         - Toggle light/dark, verify swatch updates
         - Select wallpapers, verify background updates
         - Test keyboard navigation end-to-end
 
-    - [ ] **8.3.b Test mobile flow**
+    - [ ] **8.5.b Test mobile flow**
         - Open drawer, verify bottom sheet behavior
         - All controls accessible and touch-friendly
         - Toggle inside drawer works
         - Close drawer, verify state persisted
 
-    - [ ] **8.3.c Test cross-session persistence**
+    - [ ] **8.5.c Test cross-session persistence**
         - Set theme + wallpaper, close browser, reopen
         - Verify selections restored
 
-- [ ] **8.4 Update style strategy documentation**
+- [ ] **8.6 Update style strategy documentation**
 
-    - [ ] **8.4.a Review and update visual design principles**
+    - [ ] **8.6.a Review and update visual design principles**
         - Ensure `strategy-visual-design-principles.md` reflects final patterns
         - Document any new spacing, layout, or component patterns established
 
-    - [ ] **8.4.b Update style guide if needed**
+    - [ ] **8.6.b Update style guide if needed**
         - Ensure `strategy-style-guide.md` aligns with implemented theming system
 
-- [ ] **8.5 Final quality gates**
+- [ ] **8.7 Final quality gates**
 
-    - [ ] **8.5.a Run full test suite**
+    - [ ] **8.7.a Run full test suite**
         - All unit tests pass
         - All integration tests pass
         - All E2E tests pass
 
-    - [ ] **8.5.b Run linting**
+    - [ ] **8.7.b Run linting**
         - ESLint: 0 violations
 
-    - [ ] **8.5.c Run type checking**
+    - [ ] **8.7.c Run type checking**
         - TypeScript: 0 errors
 
-    - [ ] **8.5.d Run markdown linting**
+    - [ ] **8.7.d Run markdown linting**
         - markdownlint: 0 violations
 
-- [ ] **8.6 Cleanup**
+- [ ] **8.8 Cleanup**
 
-    - [x] **8.6.a Delete remaining prototype files**
+    - [x] **8.8.a Delete remaining prototype files**
         - Removed `src/app/dev/swatch-prototype/page.tsx`
         - Removed `src/components/dev/SwatchPrototype.tsx`
         - Also fixed unused `screen` import in `Navigation.test.tsx`
 
-    - [ ] **8.6.b Remove backward-compat shims**
+    - [ ] **8.8.b Remove backward-compat shims**
         - Remove re-export from `WallpaperContext.tsx` (line: `export { WALLPAPER_OPTIONS }`)
 
-    - [ ] **8.6.c Verify no dead code**
+    - [ ] **8.8.c Verify no dead code**
         - Check for unused imports
         - Check for orphaned files
 

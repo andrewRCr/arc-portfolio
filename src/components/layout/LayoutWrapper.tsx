@@ -51,6 +51,10 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   // Fullscreen mode: no bars, no gaps, content fills viewport
   const isFullscreen = layoutMode === "full";
 
+  // In fullscreen mode, main window is always active (it's the only visible window)
+  // In other modes, respect user interaction state
+  const effectiveActiveWindow = isFullscreen ? "main" : activeWindow;
+
   // Show exit button only in fullscreen when drawer is closed
   const showExitButton = isFullscreen && !isDrawerOpen;
 
@@ -80,7 +84,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       >
         {/* Top bar - visually hidden in fullscreen mode (kept mounted so drawer can stay open) */}
         <TopBar
-          isActive={activeWindow === "top"}
+          isActive={effectiveActiveWindow === "top"}
           onActivate={() => setActiveWindow("top")}
           className={isFullscreen ? "hidden" : undefined}
         />
@@ -89,7 +93,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         <WindowContainer
           windowId="main"
           className="flex-1 min-h-0 flex flex-col"
-          isActive={activeWindow === "main"}
+          isActive={effectiveActiveWindow === "main"}
           onActivate={() => setActiveWindow("main")}
         >
           {children}
@@ -97,7 +101,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
 
         {/* Footer bar - visually hidden in fullscreen mode */}
         <FooterBar
-          isActive={activeWindow === "footer"}
+          isActive={effectiveActiveWindow === "footer"}
           onActivate={() => setActiveWindow("footer")}
           className={isFullscreen ? "hidden" : undefined}
         />
