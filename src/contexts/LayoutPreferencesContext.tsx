@@ -4,10 +4,15 @@ import * as React from "react";
 import { LAYOUT_MODE_STORAGE_KEY } from "@/config/storage";
 import { setLayoutModePreference } from "@/app/actions/layout-preferences";
 
-/** Layout mode: full width or boxed (constrained) */
-export type LayoutMode = "full" | "boxed";
+/**
+ * Layout mode options:
+ * - "wide": Full-width containers with border gaps (desktop only)
+ * - "boxed": Constrained max-width containers (default)
+ * - "full": True fullscreen - no gaps, no bars (mobile only)
+ */
+export type LayoutMode = "wide" | "boxed" | "full";
 
-const VALID_MODES: LayoutMode[] = ["full", "boxed"];
+const VALID_MODES: LayoutMode[] = ["wide", "boxed", "full"];
 const DEFAULT_LAYOUT_MODE: LayoutMode = "boxed";
 
 interface LayoutPreferencesContextProviderProps {
@@ -19,6 +24,9 @@ interface LayoutPreferencesContextProviderProps {
 interface LayoutPreferencesContextValue {
   layoutMode: LayoutMode;
   setLayoutMode: (mode: LayoutMode) => void;
+  /** Whether the mobile theme control drawer is open (for coordinating UI elements) */
+  isDrawerOpen: boolean;
+  setDrawerOpen: (open: boolean) => void;
 }
 
 const LayoutPreferencesContext = React.createContext<LayoutPreferencesContextValue | undefined>(undefined);
@@ -58,6 +66,9 @@ export function LayoutPreferencesContextProvider({
     return DEFAULT_LAYOUT_MODE;
   });
 
+  // Drawer open state (ephemeral, for UI coordination)
+  const [isDrawerOpen, setDrawerOpen] = React.useState(false);
+
   // After hydration, sync with localStorage (may differ from cookie on first visit)
   React.useEffect(() => {
     const storedMode = getStoredLayoutMode();
@@ -93,7 +104,7 @@ export function LayoutPreferencesContextProvider({
   }, []);
 
   return (
-    <LayoutPreferencesContext.Provider value={{ layoutMode, setLayoutMode }}>
+    <LayoutPreferencesContext.Provider value={{ layoutMode, setLayoutMode, isDrawerOpen, setDrawerOpen }}>
       {children}
     </LayoutPreferencesContext.Provider>
   );

@@ -12,6 +12,8 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
   useLayoutPreferences: () => ({
     layoutMode: "boxed",
     setLayoutMode: vi.fn(),
+    isDrawerOpen: false,
+    setDrawerOpen: vi.fn(),
   }),
 }));
 

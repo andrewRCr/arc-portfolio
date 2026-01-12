@@ -38,6 +38,8 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
   useLayoutPreferences: () => ({
     layoutMode: "boxed",
     setLayoutMode: mockSetLayoutMode,
+    isDrawerOpen: false,
+    setDrawerOpen: vi.fn(),
   }),
   LayoutPreferencesContextProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
@@ -253,8 +255,8 @@ describe("ThemeControl", () => {
       const layoutButton = screen.getByRole("button", { name: /layout.*boxed/i });
       await user.click(layoutButton);
 
-      // Should toggle from boxed to full
-      expect(mockSetLayoutMode).toHaveBeenCalledWith("full");
+      // Should toggle from boxed to wide
+      expect(mockSetLayoutMode).toHaveBeenCalledWith("wide");
 
       // Restore
       Object.defineProperty(window, "innerWidth", { value: originalInnerWidth, writable: true });
@@ -296,7 +298,7 @@ describe("ThemeControl", () => {
       // Set some values in localStorage
       localStorage.setItem("arc-portfolio-palette", "gruvbox");
       localStorage.setItem("arc-portfolio-wallpaper-prefs", '{"gruvbox":"mountains"}');
-      localStorage.setItem("arc-portfolio-layout-mode", "full");
+      localStorage.setItem("arc-portfolio-layout-mode", "wide");
 
       render(<ThemeControl />);
 

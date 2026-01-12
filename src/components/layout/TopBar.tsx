@@ -12,6 +12,8 @@ export interface TopBarProps {
   isActive?: boolean;
   /** Callback when window is activated (clicked/tapped) */
   onActivate?: () => void;
+  /** Additional CSS classes for the container */
+  className?: string;
 }
 
 /**
@@ -28,12 +30,12 @@ export interface TopBarProps {
  * <TopBar />
  * ```
  */
-export function TopBar({ isActive, onActivate }: TopBarProps) {
+export function TopBar({ isActive, onActivate, className }: TopBarProps) {
   const { windowBorderWidth, contentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
 
   return (
-    <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate}>
+    <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate} className={className}>
       <header
         className="flex items-center justify-between px-4 mx-auto w-full"
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}

@@ -126,7 +126,7 @@ export function ThemeControl() {
   };
 
   const toggleLayoutMode = () => {
-    setLayoutMode(layoutMode === "full" ? "boxed" : "full");
+    setLayoutMode(layoutMode === "wide" ? "boxed" : "wide");
   };
 
   // Before hydration: render placeholder to avoid color mismatch
@@ -224,14 +224,14 @@ export function ThemeControl() {
                 e.currentTarget.blur();
               }}
               disabled={!isLayoutToggleEnabled}
-              aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "full" ? "boxed" : "full"} layout`}
+              aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "wide" ? "boxed" : "wide"} layout`}
               title={!isLayoutToggleEnabled ? "Viewport too narrow for layout toggle" : undefined}
               className="min-w-[5.25rem] gap-2"
             >
-              {layoutMode === "full" ? (
+              {layoutMode === "wide" ? (
                 <>
                   <Maximize2 className="h-4 w-4" />
-                  <span>Full</span>
+                  <span>Wide</span>
                 </>
               ) : (
                 <>

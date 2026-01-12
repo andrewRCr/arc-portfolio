@@ -54,6 +54,18 @@ vi.mock("@/hooks/useCompatibleWallpapers", () => ({
   ],
 }));
 
+const mockSetLayoutMode = vi.fn();
+const mockSetDrawerOpen = vi.fn();
+
+vi.mock("@/contexts/LayoutPreferencesContext", () => ({
+  useLayoutPreferences: () => ({
+    layoutMode: "boxed",
+    setLayoutMode: mockSetLayoutMode,
+    isDrawerOpen: false,
+    setDrawerOpen: mockSetDrawerOpen,
+  }),
+}));
+
 describe("ThemeControlDrawer", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -101,18 +113,18 @@ describe("ThemeControlDrawer", () => {
       const trigger = screen.getByRole("button", { name: /open theme/i });
       await user.click(trigger);
 
-      expect(screen.getByRole("button", { name: /mode|light|dark/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /current mode.*switch to/i })).toBeInTheDocument();
     });
 
-    it("does NOT contain layout mode toggle (not meaningful on mobile)", async () => {
+    it("contains layout mode toggle for fullscreen (mobile-specific feature)", async () => {
       const user = userEvent.setup();
       render(<ThemeControlDrawer />);
 
       const trigger = screen.getByRole("button", { name: /open theme/i });
       await user.click(trigger);
 
-      // Should NOT have a layout toggle button
-      expect(screen.queryByRole("button", { name: /layout.*boxed|layout.*full/i })).not.toBeInTheDocument();
+      // Should have a layout toggle button (boxed/full for mobile fullscreen mode)
+      expect(screen.getByRole("button", { name: /current layout/i })).toBeInTheDocument();
     });
   });
 
@@ -158,7 +170,7 @@ describe("ThemeControlDrawer", () => {
       const trigger = screen.getByRole("button", { name: /open theme/i });
       await user.click(trigger);
 
-      const modeButton = screen.getByRole("button", { name: /mode|light|dark/i });
+      const modeButton = screen.getByRole("button", { name: /current mode.*switch to/i });
 
       expect(modeButton.className).toMatch(/min-h-11/);
       expect(modeButton.className).toMatch(/min-w-11/);
@@ -201,6 +213,45 @@ describe("ThemeControlDrawer", () => {
 
       expect(touchTarget.className).toMatch(/min-h-11/);
       expect(touchTarget.className).toMatch(/min-w-11/);
+    });
+  });
+
+  describe("Layout Mode Toggle", () => {
+    it("shows layout toggle button when open", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      // In boxed mode, shows "Boxed" with aria-label mentioning layout
+      expect(screen.getByRole("button", { name: /current layout.*boxed/i })).toBeInTheDocument();
+    });
+
+    it("clicking layout toggle in boxed mode calls setLayoutMode with 'full'", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      const layoutButton = screen.getByRole("button", { name: /current layout.*boxed/i });
+      await user.click(layoutButton);
+
+      expect(mockSetLayoutMode).toHaveBeenCalledWith("full");
+    });
+
+    it("layout toggle button has touch-friendly size classes", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      const layoutButton = screen.getByRole("button", { name: /current layout/i });
+
+      expect(layoutButton.className).toMatch(/min-h-11/);
+      expect(layoutButton.className).toMatch(/min-w-11/);
     });
   });
 

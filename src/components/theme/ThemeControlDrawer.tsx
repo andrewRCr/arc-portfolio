@@ -5,13 +5,13 @@
  * Mirrors desktop ThemeControl layout but adapted for touch interaction:
  * - Bottom sheet instead of popover
  * - 44px minimum touch targets
- * - No layout mode toggle (not meaningful on mobile)
+ * - Fullscreen mode toggle (mobile-only feature)
  */
 
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, Sun, Moon, RotateCcw, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronDown, Sun, Moon, RotateCcw, X, Maximize2, Square } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { useThemeSwatch } from "@/hooks/useThemeSwatch";
 import { defaultPalette } from "@/data/themes";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
@@ -37,8 +38,14 @@ export function ThemeControlDrawer() {
   const [open, setOpen] = useState(false);
   const { activeTheme, setActiveTheme } = useThemeContext();
   const { activeWallpaper, setActiveWallpaper, isWallpaperEnabled, setWallpaperEnabled } = useWallpaperContext();
+  const { layoutMode, setLayoutMode, setDrawerOpen } = useLayoutPreferences();
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
+
+  // Sync local open state to context so LayoutWrapper can coordinate UI
+  useEffect(() => {
+    setDrawerOpen(open);
+  }, [open, setDrawerOpen]);
 
   // Reset is only meaningful if there are custom preferences
   const hasCustomPreferences =
@@ -47,6 +54,10 @@ export function ThemeControlDrawer() {
 
   const toggleMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const toggleLayoutMode = () => {
+    setLayoutMode(layoutMode === "full" ? "boxed" : "full");
   };
 
   const deleteCookie = (name: string) => {
@@ -150,7 +161,7 @@ export function ThemeControlDrawer() {
             />
           </div>
 
-          {/* Mode Toggle & Reset - touch-friendly sizes */}
+          {/* Mode Toggle, Fullscreen & Reset - touch-friendly sizes */}
           <div className="flex justify-center gap-3 mt-2">
             <Button
               variant="outline"
@@ -170,6 +181,27 @@ export function ThemeControlDrawer() {
                 <>
                   <Sun className="h-5 w-5" />
                   <span>Light</span>
+                </>
+              )}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={(e) => {
+                toggleLayoutMode();
+                e.currentTarget.blur();
+              }}
+              aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "full" ? "boxed" : "full"} layout`}
+              className="gap-2 min-h-11 min-w-11 px-4"
+            >
+              {layoutMode === "full" ? (
+                <>
+                  <Maximize2 className="h-5 w-5" />
+                  <span>Full</span>
+                </>
+              ) : (
+                <>
+                  <Square className="h-5 w-5" />
+                  <span>Boxed</span>
                 </>
               )}
             </Button>

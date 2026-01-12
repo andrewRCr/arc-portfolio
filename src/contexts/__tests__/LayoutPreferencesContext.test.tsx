@@ -20,7 +20,7 @@ function TestConsumer() {
   return (
     <div>
       <span data-testid="layout-mode">{layoutMode}</span>
-      <button onClick={() => setLayoutMode("full")}>Set Full</button>
+      <button onClick={() => setLayoutMode("wide")}>Set Full</button>
       <button onClick={() => setLayoutMode("boxed")}>Set Boxed</button>
     </div>
   );
@@ -49,12 +49,12 @@ describe("LayoutPreferencesContext", () => {
 
     it("uses serverLayoutMode when provided", () => {
       render(
-        <LayoutPreferencesContextProvider serverLayoutMode="full">
+        <LayoutPreferencesContextProvider serverLayoutMode="wide">
           <TestConsumer />
         </LayoutPreferencesContextProvider>
       );
 
-      expect(screen.getByTestId("layout-mode")).toHaveTextContent("full");
+      expect(screen.getByTestId("layout-mode")).toHaveTextContent("wide");
     });
 
     it("ignores invalid serverLayoutMode", () => {
@@ -82,7 +82,7 @@ describe("LayoutPreferencesContext", () => {
         screen.getByText("Set Full").click();
       });
 
-      expect(screen.getByTestId("layout-mode")).toHaveTextContent("full");
+      expect(screen.getByTestId("layout-mode")).toHaveTextContent("wide");
     });
   });
 
@@ -98,11 +98,11 @@ describe("LayoutPreferencesContext", () => {
         screen.getByText("Set Full").click();
       });
 
-      expect(localStorage.getItem(LAYOUT_MODE_STORAGE_KEY)).toBe("full");
+      expect(localStorage.getItem(LAYOUT_MODE_STORAGE_KEY)).toBe("wide");
     });
 
     it("loads layout mode from localStorage on mount", async () => {
-      localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, "full");
+      localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, "wide");
 
       render(
         <LayoutPreferencesContextProvider>
@@ -115,7 +115,7 @@ describe("LayoutPreferencesContext", () => {
         await new Promise((resolve) => setTimeout(resolve, 0));
       });
 
-      expect(screen.getByTestId("layout-mode")).toHaveTextContent("full");
+      expect(screen.getByTestId("layout-mode")).toHaveTextContent("wide");
     });
 
     it("ignores invalid localStorage value", async () => {

@@ -504,29 +504,37 @@ neofetch-inspired color swatch grid.
     - Updated TopBar test to handle multiple swatches in DOM
     - Quality gates: Type check PASS, Lint PASS, Format PASS, Build PASS, 835 tests pass
 
-- [ ] **7.4 (Optional) Add fullscreen overlay layout mode for mobile**
-    - Exploration confirmed: feasible with toggles, no separate layout needed
-    - Single fullscreen container as wallpaper overlay (no visible borders/gaps)
-    - Hides TopBar/FooterBar, main content fills viewport
+- [x] **7.4 Add fullscreen overlay layout mode for mobile**
+    - Renamed LayoutMode: "full" → "wide", added new "full" for true fullscreen
+    - LayoutWrapper: hides TopBar/FooterBar (CSS hidden, stays mounted for drawer)
+    - ThemeControlDrawer: layout toggle shows current state (Boxed/Full)
+    - Exit button coordination: hidden when drawer open, appears when closed
+    - Drawer state synced to context via useEffect for cross-component coordination
+    - 845 tests passing
 
-    - [ ] **7.4.a Rename layout modes and add "full" mode**
-        - Update `src/contexts/LayoutPreferencesContext.tsx`
-        - Rename existing "full" → "wide" (desktop-only, full-width with border gaps)
-        - Add new "full" mode (mobile-only, true fullscreen - no gaps/bars)
-        - Final modes: `"wide" | "boxed" | "full"`
+    - [x] **7.4.a Rename layout modes and add "full" mode**
+        - Updated LayoutPreferencesContext: `"wide" | "boxed" | "full"`
+        - Added `isDrawerOpen`/`setDrawerOpen` for UI coordination
+        - Updated ThemeControl desktop toggle: "Full" → "Wide"
+        - Updated all related tests
 
-    - [ ] **7.4.b Update LayoutWrapper for fullscreen mode**
-        - Conditionally set `padding: 0` and `gap: 0` when fullscreen
-        - Conditionally hide TopBar and FooterBar
-        - Main WindowContainer fills viewport
+    - [x] **7.4.b Update LayoutWrapper for fullscreen mode**
+        - Conditional padding/gap: 0 in fullscreen mode
+        - TopBar/FooterBar: CSS hidden (not unmounted) so drawer can animate
+        - Exit button: visible only when fullscreen AND drawer closed
 
-    - [ ] **7.4.c Add fullscreen toggle to ThemeControlDrawer**
-        - Button to toggle between normal and fullscreen modes
-        - Only visible on mobile (where it's meaningful)
+    - [x] **7.4.c Add fullscreen toggle to ThemeControlDrawer**
+        - Toggle button shows current state (Boxed with Square, Full with Maximize2)
+        - Drawer stays open on toggle for immediate preview
+        - Local state + context sync pattern for testability
 
-    - [ ] **7.4.d Write tests for fullscreen mode**
+    - [x] **7.4.d Write tests for fullscreen mode**
+        - LayoutWrapper: 5 tests (hides bars, shows exit button, calls setLayoutMode)
+        - ThemeControlDrawer: 3 tests (button exists, calls setLayoutMode, touch target)
 
-    - [ ] **7.4.e Run quality gates**
+    - [x] **7.4.e Run quality gates**
+        - Type check PASS, Lint PASS, Format PASS, Markdown lint PASS
+        - Build PASS, 845 tests pass
 
 ### **Phase 8:** Integration, Polish & Quality Gates
 

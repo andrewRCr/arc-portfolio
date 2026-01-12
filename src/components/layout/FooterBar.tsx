@@ -26,6 +26,8 @@ export interface FooterBarProps {
   isActive?: boolean;
   /** Callback when window is activated (clicked/tapped) */
   onActivate?: () => void;
+  /** Additional CSS classes for the container */
+  className?: string;
 }
 
 /**
@@ -45,13 +47,13 @@ export interface FooterBarProps {
  * <FooterBar />
  * ```
  */
-export function FooterBar({ isActive, onActivate }: FooterBarProps) {
+export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
   const { windowBorderWidth, contentMaxWidth, footerHeight } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = footerHeight - windowBorderWidth * 2;
   const isDev = process.env.NODE_ENV === "development";
 
   return (
-    <WindowContainer windowId="footer" isActive={isActive} onActivate={onActivate}>
+    <WindowContainer windowId="footer" isActive={isActive} onActivate={onActivate} className={className}>
       <footer
         className="flex items-center justify-between px-4 mx-auto w-full"
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}
