@@ -612,16 +612,24 @@ neofetch-inspired color swatch grid.
     - [x] **8.3.e Fix any violations found**
         - No violations found; all accessibility features working
 
-- [ ] **8.4 E2E tests for state persistence**
+- [ ] **8.4 E2E testing**
 
-    - [ ] **8.4.a Create E2E test file `e2e/tests/theme-controls.spec.ts`**
-        - Test: Theme selection persists across page reload
-        - Test: Mode (light/dark) persists across reload
-        - Test: Per-theme wallpaper preference persists
-        - Test: Switching themes restores that theme's wallpaper
-        - Test: Incompatible wallpaper falls back correctly
+    **Goal:** Verify theme controls work end-to-end in real browser
 
-    - [ ] **8.4.b Run E2E tests - should PASS**
+    - [x] **8.4.a Create `e2e/tests/theme-controls.spec.ts`**
+        - 14 tests covering all scoped scenarios
+        - Preference persistence: theme, mode, layout, wallpaper enabled, per-theme wallpaper
+        - Cross-theme behavior: wallpaper restore, incompatible fallback
+        - Cross-tab sync: theme, mode, wallpaper changes propagate
+        - Reset functionality: clears prefs, reload shows defaults
+        - SSR consistency: no FOUC, localStorage/cookie sync
+
+    - [ ] **8.4.b Update visual regression baselines**
+        - App has changed significantly since last baseline
+        - Run `npx playwright test --update-snapshots` for affected tests
+        - Review diffs to confirm changes are intentional
+
+    - [ ] **8.4.c Run full E2E suite - should PASS**
 
 - [ ] **8.5 Manual testing**
 

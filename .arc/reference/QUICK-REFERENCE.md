@@ -151,6 +151,7 @@ npm run test:e2e -- e2e/tests/smoke.spec.ts
 
 **Notes:**
 
+- **Always use npm scripts** (not `npx playwright` directly) - ensures correct config and output paths
 - E2E tests auto-start dev server if not running
 - Reports saved to `e2e/playwright-report/` (gitignored)
 - Test artifacts in `e2e/test-results/` (gitignored)
