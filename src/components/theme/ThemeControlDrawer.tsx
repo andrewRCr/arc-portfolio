@@ -105,11 +105,11 @@ export function ThemeControlDrawer() {
         }}
         aria-describedby={undefined}
       >
-        <div className="flex flex-col gap-3 px-4 pb-6">
+        <div className="flex flex-col gap-2 px-4 pb-6 pt-1">
           {/* Theme Section */}
           <div>
-            <div className="flex items-center justify-between mb-1">
-              <SheetTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <div className="flex items-center justify-between">
+              <SheetTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wide ml-3">
                 Theme
               </SheetTitle>
               <SheetClose asChild>
@@ -129,14 +129,19 @@ export function ThemeControlDrawer() {
 
           {/* Wallpaper Picker Section */}
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Wallpaper</h3>
-              <Switch
-                checked={isWallpaperEnabled}
-                onCheckedChange={setWallpaperEnabled}
-                aria-label="Enable wallpaper"
-                data-testid="wallpaper-toggle"
-              />
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide ml-3">Wallpaper</h3>
+              <label
+                className="min-h-11 min-w-11 flex items-center justify-center cursor-pointer"
+                data-testid="wallpaper-toggle-touch-target"
+              >
+                <Switch
+                  checked={isWallpaperEnabled}
+                  onCheckedChange={setWallpaperEnabled}
+                  aria-label="Enable wallpaper"
+                  data-testid="wallpaper-toggle"
+                />
+              </label>
             </div>
             <WallpaperPicker
               selectedWallpaper={activeWallpaper}

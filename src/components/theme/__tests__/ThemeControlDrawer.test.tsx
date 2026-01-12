@@ -176,6 +176,32 @@ describe("ThemeControlDrawer", () => {
       expect(resetButton.className).toMatch(/min-h-11/);
       expect(resetButton.className).toMatch(/min-w-11/);
     });
+
+    it("close button has touch-friendly size classes", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      const closeButton = screen.getByRole("button", { name: /close/i });
+
+      expect(closeButton.className).toMatch(/min-h-11/);
+      expect(closeButton.className).toMatch(/min-w-11/);
+    });
+
+    it("wallpaper toggle has touch-friendly size container", async () => {
+      const user = userEvent.setup();
+      render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      const touchTarget = screen.getByTestId("wallpaper-toggle-touch-target");
+
+      expect(touchTarget.className).toMatch(/min-h-11/);
+      expect(touchTarget.className).toMatch(/min-w-11/);
+    });
   });
 
   describe("Accessibility", () => {

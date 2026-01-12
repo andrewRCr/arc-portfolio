@@ -509,9 +509,11 @@ neofetch-inspired color swatch grid.
     - Single fullscreen container as wallpaper overlay (no visible borders/gaps)
     - Hides TopBar/FooterBar, main content fills viewport
 
-    - [ ] **7.4.a Add "fullscreen" to LayoutMode type**
+    - [ ] **7.4.a Rename layout modes and add "full" mode**
         - Update `src/contexts/LayoutPreferencesContext.tsx`
-        - Add third mode: `"full" | "boxed" | "fullscreen"`
+        - Rename existing "full" → "wide" (desktop-only, full-width with border gaps)
+        - Add new "full" mode (mobile-only, true fullscreen - no gaps/bars)
+        - Final modes: `"wide" | "boxed" | "full"`
 
     - [ ] **7.4.b Update LayoutWrapper for fullscreen mode**
         - Conditionally set `padding: 0` and `gap: 0` when fullscreen
