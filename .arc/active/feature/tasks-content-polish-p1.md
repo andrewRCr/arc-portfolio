@@ -1,10 +1,10 @@
 # Task List: Content Polish P1 - Project Showcase
 
-**PRD:** `.arc/backlog/feature/prd-content-polish-p1.md`
+**PRD:** `.arc/active/feature/prd-content-polish-p1.md`
 **Created:** 2026-01-13
 **Branch:** `feature/content-polish-p1`
 **Base Branch:** `main`
-**Status:** Pending
+**Status:** In Progress
 
 ## Overview
 
@@ -47,24 +47,26 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Consider extending or composing with `PageHeader` patterns
         - Plan for sticky positioning within `WindowContainer` scroll context
 
-    - [ ] **1.1.b Implement base `DetailHeader` component**
+    - [ ] **1.1.b Write tests for `DetailHeader` behavior**
+        - Test: Renders title and categories correctly
+        - Test: Back button has correct href
+        - Test: Hero image displays when provided
+        - Test: Fallback when no hero image
+        - Test: Accessibility (heading hierarchy, button labels)
+        - Expect tests to FAIL initially
+
+    - [ ] **1.1.c Implement base `DetailHeader` component**
         - Create `src/components/projects/DetailHeader.tsx`
         - Hero image as background with overlay for text readability
         - Title with monospace styling (consistent with current)
         - Category badges with `bg-accent` styling
         - Smart back button (uses `backHref` prop, defaults to `/projects`)
+        - Tests should now PASS
 
-    - [ ] **1.1.c Implement sticky behavior**
+    - [ ] **1.1.d Implement sticky behavior (test after - visual/layout)**
         - Header sticks to top while content scrolls beneath
         - Coordinate with `WindowContainer` and `ScrollShadow` if needed
-        - Test across viewports (desktop, tablet, mobile)
-
-    - [ ] **1.1.d Write tests for `DetailHeader`**
-        - Test: Renders title and categories correctly
-        - Test: Back button navigates to correct href
-        - Test: Hero image displays when provided
-        - Test: Fallback when no hero image
-        - Test: Accessibility (heading hierarchy, button labels)
+        - Manual verification across viewports (desktop, tablet, mobile)
 
     - [ ] **1.1.e Run quality gates**
         - Lint and type-check pass
@@ -79,25 +81,27 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Option B: Use existing library (yet-another-react-lightbox, etc.)
         - Decision criteria: Bundle size, accessibility, keyboard nav, touch support
 
-    - [ ] **1.2.b Implement gallery thumbnail grid**
-        - Create `src/components/projects/ImageGallery.tsx`
-        - Responsive grid (2-3 columns depending on viewport)
-        - Thumbnail aspect ratio consistent (16:9 or similar)
-        - Click handler opens lightbox at selected index
-
-    - [ ] **1.2.c Implement lightbox modal**
-        - Full-screen or near-full-screen image display
-        - Previous/Next navigation (arrows + keyboard)
-        - Close button (X + Escape key)
-        - Image counter ("2 of 6")
-        - Accessible focus management
-
-    - [ ] **1.2.d Write tests for `ImageGallery`**
+    - [ ] **1.2.b Write tests for `ImageGallery` behavior**
         - Test: Renders correct number of thumbnails
         - Test: Click opens lightbox at correct index
         - Test: Keyboard navigation works (arrows, escape)
         - Test: Renders nothing gracefully when no images
         - Test: Accessibility (alt text, focus trap in modal)
+        - Expect tests to FAIL initially
+
+    - [ ] **1.2.c Implement gallery thumbnail grid**
+        - Create `src/components/projects/ImageGallery.tsx`
+        - Responsive grid (2-3 columns depending on viewport)
+        - Thumbnail aspect ratio consistent (16:9 or similar)
+        - Click handler opens lightbox at selected index
+
+    - [ ] **1.2.d Implement lightbox modal**
+        - Full-screen or near-full-screen image display
+        - Previous/Next navigation (arrows + keyboard)
+        - Close button (X + Escape key)
+        - Image counter ("2 of 6")
+        - Accessible focus management
+        - Tests should now PASS
 
     - [ ] **1.2.e Run quality gates**
         - Lint and type-check pass
@@ -161,46 +165,50 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
 **Purpose:** Split games into dedicated tab for clearer categorization.
 
-- [ ] **3.1 Update tab structure to 3 tabs**
+- [ ] **3.1 Write tests for 3-tab structure**
 
-    - [ ] **3.1.a Update `ProjectTabs` component**
+    - [ ] **3.1.a Update `ProjectTabs` tests for three tabs**
+        - Test: Three tabs render (Software, Games, Mods)
+        - Test: Tab switching works for all three
+        - Test: Keyboard navigation across three tabs
+        - Test: `?tab=games` URL param works
+        - Expect tests to FAIL initially
+
+    - [ ] **3.1.b Write tests for Games tab content**
+        - Test: Games tab shows correct projects (Action RPG, Survival Horror, Pong)
+        - Test: Game project cards link to correct detail pages
+        - Test: Back navigation returns to Games tab
+        - Expect tests to FAIL initially
+
+- [ ] **3.2 Implement 3-tab structure**
+
+    - [ ] **3.2.a Update `ProjectTabs` component**
         - Add "Games" tab between Software and Mods
         - Update tab IDs and labels
         - Verify ARIA attributes and keyboard navigation still work
 
-    - [ ] **3.1.b Update project categorization logic**
+    - [ ] **3.2.b Update project categorization logic**
         - Define which projects are "games" vs "software"
         - Games: ActionRPGProject, SurvivalHorrorProject, Pong
         - Update filtering logic in Projects page
 
-    - [ ] **3.1.c Update routing and URL params**
+    - [ ] **3.2.c Update routing and URL params**
         - Support `?tab=games` in addition to `software` and `mods`
         - Default tab remains `software`
         - Back navigation from detail pages preserves tab state
+        - Tests should now PASS
 
-- [ ] **3.2 Create Games tab content**
+- [ ] **3.3 Create Games tab content**
 
-    - [ ] **3.2.a Filter and display game projects**
+    - [ ] **3.3.a Filter and display game projects**
         - Reuse existing `ProjectCard` component
         - Same grid layout as Software tab
         - Verify game projects appear correctly
 
-    - [ ] **3.2.b Update game project detail routing**
+    - [ ] **3.3.b Update game project detail routing**
         - Games may need `/projects/games/[slug]` route
         - Or reuse `/projects/software/[slug]` with category detection
         - Decision: Simplest approach that preserves back navigation
-
-- [ ] **3.3 Update tests for Projects page**
-
-    - [ ] **3.3.a Update `ProjectTabs` tests**
-        - Test: Three tabs render (Software, Games, Mods)
-        - Test: Tab switching works for all three
-        - Test: Keyboard navigation across three tabs
-
-    - [ ] **3.3.b Add integration tests for Games tab**
-        - Test: Games tab shows correct projects
-        - Test: Game project cards link to correct detail pages
-        - Test: Back navigation returns to Games tab
 
 - [ ] **3.4 Run Phase 3 quality gates**
     - [ ] 3.4.a Run full test suite
@@ -266,23 +274,23 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
 **Purpose:** Redesign Featured section with category labels and randomization.
 
-- [ ] **5.1 Update Featured card design**
+- [ ] **5.1 Write tests for Featured section behavior**
 
-    - [ ] **5.1.a Add category type labels**
-        - Replace `[project]` with type: "software", "framework", "game", "mod"
-        - Lowercase styling
-        - Position at top of card (current bracket position)
+    - [ ] **5.1.a Write tests for randomization utility**
+        - Test: `selectFeaturedProjects()` returns 4 projects
+        - Test: Framework slot always returns ARC Framework
+        - Test: Software slots draw from correct pool
+        - Test: Game/Mod slots draw from correct pools
+        - Mock random for deterministic tests
+        - Expect tests to FAIL initially
 
-    - [ ] **5.1.b Add `bg-card` background for description**
-        - Type tag + title: keep transparent (current behavior)
-        - Description text: use `bg-card` (solid, like existing `ProjectCard`)
-        - Maintain visual hierarchy
+    - [ ] **5.1.b Write tests for Featured card rendering**
+        - Test: 4 cards render
+        - Test: Each card has type label
+        - Test: Framework card always shows ARC Framework
+        - Expect tests to FAIL initially
 
-    - [ ] **5.1.c Update section header**
-        - Change "Featured Projects" to "Featured"
-        - Maintain existing styling
-
-- [ ] **5.2 Implement 4-card randomized layout**
+- [ ] **5.2 Implement randomization logic**
 
     - [ ] **5.2.a Define card slot configuration**
         - Decide: Option A (Software, Software, Framework, Game OR Mod)
@@ -295,26 +303,32 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Game pool: ActionRPGProject, SurvivalHorrorProject
         - Mod pool: subset from Phase 4.1.b
 
-    - [ ] **5.2.c Implement client-side randomization**
-        - Randomize on page load (client component or useEffect)
+    - [ ] **5.2.c Implement `selectFeaturedProjects()` utility**
         - Select one from each pool per slot rules
         - Handle "Game OR Mod" logic if Option A chosen
+        - Randomization tests should now PASS
 
-    - [ ] **5.2.d Update grid layout for 4 cards**
-        - Adjust grid columns if needed
+- [ ] **5.3 Update Featured card design**
+
+    - [ ] **5.3.a Add category type labels**
+        - Replace `[project]` with type: "software", "framework", "game", "mod"
+        - Lowercase styling
+        - Position at top of card (current bracket position)
+
+    - [ ] **5.3.b Add `bg-card` background for description**
+        - Type tag + title: keep transparent (current behavior)
+        - Description text: use `bg-card` (solid, like existing `ProjectCard`)
+        - Maintain visual hierarchy
+
+    - [ ] **5.3.c Update section header**
+        - Change "Featured Projects" to "Featured"
+        - Maintain existing styling
+
+    - [ ] **5.3.d Integrate randomization with client component**
+        - Randomize on page load (client component or useEffect)
+        - Update grid layout for 4 cards
         - Verify responsive behavior (2x2 on mobile?)
-
-- [ ] **5.3 Write tests for Featured section**
-
-    - [ ] **5.3.a Test card rendering**
-        - Test: 4 cards render
-        - Test: Each card has type label
-        - Test: Framework slot always shows ARC Framework
-
-    - [ ] **5.3.b Test randomization behavior**
-        - Test: Software slots draw from correct pool
-        - Test: Game/Mod slots draw from correct pools
-        - Mock random for deterministic tests
+        - Card rendering tests should now PASS
 
 - [ ] **5.4 Run Phase 5 quality gates**
     - [ ] 5.4.a Run full test suite
