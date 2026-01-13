@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-06
+**Last Updated:** 2026-01-13
 
 ---
 
@@ -30,12 +30,9 @@ Transform placeholder styling into distinctive, polished design.
    - Three-window layout, wallpaper system, responsive adaptation, 588 tests
    - [Archive](../reference/archive/2026-q1/feature/01_twm-layout-system/)
 
-4. **Theme & Wallpaper Control System**
-   - Plan: `.arc/backlog/feature/plan-theme-wallpaper-controls.md`
-   - Rationale: Polished theme/wallpaper selection UI; completes visual framework
-   - Scope: ThemePicker component, WallpaperPicker with theme-aware filtering,
-     per-theme wallpaper persistence, unified control UI
-   - Dependencies: TWM Layout System (provides wallpaper infrastructure)
+4. ✅ **Theme & Wallpaper Control System** (2026-01-13)
+   - Unified theme/wallpaper controls, cookie-first SSR, 6 themes, 36 wallpapers, 862+67 tests
+   - [Archive](../reference/archive/2026-q1/feature/02_theme-wallpaper-controls/)
 
 5. **Content Polish**
    - Plan: `.arc/backlog/feature/plan-content-polish.md`
@@ -157,6 +154,7 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Change Log
 
+- **2026-01-13**: Theme & Wallpaper Control System completed and archived
 - **2026-01-06**: TWM Layout System completed and archived
 - **2026-01-01**: Added Theme & Wallpaper Control System (B4), renumbered subsequent items. Broken out
   from TWM Layout System Phase 5 after evaluation showed need for dedicated feature with state

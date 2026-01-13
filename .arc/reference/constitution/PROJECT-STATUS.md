@@ -19,43 +19,40 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ TWM Layout System (feature) - 2026-01-06
-    - Three-window layout, wallpaper system, responsive adaptation, 588 tests
-    - [Archive](../archive/2026-q1/feature/01_twm-layout-system/)
+- ✅ Theme & Wallpaper Control System (feature) - 2026-01-13
+    - Unified theme/wallpaper controls, cookie-first SSR, 6 themes, 36 wallpapers, 862 unit + 67 E2E tests
+    - [Archive](../archive/2026-q1/feature/02_theme-wallpaper-controls/)
 
 **Currently Active:**
 
-- Theme & Wallpaper Control System (feature) - Polished theme/wallpaper selection UI
-    - [Task List](../../active/feature/tasks-theme-wallpaper-controls.md)
+- None
 
 **Next Priority:**
 
-- Visual Polish & Animations (feature) - Framer Motion integration, page transitions
+- Content Polish (feature) - Project detail pages, Skills reorganization, About/Contact copy, Home skills grid
 
 ---
 
 ## Roadmap
 
-### Feature Development
+### Phase B: Visual Design System (Current)
 
-*High Priority:*
+- ✅ TWM Layout System - Three-window layout, wallpaper system, responsive adaptation
+- ✅ Theme & Wallpaper Control System - Unified controls, cookie-first SSR, 6 themes, 36 wallpapers
+- **Content Polish** (next) - Project detail pages, Skills reorganization, About/Contact copy
+- **Visual Polish** - TWM startup animation, Framer Motion transitions, micro-interactions
 
-- **Visual Polish & Animations** - Framer Motion integration, page transitions, micro-interactions
-    - [Backlog](../../backlog/feature/BACKLOG-FEATURE.md)
-- **Mod Portfolio Integration** - Feature flag ready, infrastructure exists, needs content
-    - [Backlog](../../backlog/feature/BACKLOG-FEATURE.md)
+### Phase C: Launch
 
-*Lower Priority:*
+- **Feature Flag System** - Unified infrastructure for dev-only content, incomplete projects
+- **SEO & Meta Tags** - Open Graph, structured data, sitemap
+- **Deployment** - Vercel setup, domain transfer
 
-- **Contact Form Implementation** - Form UI, email delivery (Zeptomail), rate limiting
-- **SEO & Analytics** - Meta tags, Open Graph, Vercel Analytics, sitemap
-- **Deployment** - Vercel configuration, domain transfer (andrewcreekmore.com)
+### Post-v1.0 (Backlog)
 
-### Technical Infrastructure
-
-*As Needed:*
-
-- No major technical infrastructure work planned; project uses straightforward Next.js patterns
+- Incomplete Projects (feature-flagged, enable incrementally)
+- Mod Portfolio Integration
+- Interactive Skills Filtering
 
 ---
 
@@ -114,6 +111,15 @@ contemporary web development practices.
 - **Developer tooling**: DevPageHeader for dev pages, CSS defaults generator script
 - **Test coverage**: 588 tests including E2E visual regression and accessibility validation
 - **Touch targets**: 44×44px minimum with TouchTarget component
+
+### ✅ Theme & Wallpaper Control System
+
+- **Unified controls**: Neofetch-inspired 8-color swatch grid, desktop dropdown + mobile drawer interfaces
+- **Cookie-first SSR**: Palette/wallpaper cookies for FOUC-free server rendering, localStorage client cache
+- **Theme expansion**: 6 complete themes (Remedy, Rose Pine, Gruvbox, Ayu, Rouge, Mariana)
+- **Wallpaper system**: 36 wallpapers with theme compatibility tags, enable/disable toggle, per-theme preferences
+- **Responsive layout modes**: Wide/boxed on desktop, full/boxed on mobile with space-optimized fullscreen
+- **Test coverage**: 862 unit tests, 67 E2E tests, WCAG 2.1 AA accessibility validation
 
 ---
 
