@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
-import ProjectDetail from "@/components/projects/ProjectDetail";
+import { DetailHeader } from "@/components/projects/DetailHeader";
+import ProjectDetail, { getBackDestination } from "@/components/projects/ProjectDetail";
 import { projects } from "@/data/projects";
 
 interface ProjectPageProps {
@@ -31,10 +32,24 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
 
   // Preserve tab state from query param, default to 'software'
   const currentTab = tab === "mods" ? "mods" : "software";
+  const backDest = getBackDestination(from, currentTab);
+
+  // Use thumbnail as hero, fallback to first screenshot if available
+  const heroImage = project.images.thumbnail || project.images.screenshots[0]?.src;
 
   return (
-    <PageLayout>
-      <ProjectDetail project={project} currentTab={currentTab} from={from} />
+    <PageLayout
+      header={
+        <DetailHeader
+          title={project.title}
+          categories={project.category}
+          heroImage={heroImage}
+          backHref={backDest.href}
+          backLabel={backDest.label}
+        />
+      }
+    >
+      <ProjectDetail project={project} />
     </PageLayout>
   );
 }

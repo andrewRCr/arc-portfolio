@@ -1,17 +1,15 @@
 /**
  * Behavior tests for ProjectDetail component
  *
- * Tests data display, external links, back button functionality, and tab state preservation.
+ * Tests content display: description, screenshots gallery, external links,
+ * tech stack, features, and optional metadata. Header elements (title, badges,
+ * back button) are tested in DetailHeader.test.tsx.
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
-import ProjectDetail from "../ProjectDetail";
+import { describe, it, expect } from "vitest";
+import ProjectDetail, { getBackDestination } from "../ProjectDetail";
 import type { Project } from "@/types/project";
-
-// Apply shared navigation mock
-vi.mock("next/navigation", () => createNavigationMock());
 
 const mockProject: Project = {
   id: "test-project",
@@ -45,25 +43,10 @@ const mockProject: Project = {
 };
 
 describe("ProjectDetail - Behavior Tests", () => {
-  beforeEach(() => {
-    mockNavigation.reset();
-  });
-
-  describe("Basic Rendering", () => {
-    it("renders project title", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText("Test Project")).toBeInTheDocument();
-    });
-
+  describe("Content Rendering", () => {
     it("renders project description", () => {
       render(<ProjectDetail project={mockProject} />);
       expect(screen.getByText(/comprehensive test project description/i)).toBeInTheDocument();
-    });
-
-    it("renders category badges", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText("Web App")).toBeInTheDocument();
-      expect(screen.getByText("Desktop App")).toBeInTheDocument();
     });
 
     it("renders all tech stack items", () => {
@@ -80,6 +63,24 @@ describe("ProjectDetail - Behavior Tests", () => {
       expect(screen.getByText(/User authentication/i)).toBeInTheDocument();
       expect(screen.getByText(/Real-time updates/i)).toBeInTheDocument();
       expect(screen.getByText(/API integration/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("Screenshots Gallery", () => {
+    it("renders gallery section when screenshots exist", () => {
+      render(<ProjectDetail project={mockProject} />);
+      expect(screen.getByText("Screenshots")).toBeInTheDocument();
+      expect(screen.getByTestId("image-gallery")).toBeInTheDocument();
+    });
+
+    it("does not render gallery section when no screenshots", () => {
+      const projectWithoutScreenshots: Project = {
+        ...mockProject,
+        images: { ...mockProject.images, screenshots: [] },
+      };
+      render(<ProjectDetail project={projectWithoutScreenshots} />);
+      expect(screen.queryByText("Screenshots")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("image-gallery")).not.toBeInTheDocument();
     });
   });
 
@@ -124,27 +125,6 @@ describe("ProjectDetail - Behavior Tests", () => {
     });
   });
 
-  describe("Back Button", () => {
-    it("renders back button", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByRole("button", { name: /back to.*projects/i })).toBeInTheDocument();
-    });
-
-    it("back button preserves tab state with query param", () => {
-      render(<ProjectDetail project={mockProject} currentTab="mods" />);
-      const backButton = screen.getByRole("button", { name: /back to.*projects/i });
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
-    });
-
-    it("back button defaults to software tab when no tab specified", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const backButton = screen.getByRole("button", { name: /back to.*projects/i });
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
-    });
-  });
-
   describe("Optional Metadata", () => {
     it("renders team size when provided", () => {
       render(<ProjectDetail project={mockProject} />);
@@ -178,15 +158,16 @@ describe("ProjectDetail - Behavior Tests", () => {
       };
       render(<ProjectDetail project={minimalProject} />);
       // Component should still render without errors
-      expect(screen.getByText("Test Project")).toBeInTheDocument();
+      expect(screen.getByText(/comprehensive test project description/i)).toBeInTheDocument();
     });
   });
 
   describe("Accessibility", () => {
-    it("has semantic heading for project title", () => {
+    it("has semantic headings for content sections", () => {
       render(<ProjectDetail project={mockProject} />);
-      const heading = screen.getByRole("heading", { name: "Test Project" });
-      expect(heading).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Screenshots" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Tech Stack" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Key Features" })).toBeInTheDocument();
     });
 
     it("external links have proper aria labels", () => {
@@ -194,5 +175,27 @@ describe("ProjectDetail - Behavior Tests", () => {
       const githubLink = screen.getByRole("link", { name: /github/i });
       expect(githubLink).toHaveAttribute("aria-label");
     });
+  });
+});
+
+describe("getBackDestination helper", () => {
+  it("returns home destination when from is 'home'", () => {
+    const result = getBackDestination("home", "software");
+    expect(result).toEqual({ href: "/", label: "Home" });
+  });
+
+  it("returns projects with software tab by default", () => {
+    const result = getBackDestination(undefined, "software");
+    expect(result).toEqual({ href: "/projects?tab=software", label: "Projects" });
+  });
+
+  it("returns projects with mods tab when specified", () => {
+    const result = getBackDestination(undefined, "mods");
+    expect(result).toEqual({ href: "/projects?tab=mods", label: "Projects" });
+  });
+
+  it("defaults to software tab when currentTab not provided", () => {
+    const result = getBackDestination();
+    expect(result).toEqual({ href: "/projects?tab=software", label: "Projects" });
   });
 });

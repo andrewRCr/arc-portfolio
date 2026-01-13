@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
-import ProjectDetail from "@/components/projects/ProjectDetail";
+import { DetailHeader } from "@/components/projects/DetailHeader";
+import ProjectDetail, { getBackDestination } from "@/components/projects/ProjectDetail";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 
@@ -41,10 +42,24 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
 
   // Preserve tab state from query param, default to 'mods' for mod pages
   const currentTab = tab === "software" ? "software" : "mods";
+  const backDest = getBackDestination(from, currentTab);
+
+  // Use thumbnail as hero, fallback to first screenshot if available
+  const heroImage = mod.images.thumbnail || mod.images.screenshots[0]?.src;
 
   return (
-    <PageLayout>
-      <ProjectDetail project={mod} currentTab={currentTab} from={from} />
+    <PageLayout
+      header={
+        <DetailHeader
+          title={mod.title}
+          categories={mod.category}
+          heroImage={heroImage}
+          backHref={backDest.href}
+          backLabel={backDest.label}
+        />
+      }
+    >
+      <ProjectDetail project={mod} />
     </PageLayout>
   );
 }

@@ -1,19 +1,16 @@
 /**
  * ProjectDetail component
  *
- * Displays comprehensive project information including description, features, tech stack,
- * metadata, external links, and a back button that preserves tab state.
+ * Displays scrollable project content: description, screenshots, features, tech stack,
+ * metadata, and external links. Header (title, back button, badges) is handled by
+ * DetailHeader in the page's PageLayout header slot.
  */
 
-"use client";
-
-import { useRouter } from "next/navigation";
 import type { Project } from "@/types/project";
+import { ImageGallery } from "./ImageGallery";
 
 interface ProjectDetailProps {
   project: Project;
-  currentTab?: "software" | "mods";
-  from?: string;
 }
 
 interface ExternalLinkProps {
@@ -36,47 +33,19 @@ function ExternalLink({ href, label, ariaLabel }: ExternalLinkProps) {
   );
 }
 
-export default function ProjectDetail({ project, currentTab = "software", from }: ProjectDetailProps) {
-  const router = useRouter();
-
-  const getBackDestination = () => {
-    if (from === "home") {
-      return { href: "/", label: "Home" };
-    }
-    return { href: `/projects?tab=${currentTab}`, label: "Projects" };
-  };
-
-  const backDest = getBackDestination();
-
-  const handleBackClick = () => {
-    router.push(backDest.href);
-  };
-
+export default function ProjectDetail({ project }: ProjectDetailProps) {
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-8 px-0 md:px-4">
-      {/* Back Button */}
-      <button
-        onClick={handleBackClick}
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent"
-        aria-label={`Back to ${backDest.label}`}
-      >
-        ← Back to {backDest.label}
-      </button>
+    <div className="space-y-8">
+      {/* Description */}
+      <p className="text-lg text-foreground">{project.description}</p>
 
-      {/* Project Header */}
-      <div className="space-y-4">
-        <div className="flex flex-wrap gap-2">
-          {project.category.map((cat) => (
-            <span key={cat} className="rounded bg-accent px-3 py-1 text-sm font-semibold text-accent-foreground">
-              {cat}
-            </span>
-          ))}
+      {/* Screenshots Gallery */}
+      {project.images.screenshots.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-xl font-bold text-foreground">Screenshots</h2>
+          <ImageGallery images={project.images.screenshots} />
         </div>
-
-        <h1 className="font-mono text-4xl font-bold text-foreground">{project.title}</h1>
-
-        <p className="text-lg text-foreground">{project.description}</p>
-      </div>
+      )}
 
       {/* External Links */}
       {(() => {
@@ -182,4 +151,15 @@ export default function ProjectDetail({ project, currentTab = "software", from }
       )}
     </div>
   );
+}
+
+/**
+ * Helper to compute back destination based on navigation context.
+ * Used by page components to configure DetailHeader.
+ */
+export function getBackDestination(from?: string, currentTab: "software" | "mods" = "software") {
+  if (from === "home") {
+    return { href: "/", label: "Home" };
+  }
+  return { href: `/projects?tab=${currentTab}`, label: "Projects" };
 }

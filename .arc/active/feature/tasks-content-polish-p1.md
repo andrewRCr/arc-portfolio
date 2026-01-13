@@ -38,74 +38,90 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
 **Purpose:** Create reusable components for project detail pages before integrating them.
 
-- [ ] **1.1 Create `DetailHeader` component**
+- [x] **1.1 Create `DetailHeader` component**
 
     **Goal:** Sticky header with hero image background, title, back button, and category badges.
 
-    - [ ] **1.1.a Design component interface and props**
-        - Props: `title`, `heroImage`, `categories`, `backHref`, `backLabel`
-        - Consider extending or composing with `PageHeader` patterns
-        - Plan for sticky positioning within `WindowContainer` scroll context
+    - [x] **1.1.a Design component interface and props**
 
-    - [ ] **1.1.b Write tests for `DetailHeader` behavior**
-        - Test: Renders title and categories correctly
-        - Test: Back button has correct href
-        - Test: Hero image displays when provided
-        - Test: Fallback when no hero image
-        - Test: Accessibility (heading hierarchy, button labels)
-        - Expect tests to FAIL initially
+        **Interface:**
 
-    - [ ] **1.1.c Implement base `DetailHeader` component**
-        - Create `src/components/projects/DetailHeader.tsx`
-        - Hero image as background with overlay for text readability
-        - Title with monospace styling (consistent with current)
-        - Category badges with `bg-accent` styling
-        - Smart back button (uses `backHref` prop, defaults to `/projects`)
-        - Tests should now PASS
+        ```tsx
+        interface DetailHeaderProps {
+          title: string;
+          categories?: string[];
+          heroImage?: string;  // Falls back to bg-card
+          backHref: string;
+          backLabel: string;
+        }
+        ```
 
-    - [ ] **1.1.d Implement sticky behavior (test after - visual/layout)**
-        - Header sticks to top while content scrolls beneath
-        - Coordinate with `WindowContainer` and `ScrollShadow` if needed
-        - Manual verification across viewports (desktop, tablet, mobile)
+        **Architecture decisions:**
+        - Sibling to PageHeader (not extension) - both work in PageLayout's header slot
+        - Shares bottom divider pattern (`mx-4 border-b border-border/50`)
+        - Title: `text-3xl` (between PageHeader's 2xl and old ProjectDetail's 4xl)
+        - Hero image: Full background with overlay, `bg-card` fallback
+        - Back button: Icon (ArrowLeft) + text
+        - Badges: Below title
+        - Description: Not in header (stays in scrollable content)
 
-    - [ ] **1.1.e Run quality gates**
-        - Lint and type-check pass
-        - All tests pass
+    - [x] **1.1.b Write tests for `DetailHeader` behavior**
+        - 15 behavior-focused tests (title, categories, back button, hero image, accessibility)
+        - Tests verify contracts/behavior, not styling specifics
+        - Created `src/components/projects/__tests__/DetailHeader.test.tsx`
 
-- [ ] **1.2 Implement image gallery with lightbox**
+    - [x] **1.1.c Implement base `DetailHeader` component**
+        - Created `src/components/projects/DetailHeader.tsx`
+        - Hero image with gradient overlay, `bg-card` fallback
+        - All 15 tests passing
+
+    - [x] **1.1.d Implement sticky behavior**
+        - Sticky behavior is architectural (PageLayout's `header` prop handles fixed positioning)
+        - Component structured for PageLayout integration
+        - Visual verification deferred to 2.1 integration
+
+    - [x] **1.1.e Run quality gates**
+        - Type check, lint, format, markdown lint: all pass
+        - Build: success
+        - Tests: 878 passing
+
+- [x] **1.2 Implement image gallery with lightbox**
 
     **Goal:** Clickable thumbnail grid that opens full-size images in modal.
 
-    - [ ] **1.2.a Evaluate lightbox approach**
-        - Option A: Build custom modal with `Dialog` from shadcn/ui
-        - Option B: Use existing library (yet-another-react-lightbox, etc.)
-        - Decision criteria: Bundle size, accessibility, keyboard nav, touch support
+    - [x] **1.2.a Evaluate lightbox approach**
 
-    - [ ] **1.2.b Write tests for `ImageGallery` behavior**
-        - Test: Renders correct number of thumbnails
-        - Test: Click opens lightbox at correct index
-        - Test: Keyboard navigation works (arrows, escape)
-        - Test: Renders nothing gracefully when no images
-        - Test: Accessibility (alt text, focus trap in modal)
-        - Expect tests to FAIL initially
+        **Decision:** Use `yet-another-react-lightbox` library
 
-    - [ ] **1.2.c Implement gallery thumbnail grid**
-        - Create `src/components/projects/ImageGallery.tsx`
-        - Responsive grid (2-3 columns depending on viewport)
-        - Thumbnail aspect ratio consistent (16:9 or similar)
-        - Click handler opens lightbox at selected index
+        **Rationale:**
+        - ~15-20KB bundle, active maintenance, full a11y (ARIA, keyboard nav)
+        - Mobile: horizontal swipe, pull-down-to-close built-in
+        - Zoom plugin available but skipped initially (evaluate on real hardware)
+        - CSS variables for theming (`--yarl__*`), can use our tokens
+        - Full-viewport mode initially (evaluate TWM aesthetic impact later)
+        - Counter and optional captions supported
 
-    - [ ] **1.2.d Implement lightbox modal**
-        - Full-screen or near-full-screen image display
-        - Previous/Next navigation (arrows + keyboard)
-        - Close button (X + Escape key)
-        - Image counter ("2 of 6")
-        - Accessible focus management
-        - Tests should now PASS
+    - [x] **1.2.b Write tests for `ImageGallery` behavior**
+        - 12 behavior-focused tests (thumbnails, click, empty states, accessibility)
+        - Tests wrapper interface, not YAML library internals
+        - Created `src/components/projects/__tests__/ImageGallery.test.tsx`
 
-    - [ ] **1.2.e Run quality gates**
-        - Lint and type-check pass
-        - All tests pass
+    - [x] **1.2.c Implement gallery thumbnail grid**
+        - Created `src/components/projects/ImageGallery.tsx`
+        - Responsive grid: 2 cols mobile (`grid-cols-2`), 3 cols desktop (`sm:grid-cols-3`)
+        - 16:9 aspect ratio via `aspect-video`, Next.js Image with `fill`
+
+    - [x] **1.2.d Implement lightbox with yet-another-react-lightbox**
+        - Full-viewport modal with Counter plugin
+        - Themed: `--yarl__color_backdrop` → `hsl(var(--card) / 0.95)`
+        - Lucide icons (ChevronLeft, ChevronRight, X)
+        - Pull-down-to-close enabled, finite carousel (no wrap)
+
+    - [x] **1.2.e Run quality gates**
+        - Type check, lint, format, markdown lint: all pass
+        - Build: success
+        - Tests: 890 passing (12 new ImageGallery tests)
+        - Added CSS mocks to test setup for YAML stylesheets
 
 ### **Phase 2:** Project Detail Integration
 
@@ -113,27 +129,27 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
 - [ ] **2.1 Update `ProjectDetail` component**
 
-    - [ ] **2.1.a Integrate `DetailHeader`**
-        - Replace current simple back button + title with `DetailHeader`
-        - Pass hero image from `project.images.thumbnail` or first screenshot
-        - Pass categories from `project.category`
-        - Move description out of header into scrollable content
+    - [x] **2.1.a Integrate `DetailHeader`**
+        - Page components now pass DetailHeader to PageLayout's header slot
+        - Added `getBackDestination` helper to ProjectDetail for computing back nav
+        - Hero image: thumbnail, fallback to first screenshot
+        - Updated both software and mods page routes
 
-    - [ ] **2.1.b Integrate `ImageGallery`**
-        - Add gallery section after description
-        - Use `project.images.screenshots` array
-        - Only render if screenshots exist and have entries
+    - [x] **2.1.b Integrate `ImageGallery`**
+        - Added Screenshots section with ImageGallery component
+        - Only renders when `project.images.screenshots.length > 0`
+        - ProjectDetail now receives only `project` prop (simplified interface)
 
     - [ ] **2.1.c Verify layout and spacing**
         - Content flows correctly beneath sticky header
         - Gallery integrates with existing sections (tech stack, features, etc.)
         - Mobile layout remains usable
 
-    - [ ] **2.1.d Update tests for `ProjectDetail`**
-        - Test: `DetailHeader` renders with correct props
-        - Test: `ImageGallery` renders when screenshots present
-        - Test: No gallery section when screenshots empty
-        - Existing tests continue to pass
+    - [x] **2.1.d Update tests for `ProjectDetail`**
+        - Updated ProjectDetail tests: removed header-related tests (now in DetailHeader)
+        - Added gallery section tests, getBackDestination helper tests
+        - Updated integration routing tests to use DetailHeader
+        - All 889 tests passing
 
 - [ ] **2.2 Light copy editing for software projects**
 
