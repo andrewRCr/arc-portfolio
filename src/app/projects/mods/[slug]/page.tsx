@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
+import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail, { getBackDestination } from "@/components/projects/ProjectDetail";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
@@ -49,16 +50,19 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
 
   return (
     <PageLayout
+      stickyHeader
       header={
-        <DetailHeader
-          title={mod.title}
-          categories={mod.category}
-          heroImage={heroImage}
-          backHref={backDest.href}
-          backLabel={backDest.label}
-        />
+        <DetailHeaderCompact title={mod.title} backHref={backDest.href} backLabel={backDest.label} links={mod.links} />
       }
     >
+      <DetailHeader
+        title={mod.title}
+        categories={mod.category}
+        heroImage={heroImage}
+        backHref={backDest.href}
+        backLabel={backDest.label}
+        links={mod.links}
+      />
       <ProjectDetail project={mod} />
     </PageLayout>
   );

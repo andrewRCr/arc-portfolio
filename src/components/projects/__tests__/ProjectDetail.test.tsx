@@ -84,46 +84,7 @@ describe("ProjectDetail - Behavior Tests", () => {
     });
   });
 
-  describe("External Links", () => {
-    it("renders GitHub link when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const githubLink = screen.getByRole("link", { name: /github/i });
-      expect(githubLink).toHaveAttribute("href", "https://github.com/test/project");
-      expect(githubLink).toHaveAttribute("target", "_blank");
-      expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
-    });
-
-    it("renders live demo link when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const demoLink = screen.getByRole("link", { name: /live demo/i });
-      expect(demoLink).toHaveAttribute("href", "https://demo.test.com");
-      expect(demoLink).toHaveAttribute("target", "_blank");
-    });
-
-    it("renders download link when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const downloadLink = screen.getByRole("link", { name: /download/i });
-      expect(downloadLink).toHaveAttribute("href", "https://download.test.com");
-      expect(downloadLink).toHaveAttribute("target", "_blank");
-    });
-
-    it("renders external link when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const externalLink = screen.getByRole("link", { name: /view on nexusmods/i });
-      expect(externalLink).toHaveAttribute("href", "https://nexusmods.com/test");
-      expect(externalLink).toHaveAttribute("target", "_blank");
-    });
-
-    it("does not render links when not provided", () => {
-      const projectWithoutLinks: Project = {
-        ...mockProject,
-        links: {},
-      };
-      render(<ProjectDetail project={projectWithoutLinks} />);
-      expect(screen.queryByRole("link", { name: /github/i })).not.toBeInTheDocument();
-      expect(screen.queryByRole("link", { name: /live demo/i })).not.toBeInTheDocument();
-    });
-  });
+  // Note: External links tests moved to DetailHeader.test.tsx (links now in header)
 
   describe("Optional Metadata", () => {
     it("renders team size when provided", () => {
@@ -170,11 +131,7 @@ describe("ProjectDetail - Behavior Tests", () => {
       expect(screen.getByRole("heading", { name: "Key Features" })).toBeInTheDocument();
     });
 
-    it("external links have proper aria labels", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const githubLink = screen.getByRole("link", { name: /github/i });
-      expect(githubLink).toHaveAttribute("aria-label");
-    });
+    // Note: External link accessibility tests moved to DetailHeader.test.tsx
   });
 });
 

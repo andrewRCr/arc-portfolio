@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
+import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail, { getBackDestination } from "@/components/projects/ProjectDetail";
 import { projects } from "@/data/projects";
 
@@ -39,16 +40,24 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
 
   return (
     <PageLayout
+      stickyHeader
       header={
-        <DetailHeader
+        <DetailHeaderCompact
           title={project.title}
-          categories={project.category}
-          heroImage={heroImage}
           backHref={backDest.href}
           backLabel={backDest.label}
+          links={project.links}
         />
       }
     >
+      <DetailHeader
+        title={project.title}
+        categories={project.category}
+        heroImage={heroImage}
+        backHref={backDest.href}
+        backLabel={backDest.label}
+        links={project.links}
+      />
       <ProjectDetail project={project} />
     </PageLayout>
   );

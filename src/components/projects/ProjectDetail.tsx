@@ -13,29 +13,9 @@ interface ProjectDetailProps {
   project: Project;
 }
 
-interface ExternalLinkProps {
-  href: string;
-  label: string;
-  ariaLabel: string;
-}
-
-function ExternalLink({ href, label, ariaLabel }: ExternalLinkProps) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-secondary/60 hover:text-secondary"
-      aria-label={ariaLabel}
-    >
-      {label} →
-    </a>
-  );
-}
-
 export default function ProjectDetail({ project }: ProjectDetailProps) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-2">
       {/* Description */}
       <p className="text-lg text-foreground">{project.description}</p>
 
@@ -46,24 +26,6 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           <ImageGallery images={project.images.screenshots} />
         </div>
       )}
-
-      {/* External Links */}
-      {(() => {
-        const linkDescriptors = [
-          { href: project.links.github, label: "GitHub", ariaLabel: "View project on GitHub" },
-          { href: project.links.liveDemo, label: "Live Demo", ariaLabel: "View live demo" },
-          { href: project.links.download, label: "Download", ariaLabel: "Download project" },
-          { href: project.links.external, label: "View on NexusMods", ariaLabel: "View on NexusMods" },
-        ].filter((link): link is ExternalLinkProps => Boolean(link.href));
-
-        return linkDescriptors.length > 0 ? (
-          <div className="flex flex-wrap gap-3">
-            {linkDescriptors.map((link) => (
-              <ExternalLink key={link.label} {...link} />
-            ))}
-          </div>
-        ) : null;
-      })()}
 
       {/* Tech Stack */}
       <div className="space-y-3">
