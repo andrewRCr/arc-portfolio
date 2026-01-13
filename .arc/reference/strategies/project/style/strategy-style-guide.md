@@ -1,22 +1,42 @@
 # Strategy: Style Guide
 
-**Version:** 1.4 | **Updated:** 2026-01-05
+**Version:** 1.5 | **Updated:** 2026-01-13
 
-This document outlines the style guide for arc-portfolio, including design token conventions, the
-shadow-based elevation model, TWM layout system, and visual guidelines.
+This document is the authoritative style reference for arc-portfolio, covering design philosophy,
+token conventions, the TWM layout system, and component patterns.
 
 ## Table of Contents
 
-1. [Design Token System](#design-token-system)
-2. [Semantic vs Decorative Tokens](#semantic-vs-decorative-tokens)
-3. [Surface Type Semantics](#surface-type-semantics)
-4. [Shadow-Based Elevation](#shadow-based-elevation)
-5. [TWM Layout System](#twm-layout-system)
-6. [Interactive States](#interactive-states)
-7. [Button Variants](#button-variants)
-8. [Focus Indicator Strategy](#focus-indicator-strategy)
-9. [shadcn/ui Component Usage](#shadcnui-component-usage)
-10. [Extending the Token System](#extending-the-token-system)
+1. [Design Philosophy](#design-philosophy)
+2. [Design Token System](#design-token-system)
+3. [Semantic vs Decorative Tokens](#semantic-vs-decorative-tokens)
+4. [Surface Type Semantics](#surface-type-semantics)
+5. [Shadow-Based Elevation](#shadow-based-elevation)
+6. [TWM Layout System](#twm-layout-system)
+7. [Interactive States](#interactive-states)
+8. [Button Variants](#button-variants)
+9. [Focus Indicator Strategy](#focus-indicator-strategy)
+10. [shadcn/ui Component Usage](#shadcnui-component-usage)
+11. [Extending the Token System](#extending-the-token-system)
+
+---
+
+## Design Philosophy
+
+Core principles guiding visual design decisions in arc-portfolio:
+
+- **Accessibility (WCAG AA)**: Ensure sufficient color contrast, keyboard navigability, screen
+  reader compatibility, and clear focus indicators throughout
+- **Consistency**: Maintain uniform design language—tokens, spacing, interaction patterns—across
+  all pages and components
+- **Terminal Aesthetic**: Embrace the TWM/TUI-inspired look: square corners, visible borders,
+  semi-transparent windows over wallpaper, monospace typography for UI elements
+- **Simplicity & Clarity**: Keep interfaces clean and uncluttered; labels and controls should be
+  unambiguous
+- **Purposeful Animation**: Micro-interactions should be quick (150-300ms), use appropriate easing,
+  and enhance usability rather than distract
+- **Responsive Design**: Layouts adapt gracefully from phone to desktop; touch targets meet 44×44px
+  minimum on touch devices
 
 ---
 
