@@ -13,9 +13,9 @@ import { themes } from "@/data/themes";
 /**
  * Get the current theme's swatch colors for the active mode.
  *
- * @returns Array of 8 hex color strings for the current theme/mode
+ * @returns Array of 8 hex color strings for the current theme/mode (empty array if theme invalid)
  */
-export function useThemeSwatch(): string[] {
+export function useThemeSwatch(): readonly string[] {
   const { activeTheme } = useThemeContext();
   const { resolvedTheme } = useTheme();
 

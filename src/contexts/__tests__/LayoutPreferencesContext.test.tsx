@@ -4,7 +4,7 @@
  * Tests for layout mode preference state management and persistence.
  */
 
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { LayoutPreferencesContextProvider, useLayoutPreferences } from "../LayoutPreferencesContext";
 import { LAYOUT_MODE_STORAGE_KEY } from "@/config/storage";
@@ -110,12 +110,9 @@ describe("LayoutPreferencesContext", () => {
         </LayoutPreferencesContextProvider>
       );
 
-      // Wait for useEffect to run
-      await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitFor(() => {
+        expect(screen.getByTestId("layout-mode")).toHaveTextContent("wide");
       });
-
-      expect(screen.getByTestId("layout-mode")).toHaveTextContent("wide");
     });
 
     it("ignores invalid localStorage value", async () => {
@@ -127,11 +124,9 @@ describe("LayoutPreferencesContext", () => {
         </LayoutPreferencesContextProvider>
       );
 
-      await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitFor(() => {
+        expect(screen.getByTestId("layout-mode")).toHaveTextContent("boxed");
       });
-
-      expect(screen.getByTestId("layout-mode")).toHaveTextContent("boxed");
     });
   });
 

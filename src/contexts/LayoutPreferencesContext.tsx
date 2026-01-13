@@ -2,18 +2,11 @@
 
 import * as React from "react";
 import { LAYOUT_MODE_STORAGE_KEY } from "@/config/storage";
+import { LAYOUT_MODES, DEFAULT_LAYOUT_MODE, type LayoutMode } from "@/config/layout";
 import { setLayoutModePreference } from "@/app/actions/layout-preferences";
 
-/**
- * Layout mode options:
- * - "wide": Full-width containers with border gaps (desktop only)
- * - "boxed": Constrained max-width containers (default)
- * - "full": True fullscreen - no gaps, no bars (mobile only)
- */
-export type LayoutMode = "wide" | "boxed" | "full";
-
-const VALID_MODES: LayoutMode[] = ["wide", "boxed", "full"];
-const DEFAULT_LAYOUT_MODE: LayoutMode = "boxed";
+// Re-export for consumers
+export type { LayoutMode } from "@/config/layout";
 
 interface LayoutPreferencesContextProviderProps {
   children: React.ReactNode;
@@ -32,7 +25,7 @@ interface LayoutPreferencesContextValue {
 const LayoutPreferencesContext = React.createContext<LayoutPreferencesContextValue | undefined>(undefined);
 
 function isValidLayoutMode(value: string | null | undefined): value is LayoutMode {
-  return typeof value === "string" && VALID_MODES.includes(value as LayoutMode);
+  return typeof value === "string" && LAYOUT_MODES.includes(value as LayoutMode);
 }
 
 function getStoredLayoutMode(): LayoutMode | null {

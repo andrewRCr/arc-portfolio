@@ -14,6 +14,7 @@ import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
 import { defaultPalette, themes } from "@/data/themes";
+import { LAYOUT_MODES } from "@/config/layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -82,9 +83,10 @@ export default async function RootLayout({
   }
 
   // Determine server layout mode (cookie or undefined to let context default)
-  const validLayoutModes = ["wide", "boxed", "full"];
   const serverLayoutMode =
-    layoutModeCookie && validLayoutModes.includes(layoutModeCookie) ? layoutModeCookie : undefined;
+    layoutModeCookie && LAYOUT_MODES.includes(layoutModeCookie as (typeof LAYOUT_MODES)[number])
+      ? layoutModeCookie
+      : undefined;
 
   return (
     <html lang="en" suppressHydrationWarning>

@@ -9,12 +9,13 @@
 import { useRef, useEffect, useState } from "react";
 import type { ThemeName } from "@/data/themes";
 import type { WallpaperId } from "@/data/wallpapers";
+import type { LayoutMode } from "@/contexts/LayoutPreferencesContext";
 
 interface UsePreferenceAnnouncementsProps {
   activeTheme: ThemeName;
   activeWallpaper: WallpaperId;
   mode: string | undefined;
-  layoutMode: string;
+  layoutMode: LayoutMode;
 }
 
 /**
@@ -55,8 +56,8 @@ export function usePreferenceAnnouncements({
 
     if (prevMode.current !== mode && mode) {
       messages.push(`Switched to ${mode} mode`);
-      prevMode.current = mode;
     }
+    prevMode.current = mode;
 
     if (prevLayout.current !== layoutMode) {
       messages.push(`Layout changed to ${layoutMode}`);

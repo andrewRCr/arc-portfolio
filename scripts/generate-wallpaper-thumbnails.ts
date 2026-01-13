@@ -12,11 +12,11 @@
  *        npm run generate:thumbnails
  */
 
-import { execFileSync, execSync } from "child_process";
+import { execFileSync } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 
-const SOURCE_DIR = path.join(__dirname, "../public/wallpaper/optimized");
+const SOURCE_DIR = path.join(__dirname, "../public/wallpaper/optimized-1080");
 const OUTPUT_DIR = path.join(__dirname, "../public/wallpaper/thumbnails");
 
 // Thumbnail dimensions (4:3 aspect ratio for picker preview)
@@ -89,7 +89,7 @@ function main(): void {
 
   // Verify ImageMagick is available
   try {
-    execSync("convert --version", { stdio: "pipe" });
+    execFileSync("convert", ["--version"], { stdio: "pipe" });
   } catch {
     console.error("Error: ImageMagick is required but not found.");
     console.error("Install with: brew install imagemagick (macOS) or apt install imagemagick (Linux)");

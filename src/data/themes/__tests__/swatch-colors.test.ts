@@ -5,7 +5,7 @@
  * Swatch colors are semantic-weighted (prioritizing UI-dominant colors like primary,
  * secondary, accent) and diversified (no duplicate colors within a mode).
  *
- * Slot mapping: 0=Muted, 1=Primary, 2=Secondary, 3=Accent, 4-6=Others, 7=Foreground
+ * Slot mapping: 0=Muted, 1=Primary, 2=Accent, 3=Secondary, 4-6=Others, 7=Foreground
  */
 
 import { describe, it, expect } from "vitest";
