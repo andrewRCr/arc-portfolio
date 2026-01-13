@@ -4,6 +4,12 @@
  * Maps Gruvbox palette colors to shadcn/ui semantic roles.
  * Supports light and dark modes with extended accent variants.
  *
+ * **Semantic Mapping:**
+ * - Primary: Green (visually lime - Gruvbox's distinctive signature)
+ * - Secondary: Orange/Yellow (subtle - used sparingly)
+ * - Default accent: Aqua (visually mint - main interactive color)
+ * - Destructive: Red
+ *
  * **Gruvbox Color Naming (non-standard):**
  * Official Gruvbox uses idiosyncratic color names that don't match visual perception:
  * - "aqua" (#8ec07c) = visually mint/light green
@@ -133,6 +139,35 @@ export const gruvboxTheme: Theme = {
     "shadow-sm": "0 1px 2px rgba(0, 0, 0, 0.20)",
     "shadow-md": "0 2px 8px rgba(0, 0, 0, 0.24)",
     "shadow-lg": "0 4px 16px rgba(0, 0, 0, 0.32)",
+  },
+
+  // Default wallpaper for this theme
+  defaultWallpaper: "brandon-cormier",
+
+  // Swatch colors for theme preview grid (semantic-weighted, diversified)
+  // Slots: 0=Muted, 1=Primary, 2=Accent, 3=Secondary, 4-6=Others, 7=Foreground
+  // Note: Accent at position 2 reflects its role as the dominant interactive color
+  swatchColors: {
+    light: [
+      p.light1, // 0: Muted
+      p.faded_green, // 1: Primary (visually lime)
+      p.faded_aqua, // 2: Accent (visually mint, main interactive color)
+      p.faded_orange, // 3: Secondary (subtle)
+      p.faded_red, // 4: Other-1
+      p.faded_blue, // 5: Other-2 (visually teal)
+      p.faded_purple, // 6: Other-3
+      p.dark1, // 7: Foreground
+    ],
+    dark: [
+      p.dark1, // 0: Muted
+      p.bright_green, // 1: Primary (visually lime)
+      p.bright_aqua, // 2: Accent (visually mint, main interactive color)
+      p.bright_orange, // 3: Secondary (subtle)
+      p.bright_red, // 4: Other-1
+      p.bright_blue, // 5: Other-2 (visually teal)
+      p.bright_purple, // 6: Other-3
+      p.light1, // 7: Foreground
+    ],
   },
 
   accentVariants: {

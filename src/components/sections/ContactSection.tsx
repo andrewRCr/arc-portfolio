@@ -45,7 +45,7 @@ export function ContactSection() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60"
+                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-foreground/60"
                   >
                     <Icon className="h-5 w-5 text-foreground" />
                     <span className="font-medium text-foreground">{social.platform}</span>

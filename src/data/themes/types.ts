@@ -74,7 +74,7 @@ export interface ThemeColors {
   "primary-foreground": string;
 
   // Secondary colors
-  /** Secondary action elements */
+  /** Subtle backgrounds, less prominent actions (used sparingly in UI) */
   secondary: string;
   /** Text on secondary backgrounds */
   "secondary-foreground": string;
@@ -86,7 +86,7 @@ export interface ThemeColors {
   "muted-foreground": string;
 
   // Default accent colors
-  /** Highlighted elements, callouts */
+  /** Main interactive color: links, focus states, highlights (the "workhorse" outside primary) */
   accent: string;
   /** Text on accent backgrounds */
   "accent-foreground": string;
@@ -136,13 +136,53 @@ export interface ThemeColors {
 }
 
 /**
+ * Swatch color arrays for neofetch-inspired theme preview grid.
+ *
+ * **Slot Mapping (Weighted by visual dominance):**
+ * - Position 0: Muted background
+ * - Position 1: Primary (signature color)
+ * - Position 2: Accent (main interactive color - links, focus, highlights)
+ * - Position 3: Secondary (subtle, used sparingly)
+ * - Positions 4-6: Three unique "other" colors (per-theme, avoiding P/S/A duplicates)
+ * - Position 7: Foreground
+ *
+ * Note: Accent appears before Secondary because it's the dominant interactive color
+ * in the UI (following shadcn/Material Design conventions where accent/tertiary
+ * is the workhorse color for links, focus states, and highlights).
+ *
+ * Each theme maps these slots to its palette's characteristic colors.
+ */
+/** 8-element tuple for swatch colors */
+type SwatchTuple = readonly [string, string, string, string, string, string, string, string];
+
+export interface SwatchColors {
+  /** 8 hex colors for light mode swatch display */
+  readonly light: SwatchTuple;
+  /** 8 hex colors for dark mode swatch display */
+  readonly dark: SwatchTuple;
+}
+
+/**
+ * Gradient stop definition for wallpaper fallback.
+ */
+export interface GradientStop {
+  /** Theme color token to use */
+  readonly token: keyof ThemeColors;
+  /** CSS gradient position (e.g., "0%", "50%", "100%") */
+  readonly position: string;
+}
+
+/**
  * Complete theme definition with light and dark color palettes.
  *
  * Each theme provides:
  * - Name and display label
  * - Light mode color palette
  * - Dark mode color palette
+ * - Swatch colors for visual theme preview
+ * - Default wallpaper for new users
  * - Accent variant metadata (optional)
+ * - Custom gradient stops (optional)
  */
 export interface Theme {
   /** Unique theme identifier (kebab-case) */
@@ -153,8 +193,14 @@ export interface Theme {
   readonly light: ThemeColors;
   /** Dark mode color palette */
   readonly dark: ThemeColors;
+  /** 8-color swatch arrays for theme preview grid */
+  readonly swatchColors: SwatchColors;
+  /** Default wallpaper ID for this theme (used when no preference saved) */
+  readonly defaultWallpaper: string;
   /** Accent variant configuration (optional) */
   readonly accentVariants?: AccentMetadata;
+  /** Custom gradient stops for wallpaper fallback (optional, defaults to accent→background→secondary) */
+  readonly gradientStops?: readonly GradientStop[];
 }
 
 /**

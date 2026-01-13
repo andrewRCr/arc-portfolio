@@ -4,11 +4,11 @@
  * Maps Remedy palette colors to shadcn/ui semantic roles.
  * Supports light ("bright") and dark modes with orange as signature accent.
  *
- * **Semantic Mapping (from VS Code theme ui.ts):**
- * - Primary action: Orange (accent, button.primary)
- * - Secondary action: Yellow (button.secondary)
- * - Default accent: Cyan (distinct from orange primary)
- * - Destructive: Red (icon.error)
+ * **Semantic Mapping (derived from VS Code theme ui.ts):**
+ * - Primary: Orange (Remedy's signature color)
+ * - Secondary: Yellow (subtle - used sparingly)
+ * - Default accent: Cyan (main interactive color - links, focus, highlights)
+ * - Destructive: Red
  *
  * **Surface Type Mapping:**
  * Remedy uses slightly lightened base for code areas. We follow shadcn
@@ -135,6 +135,35 @@ export const remedyTheme: Theme = {
     "shadow-sm": "0 1px 2px rgba(0, 0, 0, 0.20)",
     "shadow-md": "0 2px 8px rgba(0, 0, 0, 0.24)",
     "shadow-lg": "0 4px 16px rgba(0, 0, 0, 0.32)",
+  },
+
+  // Default wallpaper for this theme
+  defaultWallpaper: "karolis-milisauskas",
+
+  // Swatch colors for theme preview grid (semantic-weighted, diversified)
+  // Slots: 0=Muted, 1=Primary, 2=Accent, 3=Secondary, 4-6=Others, 7=Foreground
+  // Note: Accent at position 2 reflects its role as the dominant interactive color
+  swatchColors: {
+    light: [
+      remedyBright.baseCode, // 0: Muted
+      remedyAccents.normal.orange, // 1: Primary
+      remedyAccents.normal.cyan, // 2: Accent (main interactive color)
+      remedyAccents.normal.yellow, // 3: Secondary (subtle)
+      remedyAccents.normal.red, // 4: Other-1
+      remedyAccents.normal.green, // 5: Other-2
+      remedyAccents.normal.magenta, // 6: Other-3 (purple)
+      remedyBright.foreground, // 7: Foreground
+    ],
+    dark: [
+      remedyDark.baseCode, // 0: Muted
+      remedyAccents.bright.orange, // 1: Primary
+      remedyAccents.bright.cyan, // 2: Accent (main interactive color)
+      remedyAccents.bright.yellow, // 3: Secondary (subtle)
+      remedyAccents.bright.red, // 4: Other-1
+      remedyAccents.bright.green, // 5: Other-2
+      remedyAccents.bright.magenta, // 6: Other-3 (purple)
+      remedyDark.foreground, // 7: Foreground
+    ],
   },
 
   accentVariants: {

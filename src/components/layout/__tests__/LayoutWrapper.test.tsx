@@ -1,9 +1,32 @@
 import { screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, checkA11y } from "@tests/test-utils";
 import { LayoutWrapper } from "../LayoutWrapper";
 
+// Mock LayoutPreferencesContext (used by LayoutWrapper and ThemeControl)
+const mockSetLayoutMode = vi.fn();
+let mockLayoutMode = "boxed";
+
+const mockSetDrawerOpen = vi.fn();
+let mockIsDrawerOpen = false;
+
+vi.mock("@/contexts/LayoutPreferencesContext", () => ({
+  useLayoutPreferences: () => ({
+    layoutMode: mockLayoutMode,
+    setLayoutMode: mockSetLayoutMode,
+    isDrawerOpen: mockIsDrawerOpen,
+    setDrawerOpen: mockSetDrawerOpen,
+  }),
+}));
+
 describe("LayoutWrapper", () => {
+  beforeEach(() => {
+    mockLayoutMode = "boxed";
+    mockIsDrawerOpen = false;
+    mockSetLayoutMode.mockClear();
+    mockSetDrawerOpen.mockClear();
+  });
+
   describe("Three-Window Structure", () => {
     it("renders TopBar, main content, and FooterBar", () => {
       render(
@@ -144,6 +167,81 @@ describe("LayoutWrapper", () => {
       // compareDocumentPosition returns a bitmask; masking with DOCUMENT_POSITION_FOLLOWING
       // yields non-zero if contentinfo follows banner in the document
       expect(banner.compareDocumentPosition(contentinfo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+  });
+
+  describe("Fullscreen Mode", () => {
+    beforeEach(() => {
+      mockLayoutMode = "full";
+    });
+
+    it("hides TopBar in fullscreen mode", () => {
+      const { container } = render(
+        <LayoutWrapper>
+          <p>Main content</p>
+        </LayoutWrapper>
+      );
+
+      // TopBar should have "hidden" class (kept mounted for drawer to stay open)
+      const topBarWindow = container.querySelector('[data-window-id="top"]');
+      expect(topBarWindow).toHaveClass("hidden");
+    });
+
+    it("hides FooterBar in fullscreen mode", () => {
+      const { container } = render(
+        <LayoutWrapper>
+          <p>Main content</p>
+        </LayoutWrapper>
+      );
+
+      // FooterBar should have "hidden" class
+      const footerWindow = container.querySelector('[data-window-id="footer"]');
+      expect(footerWindow).toHaveClass("hidden");
+    });
+
+    it("shows exit fullscreen button", () => {
+      render(
+        <LayoutWrapper>
+          <p>Main content</p>
+        </LayoutWrapper>
+      );
+
+      expect(screen.getByRole("button", { name: /exit fullscreen/i })).toBeInTheDocument();
+    });
+
+    it("exit fullscreen button calls setLayoutMode with 'boxed'", async () => {
+      render(
+        <LayoutWrapper>
+          <p>Main content</p>
+        </LayoutWrapper>
+      );
+
+      const exitButton = screen.getByRole("button", { name: /exit fullscreen/i });
+      fireEvent.click(exitButton);
+
+      expect(mockSetLayoutMode).toHaveBeenCalledWith("boxed");
+    });
+
+    it("main content window is still rendered", () => {
+      render(
+        <LayoutWrapper>
+          <p>Main content</p>
+        </LayoutWrapper>
+      );
+
+      expect(screen.getByText("Main content")).toBeInTheDocument();
+    });
+
+    it("automatically activates main window when entering fullscreen mode", () => {
+      const { container } = render(
+        <LayoutWrapper>
+          <p>Content</p>
+        </LayoutWrapper>
+      );
+
+      // In fullscreen mode, the main window should be auto-activated
+      const mainWindow = container.querySelector('[data-window-id="main"]');
+      expect(mainWindow).toHaveAttribute("data-active", "true");
     });
   });
 });

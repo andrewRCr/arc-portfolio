@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/config/site";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { useMediaQuery, PHONE_QUERY } from "@/hooks/useMediaQuery";
+import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
 import { MobileNavigation } from "./MobileNavigation";
 
 /**
@@ -14,6 +14,8 @@ import { MobileNavigation } from "./MobileNavigation";
  * - Phone (< 768px): Collapsed dropdown showing current page
  * - Tablet and above: Full horizontal navigation links
  *
+ * Uses ResponsiveSwitch for FOUC-free viewport switching via CSS media queries.
+ *
  * Features:
  * - ALL CAPS navigation links
  * - Active state indicated by colored background
@@ -21,7 +23,6 @@ import { MobileNavigation } from "./MobileNavigation";
  */
 export function Navigation() {
   const pathname = usePathname();
-  const isPhone = useMediaQuery(PHONE_QUERY);
 
   const isActive = (href: string) => {
     if (!pathname) return false;
@@ -31,17 +32,10 @@ export function Navigation() {
     return pathname.startsWith(href);
   };
 
-  // Phone: collapsed dropdown navigation
-  if (isPhone) {
-    return <MobileNavigation />;
-  }
-
   const { navHeight } = DEFAULT_LAYOUT_TOKENS;
 
-  // Tablet and above: full horizontal navigation
-  return (
+  const desktopNav = (
     <nav aria-label="Main navigation" className="flex items-center" style={{ minHeight: navHeight }}>
-      {/* Navigation links - inline, no vertical stacking */}
       <ul className="flex gap-1 list-none items-center">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.href);
@@ -66,4 +60,6 @@ export function Navigation() {
       </ul>
     </nav>
   );
+
+  return <ResponsiveSwitch mobile={<MobileNavigation />} desktop={desktopNav} />;
 }

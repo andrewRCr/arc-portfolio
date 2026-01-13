@@ -7,6 +7,16 @@ import { TopBar } from "../TopBar";
 
 vi.mock("next-themes", () => createNextThemesMock());
 
+// Mock LayoutPreferencesContext (required by ThemeControl)
+vi.mock("@/contexts/LayoutPreferencesContext", () => ({
+  useLayoutPreferences: () => ({
+    layoutMode: "boxed",
+    setLayoutMode: vi.fn(),
+    isDrawerOpen: false,
+    setDrawerOpen: vi.fn(),
+  }),
+}));
+
 describe("TopBar", () => {
   describe("Branding", () => {
     it("renders site handle from config", () => {
@@ -24,12 +34,21 @@ describe("TopBar", () => {
     });
   });
 
-  describe("Theme Controls Placeholder", () => {
-    it("has placeholder element for theme controls", () => {
+  describe("Theme Controls", () => {
+    it("has theme controls area", () => {
       render(<TopBar />);
 
-      // Theme controls area should exist (identified by data attribute for future integration)
-      expect(screen.getByTestId("theme-controls-placeholder")).toBeInTheDocument();
+      // Theme controls area should exist
+      expect(screen.getByTestId("theme-controls")).toBeInTheDocument();
+    });
+
+    it("renders ThemeControl component", () => {
+      render(<TopBar />);
+
+      // ThemeControl renders the swatch trigger
+      // ResponsiveSwitch renders both mobile (drawer) and desktop (popover) in DOM
+      const swatches = screen.getAllByTestId("theme-swatch");
+      expect(swatches.length).toBeGreaterThanOrEqual(1);
     });
   });
 

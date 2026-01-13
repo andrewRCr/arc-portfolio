@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 /**
  * Props for DevPageHeader component.
@@ -30,14 +31,8 @@ export interface DevPageHeaderProps {
  * - OFF: 100% opacity for pure color evaluation
  */
 export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevPageHeaderProps) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
   const [envPreview, setEnvPreview] = useState(true);
-
-  // Avoid hydration mismatch
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern
-    setMounted(true);
-  }, []);
 
   // Manage environment preview data attribute (controls WindowContainer opacity via CSS)
   // When showEnvPreview is disabled: dataset.envPreview = "false" → 100% opacity for pure color evaluation

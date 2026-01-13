@@ -1,7 +1,7 @@
 # PRD: Theme & Wallpaper Control System
 
 **Type:** Feature
-**Status:** In Progress
+**Status:** Complete
 **Created:** 2026-01-07
 
 ---
@@ -40,7 +40,7 @@ interaction target, with wallpaper selection integrated into the same panel.
 ### FR1: Color Swatch Grid
 
 1.1. Display an 8-color horizontal grid representing the active theme
-1.2. Use "Approach D: Deduplicated Weighted" color selection:
+1.2. Use semantic-weighted, diversified color selection:
     - Position 0: Muted background
     - Position 1: Primary
     - Position 2: Secondary
@@ -123,19 +123,22 @@ interaction target, with wallpaper selection integrated into the same panel.
 
 ## Design Considerations
 
-### Swatch Color Mapping (Approach D)
+### Swatch Color Mapping
 
-Per-theme "other" colors (positions 4-6) to ensure no duplicates:
+Per-theme "other" colors (positions 4-6) to ensure diversification (no duplicates):
 
-| Theme     | Primary | Secondary | Accent | Others (4-6)                          |
-|-----------|---------|-----------|--------|---------------------------------------|
-| Remedy    | orange  | yellow    | cyan   | red, green, purple                    |
-| Gruvbox   | green   | yellow    | aqua   | red, blue, purple                     |
-| Rose Pine | pine    | foam      | rose   | love(red), gold(orange), iris(purple) |
+| Theme     | Primary      | Secondary | Accent      | Others (4-6)                          |
+|-----------|--------------|-----------|-------------|---------------------------------------|
+| Remedy    | orange       | yellow    | cyan        | red, green, purple                    |
+| Rose Pine | pine         | foam      | rose        | love(red), gold(orange), iris(purple) |
+| Gruvbox   | green        | yellow    | aqua        | red, blue, purple                     |
+| Ayu       | yellow       | cyan      | orange      | red, green, purple                    |
+| Rouge     | rouge(red)   | blue      | peach       | green, cyan, purple                   |
+| Mariana   | blue         | yellow    | teal        | coral, green, purple                  |
 
 ### Visual Reference
 
-Prototype available at `/dev/swatch-prototype` showing all approaches evaluated. Approach D selected.
+Prototype available at `/dev/swatch-prototype` showing approaches evaluated during planning.
 
 ### FOUC Prevention
 
@@ -195,7 +198,7 @@ interface WallpaperPreferences {
 
 - ThemeContext and WallpaperContext already exist
 - WallpaperSwitcher prototype exists (to be replaced/enhanced)
-- Wallpaper inventory documented in plan file (19 images + gradient)
+- Wallpaper inventory: 36 images + gradient (see `src/data/wallpapers/index.ts`)
 
 ## Success Metrics
 
@@ -205,14 +208,15 @@ interface WallpaperPreferences {
 - All controls pass accessibility audit (keyboard nav, screen reader)
 - E2E tests verify state persistence and fallback behavior
 
-## Open Questions
+## Open Questions (Resolved)
 
-1. **Expanded swatch size**: What size works best for theme selection list? (Explore during impl)
-2. **Wallpaper carousel vs grid**: Which interaction pattern feels better? (Explore during impl)
-3. **Mobile collapsed indicator**: Swatch grid at 16px, or simpler icon? (Decide after desktop impl)
-4. **Per-theme window opacity**: Evaluate during visual tuning if different themes need different opacity values
+1. **Expanded swatch size**: 20px squares in ThemeSelector (larger than collapsed 16px, readable without dominating)
+2. **Wallpaper carousel vs grid**: Carousel with prev/next navigation - cleaner UX, handles variable
+   wallpaper counts per theme
+3. **Mobile collapsed indicator**: Standard swatch grid at 16px - consistent with desktop, fits comfortably
+4. **Per-theme window opacity**: Single opacity value (0.92) works across all 6 themes - no per-theme tuning needed
 
 ## References
 
-- Swatch prototype: `/dev/swatch-prototype` (Approach D selected)
+- Swatch prototype: `/dev/swatch-prototype` (planning reference)
 - FOUC prevention: TWM Layout System implementation notes

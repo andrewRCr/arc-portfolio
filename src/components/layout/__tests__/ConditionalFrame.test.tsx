@@ -1,18 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { checkA11y } from "@tests/test-utils";
+import { checkA11y, axe, TestProviders } from "@tests/test-utils";
 import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
-import { createMediaQueryMock, mockMediaQuery } from "@tests/mocks/use-media-query";
 import { ConditionalFrame } from "../ConditionalFrame";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 
 vi.mock("next/navigation", () => createNavigationMock());
-vi.mock("@/hooks/useMediaQuery", () => createMediaQueryMock());
 
 describe("ConditionalFrame", () => {
   beforeEach(() => {
     mockNavigation.reset();
-    mockMediaQuery.reset();
   });
 
   describe("Dev Route Rendering", () => {
@@ -64,7 +61,9 @@ describe("ConditionalFrame", () => {
         </ConditionalFrame>
       );
 
-      expect(screen.getByRole("navigation")).toBeInTheDocument();
+      // Navigation renders both mobile and desktop navs (CSS controls visibility)
+      const navElements = screen.getAllByRole("navigation");
+      expect(navElements.length).toBeGreaterThan(0);
     });
 
     it("renders children within frame", () => {
@@ -80,9 +79,10 @@ describe("ConditionalFrame", () => {
   });
 
   describe("Responsive Nav Gap", () => {
-    it("uses desktop nav gap on non-phone viewports", () => {
+    // Nav gap is now handled via CSS custom property --nav-gap-half
+    // defined in globals.css with media query. No JS-based switching.
+    it("uses CSS variable for responsive nav gap", () => {
       mockNavigation.setPathname("/");
-      mockMediaQuery.setIsPhone(false);
       const { container } = render(
         <ConditionalFrame>
           <p>Content</p>
@@ -91,21 +91,8 @@ describe("ConditionalFrame", () => {
 
       const frameBorder = container.querySelector("[aria-hidden='true']");
       const clipPath = frameBorder?.getAttribute("style") || "";
-      expect(clipPath).toContain(`${DEFAULT_LAYOUT_TOKENS.navGapHalf}px`);
-    });
-
-    it("uses mobile nav gap on phone viewports", () => {
-      mockNavigation.setPathname("/");
-      mockMediaQuery.setIsPhone(true);
-      const { container } = render(
-        <ConditionalFrame>
-          <p>Content</p>
-        </ConditionalFrame>
-      );
-
-      const frameBorder = container.querySelector("[aria-hidden='true']");
-      const clipPath = frameBorder?.getAttribute("style") || "";
-      expect(clipPath).toContain(`${DEFAULT_LAYOUT_TOKENS.navGapHalfMobile}px`);
+      // Should use CSS variable instead of hardcoded pixel values
+      expect(clipPath).toContain("var(--nav-gap-half)");
     });
   });
 
@@ -147,18 +134,28 @@ describe("ConditionalFrame", () => {
       );
 
       const wrapper = screen.getByTestId("content-wrapper");
-      expect(wrapper).toHaveStyle({ maxWidth: `${DEFAULT_LAYOUT_TOKENS.contentMaxWidth}px` });
+      // TUI frame uses tuiFrameMaxWidth (smaller than contentMaxWidth to allow centering with padding)
+      expect(wrapper).toHaveStyle({ maxWidth: `${DEFAULT_LAYOUT_TOKENS.tuiFrameMaxWidth}px` });
     });
   });
 
   describe("Accessibility", () => {
     it("has no accessibility violations on regular route", async () => {
       mockNavigation.setPathname("/");
-      const results = await checkA11y(
-        <ConditionalFrame>
-          <p>Content</p>
-        </ConditionalFrame>
+      // Navigation renders both mobile and desktop navs (CSS-hidden switching).
+      // JSDOM doesn't apply CSS, so axe sees duplicate landmarks.
+      // In real browsers, display:none removes from accessibility tree.
+      // Disable landmark-unique rule for this false positive.
+      const { container } = render(
+        <TestProviders>
+          <ConditionalFrame>
+            <p>Content</p>
+          </ConditionalFrame>
+        </TestProviders>
       );
+      const results = await axe(container, {
+        rules: { "landmark-unique": { enabled: false } },
+      });
       expect(results).toHaveNoViolations();
     });
 

@@ -10,9 +10,12 @@
  * 3. Import and add to registry below
  */
 
+import { ayuTheme } from "./definitions/ayu";
 import { gruvboxTheme } from "./definitions/gruvbox";
+import { marianaTheme } from "./definitions/mariana";
 import { remedyTheme } from "./definitions/remedy";
 import { rosePineTheme } from "./definitions/rose-pine";
+import { rougeTheme } from "./definitions/rouge";
 import type { ThemeRegistry } from "./types";
 
 /**
@@ -20,12 +23,15 @@ import type { ThemeRegistry } from "./types";
  *
  * Themes are identified by their `name` property (kebab-case).
  * Each theme includes light and dark mode color palettes.
- * Order determines display order in ThemeSwitcher.
+ * Order determines display order in ThemeSelector.
  */
 export const themes: ThemeRegistry = {
   remedy: remedyTheme,
   "rose-pine": rosePineTheme,
   gruvbox: gruvboxTheme,
+  ayu: ayuTheme,
+  rouge: rougeTheme,
+  mariana: marianaTheme,
 };
 
 /**
@@ -42,4 +48,4 @@ export type ThemeName = keyof typeof themes;
 export const defaultPalette: ThemeName = "remedy";
 
 // Re-export types for external use
-export type { Theme, ThemeColors, AccentVariant, AccentMetadata } from "./types";
+export type { Theme, ThemeColors, AccentVariant, AccentMetadata, SwatchColors } from "./types";

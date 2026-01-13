@@ -13,8 +13,7 @@ work in these domains.
 
 **Style & Design:**
 
-- `project/style/strategy-visual-design-principles.md` - Core design philosophy, accessibility, layout principles
-- `project/style/strategy-style-guide.md` - Brand style guide (placeholder - to be defined)
+- `project/style/strategy-style-guide.md` - Design philosophy, token system, TWM layout, component patterns
 
 ## ARC Framework Strategies
 
