@@ -161,9 +161,7 @@ describe("ThemeContext", () => {
       // Suppress console.error for this test
       const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      expect(() => render(<TestConsumer />)).toThrow(
-        "useThemeContext must be used within a ThemeContextProvider"
-      );
+      expect(() => render(<TestConsumer />)).toThrow("useThemeContext must be used within a ThemeContextProvider");
 
       consoleSpy.mockRestore();
     });

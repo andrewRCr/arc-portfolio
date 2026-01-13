@@ -101,111 +101,111 @@ export function ThemeControl() {
       <ScreenReaderAnnounce message={announcement} />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-        <button
-          ref={triggerRef}
-          type="button"
-          aria-label="Open theme settings"
-          className="group flex items-center gap-1 px-1.5 h-7 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
-        >
-          <ThemeSwatch colors={swatchColors} size={16} />
-          <ChevronDown
-            data-testid="theme-control-chevron"
-            className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors"
-          />
-        </button>
-      </PopoverTrigger>
+          <button
+            ref={triggerRef}
+            type="button"
+            aria-label="Open theme settings"
+            className="group flex items-center gap-1 px-1.5 h-7 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
+          >
+            <ThemeSwatch colors={swatchColors} size={16} />
+            <ChevronDown
+              data-testid="theme-control-chevron"
+              className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors"
+            />
+          </button>
+        </PopoverTrigger>
 
-      <PopoverContent align="end" className="w-auto p-3">
-        <div className="flex flex-col gap-3">
-          {/* Theme Selector Section */}
-          <div>
-            <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Theme</h3>
-            <ThemeSelector selectedTheme={activeTheme} onSelect={setActiveTheme} />
-          </div>
+        <PopoverContent align="end" className="w-auto p-3">
+          <div className="flex flex-col gap-3">
+            {/* Theme Selector Section */}
+            <div>
+              <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Theme</h3>
+              <ThemeSelector selectedTheme={activeTheme} onSelect={setActiveTheme} />
+            </div>
 
-          {/* Wallpaper Picker Section */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Wallpaper</h3>
-              <Switch
-                checked={isWallpaperEnabled}
-                onCheckedChange={setWallpaperEnabled}
-                aria-label="Enable wallpaper"
-                data-testid="wallpaper-toggle"
+            {/* Wallpaper Picker Section */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Wallpaper</h3>
+                <Switch
+                  checked={isWallpaperEnabled}
+                  onCheckedChange={setWallpaperEnabled}
+                  aria-label="Enable wallpaper"
+                  data-testid="wallpaper-toggle"
+                />
+              </div>
+              <WallpaperPicker
+                selectedWallpaper={activeWallpaper}
+                onSelect={setActiveWallpaper}
+                isEnabled={isWallpaperEnabled}
               />
             </div>
-            <WallpaperPicker
-              selectedWallpaper={activeWallpaper}
-              onSelect={setActiveWallpaper}
-              isEnabled={isWallpaperEnabled}
-            />
-          </div>
 
-          {/* Mode Toggle, Layout Toggle & Reset */}
-          <div className="flex justify-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={(e) => {
-                toggleMode();
-                e.currentTarget.blur();
-              }}
-              aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              className="gap-2"
-            >
-              {theme === "dark" ? (
-                <>
-                  <Moon className="h-4 w-4" />
-                  <span>Dark</span>
-                </>
-              ) : (
-                <>
-                  <Sun className="h-4 w-4" />
-                  <span>Light</span>
-                </>
-              )}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={(e) => {
-                toggleLayoutMode();
-                e.currentTarget.blur();
-              }}
-              disabled={!isLayoutToggleEnabled}
-              aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "wide" ? "boxed" : "wide"} layout`}
-              title={!isLayoutToggleEnabled ? "Viewport too narrow for layout toggle" : undefined}
-              className="min-w-[5.25rem] gap-2"
-            >
-              {layoutMode === "wide" ? (
-                <>
-                  <Maximize2 className="h-4 w-4" />
-                  <span>Wide</span>
-                </>
-              ) : (
-                <>
-                  <Square className="h-4 w-4" />
-                  <span>Boxed</span>
-                </>
-              )}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={(e) => {
-                resetToDefaults();
-                e.currentTarget.blur();
-              }}
-              aria-label="Reset all preferences to defaults"
-              disabled={!hasCustomPreferences}
-              className="gap-2"
-            >
-              <RotateCcw className="h-4 w-4" />
-              <span>Reset</span>
-            </Button>
+            {/* Mode Toggle, Layout Toggle & Reset */}
+            <div className="flex justify-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  toggleMode();
+                  e.currentTarget.blur();
+                }}
+                aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                className="gap-2"
+              >
+                {theme === "dark" ? (
+                  <>
+                    <Moon className="h-4 w-4" />
+                    <span>Dark</span>
+                  </>
+                ) : (
+                  <>
+                    <Sun className="h-4 w-4" />
+                    <span>Light</span>
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  toggleLayoutMode();
+                  e.currentTarget.blur();
+                }}
+                disabled={!isLayoutToggleEnabled}
+                aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "wide" ? "boxed" : "wide"} layout`}
+                title={!isLayoutToggleEnabled ? "Viewport too narrow for layout toggle" : undefined}
+                className="min-w-[5.25rem] gap-2"
+              >
+                {layoutMode === "wide" ? (
+                  <>
+                    <Maximize2 className="h-4 w-4" />
+                    <span>Wide</span>
+                  </>
+                ) : (
+                  <>
+                    <Square className="h-4 w-4" />
+                    <span>Boxed</span>
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  resetToDefaults();
+                  e.currentTarget.blur();
+                }}
+                aria-label="Reset all preferences to defaults"
+                disabled={!hasCustomPreferences}
+                className="gap-2"
+              >
+                <RotateCcw className="h-4 w-4" />
+                <span>Reset</span>
+              </Button>
+            </div>
           </div>
-        </div>
-      </PopoverContent>
+        </PopoverContent>
       </Popover>
     </>
   );
