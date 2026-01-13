@@ -39,13 +39,6 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["remedy"],
   },
   {
-    id: "hamed-sadighi",
-    src: "/wallpaper/optimized-1080/hamed-sadighi-hvsj2ErGMog.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/hamed-sadighi-hvsj2ErGMog.webp",
-    srcHiRes: "/wallpaper/optimized-1440/hamed-sadighi-hvsj2ErGMog.webp",
-    compatibleThemes: ["remedy"],
-  },
-  {
     id: "jr-korpa-4",
     src: "/wallpaper/optimized-1080/jr-korpa-4.webp",
     thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-4.webp",
@@ -60,28 +53,29 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["remedy"],
   },
   {
-    id: "anne-nygard",
-    src: "/wallpaper/optimized-1080/anne-nygard-K6FlqZs4Dec.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/anne-nygard-K6FlqZs4Dec.webp",
-    srcHiRes: "/wallpaper/optimized-1440/anne-nygard-K6FlqZs4Dec.webp",
-    compatibleThemes: ["remedy"],
-  },
-  {
     id: "kristaps-ungurs",
     src: "/wallpaper/optimized-1080/kristaps-ungurs-VByRsW7uU5M.webp",
     thumbnailSrc: "/wallpaper/thumbnails/kristaps-ungurs-VByRsW7uU5M.webp",
     srcHiRes: "/wallpaper/optimized-1440/kristaps-ungurs-VByRsW7uU5M.webp",
     compatibleThemes: ["remedy"],
   },
+  {
+    id: "anne-nygard",
+    src: "/wallpaper/optimized-1080/anne-nygard-K6FlqZs4Dec.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/anne-nygard-K6FlqZs4Dec.webp",
+    srcHiRes: "/wallpaper/optimized-1440/anne-nygard-K6FlqZs4Dec.webp",
+    compatibleThemes: ["remedy"],
+  },
 
   // =====================
   // Rose Pine-compatible
   // =====================
+
   {
-    id: "jr-korpa-2",
-    src: "/wallpaper/optimized-1080/jr-korpa-2.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-2.webp",
-    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-2.webp",
+    id: "jr-korpa-8",
+    src: "/wallpaper/optimized-1080/jr-korpa-8.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-8.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-8.webp",
     compatibleThemes: ["rose-pine"],
   },
   {
@@ -106,10 +100,10 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["rose-pine"],
   },
   {
-    id: "jr-korpa-8",
-    src: "/wallpaper/optimized-1080/jr-korpa-8.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-8.webp",
-    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-8.webp",
+    id: "jr-korpa-2",
+    src: "/wallpaper/optimized-1080/jr-korpa-2.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-2.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-2.webp",
     compatibleThemes: ["rose-pine"],
   },
   {
@@ -123,13 +117,7 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
   // =====================
   // Gruvbox-compatible
   // =====================
-  {
-    id: "brandon-cormier",
-    src: "/wallpaper/optimized-1080/brandon-cormier.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/brandon-cormier.webp",
-    srcHiRes: "/wallpaper/optimized-1440/brandon-cormier.webp",
-    compatibleThemes: ["gruvbox"],
-  },
+
   {
     id: "c-shi",
     src: "/wallpaper/optimized-1080/c-shi.webp",
@@ -145,6 +133,13 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["gruvbox"],
   },
   {
+    id: "buddy-an-2",
+    src: "/wallpaper/optimized-1080/buddy-an-2.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/buddy-an-2.webp",
+    srcHiRes: "/wallpaper/optimized-1440/buddy-an-2.webp",
+    compatibleThemes: ["gruvbox"],
+  },
+  {
     id: "tuaans",
     src: "/wallpaper/optimized-1080/tuaans.webp",
     thumbnailSrc: "/wallpaper/thumbnails/tuaans.webp",
@@ -156,13 +151,6 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     src: "/wallpaper/optimized-1080/bernd-dittrich-JjJ8HdGCLvw.webp",
     thumbnailSrc: "/wallpaper/thumbnails/bernd-dittrich-JjJ8HdGCLvw.webp",
     srcHiRes: "/wallpaper/optimized-1440/bernd-dittrich-JjJ8HdGCLvw.webp",
-    compatibleThemes: ["gruvbox"],
-  },
-  {
-    id: "buddy-an-2",
-    src: "/wallpaper/optimized-1080/buddy-an-2.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/buddy-an-2.webp",
-    srcHiRes: "/wallpaper/optimized-1440/buddy-an-2.webp",
     compatibleThemes: ["gruvbox"],
   },
   {
@@ -184,10 +172,10 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["rouge"],
   },
   {
-    id: "jr-korpa-9",
-    src: "/wallpaper/optimized-1080/jr-korpa-9.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-9.webp",
-    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-9.webp",
+    id: "pawel-czerwinski",
+    src: "/wallpaper/optimized-1080/pawel-czerwinski.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/pawel-czerwinski.webp",
+    srcHiRes: "/wallpaper/optimized-1440/pawel-czerwinski.webp",
     compatibleThemes: ["rouge"],
   },
   {
@@ -212,10 +200,10 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["rouge"],
   },
   {
-    id: "pawel-czerwinski",
-    src: "/wallpaper/optimized-1080/pawel-czerwinski.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/pawel-czerwinski.webp",
-    srcHiRes: "/wallpaper/optimized-1440/pawel-czerwinski.webp",
+    id: "jr-korpa-9",
+    src: "/wallpaper/optimized-1080/jr-korpa-9.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-9.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-9.webp",
     compatibleThemes: ["rouge"],
   },
 
@@ -230,24 +218,10 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["ayu"],
   },
   {
-    id: "eugene-golovesov",
-    src: "/wallpaper/optimized-1080/eugene-golovesov.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/eugene-golovesov.webp",
-    srcHiRes: "/wallpaper/optimized-1440/eugene-golovesov.webp",
-    compatibleThemes: ["ayu"],
-  },
-  {
     id: "buddy-an",
     src: "/wallpaper/optimized-1080/buddy-an.webp",
     thumbnailSrc: "/wallpaper/thumbnails/buddy-an.webp",
     srcHiRes: "/wallpaper/optimized-1440/buddy-an.webp",
-    compatibleThemes: ["ayu"],
-  },
-  {
-    id: "dan-meyers",
-    src: "/wallpaper/optimized-1080/dan-meyers.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/dan-meyers.webp",
-    srcHiRes: "/wallpaper/optimized-1440/dan-meyers.webp",
     compatibleThemes: ["ayu"],
   },
   {
@@ -258,10 +232,10 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["ayu"],
   },
   {
-    id: "flyd",
-    src: "/wallpaper/optimized-1080/flyd.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/flyd.webp",
-    srcHiRes: "/wallpaper/optimized-1440/flyd.webp",
+    id: "dan-meyers",
+    src: "/wallpaper/optimized-1080/dan-meyers.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/dan-meyers.webp",
+    srcHiRes: "/wallpaper/optimized-1440/dan-meyers.webp",
     compatibleThemes: ["ayu"],
   },
   {
@@ -269,6 +243,13 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     src: "/wallpaper/optimized-1080/pawel-czerwinski-3.webp",
     thumbnailSrc: "/wallpaper/thumbnails/pawel-czerwinski-3.webp",
     srcHiRes: "/wallpaper/optimized-1440/pawel-czerwinski-3.webp",
+    compatibleThemes: ["ayu"],
+  },
+  {
+    id: "eugene-golovesov",
+    src: "/wallpaper/optimized-1080/eugene-golovesov.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/eugene-golovesov.webp",
+    srcHiRes: "/wallpaper/optimized-1440/eugene-golovesov.webp",
     compatibleThemes: ["ayu"],
   },
 
@@ -297,6 +278,13 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["mariana"],
   },
   {
+    id: "wolfgang-hasselmann-5",
+    src: "/wallpaper/optimized-1080/wolfgang-hasselmann-5.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/wolfgang-hasselmann-5.webp",
+    srcHiRes: "/wallpaper/optimized-1440/wolfgang-hasselmann-5.webp",
+    compatibleThemes: ["mariana"],
+  },
+  {
     id: "pawel-czerwinski-4",
     src: "/wallpaper/optimized-1080/pawel-czerwinski-4.webp",
     thumbnailSrc: "/wallpaper/thumbnails/pawel-czerwinski-4.webp",
@@ -308,20 +296,6 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     src: "/wallpaper/optimized-1080/patrick-hendry.webp",
     thumbnailSrc: "/wallpaper/thumbnails/patrick-hendry.webp",
     srcHiRes: "/wallpaper/optimized-1440/patrick-hendry.webp",
-    compatibleThemes: ["mariana"],
-  },
-  {
-    id: "susan-wilkinson",
-    src: "/wallpaper/optimized-1080/susan-wilkinson.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/susan-wilkinson.webp",
-    srcHiRes: "/wallpaper/optimized-1440/susan-wilkinson.webp",
-    compatibleThemes: ["mariana"],
-  },
-  {
-    id: "wolfgang-hasselmann-5",
-    src: "/wallpaper/optimized-1080/wolfgang-hasselmann-5.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/wolfgang-hasselmann-5.webp",
-    srcHiRes: "/wallpaper/optimized-1440/wolfgang-hasselmann-5.webp",
     compatibleThemes: ["mariana"],
   },
 ] as const;
