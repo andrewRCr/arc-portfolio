@@ -23,8 +23,12 @@ import { PALETTE_STORAGE_KEY, MODE_STORAGE_KEY } from "@/config/storage";
 /**
  * Wait for page to be visually stable before taking screenshot.
  * - Waits for theme CSS variables to be applied
- * - Waits for network to settle
+ * - Waits for page load (including images/stylesheets)
  * - Small buffer for CSS animations/transitions to complete
+ *
+ * Note: Uses 'load' state instead of 'networkidle' for CI reliability.
+ * 'networkidle' is flaky in CI environments where background network
+ * activity (analytics, prefetching, lazy loading) may never fully settle.
  */
 async function waitForVisualStability(page: Page): Promise<void> {
   // Wait for theme CSS variables to be applied
@@ -34,8 +38,9 @@ async function waitForVisualStability(page: Page): Promise<void> {
     return style.getPropertyValue("--background").trim().length > 0;
   });
 
-  // Wait for network activity to settle
-  await page.waitForLoadState("networkidle");
+  // Wait for page load event (fires when page + resources like images are loaded)
+  // More reliable in CI than 'networkidle' which requires zero network activity
+  await page.waitForLoadState("load");
 
   // Small buffer for CSS animations/transitions to complete
   // This is a pragmatic fallback - most animations complete within 300ms

@@ -68,7 +68,7 @@ test.describe("Smoke Tests", () => {
     for (const { name, expectedPath } of navTests) {
       // Start from homepage each iteration to avoid inter-test coupling
       await page.goto("/");
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("load");
 
       // Scope to main navigation to avoid matching other links on page
       const mainNav = page.getByRole("navigation", { name: "Main navigation" });
@@ -89,6 +89,12 @@ test.describe("Smoke Tests", () => {
 
   test("theme toggle functions", async ({ page }) => {
     await page.goto("/");
+
+    // On mobile, theme toggle is inside the theme drawer - open it first
+    if (isMobileViewport(page)) {
+      const drawerTrigger = page.getByRole("button", { name: /open theme settings/i });
+      await drawerTrigger.click();
+    }
 
     // Find the theme toggle button by its aria-label pattern
     // Component uses: "Current mode: {theme}. Click to switch to {other} mode"
