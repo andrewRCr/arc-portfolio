@@ -4,7 +4,8 @@
 **Created:** 2026-01-07
 **Branch:** `feature/theme-wallpaper-controls`
 **Base Branch:** `main`
-**Status:** In Progress
+**Status:** Complete
+**Completed:** 2026-01-13
 
 ## Overview
 
@@ -612,7 +613,7 @@ neofetch-inspired color swatch grid.
     - [x] **8.3.e Fix any violations found**
         - No violations found; all accessibility features working
 
-- [ ] **8.4 E2E testing**
+- [x] **8.4 E2E testing**
 
     **Goal:** Verify theme controls work end-to-end in real browser
 
@@ -685,8 +686,8 @@ neofetch-inspired color swatch grid.
 |----------|------------|------------|---------------|---------------|
 | 0        | Muted      | baseCode   | light1/dark1  | highlight_med |
 | 1        | Primary    | orange     | green         | pine          |
-| 2        | Secondary  | yellow     | orange/yellow | foam          |
-| 3        | Accent     | cyan       | aqua          | rose          |
+| 2        | Accent     | cyan       | aqua          | rose          |
+| 3        | Secondary  | yellow     | orange/yellow | foam          |
 | 4        | Other-1    | red        | red           | love (red)    |
 | 5        | Other-2    | green      | blue          | gold (orange) |
 | 6        | Other-3    | purple     | purple        | iris (purple) |
@@ -694,7 +695,8 @@ neofetch-inspired color swatch grid.
 
 ### Wallpaper Compatibility Reference
 
-See notes document `.arc/active/feature/notes-theme-wallpaper-controls.md` for full compatibility matrix.
+Wallpaper compatibility data is defined in `src/data/wallpapers/index.ts` (36 wallpapers + gradient).
+Each wallpaper has a `compatibleThemes` property specifying theme compatibility.
 
 ### FOUC Prevention Pattern
 
@@ -708,13 +710,13 @@ See notes document `.arc/active/feature/notes-theme-wallpaper-controls.md` for f
 
 ## Success Criteria
 
-- [ ] 8-color swatch grid renders correctly for all themes in both modes
-- [ ] Combined control works on desktop (dropdown) and mobile (drawer)
-- [ ] Theme selection updates swatch immediately
-- [ ] Light/dark toggle updates swatch immediately
-- [ ] Wallpaper picker shows only compatible wallpapers
-- [ ] Per-theme wallpaper preferences persist across sessions
-- [ ] No FOUC on initial page load or theme changes
-- [ ] All controls keyboard accessible
-- [ ] All quality gates pass (tests, lint, type check)
-- [ ] Ready for merge to main
+- [x] 8-color swatch grid renders correctly for all themes in both modes
+- [x] Combined control works on desktop (dropdown) and mobile (drawer)
+- [x] Theme selection updates swatch immediately
+- [x] Light/dark toggle updates swatch immediately
+- [x] Wallpaper picker shows only compatible wallpapers
+- [x] Per-theme wallpaper preferences persist across sessions
+- [x] No FOUC on initial page load or theme changes
+- [x] All controls keyboard accessible
+- [x] All quality gates pass (tests, lint, type check)
+- [x] Ready for merge to main

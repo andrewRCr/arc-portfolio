@@ -1,7 +1,7 @@
 # PRD: Theme & Wallpaper Control System
 
 **Type:** Feature
-**Status:** In Progress
+**Status:** Complete
 **Created:** 2026-01-07
 
 ---
@@ -205,12 +205,13 @@ interface WallpaperPreferences {
 - All controls pass accessibility audit (keyboard nav, screen reader)
 - E2E tests verify state persistence and fallback behavior
 
-## Open Questions
+## Open Questions (Resolved)
 
-1. **Expanded swatch size**: What size works best for theme selection list? (Explore during impl)
-2. **Wallpaper carousel vs grid**: Which interaction pattern feels better? (Explore during impl)
-3. **Mobile collapsed indicator**: Swatch grid at 16px, or simpler icon? (Decide after desktop impl)
-4. **Per-theme window opacity**: Evaluate during visual tuning if different themes need different opacity values
+1. **Expanded swatch size**: 20px squares in ThemeSelector (larger than collapsed 16px, readable without dominating)
+2. **Wallpaper carousel vs grid**: Carousel with prev/next navigation - cleaner UX, handles variable
+   wallpaper counts per theme
+3. **Mobile collapsed indicator**: Standard swatch grid at 16px - consistent with desktop, fits comfortably
+4. **Per-theme window opacity**: Single opacity value (0.92) works across all 6 themes - no per-theme tuning needed
 
 ## References
 
