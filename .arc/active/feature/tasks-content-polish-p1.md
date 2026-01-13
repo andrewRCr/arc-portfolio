@@ -127,7 +127,7 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
 **Purpose:** Integrate new components into existing project detail pages.
 
-- [ ] **2.1 Update `ProjectDetail` component**
+- [x] **2.1 Update `ProjectDetail` component**
 
     - [x] **2.1.a Integrate `DetailHeader`**
         - Page components now pass DetailHeader to PageLayout's header slot
@@ -140,42 +140,108 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Only renders when `project.images.screenshots.length > 0`
         - ProjectDetail now receives only `project` prop (simplified interface)
 
-    - [ ] **2.1.c Verify layout and spacing**
-        - Content flows correctly beneath sticky header
-        - Gallery integrates with existing sections (tech stack, features, etc.)
-        - Mobile layout remains usable
-
-    - [x] **2.1.d Update tests for `ProjectDetail`**
+    - [x] **2.1.c Update tests for `ProjectDetail`**
         - Updated ProjectDetail tests: removed header-related tests (now in DetailHeader)
         - Added gallery section tests, getBackDestination helper tests
         - Updated integration routing tests to use DetailHeader
         - All 889 tests passing
 
-- [ ] **2.2 Light copy editing for software projects**
+- [ ] **2.2 Layout and visual polish**
+
+    **Goal:** Refine DetailHeader, ImageGallery, and content layout based on visual review.
+    Test updates deferred until visual work stabilizes.
+
+    - [x] **2.2.a Improve `DetailHeader` layout**
+        - Changed to 3.5:1 aspect ratio (banner-optimized, matches NexusMods header format)
+        - Repositioned: back button absolute top-left, title+badges absolute bottom-left
+        - Bottom-only gradient overlay (`from-black/80 via-black/30 to-transparent`)
+        - Solid muted back button style (`bg-muted/90 backdrop-blur-sm`)
+        - Added rounded corners (`rounded-lg`)
+        - Removed bottom divider
+        - Added external links (GitHub, Demo, etc.) to header bottom-right
+        - Moved links from ProjectDetail body to header
+
+    - [x] **2.2.b Implement collapsing header on scroll**
+
+        **Goal:** Reclaim body content space by transitioning to compact header as user scrolls.
+
+        **Implementation approach:** Crossfade between full hero header and compact header.
+        Sticky positioning caused feedback loops with OverlayScrollbars; fixed positioning
+        required fragile pixel calculations. Crossfade approach works within existing architecture.
+
+        - [x] **2.2.b.1 Create compact header component**
+            - `DetailHeaderCompact`: slim single-row header (back button | title | links)
+            - Grid height animation (`grid-template-rows: 0fr/1fr`) for smooth expand/collapse
+            - Renders in PageLayout header slot
+
+        - [x] **2.2.b.2 Implement coordinated crossfade**
+            - Full `DetailHeader` fades out as user scrolls (opacity 1→0)
+            - `DetailHeaderCompact` fades in inversely (opacity 0→1)
+            - Transition zone = full header height (smooth dissolve effect)
+            - Moved `ScrollProvider` in PageLayout to wrap both header and children
+
+        - [x] **2.2.b.3 Extract shared logic to hook**
+            - `useHeaderCrossfade(direction: 'in' | 'out')` hook
+            - Handles scroll tracking, resize listening, opacity calculation
+            - Exports `DETAIL_HEADER_ASPECT_RATIO` constant (3.5)
+            - Uses `tuiFrameMaxWidth` from layout tokens
+
+        - [x] **2.2.b.4 Cleanup: document padding constant**
+            - Added explanatory comment for `64` magic number in hook
+            - Desktop: 64px correct; mobile: 48px (difference negligible for transition zone)
+            - Deferred token derivation pending phone hardware testing
+
+    - [ ] **2.2.c Simplify `ImageGallery` display**
+        - Limit to single row (max 3 thumbnails visible)
+        - Add "+X more" overlay on 3rd thumbnail when >3 images exist
+        - Click opens lightbox at appropriate index
+        - Remove "Screenshots" section header from ProjectDetail
+
+    - [ ] **2.2.d Reorder `ProjectDetail` content sections**
+        - New order: Tech stack → Description → Screenshots → Key Features → rest
+        - (Links now in header, not in body)
+        - Adjust spacing between reordered sections as needed
+
+    - [ ] **2.2.e Visual review and iteration**
+        - Check desktop and mobile viewports
+        - Adjust heights, spacing, styling as needed
+        - Iterate until layout feels polished
+
+    - [ ] **2.2.f Update tests for layout changes**
+        - Update DetailHeader tests for new structure (positioning, gradient, links, no divider)
+        - Add external link tests to DetailHeader (moved from ProjectDetail):
+            - GitHub, live demo, download, external (NexusMods) link rendering
+            - Link attributes (href, target, rel)
+            - Aria labels for accessibility
+        - Update ImageGallery tests for truncation and "+X more" behavior
+        - Update ProjectDetail tests for new section order
+        - Run full test suite to verify
+
+- [ ] **2.3 Light copy editing for software projects**
 
     **Goal:** Polish existing project descriptions without major rewrites.
 
-    - [ ] **2.2.a Review and edit CineXplorer copy**
+    - [ ] **2.3.a Review and edit CineXplorer copy**
         - Check description clarity, feature list, highlights
         - Fix typos, awkward phrasing
         - Ensure tech stack is current
 
-    - [ ] **2.2.b Review and edit TaskFocus copy**
+    - [ ] **2.3.b Review and edit TaskFocus copy**
         - Same checks as above
 
-    - [ ] **2.2.c Review and edit remaining software projects**
+    - [ ] **2.3.c Review and edit remaining software projects**
         - ARC Framework, arc-portfolio, PetResort
         - Brief review each, fix obvious issues
 
-    - [ ] **2.2.d Verify all project images exist**
+    - [ ] **2.3.d Verify all project images exist**
         - Check `public/projects/` for each project's assets
         - Ensure thumbnails and screenshots are present
         - Note any missing assets for follow-up
 
-- [ ] **2.3 Run Phase 2 quality gates**
-    - [ ] 2.3.a Run full test suite
-    - [ ] 2.3.b Run lint and type-check
-    - [ ] 2.3.c Manual verification of detail pages in browser
+- [ ] **2.4 Run Phase 2 quality gates**
+    - [ ] 2.4.a Run full test suite
+    - [ ] 2.4.b Run lint and type-check
+    - [ ] 2.4.c Manual verification of detail pages in browser
 
 ### **Phase 3:** Projects Page - Games Tab
 
