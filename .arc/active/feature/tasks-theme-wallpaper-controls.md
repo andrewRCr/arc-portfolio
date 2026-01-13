@@ -624,69 +624,56 @@ neofetch-inspired color swatch grid.
         - Reset functionality: clears prefs, reload shows defaults
         - SSR consistency: no FOUC, localStorage/cookie sync
 
-    - [ ] **8.4.b Update visual regression baselines**
-        - App has changed significantly since last baseline
-        - Run `npx playwright test --update-snapshots` for affected tests
-        - Review diffs to confirm changes are intentional
+    - [x] **8.4.b Update visual regression baselines**
+        - Regenerated all 23 baselines (18 theme/mode/viewport + 5 page-specific)
+        - Fixed 4 outdated E2E tests:
+            - Gradient test: Added cookie+localStorage setup for wallpaper prefs
+            - TopBar touch targets: Updated count from 4 to 3 (combined ThemeControl)
+            - FooterBar touch targets: Query TouchTarget wrapper instead of inner link
+            - Navigation links: Added waitForLoadState and explicit visibility wait
 
-    - [ ] **8.4.c Run full E2E suite - should PASS**
+    - [x] **8.4.c Run full E2E suite - should PASS**
+        - 67 E2E tests passing on Desktop Chrome
 
-- [ ] **8.5 Manual testing**
+- [x] **8.5 Manual testing**
+    - Verified: desktop flow, mobile flow, cross-session persistence all working
 
-    - [ ] **8.5.a Test desktop flow**
-        - Open dropdown, select themes, verify swatch updates
-        - Toggle light/dark, verify swatch updates
-        - Select wallpapers, verify background updates
-        - Test keyboard navigation end-to-end
+- [x] **8.6 Update style strategy documentation**
+    - Consolidated `strategy-visual-design-principles.md` into `strategy-style-guide.md`
+    - Added "Design Philosophy" section with core principles (accessibility, consistency, terminal aesthetic, etc.)
+    - Deleted redundant `strategy-visual-design-principles.md`
+    - Updated `STRATEGY-INDEX.md` to reflect single authoritative style doc
 
-    - [ ] **8.5.b Test mobile flow**
-        - Open drawer, verify bottom sheet behavior
-        - All controls accessible and touch-friendly
-        - Toggle inside drawer works
-        - Close drawer, verify state persisted
+- [x] **8.7 Final quality gates**
+    - Unit tests: 862 passed
+    - E2E tests: 67 passed (Desktop Chrome)
+    - ESLint: 0 errors (3 warnings in E2E test file)
+    - TypeScript: 0 errors
+    - Markdown linting: 0 violations
+    - Build: successful
+    - Also: Updated gruvbox visual baselines after wallpaper changes, fixed digby-cheung EXIF rotation
 
-    - [ ] **8.5.c Test cross-session persistence**
-        - Set theme + wallpaper, close browser, reopen
-        - Verify selections restored
-
-- [ ] **8.6 Update style strategy documentation**
-
-    - [ ] **8.6.a Review and update visual design principles**
-        - Ensure `strategy-visual-design-principles.md` reflects final patterns
-        - Document any new spacing, layout, or component patterns established
-
-    - [ ] **8.6.b Update style guide if needed**
-        - Ensure `strategy-style-guide.md` aligns with implemented theming system
-
-- [ ] **8.7 Final quality gates**
-
-    - [ ] **8.7.a Run full test suite**
-        - All unit tests pass
-        - All integration tests pass
-        - All E2E tests pass
-
-    - [ ] **8.7.b Run linting**
-        - ESLint: 0 violations
-
-    - [ ] **8.7.c Run type checking**
-        - TypeScript: 0 errors
-
-    - [ ] **8.7.d Run markdown linting**
-        - markdownlint: 0 violations
-
-- [ ] **8.8 Cleanup**
+- [x] **8.8 Cleanup**
 
     - [x] **8.8.a Delete remaining prototype files**
         - Removed `src/app/dev/swatch-prototype/page.tsx`
         - Removed `src/components/dev/SwatchPrototype.tsx`
         - Also fixed unused `screen` import in `Navigation.test.tsx`
 
-    - [ ] **8.8.b Remove backward-compat shims**
-        - Remove re-export from `WallpaperContext.tsx` (line: `export { WALLPAPER_OPTIONS }`)
+    - [x] **8.8.b Remove backward-compat shims**
+        - `WALLPAPER_OPTIONS` re-export was already removed (nothing to do)
 
-    - [ ] **8.8.c Verify no dead code**
-        - Check for unused imports
-        - Check for orphaned files
+    - [x] **8.8.c Verify no dead code**
+        - Ran knip analysis, removed:
+            - `tests/mocks/use-media-query.ts` (unused mock, CSS approach is correct)
+            - `src/data/index.ts` (barrel file never adopted)
+            - `src/components/ui/select.tsx` (no selects on production pages)
+            - `src/components/ui/tabs.tsx` (ProjectTabs uses custom URL-based implementation)
+        - Removed unused packages:
+            - `overlayscrollbars-react` (using core package directly)
+            - `@radix-ui/react-select`
+            - `@radix-ui/react-tabs`
+        - Kept `framer-motion` (upcoming animation work)
 
 ---
 
