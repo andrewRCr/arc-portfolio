@@ -127,11 +127,14 @@ interaction target, with wallpaper selection integrated into the same panel.
 
 Per-theme "other" colors (positions 4-6) to ensure diversification (no duplicates):
 
-| Theme     | Primary | Secondary | Accent | Others (4-6)                          |
-|-----------|---------|-----------|--------|---------------------------------------|
-| Remedy    | orange  | yellow    | cyan   | red, green, purple                    |
-| Gruvbox   | green   | yellow    | aqua   | red, blue, purple                     |
-| Rose Pine | pine    | foam      | rose   | love(red), gold(orange), iris(purple) |
+| Theme     | Primary      | Secondary | Accent      | Others (4-6)                          |
+|-----------|--------------|-----------|-------------|---------------------------------------|
+| Remedy    | orange       | yellow    | cyan        | red, green, purple                    |
+| Rose Pine | pine         | foam      | rose        | love(red), gold(orange), iris(purple) |
+| Gruvbox   | green        | yellow    | aqua        | red, blue, purple                     |
+| Ayu       | yellow       | cyan      | orange      | red, green, purple                    |
+| Rouge     | rouge(red)   | blue      | peach       | green, cyan, purple                   |
+| Mariana   | blue         | yellow    | teal        | coral, green, purple                  |
 
 ### Visual Reference
 
@@ -195,7 +198,7 @@ interface WallpaperPreferences {
 
 - ThemeContext and WallpaperContext already exist
 - WallpaperSwitcher prototype exists (to be replaced/enhanced)
-- Wallpaper inventory documented in plan file (19 images + gradient)
+- Wallpaper inventory: 36 images + gradient (see `src/data/wallpapers/index.ts`)
 
 ## Success Metrics
 

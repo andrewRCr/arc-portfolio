@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 export interface ThemeSwatchProps {
   /** Array of 8 hex color strings */
-  colors: string[];
+  colors: readonly string[];
   /** Size of each color square in pixels (default: 16) */
   size?: number;
   /** Additional CSS classes for the container */

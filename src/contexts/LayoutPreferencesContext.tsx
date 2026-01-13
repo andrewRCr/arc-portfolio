@@ -74,9 +74,13 @@ export function LayoutPreferencesContextProvider({
     const storedMode = getStoredLayoutMode();
     if (storedMode && storedMode !== layoutMode) {
       setLayoutModeInternal(storedMode);
+      // Sync localStorage value to cookie since it differs from server
+      syncLayoutModeCookie(storedMode);
+    } else if (!storedMode && layoutMode !== DEFAULT_LAYOUT_MODE) {
+      // Server had a non-default value but localStorage is empty - sync server value
+      syncLayoutModeCookie(layoutMode);
     }
-    // Sync current mode to cookie (ensures cookie matches localStorage)
-    syncLayoutModeCookie(storedMode ?? layoutMode);
+    // If storedMode matches layoutMode, no sync needed (already in sync)
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Wrapped setter that updates localStorage immediately and syncs to cookie

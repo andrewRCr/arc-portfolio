@@ -68,8 +68,9 @@ describe("WallpaperPicker", () => {
       render(<WallpaperPicker {...defaultProps} />);
 
       const preview = screen.getByTestId("wallpaper-preview");
-      // Check for min-width and min-height classes or styles
-      expect(preview.className).toMatch(/min-w|w-\[?2/);
+      // Check for specific dimension classes (200x150 thumbnail size)
+      expect(preview.className).toContain("w-[200px]");
+      expect(preview.className).toContain("h-[150px]");
     });
   });
 

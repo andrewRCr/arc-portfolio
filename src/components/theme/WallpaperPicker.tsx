@@ -61,17 +61,20 @@ export function formatAttribution(id: string): string {
 export function WallpaperPicker({ selectedWallpaper, onSelect, isEnabled = true, className }: WallpaperPickerProps) {
   const wallpapers = useCompatibleWallpapers();
 
-  // Find current index
+  // Find current index (safe for empty arrays)
   const currentIndex = wallpapers.findIndex((w) => w.id === selectedWallpaper);
   const safeIndex = currentIndex >= 0 ? currentIndex : 0;
   const currentWallpaper = wallpapers[safeIndex];
 
+  // Hooks must be called unconditionally (before any early returns)
   const goToNext = useCallback(() => {
+    if (wallpapers.length === 0) return;
     const nextIndex = (safeIndex + 1) % wallpapers.length;
     onSelect(wallpapers[nextIndex].id);
   }, [safeIndex, wallpapers, onSelect]);
 
   const goToPrev = useCallback(() => {
+    if (wallpapers.length === 0) return;
     const prevIndex = (safeIndex - 1 + wallpapers.length) % wallpapers.length;
     onSelect(wallpapers[prevIndex].id);
   }, [safeIndex, wallpapers, onSelect]);
@@ -91,6 +94,15 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, isEnabled = true,
     },
     [goToPrev, goToNext]
   );
+
+  // Guard against empty wallpaper list (shouldn't happen with valid theme data)
+  if (wallpapers.length === 0) {
+    return (
+      <div className={cn("flex flex-col items-center gap-2 pt-1 text-muted-foreground text-sm", className)}>
+        No wallpapers available
+      </div>
+    );
+  }
 
   return (
     <div className={cn("flex flex-col items-center gap-2 pt-1", className)}>

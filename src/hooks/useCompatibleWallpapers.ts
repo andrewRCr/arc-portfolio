@@ -12,7 +12,7 @@ import { getCompatibleWallpapers, type WallpaperOption } from "@/data/wallpapers
 /**
  * Get wallpapers compatible with the current theme.
  *
- * @returns Filtered array of compatible wallpaper options (gradient always first)
+ * @returns Filtered array of compatible wallpaper options (gradient excluded)
  */
 export function useCompatibleWallpapers(): WallpaperOption[] {
   const { activeTheme } = useThemeContext();

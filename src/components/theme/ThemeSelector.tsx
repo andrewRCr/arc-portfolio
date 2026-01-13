@@ -75,7 +75,7 @@ export function ThemeSelector({ selectedTheme, onSelect, className }: ThemeSelec
     >
       {themeEntries.map(([themeName, theme], index) => {
         const isSelected = themeName === selectedTheme;
-        const swatchColors = [...theme.swatchColors[mode]];
+        const swatchColors = theme.swatchColors[mode];
 
         return (
           <div

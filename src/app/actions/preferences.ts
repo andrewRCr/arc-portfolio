@@ -15,6 +15,7 @@
 
 import { cookies } from "next/headers";
 import { PALETTE_COOKIE_NAME } from "@/config/storage";
+import { themes } from "@/data/themes";
 
 const COOKIE_OPTIONS = {
   httpOnly: false, // Accessible on client for synchronization
@@ -30,6 +31,9 @@ const COOKIE_OPTIONS = {
  * Called when user changes palette or on mount to sync localStorage → cookie.
  */
 export async function setPalettePreference(palette: string): Promise<void> {
+  if (!(palette in themes)) {
+    return; // Silently ignore invalid palettes
+  }
   const cookieStore = await cookies();
   cookieStore.set(PALETTE_COOKIE_NAME, palette, COOKIE_OPTIONS);
 }

@@ -64,6 +64,10 @@ export function ThemeControl() {
 
   // Workaround for Radix bug #2782: after interacting inside a Popover,
   // the first outside click is swallowed. This listener ensures single-click close.
+  //
+  // Note: Cannot use Radix's onPointerDownOutside/onInteractOutside - they have the same bug.
+  // The `data-slot` attribute is a Shadcn/ui convention (our local component), not raw Radix
+  // internals, but could change with Shadcn updates. Remove this workaround when Radix fixes #2782.
   // See: https://github.com/radix-ui/primitives/issues/2782
   useEffect(() => {
     if (!open) return;

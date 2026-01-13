@@ -25,7 +25,7 @@ export const MODE_STORAGE_KEY = "theme";
 export const WALLPAPER_PREFS_STORAGE_KEY = "arc-portfolio-wallpaper-prefs";
 
 /** Per-theme wallpaper preferences (keyed by theme name) - cookie for SSR */
-export const WALLPAPER_COOKIE_NAME = "arc-portfolio-wallpaper";
+export const WALLPAPER_COOKIE_NAME = "arc-portfolio-wallpaper-prefs";
 
 /** Layout mode preference (full vs boxed) - localStorage */
 export const LAYOUT_MODE_STORAGE_KEY = "arc-portfolio-layout-mode";

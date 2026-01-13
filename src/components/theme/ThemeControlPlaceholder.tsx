@@ -25,7 +25,7 @@ export function ThemeControlPlaceholder({ isMobile = false }: ThemeControlPlaceh
     <button type="button" aria-label="Open theme settings" disabled className={className}>
       <div data-testid="theme-swatch" aria-hidden="true" className="flex">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} data-testid="swatch-square" className="bg-muted" style={{ width: "16px", height: "16px" }} />
+          <div key={i} data-testid="swatch-square" className="w-4 h-4 bg-muted" />
         ))}
       </div>
       <ChevronDown data-testid="theme-control-chevron" className="w-3 h-3 text-muted-foreground" />

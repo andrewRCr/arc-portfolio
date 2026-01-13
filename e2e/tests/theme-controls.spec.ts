@@ -1,4 +1,4 @@
-import { test, expect, type Page, type BrowserContext } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import {
   PALETTE_STORAGE_KEY,
   MODE_STORAGE_KEY,
@@ -91,21 +91,6 @@ async function getStoredLayoutMode(page: Page): Promise<string | null> {
 async function getStoredWallpaperPrefs(page: Page): Promise<Record<string, unknown> | null> {
   const stored = await page.evaluate((key) => localStorage.getItem(key), WALLPAPER_PREFS_STORAGE_KEY);
   return stored ? JSON.parse(stored) : null;
-}
-
-/**
- * Helper to clear all theme-related storage
- */
-async function clearAllStorage(page: Page): Promise<void> {
-  await page.evaluate(
-    ([paletteKey, modeKey, wallpaperKey, layoutKey]) => {
-      localStorage.removeItem(paletteKey);
-      localStorage.removeItem(modeKey);
-      localStorage.removeItem(wallpaperKey);
-      localStorage.removeItem(layoutKey);
-    },
-    [PALETTE_STORAGE_KEY, MODE_STORAGE_KEY, WALLPAPER_PREFS_STORAGE_KEY, LAYOUT_MODE_STORAGE_KEY]
-  );
 }
 
 test.describe("Theme Controls", () => {
@@ -242,7 +227,7 @@ test.describe("Theme Controls", () => {
       await selectTheme(page, "gruvbox");
       await wallpaperPreview.focus();
       await page.keyboard.press("ArrowRight");
-      const gruvboxPrefs = await getStoredWallpaperPrefs(page);
+      await getStoredWallpaperPrefs(page); // Wait for storage update
 
       // Switch back to remedy - should restore remedy's wallpaper
       await selectTheme(page, "remedy");
@@ -261,7 +246,7 @@ test.describe("Theme Controls", () => {
           localStorage.setItem(
             key,
             JSON.stringify({
-              // This wallpaper is only compatible with remedy
+              // This wallpaper is only compatible with remedy, not gruvbox
               gruvbox: { wallpaper: "karolis-milisauskas", enabled: true },
             })
           );
@@ -275,11 +260,11 @@ test.describe("Theme Controls", () => {
       // Select gruvbox - should fall back since karolis-milisauskas isn't compatible
       await selectTheme(page, "gruvbox");
 
-      // The wallpaper preview should show gradient or a compatible wallpaper
-      // (The exact behavior depends on implementation - just verify no error)
+      // Gruvbox preference should be updated to a compatible option (not the incompatible one)
       const prefs = await getStoredWallpaperPrefs(page);
-      // Gruvbox preference should be updated to a compatible option
       expect(prefs?.gruvbox).toBeDefined();
+      // Should NOT still be the incompatible wallpaper
+      expect((prefs?.gruvbox as { wallpaper?: string })?.wallpaper).not.toBe("karolis-milisauskas");
     });
   });
 
@@ -297,8 +282,8 @@ test.describe("Theme Controls", () => {
       await selectTheme(pageA, "gruvbox");
       await closeThemeControl(pageA);
 
-      // Wait for storage event to propagate
-      await pageB.waitForTimeout(500);
+      // Wait for storage event to propagate and theme to update
+      await pageB.waitForFunction(() => document.documentElement.classList.contains("gruvbox"));
 
       // Tab B should reflect the change
       const themeBHtml = pageB.locator("html");
@@ -324,8 +309,12 @@ test.describe("Theme Controls", () => {
       await modeButton.click();
       await closeThemeControl(pageA);
 
-      // Wait for storage event to propagate
-      await pageB.waitForTimeout(1000);
+      // Wait for storage event to propagate and mode to update
+      if (initialIsDark) {
+        await pageB.waitForFunction(() => !document.documentElement.classList.contains("dark"));
+      } else {
+        await pageB.waitForFunction(() => document.documentElement.classList.contains("dark"));
+      }
 
       // Tab B should reflect the change
       const htmlB = pageB.locator("html");
@@ -354,8 +343,17 @@ test.describe("Theme Controls", () => {
       const prefsA = await getStoredWallpaperPrefs(pageA);
       await closeThemeControl(pageA);
 
-      // Wait for storage event
-      await pageB.waitForTimeout(500);
+      // Wait for storage event to propagate
+      const expectedRemedy = JSON.stringify(prefsA?.remedy);
+      await pageB.waitForFunction(
+        ([key, expected]) => {
+          const stored = localStorage.getItem(key);
+          if (!stored) return false;
+          const prefs = JSON.parse(stored);
+          return JSON.stringify(prefs?.remedy) === expected;
+        },
+        [WALLPAPER_PREFS_STORAGE_KEY, expectedRemedy]
+      );
 
       // Tab B should have same wallpaper prefs
       const prefsB = await getStoredWallpaperPrefs(pageB);

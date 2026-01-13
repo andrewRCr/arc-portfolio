@@ -8,7 +8,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { checkA11y } from "@tests/test-utils";
+import { checkA11y, axe } from "@tests/test-utils";
 import { ThemeControl } from "../ThemeControl";
 
 // Mock ThemeContext
@@ -70,6 +70,7 @@ vi.mock("@/hooks/useCompatibleWallpapers", () => ({
 describe("ThemeControl", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
   describe("Collapsed State", () => {
@@ -197,16 +198,18 @@ describe("ThemeControl", () => {
     });
 
     it("has no accessibility violations in expanded state", async () => {
-      // Note: This test opens the dropdown and checks a11y on the resulting DOM
-      // Since checkA11y expects ReactElement, we test via rendered component
       const user = userEvent.setup();
-      render(<ThemeControl />);
+      const { container } = render(<ThemeControl />);
 
       const trigger = screen.getByRole("button", { name: /theme.*settings|open theme/i });
       await user.click(trigger);
 
-      // Verify expanded content is present (a11y will be checked by axe in full test suite)
+      // Verify expanded content is present
       expect(screen.getByRole("listbox", { name: /select theme/i })).toBeInTheDocument();
+
+      // Run a11y check on the open state
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
     });
 
     it("trigger button has accessible name", () => {

@@ -76,7 +76,7 @@ export function usePreferenceAnnouncements({
 }
 
 /**
- * Format a kebab-case or camelCase name for display.
+ * Format a kebab-case or snake_case name for display.
  * "rose-pine" -> "Rose Pine", "gruvbox" -> "Gruvbox"
  */
 function formatName(name: string): string {

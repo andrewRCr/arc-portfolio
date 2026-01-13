@@ -40,10 +40,10 @@ describe("Theme Swatch Colors", () => {
   describe("Color Format", () => {
     it("all swatch colors should be valid hex format (#RRGGBB)", () => {
       Object.entries(themes).forEach(([name, theme]) => {
-        theme.swatchColors?.light?.forEach((color, index) => {
+        theme.swatchColors.light.forEach((color, index) => {
           expect(color, `${name} light[${index}] invalid hex`).toMatch(HEX_COLOR_PATTERN);
         });
-        theme.swatchColors?.dark?.forEach((color, index) => {
+        theme.swatchColors.dark.forEach((color, index) => {
           expect(color, `${name} dark[${index}] invalid hex`).toMatch(HEX_COLOR_PATTERN);
         });
       });

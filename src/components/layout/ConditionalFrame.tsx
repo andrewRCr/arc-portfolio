@@ -22,7 +22,7 @@ import { Navigation } from "./Navigation";
 export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDevRoute = pathname?.startsWith("/dev");
-  const { navGapDepth, windowBorderWidth, contentMaxWidth } = DEFAULT_LAYOUT_TOKENS;
+  const { navGapDepth, windowBorderWidth, contentMaxWidth, tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
   if (isDevRoute) {
     // Dev pages: no inner frame, no navigation
@@ -60,7 +60,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
       <div
         data-testid="content-wrapper"
         className="relative rounded-lg flex flex-col flex-1 min-h-0 mx-auto w-full"
-        style={{ maxWidth: 1120 }}
+        style={{ maxWidth: tuiFrameMaxWidth }}
       >
         {/* TUI frame border - clip-path creates gap for Navigation */}
         <div

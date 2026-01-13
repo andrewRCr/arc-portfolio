@@ -9,7 +9,7 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { checkA11y } from "@tests/test-utils";
+import { checkA11y, axe } from "@tests/test-utils";
 import { ThemeControlDrawer } from "../ThemeControlDrawer";
 
 // Mock contexts (same as ThemeControl tests)
@@ -69,6 +69,7 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
 describe("ThemeControlDrawer", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
   describe("Rendering", () => {
@@ -326,6 +327,21 @@ describe("ThemeControlDrawer", () => {
   describe("Accessibility", () => {
     it("has no accessibility violations when closed", async () => {
       const results = await checkA11y(<ThemeControlDrawer />);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("has no accessibility violations when open", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ThemeControlDrawer />);
+
+      const trigger = screen.getByRole("button", { name: /open theme/i });
+      await user.click(trigger);
+
+      // Wait for sheet content to render
+      expect(screen.getByRole("listbox", { name: /select theme/i })).toBeInTheDocument();
+
+      // Run a11y check on the open state (use axe directly on already-rendered container)
+      const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
 

@@ -152,11 +152,14 @@ export interface ThemeColors {
  *
  * Each theme maps these slots to its palette's characteristic colors.
  */
+/** 8-element tuple for swatch colors */
+type SwatchTuple = readonly [string, string, string, string, string, string, string, string];
+
 export interface SwatchColors {
   /** 8 hex colors for light mode swatch display */
-  readonly light: readonly string[];
+  readonly light: SwatchTuple;
   /** 8 hex colors for dark mode swatch display */
-  readonly dark: readonly string[];
+  readonly dark: SwatchTuple;
 }
 
 /**

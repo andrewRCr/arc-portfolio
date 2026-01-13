@@ -10,6 +10,8 @@
 import { cookies } from "next/headers";
 import { LAYOUT_MODE_COOKIE_NAME } from "@/config/storage";
 
+const VALID_LAYOUT_MODES = ["wide", "boxed", "full"] as const;
+
 const COOKIE_OPTIONS = {
   httpOnly: false,
   secure: process.env.NODE_ENV === "production",
@@ -22,6 +24,9 @@ const COOKIE_OPTIONS = {
  * Set the user's layout mode preference cookie.
  */
 export async function setLayoutModePreference(mode: string): Promise<void> {
+  if (!VALID_LAYOUT_MODES.includes(mode as (typeof VALID_LAYOUT_MODES)[number])) {
+    return; // Silently ignore invalid modes
+  }
   const cookieStore = await cookies();
   cookieStore.set(LAYOUT_MODE_COOKIE_NAME, mode, COOKIE_OPTIONS);
 }

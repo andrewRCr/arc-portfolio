@@ -23,9 +23,9 @@ export interface WallpaperOption {
   /** Path to wallpaper image (1080p), or undefined for gradient option */
   readonly src: string | undefined;
   /** Path to high-res wallpaper image (1440p), for large viewports */
-  readonly srcHiRes?: string | undefined;
+  readonly srcHiRes?: string;
   /** Path to thumbnail image (200×150), for picker preview */
-  readonly thumbnailSrc?: string | undefined;
+  readonly thumbnailSrc?: string;
   /** Which themes this wallpaper works well with */
   readonly compatibleThemes: WallpaperCompatibility;
 }

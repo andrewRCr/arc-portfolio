@@ -12,7 +12,7 @@
  *        npm run generate:thumbnails
  */
 
-import { execSync } from "child_process";
+import { execFileSync, execSync } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -52,14 +52,23 @@ function generateThumbnail(inputFile: string): { success: boolean; sizeKB?: numb
   const outputPath = path.join(OUTPUT_DIR, outputFile);
 
   try {
-    // ImageMagick command:
-    // -resize WxH^ : resize to fill (^ means minimum dimensions)
-    // -gravity center : anchor crop to center
-    // -extent WxH : crop to exact dimensions
-    // -quality N : WebP quality setting
-    const command = `convert "${inputPath}" -resize ${THUMB_WIDTH}x${THUMB_HEIGHT}^ -gravity center -extent ${THUMB_WIDTH}x${THUMB_HEIGHT} -quality ${WEBP_QUALITY} "${outputPath}"`;
-
-    execSync(command, { stdio: "pipe" });
+    // ImageMagick convert with center-crop strategy
+    execFileSync(
+      "convert",
+      [
+        inputPath,
+        "-resize",
+        `${THUMB_WIDTH}x${THUMB_HEIGHT}^`,
+        "-gravity",
+        "center",
+        "-extent",
+        `${THUMB_WIDTH}x${THUMB_HEIGHT}`,
+        "-quality",
+        String(WEBP_QUALITY),
+        outputPath,
+      ],
+      { stdio: "pipe" }
+    );
 
     // Get file size
     const stats = fs.statSync(outputPath);
@@ -77,6 +86,15 @@ function generateThumbnail(inputFile: string): { success: boolean; sizeKB?: numb
  */
 function main(): void {
   console.log("Generating wallpaper thumbnails...\n");
+
+  // Verify ImageMagick is available
+  try {
+    execSync("convert --version", { stdio: "pipe" });
+  } catch {
+    console.error("Error: ImageMagick is required but not found.");
+    console.error("Install with: brew install imagemagick (macOS) or apt install imagemagick (Linux)");
+    process.exit(1);
+  }
 
   // Verify source directory exists
   if (!fs.existsSync(SOURCE_DIR)) {

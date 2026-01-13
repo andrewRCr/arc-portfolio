@@ -25,7 +25,7 @@ export interface WallpaperBackgroundProps {
  * - Fixed positioning behind all content
  * - Theme-aware gradient fallback (uses CSS custom properties)
  * - Supports custom gradient stops per theme (for neutral themes like Mariana)
- * - Priority-loaded image when provided (via Next.js Image)
+ * - Eager-loaded image when provided (native img with srcSet for multi-resolution)
  * - Smooth fade-in transition when image loads
  * - Decorative element (aria-hidden for accessibility)
  *

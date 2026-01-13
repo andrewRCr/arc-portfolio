@@ -27,6 +27,6 @@ export function useThemeSwatch(): string[] {
     }
 
     const mode = resolvedTheme === "dark" ? "dark" : "light";
-    return [...theme.swatchColors[mode]];
+    return [...(theme.swatchColors[mode] ?? [])];
   }, [activeTheme, resolvedTheme]);
 }

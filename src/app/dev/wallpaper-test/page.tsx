@@ -16,6 +16,9 @@ import { formatAttribution } from "@/components/theme";
 
 type WallpaperSource = "none" | "optimized" | "candidates";
 
+// Module-level constant (themes registry doesn't change at runtime)
+const themeNames = Object.keys(themes) as ThemeName[];
+
 /**
  * Wallpaper Test Page
  *
@@ -68,15 +71,14 @@ export default function WallpaperTestPage() {
     return () => {
       setDevOverrideSrc?.(null);
     };
-  }, [setDevOverrideSrc]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle source change - reset file selection
   const handleSourceChange = (source: WallpaperSource) => {
     setSelectedSource(source);
     setSelectedFile("");
   };
-
-  const themeNames = Object.keys(themes) as ThemeName[];
 
   // Extract photographer name from filename (e.g., "anne-nygard-K6FlqZs4Dec.webp" -> "anne-nygard")
   const formatFileName = (file: string) => {
@@ -87,14 +89,14 @@ export default function WallpaperTestPage() {
   const currentFiles = selectedSource === "optimized" ? optimizedFiles : candidateFiles;
 
   // Compute wallpapers per theme (in production order)
-  // refreshKey forces re-read after source file changes
+  // refreshKey forces re-read after source file changes (intentional cache invalidation)
   const wallpapersPerTheme = useMemo(() => {
     return themeNames.map((name) => ({
       name,
       wallpapers: getCompatibleWallpapers(name),
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [themeNames, refreshKey]);
+  }, [refreshKey]);
 
   // Get attribution for selected file
   const selectedAttribution = useMemo(() => {

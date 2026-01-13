@@ -23,12 +23,13 @@ export async function GET() {
     try {
       const files = await readdir(join(wallpaperBase, subdir));
       return files.filter((f) => /\.(webp|jpg|jpeg|png)$/i.test(f)).sort();
-    } catch {
+    } catch (error) {
+      console.warn(`[dev/wallpapers] Could not read ${subdir}:`, error);
       return [];
     }
   }
 
-  const [optimized, candidates] = await Promise.all([getImageFiles("optimized"), getImageFiles("candidates")]);
+  const [optimized, candidates] = await Promise.all([getImageFiles("optimized-1080"), getImageFiles("candidates")]);
 
   return NextResponse.json({ optimized, candidates });
 }

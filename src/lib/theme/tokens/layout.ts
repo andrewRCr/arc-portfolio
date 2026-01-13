@@ -118,6 +118,13 @@ export interface LayoutTokens {
    * **Usage:** LayoutWrapper outer container constraint
    */
   windowContainerMaxWidth: number;
+
+  /**
+   * Maximum width for the TUI frame content area.
+   * Narrower than contentMaxWidth to allow centering with padding.
+   * **Usage:** ConditionalFrame inner content constraint
+   */
+  tuiFrameMaxWidth: number;
 }
 
 /**
@@ -138,6 +145,7 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   contentPaddingX: 8, // CSS variable: --content-padding-x (auto-generated)
   topBarContentMaxWidth: 1200, // Wider than content for visual hierarchy
   windowContainerMaxWidth: 1200, // Reveals wallpaper margins at large viewports
+  tuiFrameMaxWidth: 1120, // Narrower than content for centering with padding
 };
 
 /**

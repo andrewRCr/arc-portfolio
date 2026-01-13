@@ -134,8 +134,8 @@ describe("ConditionalFrame", () => {
       );
 
       const wrapper = screen.getByTestId("content-wrapper");
-      // TUI frame uses 1120px (smaller than contentMaxWidth to allow centering with padding)
-      expect(wrapper).toHaveStyle({ maxWidth: "1120px" });
+      // TUI frame uses tuiFrameMaxWidth (smaller than contentMaxWidth to allow centering with padding)
+      expect(wrapper).toHaveStyle({ maxWidth: `${DEFAULT_LAYOUT_TOKENS.tuiFrameMaxWidth}px` });
     });
   });
 

@@ -20,7 +20,7 @@ function TestConsumer() {
   return (
     <div>
       <span data-testid="layout-mode">{layoutMode}</span>
-      <button onClick={() => setLayoutMode("wide")}>Set Full</button>
+      <button onClick={() => setLayoutMode("wide")}>Set Wide</button>
       <button onClick={() => setLayoutMode("boxed")}>Set Boxed</button>
     </div>
   );
@@ -79,7 +79,7 @@ describe("LayoutPreferencesContext", () => {
       expect(screen.getByTestId("layout-mode")).toHaveTextContent("boxed");
 
       await act(async () => {
-        screen.getByText("Set Full").click();
+        screen.getByText("Set Wide").click();
       });
 
       expect(screen.getByTestId("layout-mode")).toHaveTextContent("wide");
@@ -95,7 +95,7 @@ describe("LayoutPreferencesContext", () => {
       );
 
       await act(async () => {
-        screen.getByText("Set Full").click();
+        screen.getByText("Set Wide").click();
       });
 
       expect(localStorage.getItem(LAYOUT_MODE_STORAGE_KEY)).toBe("wide");

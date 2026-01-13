@@ -81,6 +81,11 @@ export default async function RootLayout({
     }
   }
 
+  // Determine server layout mode (cookie or undefined to let context default)
+  const validLayoutModes = ["wide", "boxed", "full"];
+  const serverLayoutMode =
+    layoutModeCookie && validLayoutModes.includes(layoutModeCookie) ? layoutModeCookie : undefined;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -99,7 +104,7 @@ export default async function RootLayout({
           disableTransitionOnChange
           serverPalette={serverPalette}
           serverWallpaper={serverWallpaper}
-          serverLayoutMode={layoutModeCookie}
+          serverLayoutMode={serverLayoutMode}
         >
           <ConsoleLoggerInit />
           <LayoutWrapper>
