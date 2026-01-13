@@ -14,6 +14,27 @@ import { VIEWPORTS } from "../constants";
 test.describe("TWM Layout System", () => {
   test.describe("Wallpaper Background", () => {
     test("gradient fallback is visible on page load", async ({ page }) => {
+      // Force gradient wallpaper mode for default theme (remedy)
+      // Must set both localStorage (client) and cookie (SSR) for consistency
+      const wallpaperPrefs = JSON.stringify({ remedy: "gradient" });
+
+      await page.addInitScript(
+        ({ prefs }) => {
+          localStorage.setItem("arc-portfolio-wallpaper-prefs", prefs);
+        },
+        { prefs: wallpaperPrefs }
+      );
+
+      // Set cookie for SSR (URL-encoded JSON)
+      await page.context().addCookies([
+        {
+          name: "arc-portfolio-wallpaper",
+          value: encodeURIComponent(wallpaperPrefs),
+          domain: "localhost",
+          path: "/",
+        },
+      ]);
+
       await page.goto("/");
 
       // Wallpaper container should exist with gradient background
@@ -285,10 +306,10 @@ test.describe("TWM Layout System", () => {
     test("TopBar touch targets meet 44×44px minimum", async ({ page }) => {
       await page.goto("/");
 
-      // All touch targets in TopBar (branding + 3 theme controls)
+      // All touch targets in TopBar (branding + combined theme control + theme toggle)
       const touchTargets = page.getByRole("banner").locator("[data-touch-target]");
       const count = await touchTargets.count();
-      expect(count).toBe(4); // branding + wallpaper switcher + theme switcher + theme toggle
+      expect(count).toBe(3); // branding + ThemeControl (combined theme/wallpaper) + ThemeToggle
 
       for (let i = 0; i < count; i++) {
         const target = touchTargets.nth(i);
@@ -302,16 +323,16 @@ test.describe("TWM Layout System", () => {
     test("FooterBar touch targets meet 44×44px minimum", async ({ page }) => {
       await page.goto("/");
 
-      // Social links (GitHub, LinkedIn, etc.)
+      // Touch target wrappers in FooterBar (social links are wrapped in TouchTarget)
       const socialNav = page.getByRole("contentinfo").getByRole("navigation", { name: /social/i });
-      const socialLinks = socialNav.getByRole("link");
-      const count = await socialLinks.count();
+      const touchTargets = socialNav.locator("[data-touch-target]");
+      const count = await touchTargets.count();
 
       expect(count).toBeGreaterThan(0);
 
       for (let i = 0; i < count; i++) {
-        const link = socialLinks.nth(i);
-        const box = await link.boundingBox();
+        const target = touchTargets.nth(i);
+        const box = await target.boundingBox();
 
         expect(box).not.toBeNull();
         expect(box!.width).toBeGreaterThanOrEqual(44);

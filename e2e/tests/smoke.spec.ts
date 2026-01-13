@@ -68,14 +68,20 @@ test.describe("Smoke Tests", () => {
     for (const { name, expectedPath } of navTests) {
       // Start from homepage each iteration to avoid inter-test coupling
       await page.goto("/");
+      await page.waitForLoadState("networkidle");
+
+      // Scope to main navigation to avoid matching other links on page
+      const mainNav = page.getByRole("navigation", { name: "Main navigation" });
 
       if (isMobile) {
         // Mobile: open dropdown, then click menuitem
         await openMobileNavIfNeeded(page);
         await page.getByRole("menuitem", { name }).click();
       } else {
-        // Desktop: click link directly
-        await page.getByRole("link", { name }).click();
+        // Desktop: wait for link to be visible and stable, then click
+        const link = mainNav.getByRole("link", { name });
+        await expect(link).toBeVisible();
+        await link.click();
       }
       await expect(page).toHaveURL(expectedPath);
     }
