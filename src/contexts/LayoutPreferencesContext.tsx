@@ -79,10 +79,8 @@ export function LayoutPreferencesContextProvider({
   // Wrapped setter that updates localStorage immediately and syncs to cookie
   const setLayoutMode = React.useCallback((mode: LayoutMode) => {
     setLayoutModeInternal(mode);
-    // localStorage update (immediate)
-    if (typeof window !== "undefined") {
-      localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, mode);
-    }
+    // localStorage update (immediate) - no window check needed in client component
+    localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, mode);
     // Cookie sync (async, fire-and-forget)
     syncLayoutModeCookie(mode);
   }, []);

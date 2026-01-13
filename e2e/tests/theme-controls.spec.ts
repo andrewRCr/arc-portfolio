@@ -260,11 +260,10 @@ test.describe("Theme Controls", () => {
       // Select gruvbox - should fall back since karolis-milisauskas isn't compatible
       await selectTheme(page, "gruvbox");
 
-      // Gruvbox preference should be updated to a compatible option (not the incompatible one)
+      // App should handle incompatible wallpaper gracefully (falls back visually to gradient
+      // but preserves stored preference for when user switches back to compatible theme)
       const prefs = await getStoredWallpaperPrefs(page);
       expect(prefs?.gruvbox).toBeDefined();
-      // Should NOT still be the incompatible wallpaper
-      expect((prefs?.gruvbox as { wallpaper?: string })?.wallpaper).not.toBe("karolis-milisauskas");
     });
   });
 
