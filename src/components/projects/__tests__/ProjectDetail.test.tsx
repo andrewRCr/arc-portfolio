@@ -8,7 +8,8 @@
 
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import ProjectDetail, { getBackDestination } from "../ProjectDetail";
+import ProjectDetail from "../ProjectDetail";
+import { getBackDestination } from "../utils";
 import type { Project } from "@/types/project";
 
 const mockProject: Project = {
@@ -67,19 +68,17 @@ describe("ProjectDetail - Behavior Tests", () => {
   });
 
   describe("Screenshots Gallery", () => {
-    it("renders gallery section when screenshots exist", () => {
+    it("renders gallery when screenshots exist", () => {
       render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText("Screenshots")).toBeInTheDocument();
       expect(screen.getByTestId("image-gallery")).toBeInTheDocument();
     });
 
-    it("does not render gallery section when no screenshots", () => {
+    it("does not render gallery when no screenshots", () => {
       const projectWithoutScreenshots: Project = {
         ...mockProject,
         images: { ...mockProject.images, screenshots: [] },
       };
       render(<ProjectDetail project={projectWithoutScreenshots} />);
-      expect(screen.queryByText("Screenshots")).not.toBeInTheDocument();
       expect(screen.queryByTestId("image-gallery")).not.toBeInTheDocument();
     });
   });
@@ -126,7 +125,6 @@ describe("ProjectDetail - Behavior Tests", () => {
   describe("Accessibility", () => {
     it("has semantic headings for content sections", () => {
       render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByRole("heading", { name: "Screenshots" })).toBeInTheDocument();
       expect(screen.getByRole("heading", { name: "Tech Stack" })).toBeInTheDocument();
       expect(screen.getByRole("heading", { name: "Key Features" })).toBeInTheDocument();
     });
