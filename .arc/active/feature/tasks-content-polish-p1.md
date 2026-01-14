@@ -197,24 +197,28 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Lightbox opens at clicked index with full image set for navigation
         - Screenshots header removal done in earlier session
 
-    - [ ] **2.2.d Reorder `ProjectDetail` content sections**
-        - New order: Tech stack → Description → Screenshots → Key Features → rest
-        - (Links now in header, not in body)
-        - Adjust spacing between reordered sections as needed
+    - [x] **2.2.d Reorder `ProjectDetail` content sections**
+        - Reordered: Tech Stack → Description → Screenshots → Key Features → rest
+        - Links already in header from 2.2.a-b work
+        - Spacing unchanged (`space-y-8` works well for new order)
 
-    - [ ] **2.2.e Visual review and iteration**
-        - Check desktop and mobile viewports
-        - Adjust heights, spacing, styling as needed
-        - Iterate until layout feels polished
+    - [x] **2.2.e Visual review and iteration**
+        - Desktop and mobile viewports tested via browser and Cloudflare tunnel
+        - DRY refactoring: extracted BackToTopButton, DetailCard, BulletList/MetadataRow helpers
+        - DetailHeaderCompact: responsive two-row layout on mobile, TouchTarget compliance
+        - ImageGallery: added Zoom plugin for mobile pinch-to-zoom
+        - Adjusted spacing throughout (section margins, description gaps)
 
-    - [ ] **2.2.f Update tests for layout changes**
-        - Update DetailHeader tests for new structure (positioning, gradient, links, no divider)
-        - Add external link tests to DetailHeader (moved from ProjectDetail):
-            - GitHub, live demo, download, external (NexusMods) link rendering
-            - Link attributes (href, target, rel)
-            - Aria labels for accessibility
-        - Update ImageGallery tests for truncation and "+X more" behavior
-        - Update ProjectDetail tests for new section order
+    - [ ] **2.2.f Mobile layout for full DetailHeader**
+        - Current wide aspect ratio doesn't work on narrow screens (title cut off, elements jumbled)
+        - Implement card-style layout on mobile: hero image top, metadata section below
+        - Keep same hero aspect ratio (no separate mobile images needed)
+        - Back button, title, badges, links in bottom section with room to breathe
+        - Use inline responsive classes (not ResponsiveSwitch)
+
+    - [ ] **2.2.g Update tests for layout changes**
+        - Update DetailHeader tests for mobile responsive structure
+        - Update ProjectDetail tests as needed
         - Run full test suite to verify
 
 - [ ] **2.3 Light copy editing for software projects**
