@@ -54,7 +54,13 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
       stickyHeader
       pageId="project-detail"
       header={
-        <DetailHeaderCompact title={mod.title} backHref={backDest.href} backLabel={backDest.label} links={mod.links} />
+        <DetailHeaderCompact
+          title={mod.title}
+          compactTitle={mod.compactTitle}
+          backHref={backDest.href}
+          backLabel={backDest.label}
+          links={mod.links}
+        />
       }
     >
       <DetailHeader

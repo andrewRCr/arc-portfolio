@@ -132,7 +132,7 @@
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
 
   /* Layout tokens */
-  --content-padding-y: 28px;
+  --content-padding-y: 24px;
   --content-padding-x: 8px;
   /* END AUTO-GENERATED THEME DEFAULTS */
 }
@@ -892,7 +892,7 @@ html[data-env-preview="false"] [data-window-container] {
 
 [data-page="project-detail"] .os-scrollbar-vertical {
   /* Mobile: shorter hero (narrow screen / 3.5 aspect) + metadata sections */
-  padding-top: 230px;
+  padding-top: 160px;
   padding-bottom: 56px;
 }
 

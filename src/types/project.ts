@@ -50,6 +50,7 @@ export interface Project {
   // Core identification and content
   id: string; // Unique identifier (e.g., "cinexplorer")
   title: string; // Display title (e.g., "CineXplorer")
+  compactTitle?: string; // Shorter title for space-constrained UI (e.g., mobile header)
   slug: string; // URL-friendly slug (e.g., "cinexplorer")
   description: string; // Full project description (multiple paragraphs supported)
   shortDescription: string; // Brief summary for project cards (~1-2 sentences)

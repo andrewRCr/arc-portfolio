@@ -46,6 +46,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
       header={
         <DetailHeaderCompact
           title={project.title}
+          compactTitle={project.compactTitle}
           backHref={backDest.href}
           backLabel={backDest.label}
           links={project.links}
