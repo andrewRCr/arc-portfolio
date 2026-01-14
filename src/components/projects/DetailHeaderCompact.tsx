@@ -60,10 +60,11 @@ export function DetailHeaderCompact({ title, backHref, backLabel, links }: Detai
           <div className="flex items-center gap-3 min-w-0">
             <Link
               href={backHref}
+              aria-label={`Back to ${backLabel}`}
               className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">{backLabel}</span>
+              <span className="hidden sm:inline">Back</span>
             </Link>
 
             <span className="text-border">|</span>

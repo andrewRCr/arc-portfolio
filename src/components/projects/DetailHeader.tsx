@@ -81,10 +81,11 @@ export function DetailHeader({ title, categories, heroImage, backHref, backLabel
         {/* Back button - positioned top-left with solid muted style */}
         <Link
           href={backHref}
+          aria-label={`Back to ${backLabel}`}
           className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-md bg-muted/90 px-3 py-1.5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-muted"
         >
           <ArrowLeft className="h-4 w-4" />
-          <span>Back to {backLabel}</span>
+          <span>Back</span>
         </Link>
 
         {/* Bottom content area - title left, links right */}
