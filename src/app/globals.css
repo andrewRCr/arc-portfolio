@@ -850,3 +850,12 @@ html[data-env-preview="false"] [data-window-container] {
   --os-handle-bg-hover: rgb(var(--border-strong) / 0.7);
   --os-handle-bg-active: rgb(var(--muted-foreground));
 }
+
+/* Reset stacking context to allow fixed elements inside to layer properly */
+[data-overlayscrollbars-viewport] {
+  z-index: auto !important;
+}
+
+.os-scrollbar {
+  z-index: 10 !important;
+}

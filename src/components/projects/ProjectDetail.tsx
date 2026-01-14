@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * ProjectDetail component
  *
@@ -6,23 +8,32 @@
  * DetailHeader in the page's PageLayout header slot.
  */
 
+import { ChevronUp } from "lucide-react";
 import type { Project } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
+import { useHeaderCrossfade } from "@/hooks/useHeaderCrossfade";
+import { useScrollViewport } from "@/components/layout/ScrollContext";
 
 interface ProjectDetailProps {
   project: Project;
 }
 
 export default function ProjectDetail({ project }: ProjectDetailProps) {
+  const { opacity: backToTopOpacity, isExpanded: showBackToTop } = useHeaderCrossfade("in");
+  const { viewport } = useScrollViewport();
+
+  const scrollToTop = () => {
+    viewport?.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div className="space-y-8 px-2">
+    <div className="space-y-8 px-2 mt-5 relative">
       {/* Description */}
       <p className="text-lg text-foreground">{project.description}</p>
 
       {/* Screenshots Gallery */}
       {project.images.screenshots.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-xl font-bold text-foreground">Screenshots</h2>
           <ImageGallery images={project.images.screenshots} />
         </div>
       )}
@@ -111,17 +122,19 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           </ul>
         </div>
       )}
+
+      {/* Back to top button - fades in when scrolled (synced with compact header) */}
+      <button
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        style={{
+          opacity: backToTopOpacity,
+          pointerEvents: showBackToTop ? "auto" : "none",
+        }}
+        className="fixed bottom-10 right-10 z-50 rounded-full bg-muted p-3 text-foreground shadow-lg transition-colors hover:bg-accent"
+      >
+        <ChevronUp className="h-6 w-6" />
+      </button>
     </div>
   );
-}
-
-/**
- * Helper to compute back destination based on navigation context.
- * Used by page components to configure DetailHeader.
- */
-export function getBackDestination(from?: string, currentTab: "software" | "mods" = "software") {
-  if (from === "home") {
-    return { href: "/", label: "Home" };
-  }
-  return { href: `/projects?tab=${currentTab}`, label: "Projects" };
 }

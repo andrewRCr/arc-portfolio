@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
-import ProjectDetail, { getBackDestination } from "@/components/projects/ProjectDetail";
+import ProjectDetail from "@/components/projects/ProjectDetail";
+import { getBackDestination } from "@/components/projects/utils";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 
