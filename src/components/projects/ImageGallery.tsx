@@ -3,11 +3,13 @@
 /**
  * ImageGallery Component
  *
- * Displays a grid of clickable thumbnail images that open in a lightbox.
+ * Displays a single row of clickable thumbnail images that open in a lightbox.
+ * Shows max 3 thumbnails with "+X more" overlay when additional images exist.
  * Uses yet-another-react-lightbox for the modal with project theme integration.
  *
  * Features:
- * - Responsive thumbnail grid (2 cols mobile, 3 cols desktop)
+ * - Single row of up to 3 thumbnails
+ * - "+X more" overlay on 3rd thumbnail when >3 images
  * - 16:9 aspect ratio thumbnails
  * - Full-viewport lightbox with navigation
  * - Image counter ("2 of 6")
@@ -38,33 +40,50 @@ export function ImageGallery({ images }: ImageGalleryProps) {
     return null;
   }
 
-  // Convert our Screenshot format to YAML's slide format
+  // Convert our Screenshot format to YAML's slide format (all images for lightbox)
   const slides = images.map((img) => ({
     src: img.src,
     alt: img.alt,
   }));
 
+  // Show max 3 thumbnails, with "+X more" overlay on the 3rd when there are additional images
+  const maxVisible = 3;
+  const visibleImages = images.slice(0, maxVisible);
+  const remainingCount = images.length - maxVisible;
+  const hasMore = remainingCount > 0;
+
   return (
     <>
-      {/* Thumbnail Grid */}
-      <div data-testid="image-gallery" className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-        {images.map((image, index) => (
-          <button
-            key={image.src}
-            type="button"
-            onClick={() => setLightboxIndex(index)}
-            aria-label={`View image: ${image.alt}`}
-            className="group relative aspect-video overflow-hidden rounded-md bg-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all hover:ring-2 hover:ring-accent/50"
-          >
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              sizes="(max-width: 640px) 50vw, 33vw"
-              className="object-cover transition-transform group-hover:scale-105"
-            />
-          </button>
-        ))}
+      {/* Thumbnail Grid - single row, max 3 visible */}
+      <div data-testid="image-gallery" className="grid grid-cols-3 gap-3 sm:gap-4">
+        {visibleImages.map((image, index) => {
+          const isLastVisible = index === maxVisible - 1;
+          const showOverlay = isLastVisible && hasMore;
+
+          return (
+            <button
+              key={image.src}
+              type="button"
+              onClick={() => setLightboxIndex(index)}
+              aria-label={showOverlay ? `View all ${images.length} images` : `View image: ${image.alt}`}
+              className="group relative aspect-video overflow-hidden rounded-md bg-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all hover:ring-2 hover:ring-accent/50"
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                sizes="33vw"
+                className="object-cover transition-transform group-hover:scale-105"
+              />
+              {/* "+X more" overlay on last thumbnail */}
+              {showOverlay && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                  <span className="text-lg font-semibold text-white">+{remainingCount} more</span>
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* Lightbox Modal */}
@@ -85,9 +104,9 @@ export function ImageGallery({ images }: ImageGalleryProps) {
         }}
         styles={{
           root: {
-            "--yarl__color_backdrop": "hsl(var(--card) / 0.95)",
-            "--yarl__color_button": "hsl(var(--muted-foreground))",
-            "--yarl__color_button_active": "hsl(var(--accent))",
+            "--yarl__color_backdrop": "rgb(var(--card) / 0.9)",
+            "--yarl__color_button": "rgb(var(--muted-foreground))",
+            "--yarl__color_button_active": "rgb(var(--accent))",
           },
         }}
         carousel={{
