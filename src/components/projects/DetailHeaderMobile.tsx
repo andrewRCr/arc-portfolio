@@ -13,6 +13,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
+import { TouchTarget } from "@/components/ui/TouchTarget";
 import { buildLinkItems } from "./utils/buildLinkItems";
 import type { DetailHeaderProps } from "./DetailHeader";
 
@@ -82,22 +83,23 @@ export function DetailHeaderMobile({
             )}
           </div>
 
-          {/* External links section */}
+          {/* External links section - ghost buttons with TouchTarget for WCAG compliance */}
           {hasLinks && (
             <div
               data-testid="header-links"
-              className="flex flex-wrap justify-end gap-2 shrink-0 px-4 py-2 bg-background/80 rounded-b-lg"
+              className="flex flex-wrap justify-end shrink-0 px-4 bg-background/80 rounded-b-lg"
             >
-              {linkItems.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/80"
-                >
-                  {link.label} →
-                </a>
+              {linkItems.map((link, index) => (
+                <TouchTarget key={link.label} align={index === linkItems.length - 1 ? "end" : "center"}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
+                  >
+                    {link.label} →
+                  </a>
+                </TouchTarget>
               ))}
             </div>
           )}

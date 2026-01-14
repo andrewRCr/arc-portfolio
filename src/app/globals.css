@@ -891,6 +891,15 @@ html[data-env-preview="false"] [data-window-container] {
    ========================================================================== */
 
 [data-page="project-detail"] .os-scrollbar-vertical {
-  padding-top: 275px;
-  padding-bottom: 80px;
+  /* Mobile: shorter hero (narrow screen / 3.5 aspect) + metadata sections */
+  padding-top: 230px;
+  padding-bottom: 56px;
+}
+
+@media (min-width: 768px) {
+  [data-page="project-detail"] .os-scrollbar-vertical {
+    /* Desktop: wider hero with overlay layout */
+    padding-top: 275px;
+    padding-bottom: 80px;
+  }
 }
