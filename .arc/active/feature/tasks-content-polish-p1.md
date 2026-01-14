@@ -209,17 +209,25 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - ImageGallery: added Zoom plugin for mobile pinch-to-zoom
         - Adjusted spacing throughout (section margins, description gaps)
 
-    - [ ] **2.2.f Mobile layout for full DetailHeader**
-        - Current wide aspect ratio doesn't work on narrow screens (title cut off, elements jumbled)
-        - Implement card-style layout on mobile: hero image top, metadata section below
-        - Keep same hero aspect ratio (no separate mobile images needed)
-        - Back button, title, badges, links in bottom section with room to breathe
-        - Use inline responsive classes (not ResponsiveSwitch)
+    - [x] **2.2.f Mobile layout for full DetailHeader**
+        - **Problem solved:** iOS Safari scroll jank from header height animations during momentum scroll
+        - **Solution:** Redesigned mobile AND desktop to avoid height changes entirely
+        - **New architecture (both viewports):**
+            - `DetailHeaderCompact`: Always visible on mobile (no animation), crossfade on desktop
+            - `DetailHeader`: Hero image with minimal overlay (back + title), footer section below
+            - Footer: category badges (left) + icon-only links (right) with ghost button styling
+        - **New components:**
+            - `DetailHeaderHeroBanner`: Mobile body content (hero + badges + icon links)
+            - `buildIconLinkItems()`: Icon link builder (GitHub, Globe, Download, NexusMods icons)
+        - **Removed:** `DetailHeaderMobile.tsx` (replaced by HeroBanner)
+        - **Added:** `compactTitle` field for long titles (e.g., "NewGame+ Customizer")
+        - **Styling:** Consistent icon links, TouchTarget WCAG compliance, conditional padding
 
     - [ ] **2.2.g Update tests for layout changes**
-        - Update DetailHeader tests for mobile responsive structure
-        - Update ProjectDetail tests as needed
-        - Run full test suite to verify
+        - Run coverage check for new components (DetailHeaderHeroBanner, buildIconLinkItems)
+        - Add tests for new components as needed
+        - Update existing DetailHeader tests if any fail due to structure changes
+        - Run full test suite to verify all pass
 
 - [ ] **2.3 Light copy editing for software projects**
 
