@@ -191,11 +191,11 @@ section, Project Detail pages with proper headers and image galleries, Games tab
             - Desktop: 64px correct; mobile: 48px (difference negligible for transition zone)
             - Deferred token derivation pending phone hardware testing
 
-    - [ ] **2.2.c Simplify `ImageGallery` display**
-        - Limit to single row (max 3 thumbnails visible)
-        - Add "+X more" overlay on 3rd thumbnail when >3 images exist
-        - Click opens lightbox at appropriate index
-        - Remove "Screenshots" section header from ProjectDetail
+    - [x] **2.2.c Simplify `ImageGallery` display**
+        - Single row grid (`grid-cols-3`), max 3 thumbnails visible
+        - "+X more" overlay on 3rd thumbnail when >3 images (dark overlay with count)
+        - Lightbox opens at clicked index with full image set for navigation
+        - Screenshots header removal done in earlier session
 
     - [ ] **2.2.d Reorder `ProjectDetail` content sections**
         - New order: Tech stack → Description → Screenshots → Key Features → rest
