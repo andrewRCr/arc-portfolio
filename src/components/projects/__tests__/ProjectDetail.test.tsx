@@ -125,8 +125,11 @@ describe("ProjectDetail - Behavior Tests", () => {
   describe("Accessibility", () => {
     it("has semantic headings for content sections", () => {
       render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByRole("heading", { name: "Tech Stack" })).toBeInTheDocument();
+      // Note: Tech Stack has no heading - badges are self-explanatory
       expect(screen.getByRole("heading", { name: "Key Features" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Project Details" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Highlights" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Architecture" })).toBeInTheDocument();
     });
 
     // Note: External link accessibility tests moved to DetailHeader.test.tsx

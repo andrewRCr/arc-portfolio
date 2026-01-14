@@ -114,18 +114,20 @@ describe("Routing Integration Tests", () => {
       expect(backLink).toHaveAttribute("href", "/projects?tab=mods");
     });
 
-    it("displays correct label for Home destination", () => {
+    it("has correct accessible label for Home destination", () => {
       render(<DetailHeader title="Test Project" backHref="/" backLabel="Home" />);
 
-      expect(screen.getByText(/back to home/i)).toBeInTheDocument();
-      expect(screen.queryByText(/back to projects/i)).not.toBeInTheDocument();
+      // Visible text is just "Back", aria-label provides full context
+      const backLink = screen.getByRole("link", { name: /back to home/i });
+      expect(backLink).toHaveAttribute("aria-label", "Back to Home");
     });
 
-    it("displays correct label for Projects destination", () => {
+    it("has correct accessible label for Projects destination", () => {
       render(<DetailHeader title="Test Project" backHref="/projects?tab=software" backLabel="Projects" />);
 
-      expect(screen.getByText(/back to projects/i)).toBeInTheDocument();
-      expect(screen.queryByText(/back to home/i)).not.toBeInTheDocument();
+      // Visible text is just "Back", aria-label provides full context
+      const backLink = screen.getByRole("link", { name: /back to projects/i });
+      expect(backLink).toHaveAttribute("aria-label", "Back to Projects");
     });
   });
 });
