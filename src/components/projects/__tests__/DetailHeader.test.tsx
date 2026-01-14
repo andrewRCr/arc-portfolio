@@ -3,6 +3,10 @@
  *
  * Tests title rendering, category badges, back button, hero image,
  * and accessibility. Focuses on behavior/contracts, not styling.
+ *
+ * Note: DetailHeader uses ResponsiveSwitch to render both mobile and desktop
+ * versions in the DOM (CSS controls visibility). Tests use getAllBy* queries
+ * to handle multiple matching elements.
  */
 
 import { render, screen } from "@testing-library/react";
@@ -21,13 +25,16 @@ describe("DetailHeader - Behavior Tests", () => {
     it("renders title as heading element", () => {
       render(<DetailHeader {...defaultProps} />);
 
-      expect(screen.getByRole("heading", { name: "Test Project" })).toBeInTheDocument();
+      // Both mobile and desktop versions render h1
+      const headings = screen.getAllByRole("heading", { name: "Test Project" });
+      expect(headings.length).toBeGreaterThan(0);
     });
 
     it("renders title as h1 for proper document structure", () => {
       render(<DetailHeader {...defaultProps} />);
 
-      expect(screen.getByRole("heading", { level: 1, name: "Test Project" })).toBeInTheDocument();
+      const headings = screen.getAllByRole("heading", { level: 1, name: "Test Project" });
+      expect(headings.length).toBeGreaterThan(0);
     });
   });
 
@@ -35,27 +42,28 @@ describe("DetailHeader - Behavior Tests", () => {
     it("renders all category badges when provided", () => {
       render(<DetailHeader {...defaultProps} categories={["Web App", "Desktop App"]} />);
 
-      expect(screen.getByText("Web App")).toBeInTheDocument();
-      expect(screen.getByText("Desktop App")).toBeInTheDocument();
+      // Both versions render badges
+      expect(screen.getAllByText("Web App").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("Desktop App").length).toBeGreaterThan(0);
     });
 
     it("renders single category badge", () => {
       render(<DetailHeader {...defaultProps} categories={["Game"]} />);
 
-      expect(screen.getByText("Game")).toBeInTheDocument();
+      expect(screen.getAllByText("Game").length).toBeGreaterThan(0);
     });
 
     it("does not render category section when categories is empty array", () => {
       render(<DetailHeader {...defaultProps} categories={[]} />);
 
-      // Should not have any badge elements
-      expect(screen.queryByTestId("category-badges")).not.toBeInTheDocument();
+      // Neither version should have badge elements
+      expect(screen.queryAllByTestId("category-badges")).toHaveLength(0);
     });
 
     it("does not render category section when categories is undefined", () => {
       render(<DetailHeader {...defaultProps} />);
 
-      expect(screen.queryByTestId("category-badges")).not.toBeInTheDocument();
+      expect(screen.queryAllByTestId("category-badges")).toHaveLength(0);
     });
   });
 
@@ -63,21 +71,28 @@ describe("DetailHeader - Behavior Tests", () => {
     it("renders back button with correct href", () => {
       render(<DetailHeader {...defaultProps} backHref="/projects?tab=software" />);
 
-      const backLink = screen.getByRole("link", { name: /back to projects/i });
-      expect(backLink).toHaveAttribute("href", "/projects?tab=software");
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/projects?tab=software");
+      });
     });
 
     it("renders back button with custom label", () => {
       render(<DetailHeader {...defaultProps} backLabel="Home" />);
 
-      expect(screen.getByRole("link", { name: /back to home/i })).toBeInTheDocument();
+      const backLinks = screen.getAllByRole("link", { name: /back to home/i });
+      expect(backLinks.length).toBeGreaterThan(0);
     });
 
     it("back button is keyboard accessible", () => {
       render(<DetailHeader {...defaultProps} />);
 
-      const backLink = screen.getByRole("link", { name: /back to projects/i });
-      expect(backLink).toBeVisible();
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toBeVisible();
+      });
     });
   });
 
@@ -85,27 +100,30 @@ describe("DetailHeader - Behavior Tests", () => {
     it("renders hero image when provided", () => {
       render(<DetailHeader {...defaultProps} heroImage="/images/project-hero.webp" />);
 
-      const heroImg = screen.getByTestId("hero-image");
-      expect(heroImg).toBeInTheDocument();
+      const heroImages = screen.getAllByTestId("hero-image");
+      expect(heroImages.length).toBeGreaterThan(0);
     });
 
     it("hero image is decorative (not announced by screen readers)", () => {
       render(<DetailHeader {...defaultProps} heroImage="/images/project-hero.webp" />);
 
-      const heroImg = screen.getByTestId("hero-image");
-      // Decorative images should have empty alt or aria-hidden
-      const hasEmptyAlt = heroImg.getAttribute("alt") === "";
-      const isAriaHidden = heroImg.getAttribute("aria-hidden") === "true";
-      expect(hasEmptyAlt || isAriaHidden).toBe(true);
+      const heroImages = screen.getAllByTestId("hero-image");
+      heroImages.forEach((heroImg) => {
+        // Decorative images should have empty alt or aria-hidden
+        const hasEmptyAlt = heroImg.getAttribute("alt") === "";
+        const isAriaHidden = heroImg.getAttribute("aria-hidden") === "true";
+        expect(hasEmptyAlt || isAriaHidden).toBe(true);
+      });
     });
 
     it("renders fallback background when no hero image provided", () => {
       render(<DetailHeader {...defaultProps} />);
 
-      // Should not have hero image element
-      expect(screen.queryByTestId("hero-image")).not.toBeInTheDocument();
-      // Container should still render (fallback styling handled by CSS)
-      expect(screen.getByTestId("detail-header")).toBeInTheDocument();
+      // Should not have hero image element in either version
+      expect(screen.queryAllByTestId("hero-image")).toHaveLength(0);
+      // Containers should still render (fallback styling handled by CSS)
+      const headers = screen.getAllByTestId("detail-header");
+      expect(headers.length).toBeGreaterThan(0);
     });
   });
 
@@ -125,9 +143,12 @@ describe("DetailHeader - Behavior Tests", () => {
     it("maintains heading hierarchy", () => {
       render(<DetailHeader {...defaultProps} />);
 
-      // Title should be the primary heading
-      const heading = screen.getByRole("heading", { level: 1 });
-      expect(heading).toHaveTextContent("Test Project");
+      // Title should be the primary heading (both mobile and desktop versions have h1)
+      const headings = screen.getAllByRole("heading", { level: 1, name: "Test Project" });
+      expect(headings.length).toBeGreaterThan(0);
+      headings.forEach((heading) => {
+        expect(heading).toHaveTextContent("Test Project");
+      });
     });
   });
 });

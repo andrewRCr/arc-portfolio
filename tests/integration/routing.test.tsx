@@ -92,42 +92,60 @@ describe("Routing Integration Tests", () => {
     });
   });
 
+  // Note: DetailHeader uses ResponsiveSwitch to render both mobile and desktop
+  // versions in the DOM (CSS controls visibility). Tests use getAllByRole to
+  // handle multiple matching elements.
   describe("DetailHeader Back Button", () => {
     it("renders back link to Home when backLabel is Home", () => {
       render(<DetailHeader title="Test Project" backHref="/" backLabel="Home" />);
 
-      const backLink = screen.getByRole("link", { name: /back to home/i });
-      expect(backLink).toHaveAttribute("href", "/");
+      const backLinks = screen.getAllByRole("link", { name: /back to home/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/");
+      });
     });
 
     it("renders back link to Projects with tab state", () => {
       render(<DetailHeader title="Test Project" backHref="/projects?tab=software" backLabel="Projects" />);
 
-      const backLink = screen.getByRole("link", { name: /back to projects/i });
-      expect(backLink).toHaveAttribute("href", "/projects?tab=software");
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/projects?tab=software");
+      });
     });
 
     it("renders back link to Projects with mods tab", () => {
       render(<DetailHeader title="Test Project" backHref="/projects?tab=mods" backLabel="Projects" />);
 
-      const backLink = screen.getByRole("link", { name: /back to projects/i });
-      expect(backLink).toHaveAttribute("href", "/projects?tab=mods");
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/projects?tab=mods");
+      });
     });
 
     it("has correct accessible label for Home destination", () => {
       render(<DetailHeader title="Test Project" backHref="/" backLabel="Home" />);
 
       // Visible text is just "Back", aria-label provides full context
-      const backLink = screen.getByRole("link", { name: /back to home/i });
-      expect(backLink).toHaveAttribute("aria-label", "Back to Home");
+      const backLinks = screen.getAllByRole("link", { name: /back to home/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("aria-label", "Back to Home");
+      });
     });
 
     it("has correct accessible label for Projects destination", () => {
       render(<DetailHeader title="Test Project" backHref="/projects?tab=software" backLabel="Projects" />);
 
       // Visible text is just "Back", aria-label provides full context
-      const backLink = screen.getByRole("link", { name: /back to projects/i });
-      expect(backLink).toHaveAttribute("aria-label", "Back to Projects");
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("aria-label", "Back to Projects");
+      });
     });
   });
 });
