@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Minimize2 } from "lucide-react";
+import { Minimize2, Maximize2 } from "lucide-react";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
 import { WindowContainer } from "./WindowContainer";
@@ -43,10 +44,11 @@ export interface LayoutWrapperProps {
  * ```
  */
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
-  const { windowGap, windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
+  const { windowGap, windowContainerMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const { wallpaperSrc, wallpaperSrcHiRes } = useWallpaperContext();
   const { layoutMode, setLayoutMode, isDrawerOpen } = useLayoutPreferences();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
+  const isMobile = useIsMobile();
 
   // Fullscreen mode: no bars, no gaps, content fills viewport
   const isFullscreen = layoutMode === "full";
@@ -55,11 +57,13 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   // In other modes, respect user interaction state
   const effectiveActiveWindow = isFullscreen ? "main" : activeWindow;
 
-  // Show exit button only in fullscreen when drawer is closed
-  const showExitButton = isFullscreen && !isDrawerOpen;
+  // Layout toggle button visibility:
+  // - Mobile: always visible (toggle between full and boxed), hidden when drawer is open
+  // - Desktop: only visible in fullscreen mode (exit button)
+  const showLayoutToggle = isMobile ? !isDrawerOpen : isFullscreen && !isDrawerOpen;
 
-  const exitFullscreen = () => {
-    setLayoutMode("boxed"); // Return to default mobile layout
+  const toggleLayoutMode = () => {
+    setLayoutMode(isFullscreen ? "boxed" : "full");
   };
 
   // Apply max-width only in "boxed" mode (wide and full modes have no max-width constraint)
@@ -107,15 +111,19 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         />
       </div>
 
-      {/* Exit fullscreen button - visible in fullscreen mode when drawer is closed */}
-      {showExitButton && (
+      {/* Layout mode toggle button
+          - Mobile: always visible, toggles between full and boxed
+          - Desktop: only visible in fullscreen mode (exit button)
+          - Position: top-right of main content area (accounts for TopBar in boxed mode) */}
+      {showLayoutToggle && (
         <button
           type="button"
-          onClick={exitFullscreen}
-          aria-label="Exit fullscreen mode"
-          className="fixed top-4 right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-background/80 backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring"
+          onClick={toggleLayoutMode}
+          aria-label={isFullscreen ? "Exit fullscreen mode" : "Enter fullscreen mode"}
+          className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
+          style={{ top: isFullscreen ? 16 : topBarHeight + windowGap + 16 }}
         >
-          <Minimize2 className="h-5 w-5" />
+          {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
         </button>
       )}
     </>

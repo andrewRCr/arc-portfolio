@@ -18,6 +18,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade } from "@/hooks/useHeaderCrossfade";
 import { TouchTarget } from "@/components/ui/TouchTarget";
+import { buildLinkItems } from "./utils/buildLinkItems";
 import type { ProjectLinks } from "@/types/project";
 
 export interface DetailHeaderCompactProps {
@@ -33,15 +34,7 @@ export interface DetailHeaderCompactProps {
 
 export function DetailHeaderCompact({ title, backHref, backLabel, links }: DetailHeaderCompactProps) {
   const { opacity, isExpanded } = useHeaderCrossfade("in");
-
-  // Build link items from available links
-  const linkItems = [
-    links?.github && { href: links.github, label: "GitHub" },
-    links?.liveDemo && { href: links.liveDemo, label: "Demo" },
-    links?.download && { href: links.download, label: "Download" },
-    links?.external && { href: links.external, label: "NexusMods" },
-  ].filter((link): link is { href: string; label: string } => Boolean(link));
-
+  const linkItems = buildLinkItems(links, true); // compact labels
   const hasLinks = linkItems.length > 0;
 
   return (

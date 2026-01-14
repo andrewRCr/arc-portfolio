@@ -7,6 +7,8 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { useScrollShadow } from "@/hooks/useScrollShadow";
 import { ScrollShadow } from "./ScrollShadow";
 import { ScrollProvider } from "./ScrollContext";
+import { BackToTopButton } from "@/components/ui/BackToTopButton";
+import type { HeaderType } from "@/hooks/useHeaderCrossfade";
 
 /**
  * PageLayout Component
@@ -38,9 +40,20 @@ export interface PageLayoutProps {
   stickyHeader?: boolean;
   /** Page identifier for page-specific styling (sets data-page attribute) */
   pageId?: string;
+  /** Header type for back-to-top button threshold (inferred from stickyHeader if not set) */
+  headerType?: HeaderType;
 }
 
-export function PageLayout({ header, children, fullWidth = false, stickyHeader = false, pageId }: PageLayoutProps) {
+export function PageLayout({
+  header,
+  children,
+  fullWidth = false,
+  stickyHeader = false,
+  pageId,
+  headerType,
+}: PageLayoutProps) {
+  // Infer header type from stickyHeader if not explicitly set
+  const effectiveHeaderType = headerType ?? (stickyHeader ? "detail" : "page");
   const { contentMaxWidth, contentPaddingY, contentPaddingX } = DEFAULT_LAYOUT_TOKENS;
   const { ref: scrollShadowRef, showTopShadow, showBottomShadow } = useScrollShadow();
   const [element, setElement] = useState<HTMLElement | null>(null);
@@ -113,6 +126,9 @@ export function PageLayout({ header, children, fullWidth = false, stickyHeader =
           <ScrollShadow position="top" visible={showTopShadow} />
           <ScrollShadow position="bottom" visible={showBottomShadow} />
         </div>
+
+        {/* Back to top button - appears when scrolled down */}
+        <BackToTopButton headerType={effectiveHeaderType} />
       </div>
     </ScrollProvider>
   );

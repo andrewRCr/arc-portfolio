@@ -11,7 +11,6 @@
 import type { Project } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
-import { BackToTopButton } from "./BackToTopButton";
 
 interface ProjectDetailProps {
   project: Project;
@@ -101,8 +100,6 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           <BulletList items={project.architectureNotes} />
         </DetailCard>
       )}
-
-      <BackToTopButton />
     </div>
   );
 }

@@ -17,7 +17,7 @@ export default function Home() {
   }).filter((p): p is Project => p !== undefined);
 
   return (
-    <PageLayout>
+    <PageLayout headerType="hero">
       <div className="flex-1 flex flex-col pt-1 px-2 pb-2 md:pt-7 md:px-8 md:pb-8">
         {/* Hero Section */}
         <Hero />

@@ -3,6 +3,15 @@
 import { useState, useEffect } from "react";
 import { useScrollViewport } from "@/components/layout/ScrollContext";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { BREAKPOINTS } from "@/config/breakpoints";
+
+/**
+ * Header types for scroll-based fade calculations
+ * - "detail": DetailHeader with hero image (aspect-ratio based threshold)
+ * - "page": PageHeader (fixed threshold)
+ * - "hero": Home Hero section (fixed threshold, tuned for hero height)
+ */
+export type HeaderType = "detail" | "page" | "hero";
 
 /**
  * Constants for detail header layout
@@ -15,8 +24,9 @@ export const DETAIL_HEADER_ASPECT_RATIO = 3.5;
  */
 const MOBILE_METADATA_HEIGHT = 140;
 
-/** Tailwind sm breakpoint */
-const SM_BREAKPOINT = 640;
+/** Fixed thresholds for non-detail headers */
+const PAGE_HEADER_THRESHOLD = 100;
+const HERO_THRESHOLD = 150;
 
 /**
  * Hook for coordinated crossfade between full and compact detail headers.
@@ -27,33 +37,44 @@ const SM_BREAKPOINT = 640;
  * - 'in': opacity goes 0→1 as scroll increases (for compact header)
  *
  * @param direction - 'in' to fade in on scroll, 'out' to fade out on scroll
+ * @param headerType - Type of header to calculate threshold for (default: "detail")
  * @returns opacity (0-1) and isExpanded (for grid animation threshold)
  */
-export function useHeaderCrossfade(direction: "in" | "out") {
+export function useHeaderCrossfade(direction: "in" | "out", headerType: HeaderType = "detail") {
   const { viewport } = useScrollViewport();
   const [opacity, setOpacity] = useState(direction === "out" ? 1 : 0);
   const [transitionZone, setTransitionZone] = useState(200);
 
   const { tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
-  // Calculate transition zone based on header height (aspect ratio applied to content width)
-  // On mobile, adds extra height for metadata card sections below the hero
+  // Calculate transition zone based on header type
   useEffect(() => {
     const calculateZone = () => {
-      const isMobile = window.innerWidth < SM_BREAKPOINT;
+      if (headerType === "page") {
+        setTransitionZone(PAGE_HEADER_THRESHOLD);
+        return;
+      }
+
+      if (headerType === "hero") {
+        setTransitionZone(HERO_THRESHOLD);
+        return;
+      }
+
+      // "detail" type: aspect-ratio based calculation
+      const isPhone = window.innerWidth < BREAKPOINTS.sm;
       // Horizontal padding: contentPaddingX (8px×2) + ConditionalFrame (16-24px×2)
-      const horizontalPadding = isMobile ? 48 : 64;
+      const horizontalPadding = isPhone ? 48 : 64;
       const contentWidth = Math.min(window.innerWidth - horizontalPadding, tuiFrameMaxWidth);
       const heroHeight = contentWidth / DETAIL_HEADER_ASPECT_RATIO;
       // Mobile card layout has metadata sections below hero
-      const totalHeight = isMobile ? heroHeight + MOBILE_METADATA_HEIGHT : heroHeight;
+      const totalHeight = isPhone ? heroHeight + MOBILE_METADATA_HEIGHT : heroHeight;
       setTransitionZone(totalHeight);
     };
 
     calculateZone();
     window.addEventListener("resize", calculateZone);
     return () => window.removeEventListener("resize", calculateZone);
-  }, [tuiFrameMaxWidth]);
+  }, [tuiFrameMaxWidth, headerType]);
 
   // Track scroll position and calculate opacity
   useEffect(() => {

@@ -22,6 +22,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Lightbox from "yet-another-react-lightbox";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -37,6 +38,7 @@ export interface ImageGalleryProps {
 export function ImageGallery({ images }: ImageGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  const isPhone = useIsPhone();
 
   // Find the main window container for portaling the lightbox
   // This constrains the lightbox to the TWM content window instead of full viewport
@@ -57,16 +59,17 @@ export function ImageGallery({ images }: ImageGalleryProps) {
     alt: img.alt,
   }));
 
-  // Show max 3 thumbnails, with "+X more" overlay on the 3rd when there are additional images
-  const maxVisible = 3;
+  // Show max 2 thumbnails on mobile, 3 on desktop
+  // "+X more" overlay on last visible when there are additional images
+  const maxVisible = isPhone ? 2 : 3;
   const visibleImages = images.slice(0, maxVisible);
   const remainingCount = images.length - maxVisible;
   const hasMore = remainingCount > 0;
 
   return (
     <>
-      {/* Thumbnail Grid - single row, max 3 visible */}
-      <div data-testid="image-gallery" className="grid grid-cols-3 gap-3 sm:gap-4">
+      {/* Thumbnail Grid - 2 columns on mobile, 3 on desktop */}
+      <div data-testid="image-gallery" className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
         {visibleImages.map((image, index) => {
           const isLastVisible = index === maxVisible - 1;
           const showOverlay = isLastVisible && hasMore;
@@ -83,7 +86,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
                 src={image.src}
                 alt={image.alt}
                 fill
-                sizes="33vw"
+                sizes="(min-width: 640px) 33vw, 50vw"
                 className="object-cover transition-transform group-hover:scale-105"
               />
               {/* "+X more" overlay on last thumbnail */}
