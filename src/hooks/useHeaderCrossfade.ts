@@ -10,6 +10,15 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 export const DETAIL_HEADER_ASPECT_RATIO = 3.5;
 
 /**
+ * Extra height for mobile card layout (metadata sections below hero)
+ * Includes: title section (~90px) + links section (~50px)
+ */
+const MOBILE_METADATA_HEIGHT = 140;
+
+/** Tailwind sm breakpoint */
+const SM_BREAKPOINT = 640;
+
+/**
  * Hook for coordinated crossfade between full and compact detail headers.
  *
  * Both headers use the same transition zone (based on full header height),
@@ -28,13 +37,17 @@ export function useHeaderCrossfade(direction: "in" | "out") {
   const { tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
 
   // Calculate transition zone based on header height (aspect ratio applied to content width)
+  // On mobile, adds extra height for metadata card sections below the hero
   useEffect(() => {
     const calculateZone = () => {
+      const isMobile = window.innerWidth < SM_BREAKPOINT;
       // Horizontal padding: contentPaddingX (8px×2) + ConditionalFrame (16-24px×2)
-      // Uses desktop value (64px); mobile (48px) difference is negligible for transition zone
-      const contentWidth = Math.min(window.innerWidth - 64, tuiFrameMaxWidth);
-      const headerHeight = contentWidth / DETAIL_HEADER_ASPECT_RATIO;
-      setTransitionZone(headerHeight);
+      const horizontalPadding = isMobile ? 48 : 64;
+      const contentWidth = Math.min(window.innerWidth - horizontalPadding, tuiFrameMaxWidth);
+      const heroHeight = contentWidth / DETAIL_HEADER_ASPECT_RATIO;
+      // Mobile card layout has metadata sections below hero
+      const totalHeight = isMobile ? heroHeight + MOBILE_METADATA_HEIGHT : heroHeight;
+      setTransitionZone(totalHeight);
     };
 
     calculateZone();

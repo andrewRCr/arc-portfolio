@@ -62,8 +62,8 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         ))}
       </div>
 
-      {/* Description - tighter spacing (mt-6) */}
-      <p className="mt-6 text-lg text-foreground">{project.description}</p>
+      {/* Description - tighter spacing (mt-6), smaller on mobile */}
+      <p className="mt-6 text-base sm:text-lg text-foreground">{project.description}</p>
 
       {/* Screenshots Gallery - tighter spacing from description */}
       {project.images.screenshots.length > 0 && (
