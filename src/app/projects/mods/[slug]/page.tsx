@@ -52,6 +52,7 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
   return (
     <PageLayout
       stickyHeader
+      pageId="project-detail"
       header={
         <DetailHeaderCompact title={mod.title} backHref={backDest.href} backLabel={backDest.label} links={mod.links} />
       }

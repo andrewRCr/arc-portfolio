@@ -13,15 +13,17 @@
  * - 16:9 aspect ratio thumbnails
  * - Full-viewport lightbox with navigation
  * - Image counter ("2 of 6")
+ * - Zoom support (pinch-to-zoom, double-tap on mobile; scroll/click on desktop)
  * - Keyboard navigation (arrows, escape) via library
  * - Touch support (swipe, pull-down-to-close) via library
  * - Themed to match project design system
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Lightbox from "yet-another-react-lightbox";
 import Counter from "yet-another-react-lightbox/plugins/counter";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/counter.css";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -34,6 +36,15 @@ export interface ImageGalleryProps {
 
 export function ImageGallery({ images }: ImageGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+
+  // Find the main window container for portaling the lightbox
+  // This constrains the lightbox to the TWM content window instead of full viewport
+  useEffect(() => {
+    const mainWindow = document.querySelector<HTMLElement>('[data-window-id="main"]');
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- DOM query for portal target must trigger re-render
+    setPortalRoot(mainWindow);
+  }, []);
 
   // Don't render anything if no images
   if (!images || images.length === 0) {
@@ -92,7 +103,8 @@ export function ImageGallery({ images }: ImageGalleryProps) {
         slides={slides}
         open={lightboxIndex >= 0}
         close={() => setLightboxIndex(-1)}
-        plugins={[Counter]}
+        plugins={[Counter, Zoom]}
+        portal={{ root: portalRoot }}
         controller={{
           closeOnPullDown: true,
           closeOnBackdropClick: true,

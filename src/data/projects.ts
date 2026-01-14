@@ -451,7 +451,7 @@ export const projects: Project[] = [
       "Third-person action RPG in Unreal Engine 4 with Souls-like combat, 6 enemy AI types, and posture-break mechanics.",
     category: ["Game"],
     tags: ["Unreal Engine 4", "C++", "Game Development", "Combat Systems", "Enemy AI", "Action RPG"],
-    techStack: ["Unreal Engine 4", "C++", "Blueprint", "AI Systems", "Animation Systems"],
+    techStack: ["C++", "Unreal Engine 4", "Blueprint", "AI Behavior Trees", "Animation State Machines"],
     features: [
       "Souls-like combat design emphasizing aggressive play through posture mechanics",
       "6 distinct enemy AI types with unique behaviors and combat patterns",
@@ -537,7 +537,7 @@ export const projects: Project[] = [
       "Capstone survival horror game in Unreal Engine 5 with puzzle-solving, inventory management, and zombie combat. Team project lead role.",
     category: ["Game"],
     tags: ["Unreal Engine 5", "C++", "Blueprint", "Game Development", "Team Leadership", "Capstone Project"],
-    techStack: ["Unreal Engine 5", "C++", "Blueprint", "Animation Systems", "AI Behavior Trees", "Cinematics"],
+    techStack: ["C++", "Unreal Engine 5", "Blueprint", "AI Behavior Trees", "Animation State Machines"],
     features: [
       "9 environmental puzzles with varying complexity levels",
       "Progression-updated multi-floor map system for navigation",

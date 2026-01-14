@@ -852,10 +852,45 @@ html[data-env-preview="false"] [data-window-container] {
 }
 
 /* Reset stacking context to allow fixed elements inside to layer properly */
+/* Also establish positioning context for contained lightbox */
 [data-overlayscrollbars-viewport] {
   z-index: auto !important;
+  position: relative !important;
 }
 
 .os-scrollbar {
   z-index: 10 !important;
+}
+
+/* ==========================================================================
+   YARL Lightbox - Contained Mode
+   Constrain lightbox to the main content window instead of full viewport
+   to maintain TWM aesthetic where modals stay within their origin container
+   ========================================================================== */
+
+/* Ensure main window container establishes positioning context */
+[data-window-id="main"] {
+  position: relative;
+}
+
+.yarl__root {
+  /* Override fixed positioning to stay within window container */
+  position: absolute !important;
+  /* Fill the entire window container */
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ==========================================================================
+   Project Detail Page - Scrollbar Inset
+   Adds extra padding to scrollbar track to clear header and back-to-top button
+   ========================================================================== */
+
+[data-page="project-detail"] .os-scrollbar-vertical {
+  padding-top: 275px;
+  padding-bottom: 80px;
 }

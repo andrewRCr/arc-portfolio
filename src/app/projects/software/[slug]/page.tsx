@@ -42,6 +42,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
   return (
     <PageLayout
       stickyHeader
+      pageId="project-detail"
       header={
         <DetailHeaderCompact
           title={project.title}

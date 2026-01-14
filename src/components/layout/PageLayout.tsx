@@ -36,9 +36,11 @@ export interface PageLayoutProps {
   fullWidth?: boolean;
   /** Remove top padding when content includes a sticky header (default: false) */
   stickyHeader?: boolean;
+  /** Page identifier for page-specific styling (sets data-page attribute) */
+  pageId?: string;
 }
 
-export function PageLayout({ header, children, fullWidth = false, stickyHeader = false }: PageLayoutProps) {
+export function PageLayout({ header, children, fullWidth = false, stickyHeader = false, pageId }: PageLayoutProps) {
   const { contentMaxWidth, contentPaddingY, contentPaddingX } = DEFAULT_LAYOUT_TOKENS;
   const { ref: scrollShadowRef, showTopShadow, showBottomShadow } = useScrollShadow();
   const [element, setElement] = useState<HTMLElement | null>(null);
@@ -91,7 +93,7 @@ export function PageLayout({ header, children, fullWidth = false, stickyHeader =
 
   return (
     <ScrollProvider viewport={viewport}>
-      <div className="flex flex-col flex-1 min-h-0">
+      <div className="flex flex-col flex-1 min-h-0" data-page={pageId}>
         {/* Fixed header area - doesn't scroll, centered with max-width */}
         {header && (
           <div className="shrink-0">
