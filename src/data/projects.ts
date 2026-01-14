@@ -24,28 +24,16 @@ export const projects: Project[] = [
       "Full-stack movie discovery platform with personalized recommendations, watchlists, and OAuth authentication. " +
       "Demonstrates modern type-safe architecture with Django Ninja + React TypeScript.",
     category: ["Web App"],
-    tags: [
-      "React",
-      "TypeScript",
-      "Django",
-      "Django REST Framework",
-      "PostgreSQL",
-      "Redis",
-      "Docker",
-      "Python",
-      "Pydantic",
-    ],
+    tags: ["React", "TypeScript", "Django", "PostgreSQL", "Redis", "Docker", "Python", "Pydantic"],
     techStack: [
-      "React",
       "TypeScript",
+      "React",
       "Django",
-      "Django REST Framework",
       "Django Ninja",
       "PostgreSQL",
       "Redis",
       "Docker",
       "Pydantic",
-      "Pyright",
       "Vite",
       "Chakra UI",
     ],
@@ -87,7 +75,7 @@ export const projects: Project[] = [
   // ==========================================
   {
     id: "arc-agentic-dev-framework",
-    title: "ARC Agentic Development Framework",
+    title: "ARC Agentic Tookit",
     slug: "arc-agentic-dev-framework",
     description:
       "A structured methodology for spec-driven development with AI agents, emphasizing disciplined collaboration over automation. " +
@@ -97,9 +85,9 @@ export const projects: Project[] = [
     shortDescription:
       "Documentation-only framework for AI-augmented development with structured workflows and battle-tested processes. " +
       "Emphasizes directed collaboration over autonomous automation.",
-    category: ["Framework"],
+    category: ["Dev Framework"],
     tags: ["Documentation", "Process Framework", "AI Collaboration", "Methodology", "Git"],
-    techStack: ["Markdown", "Git", "Documentation Systems", "Process Frameworks", "AI Collaboration Patterns"],
+    techStack: ["Markdown"],
     features: [
       "Template-first constitutional documents with battle-tested defaults from production usage",
       "4-step core workflow: constitution → PRD generation → task processing → guided execution",
@@ -151,7 +139,7 @@ export const projects: Project[] = [
   // ==========================================
   {
     id: "arc-portfolio",
-    title: "arc-portfolio",
+    title: "andrewRCr Portfolio",
     slug: "arc-portfolio",
     description:
       "The portfolio site you're currently viewing - a technical case study in modern Next.js development. " +
@@ -162,19 +150,8 @@ export const projects: Project[] = [
       "Modern portfolio website built with Next.js 15, showcasing type-safe architecture and systematic development practices. " +
       "The site you're currently viewing.",
     category: ["Web App"],
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Shadcn/ui", "Portfolio"],
-    techStack: [
-      "Next.js 15",
-      "React 19",
-      "TypeScript",
-      "Tailwind CSS v4",
-      "Shadcn/ui",
-      "Turbopack",
-      "Vercel",
-      "Vitest",
-      "ESLint",
-      "Prettier",
-    ],
+    tags: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Vercel", "Shadcn/ui", "Portfolio"],
+    techStack: ["TypeScript", "Next.js 15", "React 19", "Tailwind CSS v4", "Shadcn/ui"],
     features: [
       "Type-safe content architecture with TypeScript interfaces for projects, skills, education, and profile data",
       "Server Components by default with strategic Client Component usage for interactivity",
@@ -232,19 +209,7 @@ export const projects: Project[] = [
       "GTD-based task manager with native desktop and web interfaces, featuring bi-directional sync and comprehensive task organization.",
     category: ["Desktop App", "Web App"],
     tags: [".NET", "C#", "Blazor", "WPF", "SQL Server", "Entity Framework", "Productivity"],
-    techStack: [
-      ".NET 8",
-      "C#",
-      "SQL Server",
-      "Entity Framework",
-      "Blazor Web Assembly",
-      "MudBlazor",
-      "WPF",
-      "Caliburn Micro",
-      "Identity",
-      "JWT",
-      "Azure DevOps",
-    ],
+    techStack: [".NET 8", "C#", "SQL Server", "Blazor Web Assembly", "MudBlazor", "WPF", "Caliburn Micro"],
     features: [
       "Bi-directional data synchronization between web and desktop platforms",
       "GTD-inspired task organization: Inbox, Today, Projects, Contexts, Completed views",
@@ -366,6 +331,7 @@ export const projects: Project[] = [
   {
     id: "doom-newgame-plus-customizer",
     title: "NewGame+ Customizer for DOOM (2016)",
+    compactTitle: "NewGame+ Customizer",
     slug: "doom-newgame-plus-customizer",
     description:
       "Desktop application and mod generation tool for DOOM (2016) that translates player-defined gameplay preferences into custom .decl mod files. " +
@@ -376,7 +342,7 @@ export const projects: Project[] = [
       "Python desktop application generating custom DOOM (2016) mods from player-defined gameplay configurations.",
     category: ["Desktop App", "Modding Tool"],
     tags: ["Python", "Desktop Application", "Game Modding", "Data Modeling", "Tool Development"],
-    techStack: ["Python", "CustomTkinter", "Python Dataclasses", "Pillow (PIL)", "pygame", "CTkToolTip"],
+    techStack: ["Python", "CustomTkinter", "Pillow (PIL)", "pygame"],
     features: [
       "Data modeling: Python dataclasses representing game systems (inventory, weapons, equipment, upgrades)",
       "User-friendly GUI for configuring gameplay parameters without technical knowledge",
