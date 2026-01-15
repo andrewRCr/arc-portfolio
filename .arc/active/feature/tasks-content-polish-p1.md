@@ -329,25 +329,24 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
 **Purpose:** Migrate real mod content and enable Mods tab.
 
-- [ ] **4.1 Prepare mod data structure**
+- [x] **4.1 Prepare mod data structure**
 
-    - [ ] **4.1.a Select 6-9 mods to feature**
-        - Review 35 published mods on NexusMods
-        - Select highest impact/most complex ones
-        - Document selection with brief rationale
+    - [x] **4.1.a Select 6-9 mods to feature**
+        - Selected 6 mods: Lies of P Hardcore Mode + 5 others (pending migration)
+        - DOOM NG+ Customizer will appear in both Software and Mods tabs
 
-    - [ ] **4.1.b Identify Featured pool subset**
-        - From the 6-9, select smaller subset for Home Featured rotation
-        - Criteria: Visual appeal, technical interest, variety
+    - [x] **4.1.b Identify Featured pool subset**
+        - All 6 selected mods qualify for Home Featured rotation
+        - May add 3 more mods later (non-featured)
 
 - [ ] **4.2 Migrate mod content**
 
-    - [ ] **4.2.a Migrate first mod (template)**
-        - Copy description from NexusMods
-        - Download and process images (thumbnail, banner)
-        - Remove text overlays from images
-        - Add to `src/data/mods.ts`
-        - Verify renders correctly on detail page
+    - [x] **4.2.a Migrate first mod (template)**
+        - Lies of P: Hardcore Mode migrated with full content
+        - Established patterns: hero images, `game` field, `ContentItem` type, `sectionLabels`
+        - Added react-markdown for formatting support
+        - Added "More Information" section linking to NexusMods
+        - PageHeader title hidden on phone (nav provides context)
 
     - [ ] **4.2.b Migrate remaining mods**
         - Repeat process for remaining 5-8 mods
