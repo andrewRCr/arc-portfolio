@@ -48,17 +48,26 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
 
       {/* Content */}
       <div className="p-4">
-        {/* Category Badges (prominent, first) */}
+        {/* Category/Game Badge (prominent, first) */}
         <div className="mb-2 flex flex-wrap gap-1.5">
-          {project.category.map((cat) => (
+          {categoryType === "mods" && project.game ? (
             <span
-              key={cat}
               data-testid="category-badge"
               className="rounded bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground"
             >
-              {cat}
+              {project.game}
             </span>
-          ))}
+          ) : (
+            project.category.map((cat) => (
+              <span
+                key={cat}
+                data-testid="category-badge"
+                className="rounded bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground"
+              >
+                {cat}
+              </span>
+            ))
+          )}
         </div>
 
         {/* Title */}

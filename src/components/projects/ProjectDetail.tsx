@@ -12,6 +12,7 @@ import ReactMarkdown from "react-markdown";
 import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
+import { TextLink } from "@/components/ui/text-link";
 
 interface ProjectDetailProps {
   project: Project;
@@ -29,19 +30,8 @@ function InlineMarkdown({ children, className }: { children: string; className?:
         p: ({ children }) => <span className={className}>{children}</span>,
         strong: ({ children }) => <strong>{children}</strong>,
         em: ({ children }) => <em>{children}</em>,
-        code: ({ children }) => (
-          <code className="rounded bg-muted px-1 py-0.5 text-sm font-mono">{children}</code>
-        ),
-        a: ({ href, children }) => (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent underline underline-offset-2 hover:text-accent/80"
-          >
-            {children}
-          </a>
-        ),
+        code: ({ children }) => <code className="rounded bg-muted px-1 py-0.5 text-sm font-mono">{children}</code>,
+        a: ({ href, children }) => <TextLink href={href || "#"}>{children}</TextLink>,
       }}
     >
       {children}
@@ -185,15 +175,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         <DetailCard title="More Information" className="mt-8">
           <p className="text-muted-foreground">
             For compatibility details, installation instructions, and additional information, visit the{" "}
-            <a
-              href={project.links.external}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline underline-offset-2 hover:text-accent/80"
-            >
-              NexusMods page
-            </a>
-            .
+            <TextLink href={project.links.external}>NexusMods page</TextLink>.
           </p>
         </DetailCard>
       )}

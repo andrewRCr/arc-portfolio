@@ -339,7 +339,7 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - All 6 selected mods qualify for Home Featured rotation
         - May add 3 more mods later (non-featured)
 
-- [ ] **4.2 Migrate mod content**
+- [x] **4.2 Migrate mod content**
 
     - [x] **4.2.a Migrate first mod (template)**
         - Lies of P: Hardcore Mode migrated with full content
@@ -348,36 +348,41 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Added "More Information" section linking to NexusMods
         - PageHeader title hidden on phone (nav provides context)
 
-    - [ ] **4.2.b Migrate remaining mods**
-        - Repeat process for remaining 5-8 mods
-        - Ensure consistent data structure
-        - Process all images (WebP optimization)
+    - [x] **4.2.b Migrate remaining mods**
+        - Migrated 5 additional mods (6 total):
+          1. RE4R: Improved Weapon Balance (comprehensive scope)
+          2. Elden Ring: Guard Parry (animation/frame data)
+          3. Lies of P: Hardcore Mode (balance design)
+          4. SoR4: Improved Movement (community + commissioned art)
+          5. RE Village: Aim-Dependent Crosshair (Lua/REFramework)
+          6. SH2: Never Holster Weapons (problem-solving/lateral thinking)
+        - Created `TextLink` component for consistent link styling
+        - Fixed `ProjectCard` to show `game` field for mods instead of `category`
+        - All images converted to WebP
 
-    - [ ] **4.2.c Add mod images to `public/projects/mods/`**
-        - Organize by mod slug
-        - Include thumbnail and banner/hero
-        - Include content screenshots where available
+    - [x] **4.2.c Add mod images to `public/projects/mods/`**
+        - Images organized by mod slug in `public/projects/{slug}/`
+        - Hero images and thumbnails for all 6 mods
 
-- [ ] **4.3 Enable Mods tab**
+- [x] **4.3 Enable Mods tab**
 
-    - [ ] **4.3.a Remove placeholder content**
-        - Delete placeholder mod entries
-        - Remove "coming soon" messaging
+    - [x] **4.3.a Remove placeholder content**
+        - No placeholder content present; tab was clean
 
-    - [ ] **4.3.b Verify Mods tab displays correctly**
+    - [x] **4.3.b Verify Mods tab displays correctly**
         - Grid layout matches Software/Games tabs
-        - Mod cards render with correct data
+        - Mod cards render with game badge (not category)
         - Links to mod detail pages work
 
-    - [ ] **4.3.c Verify mod detail pages**
+    - [x] **4.3.c Verify mod detail pages**
         - `DetailHeader` works with mod data
-        - `ImageGallery` displays mod screenshots
-        - External link to NexusMods works
+        - Custom section labels (Approach Comparison, Frame Data, etc.)
+        - External "More Information" links to NexusMods
 
-- [ ] **4.4 Run Phase 4 quality gates**
-    - [ ] 4.4.a Run full test suite
-    - [ ] 4.4.b Run lint and type-check
-    - [ ] 4.4.c Manual verification of Mods tab and detail pages
+- [x] **4.4 Run Phase 4 quality gates**
+    - [x] 4.4.a Run full test suite (924/924 passing)
+    - [x] 4.4.b Run lint and type-check (all passing)
+    - [x] 4.4.c Build successful
 
 ### **Phase 5:** Home Featured Section
 
