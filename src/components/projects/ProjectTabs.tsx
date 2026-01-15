@@ -98,7 +98,7 @@ export default function ProjectTabs() {
           onClick={() => handleTabChange(tab)}
           onKeyDown={(e) => handleKeyDown(tab, e)}
           className={`min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-mono text-sm font-semibold transition-colors ${
-            activeTab === tab ? "border-b-2 border-secondary text-secondary" : "text-muted-foreground hover:text-foreground"
+            activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           {TAB_LABELS[tab]}
