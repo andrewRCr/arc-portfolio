@@ -25,15 +25,7 @@ export const projects: Project[] = [
       "Demonstrates modern type-safe architecture with Django Ninja + React TypeScript.",
     category: ["Web App"],
     tags: ["React", "TypeScript", "Django", "PostgreSQL", "Docker", "Python"],
-    techStack: [
-      "TypeScript",
-      "React",
-      "Django",
-      "Django Ninja",
-      "PostgreSQL",
-      "Docker",
-      "Chakra UI",
-    ],
+    techStack: ["TypeScript", "React", "Django", "Django Ninja", "PostgreSQL", "Docker", "Chakra UI"],
     features: [
       "Type-safe API layer with Pydantic schemas and auto-generated TypeScript types",
       "JWT authentication with OAuth 2.0 social login (Google, GitHub via django-allauth)",

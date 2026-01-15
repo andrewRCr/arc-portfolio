@@ -144,6 +144,12 @@ describe("ProjectCard - Behavior Tests", () => {
       expect(link).toHaveAttribute("href", "/projects/mods/test-project");
     });
 
+    it("links to correct games project detail page when categoryType is games", () => {
+      render(<ProjectCard project={mockProjectSingleCategory} categoryType="games" />);
+      const link = screen.getByRole("link", { name: /single category project/i });
+      expect(link).toHaveAttribute("href", "/projects/games/single-category");
+    });
+
     it("does not open in new tab (internal navigation)", () => {
       render(<ProjectCard project={mockProject} />);
       const link = screen.getByRole("link", { name: /test project/i });

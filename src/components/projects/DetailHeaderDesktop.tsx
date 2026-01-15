@@ -16,14 +16,7 @@ import { buildIconLinkItems } from "./utils/buildLinkItems";
 import { TouchTarget } from "@/components/ui/TouchTarget";
 import type { DetailHeaderProps } from "./DetailHeader";
 
-export function DetailHeaderDesktop({
-  title,
-  categories,
-  heroImage,
-  backHref,
-  backLabel,
-  links,
-}: DetailHeaderProps) {
+export function DetailHeaderDesktop({ title, categories, heroImage, backHref, backLabel, links }: DetailHeaderProps) {
   const hasCategories = categories && categories.length > 0;
   const { opacity } = useHeaderCrossfade("out");
   const iconLinks = buildIconLinkItems(links);
@@ -35,10 +28,7 @@ export function DetailHeaderDesktop({
   return (
     <div data-testid="detail-header" style={{ opacity }}>
       {/* Hero image with overlaid back button and title */}
-      <div
-        className={`relative overflow-hidden ${hasFooter ? "rounded-t-lg" : "rounded-lg"}`}
-        style={aspectRatioStyle}
-      >
+      <div className={`relative overflow-hidden ${hasFooter ? "rounded-t-lg" : "rounded-lg"}`} style={aspectRatioStyle}>
         {/* Hero image or fallback background */}
         {heroImage ? (
           <>

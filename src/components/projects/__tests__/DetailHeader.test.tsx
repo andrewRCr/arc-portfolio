@@ -147,12 +147,7 @@ describe("DetailHeader - Behavior Tests", () => {
     });
 
     it("icon links open in new tab with security attributes", () => {
-      render(
-        <DetailHeader
-          {...defaultProps}
-          links={{ github: "https://github.com/test" }}
-        />
-      );
+      render(<DetailHeader {...defaultProps} links={{ github: "https://github.com/test" }} />);
 
       const githubLinks = screen.getAllByRole("link", { name: "View on GitHub" });
       githubLinks.forEach((link) => {
@@ -162,12 +157,7 @@ describe("DetailHeader - Behavior Tests", () => {
     });
 
     it("renders links without categories (spacer case)", () => {
-      render(
-        <DetailHeader
-          {...defaultProps}
-          links={{ github: "https://github.com/test" }}
-        />
-      );
+      render(<DetailHeader {...defaultProps} links={{ github: "https://github.com/test" }} />);
 
       // Links should render even without categories
       const githubLinks = screen.getAllByRole("link", { name: "View on GitHub" });

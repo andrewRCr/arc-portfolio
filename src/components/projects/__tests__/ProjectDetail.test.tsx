@@ -152,6 +152,11 @@ describe("getBackDestination helper", () => {
     expect(result).toEqual({ href: "/projects?tab=mods", label: "Projects" });
   });
 
+  it("returns projects with games tab when specified", () => {
+    const result = getBackDestination(undefined, "games");
+    expect(result).toEqual({ href: "/projects?tab=games", label: "Projects" });
+  });
+
   it("defaults to software tab when currentTab not provided", () => {
     const result = getBackDestination();
     expect(result).toEqual({ href: "/projects?tab=software", label: "Projects" });

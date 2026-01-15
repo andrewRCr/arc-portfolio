@@ -11,7 +11,7 @@ import type { Project } from "@/types/project";
 
 interface ProjectCardProps {
   project: Project;
-  categoryType?: "software" | "mods";
+  categoryType?: "software" | "games" | "mods";
 }
 
 export default function ProjectCard({ project, categoryType = "software" }: ProjectCardProps) {

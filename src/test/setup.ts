@@ -14,6 +14,13 @@ vi.mock("overlayscrollbars/styles/overlayscrollbars.css", () => ({}));
 vi.mock("yet-another-react-lightbox/styles.css", () => ({}));
 vi.mock("yet-another-react-lightbox/plugins/counter.css", () => ({}));
 
+// Mock ResizeObserver (not available in jsdom)
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
 // Extend Vitest with accessibility matchers
 expect.extend(matchers);
 

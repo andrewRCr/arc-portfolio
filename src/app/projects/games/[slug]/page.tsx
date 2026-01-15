@@ -4,10 +4,9 @@ import { DetailHeader } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { getBackDestination } from "@/components/projects/utils";
-import { mods } from "@/data/mods";
-import { FEATURES } from "@/config/features";
+import { projects } from "@/data/projects";
 
-interface ModPageProps {
+interface GamePageProps {
   params: Promise<{
     slug: string;
   }>;
@@ -17,40 +16,42 @@ interface ModPageProps {
   }>;
 }
 
+/**
+ * Check if a project is categorized as a game
+ */
+function isGameProject(project: { category: string[] }): boolean {
+  return project.category.includes("Game");
+}
+
+// Games route only serves game projects
+const gameProjects = projects.filter((p) => isGameProject(p));
+
 export async function generateStaticParams() {
-  // Don't generate static pages when project tabs are disabled
-  if (!FEATURES.SHOW_PROJECT_TABS) {
-    return [];
-  }
-  return mods.map((mod) => ({
-    slug: mod.slug,
+  return gameProjects.map((project) => ({
+    slug: project.slug,
   }));
 }
 
-export default async function ModProjectPage({ params, searchParams }: ModPageProps) {
-  // Feature flag guard - enforces same access control as UI tab visibility
-  if (!FEATURES.SHOW_PROJECT_TABS) {
-    notFound();
-  }
-
+export default async function GameProjectPage({ params, searchParams }: GamePageProps) {
   const { slug } = await params;
   const { tab, from } = await searchParams;
 
-  const mod = mods.find((m) => m.slug === slug);
+  // Only find in game projects
+  const project = gameProjects.find((p) => p.slug === slug);
 
-  if (!mod) {
+  if (!project) {
     notFound();
   }
 
-  // Preserve tab state from query param, default to 'mods' for mod pages
+  // Preserve tab state from query param, default to 'games' for game pages
   const validTabs = ["software", "games", "mods"] as const;
   const currentTab = validTabs.includes(tab as (typeof validTabs)[number])
     ? (tab as (typeof validTabs)[number])
-    : "mods";
+    : "games";
   const backDest = getBackDestination(from, currentTab);
 
   // Use thumbnail as hero, fallback to first screenshot if available
-  const heroImage = mod.images.thumbnail || mod.images.screenshots[0]?.src;
+  const heroImage = project.images.thumbnail || project.images.screenshots[0]?.src;
 
   return (
     <PageLayout
@@ -58,23 +59,23 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
       pageId="project-detail"
       header={
         <DetailHeaderCompact
-          title={mod.title}
-          compactTitle={mod.compactTitle}
+          title={project.title}
+          compactTitle={project.compactTitle}
           backHref={backDest.href}
           backLabel={backDest.label}
-          links={mod.links}
+          links={project.links}
         />
       }
     >
       <DetailHeader
-        title={mod.title}
-        categories={mod.category}
+        title={project.title}
+        categories={project.category}
         heroImage={heroImage}
         backHref={backDest.href}
         backLabel={backDest.label}
-        links={mod.links}
+        links={project.links}
       />
-      <ProjectDetail project={mod} />
+      <ProjectDetail project={project} />
     </PageLayout>
   );
 }

@@ -115,12 +115,7 @@ describe("DetailHeaderCompact - Behavior Tests", () => {
     });
 
     it("icon links open in new tab", () => {
-      render(
-        <DetailHeaderCompact
-          {...defaultProps}
-          links={{ github: "https://github.com/test" }}
-        />
-      );
+      render(<DetailHeaderCompact {...defaultProps} links={{ github: "https://github.com/test" }} />);
 
       const githubLink = screen.getByRole("link", { name: "View on GitHub" });
       expect(githubLink).toHaveAttribute("target", "_blank");

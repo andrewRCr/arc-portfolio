@@ -10,51 +10,65 @@ import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 
+/**
+ * Check if a project is categorized as a game
+ */
+function isGameProject(project: { category: string[] }): boolean {
+  return project.category.includes("Game");
+}
+
 function ProjectsContent() {
   const searchParams = useSearchParams();
-  const currentTab = FEATURES.SHOW_MODS_TAB ? searchParams.get("tab") || "software" : "software";
+  const currentTab = FEATURES.SHOW_PROJECT_TABS ? searchParams.get("tab") || "software" : "software";
 
-  // Sort projects and mods by order field
-  const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
-  const sortedMods = FEATURES.SHOW_MODS_TAB ? [...mods].sort((a, b) => a.order - b.order) : [];
+  // Filter and sort projects
+  const allProjects = [...projects].sort((a, b) => a.order - b.order);
+  const softwareProjects = allProjects.filter((p) => !isGameProject(p));
+  const gameProjects = allProjects.filter((p) => isGameProject(p));
+  const sortedMods = FEATURES.SHOW_PROJECT_TABS ? [...mods].sort((a, b) => a.order - b.order) : [];
 
   return (
     <PageLayout
       header={
-        <PageHeader
-          title="Projects"
-          subtitle={
-            FEATURES.SHOW_MODS_TAB
-              ? "Explore my software development work and community contributions."
-              : "Explore my software development work."
-          }
-        >
-          {/* Tab Navigation - only shown when mods tab is enabled */}
-          {FEATURES.SHOW_MODS_TAB && <ProjectTabs />}
+        <PageHeader title="Projects" hideDivider={FEATURES.SHOW_PROJECT_TABS}>
+          {/* Tab Navigation - only shown when tabs are enabled */}
+          {FEATURES.SHOW_PROJECT_TABS && <ProjectTabs />}
         </PageHeader>
       }
     >
       <div className="px-4">
-        {/* Projects content - tab panel attributes only when tabs enabled */}
+        {/* Software Tab Panel */}
         {currentTab === "software" && (
           <div
-            id={FEATURES.SHOW_MODS_TAB ? "panel-software" : undefined}
-            role={FEATURES.SHOW_MODS_TAB ? "tabpanel" : undefined}
-            aria-labelledby={FEATURES.SHOW_MODS_TAB ? "tab-software" : undefined}
-            tabIndex={FEATURES.SHOW_MODS_TAB ? 0 : undefined}
+            id={FEATURES.SHOW_PROJECT_TABS ? "panel-software" : undefined}
+            role={FEATURES.SHOW_PROJECT_TABS ? "tabpanel" : undefined}
+            aria-labelledby={FEATURES.SHOW_PROJECT_TABS ? "tab-software" : undefined}
+            tabIndex={FEATURES.SHOW_PROJECT_TABS ? 0 : undefined}
             className="space-y-6"
           >
             {/* Software Projects Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {sortedProjects.map((project) => (
+              {softwareProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} categoryType="software" />
               ))}
             </div>
           </div>
         )}
 
-        {/* Mods panel - only rendered when tabs enabled */}
-        {FEATURES.SHOW_MODS_TAB && currentTab === "mods" && (
+        {/* Games Tab Panel - only rendered when tabs enabled */}
+        {FEATURES.SHOW_PROJECT_TABS && currentTab === "games" && (
+          <div id="panel-games" role="tabpanel" aria-labelledby="tab-games" tabIndex={0} className="space-y-6">
+            {/* Games Projects Grid */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {gameProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} categoryType="games" />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Mods Tab Panel - only rendered when tabs enabled */}
+        {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
           <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6">
             {/* Mods Tab Intro */}
             <div className="space-y-3">
@@ -71,7 +85,7 @@ function ProjectsContent() {
               </p>
             </div>
 
-            {/* Placeholder Mods Grid */}
+            {/* Mods Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {sortedMods.map((mod) => (
                 <ProjectCard key={mod.id} project={mod} categoryType="mods" />

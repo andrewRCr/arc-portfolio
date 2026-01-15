@@ -6,9 +6,9 @@
  */
 export const FEATURES = {
   /**
-   * Show the Mods tab on the /projects page.
+   * Show the project category tabs (Software, Games, Mods) on the /projects page.
    * When false, only software projects are displayed (no tab UI).
-   * Mod routes and data remain intact for future re-enablement.
+   * Tab routes and data remain intact for future re-enablement.
    */
-  SHOW_MODS_TAB: false,
+  SHOW_PROJECT_TABS: true,
 } as const;

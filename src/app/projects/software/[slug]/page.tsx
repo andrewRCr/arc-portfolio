@@ -16,8 +16,18 @@ interface ProjectPageProps {
   }>;
 }
 
+/**
+ * Check if a project is categorized as a game
+ */
+function isGameProject(project: { category: string[] }): boolean {
+  return project.category.includes("Game");
+}
+
+// Software route only serves non-game projects
+const softwareProjects = projects.filter((p) => !isGameProject(p));
+
 export async function generateStaticParams() {
-  return projects.map((project) => ({
+  return softwareProjects.map((project) => ({
     slug: project.slug,
   }));
 }
@@ -26,14 +36,18 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
   const { slug } = await params;
   const { tab, from } = await searchParams;
 
-  const project = projects.find((p) => p.slug === slug);
+  // Only find in software (non-game) projects
+  const project = softwareProjects.find((p) => p.slug === slug);
 
   if (!project) {
     notFound();
   }
 
   // Preserve tab state from query param, default to 'software'
-  const currentTab = tab === "mods" ? "mods" : "software";
+  const validTabs = ["software", "games", "mods"] as const;
+  const currentTab = validTabs.includes(tab as (typeof validTabs)[number])
+    ? (tab as (typeof validTabs)[number])
+    : "software";
   const backDest = getBackDestination(from, currentTab);
 
   // Use thumbnail as hero, fallback to first screenshot if available

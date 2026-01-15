@@ -58,9 +58,7 @@ function DetailHeaderCompactMobile({
 
           <div className="h-4 w-px bg-border -ml-3" aria-hidden="true" />
 
-          <h1 className="font-mono text-lg font-bold text-foreground truncate ml-3">
-            {compactTitle || title}
-          </h1>
+          <h1 className="font-mono text-lg font-bold text-foreground truncate ml-3">{compactTitle || title}</h1>
         </div>
       </div>
 
