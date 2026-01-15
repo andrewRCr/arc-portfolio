@@ -29,13 +29,13 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
       {/* Title/subtitle if provided */}
       {title && (
         <div className="space-y-1">
-          <h1 className="font-mono text-2xl font-bold text-foreground">{title}</h1>
+          <h1 className="hidden sm:block font-mono text-2xl font-bold text-foreground">{title}</h1>
           {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
         </div>
       )}
 
       {/* Children: controls below title, or full custom content */}
-      {children && <div className={title ? "mt-2" : ""}>{children}</div>}
+      {children && <div className={title ? "sm:mt-2" : ""}>{children}</div>}
 
       {/* Bottom separator - hidden when children provide their own (e.g., tabs with border) */}
       {!hideDivider && <div className="mt-3 mx-4 border-b border-border/50" />}
