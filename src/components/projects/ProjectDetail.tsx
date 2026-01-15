@@ -8,7 +8,8 @@
  * by DetailHeader in the page's PageLayout header slot.
  */
 
-import type { Project } from "@/types/project";
+import ReactMarkdown from "react-markdown";
+import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
 
@@ -16,16 +17,78 @@ interface ProjectDetailProps {
   project: Project;
 }
 
-/** Renders a bulleted list of string items */
-function BulletList({ items }: { items: string[] }) {
+/**
+ * Renders inline markdown (bold, italic, links, code) with consistent styling.
+ * Used for descriptions and content items.
+ */
+function InlineMarkdown({ children, className }: { children: string; className?: string }) {
   return (
-    <ul className="space-y-2">
-      {items.map((item, index) => (
-        <li key={index} className="text-muted-foreground">
-          • {item}
-        </li>
-      ))}
-    </ul>
+    <ReactMarkdown
+      components={{
+        // Render as span to avoid block-level elements inside p tags
+        p: ({ children }) => <span className={className}>{children}</span>,
+        strong: ({ children }) => <strong>{children}</strong>,
+        em: ({ children }) => <em>{children}</em>,
+        code: ({ children }) => (
+          <code className="rounded bg-muted px-1 py-0.5 text-sm font-mono">{children}</code>
+        ),
+        a: ({ href, children }) => (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent underline underline-offset-2 hover:text-accent/80"
+          >
+            {children}
+          </a>
+        ),
+      }}
+    >
+      {children}
+    </ReactMarkdown>
+  );
+}
+
+/**
+ * Normalizes content items to a consistent format.
+ * Handles both string items and typed { text, paragraph } objects.
+ * Also handles legacy [p] prefix for backwards compatibility.
+ */
+function normalizeContentItem(item: ContentItem): { text: string; isParagraph: boolean } {
+  if (typeof item === "string") {
+    // Legacy [p] prefix support
+    if (item.startsWith("[p]")) {
+      return { text: item.slice(3), isParagraph: true };
+    }
+    return { text: item, isParagraph: false };
+  }
+  return { text: item.text, isParagraph: item.paragraph ?? false };
+}
+
+/**
+ * Renders a mixed list of bullet items and paragraphs with markdown support.
+ */
+function ContentList({ items }: { items: ContentItem[] }) {
+  return (
+    <div className="space-y-2">
+      {items.map((item, index) => {
+        const { text, isParagraph } = normalizeContentItem(item);
+
+        if (isParagraph) {
+          return (
+            <p key={index} className="text-muted-foreground">
+              <InlineMarkdown>{text}</InlineMarkdown>
+            </p>
+          );
+        }
+
+        return (
+          <p key={index} className="text-muted-foreground">
+            • <InlineMarkdown>{text}</InlineMarkdown>
+          </p>
+        );
+      })}
+    </div>
   );
 }
 
@@ -50,6 +113,16 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
   ];
   const hasMetadata = metadataFields.some((field) => field.value);
 
+  // Section labels with customization support
+  const labels = {
+    features: project.sectionLabels?.features ?? "Key Features",
+    highlights: project.sectionLabels?.highlights ?? "Highlights",
+    architectureNotes: project.sectionLabels?.architectureNotes ?? "Architecture",
+  };
+
+  // Split description into paragraphs
+  const descriptionParagraphs = project.description.split("\n\n").filter((p) => p.trim());
+
   return (
     <div className="px-2 mt-3 mb-1 relative">
       {/* Tech Stack - tight to header */}
@@ -61,8 +134,14 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         ))}
       </div>
 
-      {/* Description - tighter spacing (mt-6), smaller on mobile */}
-      <p className="mt-6 text-base sm:text-lg text-foreground">{project.description}</p>
+      {/* Description - supports multiple paragraphs and markdown formatting */}
+      <div className="mt-6 space-y-4">
+        {descriptionParagraphs.map((paragraph, index) => (
+          <p key={index} className="text-base sm:text-lg text-foreground">
+            <InlineMarkdown>{paragraph}</InlineMarkdown>
+          </p>
+        ))}
+      </div>
 
       {/* Screenshots Gallery - tighter spacing from description */}
       {project.images.screenshots.length > 0 && (
@@ -72,8 +151,8 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
       )}
 
       {/* Features */}
-      <DetailCard title="Key Features" className="mt-8">
-        <BulletList items={project.features} />
+      <DetailCard title={labels.features} className="mt-8">
+        <ContentList items={project.features} />
       </DetailCard>
 
       {/* Optional Metadata */}
@@ -89,15 +168,33 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Highlights */}
       {project.highlights && project.highlights.length > 0 && (
-        <DetailCard title="Highlights" className="mt-8">
-          <BulletList items={project.highlights} />
+        <DetailCard title={labels.highlights} className="mt-8">
+          <ContentList items={project.highlights} />
         </DetailCard>
       )}
 
       {/* Architecture Notes */}
       {project.architectureNotes && project.architectureNotes.length > 0 && (
-        <DetailCard title="Architecture" className="mt-8">
-          <BulletList items={project.architectureNotes} />
+        <DetailCard title={labels.architectureNotes} className="mt-8">
+          <ContentList items={project.architectureNotes} />
+        </DetailCard>
+      )}
+
+      {/* More Information - links to external page (e.g., NexusMods) */}
+      {project.links.external && (
+        <DetailCard title="More Information" className="mt-8">
+          <p className="text-muted-foreground">
+            For compatibility details, installation instructions, and additional information, visit the{" "}
+            <a
+              href={project.links.external}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline underline-offset-2 hover:text-accent/80"
+            >
+              NexusMods page
+            </a>
+            .
+          </p>
         </DetailCard>
       )}
     </div>

@@ -50,8 +50,8 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
     : "software";
   const backDest = getBackDestination(from, currentTab);
 
-  // Use thumbnail as hero, fallback to first screenshot if available
-  const heroImage = project.images.thumbnail || project.images.screenshots[0]?.src;
+  // Use hero image if available, then thumbnail, then first screenshot
+  const heroImage = project.images.hero || project.images.thumbnail || project.images.screenshots[0]?.src;
 
   return (
     <PageLayout

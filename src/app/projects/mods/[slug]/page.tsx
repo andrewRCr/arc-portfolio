@@ -49,8 +49,12 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
     : "mods";
   const backDest = getBackDestination(from, currentTab);
 
-  // Use thumbnail as hero, fallback to first screenshot if available
-  const heroImage = mod.images.thumbnail || mod.images.screenshots[0]?.src;
+  // Use hero image if available, then thumbnail, then first screenshot
+  const heroImage = mod.images.hero || mod.images.thumbnail || mod.images.screenshots[0]?.src;
+
+  // For mods, prefix title with game name on larger screens
+  // Phone uses just the mod title for space
+  const fullTitle = mod.game ? `${mod.game}: ${mod.title}` : mod.title;
 
   return (
     <PageLayout
@@ -58,8 +62,8 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
       pageId="project-detail"
       header={
         <DetailHeaderCompact
-          title={mod.title}
-          compactTitle={mod.compactTitle}
+          title={fullTitle}
+          compactTitle={mod.title}
           backHref={backDest.href}
           backLabel={backDest.label}
           links={mod.links}
@@ -68,7 +72,7 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
     >
       <DetailHeader
         title={mod.title}
-        categories={mod.category}
+        categories={mod.game ? [mod.game] : mod.category}
         heroImage={heroImage}
         backHref={backDest.href}
         backLabel={backDest.label}

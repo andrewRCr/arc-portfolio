@@ -33,10 +33,20 @@ export interface Screenshot {
 }
 
 /**
+ * Content item for features, highlights, and other list sections.
+ * Can be a simple string (rendered as bullet) or an object with paragraph flag.
+ * Supports markdown formatting (bold, italic, links, inline code).
+ */
+export type ContentItem =
+  | string // Simple bullet item (legacy [p] prefix also supported for paragraphs)
+  | { text: string; paragraph?: boolean }; // Explicit paragraph control
+
+/**
  * Image references for a project
  */
 export interface ProjectImages {
   thumbnail: string; // Main thumbnail for project cards (e.g., "/thumbnails/project-slug.webp")
+  hero?: string; // Hero/banner image for detail header (e.g., "/projects/slug/hero.webp")
   screenshots: Screenshot[]; // Array of screenshots with alt text
 }
 
@@ -58,10 +68,11 @@ export interface Project {
   // Categorization and tagging
   category: string[]; // Project categories (e.g., ["Web App"], ["Desktop App", "Web App"], ["Game"])
   tags: string[]; // Technology tags using canonical names matching skills data (enables future filtering)
+  game?: string; // For mods: the game this mod is for (e.g., "Lies of P")
 
   // Technical details
   techStack: string[]; // Technologies used (e.g., ["React", "Next.js", "TypeScript"])
-  features: string[]; // Key features and capabilities
+  features: ContentItem[]; // Key features and capabilities (supports markdown)
 
   // External links
   links: ProjectLinks; // GitHub, live demo, downloads, etc.
@@ -75,9 +86,16 @@ export interface Project {
   role?: string; // Your role if team project (e.g., "Lead Developer", "Full-Stack Developer")
   developmentTime?: string; // Alternative to duration (e.g., "Spring 2024")
 
-  // Optional detailed content
-  architectureNotes?: string[]; // Technical architecture details and design decisions
-  highlights?: string[]; // Key achievements, metrics, or notable aspects
+  // Optional detailed content (supports markdown and mixed bullet/paragraph items)
+  architectureNotes?: ContentItem[]; // Technical architecture details and design decisions
+  highlights?: ContentItem[]; // Key achievements, metrics, or notable aspects
+
+  // Section label customization (for mods and other non-standard projects)
+  sectionLabels?: {
+    features?: string; // Override "Key Features" (e.g., "Default Modifiers")
+    highlights?: string; // Override "Highlights" (e.g., "Legion Arms")
+    architectureNotes?: string; // Override "Architecture" (e.g., "Additional Notes")
+  };
 
   // Display properties
   order: number; // Display order (1-9, with 1 being highest priority)
