@@ -1,14 +1,14 @@
 "use client";
 
 /**
- * DetailHeaderHeroBanner Component (PROTOTYPE)
+ * DetailBannerMobile Component
  *
- * Hero image with category badges and icon links - no title or back button.
- * Designed to sit at top of scrollable content when DetailHeaderCompact
- * is the primary header (always visible).
+ * Mobile-only banner: hero image with category badges and icon links.
+ * Sits at top of scrollable content (not in header slot) while
+ * DetailHeaderCompact serves as the sticky header.
  *
- * This avoids the iOS Safari scroll jank caused by height animations
- * in the header slot during momentum scrolling.
+ * This architecture avoids iOS Safari scroll jank caused by height
+ * animations in the header slot during momentum scrolling.
  */
 
 import { DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
@@ -16,7 +16,7 @@ import { buildIconLinkItems } from "./utils/buildLinkItems";
 import { TouchTarget } from "@/components/ui/TouchTarget";
 import type { ProjectLinks } from "@/types/project";
 
-export interface DetailHeaderHeroBannerProps {
+export interface DetailBannerMobileProps {
   /** Category badges displayed in footer */
   categories?: string[];
   /** Path to hero background image (falls back to bg-card if not provided) */
@@ -25,7 +25,7 @@ export interface DetailHeaderHeroBannerProps {
   links?: ProjectLinks;
 }
 
-export function DetailHeaderHeroBanner({ categories, heroImage, links }: DetailHeaderHeroBannerProps) {
+export function DetailBannerMobile({ categories, heroImage, links }: DetailBannerMobileProps) {
   const hasCategories = categories && categories.length > 0;
   const iconLinks = buildIconLinkItems(links);
   const hasLinks = iconLinks.length > 0;

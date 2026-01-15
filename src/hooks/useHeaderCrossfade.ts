@@ -9,7 +9,7 @@ import { BREAKPOINTS } from "@/config/breakpoints";
  * Header types for scroll-based fade calculations
  * - "detail": DetailHeader with hero image (aspect-ratio based threshold)
  * - "page": PageHeader (fixed threshold)
- * - "hero": Home Hero section (fixed threshold, tuned for hero height)
+ * - "hero": Home page Hero section only (fixed threshold, tuned for hero height)
  */
 export type HeaderType = "detail" | "page" | "hero";
 
@@ -26,7 +26,7 @@ const MOBILE_METADATA_HEIGHT = 140;
 
 /** Fixed thresholds for non-detail headers */
 const PAGE_HEADER_THRESHOLD = 100;
-const HERO_THRESHOLD = 150;
+const HOME_HERO_THRESHOLD = 150;
 
 /**
  * Hook for coordinated crossfade between full and compact detail headers.
@@ -56,7 +56,7 @@ export function useHeaderCrossfade(direction: "in" | "out", headerType: HeaderTy
       }
 
       if (headerType === "hero") {
-        setTransitionZone(HERO_THRESHOLD);
+        setTransitionZone(HOME_HERO_THRESHOLD);
         return;
       }
 
