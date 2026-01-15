@@ -1,74 +1,61 @@
 /**
  * Game modification portfolio data
  *
- * Placeholder entries for validating tabbed project architecture.
- * Full mod data (~35 published mods from NexusMods) to be added in future work.
- *
  * Mods use the same Project interface as software projects for component reusability.
+ * The `game` field specifies which game the mod is for; `category` is the mod type.
  */
 
 import { Project } from "@/types/project";
 
 export const mods: Project[] = [
   // ==========================================
-  // PLACEHOLDER MOD 1
+  // LIES OF P - HARDCORE MODE
   // ==========================================
   {
-    id: "placeholder-mod-1",
-    title: "[Placeholder] Example Skyrim Mod",
-    slug: "placeholder-skyrim-mod",
+    id: "lies-of-p-hardcore-mode",
+    title: "Hardcore Mode",
+    slug: "lies-of-p-hardcore-mode",
     description:
-      "Placeholder entry for a Skyrim mod. Full mod data to be added in future work. " +
-      "The actual portfolio includes gameplay overhauls, UI improvements, and quality-of-life enhancements " +
-      "published on NexusMods with thousands of downloads and active community support.",
-    shortDescription: "Placeholder for gameplay mod. Full data to be added from NexusMods portfolio.",
-    category: ["Skyrim"],
-    tags: ["Modding", "Game Design", "Community Support"],
-    techStack: ["Creation Kit", "Papyrus Scripting", "xEdit"],
+      "Increases overall game difficulty by modifying various core mechanics. Combat is more demanding, requiring precision and punishing mistakes—encouraging mastery. **All difficulties** are affected by these changes.\n\n" +
+      "An optional, **modular** version of the mod is also available, allowing you to choose features more selectively.",
+    shortDescription:
+      "Comprehensive difficulty overhaul with interconnected mechanical changes—tighter guard windows, tiered Legion costs, and accelerated resource decay.",
+    game: "Lies of P",
+    category: ["Gameplay"],
+    tags: ["Balance Design", "UE4 Modding"],
+    techStack: ["UAssetGUI", "repak"],
     features: [
-      "Placeholder feature 1 - Real features will include gameplay mechanics",
-      "Placeholder feature 2 - Real features will include balance improvements",
-      "Placeholder feature 3 - Real features will include compatibility patches",
+      "Link Dodge (dodge chaining) is **disabled**",
+      "Enemy damage to the player **increased** by 20% (with an option for 35%)",
+      "Perfect Guard window **reduced**, from 9.3 frames → **6** frames (0.155s → 0.1s)",
+      "Guard Regain begins to decay **immediately** and decays at **twice** the normal rate",
+      "Legion consumption rate **increased** by 25-65% (depending on arm; see detail below)",
+      "Fable gain rate (from attacking) for all weapons **reduced** by 30% (with an option for 50%)",
+      "All weight tiers **increased** by one (1) level (Light: 0.3 → 0.15, Normal: 0.6 → 0.3, and so on)",
     ],
+    highlights: [
+      "Left Arm of Steel: unchanged",
+      "Fulminis, Pandemonium, Deus Ex Machina, Falcon Eyes: **+25%**",
+      "Puppet String, Flamberge, Icarus: **+40%**",
+      "Aegis, Cataclysm: **+65%**",
+      {
+        text: "Certain arms are more powerful and/or easier to use than others. Fulminis and Pandemonium require skillful timing and positioning—they restrict mobility and cannot be guard canceled. Deus Ex Machina requires time to lay and has a magazine size limitation, while Falcon Eyes already comes with a hefty vanilla Legion cost.",
+        paragraph: true,
+      },
+    ],
+    sectionLabels: {
+      features: "Default Modifiers",
+      highlights: "Legion Arms",
+    },
     links: {
-      external: "https://www.nexusmods.com/skyrim",
+      external: "https://www.nexusmods.com/liesofp/mods/304",
     },
     images: {
-      thumbnail: "", // Empty string triggers placehold.co fallback in ProjectCard
+      thumbnail: "/thumbnails/lies-of-p-hardcore-mode.webp",
+      hero: "/projects/lies-of-p-hardcore-mode/hero.webp",
       screenshots: [],
     },
     order: 1,
-    featured: false,
-  },
-
-  // ==========================================
-  // PLACEHOLDER MOD 2
-  // ==========================================
-  {
-    id: "placeholder-mod-2",
-    title: "[Placeholder] Example Fallout 4 Mod",
-    slug: "placeholder-fallout4-mod",
-    description:
-      "Placeholder entry for a Fallout 4 mod. Full mod data to be added in future work. " +
-      "The actual portfolio includes settlement building tools, weapon modifications, and gameplay enhancements " +
-      "demonstrating reverse engineering skills and ongoing maintenance commitment.",
-    shortDescription: "Placeholder for settlement mod. Full data to be added from NexusMods portfolio.",
-    category: ["Fallout 4"],
-    tags: ["Modding", "Game Design", "Bug Fixing"],
-    techStack: ["Creation Kit", "F4SE", "Material Editor"],
-    features: [
-      "Placeholder feature 1 - Real features will include building mechanics",
-      "Placeholder feature 2 - Real features will include custom assets",
-      "Placeholder feature 3 - Real features will include performance optimizations",
-    ],
-    links: {
-      external: "https://www.nexusmods.com/fallout4",
-    },
-    images: {
-      thumbnail: "", // Empty string triggers placehold.co fallback in ProjectCard
-      screenshots: [],
-    },
-    order: 2,
     featured: false,
   },
 ];
