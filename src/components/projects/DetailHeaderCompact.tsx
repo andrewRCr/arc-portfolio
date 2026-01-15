@@ -50,7 +50,7 @@ function DetailHeaderCompactMobile({
             <Link
               href={backHref}
               aria-label={`Back to ${backLabel}`}
-              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
+              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>
@@ -93,7 +93,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
               <Link
                 href={backHref}
                 aria-label={`Back to ${backLabel}`}
-                className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
+                className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Link>
@@ -115,7 +115,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.ariaLabel}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
+                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground"
                     >
                       <Icon size={18} />
                     </a>
