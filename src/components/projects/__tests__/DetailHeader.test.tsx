@@ -127,6 +127,81 @@ describe("DetailHeader - Behavior Tests", () => {
     });
   });
 
+  describe("Icon Links", () => {
+    it("renders icon links when provided", () => {
+      render(
+        <DetailHeader
+          {...defaultProps}
+          links={{
+            github: "https://github.com/test",
+            liveDemo: "https://demo.com",
+          }}
+        />
+      );
+
+      // Both mobile and desktop versions render icon links
+      const githubLinks = screen.getAllByRole("link", { name: "View on GitHub" });
+      const demoLinks = screen.getAllByRole("link", { name: "View live demo" });
+      expect(githubLinks.length).toBeGreaterThan(0);
+      expect(demoLinks.length).toBeGreaterThan(0);
+    });
+
+    it("icon links open in new tab with security attributes", () => {
+      render(
+        <DetailHeader
+          {...defaultProps}
+          links={{ github: "https://github.com/test" }}
+        />
+      );
+
+      const githubLinks = screen.getAllByRole("link", { name: "View on GitHub" });
+      githubLinks.forEach((link) => {
+        expect(link).toHaveAttribute("target", "_blank");
+        expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      });
+    });
+
+    it("renders links without categories (spacer case)", () => {
+      render(
+        <DetailHeader
+          {...defaultProps}
+          links={{ github: "https://github.com/test" }}
+        />
+      );
+
+      // Links should render even without categories
+      const githubLinks = screen.getAllByRole("link", { name: "View on GitHub" });
+      expect(githubLinks.length).toBeGreaterThan(0);
+      // Category badges should not exist
+      expect(screen.queryAllByTestId("category-badges")).toHaveLength(0);
+    });
+
+    it("renders all link types", () => {
+      render(
+        <DetailHeader
+          {...defaultProps}
+          links={{
+            github: "https://github.com/test",
+            liveDemo: "https://demo.com",
+            download: "https://download.com",
+            external: "https://nexusmods.com",
+          }}
+        />
+      );
+
+      expect(screen.getAllByRole("link", { name: "View on GitHub" }).length).toBeGreaterThan(0);
+      expect(screen.getAllByRole("link", { name: "View live demo" }).length).toBeGreaterThan(0);
+      expect(screen.getAllByRole("link", { name: "Download app" }).length).toBeGreaterThan(0);
+      expect(screen.getAllByRole("link", { name: "View on NexusMods" }).length).toBeGreaterThan(0);
+    });
+
+    it("does not render links section when no links provided", () => {
+      render(<DetailHeader {...defaultProps} />);
+
+      expect(screen.queryAllByTestId("header-links")).toHaveLength(0);
+    });
+  });
+
   describe("Accessibility", () => {
     it("has no accessibility violations with all props", async () => {
       const results = await checkA11y(

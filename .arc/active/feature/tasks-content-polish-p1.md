@@ -146,10 +146,9 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Updated integration routing tests to use DetailHeader
         - All 889 tests passing
 
-- [ ] **2.2 Layout and visual polish**
+- [x] **2.2 Layout and visual polish**
 
     **Goal:** Refine DetailHeader, ImageGallery, and content layout based on visual review.
-    Test updates deferred until visual work stabilizes.
 
     - [x] **2.2.a Improve `DetailHeader` layout**
         - Changed to 3.5:1 aspect ratio (banner-optimized, matches NexusMods header format)
@@ -217,17 +216,18 @@ section, Project Detail pages with proper headers and image galleries, Games tab
             - `DetailHeader`: Hero image with minimal overlay (back + title), footer section below
             - Footer: category badges (left) + icon-only links (right) with ghost button styling
         - **New components:**
-            - `DetailHeaderHeroBanner`: Mobile body content (hero + badges + icon links)
+            - `DetailBannerMobile`: Mobile body content (hero + badges + icon links)
             - `buildIconLinkItems()`: Icon link builder (GitHub, Globe, Download, NexusMods icons)
-        - **Removed:** `DetailHeaderMobile.tsx` (replaced by HeroBanner)
+        - **Removed:** `DetailHeaderMobile.tsx` (replaced by banner)
         - **Added:** `compactTitle` field for long titles (e.g., "NewGame+ Customizer")
         - **Styling:** Consistent icon links, TouchTarget WCAG compliance, conditional padding
 
-    - [ ] **2.2.g Update tests for layout changes**
-        - Run coverage check for new components (DetailHeaderHeroBanner, buildIconLinkItems)
-        - Add tests for new components as needed
-        - Update existing DetailHeader tests if any fail due to structure changes
-        - Run full test suite to verify all pass
+    - [x] **2.2.g Update tests for layout changes**
+        - **Pre-work cleanup:** Renamed `DetailHeaderHeroBanner` → `DetailBannerMobile`,
+          `HERO_THRESHOLD` → `HOME_HERO_THRESHOLD` for naming consistency
+        - **New tests added:** 35 tests total (17 buildLinkItems, 13 DetailHeaderCompact, 5 icon links)
+        - **Coverage results:** projects components 98.89% (target 80%), all new components at 100%
+        - **Full suite:** 900 tests passing
 
 - [ ] **2.3 Light copy editing for software projects**
 
