@@ -255,64 +255,75 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - arc-portfolio assets TBD closer to deployment; may use header image only (no gallery)
           since screenshots of "the site you're on" have limited value
 
-- [ ] **2.4 Run Phase 2 quality gates**
-    - [ ] 2.4.a Run full test suite
-    - [ ] 2.4.b Run lint and type-check
-    - [ ] 2.4.c Manual verification of detail pages in browser
+- [x] **2.4 Run Phase 2 quality gates**
+    - [x] 2.4.a Run full test suite - 900 tests passing
+    - [x] 2.4.b Run lint and type-check - all pass
+    - [x] 2.4.c Manual verification of detail pages in browser - confirmed
 
 ### **Phase 3:** Projects Page - Games Tab
 
 **Purpose:** Split games into dedicated tab for clearer categorization.
 
-- [ ] **3.1 Write tests for 3-tab structure**
+- [x] **3.1 Write tests for 3-tab structure**
 
-    - [ ] **3.1.a Update `ProjectTabs` tests for three tabs**
-        - Test: Three tabs render (Software, Games, Mods)
-        - Test: Tab switching works for all three
-        - Test: Keyboard navigation across three tabs
-        - Test: `?tab=games` URL param works
-        - Expect tests to FAIL initially
+    - [x] **3.1.a Update `ProjectTabs` tests for three tabs**
+        - 26 tests: 3-tab rendering, tab order, active states, switching, keyboard nav, query params, ARIA
+        - Tests FAIL as expected (16/26) - Games tab not yet implemented
 
-    - [ ] **3.1.b Write tests for Games tab content**
-        - Test: Games tab shows correct projects (Action RPG, Survival Horror, Pong)
-        - Test: Game project cards link to correct detail pages
-        - Test: Back navigation returns to Games tab
-        - Expect tests to FAIL initially
+    - [x] **3.1.b Write tests for Games tab content**
+        - 10 tests: Games tab content filtering, project card links, Software tab exclusion, default behavior
+        - Added ResizeObserver mock to test setup (required for PageLayout)
+        - Tests FAIL as expected (8/10) - Games tab filtering not yet implemented
 
-- [ ] **3.2 Implement 3-tab structure**
+- [x] **3.2 Implement 3-tab structure**
 
-    - [ ] **3.2.a Update `ProjectTabs` component**
-        - Add "Games" tab between Software and Mods
-        - Update tab IDs and labels
-        - Verify ARIA attributes and keyboard navigation still work
+    - [x] **3.2.a Update `ProjectTabs` component**
+        - Refactored to data-driven approach with TABS array and TAB_LABELS record
+        - 3 tabs: Software, Games, Mods
+        - All 26 tests pass
 
-    - [ ] **3.2.b Update project categorization logic**
-        - Define which projects are "games" vs "software"
-        - Games: ActionRPGProject, SurvivalHorrorProject, Pong
-        - Update filtering logic in Projects page
+    - [x] **3.2.b Update project categorization logic**
+        - `isGameProject()` helper checks for `category.includes("Game")`
+        - Software tab filters out games, Games tab filters for games only
+        - Feature flag renamed: `SHOW_MODS_TAB` → `SHOW_PROJECT_TABS`
 
-    - [ ] **3.2.c Update routing and URL params**
-        - Support `?tab=games` in addition to `software` and `mods`
-        - Default tab remains `software`
-        - Back navigation from detail pages preserves tab state
-        - Tests should now PASS
+    - [x] **3.2.c Update routing and URL params**
+        - Created `/projects/games/[slug]` route for game detail pages
+        - Updated `getBackDestination()` to support "games" tab
+        - All detail pages handle "software" | "games" | "mods" tab preservation
+        - `ProjectCard` accepts `categoryType: "games"` for correct routing
+        - All 117 project tests pass
 
-- [ ] **3.3 Create Games tab content**
+- [x] **3.3 Create Games tab content**
 
-    - [ ] **3.3.a Filter and display game projects**
-        - Reuse existing `ProjectCard` component
-        - Same grid layout as Software tab
-        - Verify game projects appear correctly
+    - [x] **3.3.a Filter and display game projects**
+        - Games panel with grid layout matching Software tab
+        - 3 game projects: Action RPG, Survival Horror, Pong Clone
 
-    - [ ] **3.3.b Update game project detail routing**
-        - Games may need `/projects/games/[slug]` route
-        - Or reuse `/projects/software/[slug]` with category detection
-        - Decision: Simplest approach that preserves back navigation
+    - [x] **3.3.b Update game project detail routing**
+        - Created dedicated `/projects/games/[slug]` route
+        - Back navigation preserves tab state via query param
 
-- [ ] **3.4 Run Phase 3 quality gates**
-    - [ ] 3.4.a Run full test suite
-    - [ ] 3.4.b Run lint and type-check
-    - [ ] 3.4.c Manual verification of all three tabs
+- [x] **3.4 Re-enable ProjectTabs and style**
+
+    **Goal:** Polish tab styling for production use. Feature flag already enabled during 3.2 implementation.
+
+    - [x] **3.4.a Enable tabs**
+        - Feature flag `SHOW_PROJECT_TABS` set to `true`
+        - Tabs render correctly on Projects page
+    - [x] **3.4.b Visual iteration on tab styling**
+        - Typography: `font-mono text-sm font-semibold` (matches Navigation)
+        - Labels: ALL CAPS (SOFTWARE, GAMES, MODS)
+        - Active state: `text-secondary border-secondary` (consistent with nav bg)
+        - Layout: left-aligned, `mx-4` width constraint, `items-end` alignment
+        - Divider: `border-border/50` matches PageHeader; added `hideDivider` prop
+        - Touch targets: `min-h-11 lg:min-h-0` with `pb-2 pt-3` for WCAG compliance
+        - Removed subtitle from Projects page (tabs fill that visual space)
+
+- [x] **3.5 Run Phase 3 quality gates**
+    - [x] 3.5.a Run full test suite - 924 tests pass
+    - [x] 3.5.b Run lint and type-check - all pass
+    - [x] 3.5.c Manual verification of all three tabs - confirmed
 
 ### **Phase 4:** Mod Content Migration
 
