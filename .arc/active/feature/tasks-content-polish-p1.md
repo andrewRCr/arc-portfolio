@@ -229,26 +229,31 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - **Coverage results:** projects components 98.89% (target 80%), all new components at 100%
         - **Full suite:** 900 tests passing
 
-- [ ] **2.3 Light copy editing for software projects**
+- [x] **2.3 Light copy editing for software projects**
 
     **Goal:** Polish existing project descriptions without major rewrites.
 
-    - [ ] **2.3.a Review and edit CineXplorer copy**
-        - Check description clarity, feature list, highlights
-        - Fix typos, awkward phrasing
-        - Ensure tech stack is current
+    - [x] **2.3.a Review and edit CineXplorer copy**
+        - Trimmed techStack from 10 to 7 items (removed Pydantic, Vite, Redis from badges)
+        - Added Redis to production infrastructure feature (captured in text)
+        - Project still in progress; deeper copy work deferred until complete
 
-    - [ ] **2.3.b Review and edit TaskFocus copy**
-        - Same checks as above
+    - [x] **2.3.b Review and edit TaskFocus copy**
+        - Already reviewed in prior pass; no changes needed
 
-    - [ ] **2.3.c Review and edit remaining software projects**
-        - ARC Framework, arc-portfolio, PetResort
-        - Brief review each, fix obvious issues
+    - [x] **2.3.c Review and edit remaining software projects**
+        - **ARC Framework:** Fixed "Tookit" → "Toolkit" typo; naming evaluated and confirmed
+        - **arc-portfolio:** Major revision - removed "bleeding-edge" language, added Server Actions,
+          accessibility testing, WCAG contrast validation to description/features/highlights;
+          removed version numbers from techStack badges (kept in prose)
+        - **PetResort:** Removed "enterprise-level" overclaims, reframed as "business application demo",
+          clarified it's a portfolio demonstration project
 
-    - [ ] **2.3.d Verify all project images exist**
-        - Check `public/projects/` for each project's assets
-        - Ensure thumbnails and screenshots are present
-        - Note any missing assets for follow-up
+    - [x] **2.3.d Verify all project images exist**
+        - Complete projects (TaskFocus, PetResort, mods) have all assets present
+        - Feature-flagged projects (CineXplorer, ARC Framework) still need assets (expected)
+        - arc-portfolio assets TBD closer to deployment; may use header image only (no gallery)
+          since screenshots of "the site you're on" have limited value
 
 - [ ] **2.4 Run Phase 2 quality gates**
     - [ ] 2.4.a Run full test suite

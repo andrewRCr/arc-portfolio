@@ -24,17 +24,14 @@ export const projects: Project[] = [
       "Full-stack movie discovery platform with personalized recommendations, watchlists, and OAuth authentication. " +
       "Demonstrates modern type-safe architecture with Django Ninja + React TypeScript.",
     category: ["Web App"],
-    tags: ["React", "TypeScript", "Django", "PostgreSQL", "Redis", "Docker", "Python", "Pydantic"],
+    tags: ["React", "TypeScript", "Django", "PostgreSQL", "Docker", "Python"],
     techStack: [
       "TypeScript",
       "React",
       "Django",
       "Django Ninja",
       "PostgreSQL",
-      "Redis",
       "Docker",
-      "Pydantic",
-      "Vite",
       "Chakra UI",
     ],
     features: [
@@ -43,7 +40,7 @@ export const projects: Project[] = [
       "Advanced movie filtering system with hybrid API/client-side logic",
       "Comprehensive quality gates: 89 backend + 321 frontend tests, zero-tolerance type checking",
       "Development workflow powered by ARC Framework for systematic AI-assisted feature planning",
-      "Production-ready infrastructure: Docker containerization, Caddy reverse proxy, CI/CD pipeline",
+      "Production-ready infrastructure: Docker containerization, Redis caching, Caddy reverse proxy, CI/CD pipeline",
     ],
     links: {
       github: "https://github.com/andrewRCr/CineXplorer",
@@ -75,7 +72,7 @@ export const projects: Project[] = [
   // ==========================================
   {
     id: "arc-agentic-dev-framework",
-    title: "ARC Agentic Tookit",
+    title: "ARC Agentic Toolkit",
     slug: "arc-agentic-dev-framework",
     description:
       "A structured methodology for spec-driven development with AI agents, emphasizing disciplined collaboration over automation. " +
@@ -142,23 +139,23 @@ export const projects: Project[] = [
     title: "andrewRCr Portfolio",
     slug: "arc-portfolio",
     description:
-      "The portfolio site you're currently viewing - a technical case study in modern Next.js development. " +
-      "Built with Next.js 15 App Router, React 19, TypeScript, and Tailwind CSS v4, demonstrating type-safe content architecture, " +
-      "component composition patterns, and systematic AI-assisted development workflows. Features pragmatic TDD approach, " +
-      "comprehensive quality gates, and zero-tolerance code standards enforced through CI/CD pipeline.",
+      "This portfolio site, built with Next.js 15 App Router, React 19, TypeScript, and Tailwind CSS v4, featuring " +
+      "Server Actions for SSR-optimized preference persistence, automated accessibility testing, and WCAG AA contrast " +
+      "validation across all theme combinations. Demonstrates pragmatic TDD with 900+ tests and zero-tolerance quality " +
+      "gates enforced through CI/CD pipeline.",
     shortDescription:
       "Modern portfolio website built with Next.js 15, showcasing type-safe architecture and systematic development practices. " +
       "The site you're currently viewing.",
     category: ["Web App"],
     tags: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Vercel", "Shadcn/ui", "Portfolio"],
-    techStack: ["TypeScript", "Next.js 15", "React 19", "Tailwind CSS v4", "Shadcn/ui"],
+    techStack: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Shadcn/ui"],
     features: [
-      "Type-safe content architecture with TypeScript interfaces for projects, skills, education, and profile data",
-      "Server Components by default with strategic Client Component usage for interactivity",
-      "Shadcn/ui component library for accessible, customizable UI primitives",
-      "Comprehensive quality gates: type checking, linting, formatting, markdown validation",
-      "Pragmatic TDD approach with Vitest and React Testing Library",
-      "CI/CD pipeline with GitHub Actions and Vercel automatic deployments",
+      "Server Actions for cookie-based preference persistence, preventing flash of unstyled content on SSR",
+      "Automated accessibility testing with vitest-axe across 60+ component test suites",
+      "WCAG AA contrast validation: automated testing of all theme color combinations in light/dark modes",
+      "Hydration-safe responsive design using CSS media queries instead of client-side detection",
+      "Type-safe content architecture with TypeScript interfaces and 300+ lines of data validation tests",
+      "CI/CD pipeline with GitHub Actions, comprehensive quality gates, and Vercel automatic deployments",
     ],
     links: {
       github: "https://github.com/andrewRCr/arc-portfolio",
@@ -184,10 +181,10 @@ export const projects: Project[] = [
       "Zero-tolerance quality enforcement: TypeScript strict mode, ESLint, Prettier, markdown linting",
     ],
     highlights: [
-      "Demonstrates modern React patterns: Server Components, App Router, composition-over-complexity architecture",
-      "Showcases type-safe development practices from data layer through UI with comprehensive TypeScript coverage",
-      "Exemplifies systematic development methodology: quality gates, pragmatic TDD, atomic commits, and ARC Framework integration",
-      "Represents practical application of bleeding-edge tools: Next.js 15, React 19, Tailwind CSS v4, Turbopack",
+      "Accessibility-first engineering: automated WCAG testing, screen reader announcements, keyboard navigation throughout",
+      "Production-grade SSR optimization: Server Actions sync preferences to cookies, eliminating layout shifts on page load",
+      "Comprehensive test coverage: 900+ tests including accessibility validation, contrast checking, and data integrity",
+      "Systematic development methodology: quality gates, pragmatic TDD, atomic commits, and ARC Framework integration",
     ],
     order: 4,
     featured: true,
@@ -265,10 +262,10 @@ export const projects: Project[] = [
     title: "PetResort",
     slug: "petresort",
     description:
-      "Full-stack employee web portal for a pet boarding and grooming business, streamlining operations and data management. " +
-      "Built with TypeScript, Express, Node.js, and MongoDB, featuring robust authentication, role-based access control, " +
-      "and comprehensive CRUD operations for pets, clients, and visits. Demonstrates enterprise-level features including granular permissions, " +
-      "advanced UI/UX patterns (pagination, fuzzy search, input masking), and secure user management with password reset functionality.",
+      "Full-stack employee web portal demonstrating a pet boarding and grooming business management system. " +
+      "Built with TypeScript, Express, Node.js, and MongoDB, featuring session-based authentication with password reset, " +
+      "role-based access control with granular permissions, and comprehensive CRUD operations for pets, clients, and visits. " +
+      "Includes polished UX patterns: pagination, fuzzy search, input masking, and toast notifications.",
     shortDescription:
       "Employee web portal for pet care business operations with role-based access control and comprehensive management features.",
     category: ["Web App"],
@@ -316,10 +313,10 @@ export const projects: Project[] = [
       "Role-based authorization with granular permission system",
     ],
     highlights: [
-      "Demonstrates enterprise-level feature implementation: role-based access control, comprehensive user management, operational dashboards",
-      "Showcases full-stack JavaScript/TypeScript proficiency with modern Node.js patterns and MongoDB integration",
-      "Implements production-ready security practices: authentication, authorization, input validation, HTML sanitization",
-      "Features polished UX with advanced interaction patterns: fuzzy search, pagination, toast notifications, breadcrumb navigation",
+      "Complete business application demo: role-based access control, user management, operational dashboards with live demo available",
+      "Full-stack TypeScript: type safety from Express routes through MongoDB models to EJS templates",
+      "Production security practices: session auth, bcrypt hashing, input validation, HTML sanitization, secure image uploads",
+      "Polished UX details: fuzzy search, pagination, toast notifications, breadcrumb navigation, input masking",
     ],
     order: 5,
     featured: false,
