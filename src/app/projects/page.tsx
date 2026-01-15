@@ -70,31 +70,11 @@ function ProjectsContent() {
         {/* Mods Tab Panel - only rendered when tabs enabled */}
         {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
           <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6">
-            {/* Mods Tab Intro */}
-            <div className="space-y-3">
-              <p className="text-foreground">
-                Beyond software development, I maintain a portfolio of game modifications published on NexusMods,
-                demonstrating sustained commitment to community-driven projects and technical problem-solving in
-                production environments.
-              </p>
-              <p className="text-muted-foreground">
-                These projects showcase skills in reverse engineering, bug triage, community management, and ongoing
-                maintenance. With ~35 published mods and thousands of downloads, this work reflects the same
-                professional approach I bring to software development: thorough documentation, responsive support, and
-                continuous improvement.
-              </p>
-            </div>
-
             {/* Mods Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {sortedMods.map((mod) => (
                 <ProjectCard key={mod.id} project={mod} categoryType="mods" />
               ))}
-            </div>
-
-            {/* Placeholder notice - mods content pending */}
-            <div className="rounded-lg border border-border bg-muted p-4 text-center">
-              <p className="text-sm text-muted-foreground">Placeholder entries. Mod content migration pending.</p>
             </div>
           </div>
         )}
