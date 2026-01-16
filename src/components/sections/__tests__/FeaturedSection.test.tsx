@@ -6,6 +6,9 @@
  * - Each card has required elements (type label, title, description)
  * - Cards link to correct route patterns
  * - Framework card is always present
+ *
+ * Note: Section heading ("Featured Projects") is rendered in Hero component,
+ * not FeaturedSection, for scroll shadow alignment.
  */
 
 import { render, screen } from "@testing-library/react";
@@ -45,12 +48,6 @@ describe("FeaturedSection", () => {
 
       const links = screen.getAllByRole("link");
       expect(links).toHaveLength(4);
-    });
-
-    it("renders a heading element", () => {
-      render(<FeaturedSection />);
-
-      expect(screen.getByRole("heading", { level: 3 })).toBeInTheDocument();
     });
 
     it("each card contains a title heading", () => {
