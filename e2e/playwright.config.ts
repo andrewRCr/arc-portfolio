@@ -57,10 +57,20 @@ export default defineConfig({
       },
     },
 
-    // Cross-browser - Firefox runs locally, WebKit requires CI (WSL2 missing deps)
+    // Cross-browser - Firefox with WSL2-specific accommodations
+    // Firefox is 30-70% slower than Chromium and WSL2 has DNS/networking overhead
+    // See: https://github.com/microsoft/playwright/issues/18255
     {
       name: "Firefox",
-      use: { ...devices["Desktop Firefox"] },
+      use: {
+        ...devices["Desktop Firefox"],
+        launchOptions: {
+          // Clear DISPLAY to prevent X Server connection attempts in headless mode
+          env: { ...process.env, DISPLAY: "" },
+        },
+      },
+      timeout: 60_000, // Extended timeout for WSL2 environment
+      retries: 1, // Single retry for flaky network issues
     },
     // WebKit only in CI - WSL2 lacks required system libraries locally
     ...(process.env.CI
