@@ -30,4 +30,7 @@
 
 ## Active
 
-[none]
+- [ ] Create and wire up hero images (3.5:1 aspect ratio) for 8 projects
+    - DOOM NG+ Customizer already has dedicated hero image (from NexusMods page)
+    - All other software/game projects currently fallback to first thumbnail
+    - Not a blocker - visual polish task, do whenever convenient
