@@ -4,6 +4,22 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Audit light mode token issues across themes**
+    - **Outcome:** Fixed light mode card/popover tokens being too stark (pure white) against
+      semi-transparent window background. Darkened card/popover tokens in 4 themes to harmonize
+      with 80% opacity window aesthetic. Added `/80` opacity pattern to ProjectCard for consistency.
+      Gruvbox and Remedy already had appropriate values and needed no changes.
+    - **Files:** `src/data/themes/definitions/rouge.ts` (#ffffff → #eeece9),
+      `src/data/themes/definitions/mariana.ts` (#ffffff → #eef1f5),
+      `src/data/themes/definitions/rose-pine.ts` (#fffaf3 → #f2e9e1),
+      `src/data/themes/definitions/ayu.ts` (#F8F9FA → #F0F1F2),
+      `src/components/projects/ProjectCard.tsx` (bg-background/80),
+      `src/app/globals.css` (regenerated)
+    - **Also:** Navigation active indicator light mode fix (secondary/40), DetailHeaderCompact
+      NexusMods text label styling for desktop
+
+    - **Branch:** `feature/content-polish-p1`
+
 - [x] **Refactor theme swatches to derive from tokens (prevent drift)**
     - **Outcome:** Architectural improvement to theme system. Swatches now computed from tokens via
       `deriveSwatchColors()` utility instead of manual arrays. Eliminates drift between theme preview

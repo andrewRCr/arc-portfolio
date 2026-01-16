@@ -302,7 +302,7 @@
   --foreground: 87 82 121;
 
   /* Card colors */
-  --card: 255 250 243;
+  --card: 242 233 225;
   --card-foreground: 87 82 121;
 
   /* Popover colors */
@@ -510,11 +510,11 @@
   --foreground: 92 97 102;
 
   /* Card colors */
-  --card: 248 249 250;
+  --card: 240 241 242;
   --card-foreground: 92 97 102;
 
   /* Popover colors */
-  --popover: 248 249 250;
+  --popover: 240 241 242;
   --popover-foreground: 92 97 102;
 
   /* Primary colors */
@@ -718,11 +718,11 @@
   --foreground: 48 56 65;
 
   /* Card colors */
-  --card: 255 255 255;
+  --card: 238 241 245;
   --card-foreground: 48 56 65;
 
   /* Popover colors */
-  --popover: 255 255 255;
+  --popover: 238 241 245;
   --popover-foreground: 48 56 65;
 
   /* Primary colors */

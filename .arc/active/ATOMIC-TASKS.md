@@ -30,14 +30,4 @@
 
 ## Active
 
-- [ ] **Audit light mode token issues across themes**
-    - Issue: Some themes have token problems in light mode (untested, app defaults to dark)
-    - Scope: Systematic audit of all 6 themes in light mode
-    - Identify: Contrast issues, readability problems, visual inconsistencies
-    - **Progress:**
-        - **Root cause identified:** Pure white (#ffffff) card/popover tokens feel too stark against
-          semi-transparent (80% opacity) window background. Creates visual disconnect.
-        - **Solution approach:** (1) Darken card/popover tokens in light mode to harmonize with
-          window aesthetic, (2) ensure large surfaces use `/80` opacity pattern for consistency
-        - **Rouge:** Complete - card/popover #ffffff → #eeece9, ProjectCard uses bg-background/80
-        - **Remaining:** Mariana, Rosé Pine, Gruvbox, Ayu, Remedy (5 themes)
+[none]

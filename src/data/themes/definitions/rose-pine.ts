@@ -30,10 +30,12 @@ const lightTokens: ThemeColors = {
   foreground: hexToRgb(rosePineDawn.text), // #575279
 
   // Card colors
-  card: hexToRgb(rosePineDawn.surface), // #fffaf3
+  // Light mode adjustment: surface (#fffaf3) is lighter than base - inverse elevation
+  // Using overlay for darker card that harmonizes with semi-transparent window
+  card: hexToRgb(rosePineDawn.overlay), // #f2e9e1
   "card-foreground": hexToRgb(rosePineDawn.text),
 
-  // Popover colors
+  // Popover colors (same as card for consistency)
   popover: hexToRgb(rosePineDawn.overlay), // #f2e9e1
   "popover-foreground": hexToRgb(rosePineDawn.text),
 

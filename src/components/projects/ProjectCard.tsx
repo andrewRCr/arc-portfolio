@@ -71,7 +71,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-xl font-bold text-foreground group-hover:text-accent">{project.title}</h3>
+        <h3 className="mb-2 text-xl font-bold text-foreground group-hover:text-secondary">{project.title}</h3>
 
         {/* Short Description */}
         <p className="mb-3 text-sm text-muted-foreground">{project.shortDescription}</p>

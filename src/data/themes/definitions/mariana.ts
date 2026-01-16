@@ -27,11 +27,13 @@ const lightTokens: ThemeColors = {
   foreground: hexToRgb(marianaLight.fg), // #303841
 
   // Card colors
-  card: hexToRgb(marianaLight.bgElevated), // #ffffff
+  // Light mode adjustment: #ffffff too stark against semi-transparent window
+  // Using bgHighlight - darker with cool blue-gray tint matching theme character
+  card: hexToRgb(marianaLight.bgHighlight), // #eef1f5
   "card-foreground": hexToRgb(marianaLight.fg),
 
-  // Popover colors
-  popover: hexToRgb(marianaLight.bgElevated),
+  // Popover colors (same adjustment as card)
+  popover: hexToRgb(marianaLight.bgHighlight), // #eef1f5
   "popover-foreground": hexToRgb(marianaLight.fg),
 
   // Primary colors (medium blue - signature)

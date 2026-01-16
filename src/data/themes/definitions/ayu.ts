@@ -26,11 +26,13 @@ const lightTokens: ThemeColors = {
   foreground: hexToRgb(ayuLight.fg), // #5C6166
 
   // Card colors
-  card: hexToRgb(ayuLight.bgSecondary), // #F8F9FA
+  // Light mode adjustment: bgSecondary (#F8F9FA) only ~4pts darker than bg
+  // Using darker value to harmonize with semi-transparent window aesthetic
+  card: hexToRgb("#F0F1F2"),
   "card-foreground": hexToRgb(ayuLight.fg),
 
-  // Popover colors
-  popover: hexToRgb(ayuLight.bgSecondary),
+  // Popover colors (same adjustment as card)
+  popover: hexToRgb("#F0F1F2"),
   "popover-foreground": hexToRgb(ayuLight.fg),
 
   // Primary colors (yellow/orange - Ayu signature)
