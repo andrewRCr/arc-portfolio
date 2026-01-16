@@ -384,6 +384,71 @@ section, Project Detail pages with proper headers and image galleries, Games tab
     - [x] 4.4.b Run lint and type-check (all passing)
     - [x] 4.4.c Build successful
 
+- [ ] **4.5 Add NexusMods download stats infrastructure**
+
+    **Goal:** Display dynamic download stats from NexusMods API for mods (individual + aggregate).
+
+    - [x] **4.5.a Setup NexusMods integration config**
+        - Created `.env.example` with `NEXUSMODS_API_KEY` template
+        - Created `src/config/nexusmods.ts` with mod registry (35 mods)
+        - 7 displayed mods with `portfolioSlug` for matching
+        - 28 additional mods for aggregate totals
+        - 3 hidden mods tracked separately for profile total comparison
+
+    - [x] **4.5.b Create server action for fetching stats**
+        - Created `src/app/actions/nexusmods.ts`
+        - `getModStats(game, modId)` - individual mod with 24hr cache
+        - `getModStatsBySlug(slug)` - lookup by portfolio slug
+        - `getAggregateStats()` - sums all 35 mods in parallel
+        - `getDisplayedModStats()` - batch fetch for 7 displayed mods
+        - Returns: `downloads`, `uniqueDownloads`, `endorsements`, `updatedAt`
+        - Error handling: NO_API_KEY, RATE_LIMITED, NOT_FOUND, API_ERROR
+        - `isModStatsError()` type guard for error checking
+
+    - [x] **4.5.c Write tests for NexusMods utilities**
+        - Created `src/lib/nexusmods.ts` with utility functions
+        - `parseNexusModsUrl()` - 11 tests (valid URLs, edge cases, invalid inputs)
+        - `formatStatNumber()` - 10 tests (K/M formatting, decimals, trailing zeros)
+        - `buildNexusModsUrl()` - 3 tests
+        - Created `src/app/actions/__tests__/nexusmods.test.ts` - 10 tests
+        - `isModStatsError()` type guard tests
+        - Type structure validation for ModStats, ModStatsError, AggregateStats
+        - Total: 34 new tests, all passing
+
+    - [x] **4.5.d Create `ModStatsBadge` component**
+        - Created `src/components/projects/ModStatsBadge.tsx`
+        - `ModStatsBadge` - single stat with icon (Users, ThumbsUp, Download)
+        - `ModStatsGroup` - convenience wrapper for multiple stats
+        - Uses `formatStatNumber()` for K/M formatting
+        - Accessible: aria-labels with full number, aria-hidden icons
+        - 16 tests covering rendering, formatting, accessibility, styling
+
+    - [x] **4.5.e Integrate into displayed project detail pages**
+        - Added `stats` prop to `DetailHeader`, `DetailBannerMobile`, `DetailHeaderDesktop`
+        - Stats display in footer next to category badges (both mobile + desktop)
+        - Mod detail pages fetch stats via `getModStatsBySlug(slug)`
+        - Software page conditionally fetches for projects with NexusMods links
+        - Graceful fallback: no stats shown if API error or unavailable
+        - Created `src/lib/nexusmods-types.ts` for types + type guard (Turbopack compatibility)
+
+    - [ ] **4.5.f Add aggregate stats to About and Contact pages**
+        - Replace static download count on About page with dynamic aggregate value
+        - Add aggregate badge near NexusMods social link on Contact page
+        - Graceful fallback if API unavailable
+
+    - [ ] **4.5.g Visual polish of stats badges**
+        - Design iteration on badge styling (colors, spacing, icons)
+        - Evaluate placement in DetailHeader (next to game badge vs separate row)
+        - Mobile vs desktop layout considerations
+        - Ensure visual consistency with existing design system
+
+    - [ ] **4.5.h Run Phase 4.5 quality gates**
+        - Type check, lint, format, markdown lint
+        - Run tests (new + existing)
+        - Manual verification of stats display
+        - Run tests (new + existing)
+        - Manual verification of stats display
+
 ### **Phase 5:** Home Featured Section
 
 **Purpose:** Redesign Featured section with category labels and randomization.
