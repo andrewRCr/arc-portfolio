@@ -28,11 +28,13 @@ const lightTokens: ThemeColors = {
   foreground: hexToRgb(rougeLight.fg), // #2d3748
 
   // Card colors
-  card: hexToRgb(rougeLight.bgElevated), // #ffffff
+  // Light mode adjustment: #ffffff too stark against semi-transparent window
+  // Darkened to harmonize with 80% opacity window aesthetic
+  card: hexToRgb("#eeece9"),
   "card-foreground": hexToRgb(rougeLight.fg),
 
-  // Popover colors
-  popover: hexToRgb(rougeLight.bgElevated),
+  // Popover colors (same adjustment as card)
+  popover: hexToRgb("#eeece9"),
   "popover-foreground": hexToRgb(rougeLight.fg),
 
   // Primary colors (rouge - signature)

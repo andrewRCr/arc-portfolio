@@ -27,7 +27,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
     <Link
       href={detailUrl}
       data-testid="project-card"
-      className="group block overflow-hidden rounded-lg border border-border bg-background transition-colors hover:border-secondary/60"
+      className="group block overflow-hidden rounded-lg border border-border bg-background/80 transition-colors hover:border-secondary/60"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
@@ -47,7 +47,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 bg-background/80">
         {/* Category/Game Badge (prominent, first) */}
         <div className="mb-2 flex flex-wrap gap-1.5">
           {categoryType === "mods" && project.game ? (

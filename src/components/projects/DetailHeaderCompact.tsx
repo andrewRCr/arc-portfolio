@@ -106,6 +106,25 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
             <div className="flex items-center shrink-0">
               {iconLinks.map((link, index) => {
                 const Icon = link.icon;
+                const showAsButton = iconLinks.length === 1 && link.label === "NexusMods";
+
+                if (showAsButton) {
+                  // Custom styled link matching DetailHeaderDesktop's NexusMods button
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={link.ariaLabel}
+                      className="inline-flex min-h-6 items-center gap-1.5 rounded px-2 py-0.5 text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                      <Icon size={16} className="shrink-0 mt-px" />
+                      <span>{link.label}</span>
+                    </a>
+                  );
+                }
+
                 return (
                   <TouchTarget key={link.label} align={index === iconLinks.length - 1 ? "end" : "center"}>
                     <a

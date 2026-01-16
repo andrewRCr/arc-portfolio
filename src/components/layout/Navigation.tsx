@@ -48,7 +48,9 @@ export function Navigation() {
               >
                 <span
                   className={`px-2 py-1 text-sm font-mono font-semibold leading-[1.2] transition-colors ${
-                    active ? "text-foreground bg-secondary/20" : "text-muted-foreground hover:text-foreground"
+                    active
+                      ? "text-foreground bg-secondary/40 dark:bg-secondary/20"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {item.label}
