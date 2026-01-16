@@ -457,66 +457,52 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
 **Purpose:** Redesign Featured section with category labels and randomization.
 
-- [ ] **5.1 Write tests for Featured section behavior**
+- [x] **5.1 Write tests for Featured section behavior**
 
-    - [ ] **5.1.a Write tests for randomization utility**
-        - Test: `selectFeaturedProjects()` returns 4 projects
-        - Test: Framework slot always returns ARC Framework
-        - Test: Software slots draw from correct pool
-        - Test: Game/Mod slots draw from correct pools
-        - Mock random for deterministic tests
-        - Expect tests to FAIL initially
+    - [x] **5.1.a Write tests for randomization utility**
+        - 19 tests for `selectFeaturedProjects()`: structure, slot types, pool selection, deterministic random
+        - Created `src/lib/__tests__/featured-projects.test.ts`
 
-    - [ ] **5.1.b Write tests for Featured card rendering**
-        - Test: 4 cards render
-        - Test: Each card has type label
-        - Test: Framework card always shows ARC Framework
-        - Expect tests to FAIL initially
+    - [x] **5.1.b Write tests for Featured card rendering**
+        - 13 tests for `FeaturedSection`: card count, titles, type labels, links, accessibility
+        - Created `src/components/sections/__tests__/FeaturedSection.test.tsx`
 
-- [ ] **5.2 Implement randomization logic**
+- [x] **5.2 Implement randomization logic**
 
-    - [ ] **5.2.a Define card slot configuration**
-        - Decide: Option A (Software, Software, Framework, Game OR Mod)
-        - Or: Option B (Software, Framework, Game, Mod)
-        - Document decision in code comments
+    - [x] **5.2.a Define card slot configuration**
+        - Chose: Software, Framework, Game, Mod (one of each type)
 
-    - [ ] **5.2.b Define card pools**
-        - Software pool: CineXplorer, TaskFocus
-        - Framework: ARC Framework (always)
-        - Game pool: ActionRPGProject, SurvivalHorrorProject
-        - Mod pool: subset from Phase 4.1.b
+    - [x] **5.2.b Define card pools**
+        - Software: cinexplorer, taskfocus
+        - Framework: arc-agentic-dev-framework (always)
+        - Game: action-rpg-project, survival-horror-project
+        - Mod: 5 mods (excludes sh2r-never-holster-weapons)
 
-    - [ ] **5.2.c Implement `selectFeaturedProjects()` utility**
-        - Select one from each pool per slot rules
-        - Handle "Game OR Mod" logic if Option A chosen
-        - Randomization tests should now PASS
+    - [x] **5.2.c Implement `selectFeaturedProjects()` utility**
+        - Created `src/lib/featured-projects.ts`
+        - Created `src/components/sections/FeaturedSection.tsx` (client component)
+        - 32 tests passing
 
-- [ ] **5.3 Update Featured card design**
+- [x] **5.3 Update Featured card design**
 
-    - [ ] **5.3.a Add category type labels**
-        - Replace `[project]` with type: "software", "framework", "game", "mod"
-        - Lowercase styling
-        - Position at top of card (current bracket position)
+    - [x] **5.3.a Add category type labels**
+        - Lowercase type labels at top of each card
 
-    - [ ] **5.3.b Add `bg-card` background for description**
-        - Type tag + title: keep transparent (current behavior)
-        - Description text: use `bg-card` (solid, like existing `ProjectCard`)
-        - Maintain visual hierarchy
+    - [x] **5.3.b Add background tokens for header/body**
+        - Type tag + title uses `bg-card/80`, description uses `bg-background/80`
 
-    - [ ] **5.3.c Update section header**
-        - Change "Featured Projects" to "Featured"
-        - Maintain existing styling
+    - [x] **5.3.c Update section header**
+        - Changed to "Featured"
 
-    - [ ] **5.3.d Integrate randomization with client component**
-        - Randomize on page load (client component or useEffect)
-        - Update grid layout for 4 cards
-        - Verify responsive behavior (2x2 on mobile?)
-        - Card rendering tests should now PASS
+    - [x] **5.3.d Integrate randomization with client component**
+        - Replaced inline Home page code with `FeaturedSection` component
+        - Simplified `page.tsx` from 45 lines to 15 lines
+        - Grid layout: 2x2 on desktop, stacked on mobile
 
-- [ ] **5.4 Run Phase 5 quality gates**
-    - [ ] 5.4.a Run full test suite
-    - [ ] 5.4.b Run lint and type-check
-    - [ ] 5.4.c Manual verification of Home page
+- [x] **5.4 Run Phase 5 quality gates**
+    - [x] 5.4.a Run full test suite (1007 tests passing)
+    - [x] 5.4.b Run lint and type-check (pass)
+    - [x] 5.4.c Manual verification of Home page (4 cards, randomization, correct links)
 
 ### **Phase 6:** Final Quality Gates
 
