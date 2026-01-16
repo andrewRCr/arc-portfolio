@@ -343,7 +343,9 @@ export const projects: Project[] = [
     links: {
       github: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer",
       external: "https://www.nexusmods.com/doom/mods/59", // NexusMods community page
-      download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
+      // download link disabled; takes up too much space on mobile and is already available via the other two links
+      // this is unique to this entry: despite being software, it also has mod download stat badges, so space is more limited than most other project entries
+      // download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
     },
     images: {
       thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
