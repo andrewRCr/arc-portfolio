@@ -87,7 +87,12 @@ export function FeaturedSection() {
               <h4 className="font-semibold">{project.title}</h4>
             </div>
             <div className="flex-1 px-4 py-3 bg-background/80">
-              <p className="text-sm text-muted-foreground">{project.shortDescription}</p>
+              <p className="text-sm text-muted-foreground">
+                {type === "mod" && project.game && (
+                  <>{project.category[0]} mod for {project.game}. </>
+                )}
+                {project.shortDescription}
+              </p>
             </div>
           </Link>
         ))}
