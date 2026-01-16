@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DetailHeader } from "@/components/projects/DetailHeader";
+import { DetailHeader, type DetailHeaderStats } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
+import { getModStatsBySlug } from "@/app/actions/nexusmods";
+import { isModStatsError } from "@/lib/nexusmods-types";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -53,6 +55,15 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
   // Use hero image if available, then thumbnail, then first screenshot
   const heroImage = project.images.hero || project.images.thumbnail || project.images.screenshots[0]?.src;
 
+  // Fetch NexusMods stats if project has a NexusMods link (e.g., DOOM NG+ Customizer)
+  let stats: DetailHeaderStats | undefined;
+  if (project.links?.external?.includes("nexusmods.com")) {
+    const statsResult = await getModStatsBySlug(slug);
+    if (!isModStatsError(statsResult)) {
+      stats = { uniqueDownloads: statsResult.uniqueDownloads, endorsements: statsResult.endorsements };
+    }
+  }
+
   return (
     <PageLayout
       stickyHeader
@@ -74,6 +85,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
         backHref={backDest.href}
         backLabel={backDest.label}
         links={project.links}
+        stats={stats}
       />
       <ProjectDetail project={project} />
     </PageLayout>

@@ -18,6 +18,14 @@ import { DetailBannerMobile } from "./DetailBannerMobile";
 import { DetailHeaderDesktop } from "./DetailHeaderDesktop";
 import type { ProjectLinks } from "@/types/project";
 
+/**
+ * Stats to display in the header (from NexusMods API)
+ */
+export interface DetailHeaderStats {
+  uniqueDownloads?: number;
+  endorsements?: number;
+}
+
 export interface DetailHeaderProps {
   /** Project title displayed as h1 */
   title: string;
@@ -31,12 +39,21 @@ export interface DetailHeaderProps {
   backLabel: string;
   /** External project links (GitHub, demo, etc.) */
   links?: ProjectLinks;
+  /** NexusMods stats (optional, for mods) */
+  stats?: DetailHeaderStats;
 }
 
 export function DetailHeader(props: DetailHeaderProps) {
   return (
     <ResponsiveSwitch
-      mobile={<DetailBannerMobile categories={props.categories} heroImage={props.heroImage} links={props.links} />}
+      mobile={
+        <DetailBannerMobile
+          categories={props.categories}
+          heroImage={props.heroImage}
+          links={props.links}
+          stats={props.stats}
+        />
+      }
       desktop={<DetailHeaderDesktop {...props} />}
     />
   );

@@ -6,6 +6,8 @@ import ProjectDetail from "@/components/projects/ProjectDetail";
 import { getBackDestination } from "@/components/projects/utils";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
+import { getModStatsBySlug } from "@/app/actions/nexusmods";
+import { isModStatsError } from "@/lib/nexusmods-types";
 
 interface ModPageProps {
   params: Promise<{
@@ -56,6 +58,12 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
   // Phone uses just the mod title for space
   const fullTitle = mod.game ? `${mod.game}: ${mod.title}` : mod.title;
 
+  // Fetch NexusMods stats (cached server-side)
+  const statsResult = await getModStatsBySlug(slug);
+  const stats = isModStatsError(statsResult)
+    ? undefined
+    : { uniqueDownloads: statsResult.uniqueDownloads, endorsements: statsResult.endorsements };
+
   return (
     <PageLayout
       stickyHeader
@@ -77,6 +85,7 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
         backHref={backDest.href}
         backLabel={backDest.label}
         links={mod.links}
+        stats={stats}
       />
       <ProjectDetail project={mod} />
     </PageLayout>

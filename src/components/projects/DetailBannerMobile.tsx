@@ -14,7 +14,9 @@
 import { DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { buildIconLinkItems } from "./utils/buildLinkItems";
 import { TouchTarget } from "@/components/ui/TouchTarget";
+import { ModStatsGroup } from "./ModStatsBadge";
 import type { ProjectLinks } from "@/types/project";
+import type { DetailHeaderStats } from "./DetailHeader";
 
 export interface DetailBannerMobileProps {
   /** Category badges displayed in footer */
@@ -23,13 +25,16 @@ export interface DetailBannerMobileProps {
   heroImage?: string;
   /** External project links (rendered as icons) */
   links?: ProjectLinks;
+  /** NexusMods stats (optional, for mods) */
+  stats?: DetailHeaderStats;
 }
 
-export function DetailBannerMobile({ categories, heroImage, links }: DetailBannerMobileProps) {
+export function DetailBannerMobile({ categories, heroImage, links, stats }: DetailBannerMobileProps) {
   const hasCategories = categories && categories.length > 0;
+  const hasStats = stats && (stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const iconLinks = buildIconLinkItems(links);
   const hasLinks = iconLinks.length > 0;
-  const hasFooter = hasCategories || hasLinks;
+  const hasFooter = hasCategories || hasStats || hasLinks;
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
   return (
@@ -58,17 +63,19 @@ export function DetailBannerMobile({ categories, heroImage, links }: DetailBanne
             categories && categories.length > 1 ? "py-2" : "py-1"
           }`}
         >
-          {/* Category badges */}
-          {hasCategories ? (
-            <div data-testid="category-badges" className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <span
-                  key={category}
-                  className="rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
-                >
-                  {category}
-                </span>
-              ))}
+          {/* Category badges + stats */}
+          {hasCategories || hasStats ? (
+            <div data-testid="category-badges" className="flex flex-wrap items-center gap-2">
+              {hasCategories &&
+                categories.map((category) => (
+                  <span
+                    key={category}
+                    className="rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
+                  >
+                    {category}
+                  </span>
+                ))}
+              {hasStats && <ModStatsGroup uniqueDownloads={stats.uniqueDownloads} endorsements={stats.endorsements} />}
             </div>
           ) : (
             <div /> // Spacer to push links right

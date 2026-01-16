@@ -14,14 +14,24 @@ import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { buildIconLinkItems } from "./utils/buildLinkItems";
 import { TouchTarget } from "@/components/ui/TouchTarget";
+import { ModStatsGroup } from "./ModStatsBadge";
 import type { DetailHeaderProps } from "./DetailHeader";
 
-export function DetailHeaderDesktop({ title, categories, heroImage, backHref, backLabel, links }: DetailHeaderProps) {
+export function DetailHeaderDesktop({
+  title,
+  categories,
+  heroImage,
+  backHref,
+  backLabel,
+  links,
+  stats,
+}: DetailHeaderProps) {
   const hasCategories = categories && categories.length > 0;
+  const hasStats = stats && (stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const { opacity } = useHeaderCrossfade("out");
   const iconLinks = buildIconLinkItems(links);
   const hasLinks = iconLinks.length > 0;
-  const hasFooter = hasCategories || hasLinks;
+  const hasFooter = hasCategories || hasStats || hasLinks;
 
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
@@ -70,17 +80,19 @@ export function DetailHeaderDesktop({ title, categories, heroImage, backHref, ba
             categories && categories.length > 1 ? "py-1.5" : "py-1"
           }`}
         >
-          {/* Category badges */}
-          {hasCategories ? (
-            <div data-testid="category-badges" className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <span
-                  key={category}
-                  className="rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
-                >
-                  {category}
-                </span>
-              ))}
+          {/* Category badges + stats */}
+          {hasCategories || hasStats ? (
+            <div data-testid="category-badges" className="flex flex-wrap items-center gap-2">
+              {hasCategories &&
+                categories.map((category) => (
+                  <span
+                    key={category}
+                    className="rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
+                  >
+                    {category}
+                  </span>
+                ))}
+              {hasStats && <ModStatsGroup uniqueDownloads={stats.uniqueDownloads} endorsements={stats.endorsements} />}
             </div>
           ) : (
             <div /> // Spacer to push links right
