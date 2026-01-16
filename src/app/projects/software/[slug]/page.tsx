@@ -60,7 +60,11 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
   if (project.links?.external?.includes("nexusmods.com")) {
     const statsResult = await getModStatsBySlug(slug);
     if (!isModStatsError(statsResult)) {
-      stats = { uniqueDownloads: statsResult.uniqueDownloads, endorsements: statsResult.endorsements };
+      stats = {
+        downloads: statsResult.downloads,
+        uniqueDownloads: statsResult.uniqueDownloads,
+        endorsements: statsResult.endorsements,
+      };
     }
   }
 

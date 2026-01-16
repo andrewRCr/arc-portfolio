@@ -319,7 +319,7 @@ export const projects: Project[] = [
   // ==========================================
   {
     id: "doom-newgame-plus-customizer",
-    title: "NewGame+ Customizer for DOOM (2016)",
+    title: "DOOM (2016) NewGame+ Customizer",
     compactTitle: "NewGame+ Customizer",
     slug: "doom-newgame-plus-customizer",
     description:
@@ -347,6 +347,7 @@ export const projects: Project[] = [
     },
     images: {
       thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
+      hero: "/projects/doom-newgame-plus-customizer/hero.webp",
       screenshots: [
         {
           src: "/projects/doom-newgame-plus-customizer/screenshot-1.webp",
