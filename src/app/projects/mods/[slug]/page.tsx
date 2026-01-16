@@ -62,7 +62,11 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
   const statsResult = await getModStatsBySlug(slug);
   const stats = isModStatsError(statsResult)
     ? undefined
-    : { uniqueDownloads: statsResult.uniqueDownloads, endorsements: statsResult.endorsements };
+    : {
+        downloads: statsResult.downloads,
+        uniqueDownloads: statsResult.uniqueDownloads,
+        endorsements: statsResult.endorsements,
+      };
 
   return (
     <PageLayout

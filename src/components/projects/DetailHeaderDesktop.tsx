@@ -27,7 +27,8 @@ export function DetailHeaderDesktop({
   stats,
 }: DetailHeaderProps) {
   const hasCategories = categories && categories.length > 0;
-  const hasStats = stats && (stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
+  const hasStats =
+    stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const { opacity } = useHeaderCrossfade("out");
   const iconLinks = buildIconLinkItems(links);
   const hasLinks = iconLinks.length > 0;
@@ -76,8 +77,7 @@ export function DetailHeaderDesktop({
       {/* Tighter padding for single row, more room when categories may wrap */}
       {hasFooter && (
         <div
-          className={`flex items-center justify-between gap-4 px-4 bg-card/80 rounded-b-lg ${
-            categories && categories.length > 1 ? "py-1.5" : "py-1"
+          className={`flex items-center justify-between gap-4 px-4 py-3 bg-card/80 rounded-b-lg
           }`}
         >
           {/* Category badges + stats */}
@@ -87,22 +87,49 @@ export function DetailHeaderDesktop({
                 categories.map((category) => (
                   <span
                     key={category}
-                    className="rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
+                    className="min-h-6 rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
                   >
                     {category}
                   </span>
                 ))}
-              {hasStats && <ModStatsGroup uniqueDownloads={stats.uniqueDownloads} endorsements={stats.endorsements} />}
+              {hasStats && (
+                <ModStatsGroup
+                  downloads={stats.downloads}
+                  uniqueDownloads={stats.uniqueDownloads}
+                  endorsements={stats.endorsements}
+                />
+              )}
             </div>
           ) : (
             <div /> // Spacer to push links right
           )}
 
-          {/* Icon links - ghost buttons */}
+          {/* Icon links - ghost buttons, or outline button when single NexusMods link */}
           {hasLinks && (
             <div data-testid="header-links" className="flex items-center">
               {iconLinks.map((link, index) => {
                 const Icon = link.icon;
+                const showAsButton = iconLinks.length === 1 && link.label === "NexusMods";
+
+                if (showAsButton) {
+                  // Custom styled link matching category badge sizing
+                  // leading-none eliminates line-height padding that causes icon/text misalignment
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={link.ariaLabel}
+                      className="inline-flex min-h-6 items-center gap-1.5 rounded px-2 py-0.5 text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                      {/* mt-px: optical alignment - SVG box model sits higher than text baseline */}
+                      <Icon size={16} className="shrink-0 mt-px" />
+                      <span>{link.label}</span>
+                    </a>
+                  );
+                }
+
                 return (
                   <TouchTarget key={link.label} align={index === iconLinks.length - 1 ? "end" : "center"}>
                     <a

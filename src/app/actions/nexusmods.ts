@@ -10,13 +10,14 @@
  */
 
 import { unstable_cache } from "next/cache";
-import { NEXUSMODS_CONFIG, MOD_REGISTRY, DISPLAYED_MODS, type NexusModEntry } from "@/config/nexusmods";
 import {
-  isModStatsError,
-  type ModStats,
-  type ModStatsResult,
-  type AggregateStatsResult,
-} from "@/lib/nexusmods-types";
+  NEXUSMODS_CONFIG,
+  ALL_MODS_FOR_AGGREGATE,
+  DISPLAYED_MODS,
+  HIDDEN_MODS_DOWNLOAD_TALLY,
+  type NexusModEntry,
+} from "@/config/nexusmods";
+import { isModStatsError, type ModStatsResult, type AggregateStatsResult } from "@/lib/nexusmods-types";
 
 /**
  * Build headers required by NexusMods API
@@ -169,13 +170,15 @@ async function fetchAggregateStatsInternal(): Promise<AggregateStatsResult> {
   let successCount = 0;
 
   // Fetch all mods in parallel (respecting that we have 600 request quota)
-  const results = await Promise.all(MOD_REGISTRY.map((mod) => fetchModStatsInternal(mod.game, mod.modId)));
+  // Includes hidden mods to match NexusMods profile page total
+  const results = await Promise.all(ALL_MODS_FOR_AGGREGATE.map((mod) => fetchModStatsInternal(mod.game, mod.modId)));
 
   for (const result of results) {
     if (!isModStatsError(result)) {
-      totalDownloads += result.downloads;
-      totalUniqueDownloads += result.uniqueDownloads;
-      totalEndorsements += result.endorsements;
+      // Hidden mods return undefined for downloads - skip those values
+      totalDownloads += result.downloads ?? 0;
+      totalUniqueDownloads += result.uniqueDownloads ?? 0;
+      totalEndorsements += result.endorsements ?? 0;
       successCount++;
     }
   }
@@ -189,6 +192,11 @@ async function fetchAggregateStatsInternal(): Promise<AggregateStatsResult> {
     };
   }
 
+  // Add manual tally for hidden mods (API returns undefined for their downloads)
+  // These values captured manually from NexusMods before mods were hidden
+  totalDownloads += HIDDEN_MODS_DOWNLOAD_TALLY.downloads;
+  totalUniqueDownloads += HIDDEN_MODS_DOWNLOAD_TALLY.uniqueDownloads;
+
   return {
     totalDownloads,
     totalUniqueDownloads,
@@ -201,8 +209,8 @@ async function fetchAggregateStatsInternal(): Promise<AggregateStatsResult> {
 /**
  * Get aggregate stats across all mods (cached)
  *
- * Sums downloads, unique downloads, and endorsements across all 35 mods
- * in the registry.
+ * Sums downloads, unique downloads, and endorsements across all 38 mods
+ * (35 registry + 3 hidden mods).
  *
  * @returns Aggregate stats or error
  */

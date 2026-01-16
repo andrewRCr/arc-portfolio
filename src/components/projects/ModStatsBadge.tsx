@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * ModStatsBadge - Display NexusMods statistics with icon
  *
@@ -6,7 +8,9 @@
 
 import { Download, ThumbsUp, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { formatStatNumber } from "@/lib/nexusmods";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 
 export type ModStatType = "downloads" | "uniqueDownloads" | "endorsements";
@@ -27,22 +31,26 @@ const statConfig: Record<
   {
     icon: typeof Download;
     label: string;
+    tooltip: string;
     ariaLabel: (value: number) => string;
   }
 > = {
   downloads: {
     icon: Download,
     label: "downloads",
+    tooltip: "Total Downloads",
     ariaLabel: (v) => `${v.toLocaleString()} total downloads`,
   },
   uniqueDownloads: {
     icon: Users,
     label: "unique downloads",
+    tooltip: "Unique Downloads",
     ariaLabel: (v) => `${v.toLocaleString()} unique downloads`,
   },
   endorsements: {
     icon: ThumbsUp,
     label: "endorsements",
+    tooltip: "Endorsements",
     ariaLabel: (v) => `${v.toLocaleString()} endorsements`,
   },
 };
@@ -64,15 +72,80 @@ export function ModStatsBadge({ value, type, className, showRaw = false }: ModSt
   const displayValue = showRaw ? value.toLocaleString() : formatStatNumber(value);
 
   return (
-    <Badge variant="secondary" className={cn("gap-1.5", className)} aria-label={config.ariaLabel(value)}>
-      <Icon className="size-3" aria-hidden="true" />
-      <span>{displayValue}</span>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Badge variant="secondary" className={cn("gap-1.5", className)} aria-label={config.ariaLabel(value)}>
+          <Icon className="size-3" aria-hidden="true" />
+          <span>{displayValue}</span>
+        </Badge>
+      </TooltipTrigger>
+      <TooltipContent>{config.tooltip}</TooltipContent>
+    </Tooltip>
+  );
+}
+
+/**
+ * Compact badge combining multiple stats in one (for phone viewports)
+ * Renders: [👍 212 · 👥 6K · ⬇️ 9K]
+ */
+interface ModStatsCompactProps {
+  downloads?: number;
+  uniqueDownloads?: number;
+  endorsements?: number;
+  className?: string;
+}
+
+function ModStatsCompact({ downloads, uniqueDownloads, endorsements, className }: ModStatsCompactProps) {
+  // Build array of stats to display
+  const stats: Array<{ icon: typeof Download; value: string; label: string }> = [];
+
+  if (endorsements !== undefined) {
+    stats.push({
+      icon: ThumbsUp,
+      value: formatStatNumber(endorsements),
+      label: `${endorsements.toLocaleString()} endorsements`,
+    });
+  }
+  if (uniqueDownloads !== undefined) {
+    stats.push({
+      icon: Users,
+      value: formatStatNumber(uniqueDownloads),
+      label: `${uniqueDownloads.toLocaleString()} unique downloads`,
+    });
+  }
+  if (downloads !== undefined) {
+    stats.push({
+      icon: Download,
+      value: formatStatNumber(downloads),
+      label: `${downloads.toLocaleString()} total downloads`,
+    });
+  }
+
+  if (stats.length === 0) return null;
+
+  const ariaLabel = stats.map((s) => s.label).join(", ");
+
+  return (
+    <Badge variant="secondary" className={cn("gap-1", className)} aria-label={ariaLabel}>
+      {stats.map((stat, index) => {
+        const Icon = stat.icon;
+        return (
+          <span key={index} className="inline-flex items-center gap-1">
+            {index > 0 && <span className="text-muted-foreground">·</span>}
+            <Icon className="size-3" aria-hidden="true" />
+            <span>{stat.value}</span>
+          </span>
+        );
+      })}
     </Badge>
   );
 }
 
 /**
  * Group of stat badges for displaying multiple stats together
+ *
+ * On phone: renders a single compact badge combining all stats
+ * On tablet/desktop: renders separate badges for each stat
  *
  * @example
  * <ModStatsGroup
@@ -92,16 +165,30 @@ interface ModStatsGroupProps {
 }
 
 export function ModStatsGroup({ downloads, uniqueDownloads, endorsements, className }: ModStatsGroupProps) {
+  const isPhone = useIsPhone();
   const hasStats = downloads !== undefined || uniqueDownloads !== undefined || endorsements !== undefined;
 
   if (!hasStats) {
     return null;
   }
 
+  // Phone: single compact badge with all stats
+  if (isPhone) {
+    return (
+      <ModStatsCompact
+        downloads={downloads}
+        uniqueDownloads={uniqueDownloads}
+        endorsements={endorsements}
+        className={className}
+      />
+    );
+  }
+
+  // Tablet/Desktop: separate badges
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      {uniqueDownloads !== undefined && <ModStatsBadge type="uniqueDownloads" value={uniqueDownloads} />}
       {endorsements !== undefined && <ModStatsBadge type="endorsements" value={endorsements} />}
+      {uniqueDownloads !== undefined && <ModStatsBadge type="uniqueDownloads" value={uniqueDownloads} />}
       {downloads !== undefined && <ModStatsBadge type="downloads" value={downloads} />}
     </div>
   );

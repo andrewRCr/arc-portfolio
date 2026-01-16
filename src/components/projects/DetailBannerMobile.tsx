@@ -12,6 +12,7 @@
  */
 
 import { DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 import { buildIconLinkItems } from "./utils/buildLinkItems";
 import { TouchTarget } from "@/components/ui/TouchTarget";
 import { ModStatsGroup } from "./ModStatsBadge";
@@ -30,12 +31,20 @@ export interface DetailBannerMobileProps {
 }
 
 export function DetailBannerMobile({ categories, heroImage, links, stats }: DetailBannerMobileProps) {
+  const isPhone = useIsPhone();
   const hasCategories = categories && categories.length > 0;
-  const hasStats = stats && (stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
+  const hasStats =
+    stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const iconLinks = buildIconLinkItems(links);
   const hasLinks = iconLinks.length > 0;
   const hasFooter = hasCategories || hasStats || hasLinks;
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
+
+  // Extra padding on phone when content may wrap:
+  // - Multiple categories (software projects), or
+  // - Game title with stats (even short names like "Elden Ring" cause wrapping on phone)
+  const mayWrap = (categories && categories.length > 1) || (hasCategories && hasStats);
+  const needsExtraPadding = isPhone && mayWrap;
 
   return (
     <div data-testid="hero-banner">
@@ -56,11 +65,11 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
       </div>
 
       {/* Footer: category badges (left) + icon links (right) */}
-      {/* Use tighter padding when single row (0-1 categories), more breathing room when categories may wrap */}
+      {/* Extra vertical padding on phone when content wraps (long game title + stats, or multiple categories) */}
       {hasFooter && (
         <div
           className={`flex items-center justify-between gap-4 px-4 bg-card/80 rounded-b-lg ${
-            categories && categories.length > 1 ? "py-2" : "py-1"
+            needsExtraPadding ? "py-2" : "py-1"
           }`}
         >
           {/* Category badges + stats */}
@@ -75,7 +84,13 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
                     {category}
                   </span>
                 ))}
-              {hasStats && <ModStatsGroup uniqueDownloads={stats.uniqueDownloads} endorsements={stats.endorsements} />}
+              {hasStats && (
+                <ModStatsGroup
+                  downloads={stats.downloads}
+                  uniqueDownloads={stats.uniqueDownloads}
+                  endorsements={stats.endorsements}
+                />
+              )}
             </div>
           ) : (
             <div /> // Spacer to push links right
@@ -86,6 +101,24 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
             <div data-testid="header-links" className="flex items-center">
               {iconLinks.map((link, index) => {
                 const Icon = link.icon;
+                const showAsOutline = iconLinks.length === 1 && link.label === "NexusMods";
+
+                if (showAsOutline) {
+                  // Single NexusMods link: outline button style
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={link.ariaLabel}
+                      className="inline-flex items-center justify-center rounded-md border border-border p-2 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                      <Icon size={18} />
+                    </a>
+                  );
+                }
+
                 return (
                   <TouchTarget key={link.label} align={index === iconLinks.length - 1 ? "end" : "center"}>
                     <a

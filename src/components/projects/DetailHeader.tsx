@@ -22,6 +22,7 @@ import type { ProjectLinks } from "@/types/project";
  * Stats to display in the header (from NexusMods API)
  */
 export interface DetailHeaderStats {
+  downloads?: number;
   uniqueDownloads?: number;
   endorsements?: number;
 }

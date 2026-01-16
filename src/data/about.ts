@@ -16,7 +16,7 @@ export const about: About = {
     "Previously a graduate student in psychology, I fell in love with programming and pivoted to computer science. " +
       "In my free time, I have a hobbyist interest in video game development - both programming as well as 3D modeling " +
       "and animation. I also enjoy reverse engineering and modifying existing games, focusing on gameplay adjustments. " +
-      "My [modding work](https://next.nexusmods.com/profile/andrewRCr/mods) has reached over 300 thousand unique user downloads.",
+      "My {{MODDING_LINK}} has reached {{DOWNLOAD_COUNT}} unique user downloads.",
 
     "I'm eager to add value to your team's project while continuing to grow my toolkit and expand my knowledge.",
   ],

@@ -96,14 +96,27 @@ describe("ModStatsGroup", () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it("renders stats in correct order (uniqueDownloads, endorsements, downloads)", () => {
-    const { container } = render(<ModStatsGroup downloads={1000} uniqueDownloads={500} endorsements={50} />);
-    const badges = container.querySelectorAll("[data-slot='badge']");
-    expect(badges).toHaveLength(3);
-    // Order: uniqueDownloads first, then endorsements, then downloads
-    expect(badges[0]).toHaveTextContent("500");
-    expect(badges[1]).toHaveTextContent("50");
-    expect(badges[2]).toHaveTextContent("1K");
+  it("renders stats in correct order (endorsements, uniqueDownloads, downloads)", () => {
+    render(<ModStatsGroup downloads={1000} uniqueDownloads={500} endorsements={50} />);
+    // Query by aria-label (more semantic than data-slot which gets overwritten by Tooltip)
+    const endorsements = screen.getByLabelText("50 endorsements");
+    const uniqueDownloads = screen.getByLabelText("500 unique downloads");
+    const downloads = screen.getByLabelText("1,000 total downloads");
+
+    // Verify all three badges exist
+    expect(endorsements).toBeInTheDocument();
+    expect(uniqueDownloads).toBeInTheDocument();
+    expect(downloads).toBeInTheDocument();
+
+    // Verify order by checking DOM position (endorsements should come first)
+    const parent = endorsements.parentElement;
+    const children = Array.from(parent?.children || []);
+    const endorsementsIndex = children.indexOf(endorsements);
+    const uniqueDownloadsIndex = children.indexOf(uniqueDownloads);
+    const downloadsIndex = children.indexOf(downloads);
+
+    expect(endorsementsIndex).toBeLessThan(uniqueDownloadsIndex);
+    expect(uniqueDownloadsIndex).toBeLessThan(downloadsIndex);
   });
 
   it("accepts custom className", () => {

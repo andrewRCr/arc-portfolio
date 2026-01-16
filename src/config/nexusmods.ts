@@ -9,8 +9,8 @@ export const NEXUSMODS_CONFIG = {
   /** API base URL */
   baseUrl: "https://api.nexusmods.com/v1",
 
-  /** Cache duration in seconds (24 hours) */
-  cacheTtl: 86400,
+  /** Cache duration in seconds (6 hours = 4 refreshes per day) */
+  cacheTtl: 21600,
 
   /** Application identification for API headers */
   appName: "arc-portfolio",
@@ -32,11 +32,13 @@ export interface NexusModEntry {
 }
 
 /**
- * All mods by author - used for aggregate stats calculation
+ * Public mods by author - core registry for portfolio display
  *
- * 35 total mods:
+ * 35 public mods:
  * - 7 displayed in portfolio (with portfolioSlug for matching)
- * - 28 additional mods contributing to aggregate totals
+ * - 28 additional public mods
+ *
+ * See also: HIDDEN_MODS (3 mods) and ALL_MODS_FOR_AGGREGATE (38 total)
  */
 export const MOD_REGISTRY: NexusModEntry[] = [
   // ============================================
@@ -119,19 +121,43 @@ export const MOD_REGISTRY: NexusModEntry[] = [
 ];
 
 /**
- * Hidden mods (currently not public on NexusMods)
+ * Hidden mods (not public on NexusMods but still have downloads)
  *
- * These may still contribute to author profile totals on NexusMods.
- * Kept separate for comparison - if our calculated total doesn't match
- * the profile page, we can add these to reconcile.
+ * These contribute to author profile totals on NexusMods.
+ * Included in aggregate stats to match the profile page total.
+ * Note: API returns undefined for download counts on hidden mods,
+ * so we track them separately with manual tallies.
  */
-export const HIDDEN_MODS: Omit<NexusModEntry, "displayed">[] = [
-  { game: "thefirstberserkerkhazan", modId: 88 },
-  { game: "eldenringnightreign", modId: 51 },
-  { game: "doomthedarkages", modId: 34 },
+export const HIDDEN_MODS: NexusModEntry[] = [
+  { game: "thefirstberserkerkhazan", modId: 88, displayed: false },
+  { game: "eldenringnightreign", modId: 51, displayed: false },
+  { game: "doomthedarkages", modId: 34, displayed: false },
 ];
+
+/**
+ * Manual download tally for hidden mods
+ *
+ * NexusMods API returns undefined for download counts on hidden mods,
+ * but they still count toward the profile total. These values were
+ * captured manually from the mod pages.
+ *
+ * Breakdown:
+ * - thefirstberserkerkhazan/88: 83 unique, 94 total
+ * - eldenringnightreign/51: 672 unique, 992 total
+ * - doomthedarkages/34: 123 unique, 235 total
+ *
+ * Last updated: 2026-01-16
+ */
+export const HIDDEN_MODS_DOWNLOAD_TALLY = {
+  downloads: 1321, // 94 + 992 + 235
+  uniqueDownloads: 878, // 83 + 672 + 123
+};
 
 // Derived constants
 export const DISPLAYED_MODS = MOD_REGISTRY.filter((mod) => mod.displayed);
-export const TOTAL_MOD_COUNT = MOD_REGISTRY.length;
+
+/** All mods for aggregate stats (registry + hidden) */
+export const ALL_MODS_FOR_AGGREGATE = [...MOD_REGISTRY, ...HIDDEN_MODS];
+
+export const TOTAL_MOD_COUNT = ALL_MODS_FOR_AGGREGATE.length;
 export const DISPLAYED_MOD_COUNT = DISPLAYED_MODS.length;
