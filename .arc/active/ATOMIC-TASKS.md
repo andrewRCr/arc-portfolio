@@ -30,4 +30,18 @@
 
 ## Active
 
-[none]
+- [ ] **Evaluate secondary token strength in certain themes**
+    - Issue: `secondary` token is visually too strong in gruvbox and ayu themes (dark mode)
+    - Affects: ModStatsBadge (new), potentially other Badge uses
+    - Does NOT affect: Navigation backgrounds (use `/20` modifier, works fine)
+    - Options to evaluate:
+        1. Add semantic tokens like `secondary-muted` with built-in opacity
+        2. Adjust base secondary values for problem themes only
+        3. Use different variant for stat badges specifically
+    - Goal: Targeted fix that doesn't impact working areas (nav /20, non-problem themes)
+
+- [ ] **Audit light mode token issues across themes**
+    - Issue: Some themes have token problems in light mode (untested, app defaults to dark)
+    - Scope: Systematic audit of all 6 themes in light mode
+    - Identify: Contrast issues, readability problems, visual inconsistencies
+    - May overlap with secondary token issue above

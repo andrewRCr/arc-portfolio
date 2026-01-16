@@ -384,7 +384,7 @@ section, Project Detail pages with proper headers and image galleries, Games tab
     - [x] 4.4.b Run lint and type-check (all passing)
     - [x] 4.4.c Build successful
 
-- [ ] **4.5 Add NexusMods download stats infrastructure**
+- [x] **4.5 Add NexusMods download stats infrastructure**
 
     **Goal:** Display dynamic download stats from NexusMods API for mods (individual + aggregate).
 
@@ -431,23 +431,27 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Graceful fallback: no stats shown if API error or unavailable
         - Created `src/lib/nexusmods-types.ts` for types + type guard (Turbopack compatibility)
 
-    - [ ] **4.5.f Add aggregate stats to About and Contact pages**
-        - Replace static download count on About page with dynamic aggregate value
-        - Add aggregate badge near NexusMods social link on Contact page
-        - Graceful fallback if API unavailable
+    - [x] **4.5.f Add aggregate stats to About and Contact pages**
+        - `AboutSection` accepts `uniqueDownloads` prop, uses placeholder substitution
+        - About page fetches `getAggregateStats()`, passes `totalUniqueDownloads`
+        - Fallback: "over 300 thousand"; API value styled as inline `<code>`
+        - Included hidden mods in aggregate via `HIDDEN_MODS_DOWNLOAD_TALLY`
+        - Reduced cache TTL from 24h to 6h
+        - Contact page skipped (doesn't fit page purpose)
 
-    - [ ] **4.5.g Visual polish of stats badges**
-        - Design iteration on badge styling (colors, spacing, icons)
-        - Evaluate placement in DetailHeader (next to game badge vs separate row)
-        - Mobile vs desktop layout considerations
-        - Ensure visual consistency with existing design system
+    - [x] **4.5.g Visual polish of stats badges**
+        - Fixed icon/text alignment: `leading-none` + `mt-px` optical adjustment
+        - Added hover tooltips on desktop (Endorsements, Unique Downloads, Total Downloads)
+        - Added total downloads as third stat badge
+        - Phone: compact combined badge `[👍 · 👥 · ⬇️]` saves horizontal space
+        - Desktop: separate badges with tooltips
+        - NexusMods link: `min-h-6` matching category badges, outline button on phone
+        - About page download count: inline code styling when API value available
+        - Secondary token strength issue deferred to ATOMIC-TASKS.md
 
-    - [ ] **4.5.h Run Phase 4.5 quality gates**
-        - Type check, lint, format, markdown lint
-        - Run tests (new + existing)
-        - Manual verification of stats display
-        - Run tests (new + existing)
-        - Manual verification of stats display
+    - [x] **4.5.h Run Phase 4.5 quality gates**
+        - All quality gates pass (type check, lint, format, markdown lint, build, tests)
+        - 978 tests passing
 
 ### **Phase 5:** Home Featured Section
 
