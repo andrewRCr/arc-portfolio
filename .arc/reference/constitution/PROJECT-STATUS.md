@@ -19,9 +19,10 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ Theme & Wallpaper Control System (feature) - 2026-01-13
-    - Unified theme/wallpaper controls, cookie-first SSR, 6 themes, 36 wallpapers, 862 unit + 67 E2E tests
-    - [Archive](../archive/2026-q1/feature/02_theme-wallpaper-controls/)
+- ✅ Content Polish P1 (feature) - 2026-01-18
+    - Project showcase: DetailHeader with hero images, image gallery, 3-tab Projects page, 6 mods with NexusMods API, Featured section
+    - 1002 unit tests, 199 E2E tests
+    - [Archive](../archive/2026-q1/feature/03_content-polish-p1/)
 
 **Currently Active:**
 
@@ -29,7 +30,7 @@ contemporary web development practices.
 
 **Next Priority:**
 
-- Content Polish (feature) - Project detail pages, Skills reorganization, About/Contact copy, Home skills grid
+- Content Polish P2 (feature) - Skills page reorganization, About/Contact copy polish
 
 ---
 
@@ -39,7 +40,8 @@ contemporary web development practices.
 
 - ✅ TWM Layout System - Three-window layout, wallpaper system, responsive adaptation
 - ✅ Theme & Wallpaper Control System - Unified controls, cookie-first SSR, 6 themes, 36 wallpapers
-- **Content Polish** (next) - Project detail pages, Skills reorganization, About/Contact copy
+- ✅ Content Polish P1 - Project showcase, DetailHeader, image gallery, 3-tab Projects, NexusMods API
+- **Content Polish P2** (next) - Skills page reorganization, About/Contact copy polish
 - **Visual Polish** - TWM startup animation, Framer Motion transitions, micro-interactions
 
 ### Phase C: Launch
@@ -120,6 +122,15 @@ contemporary web development practices.
 - **Wallpaper system**: 36 wallpapers with theme compatibility tags, enable/disable toggle, per-theme preferences
 - **Responsive layout modes**: Wide/boxed on desktop, full/boxed on mobile with space-optimized fullscreen
 - **Test coverage**: 862 unit tests, 67 E2E tests, WCAG 2.1 AA accessibility validation
+
+### ✅ Content Polish P1 - Project Showcase
+
+- **DetailHeader system**: Sticky header with hero image, crossfade animation between full and compact on scroll
+- **Image gallery**: Lightbox with thumbnails, "+X more" overlay, zoom support, themed to match design system
+- **Projects page**: Three-tab structure (Software/Games/Mods), unified ProjectCard with category routing
+- **NexusMods integration**: Server actions with 6-hour cache, live stats on mod detail pages, aggregate on About
+- **Featured section**: Redesigned Home hero with category labels, client-side randomization from pools
+- **Test coverage**: 1002 unit tests, 199 E2E tests
 
 ---
 

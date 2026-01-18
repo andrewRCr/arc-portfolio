@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-18
 
 ---
 
@@ -34,38 +34,41 @@ Transform placeholder styling into distinctive, polished design.
    - Unified theme/wallpaper controls, cookie-first SSR, 6 themes, 36 wallpapers, 862+67 tests
    - [Archive](../reference/archive/2026-q1/feature/02_theme-wallpaper-controls/)
 
-5. **Content Polish**
-   - Plan: `.arc/backlog/feature/plan-content-polish.md`
-   - Rationale: Pages need structural completion before animation polish
-   - Scope: Project detail pages (header, images, copy), Skills page reorganization,
-     About copy pass, Contact form + polish, Home skills logo grid
-   - Dependencies: Theme & Wallpaper Control System (styling framework complete)
+5. ✅ **Content Polish P1** (2026-01-18)
+   - Project showcase: DetailHeader, image gallery, 3-tab Projects, NexusMods API, Featured section
+   - 1002 unit tests, 199 E2E tests
+   - [Archive](../reference/archive/2026-q1/feature/03_content-polish-p1/)
 
-6. **Visual Polish**
+6. **Content Polish P2**
+   - Plan: `.arc/backlog/feature/plan-content-polish-p2.md`
+   - Scope: Skills page reorganization, About/Contact copy polish
+   - Dependencies: Content Polish P1 (project showcase complete)
+
+7. **Visual Polish**
    - Plan: `.arc/backlog/feature/plan-twm-startup-animation.md` (primary)
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md` (additional items)
    - Rationale: Animation/transition layer after pages are structurally complete
    - Scope: TWM startup animation, Framer Motion transitions, micro-interactions, loading states
-   - Dependencies: Content Polish (can't animate incomplete pages)
+   - Dependencies: Content Polish P2 (can't animate incomplete pages)
 
 ### Phase C: Launch
 
 Production readiness and deployment.
 
-7. **Feature Flag System**
+8. **Feature Flag System**
    - Rationale: Unified infrastructure for dev-only content, incomplete projects, and future feature rollouts
    - Scope: Centralized flag definitions, environment-based defaults (dev vs prod), type-safe API
    - Consolidates: Dev pages visibility, mods tab gating, incomplete project hiding
    - Enables: Deploy v1.0 without waiting for all projects; enable incrementally as completed
 
-8. **SEO & Meta Tags**
+9. **SEO & Meta Tags**
    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
    - Rationale: Discoverability and social sharing
    - Scope: Open Graph (social previews), structured data (search), sitemap, robots.txt
 
-9. **Deployment**
-   - Rationale: Final step; requires all above complete
-   - Scope: Vercel setup, domain transfer, production config
+10. **Deployment**
+    - Rationale: Final step; requires all above complete
+    - Scope: Vercel setup, domain transfer, production config
 
 ---
 
@@ -92,7 +95,10 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
                                                Theme & Wallpaper Controls
                                                             │
                                                             ▼
-                                                      Content Polish
+                                                    Content Polish P1
+                                                            │
+                                                            ▼
+                                                    Content Polish P2
                                                             │
                                                             ▼
                                                       Visual Polish
@@ -154,6 +160,8 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Change Log
 
+- **2026-01-18**: Content Polish P1 completed and archived. Split into P1 (project showcase) and P2 (skills/about/contact).
+  Renumbered items 7-9 to 8-10.
 - **2026-01-13**: Theme & Wallpaper Control System completed and archived
 - **2026-01-06**: TWM Layout System completed and archived
 - **2026-01-01**: Added Theme & Wallpaper Control System (B4), renumbered subsequent items. Broken out
