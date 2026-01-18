@@ -1,7 +1,7 @@
 # PRD: Content Polish P1 - Project Showcase
 
 **Type:** Feature
-**Status:** Ready for Implementation
+**Status:** Complete
 **Created:** 2026-01-13
 
 ---
@@ -106,21 +106,22 @@ on Home and Projects - the core of what visitors come to see. P2 (separate PRD) 
 
 ## Success Criteria
 
-- [ ] Home Featured section displays 4 cards with category labels and randomization
-- [ ] Projects page has 3 functional tabs (Software/Games/Mods)
-- [ ] All project detail pages have sticky DetailHeader with hero image and badges
-- [ ] All project detail pages have functional image gallery with lightbox
-- [ ] 6-9 mods fully migrated with images and copy
-- [ ] All existing software projects have light copy editing pass completed
-- [ ] All game projects properly categorized and accessible via Games tab
+- [x] Home Featured section displays 4 cards with category labels and randomization
+- [x] Projects page has 3 functional tabs (Software/Games/Mods)
+- [x] All project detail pages have sticky DetailHeader with hero image and badges
+- [x] All project detail pages have functional image gallery with lightbox
+- [x] 6-9 mods fully migrated with images and copy
+- [x] All existing software projects have light copy editing pass completed
+- [x] All game projects properly categorized and accessible via Games tab
 
-## Open Questions
+## Open Questions (Resolved)
 
-1. **Featured layout:** Option A (2 software slots) vs Option B (all categories)? Leaning A for software emphasis.
-2. **Framework label:** "framework" vs "toolkit" - depends on final ARC naming
-3. **Hero image in header:** Feasibility given TWM space constraints - may need design exploration
-4. **DetailHeader inheritance:** Can we extend PageHeader, or does it need to be distinct?
-5. **Mod selection:** Which 6-9 mods for Mods tab, and which subset for Featured pool? (Decision needed before migration)
+1. **Featured layout:** Chose Option B (Software, Framework, Game, Mod) - one of each type for variety.
+2. **Framework label:** Used "framework" - aligns with naming conventions.
+3. **Hero image in header:** Implemented 3.5:1 aspect ratio banner with crossfade animation on scroll.
+4. **DetailHeader inheritance:** Created as sibling to PageHeader (distinct component) - both work in
+   PageLayout's header slot.
+5. **Mod selection:** Selected 6 mods for Mods tab; 5 in Featured pool (excludes sh2r-never-holster-weapons).
 
 ## Related Documentation
 
