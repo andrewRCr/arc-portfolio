@@ -20,7 +20,7 @@ contemporary web development practices.
 **Last Completed:**
 
 - ✅ Content Polish P1 (feature) - 2026-01-18
-    - Project showcase: DetailHeader with hero images, image gallery, 3-tab Projects page, 6 mods with NexusMods API, Featured section
+    - Project showcase: DetailHeader, image gallery, 3-tab Projects, NexusMods API, Featured section
     - 1002 unit tests, 199 E2E tests
     - [Archive](../archive/2026-q1/feature/03_content-polish-p1/)
 
