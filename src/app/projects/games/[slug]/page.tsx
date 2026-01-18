@@ -5,6 +5,7 @@ import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
+import { getHeroImage } from "@/lib/project-utils";
 
 interface GamePageProps {
   params: Promise<{
@@ -43,8 +44,7 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
     : "games";
   const backDest = getBackDestination(from, currentTab);
 
-  // Use hero image if available, then thumbnail, then first screenshot
-  const heroImage = project.images.hero || project.images.thumbnail || project.images.screenshots[0]?.src;
+  const heroImage = getHeroImage(project.images);
 
   return (
     <PageLayout

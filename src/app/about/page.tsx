@@ -11,7 +11,7 @@ export default async function AboutPage() {
   const uniqueDownloads = isModStatsError(aggregateStats) ? undefined : aggregateStats.totalUniqueDownloads;
 
   return (
-    <PageLayout header={<PageHeader title="About" subtitle="Background and qualifications." />}>
+    <PageLayout pageId="about" header={<PageHeader title="About" subtitle="Background and qualifications." />}>
       <div className="space-y-8">
         <AboutSection uniqueDownloads={uniqueDownloads} />
         <EducationSection />

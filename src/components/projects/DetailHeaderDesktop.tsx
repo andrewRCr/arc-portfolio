@@ -111,19 +111,21 @@ export function DetailHeaderDesktop({
                 if (showAsButton) {
                   // Custom styled link matching category badge sizing
                   // leading-none eliminates line-height padding that causes icon/text misalignment
+                  // TouchTarget ensures 44px touch area for tablet accessibility
                   return (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.ariaLabel}
-                      className="inline-flex min-h-6 items-center gap-1.5 rounded px-2 py-0.5 text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                    >
-                      {/* mt-px: optical alignment - SVG box model sits higher than text baseline */}
-                      <Icon size={16} className="shrink-0 mt-px" />
-                      <span>{link.label}</span>
-                    </a>
+                    <TouchTarget key={link.label} align="end">
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={link.ariaLabel}
+                        className="inline-flex min-h-6 items-center gap-1.5 rounded px-2 py-0.5 text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                      >
+                        {/* mt-px: optical alignment - SVG box model sits higher than text baseline */}
+                        <Icon size={16} className="shrink-0 mt-px" />
+                        <span>{link.label}</span>
+                      </a>
+                    </TouchTarget>
                   );
                 }
 

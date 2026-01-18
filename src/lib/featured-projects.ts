@@ -61,6 +61,16 @@ function selectRandom<T>(pool: T[]): T {
  * @returns Array of 4 FeaturedProject objects with slug and type
  */
 export function selectFeaturedProjects(): FeaturedProject[] {
+  if (SOFTWARE_POOL.length === 0) {
+    throw new Error("No featured software projects available");
+  }
+  if (GAME_POOL.length === 0) {
+    throw new Error("No featured game projects available");
+  }
+  if (MOD_POOL.length === 0) {
+    throw new Error("No featured mod projects available");
+  }
+
   return [
     { slug: selectRandom(SOFTWARE_POOL), type: "software" },
     { slug: FRAMEWORK_SLUG, type: "framework" },

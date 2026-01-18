@@ -43,8 +43,11 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
   // Extra padding on phone when content may wrap:
   // - Multiple categories (software projects), or
   // - Game title with stats (even short names like "Elden Ring" cause wrapping on phone)
-  const mayWrap = (categories && categories.length > 1) || (hasCategories && hasStats);
+  const hasMultipleCategories = categories && categories.length > 1;
+  const mayWrap = hasMultipleCategories || (hasCategories && hasStats);
   const needsExtraPadding = isPhone && mayWrap;
+  // Smaller badges on phone for better visual hierarchy
+  const badgeTextSize = isPhone ? "text-xs" : "text-sm";
 
   return (
     <div data-testid="hero-banner">
@@ -79,7 +82,7 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
                 categories.map((category) => (
                   <span
                     key={category}
-                    className="rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
+                    className={`rounded bg-accent px-2 py-0.5 ${badgeTextSize} font-semibold text-accent-foreground`}
                   >
                     {category}
                   </span>
@@ -106,16 +109,17 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
                 if (showAsOutline) {
                   // Single NexusMods link: outline button style
                   return (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.ariaLabel}
-                      className="inline-flex items-center justify-center rounded-md border border-border p-2 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                    >
-                      <Icon size={18} />
-                    </a>
+                    <TouchTarget key={link.label} align="end">
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={link.ariaLabel}
+                        className="inline-flex items-center justify-center rounded-md border border-border p-2 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                      >
+                        <Icon size={18} />
+                      </a>
+                    </TouchTarget>
                   );
                 }
 

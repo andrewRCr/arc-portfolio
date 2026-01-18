@@ -12,7 +12,12 @@ import { FEATURES } from "@/config/features";
 
 function ProjectsContent() {
   const searchParams = useSearchParams();
-  const currentTab = FEATURES.SHOW_PROJECT_TABS ? searchParams.get("tab") || "software" : "software";
+  const validTabs = ["software", "games", "mods"] as const;
+  const tabParam = searchParams.get("tab");
+  const currentTab =
+    FEATURES.SHOW_PROJECT_TABS && tabParam && validTabs.includes(tabParam as (typeof validTabs)[number])
+      ? (tabParam as (typeof validTabs)[number])
+      : "software";
 
   // Filter and sort projects by projectType
   const allProjects = [...projects].sort((a, b) => a.order - b.order);
@@ -22,6 +27,7 @@ function ProjectsContent() {
 
   return (
     <PageLayout
+      pageId="projects"
       header={
         <PageHeader title="Projects" hideDivider={FEATURES.SHOW_PROJECT_TABS}>
           {/* Tab Navigation - only shown when tabs are enabled */}

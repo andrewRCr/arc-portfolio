@@ -80,13 +80,15 @@ describe("DetailHeaderCompact - Behavior Tests", () => {
       expect(backLinks.length).toBeGreaterThan(0);
     });
 
-    it("back button is keyboard accessible", () => {
+    it("back button is visible and focusable", () => {
       render(<DetailHeaderCompact {...defaultProps} />);
 
       const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
       expect(backLinks.length).toBeGreaterThan(0);
       backLinks.forEach((link) => {
         expect(link).toBeVisible();
+        // Links are inherently keyboard focusable when visible
+        expect(link).not.toHaveAttribute("tabindex", "-1");
       });
     });
   });

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { about } from "@/data/about";
-import { AboutSection } from "../AboutSection";
+import { AboutSection, NEXUSMODS_PROFILE_URL } from "../AboutSection";
 
 describe("AboutSection - Behavior Tests", () => {
   describe("Content Rendering", () => {
@@ -79,7 +79,7 @@ describe("AboutSection - Behavior Tests", () => {
 
       const moddingLink = screen.getByRole("link", { name: "modding work" });
       expect(moddingLink).toBeInTheDocument();
-      expect(moddingLink).toHaveAttribute("href", "https://next.nexusmods.com/profile/andrewRCr/mods");
+      expect(moddingLink).toHaveAttribute("href", NEXUSMODS_PROFILE_URL);
     });
   });
 });

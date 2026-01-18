@@ -107,7 +107,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
         open={lightboxIndex >= 0}
         close={() => setLightboxIndex(-1)}
         plugins={[Counter, Zoom]}
-        portal={{ root: portalRoot }}
+        portal={portalRoot ? { root: portalRoot } : undefined}
         controller={{
           closeOnPullDown: true,
           closeOnBackdropClick: true,

@@ -1,15 +1,17 @@
 /**
  * Tests for featured projects selection utility
  *
- * Option B slot configuration:
- * - Slot 1: Software (CineXplorer or TaskFocus)
+ * Slot configuration:
+ * - Slot 1: Software (random from featured software, excluding framework)
  * - Slot 2: Framework (ARC Framework - always)
- * - Slot 3: Game (Action RPG or Survival Horror)
- * - Slot 4: Mod (from 5-mod pool)
+ * - Slot 3: Game (random from featured games)
+ * - Slot 4: Mod (random from featured mods)
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { selectFeaturedProjects, SOFTWARE_POOL, FRAMEWORK_SLUG, GAME_POOL, MOD_POOL } from "../featured-projects";
+import { projects } from "@/data/projects";
+import { mods } from "@/data/mods";
 
 describe("selectFeaturedProjects", () => {
   beforeEach(() => {
@@ -130,34 +132,52 @@ describe("selectFeaturedProjects", () => {
     });
   });
 
-  describe("pool definitions", () => {
-    it("software pool contains expected projects", () => {
-      expect(SOFTWARE_POOL).toContain("cinexplorer");
-      expect(SOFTWARE_POOL).toContain("taskfocus");
-      expect(SOFTWARE_POOL).toHaveLength(2);
+  describe("pool definitions (structural invariants)", () => {
+    it("software pool contains only featured software projects, excludes framework", () => {
+      expect(SOFTWARE_POOL.length).toBeGreaterThan(0);
+
+      SOFTWARE_POOL.forEach((slug) => {
+        const project = projects.find((p) => p.slug === slug);
+        expect(project).toBeDefined();
+        expect(project?.featured).toBe(true);
+        expect(project?.projectType).toBe("software");
+        expect(slug).not.toBe(FRAMEWORK_SLUG);
+      });
     });
 
-    it("framework slug is arc-agentic-dev-framework", () => {
-      expect(FRAMEWORK_SLUG).toBe("arc-agentic-dev-framework");
+    it("framework slug references a valid featured software project", () => {
+      const framework = projects.find((p) => p.slug === FRAMEWORK_SLUG);
+      expect(framework).toBeDefined();
+      expect(framework?.featured).toBe(true);
+      expect(framework?.projectType).toBe("software");
     });
 
-    it("game pool contains expected projects", () => {
-      expect(GAME_POOL).toContain("action-rpg-project");
-      expect(GAME_POOL).toContain("survival-horror-project");
-      expect(GAME_POOL).toHaveLength(2);
+    it("game pool contains only featured game projects", () => {
+      expect(GAME_POOL.length).toBeGreaterThan(0);
+
+      GAME_POOL.forEach((slug) => {
+        const project = projects.find((p) => p.slug === slug);
+        expect(project).toBeDefined();
+        expect(project?.featured).toBe(true);
+        expect(project?.projectType).toBe("game");
+      });
     });
 
-    it("mod pool contains expected projects (5 mods)", () => {
-      expect(MOD_POOL).toContain("lies-of-p-hardcore-mode");
-      expect(MOD_POOL).toContain("sor4-improved-movement");
-      expect(MOD_POOL).toContain("re8-aim-dependent-crosshair");
-      expect(MOD_POOL).toContain("elden-ring-guard-parry");
-      expect(MOD_POOL).toContain("re4r-improved-weapon-balance");
-      expect(MOD_POOL).toHaveLength(5);
+    it("mod pool contains only featured mods", () => {
+      expect(MOD_POOL.length).toBeGreaterThan(0);
+
+      MOD_POOL.forEach((slug) => {
+        const mod = mods.find((m) => m.slug === slug);
+        expect(mod).toBeDefined();
+        expect(mod?.featured).toBe(true);
+      });
     });
 
-    it("mod pool excludes silent hill 2 never holster weapons", () => {
-      expect(MOD_POOL).not.toContain("sh2r-never-holster-weapons");
+    it("mod pool excludes non-featured mods", () => {
+      const nonFeaturedMods = mods.filter((m) => !m.featured);
+      nonFeaturedMods.forEach((mod) => {
+        expect(MOD_POOL).not.toContain(mod.slug);
+      });
     });
   });
 });

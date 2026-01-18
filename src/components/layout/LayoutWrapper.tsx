@@ -59,7 +59,8 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
 
   // Layout toggle button visibility:
   // - Mobile: always visible (toggle between full and boxed), hidden when drawer is open
-  // - Desktop: only visible in fullscreen mode (exit button)
+  // - Desktop: only visible as escape hatch if "full" mode inherited (e.g., from mobile session
+  //   or viewport resize). Desktop can't enter fullscreen via ThemeControl, but needs a way out.
   const showLayoutToggle = isMobile ? !isDrawerOpen : isFullscreen && !isDrawerOpen;
 
   const toggleLayoutMode = () => {

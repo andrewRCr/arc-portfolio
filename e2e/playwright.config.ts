@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// Detect WSL environment for platform-specific accommodations
+const isWSL = !!process.env.WSL_DISTRO_NAME;
+
 /**
  * Playwright configuration for arc-portfolio E2E tests.
  *
@@ -65,8 +68,9 @@ export default defineConfig({
       use: {
         ...devices["Desktop Firefox"],
         launchOptions: {
-          // Clear DISPLAY to prevent X Server connection attempts in headless mode
-          env: { ...process.env, DISPLAY: "" },
+          // Clear DISPLAY only in WSL to prevent X Server connection attempts in headless mode
+          // On non-WSL Linux, preserve DISPLAY for headed debugging
+          env: isWSL ? { ...process.env, DISPLAY: "" } : { ...process.env },
         },
       },
       timeout: 60_000, // Extended timeout for WSL2 environment

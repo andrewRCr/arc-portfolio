@@ -96,30 +96,20 @@ interface ModStatsCompactProps {
 }
 
 function ModStatsCompact({ downloads, uniqueDownloads, endorsements, className }: ModStatsCompactProps) {
-  // Build array of stats to display
-  const stats: Array<{ icon: typeof Download; value: string; label: string }> = [];
+  // Build array of stats to display, deriving from shared statConfig
+  const entries: Array<{ type: ModStatType; value: number }> = [];
+  if (endorsements !== undefined) entries.push({ type: "endorsements", value: endorsements });
+  if (uniqueDownloads !== undefined) entries.push({ type: "uniqueDownloads", value: uniqueDownloads });
+  if (downloads !== undefined) entries.push({ type: "downloads", value: downloads });
 
-  if (endorsements !== undefined) {
-    stats.push({
-      icon: ThumbsUp,
-      value: formatStatNumber(endorsements),
-      label: `${endorsements.toLocaleString()} endorsements`,
-    });
-  }
-  if (uniqueDownloads !== undefined) {
-    stats.push({
-      icon: Users,
-      value: formatStatNumber(uniqueDownloads),
-      label: `${uniqueDownloads.toLocaleString()} unique downloads`,
-    });
-  }
-  if (downloads !== undefined) {
-    stats.push({
-      icon: Download,
-      value: formatStatNumber(downloads),
-      label: `${downloads.toLocaleString()} total downloads`,
-    });
-  }
+  const stats = entries.map(({ type, value }) => {
+    const config = statConfig[type];
+    return {
+      icon: config.icon,
+      value: formatStatNumber(value),
+      label: config.ariaLabel(value),
+    };
+  });
 
   if (stats.length === 0) return null;
 

@@ -837,11 +837,11 @@ html[data-env-preview="false"] [data-window-container] {
 }
 
 /* ==========================================================================
-   OverlayScrollbars Theme Overrides
-   Customize the built-in os-theme-dark with project colors
+   OverlayScrollbars
+   Theme styling and page-specific track insets.
    ========================================================================== */
 
-/* Override built-in theme with our styling */
+/* Theme: colors and base sizing */
 .os-theme-dark.os-scrollbar {
   --os-size: 10px;
   --os-padding-perpendicular: 4px;
@@ -851,8 +851,7 @@ html[data-env-preview="false"] [data-window-container] {
   --os-handle-bg-active: rgb(var(--muted-foreground));
 }
 
-/* Reset stacking context to allow fixed elements inside to layer properly */
-/* Also establish positioning context for contained lightbox */
+/* Stacking context resets */
 [data-overlayscrollbars-viewport] {
   z-index: auto !important;
   position: relative !important;
@@ -860,6 +859,40 @@ html[data-env-preview="false"] [data-window-container] {
 
 .os-scrollbar {
   z-index: 10 !important;
+}
+
+/*
+ * Track insets (+/- visual tuning)
+ * Structure: baseline → page overrides, each with mobile → desktop
+ */
+
+/* Baseline (pages with data-page) - mobile */
+[data-page] .os-scrollbar-vertical {
+  padding-top: 24px;
+  padding-bottom: 56px;
+}
+/* Baseline (pages with data-page) - desktop */
+@media (min-width: 768px) {
+  [data-page] .os-scrollbar-vertical {
+    padding-top: 40px;
+    padding-bottom: 64px;
+  }
+}
+
+/* Projects listing - mobile */
+[data-page="projects"] .os-scrollbar-vertical {
+  padding-top: 30px;
+}
+
+/* Project detail - mobile */
+[data-page="project-detail"] .os-scrollbar-vertical {
+  padding-top: 165px;
+}
+/* Project detail - desktop */
+@media (min-width: 768px) {
+  [data-page="project-detail"] .os-scrollbar-vertical {
+    padding-top: 396px;
+  }
 }
 
 /* ==========================================================================
@@ -874,36 +907,11 @@ html[data-env-preview="false"] [data-window-container] {
 }
 
 .yarl__root {
-  /* Override fixed positioning to stay within window container */
   position: absolute !important;
-  /* Fill the entire window container */
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
   width: 100% !important;
   height: 100% !important;
-}
-
-/* ==========================================================================
-   Project Detail Page - Scrollbar Inset
-   Adds extra padding to scrollbar track to clear header and back-to-top button.
-   Values derived from DetailHeader aspect ratio (3.5:1) and component heights.
-   See: useHeaderCrossfade.ts for DETAIL_HEADER_ASPECT_RATIO constant.
-   ========================================================================== */
-
-[data-page="project-detail"] .os-scrollbar-vertical {
-  /* Mobile (<768px): DetailHeaderCompact (~48px) + DetailBannerMobile hero + footer (~112px) */
-  padding-top: 160px;
-  /* Mobile: BackToTopButton height (~44px) + spacing */
-  padding-bottom: 56px;
-}
-
-@media (min-width: 768px) {
-  [data-page="project-detail"] .os-scrollbar-vertical {
-    /* Desktop: Full DetailHeader hero at 3.5:1 aspect (~200px at 700px width) + footer (~75px) */
-    padding-top: 275px;
-    /* Desktop: BackToTopButton height (~44px) + extra spacing for larger viewport */
-    padding-bottom: 80px;
-  }
 }

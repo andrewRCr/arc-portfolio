@@ -10,6 +10,7 @@ import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
 import { isModStatsError } from "@/lib/nexusmods-types";
+import { getHeroImage } from "@/lib/project-utils";
 
 interface ModPageProps {
   params: Promise<{
@@ -53,22 +54,22 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
     : "mods";
   const backDest = getBackDestination(from, currentTab);
 
-  // Use hero image if available, then thumbnail, then first screenshot
-  const heroImage = mod.images.hero || mod.images.thumbnail || mod.images.screenshots[0]?.src;
+  const heroImage = getHeroImage(mod.images);
 
   // For mods, prefix title with game name on larger screens
   // Phone uses just the mod title for space
   const fullTitle = mod.game ? `${mod.game}: ${mod.title}` : mod.title;
 
-  // Fetch NexusMods stats (cached server-side)
-  const statsResult = await getModStatsBySlug(slug);
-  const stats = isModStatsError(statsResult)
-    ? undefined
-    : {
-        downloads: statsResult.downloads,
-        uniqueDownloads: statsResult.uniqueDownloads,
-        endorsements: statsResult.endorsements,
-      };
+  // Fetch NexusMods stats (cached server-side) - only if mod has NexusMods link
+  const statsResult = mod.links?.nexusmods ? await getModStatsBySlug(slug) : undefined;
+  const stats =
+    statsResult && !isModStatsError(statsResult)
+      ? {
+          downloads: statsResult.downloads,
+          uniqueDownloads: statsResult.uniqueDownloads,
+          endorsements: statsResult.endorsements,
+        }
+      : undefined;
 
   return (
     <PageLayout
@@ -96,7 +97,7 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
       <ProjectDetail
         project={mod}
         footer={
-          mod.links.nexusmods && (
+          mod.links?.nexusmods && (
             <DetailCard title="More Information" className="mt-8">
               <p className="text-muted-foreground">
                 For compatibility details, installation instructions, and additional information, visit the{" "}

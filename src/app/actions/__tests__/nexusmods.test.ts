@@ -1,8 +1,8 @@
 /**
- * Tests for NexusMods server actions
+ * Tests for NexusMods types and type guards
  *
- * Tests error handling and type guards. Note: These tests mock global fetch
- * to test error paths. The unstable_cache wrapper is bypassed in test environment.
+ * Covers the isModStatsError type guard and validates type structures
+ * for ModStats, ModStatsError, and AggregateStats.
  */
 
 import { describe, it, expect } from "vitest";

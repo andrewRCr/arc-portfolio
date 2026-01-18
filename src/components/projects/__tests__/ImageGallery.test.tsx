@@ -74,7 +74,7 @@ describe("ImageGallery - Behavior Tests", () => {
       const firstThumbnail = screen.getAllByRole("button")[0];
       await user.click(firstThumbnail);
 
-      // Lightbox should be open - YAML renders with specific classes/attributes
+      // Lightbox should be open - YARL renders with specific classes/attributes
       // We check for the lightbox root element
       expect(document.querySelector(".yarl__root")).toBeInTheDocument();
     });
@@ -87,7 +87,7 @@ describe("ImageGallery - Behavior Tests", () => {
       await user.click(secondThumbnail);
 
       // Lightbox should show the second image
-      // YAML displays the current slide - we verify it's showing correct content
+      // YARL displays the current slide - we verify it's showing correct content
       const lightboxImage = document.querySelector(".yarl__slide_current img");
       expect(lightboxImage).toHaveAttribute("alt", "Settings page with options");
     });
@@ -100,7 +100,7 @@ describe("ImageGallery - Behavior Tests", () => {
       const firstThumbnail = screen.getAllByRole("button")[0];
       await user.click(firstThumbnail);
 
-      // Verify close button exists (YAML handles actual close behavior)
+      // Verify close button exists (YARL handles actual close behavior)
       const closeButton = document.querySelector('button[aria-label="Close"]');
       expect(closeButton).toBeInTheDocument();
     });

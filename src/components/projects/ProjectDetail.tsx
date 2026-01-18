@@ -13,6 +13,7 @@ import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
 import { TextLink } from "@/components/ui/text-link";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 
 interface ProjectDetailProps {
   project: Project;
@@ -91,6 +92,10 @@ function MetadataRow({ label, value }: { label: string; value?: string }) {
 }
 
 export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
+  const isPhone = useIsPhone();
+  // Smaller tech stack badges on phone for visual hierarchy
+  const techBadgeTextSize = isPhone ? "text-xs" : "text-sm";
+
   // Build metadata rows from available fields
   const metadataFields = [
     { label: "Team", value: project.teamSize },
@@ -114,7 +119,7 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
       {/* Tech Stack - tight to header */}
       <div className="flex flex-wrap gap-2">
         {project.techStack.map((tech) => (
-          <span key={tech} className="rounded border border-border bg-muted px-3 py-1 text-sm text-foreground">
+          <span key={tech} className={`rounded border border-border bg-muted px-3 py-1 ${techBadgeTextSize} text-foreground`}>
             {tech}
           </span>
         ))}

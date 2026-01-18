@@ -7,6 +7,7 @@ import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
 import { isModStatsError } from "@/lib/nexusmods-types";
+import { getHeroImage } from "@/lib/project-utils";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -45,8 +46,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
     : "software";
   const backDest = getBackDestination(from, currentTab);
 
-  // Use hero image if available, then thumbnail, then first screenshot
-  const heroImage = project.images.hero || project.images.thumbnail || project.images.screenshots[0]?.src;
+  const heroImage = getHeroImage(project.images);
 
   // Fetch NexusMods stats if project has a NexusMods link (e.g., DOOM NG+ Customizer)
   let stats: DetailHeaderStats | undefined;

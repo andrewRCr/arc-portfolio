@@ -4,7 +4,7 @@ import { Github, Globe, Download } from "lucide-react";
 import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
 import type { ProjectLinks } from "@/types/project";
 
-describe("buildLinkItems", () => {
+describe("buildLinkItems utilities", () => {
   describe("buildLinkItems()", () => {
     it("returns empty array when links is undefined", () => {
       expect(buildLinkItems(undefined)).toEqual([]);

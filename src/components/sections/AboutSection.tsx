@@ -17,7 +17,7 @@ interface AboutSectionProps {
 }
 
 /** NexusMods profile URL */
-const NEXUSMODS_PROFILE_URL = "https://next.nexusmods.com/profile/andrewRCr/mods";
+export const NEXUSMODS_PROFILE_URL = "https://next.nexusmods.com/profile/andrewRCr/mods";
 
 /** Static fallback text when API is unavailable (includes "over" prefix) */
 const FALLBACK_DOWNLOAD_TEXT = "over 300 thousand";

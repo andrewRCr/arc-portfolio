@@ -4,7 +4,7 @@
  * Server Actions for NexusMods API
  *
  * Fetches mod statistics (downloads, endorsements) from NexusMods API.
- * Uses Next.js caching with 24-hour revalidation to minimize API calls.
+ * Uses Next.js caching with 6-hour revalidation to minimize API calls.
  *
  * API key must be set in NEXUSMODS_API_KEY environment variable.
  */
@@ -121,7 +121,7 @@ export const getModStats = unstable_cache(
   async (game: string, modId: number): Promise<ModStatsResult> => {
     return fetchModStatsInternal(game, modId);
   },
-  ["nexusmods-mod-stats"],
+  ["nexusmods-mod-stats"], // Args (game, modId) are automatically appended by unstable_cache
   {
     revalidate: NEXUSMODS_CONFIG.cacheTtl,
     tags: ["nexusmods"],

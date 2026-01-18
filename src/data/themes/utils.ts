@@ -5,6 +5,7 @@
  */
 
 import type { ThemeColors } from "./types";
+import { rgbToHex } from "@/lib/theme/utils";
 
 /**
  * Convert hex color to RGB space-separated string for Tailwind.
@@ -17,29 +18,6 @@ export function hexToRgb(hex: string): string {
     throw new Error(`Invalid hex color: ${hex}`);
   }
   return `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`;
-}
-
-/**
- * Convert RGB space-separated string back to hex.
- * Example: "252 238 209" → "#fceed1"
- * @throws Error if rgb is not a valid "R G B" string with values 0-255
- */
-export function rgbToHex(rgb: string): string {
-  const parts = rgb.split(" ");
-  if (parts.length !== 3) {
-    throw new Error(`Invalid RGB color (expected 3 components): ${rgb}`);
-  }
-
-  const values = parts.map(Number);
-  for (let i = 0; i < 3; i++) {
-    const v = values[i];
-    if (!Number.isInteger(v) || v < 0 || v > 255) {
-      throw new Error(`Invalid RGB color (component ${i} out of range): ${rgb}`);
-    }
-  }
-
-  const [r, g, b] = values;
-  return `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
 }
 
 /**

@@ -104,7 +104,7 @@ section, Project Detail pages with proper headers and image galleries, Games tab
 
     - [x] **1.2.b Write tests for `ImageGallery` behavior**
         - 12 behavior-focused tests (thumbnails, click, empty states, accessibility)
-        - Tests wrapper interface, not YAML library internals
+        - Tests wrapper interface, not YARL library internals
         - Created `src/components/projects/__tests__/ImageGallery.test.tsx`
 
     - [x] **1.2.c Implement gallery thumbnail grid**
@@ -122,7 +122,7 @@ section, Project Detail pages with proper headers and image galleries, Games tab
         - Type check, lint, format, markdown lint: all pass
         - Build: success
         - Tests: 890 passing (12 new ImageGallery tests)
-        - Added CSS mocks to test setup for YAML stylesheets
+        - Added CSS mocks to test setup for YARL stylesheets
 
 ### **Phase 2:** Project Detail Integration
 
