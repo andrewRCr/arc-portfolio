@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore, useCallback } from "react";
+import { VIEWPORT_QUERIES } from "@/config/breakpoints";
 
 /**
  * Custom hook for responsive behavior based on CSS media queries.
@@ -58,13 +59,30 @@ export function useMediaQuery(query: string): boolean {
 }
 
 /**
- * Preset media query for phone viewport (below Tailwind md breakpoint).
+ * Preset media query for mobile viewport (below Tailwind md breakpoint).
  * Use this for mobile-specific behavior like collapsed navigation.
+ * @deprecated Use VIEWPORT_QUERIES.mobile from @/config/breakpoints instead
  */
-export const PHONE_QUERY = "(max-width: 767px)";
+export const PHONE_QUERY = VIEWPORT_QUERIES.mobile;
 
 /**
  * Preset media query for touch devices.
  * Use this for touch-specific behavior like tap targets.
  */
 export const TOUCH_DEVICE_QUERY = "(hover: none) and (pointer: coarse)";
+
+/**
+ * Hook for detecting mobile viewport (below md breakpoint).
+ * Use for mobile-specific UI like collapsed navigation, layout toggle.
+ */
+export function useIsMobile(): boolean {
+  return useMediaQuery(VIEWPORT_QUERIES.mobile);
+}
+
+/**
+ * Hook for detecting phone viewport (below sm breakpoint).
+ * Use for extra-compact layouts like 2-column gallery, card-style headers.
+ */
+export function useIsPhone(): boolean {
+  return useMediaQuery(VIEWPORT_QUERIES.phone);
+}

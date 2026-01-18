@@ -2,6 +2,7 @@
  * Behavior tests for ProjectTabs component
  *
  * Tests tab switching functionality, query parameter handling, and active state management.
+ * Updated for 3-tab structure: Software, Games, Mods
  */
 
 import { render, screen } from "@testing-library/react";
@@ -20,10 +21,11 @@ describe("ProjectTabs - Behavior Tests", () => {
   });
 
   describe("Tab Rendering", () => {
-    it("renders both Software and Mods tabs", () => {
+    it("renders all three tabs: Software, Games, and Mods", () => {
       render(<ProjectTabs />);
 
       expect(screen.getByRole("tab", { name: /software/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /games/i })).toBeInTheDocument();
       expect(screen.getByRole("tab", { name: /mods/i })).toBeInTheDocument();
     });
 
@@ -34,7 +36,16 @@ describe("ProjectTabs - Behavior Tests", () => {
       expect(tablist).toBeInTheDocument();
 
       const tabs = screen.getAllByRole("tab");
-      expect(tabs).toHaveLength(2);
+      expect(tabs).toHaveLength(3);
+    });
+
+    it("renders tabs in correct order: Software, Games, Mods", () => {
+      render(<ProjectTabs />);
+
+      const tabs = screen.getAllByRole("tab");
+      expect(tabs[0]).toHaveTextContent(/software/i);
+      expect(tabs[1]).toHaveTextContent(/games/i);
+      expect(tabs[2]).toHaveTextContent(/mods/i);
     });
   });
 
@@ -43,9 +54,25 @@ describe("ProjectTabs - Behavior Tests", () => {
       render(<ProjectTabs />);
 
       const softwareTab = screen.getByRole("tab", { name: /software/i });
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
       const modsTab = screen.getByRole("tab", { name: /mods/i });
 
       expect(softwareTab).toHaveAttribute("aria-selected", "true");
+      expect(gamesTab).toHaveAttribute("aria-selected", "false");
+      expect(modsTab).toHaveAttribute("aria-selected", "false");
+    });
+
+    it("marks Games tab as active when query param is 'games'", () => {
+      mockNavigation.setSearchParams({ tab: "games" });
+
+      render(<ProjectTabs />);
+
+      const softwareTab = screen.getByRole("tab", { name: /software/i });
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
+      const modsTab = screen.getByRole("tab", { name: /mods/i });
+
+      expect(softwareTab).toHaveAttribute("aria-selected", "false");
+      expect(gamesTab).toHaveAttribute("aria-selected", "true");
       expect(modsTab).toHaveAttribute("aria-selected", "false");
     });
 
@@ -55,15 +82,27 @@ describe("ProjectTabs - Behavior Tests", () => {
       render(<ProjectTabs />);
 
       const softwareTab = screen.getByRole("tab", { name: /software/i });
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
       const modsTab = screen.getByRole("tab", { name: /mods/i });
 
       expect(softwareTab).toHaveAttribute("aria-selected", "false");
+      expect(gamesTab).toHaveAttribute("aria-selected", "false");
       expect(modsTab).toHaveAttribute("aria-selected", "true");
     });
   });
 
   describe("Tab Switching", () => {
-    it("updates URL with query param when switching to Mods tab", async () => {
+    it("updates URL when switching to Games tab", async () => {
+      const user = userEvent.setup();
+      render(<ProjectTabs />);
+
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
+      await user.click(gamesTab);
+
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+    });
+
+    it("updates URL when switching to Mods tab", async () => {
       const user = userEvent.setup();
       render(<ProjectTabs />);
 
@@ -73,9 +112,9 @@ describe("ProjectTabs - Behavior Tests", () => {
       expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
 
-    it("updates URL with query param when switching to Software tab", async () => {
+    it("updates URL when switching to Software tab from Games", async () => {
       const user = userEvent.setup();
-      mockNavigation.setSearchParams({ tab: "mods" });
+      mockNavigation.setSearchParams({ tab: "games" });
 
       render(<ProjectTabs />);
 
@@ -85,29 +124,29 @@ describe("ProjectTabs - Behavior Tests", () => {
       expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
     });
 
-    it("handles keyboard navigation (Enter key)", async () => {
+    it("handles keyboard navigation (Enter key) on Games tab", async () => {
       const user = userEvent.setup();
       render(<ProjectTabs />);
 
-      const modsTab = screen.getByRole("tab", { name: /mods/i });
-      modsTab.focus();
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
+      gamesTab.focus();
       await user.keyboard("{Enter}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
     });
 
-    it("handles keyboard navigation (Space key)", async () => {
+    it("handles keyboard navigation (Space key) on Games tab", async () => {
       const user = userEvent.setup();
       render(<ProjectTabs />);
 
-      const modsTab = screen.getByRole("tab", { name: /mods/i });
-      modsTab.focus();
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
+      gamesTab.focus();
       await user.keyboard(" ");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
     });
 
-    it("handles ArrowRight to move to next tab", async () => {
+    it("handles ArrowRight from Software to Games", async () => {
       const user = userEvent.setup();
       render(<ProjectTabs />);
 
@@ -115,10 +154,34 @@ describe("ProjectTabs - Behavior Tests", () => {
       softwareTab.focus();
       await user.keyboard("{ArrowRight}");
 
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+    });
+
+    it("handles ArrowRight from Games to Mods", async () => {
+      const user = userEvent.setup();
+      mockNavigation.setSearchParams({ tab: "games" });
+      render(<ProjectTabs />);
+
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
+      gamesTab.focus();
+      await user.keyboard("{ArrowRight}");
+
       expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
 
-    it("handles ArrowLeft to move to previous tab (wraps)", async () => {
+    it("handles ArrowRight from Mods wraps to Software", async () => {
+      const user = userEvent.setup();
+      mockNavigation.setSearchParams({ tab: "mods" });
+      render(<ProjectTabs />);
+
+      const modsTab = screen.getByRole("tab", { name: /mods/i });
+      modsTab.focus();
+      await user.keyboard("{ArrowRight}");
+
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+    });
+
+    it("handles ArrowLeft from Software wraps to Mods", async () => {
       const user = userEvent.setup();
       render(<ProjectTabs />);
 
@@ -126,11 +189,34 @@ describe("ProjectTabs - Behavior Tests", () => {
       softwareTab.focus();
       await user.keyboard("{ArrowLeft}");
 
-      // Wraps from first to last
       expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
     });
 
-    it("handles Home key to move to first tab", async () => {
+    it("handles ArrowLeft from Games to Software", async () => {
+      const user = userEvent.setup();
+      mockNavigation.setSearchParams({ tab: "games" });
+      render(<ProjectTabs />);
+
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
+      gamesTab.focus();
+      await user.keyboard("{ArrowLeft}");
+
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+    });
+
+    it("handles ArrowLeft from Mods to Games", async () => {
+      const user = userEvent.setup();
+      mockNavigation.setSearchParams({ tab: "mods" });
+      render(<ProjectTabs />);
+
+      const modsTab = screen.getByRole("tab", { name: /mods/i });
+      modsTab.focus();
+      await user.keyboard("{ArrowLeft}");
+
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+    });
+
+    it("handles Home key to move to first tab (Software)", async () => {
       const user = userEvent.setup();
       mockNavigation.setSearchParams({ tab: "mods" });
       render(<ProjectTabs />);
@@ -142,7 +228,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
     });
 
-    it("handles End key to move to last tab", async () => {
+    it("handles End key to move to last tab (Mods)", async () => {
       const user = userEvent.setup();
       render(<ProjectTabs />);
 
@@ -180,6 +266,15 @@ describe("ProjectTabs - Behavior Tests", () => {
       expect(softwareTab).toHaveAttribute("aria-selected", "true");
     });
 
+    it("recognizes 'games' as valid query param value", () => {
+      mockNavigation.setSearchParams({ tab: "games" });
+
+      render(<ProjectTabs />);
+
+      const gamesTab = screen.getByRole("tab", { name: /games/i });
+      expect(gamesTab).toHaveAttribute("aria-selected", "true");
+    });
+
     it("recognizes 'mods' as valid query param value", () => {
       mockNavigation.setSearchParams({ tab: "mods" });
 
@@ -187,6 +282,25 @@ describe("ProjectTabs - Behavior Tests", () => {
 
       const modsTab = screen.getByRole("tab", { name: /mods/i });
       expect(modsTab).toHaveAttribute("aria-selected", "true");
+    });
+  });
+
+  describe("ARIA Attributes", () => {
+    it("has correct aria-controls attributes for all tabs", () => {
+      render(<ProjectTabs />);
+
+      expect(screen.getByRole("tab", { name: /software/i })).toHaveAttribute("aria-controls", "panel-software");
+      expect(screen.getByRole("tab", { name: /games/i })).toHaveAttribute("aria-controls", "panel-games");
+      expect(screen.getByRole("tab", { name: /mods/i })).toHaveAttribute("aria-controls", "panel-mods");
+    });
+
+    it("has correct tabindex for active/inactive tabs", () => {
+      mockNavigation.setSearchParams({ tab: "games" });
+      render(<ProjectTabs />);
+
+      expect(screen.getByRole("tab", { name: /software/i })).toHaveAttribute("tabIndex", "-1");
+      expect(screen.getByRole("tab", { name: /games/i })).toHaveAttribute("tabIndex", "0");
+      expect(screen.getByRole("tab", { name: /mods/i })).toHaveAttribute("tabIndex", "-1");
     });
   });
 });

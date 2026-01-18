@@ -46,6 +46,22 @@ describe("PageHeader", () => {
     });
   });
 
+  describe("Divider", () => {
+    it("renders divider by default", () => {
+      const { container } = render(<PageHeader title="Projects" />);
+
+      const divider = container.querySelector(".border-b");
+      expect(divider).toBeInTheDocument();
+    });
+
+    it("hides divider when hideDivider is true", () => {
+      const { container } = render(<PageHeader title="Projects" hideDivider />);
+
+      const divider = container.querySelector(".border-b");
+      expect(divider).not.toBeInTheDocument();
+    });
+  });
+
   describe("Accessibility", () => {
     it("has no accessibility violations with title", async () => {
       const results = await checkA11y(<PageHeader title="Page Title" subtitle="Description" />);

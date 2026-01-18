@@ -22,8 +22,8 @@ describe("Project Interface", () => {
     const project = projects[0];
 
     // Core fields
-    expect(project.id).toBeDefined();
-    expect(typeof project.id).toBe("string");
+    expect(project.projectType).toBeDefined();
+    expect(["software", "game", "mod"]).toContain(project.projectType);
     expect(project.title).toBeDefined();
     expect(typeof project.title).toBe("string");
     expect(project.slug).toBeDefined();
@@ -79,7 +79,7 @@ describe("Project Interface", () => {
   it("should allow optional fields to be undefined", () => {
     // Type assertion to verify optional fields can be undefined
     const minimalProject: Project = {
-      id: "test",
+      projectType: "software",
       title: "Test",
       slug: "test",
       description: "Test description",
@@ -100,7 +100,6 @@ describe("Project Interface", () => {
 
     expect(minimalProject).toBeDefined();
     expect(minimalProject.teamSize).toBeUndefined();
-    expect(minimalProject.duration).toBeUndefined();
   });
 
   it("should have valid demo credentials when present", () => {

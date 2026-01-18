@@ -12,7 +12,7 @@ export const projects: Project[] = [
   // PROJECT 1: CineXplorer (New Project)
   // ==========================================
   {
-    id: "cinexplorer",
+    projectType: "software",
     title: "CineXplorer",
     slug: "cinexplorer",
     description:
@@ -24,38 +24,15 @@ export const projects: Project[] = [
       "Full-stack movie discovery platform with personalized recommendations, watchlists, and OAuth authentication. " +
       "Demonstrates modern type-safe architecture with Django Ninja + React TypeScript.",
     category: ["Web App"],
-    tags: [
-      "React",
-      "TypeScript",
-      "Django",
-      "Django REST Framework",
-      "PostgreSQL",
-      "Redis",
-      "Docker",
-      "Python",
-      "Pydantic",
-    ],
-    techStack: [
-      "React",
-      "TypeScript",
-      "Django",
-      "Django REST Framework",
-      "Django Ninja",
-      "PostgreSQL",
-      "Redis",
-      "Docker",
-      "Pydantic",
-      "Pyright",
-      "Vite",
-      "Chakra UI",
-    ],
+    tags: ["React", "TypeScript", "Django", "PostgreSQL", "Docker", "Python"],
+    techStack: ["TypeScript", "React", "Django", "Django Ninja", "PostgreSQL", "Docker", "Chakra UI"],
     features: [
       "Type-safe API layer with Pydantic schemas and auto-generated TypeScript types",
       "JWT authentication with OAuth 2.0 social login (Google, GitHub via django-allauth)",
       "Advanced movie filtering system with hybrid API/client-side logic",
       "Comprehensive quality gates: 89 backend + 321 frontend tests, zero-tolerance type checking",
       "Development workflow powered by ARC Framework for systematic AI-assisted feature planning",
-      "Production-ready infrastructure: Docker containerization, Caddy reverse proxy, CI/CD pipeline",
+      "Production-ready infrastructure: Docker containerization, Redis caching, Caddy reverse proxy, CI/CD pipeline",
     ],
     links: {
       github: "https://github.com/andrewRCr/CineXplorer",
@@ -86,8 +63,8 @@ export const projects: Project[] = [
   // PROJECT 2: ARC Agentic Development Framework (New Project)
   // ==========================================
   {
-    id: "arc-agentic-dev-framework",
-    title: "ARC Agentic Development Framework",
+    projectType: "software",
+    title: "ARC Agentic Toolkit",
     slug: "arc-agentic-dev-framework",
     description:
       "A structured methodology for spec-driven development with AI agents, emphasizing disciplined collaboration over automation. " +
@@ -97,9 +74,9 @@ export const projects: Project[] = [
     shortDescription:
       "Documentation-only framework for AI-augmented development with structured workflows and battle-tested processes. " +
       "Emphasizes directed collaboration over autonomous automation.",
-    category: ["Framework"],
+    category: ["Dev Framework"],
     tags: ["Documentation", "Process Framework", "AI Collaboration", "Methodology", "Git"],
-    techStack: ["Markdown", "Git", "Documentation Systems", "Process Frameworks", "AI Collaboration Patterns"],
+    techStack: ["Markdown"],
     features: [
       "Template-first constitutional documents with battle-tested defaults from production usage",
       "4-step core workflow: constitution → PRD generation → task processing → guided execution",
@@ -150,38 +127,27 @@ export const projects: Project[] = [
   // PROJECT 3: arc-portfolio (New Project - This Portfolio)
   // ==========================================
   {
-    id: "arc-portfolio",
-    title: "arc-portfolio",
+    projectType: "software",
+    title: "andrewRCr Portfolio",
     slug: "arc-portfolio",
     description:
-      "The portfolio site you're currently viewing - a technical case study in modern Next.js development. " +
-      "Built with Next.js 15 App Router, React 19, TypeScript, and Tailwind CSS v4, demonstrating type-safe content architecture, " +
-      "component composition patterns, and systematic AI-assisted development workflows. Features pragmatic TDD approach, " +
-      "comprehensive quality gates, and zero-tolerance code standards enforced through CI/CD pipeline.",
+      "This portfolio site, built with Next.js 15 App Router, React 19, TypeScript, and Tailwind CSS v4, featuring " +
+      "Server Actions for SSR-optimized preference persistence, automated accessibility testing, and WCAG AA contrast " +
+      "validation across all theme combinations. Demonstrates pragmatic TDD with 900+ tests and zero-tolerance quality " +
+      "gates enforced through CI/CD pipeline.",
     shortDescription:
       "Modern portfolio website built with Next.js 15, showcasing type-safe architecture and systematic development practices. " +
       "The site you're currently viewing.",
     category: ["Web App"],
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Shadcn/ui", "Portfolio"],
-    techStack: [
-      "Next.js 15",
-      "React 19",
-      "TypeScript",
-      "Tailwind CSS v4",
-      "Shadcn/ui",
-      "Turbopack",
-      "Vercel",
-      "Vitest",
-      "ESLint",
-      "Prettier",
-    ],
+    tags: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Vercel", "Shadcn/ui", "Portfolio"],
+    techStack: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Shadcn/ui"],
     features: [
-      "Type-safe content architecture with TypeScript interfaces for projects, skills, education, and profile data",
-      "Server Components by default with strategic Client Component usage for interactivity",
-      "Shadcn/ui component library for accessible, customizable UI primitives",
-      "Comprehensive quality gates: type checking, linting, formatting, markdown validation",
-      "Pragmatic TDD approach with Vitest and React Testing Library",
-      "CI/CD pipeline with GitHub Actions and Vercel automatic deployments",
+      "Server Actions for cookie-based preference persistence, preventing flash of unstyled content on SSR",
+      "Automated accessibility testing with vitest-axe across 60+ component test suites",
+      "WCAG AA contrast validation: automated testing of all theme color combinations in light/dark modes",
+      "Hydration-safe responsive design using CSS media queries instead of client-side detection",
+      "Type-safe content architecture with TypeScript interfaces and 300+ lines of data validation tests",
+      "CI/CD pipeline with GitHub Actions, comprehensive quality gates, and Vercel automatic deployments",
     ],
     links: {
       github: "https://github.com/andrewRCr/arc-portfolio",
@@ -207,20 +173,20 @@ export const projects: Project[] = [
       "Zero-tolerance quality enforcement: TypeScript strict mode, ESLint, Prettier, markdown linting",
     ],
     highlights: [
-      "Demonstrates modern React patterns: Server Components, App Router, composition-over-complexity architecture",
-      "Showcases type-safe development practices from data layer through UI with comprehensive TypeScript coverage",
-      "Exemplifies systematic development methodology: quality gates, pragmatic TDD, atomic commits, and ARC Framework integration",
-      "Represents practical application of bleeding-edge tools: Next.js 15, React 19, Tailwind CSS v4, Turbopack",
+      "Accessibility-first engineering: automated WCAG testing, screen reader announcements, keyboard navigation throughout",
+      "Production-grade SSR optimization: Server Actions sync preferences to cookies, eliminating layout shifts on page load",
+      "Comprehensive test coverage: 900+ tests including accessibility validation, contrast checking, and data integrity",
+      "Systematic development methodology: quality gates, pragmatic TDD, atomic commits, and ARC Framework integration",
     ],
     order: 4,
-    featured: true,
+    featured: false,
   },
 
   // ==========================================
   // PROJECT 4: TaskFocus (Squarespace Migration)
   // ==========================================
   {
-    id: "taskfocus",
+    projectType: "software",
     title: "TaskFocus",
     slug: "taskfocus",
     description:
@@ -232,19 +198,7 @@ export const projects: Project[] = [
       "GTD-based task manager with native desktop and web interfaces, featuring bi-directional sync and comprehensive task organization.",
     category: ["Desktop App", "Web App"],
     tags: [".NET", "C#", "Blazor", "WPF", "SQL Server", "Entity Framework", "Productivity"],
-    techStack: [
-      ".NET 8",
-      "C#",
-      "SQL Server",
-      "Entity Framework",
-      "Blazor Web Assembly",
-      "MudBlazor",
-      "WPF",
-      "Caliburn Micro",
-      "Identity",
-      "JWT",
-      "Azure DevOps",
-    ],
+    techStack: [".NET 8", "C#", "SQL Server", "Blazor Web Assembly", "MudBlazor", "WPF", "Caliburn Micro"],
     features: [
       "Bi-directional data synchronization between web and desktop platforms",
       "GTD-inspired task organization: Inbox, Today, Projects, Contexts, Completed views",
@@ -289,21 +243,21 @@ export const projects: Project[] = [
       "Released production application (v1.0.0) with live deployment and downloadable desktop client",
     ],
     order: 2,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // PROJECT 5: PetResort (Squarespace Migration)
   // ==========================================
   {
-    id: "petresort",
+    projectType: "software",
     title: "PetResort",
     slug: "petresort",
     description:
-      "Full-stack employee web portal for a pet boarding and grooming business, streamlining operations and data management. " +
-      "Built with TypeScript, Express, Node.js, and MongoDB, featuring robust authentication, role-based access control, " +
-      "and comprehensive CRUD operations for pets, clients, and visits. Demonstrates enterprise-level features including granular permissions, " +
-      "advanced UI/UX patterns (pagination, fuzzy search, input masking), and secure user management with password reset functionality.",
+      "Full-stack employee web portal demonstrating a pet boarding and grooming business management system. " +
+      "Built with TypeScript, Express, Node.js, and MongoDB, featuring session-based authentication with password reset, " +
+      "role-based access control with granular permissions, and comprehensive CRUD operations for pets, clients, and visits. " +
+      "Includes polished UX patterns: pagination, fuzzy search, input masking, and toast notifications.",
     shortDescription:
       "Employee web portal for pet care business operations with role-based access control and comprehensive management features.",
     category: ["Web App"],
@@ -351,10 +305,10 @@ export const projects: Project[] = [
       "Role-based authorization with granular permission system",
     ],
     highlights: [
-      "Demonstrates enterprise-level feature implementation: role-based access control, comprehensive user management, operational dashboards",
-      "Showcases full-stack JavaScript/TypeScript proficiency with modern Node.js patterns and MongoDB integration",
-      "Implements production-ready security practices: authentication, authorization, input validation, HTML sanitization",
-      "Features polished UX with advanced interaction patterns: fuzzy search, pagination, toast notifications, breadcrumb navigation",
+      "Complete business application demo: role-based access control, user management, operational dashboards with live demo available",
+      "Full-stack TypeScript: type safety from Express routes through MongoDB models to EJS templates",
+      "Production security practices: session auth, bcrypt hashing, input validation, HTML sanitization, secure image uploads",
+      "Polished UX details: fuzzy search, pagination, toast notifications, breadcrumb navigation, input masking",
     ],
     order: 5,
     featured: false,
@@ -364,8 +318,9 @@ export const projects: Project[] = [
   // PROJECT 6: DOOM NewGame+ Customizer (Squarespace Migration)
   // ==========================================
   {
-    id: "doom-newgame-plus-customizer",
-    title: "NewGame+ Customizer for DOOM (2016)",
+    projectType: "software",
+    title: "DOOM (2016) NewGame+ Customizer",
+    compactTitle: "NewGame+ Customizer",
     slug: "doom-newgame-plus-customizer",
     description:
       "Desktop application and mod generation tool for DOOM (2016) that translates player-defined gameplay preferences into custom .decl mod files. " +
@@ -376,7 +331,7 @@ export const projects: Project[] = [
       "Python desktop application generating custom DOOM (2016) mods from player-defined gameplay configurations.",
     category: ["Desktop App", "Modding Tool"],
     tags: ["Python", "Desktop Application", "Game Modding", "Data Modeling", "Tool Development"],
-    techStack: ["Python", "CustomTkinter", "Python Dataclasses", "Pillow (PIL)", "pygame", "CTkToolTip"],
+    techStack: ["Python", "CustomTkinter", "Pillow (PIL)", "pygame"],
     features: [
       "Data modeling: Python dataclasses representing game systems (inventory, weapons, equipment, upgrades)",
       "User-friendly GUI for configuring gameplay parameters without technical knowledge",
@@ -387,11 +342,14 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer",
-      external: "https://www.nexusmods.com/doom/mods/59", // NexusMods community page
-      download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
+      nexusmods: "https://www.nexusmods.com/doom/mods/59", // NexusMods community page
+      // download link disabled; takes up too much space on mobile and is already available via the other two links
+      // this is unique to this entry: despite being software, it also has mod download stat badges, so space is more limited than most other project entries
+      // download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
     },
     images: {
       thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
+      hero: "/projects/doom-newgame-plus-customizer/hero.webp",
       screenshots: [
         {
           src: "/projects/doom-newgame-plus-customizer/screenshot-1.webp",
@@ -437,7 +395,7 @@ export const projects: Project[] = [
   // PROJECT 7: Action RPG Project (Squarespace Migration)
   // ==========================================
   {
-    id: "action-rpg-project",
+    projectType: "game",
     title: "Action RPG Project",
     slug: "action-rpg-project",
     description:
@@ -451,7 +409,7 @@ export const projects: Project[] = [
       "Third-person action RPG in Unreal Engine 4 with Souls-like combat, 6 enemy AI types, and posture-break mechanics.",
     category: ["Game"],
     tags: ["Unreal Engine 4", "C++", "Game Development", "Combat Systems", "Enemy AI", "Action RPG"],
-    techStack: ["Unreal Engine 4", "C++", "Blueprint", "AI Systems", "Animation Systems"],
+    techStack: ["C++", "Unreal Engine 4", "Blueprint", "AI Behavior Trees", "Animation State Machines"],
     features: [
       "Souls-like combat design emphasizing aggressive play through posture mechanics",
       "6 distinct enemy AI types with unique behaviors and combat patterns",
@@ -515,14 +473,14 @@ export const projects: Project[] = [
       "Features 6 distinct enemy AI types demonstrating behavioral variety and state-based logic",
     ],
     order: 7,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // PROJECT 8: Survival Horror Project (Squarespace Migration)
   // ==========================================
   {
-    id: "survival-horror-project",
+    projectType: "game",
     title: "Survival Horror Project",
     slug: "survival-horror-project",
     description:
@@ -537,7 +495,7 @@ export const projects: Project[] = [
       "Capstone survival horror game in Unreal Engine 5 with puzzle-solving, inventory management, and zombie combat. Team project lead role.",
     category: ["Game"],
     tags: ["Unreal Engine 5", "C++", "Blueprint", "Game Development", "Team Leadership", "Capstone Project"],
-    techStack: ["Unreal Engine 5", "C++", "Blueprint", "Animation Systems", "AI Behavior Trees", "Cinematics"],
+    techStack: ["C++", "Unreal Engine 5", "Blueprint", "AI Behavior Trees", "Animation State Machines"],
     features: [
       "9 environmental puzzles with varying complexity levels",
       "Progression-updated multi-floor map system for navigation",
@@ -609,14 +567,14 @@ export const projects: Project[] = [
       "Implements production-level systems: complex animation state machines, dynamic enemy spawning, environmental puzzle mechanics, and polished player interactions",
     ],
     order: 8,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // PROJECT 9: Pong Clone (Squarespace Migration)
   // ==========================================
   {
-    id: "pong-clone",
+    projectType: "game",
     title: "Pong Clone",
     slug: "pong-clone",
     description:

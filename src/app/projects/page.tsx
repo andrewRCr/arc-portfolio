@@ -12,75 +12,68 @@ import { FEATURES } from "@/config/features";
 
 function ProjectsContent() {
   const searchParams = useSearchParams();
-  const currentTab = FEATURES.SHOW_MODS_TAB ? searchParams.get("tab") || "software" : "software";
+  const validTabs = ["software", "games", "mods"] as const;
+  const tabParam = searchParams.get("tab");
+  const currentTab =
+    FEATURES.SHOW_PROJECT_TABS && tabParam && validTabs.includes(tabParam as (typeof validTabs)[number])
+      ? (tabParam as (typeof validTabs)[number])
+      : "software";
 
-  // Sort projects and mods by order field
-  const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
-  const sortedMods = FEATURES.SHOW_MODS_TAB ? [...mods].sort((a, b) => a.order - b.order) : [];
+  // Filter and sort projects by projectType
+  const allProjects = [...projects].sort((a, b) => a.order - b.order);
+  const softwareProjects = allProjects.filter((p) => p.projectType === "software");
+  const gameProjects = allProjects.filter((p) => p.projectType === "game");
+  const sortedMods = FEATURES.SHOW_PROJECT_TABS ? [...mods].sort((a, b) => a.order - b.order) : [];
 
   return (
     <PageLayout
+      pageId="projects"
       header={
-        <PageHeader
-          title="Projects"
-          subtitle={
-            FEATURES.SHOW_MODS_TAB
-              ? "Explore my software development work and community contributions."
-              : "Explore my software development work."
-          }
-        >
-          {/* Tab Navigation - only shown when mods tab is enabled */}
-          {FEATURES.SHOW_MODS_TAB && <ProjectTabs />}
+        <PageHeader title="Projects" hideDivider={FEATURES.SHOW_PROJECT_TABS}>
+          {/* Tab Navigation - only shown when tabs are enabled */}
+          {FEATURES.SHOW_PROJECT_TABS && <ProjectTabs />}
         </PageHeader>
       }
     >
       <div className="px-4">
-        {/* Projects content - tab panel attributes only when tabs enabled */}
+        {/* Software Tab Panel */}
         {currentTab === "software" && (
           <div
-            id={FEATURES.SHOW_MODS_TAB ? "panel-software" : undefined}
-            role={FEATURES.SHOW_MODS_TAB ? "tabpanel" : undefined}
-            aria-labelledby={FEATURES.SHOW_MODS_TAB ? "tab-software" : undefined}
-            tabIndex={FEATURES.SHOW_MODS_TAB ? 0 : undefined}
+            id={FEATURES.SHOW_PROJECT_TABS ? "panel-software" : undefined}
+            role={FEATURES.SHOW_PROJECT_TABS ? "tabpanel" : undefined}
+            aria-labelledby={FEATURES.SHOW_PROJECT_TABS ? "tab-software" : undefined}
+            tabIndex={FEATURES.SHOW_PROJECT_TABS ? 0 : undefined}
             className="space-y-6"
           >
             {/* Software Projects Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {sortedProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} categoryType="software" />
+              {softwareProjects.map((project) => (
+                <ProjectCard key={project.slug} project={project} categoryType="software" />
               ))}
             </div>
           </div>
         )}
 
-        {/* Mods panel - only rendered when tabs enabled */}
-        {FEATURES.SHOW_MODS_TAB && currentTab === "mods" && (
-          <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6">
-            {/* Mods Tab Intro */}
-            <div className="space-y-3">
-              <p className="text-foreground">
-                Beyond software development, I maintain a portfolio of game modifications published on NexusMods,
-                demonstrating sustained commitment to community-driven projects and technical problem-solving in
-                production environments.
-              </p>
-              <p className="text-muted-foreground">
-                These projects showcase skills in reverse engineering, bug triage, community management, and ongoing
-                maintenance. With ~35 published mods and thousands of downloads, this work reflects the same
-                professional approach I bring to software development: thorough documentation, responsive support, and
-                continuous improvement.
-              </p>
-            </div>
-
-            {/* Placeholder Mods Grid */}
+        {/* Games Tab Panel - only rendered when tabs enabled */}
+        {FEATURES.SHOW_PROJECT_TABS && currentTab === "games" && (
+          <div id="panel-games" role="tabpanel" aria-labelledby="tab-games" tabIndex={0} className="space-y-6">
+            {/* Games Projects Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {sortedMods.map((mod) => (
-                <ProjectCard key={mod.id} project={mod} categoryType="mods" />
+              {gameProjects.map((project) => (
+                <ProjectCard key={project.slug} project={project} categoryType="games" />
               ))}
             </div>
+          </div>
+        )}
 
-            {/* Placeholder notice - mods content pending */}
-            <div className="rounded-lg border border-border bg-muted p-4 text-center">
-              <p className="text-sm text-muted-foreground">Placeholder entries. Mod content migration pending.</p>
+        {/* Mods Tab Panel - only rendered when tabs enabled */}
+        {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
+          <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6">
+            {/* Mods Grid */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {sortedMods.map((mod) => (
+                <ProjectCard key={mod.slug} project={mod} categoryType="mods" />
+              ))}
             </div>
           </div>
         )}

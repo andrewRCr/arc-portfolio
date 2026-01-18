@@ -44,7 +44,7 @@ export function ThemeToggle() {
       size="icon-xs"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="border-transparent hover:border-foreground/60 text-muted-foreground hover:text-foreground"
+      className="border-transparent hover:border-transparent text-muted-foreground hover:text-foreground"
     >
       {theme === "dark" ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5" />}
     </Button>

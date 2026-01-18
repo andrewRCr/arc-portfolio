@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 import "overlayscrollbars/styles/overlayscrollbars.css";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { useScrollShadow } from "@/hooks/useScrollShadow";
 import { ScrollShadow } from "./ScrollShadow";
+import { ScrollProvider } from "./ScrollContext";
+import { BackToTopButton } from "@/components/ui/BackToTopButton";
+import type { HeaderType } from "@/hooks/useHeaderCrossfade";
 
 /**
  * PageLayout Component
@@ -23,6 +26,7 @@ import { ScrollShadow } from "./ScrollShadow";
  * - With header: <PageLayout header={<PageHeader title="..." />}>{content}</PageLayout>
  * - Without header: <PageLayout>{content}</PageLayout>
  * - Full width: <PageLayout fullWidth>{content}</PageLayout>
+ * - With sticky header in content: <PageLayout stickyHeader>{content with sticky header}</PageLayout>
  */
 
 export interface PageLayoutProps {
@@ -32,15 +36,32 @@ export interface PageLayoutProps {
   children: React.ReactNode;
   /** Disable content width constraint (default: false) */
   fullWidth?: boolean;
+  /** Remove top padding when content includes a sticky header (default: false) */
+  stickyHeader?: boolean;
+  /** Page identifier for page-specific styling (sets data-page attribute) */
+  pageId?: string;
+  /** Header type for back-to-top button threshold (inferred from stickyHeader if not set) */
+  headerType?: HeaderType;
 }
 
-export function PageLayout({ header, children, fullWidth = false }: PageLayoutProps) {
+export function PageLayout({
+  header,
+  children,
+  fullWidth = false,
+  stickyHeader = false,
+  pageId,
+  headerType,
+}: PageLayoutProps) {
+  // Infer header type from stickyHeader if not explicitly set
+  const effectiveHeaderType = headerType ?? (stickyHeader ? "detail" : "page");
   const { contentMaxWidth, contentPaddingY, contentPaddingX } = DEFAULT_LAYOUT_TOKENS;
   const { ref: scrollShadowRef, showTopShadow, showBottomShadow } = useScrollShadow();
   const [element, setElement] = useState<HTMLElement | null>(null);
+  const [viewport, setViewport] = useState<HTMLElement | null>(null);
 
   // Initialize OverlayScrollbars and connect its viewport to scroll shadow detection
-  useEffect(() => {
+  // useLayoutEffect ensures viewport is set before paint (avoids flash of missing scroll context)
+  useLayoutEffect(() => {
     if (!element) return;
 
     const instance = OverlayScrollbars(element, {
@@ -52,11 +73,16 @@ export function PageLayout({ header, children, fullWidth = false }: PageLayoutPr
     });
 
     // OverlayScrollbars creates its own viewport - use that for scroll detection
-    const { viewport } = instance.elements();
-    scrollShadowRef(viewport);
+    // State propagates viewport to ScrollContext; children's effects depend on re-render.
+    // This is a legitimate third-party library initialization pattern.
+    const { viewport: osViewport } = instance.elements();
+    scrollShadowRef(osViewport);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- viewport must trigger child re-renders
+    setViewport(osViewport);
 
     return () => {
       scrollShadowRef(null);
+      setViewport(null);
       instance.destroy();
     };
   }, [element, scrollShadowRef]);
@@ -69,35 +95,41 @@ export function PageLayout({ header, children, fullWidth = false }: PageLayoutPr
   };
 
   // Scrollable content gets full padding on all sides
+  // When stickyHeader is true, skip top padding (sticky header fills that space)
   const contentStyle = {
     ...(fullWidth ? {} : { maxWidth: contentMaxWidth }),
-    paddingTop: contentPaddingY,
+    ...(stickyHeader ? {} : { paddingTop: contentPaddingY }),
     paddingBottom: contentPaddingY,
     paddingLeft: contentPaddingX,
     paddingRight: contentPaddingX,
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0">
-      {/* Fixed header area - doesn't scroll, centered with max-width */}
-      {header && (
-        <div className="shrink-0">
-          <div className="mx-auto w-full" style={headerStyle}>
-            {header}
+    <ScrollProvider viewport={viewport}>
+      <div className="flex flex-col flex-1 min-h-0" {...(pageId && { "data-page": pageId })}>
+        {/* Fixed header area - doesn't scroll, centered with max-width */}
+        {header && (
+          <div className="shrink-0">
+            <div className="mx-auto w-full" style={headerStyle}>
+              {header}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Scrollable content area with scroll shadows */}
-      <div className="relative flex-1 min-h-0">
-        <main ref={setElement} className="h-full overflow-auto" data-overlayscrollbars-initialize>
-          <div className="mx-auto w-full min-h-full" style={contentStyle}>
-            {children}
-          </div>
-        </main>
-        <ScrollShadow position="top" visible={showTopShadow} />
-        <ScrollShadow position="bottom" visible={showBottomShadow} />
+        {/* Scrollable content area with scroll shadows */}
+        <div className="relative flex-1 min-h-0">
+          <main ref={setElement} className="h-full overflow-auto" data-overlayscrollbars-initialize>
+            <div className="mx-auto w-full min-h-full" style={contentStyle}>
+              {children}
+            </div>
+          </main>
+          <ScrollShadow position="top" visible={showTopShadow} />
+          <ScrollShadow position="bottom" visible={showBottomShadow} />
+        </div>
+
+        {/* Back to top button - appears when scrolled down */}
+        <BackToTopButton headerType={effectiveHeaderType} />
       </div>
-    </div>
+    </ScrollProvider>
   );
 }

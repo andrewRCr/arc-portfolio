@@ -141,7 +141,7 @@ export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   navHeight: 28,
   navGapDepth: 3,
   contentMaxWidth: 1152, // Tailwind max-w-6xl equivalent (72rem)
-  contentPaddingY: 28, // CSS variable: --content-padding-y (auto-generated)
+  contentPaddingY: 24, // CSS variable: --content-padding-y (auto-generated)
   contentPaddingX: 8, // CSS variable: --content-padding-x (auto-generated)
   topBarContentMaxWidth: 1200, // Wider than content for visual hierarchy
   windowContainerMaxWidth: 1200, // Reveals wallpaper margins at large viewports

@@ -1,69 +1,23 @@
 /**
  * Data validation tests for projects data file
  *
- * These tests verify that:
- * - All projects are present and properly structured
- * - Order fields are unique and sequential
- * - URLs are properly formatted and consistent
- * - Featured projects are correctly marked
- * - All required data is present and valid
+ * Tests meaningful invariants:
+ * - Required fields present and correctly typed
+ * - Referential integrity (unique IDs, slugs, valid URLs)
+ * - Business rules (order sequencing, featured project constraints)
+ *
+ * Does NOT test brittle implementation details like exact category names,
+ * specific project positions, or exact counts that change with content updates.
  */
 
 import { describe, it, expect } from "vitest";
 import { projects } from "@/data/projects";
 
 describe("Projects Data Validation", () => {
-  describe("Basic Structure", () => {
-    it("should have at least 9 projects", () => {
-      expect(projects).toBeDefined();
-      expect(projects.length).toBeGreaterThanOrEqual(9);
-    });
-
-    it("should have all projects as valid objects", () => {
-      projects.forEach((project) => {
-        expect(project).toBeDefined();
-        expect(typeof project).toBe("object");
-        expect(project).not.toBeNull();
-      });
-    });
-  });
-
-  describe("Order Field Validation", () => {
-    it("should have unique order values starting from 1", () => {
-      const orderValues = projects.map((p) => p.order);
-      const uniqueOrders = new Set(orderValues);
-
-      // All order values should be unique
-      expect(uniqueOrders.size).toBe(projects.length);
-
-      // Order values should start at 1
-      const sortedOrders = [...orderValues].sort((a, b) => a - b);
-      expect(sortedOrders[0]).toBe(1);
-    });
-
-    it("should have sequential order values with no gaps", () => {
-      const orderValues = projects.map((p) => p.order).sort((a, b) => a - b);
-
-      for (let i = 0; i < orderValues.length; i++) {
-        expect(orderValues[i]).toBe(i + 1);
-      }
-    });
-
-    it("should have projects sorted by order field", () => {
-      // Create sorted copy to test order values
-      const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
-      for (let i = 0; i < sortedProjects.length - 1; i++) {
-        expect(sortedProjects[i].order).toBeLessThan(sortedProjects[i + 1].order);
-      }
-    });
-  });
-
-  describe("Required Fields Presence", () => {
+  describe("Required Fields", () => {
     it("should have all core required fields for every project", () => {
       projects.forEach((project) => {
         // Core identification
-        expect(project.id).toBeDefined();
-        expect(project.id.length).toBeGreaterThan(0);
         expect(project.title).toBeDefined();
         expect(project.title.length).toBeGreaterThan(0);
         expect(project.slug).toBeDefined();
@@ -75,7 +29,7 @@ describe("Projects Data Validation", () => {
         expect(project.shortDescription).toBeDefined();
         expect(project.shortDescription.length).toBeGreaterThan(0);
 
-        // Categorization
+        // Categorization - at least one category
         expect(project.category).toBeDefined();
         expect(project.category.length).toBeGreaterThan(0);
 
@@ -98,15 +52,13 @@ describe("Projects Data Validation", () => {
       });
     });
 
-    it("should have valid images object with required fields", () => {
+    it("should have valid images object structure", () => {
       projects.forEach((project) => {
         expect(project.images).toBeDefined();
-        expect(project.images.thumbnail).toBeDefined();
         expect(typeof project.images.thumbnail).toBe("string");
-        // Thumbnail can be empty (triggers placehold.co fallback in ProjectCard)
-
         expect(Array.isArray(project.images.screenshots)).toBe(true);
-        // Each screenshot should have src and alt properties
+
+        // Each screenshot should have src and alt
         project.images.screenshots.forEach((screenshot) => {
           expect(typeof screenshot.src).toBe("string");
           expect(typeof screenshot.alt).toBe("string");
@@ -122,231 +74,79 @@ describe("Projects Data Validation", () => {
     });
   });
 
-  describe("URL Format Validation", () => {
-    it("should have valid GitHub URLs for all projects", () => {
-      projects.forEach((project) => {
-        if (project.links.github) {
-          expect(project.links.github).toMatch(/^https:\/\/github\.com\//);
-          expect(project.links.github).toContain("andrewRCr");
-        }
-      });
-    });
-
-    it("should have valid live demo URLs when present", () => {
-      const projectsWithDemo = projects.filter((p) => p.links.liveDemo);
-
-      projectsWithDemo.forEach((project) => {
-        expect(project.links.liveDemo).toMatch(/^https?:\/\//);
-      });
-    });
-
-    it("should have valid download URLs when present", () => {
-      const projectsWithDownload = projects.filter((p) => p.links.download);
-
-      projectsWithDownload.forEach((project) => {
-        expect(project.links.download).toMatch(/^https?:\/\//);
-      });
-    });
-
-    it("should have valid external URLs when present", () => {
-      const projectsWithExternal = projects.filter((p) => p.links.external);
-
-      projectsWithExternal.forEach((project) => {
-        expect(project.links.external).toMatch(/^https?:\/\//);
-      });
-    });
-  });
-
-  describe("Featured Projects", () => {
-    it("should have at least 3 featured projects", () => {
-      const featuredProjects = projects.filter((p) => p.featured);
-      expect(featuredProjects.length).toBeGreaterThanOrEqual(3);
-    });
-
-    it("should have featured projects with lowest order numbers", () => {
-      const featuredProjects = projects.filter((p) => p.featured);
-      const featuredOrders = featuredProjects.map((p) => p.order).sort((a, b) => a - b);
-
-      // Featured projects should start from order 1
-      expect(featuredOrders[0]).toBe(1);
-
-      // Featured projects should be among the lowest order numbers (< 5)
-      featuredOrders.forEach((order) => {
-        expect(order).toBeLessThan(5);
-      });
-    });
-
-    it("should have CineXplorer, ARC Framework, and arc-portfolio as featured", () => {
-      const featuredSlugs = projects
-        .filter((p) => p.featured)
-        .map((p) => p.slug)
-        .sort();
-
-      expect(featuredSlugs).toEqual(["arc-agentic-dev-framework", "arc-portfolio", "cinexplorer"]);
-    });
-  });
-
-  describe("Project Categories", () => {
-    it("should have valid project categories", () => {
-      const validCategories = ["Web App", "Desktop App", "Framework", "Game", "Modding Tool"];
-
-      projects.forEach((project) => {
-        // Each category in the array should be valid
-        project.category.forEach((cat) => {
-          expect(validCategories).toContain(cat);
-        });
-        // Should have at least one category
-        expect(project.category.length).toBeGreaterThanOrEqual(1);
-      });
-    });
-
-    it("should have reasonable distribution of categories", () => {
-      const categoryCounts = projects.reduce(
-        (acc, project) => {
-          // Count each category in the project's category array
-          project.category.forEach((cat) => {
-            acc[cat] = (acc[cat] || 0) + 1;
-          });
-          return acc;
-        },
-        {} as Record<string, number>
-      );
-
-      // Should have at least the baseline counts from current projects
-      expect(categoryCounts["Web App"]).toBeGreaterThanOrEqual(3);
-      expect(categoryCounts["Game"]).toBeGreaterThanOrEqual(3);
-      expect(categoryCounts["Desktop App"]).toBeGreaterThanOrEqual(1);
-      expect(categoryCounts["Framework"]).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  describe("Specific Project Validation", () => {
-    it("should have CineXplorer as project 1", () => {
-      const cinexplorer = projects.find((p) => p.slug === "cinexplorer");
-      expect(cinexplorer).toBeDefined();
-      expect(cinexplorer?.order).toBe(1);
-      expect(cinexplorer?.featured).toBe(true);
-      expect(cinexplorer?.category).toContain("Web App");
-    });
-
-    it("should have TaskFocus as project 2", () => {
-      const taskfocus = projects.find((p) => p.slug === "taskfocus");
-      expect(taskfocus).toBeDefined();
-      expect(taskfocus?.order).toBe(2);
-      expect(taskfocus?.featured).toBe(false);
-      expect(taskfocus?.category).toContain("Desktop App");
-      expect(taskfocus?.category).toContain("Web App");
-    });
-
-    it("should have ARC Framework as project 3", () => {
-      const arcFramework = projects.find((p) => p.slug === "arc-agentic-dev-framework");
-      expect(arcFramework).toBeDefined();
-      expect(arcFramework?.order).toBe(3);
-      expect(arcFramework?.featured).toBe(true);
-      expect(arcFramework?.category).toContain("Framework");
-    });
-
-    it("should have arc-portfolio as project 4", () => {
-      const arcPortfolio = projects.find((p) => p.slug === "arc-portfolio");
-      expect(arcPortfolio).toBeDefined();
-      expect(arcPortfolio?.order).toBe(4);
-      expect(arcPortfolio?.featured).toBe(true);
-      expect(arcPortfolio?.category).toContain("Web App");
-    });
-
-    it("should have Unreal Engine projects with download links", () => {
-      const ueProjects = projects.filter(
-        (p) => p.techStack.includes("Unreal Engine 4") || p.techStack.includes("Unreal Engine 5")
-      );
-
-      ueProjects.forEach((project) => {
-        expect(project.links.download).toBeDefined();
-        expect(project.links.download).toMatch(/^https:\/\//);
-      });
-    });
-
-    it("should have PetResort with demo credentials", () => {
-      const petresort = projects.find((p) => p.slug === "petresort");
-      expect(petresort).toBeDefined();
-      expect(petresort?.links.demoCredentials).toBeDefined();
-      expect(petresort?.links.demoCredentials?.username).toBe("admin");
-      expect(petresort?.links.demoCredentials?.password).toBe("admin");
-    });
-  });
-
-  describe("Data Consistency", () => {
-    it("should have unique project IDs", () => {
-      const ids = projects.map((p) => p.id);
-      const uniqueIds = new Set(ids);
-      expect(uniqueIds.size).toBe(projects.length);
-    });
-
+  describe("Referential Integrity", () => {
     it("should have unique project slugs", () => {
       const slugs = projects.map((p) => p.slug);
       const uniqueSlugs = new Set(slugs);
       expect(uniqueSlugs.size).toBe(projects.length);
     });
 
-    it("should have id and slug match for all projects", () => {
+    it("should have unique order values", () => {
+      const orderValues = projects.map((p) => p.order);
+      const uniqueOrders = new Set(orderValues);
+      expect(uniqueOrders.size).toBe(projects.length);
+    });
+
+    it("should have sequential order values starting from 1", () => {
+      const orderValues = projects.map((p) => p.order).sort((a, b) => a - b);
+      for (let i = 0; i < orderValues.length; i++) {
+        expect(orderValues[i]).toBe(i + 1);
+      }
+    });
+  });
+
+  describe("URL Format Validation", () => {
+    it("should have valid GitHub URLs when present", () => {
       projects.forEach((project) => {
-        expect(project.id).toBe(project.slug);
+        if (project.links.github) {
+          expect(project.links.github).toMatch(/^https:\/\/github\.com\//);
+        }
       });
     });
 
-    it("should have valid teamSize values when present", () => {
-      const projectsWithTeamSize = projects.filter((p) => p.teamSize);
-
-      projectsWithTeamSize.forEach((project) => {
-        expect(typeof project.teamSize).toBe("string");
-        expect(project.teamSize!.length).toBeGreaterThan(0);
-      });
-    });
-
-    it("should have valid role values when present", () => {
-      const projectsWithRole = projects.filter((p) => p.role);
-
-      projectsWithRole.forEach((project) => {
-        expect(typeof project.role).toBe("string");
-        expect(project.role!.length).toBeGreaterThan(0);
+    it("should have valid URLs for all link types when present", () => {
+      projects.forEach((project) => {
+        if (project.links.liveDemo) {
+          expect(project.links.liveDemo).toMatch(/^https?:\/\//);
+        }
+        if (project.links.download) {
+          expect(project.links.download).toMatch(/^https?:\/\//);
+        }
+        if (project.links.nexusmods) {
+          expect(project.links.nexusmods).toMatch(/^https?:\/\//);
+        }
       });
     });
   });
 
-  describe("Core Projects Validation", () => {
-    it("should have core portfolio projects", () => {
-      const coreProjectSlugs = [
-        "cinexplorer",
-        "arc-agentic-dev-framework",
-        "arc-portfolio",
-        "taskfocus",
-        "petresort",
-        "doom-newgame-plus-customizer",
-        "action-rpg-project",
-        "survival-horror-project",
-        "pong-clone",
-      ];
-
-      coreProjectSlugs.forEach((slug) => {
-        const project = projects.find((p) => p.slug === slug);
-        expect(project).toBeDefined();
-      });
+  describe("Business Rules", () => {
+    it("should have at least one featured project", () => {
+      const featuredProjects = projects.filter((p) => p.featured);
+      expect(featuredProjects.length).toBeGreaterThanOrEqual(1);
     });
 
-    it("should have all projects with highlights when present", () => {
-      const projectsWithHighlights = projects.filter((p) => p.highlights);
-
-      projectsWithHighlights.forEach((project) => {
-        expect(Array.isArray(project.highlights)).toBe(true);
-        expect(project.highlights!.length).toBeGreaterThan(0);
-      });
-    });
-
-    it("should have all projects with architectureNotes when present", () => {
-      const projectsWithArchNotes = projects.filter((p) => p.architectureNotes);
-
-      projectsWithArchNotes.forEach((project) => {
-        expect(Array.isArray(project.architectureNotes)).toBe(true);
-        expect(project.architectureNotes!.length).toBeGreaterThan(0);
+    it("should have valid optional fields when present", () => {
+      projects.forEach((project) => {
+        if (project.teamSize) {
+          expect(typeof project.teamSize).toBe("string");
+          expect(project.teamSize.length).toBeGreaterThan(0);
+        }
+        if (project.role) {
+          expect(typeof project.role).toBe("string");
+          expect(project.role.length).toBeGreaterThan(0);
+        }
+        if (project.highlights) {
+          expect(Array.isArray(project.highlights)).toBe(true);
+          expect(project.highlights.length).toBeGreaterThan(0);
+        }
+        if (project.architectureNotes) {
+          expect(Array.isArray(project.architectureNotes)).toBe(true);
+          expect(project.architectureNotes.length).toBeGreaterThan(0);
+        }
+        if (project.compactTitle) {
+          expect(typeof project.compactTitle).toBe("string");
+          expect(project.compactTitle.length).toBeGreaterThan(0);
+        }
       });
     });
   });

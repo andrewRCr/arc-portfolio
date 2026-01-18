@@ -19,24 +19,26 @@ export interface PageHeaderProps {
   subtitle?: string;
   /** Content below title (tabs, filters, etc.) OR full custom content if no title */
   children?: React.ReactNode;
+  /** Hide the bottom divider (useful when children provide their own divider, e.g., tabs) */
+  hideDivider?: boolean;
 }
 
-export function PageHeader({ title, subtitle, children }: PageHeaderProps) {
+export function PageHeader({ title, subtitle, children, hideDivider = false }: PageHeaderProps) {
   return (
     <div>
       {/* Title/subtitle if provided */}
       {title && (
         <div className="space-y-1">
-          <h1 className="font-mono text-2xl font-bold text-foreground">{title}</h1>
+          <h1 className="hidden sm:block font-mono text-2xl font-bold text-foreground">{title}</h1>
           {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
         </div>
       )}
 
       {/* Children: controls below title, or full custom content */}
-      {children && <div className={title ? "mt-3" : ""}>{children}</div>}
+      {children && <div className={title ? "sm:mt-2" : ""}>{children}</div>}
 
-      {/* Bottom separator - mx-4 inset creates visual hierarchy, not meant to align with parent padding */}
-      <div className="mt-3 mx-4 border-b border-border/50" />
+      {/* Bottom separator - hidden when children provide their own (e.g., tabs with border) */}
+      {!hideDivider && <div className="mt-3 mx-4 border-b border-border/50" />}
     </div>
   );
 }

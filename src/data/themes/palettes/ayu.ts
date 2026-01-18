@@ -160,6 +160,8 @@ export const ayuA11y = {
   // Dark mode fixes
   /** FgMuted lightened 20% for panelBg contrast (3.14 → 4.51) */
   fgMutedLightened20: "#8d95a3",
+  /** Tag (cyan) softened ~15% for UI backgrounds - less electric/neon */
+  tagSoftened: "#52AFC6",
 } as const;
 
 /**

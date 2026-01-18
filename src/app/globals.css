@@ -132,7 +132,7 @@
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
 
   /* Layout tokens */
-  --content-padding-y: 28px;
+  --content-padding-y: 24px;
   --content-padding-x: 8px;
   /* END AUTO-GENERATED THEME DEFAULTS */
 }
@@ -302,7 +302,7 @@
   --foreground: 87 82 121;
 
   /* Card colors */
-  --card: 255 250 243;
+  --card: 242 233 225;
   --card-foreground: 87 82 121;
 
   /* Popover colors */
@@ -366,7 +366,7 @@
   --primary-foreground: 40 40 40;
 
   /* Secondary colors */
-  --secondary: 250 189 47;
+  --secondary: 215 153 33;
   --secondary-foreground: 40 40 40;
 
   /* Muted colors */
@@ -470,7 +470,7 @@
   --primary-foreground: 23 27 36;
 
   /* Secondary colors */
-  --secondary: 92 207 230;
+  --secondary: 82 175 198;
   --secondary-foreground: 23 27 36;
 
   /* Muted colors */
@@ -510,11 +510,11 @@
   --foreground: 92 97 102;
 
   /* Card colors */
-  --card: 248 249 250;
+  --card: 240 241 242;
   --card-foreground: 92 97 102;
 
   /* Popover colors */
-  --popover: 248 249 250;
+  --popover: 240 241 242;
   --popover-foreground: 92 97 102;
 
   /* Primary colors */
@@ -614,11 +614,11 @@
   --foreground: 45 55 72;
 
   /* Card colors */
-  --card: 255 255 255;
+  --card: 238 236 233;
   --card-foreground: 45 55 72;
 
   /* Popover colors */
-  --popover: 255 255 255;
+  --popover: 238 236 233;
   --popover-foreground: 45 55 72;
 
   /* Primary colors */
@@ -718,11 +718,11 @@
   --foreground: 48 56 65;
 
   /* Card colors */
-  --card: 255 255 255;
+  --card: 238 241 245;
   --card-foreground: 48 56 65;
 
   /* Popover colors */
-  --popover: 255 255 255;
+  --popover: 238 241 245;
   --popover-foreground: 48 56 65;
 
   /* Primary colors */
@@ -837,11 +837,11 @@ html[data-env-preview="false"] [data-window-container] {
 }
 
 /* ==========================================================================
-   OverlayScrollbars Theme Overrides
-   Customize the built-in os-theme-dark with project colors
+   OverlayScrollbars
+   Theme styling and page-specific track insets.
    ========================================================================== */
 
-/* Override built-in theme with our styling */
+/* Theme: colors and base sizing */
 .os-theme-dark.os-scrollbar {
   --os-size: 10px;
   --os-padding-perpendicular: 4px;
@@ -849,4 +849,69 @@ html[data-env-preview="false"] [data-window-container] {
   --os-handle-bg: rgb(var(--border-strong) / 0.5);
   --os-handle-bg-hover: rgb(var(--border-strong) / 0.7);
   --os-handle-bg-active: rgb(var(--muted-foreground));
+}
+
+/* Stacking context resets */
+[data-overlayscrollbars-viewport] {
+  z-index: auto !important;
+  position: relative !important;
+}
+
+.os-scrollbar {
+  z-index: 10 !important;
+}
+
+/*
+ * Track insets (+/- visual tuning)
+ * Structure: baseline → page overrides, each with mobile → desktop
+ */
+
+/* Baseline (pages with data-page) - mobile */
+[data-page] .os-scrollbar-vertical {
+  padding-top: 24px;
+  padding-bottom: 56px;
+}
+/* Baseline (pages with data-page) - desktop */
+@media (min-width: 768px) {
+  [data-page] .os-scrollbar-vertical {
+    padding-top: 40px;
+    padding-bottom: 64px;
+  }
+}
+
+/* Projects listing - mobile */
+[data-page="projects"] .os-scrollbar-vertical {
+  padding-top: 30px;
+}
+
+/* Project detail - mobile: 165px = DetailHeaderCompact height (~140px) + visual offset */
+[data-page="project-detail"] .os-scrollbar-vertical {
+  padding-top: 165px;
+}
+/* Project detail - desktop: 396px = DetailHeader hero height (~360px) + visual offset */
+@media (min-width: 768px) {
+  [data-page="project-detail"] .os-scrollbar-vertical {
+    padding-top: 396px;
+  }
+}
+
+/* ==========================================================================
+   YARL Lightbox - Contained Mode
+   Constrain lightbox to the main content window instead of full viewport
+   to maintain TWM aesthetic where modals stay within their origin container
+   ========================================================================== */
+
+/* Ensure main window container establishes positioning context */
+[data-window-id="main"] {
+  position: relative;
+}
+
+.yarl__root {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
 }

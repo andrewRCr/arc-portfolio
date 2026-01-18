@@ -20,7 +20,7 @@ export interface ProjectLinks {
   github?: string; // GitHub repository URL
   liveDemo?: string; // Live demo/deployed application URL
   download?: string; // Direct download link (e.g., for desktop apps)
-  external?: string; // External profile/showcase link (e.g., NexusMods)
+  nexusmods?: string; // NexusMods page URL
   demoCredentials?: DemoCredentials; // Optional login credentials for demos
 }
 
@@ -33,12 +33,28 @@ export interface Screenshot {
 }
 
 /**
+ * Content item for features, highlights, and other list sections.
+ * Can be a simple string (rendered as bullet) or an object with paragraph flag.
+ * Supports markdown formatting (bold, italic, links, inline code).
+ */
+export type ContentItem =
+  | string // Simple bullet item
+  | { text: string; paragraph?: boolean }; // Explicit paragraph control
+
+/**
  * Image references for a project
  */
 export interface ProjectImages {
   thumbnail: string; // Main thumbnail for project cards (e.g., "/thumbnails/project-slug.webp")
+  hero?: string; // Hero/banner image for detail header (e.g., "/projects/slug/hero.webp")
   screenshots: Screenshot[]; // Array of screenshots with alt text
 }
+
+/**
+ * Project type discriminator for routing and filtering.
+ * Determines which tab/route a project belongs to.
+ */
+export type ProjectType = "software" | "game" | "mod";
 
 /**
  * Complete project data structure
@@ -48,8 +64,9 @@ export interface ProjectImages {
  */
 export interface Project {
   // Core identification and content
-  id: string; // Unique identifier (e.g., "cinexplorer")
+  projectType: ProjectType; // Routing discriminator (software/game/mod)
   title: string; // Display title (e.g., "CineXplorer")
+  compactTitle?: string; // Shorter title for space-constrained UI (e.g., mobile header)
   slug: string; // URL-friendly slug (e.g., "cinexplorer")
   description: string; // Full project description (multiple paragraphs supported)
   shortDescription: string; // Brief summary for project cards (~1-2 sentences)
@@ -57,10 +74,11 @@ export interface Project {
   // Categorization and tagging
   category: string[]; // Project categories (e.g., ["Web App"], ["Desktop App", "Web App"], ["Game"])
   tags: string[]; // Technology tags using canonical names matching skills data (enables future filtering)
+  game?: string; // For mods: the game this mod is for (e.g., "Lies of P")
 
   // Technical details
   techStack: string[]; // Technologies used (e.g., ["React", "Next.js", "TypeScript"])
-  features: string[]; // Key features and capabilities
+  features: ContentItem[]; // Key features and capabilities (supports markdown)
 
   // External links
   links: ProjectLinks; // GitHub, live demo, downloads, etc.
@@ -70,13 +88,19 @@ export interface Project {
 
   // Optional metadata
   teamSize?: string; // Team composition (e.g., "Solo", "2 developers", "4-person team")
-  duration?: string; // Development timeline (e.g., "3 months", "6 weeks")
   role?: string; // Your role if team project (e.g., "Lead Developer", "Full-Stack Developer")
-  developmentTime?: string; // Alternative to duration (e.g., "Spring 2024")
+  developmentTime?: string; // Development timeline (e.g., "2024", "Spring 2024", "8 weeks (2024)")
 
-  // Optional detailed content
-  architectureNotes?: string[]; // Technical architecture details and design decisions
-  highlights?: string[]; // Key achievements, metrics, or notable aspects
+  // Optional detailed content (supports markdown and mixed bullet/paragraph items)
+  architectureNotes?: ContentItem[]; // Technical architecture details and design decisions
+  highlights?: ContentItem[]; // Key achievements, metrics, or notable aspects
+
+  // Section label customization (for mods and other non-standard projects)
+  sectionLabels?: {
+    features?: string; // Override "Key Features" (e.g., "Default Modifiers")
+    highlights?: string; // Override "Highlights" (e.g., "Legion Arms")
+    architectureNotes?: string; // Override "Architecture" (e.g., "Additional Notes")
+  };
 
   // Display properties
   order: number; // Display order (1-9, with 1 being highest priority)

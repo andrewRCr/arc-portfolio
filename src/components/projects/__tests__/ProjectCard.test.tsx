@@ -11,7 +11,7 @@ import ProjectCard from "../ProjectCard";
 import type { Project } from "@/types/project";
 
 const mockProject: Project = {
-  id: "test-project",
+  projectType: "software",
   title: "Test Project",
   slug: "test-project",
   description: "A comprehensive test project description with multiple paragraphs.",
@@ -34,7 +34,6 @@ const mockProject: Project = {
 
 const mockProjectSingleCategory: Project = {
   ...mockProject,
-  id: "single-category",
   title: "Single Category Project",
   slug: "single-category",
   category: ["Game"],
@@ -142,6 +141,12 @@ describe("ProjectCard - Behavior Tests", () => {
       render(<ProjectCard project={mockProject} categoryType="mods" />);
       const link = screen.getByRole("link", { name: /test project/i });
       expect(link).toHaveAttribute("href", "/projects/mods/test-project");
+    });
+
+    it("links to correct games project detail page when categoryType is games", () => {
+      render(<ProjectCard project={mockProjectSingleCategory} categoryType="games" />);
+      const link = screen.getByRole("link", { name: /single category project/i });
+      expect(link).toHaveAttribute("href", "/projects/games/single-category");
     });
 
     it("does not open in new tab (internal navigation)", () => {

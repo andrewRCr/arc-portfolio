@@ -1,20 +1,19 @@
 /**
  * Behavior tests for ProjectDetail component
  *
- * Tests data display, external links, back button functionality, and tab state preservation.
+ * Tests content display: description, screenshots gallery, external links,
+ * tech stack, features, and optional metadata. Header elements (title, badges,
+ * back button) are tested in DetailHeader.test.tsx.
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
+import { describe, it, expect } from "vitest";
 import ProjectDetail from "../ProjectDetail";
+import { getBackDestination } from "../utils";
 import type { Project } from "@/types/project";
 
-// Apply shared navigation mock
-vi.mock("next/navigation", () => createNavigationMock());
-
 const mockProject: Project = {
-  id: "test-project",
+  projectType: "software",
   title: "Test Project",
   slug: "test-project",
   description: "A comprehensive test project description with multiple paragraphs of detailed information.",
@@ -27,7 +26,7 @@ const mockProject: Project = {
     github: "https://github.com/test/project",
     liveDemo: "https://demo.test.com",
     download: "https://download.test.com",
-    external: "https://nexusmods.com/test",
+    nexusmods: "https://nexusmods.com/test",
   },
   images: {
     thumbnail: "/thumbnails/test-project.webp",
@@ -39,31 +38,15 @@ const mockProject: Project = {
   order: 1,
   featured: true,
   teamSize: "Solo",
-  duration: "3 months",
   highlights: ["Achievement 1", "Achievement 2"],
   architectureNotes: ["Architecture note 1", "Architecture note 2"],
 };
 
 describe("ProjectDetail - Behavior Tests", () => {
-  beforeEach(() => {
-    mockNavigation.reset();
-  });
-
-  describe("Basic Rendering", () => {
-    it("renders project title", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText("Test Project")).toBeInTheDocument();
-    });
-
+  describe("Content Rendering", () => {
     it("renders project description", () => {
       render(<ProjectDetail project={mockProject} />);
       expect(screen.getByText(/comprehensive test project description/i)).toBeInTheDocument();
-    });
-
-    it("renders category badges", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText("Web App")).toBeInTheDocument();
-      expect(screen.getByText("Desktop App")).toBeInTheDocument();
     });
 
     it("renders all tech stack items", () => {
@@ -83,77 +66,28 @@ describe("ProjectDetail - Behavior Tests", () => {
     });
   });
 
-  describe("External Links", () => {
-    it("renders GitHub link when provided", () => {
+  describe("Screenshots Gallery", () => {
+    it("renders gallery when screenshots exist", () => {
       render(<ProjectDetail project={mockProject} />);
-      const githubLink = screen.getByRole("link", { name: /github/i });
-      expect(githubLink).toHaveAttribute("href", "https://github.com/test/project");
-      expect(githubLink).toHaveAttribute("target", "_blank");
-      expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
+      expect(screen.getByTestId("image-gallery")).toBeInTheDocument();
     });
 
-    it("renders live demo link when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const demoLink = screen.getByRole("link", { name: /live demo/i });
-      expect(demoLink).toHaveAttribute("href", "https://demo.test.com");
-      expect(demoLink).toHaveAttribute("target", "_blank");
-    });
-
-    it("renders download link when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const downloadLink = screen.getByRole("link", { name: /download/i });
-      expect(downloadLink).toHaveAttribute("href", "https://download.test.com");
-      expect(downloadLink).toHaveAttribute("target", "_blank");
-    });
-
-    it("renders external link when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const externalLink = screen.getByRole("link", { name: /view on nexusmods/i });
-      expect(externalLink).toHaveAttribute("href", "https://nexusmods.com/test");
-      expect(externalLink).toHaveAttribute("target", "_blank");
-    });
-
-    it("does not render links when not provided", () => {
-      const projectWithoutLinks: Project = {
+    it("does not render gallery when no screenshots", () => {
+      const projectWithoutScreenshots: Project = {
         ...mockProject,
-        links: {},
+        images: { ...mockProject.images, screenshots: [] },
       };
-      render(<ProjectDetail project={projectWithoutLinks} />);
-      expect(screen.queryByRole("link", { name: /github/i })).not.toBeInTheDocument();
-      expect(screen.queryByRole("link", { name: /live demo/i })).not.toBeInTheDocument();
+      render(<ProjectDetail project={projectWithoutScreenshots} />);
+      expect(screen.queryByTestId("image-gallery")).not.toBeInTheDocument();
     });
   });
 
-  describe("Back Button", () => {
-    it("renders back button", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByRole("button", { name: /back to.*projects/i })).toBeInTheDocument();
-    });
-
-    it("back button preserves tab state with query param", () => {
-      render(<ProjectDetail project={mockProject} currentTab="mods" />);
-      const backButton = screen.getByRole("button", { name: /back to.*projects/i });
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
-    });
-
-    it("back button defaults to software tab when no tab specified", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const backButton = screen.getByRole("button", { name: /back to.*projects/i });
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
-    });
-  });
+  // Note: External links tests moved to DetailHeader.test.tsx (links now in header)
 
   describe("Optional Metadata", () => {
     it("renders team size when provided", () => {
       render(<ProjectDetail project={mockProject} />);
       expect(screen.getByText(/Solo/i)).toBeInTheDocument();
-    });
-
-    it("renders duration when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText(/3 months/i)).toBeInTheDocument();
     });
 
     it("renders highlights when provided", () => {
@@ -172,27 +106,52 @@ describe("ProjectDetail - Behavior Tests", () => {
       const minimalProject: Project = {
         ...mockProject,
         teamSize: undefined,
-        duration: undefined,
         highlights: undefined,
         architectureNotes: undefined,
       };
       render(<ProjectDetail project={minimalProject} />);
       // Component should still render without errors
-      expect(screen.getByText("Test Project")).toBeInTheDocument();
+      expect(screen.getByText(/comprehensive test project description/i)).toBeInTheDocument();
     });
   });
 
   describe("Accessibility", () => {
-    it("has semantic heading for project title", () => {
+    it("has semantic headings for content sections", () => {
       render(<ProjectDetail project={mockProject} />);
-      const heading = screen.getByRole("heading", { name: "Test Project" });
-      expect(heading).toBeInTheDocument();
+      // Note: Tech Stack has no heading - badges are self-explanatory
+      expect(screen.getByRole("heading", { name: "Key Features" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Project Details" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Highlights" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Architecture" })).toBeInTheDocument();
     });
 
-    it("external links have proper aria labels", () => {
-      render(<ProjectDetail project={mockProject} />);
-      const githubLink = screen.getByRole("link", { name: /github/i });
-      expect(githubLink).toHaveAttribute("aria-label");
-    });
+    // Note: External link accessibility tests moved to DetailHeader.test.tsx
+  });
+});
+
+describe("getBackDestination helper", () => {
+  it("returns home destination when from is 'home'", () => {
+    const result = getBackDestination("home", "software");
+    expect(result).toEqual({ href: "/", label: "Home" });
+  });
+
+  it("returns projects with software tab by default", () => {
+    const result = getBackDestination(undefined, "software");
+    expect(result).toEqual({ href: "/projects?tab=software", label: "Projects" });
+  });
+
+  it("returns projects with mods tab when specified", () => {
+    const result = getBackDestination(undefined, "mods");
+    expect(result).toEqual({ href: "/projects?tab=mods", label: "Projects" });
+  });
+
+  it("returns projects with games tab when specified", () => {
+    const result = getBackDestination(undefined, "games");
+    expect(result).toEqual({ href: "/projects?tab=games", label: "Projects" });
+  });
+
+  it("defaults to software tab when currentTab not provided", () => {
+    const result = getBackDestination();
+    expect(result).toEqual({ href: "/projects?tab=software", label: "Projects" });
   });
 });

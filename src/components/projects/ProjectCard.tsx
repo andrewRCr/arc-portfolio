@@ -11,7 +11,7 @@ import type { Project } from "@/types/project";
 
 interface ProjectCardProps {
   project: Project;
-  categoryType?: "software" | "mods";
+  categoryType?: "software" | "games" | "mods";
 }
 
 export default function ProjectCard({ project, categoryType = "software" }: ProjectCardProps) {
@@ -27,7 +27,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
     <Link
       href={detailUrl}
       data-testid="project-card"
-      className="group block overflow-hidden rounded-lg border border-border bg-background transition-colors hover:border-secondary/60"
+      className="group block overflow-hidden rounded-lg border border-border bg-background/80 transition-colors hover:border-secondary/60"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
@@ -47,22 +47,31 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        {/* Category Badges (prominent, first) */}
+      <div className="p-4 bg-background/80">
+        {/* Category/Game Badge (prominent, first) */}
         <div className="mb-2 flex flex-wrap gap-1.5">
-          {project.category.map((cat) => (
+          {categoryType === "mods" && project.game ? (
             <span
-              key={cat}
               data-testid="category-badge"
               className="rounded bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground"
             >
-              {cat}
+              {project.game}
             </span>
-          ))}
+          ) : (
+            project.category.map((cat) => (
+              <span
+                key={cat}
+                data-testid="category-badge"
+                className="rounded bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground"
+              >
+                {cat}
+              </span>
+            ))
+          )}
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-xl font-bold text-foreground group-hover:text-accent">{project.title}</h3>
+        <h3 className="mb-2 text-xl font-bold text-foreground group-hover:text-secondary">{project.title}</h3>
 
         {/* Short Description */}
         <p className="mb-3 text-sm text-muted-foreground">{project.shortDescription}</p>

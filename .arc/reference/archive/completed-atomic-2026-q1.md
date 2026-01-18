@@ -4,6 +4,43 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Audit light mode token issues across themes**
+    - **Outcome:** Fixed light mode card/popover tokens being too stark (pure white) against
+      semi-transparent window background. Darkened card/popover tokens in 4 themes to harmonize
+      with 80% opacity window aesthetic. Added `/80` opacity pattern to ProjectCard for consistency.
+      Gruvbox and Remedy already had appropriate values and needed no changes.
+    - **Files:** `src/data/themes/definitions/rouge.ts` (#ffffff → #eeece9),
+      `src/data/themes/definitions/mariana.ts` (#ffffff → #eef1f5),
+      `src/data/themes/definitions/rose-pine.ts` (#fffaf3 → #f2e9e1),
+      `src/data/themes/definitions/ayu.ts` (#F8F9FA → #F0F1F2),
+      `src/components/projects/ProjectCard.tsx` (bg-background/80),
+      `src/app/globals.css` (regenerated)
+    - **Also:** Navigation active indicator light mode fix (secondary/40), DetailHeaderCompact
+      NexusMods text label styling for desktop
+
+    - **Branch:** `feature/content-polish-p1`
+
+- [x] **Refactor theme swatches to derive from tokens (prevent drift)**
+    - **Outcome:** Architectural improvement to theme system. Swatches now computed from tokens via
+      `deriveSwatchColors()` utility instead of manual arrays. Eliminates drift between theme preview
+      and actual UI colors. Smart duplicate avoidance picks unique decorative accents automatically.
+    - **Files:** `src/data/themes/utils.ts` (new utilities), all 6 theme definitions refactored
+      (`gruvbox.ts`, `ayu.ts`, `remedy.ts`, `rose-pine.ts`, `rouge.ts`, `mariana.ts`)
+    - **Related:** Discovered during secondary token strength evaluation
+
+    - **Branch:** `feature/content-polish-p1`
+
+- [x] **Evaluate secondary token strength in certain themes**
+    - **Outcome:** Adjusted secondary tokens in gruvbox-dark and ayu-dark to reduce visual intensity.
+      Gruvbox: changed from `bright_yellow` (#fabd2f) to `neutral_yellow` (#d79921) - uses existing
+      palette color. Ayu: added `tagSoftened` (#52AFC6) to palette, ~15% less electric than original
+      cyan. Both themes now have secondary that works well at full opacity (badges) without being
+      too punchy. Follows existing pattern of minimal A11y/UX adjustments to IDE-origin themes.
+    - **Files:** `src/data/themes/definitions/gruvbox.ts`, `src/data/themes/definitions/ayu.ts`,
+      `src/data/themes/palettes/ayu.ts`, `src/app/globals.css` (regenerated)
+
+    - **Branch:** `feature/content-polish-p1`
+
 - [x] Investigate Safari hydration mismatch error
     - **Outcome:** Dev-mode only, Safari-specific quirk. React's `suppressHydrationWarning` only suppresses
       element attribute mismatches, not child mismatches. Error is "recoverable" with no functional impact.

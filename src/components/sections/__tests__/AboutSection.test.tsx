@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { about } from "@/data/about";
-import { AboutSection } from "../AboutSection";
+import { AboutSection, NEXUSMODS_PROFILE_URL } from "../AboutSection";
 
 describe("AboutSection - Behavior Tests", () => {
   describe("Content Rendering", () => {
@@ -46,6 +46,40 @@ describe("AboutSection - Behavior Tests", () => {
 
       const paragraphs = container.querySelectorAll("p");
       expect(paragraphs.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("Dynamic Download Count", () => {
+    it("displays formatted download count without 'over' when provided", () => {
+      render(<AboutSection uniqueDownloads={345678} />);
+
+      // Should show formatted number with commas, no "over" prefix
+      expect(screen.getByText(/345,678/)).toBeInTheDocument();
+      // The text should NOT include "over" when we have exact count
+      expect(screen.queryByText(/over 345,678/)).not.toBeInTheDocument();
+    });
+
+    it("displays fallback text with 'over' when uniqueDownloads is undefined", () => {
+      render(<AboutSection />);
+
+      // Should show static fallback with "over" prefix
+      expect(screen.getByText(/over 300 thousand/)).toBeInTheDocument();
+    });
+
+    it("displays fallback text when uniqueDownloads is explicitly undefined", () => {
+      render(<AboutSection uniqueDownloads={undefined} />);
+
+      expect(screen.getByText(/over 300 thousand/)).toBeInTheDocument();
+    });
+  });
+
+  describe("TextLink Integration", () => {
+    it("renders modding work link using TextLink component", () => {
+      render(<AboutSection />);
+
+      const moddingLink = screen.getByRole("link", { name: "modding work" });
+      expect(moddingLink).toBeInTheDocument();
+      expect(moddingLink).toHaveAttribute("href", NEXUSMODS_PROFILE_URL);
     });
   });
 });

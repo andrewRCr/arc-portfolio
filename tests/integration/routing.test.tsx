@@ -2,9 +2,8 @@
  * Integration tests for navigation and routing flows
  *
  * Tests the navigation paths between pages:
- * - Home page featured projects → Project detail pages
- * - Project detail back button → Home or Projects (context-aware)
  * - Navigation active state detection
+ * - Project detail header back button hrefs
  */
 
 import { render, screen } from "@tests/test-utils";
@@ -17,27 +16,7 @@ vi.mock("next/navigation", () => createNavigationMock());
 vi.mock("next/image", () => createImageMock());
 
 import { Navigation } from "@/components/layout/Navigation";
-import ProjectDetail from "@/components/projects/ProjectDetail";
-import type { Project } from "@/types/project";
-
-const mockProject: Project = {
-  id: "test-project",
-  title: "Test Project",
-  slug: "test-project",
-  description: "A test project description.",
-  shortDescription: "Brief description.",
-  category: ["Web App"],
-  tags: ["React"],
-  techStack: ["React", "TypeScript"],
-  features: ["Feature 1"],
-  links: {},
-  images: {
-    thumbnail: "/test.webp",
-    screenshots: [],
-  },
-  order: 1,
-  featured: true,
-};
+import { DetailHeader } from "@/components/projects/DetailHeader";
 
 describe("Routing Integration Tests", () => {
   beforeEach(() => {
@@ -113,63 +92,60 @@ describe("Routing Integration Tests", () => {
     });
   });
 
-  describe("Context-Aware Back Button", () => {
-    it("navigates to Home when from=home is provided", () => {
-      render(<ProjectDetail project={mockProject} from="home" />);
+  // Note: DetailHeader uses ResponsiveSwitch to render both mobile and desktop
+  // versions in the DOM (CSS controls visibility). Tests use getAllByRole to
+  // handle multiple matching elements.
+  describe("DetailHeader Back Button", () => {
+    it("renders back link to Home when backLabel is Home", () => {
+      render(<DetailHeader title="Test Project" backHref="/" backLabel="Home" />);
 
-      const backButton = screen.getByRole("button", { name: /back to home/i });
-      expect(backButton).toBeInTheDocument();
-
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/");
+      const backLinks = screen.getAllByRole("link", { name: /back to home/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/");
+      });
     });
 
-    it("navigates to Projects when from is not provided", () => {
-      render(<ProjectDetail project={mockProject} />);
+    it("renders back link to Projects with tab state", () => {
+      render(<DetailHeader title="Test Project" backHref="/projects?tab=software" backLabel="Projects" />);
 
-      const backButton = screen.getByRole("button", { name: /back to projects/i });
-      expect(backButton).toBeInTheDocument();
-
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/projects?tab=software");
+      });
     });
 
-    it("navigates to Projects when from is undefined", () => {
-      render(<ProjectDetail project={mockProject} from={undefined} />);
+    it("renders back link to Projects with mods tab", () => {
+      render(<DetailHeader title="Test Project" backHref="/projects?tab=mods" backLabel="Projects" />);
 
-      const backButton = screen.getByRole("button", { name: /back to projects/i });
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("href", "/projects?tab=mods");
+      });
     });
 
-    it("navigates to Projects with mods tab when currentTab is mods", () => {
-      render(<ProjectDetail project={mockProject} currentTab="mods" />);
+    it("has correct accessible label for Home destination", () => {
+      render(<DetailHeader title="Test Project" backHref="/" backLabel="Home" />);
 
-      const backButton = screen.getByRole("button", { name: /back to projects/i });
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+      // Visible text is just "Back", aria-label provides full context
+      const backLinks = screen.getAllByRole("link", { name: /back to home/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("aria-label", "Back to Home");
+      });
     });
 
-    it("prioritizes from=home over currentTab", () => {
-      render(<ProjectDetail project={mockProject} from="home" currentTab="mods" />);
+    it("has correct accessible label for Projects destination", () => {
+      render(<DetailHeader title="Test Project" backHref="/projects?tab=software" backLabel="Projects" />);
 
-      const backButton = screen.getByRole("button", { name: /back to home/i });
-      backButton.click();
-      expect(mockNavigation.push).toHaveBeenCalledWith("/");
-    });
-
-    it("displays correct label for Home destination", () => {
-      render(<ProjectDetail project={mockProject} from="home" />);
-
-      expect(screen.getByText(/back to home/i)).toBeInTheDocument();
-      expect(screen.queryByText(/back to projects/i)).not.toBeInTheDocument();
-    });
-
-    it("displays correct label for Projects destination", () => {
-      render(<ProjectDetail project={mockProject} />);
-
-      expect(screen.getByText(/back to projects/i)).toBeInTheDocument();
-      expect(screen.queryByText(/back to home/i)).not.toBeInTheDocument();
+      // Visible text is just "Back", aria-label provides full context
+      const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
+      expect(backLinks.length).toBeGreaterThan(0);
+      backLinks.forEach((link) => {
+        expect(link).toHaveAttribute("aria-label", "Back to Projects");
+      });
     });
   });
 });

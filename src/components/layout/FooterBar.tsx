@@ -71,7 +71,7 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
                   {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
                   aria-label={link.platform}
                   title={link.platform}
-                  className="flex items-center justify-center size-7 rounded-md border border-transparent hover:border-foreground/60 text-muted-foreground hover:text-foreground transition-all"
+                  className="flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Icon size={16} aria-hidden="true" />
                 </a>

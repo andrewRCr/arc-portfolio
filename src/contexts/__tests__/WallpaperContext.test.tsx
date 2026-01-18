@@ -11,6 +11,13 @@ import { WallpaperContextProvider, useWallpaperContext } from "../WallpaperConte
 import { ThemeContextProvider, useThemeContext } from "../ThemeContext";
 import { WALLPAPER_PREFS_STORAGE_KEY } from "@/config/storage";
 import { WALLPAPER_OPTIONS, type WallpaperId } from "@/data/wallpapers";
+import { themes } from "@/data/themes";
+
+/** Get the actual default wallpaper for a theme from theme data */
+function getThemeDefaultWallpaper(themeId: string): string {
+  const theme = themes[themeId as keyof typeof themes];
+  return theme?.defaultWallpaper ?? "gradient";
+}
 
 /**
  * Find a wallpaper by trait for testing.
@@ -187,8 +194,8 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
         screen.getByText("Switch to Gruvbox").click();
       });
 
-      // Should use theme's default wallpaper (gruvbox default is "brandon-cormier")
-      expect(screen.getByTestId("active-wallpaper").textContent).toBe("brandon-cormier");
+      // Should use theme's default wallpaper
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe(getThemeDefaultWallpaper("gruvbox"));
     });
   });
 
@@ -211,8 +218,7 @@ describe("WallpaperContext - Per-Theme Preferences", () => {
       });
 
       // Should fall back to theme default since anne-nygard is incompatible
-      // Gruvbox default is "brandon-cormier"
-      expect(screen.getByTestId("active-wallpaper").textContent).toBe("brandon-cormier");
+      expect(screen.getByTestId("active-wallpaper").textContent).toBe(getThemeDefaultWallpaper("gruvbox"));
     });
 
     it("should allow universal wallpapers on any theme", async () => {
