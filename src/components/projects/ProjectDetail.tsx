@@ -119,7 +119,10 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
       {/* Tech Stack - tight to header */}
       <div className="flex flex-wrap gap-2">
         {project.techStack.map((tech) => (
-          <span key={tech} className={`rounded border border-border bg-muted px-3 py-1 ${techBadgeTextSize} text-foreground`}>
+          <span
+            key={tech}
+            className={`rounded border border-border bg-muted px-3 py-1 ${techBadgeTextSize} text-foreground`}
+          >
             {tech}
           </span>
         ))}
