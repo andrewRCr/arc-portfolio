@@ -33,7 +33,7 @@ redesigned Home Featured section with category labels and randomization.
     - 6 mods migrated with images and copy
     - 3-tab Projects page structure
     - NexusMods API integration (35 mods tracked, 7 displayed)
-- **Tests Added**: 128+ new tests (1006 unit total, 199 E2E total)
+- **Tests Added**: 124+ new tests (1002 unit total, 199 E2E total)
 - **Quality Gates**: Type-check, lint, format, markdown lint, build, full test suite (unit + E2E)
 
 ## Related Documentation
