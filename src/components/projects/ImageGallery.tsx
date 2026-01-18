@@ -38,7 +38,14 @@ export interface ImageGalleryProps {
 export function ImageGallery({ images }: ImageGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const isPhone = useIsPhone();
+
+  // Track mount state to avoid rendering Lightbox during SSR
+  // (yet-another-react-lightbox accesses document.body internally)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Find the main window container for portaling the lightbox
   // This constrains the lightbox to the TWM content window instead of full viewport
@@ -100,34 +107,36 @@ export function ImageGallery({ images }: ImageGalleryProps) {
         })}
       </div>
 
-      {/* Lightbox Modal */}
-      <Lightbox
-        index={lightboxIndex}
-        slides={slides}
-        open={lightboxIndex >= 0}
-        close={() => setLightboxIndex(-1)}
-        plugins={[Counter, Zoom]}
-        portal={{ root: portalRoot || document.body }}
-        controller={{
-          closeOnPullDown: true,
-          closeOnBackdropClick: true,
-        }}
-        render={{
-          iconPrev: () => <ChevronLeft className="h-8 w-8" />,
-          iconNext: () => <ChevronRight className="h-8 w-8" />,
-          iconClose: () => <X className="h-6 w-6" />,
-        }}
-        styles={{
-          root: {
-            "--yarl__color_backdrop": "rgb(var(--card) / 0.9)",
-            "--yarl__color_button": "rgb(var(--muted-foreground))",
-            "--yarl__color_button_active": "rgb(var(--accent))",
-          },
-        }}
-        carousel={{
-          finite: true, // Don't wrap around at ends
-        }}
-      />
+      {/* Lightbox Modal - only render client-side (library accesses document.body) */}
+      {isMounted && (
+        <Lightbox
+          index={lightboxIndex}
+          slides={slides}
+          open={lightboxIndex >= 0}
+          close={() => setLightboxIndex(-1)}
+          plugins={[Counter, Zoom]}
+          portal={{ root: portalRoot || document.body }}
+          controller={{
+            closeOnPullDown: true,
+            closeOnBackdropClick: true,
+          }}
+          render={{
+            iconPrev: () => <ChevronLeft className="h-8 w-8" />,
+            iconNext: () => <ChevronRight className="h-8 w-8" />,
+            iconClose: () => <X className="h-6 w-6" />,
+          }}
+          styles={{
+            root: {
+              "--yarl__color_backdrop": "rgb(var(--card) / 0.9)",
+              "--yarl__color_button": "rgb(var(--muted-foreground))",
+              "--yarl__color_button_active": "rgb(var(--accent))",
+            },
+          }}
+          carousel={{
+            finite: true, // Don't wrap around at ends
+          }}
+        />
+      )}
     </>
   );
 }
