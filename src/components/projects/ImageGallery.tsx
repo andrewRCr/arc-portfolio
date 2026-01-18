@@ -63,7 +63,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
   // "+X more" overlay on last visible when there are additional images
   const maxVisible = isPhone ? 2 : 3;
   const visibleImages = images.slice(0, maxVisible);
-  const remainingCount = images.length - maxVisible;
+  const remainingCount = Math.max(images.length - maxVisible, 0);
   const hasMore = remainingCount > 0;
 
   return (
@@ -107,7 +107,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
         open={lightboxIndex >= 0}
         close={() => setLightboxIndex(-1)}
         plugins={[Counter, Zoom]}
-        portal={portalRoot ? { root: portalRoot } : undefined}
+        portal={{ root: portalRoot || document.body }}
         controller={{
           closeOnPullDown: true,
           closeOnBackdropClick: true,

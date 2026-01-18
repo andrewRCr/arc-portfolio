@@ -884,11 +884,11 @@ html[data-env-preview="false"] [data-window-container] {
   padding-top: 30px;
 }
 
-/* Project detail - mobile */
+/* Project detail - mobile: 165px = DetailHeaderCompact height (~140px) + visual offset */
 [data-page="project-detail"] .os-scrollbar-vertical {
   padding-top: 165px;
 }
-/* Project detail - desktop */
+/* Project detail - desktop: 396px = DetailHeader hero height (~360px) + visual offset */
 @media (min-width: 768px) {
   [data-page="project-detail"] .os-scrollbar-vertical {
     padding-top: 396px;

@@ -116,7 +116,8 @@ export function deriveSwatchColors(tokens: ThemeColors): SwatchTuple {
 
   // Last resort fallback (shouldn't happen with diverse themes)
   while (decorativeCount < 3) {
-    result.push(result[1]); // Duplicate primary
+    // Intentionally duplicate primary when all accent/fallback colors conflict
+    result.push(result[1]);
     decorativeCount++;
   }
 

@@ -27,7 +27,7 @@ const FALLBACK_DOWNLOAD_TEXT = "over 300 thousand";
  * e.g., 345678 → "345,678"
  */
 function formatDownloadCountForProse(count: number): string {
-  return count.toLocaleString();
+  return new Intl.NumberFormat("en-US").format(count);
 }
 
 /**
