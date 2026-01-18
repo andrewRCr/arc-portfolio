@@ -20,7 +20,7 @@ export interface ProjectLinks {
   github?: string; // GitHub repository URL
   liveDemo?: string; // Live demo/deployed application URL
   download?: string; // Direct download link (e.g., for desktop apps)
-  external?: string; // External profile/showcase link (e.g., NexusMods)
+  nexusmods?: string; // NexusMods page URL
   demoCredentials?: DemoCredentials; // Optional login credentials for demos
 }
 
@@ -38,7 +38,7 @@ export interface Screenshot {
  * Supports markdown formatting (bold, italic, links, inline code).
  */
 export type ContentItem =
-  | string // Simple bullet item (legacy [p] prefix also supported for paragraphs)
+  | string // Simple bullet item
   | { text: string; paragraph?: boolean }; // Explicit paragraph control
 
 /**
@@ -51,6 +51,12 @@ export interface ProjectImages {
 }
 
 /**
+ * Project type discriminator for routing and filtering.
+ * Determines which tab/route a project belongs to.
+ */
+export type ProjectType = "software" | "game" | "mod";
+
+/**
  * Complete project data structure
  *
  * Represents a portfolio project with all metadata, links, and content.
@@ -58,7 +64,7 @@ export interface ProjectImages {
  */
 export interface Project {
   // Core identification and content
-  id: string; // Unique identifier (e.g., "cinexplorer")
+  projectType: ProjectType; // Routing discriminator (software/game/mod)
   title: string; // Display title (e.g., "CineXplorer")
   compactTitle?: string; // Shorter title for space-constrained UI (e.g., mobile header)
   slug: string; // URL-friendly slug (e.g., "cinexplorer")
@@ -82,9 +88,8 @@ export interface Project {
 
   // Optional metadata
   teamSize?: string; // Team composition (e.g., "Solo", "2 developers", "4-person team")
-  duration?: string; // Development timeline (e.g., "3 months", "6 weeks")
   role?: string; // Your role if team project (e.g., "Lead Developer", "Full-Stack Developer")
-  developmentTime?: string; // Alternative to duration (e.g., "Spring 2024")
+  developmentTime?: string; // Development timeline (e.g., "2024", "Spring 2024", "8 weeks (2024)")
 
   // Optional detailed content (supports markdown and mixed bullet/paragraph items)
   architectureNotes?: ContentItem[]; // Technical architecture details and design decisions

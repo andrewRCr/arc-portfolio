@@ -6,6 +6,8 @@
  * transparent (larger text readable), body opaque (bg-card for body text).
  */
 
+import { cn } from "@/lib/utils";
+
 interface DetailCardProps {
   /** Section title displayed in transparent header area */
   title: string;
@@ -17,7 +19,7 @@ interface DetailCardProps {
 
 export function DetailCard({ title, children, className }: DetailCardProps) {
   return (
-    <div className={`overflow-hidden rounded-lg border border-border-strong ${className ?? ""}`.trim()}>
+    <div className={cn("overflow-hidden rounded-lg border border-border-strong", className)}>
       {/* Header */}
       <div className="px-4 py-3 bg-card/80">
         <h2 className="text-xl font-bold text-foreground">{title}</h2>

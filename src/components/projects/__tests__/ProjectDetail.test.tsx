@@ -13,7 +13,7 @@ import { getBackDestination } from "../utils";
 import type { Project } from "@/types/project";
 
 const mockProject: Project = {
-  id: "test-project",
+  projectType: "software",
   title: "Test Project",
   slug: "test-project",
   description: "A comprehensive test project description with multiple paragraphs of detailed information.",
@@ -26,7 +26,7 @@ const mockProject: Project = {
     github: "https://github.com/test/project",
     liveDemo: "https://demo.test.com",
     download: "https://download.test.com",
-    external: "https://nexusmods.com/test",
+    nexusmods: "https://nexusmods.com/test",
   },
   images: {
     thumbnail: "/thumbnails/test-project.webp",
@@ -38,7 +38,6 @@ const mockProject: Project = {
   order: 1,
   featured: true,
   teamSize: "Solo",
-  duration: "3 months",
   highlights: ["Achievement 1", "Achievement 2"],
   architectureNotes: ["Architecture note 1", "Architecture note 2"],
 };
@@ -91,11 +90,6 @@ describe("ProjectDetail - Behavior Tests", () => {
       expect(screen.getByText(/Solo/i)).toBeInTheDocument();
     });
 
-    it("renders duration when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText(/3 months/i)).toBeInTheDocument();
-    });
-
     it("renders highlights when provided", () => {
       render(<ProjectDetail project={mockProject} />);
       expect(screen.getByText(/Achievement 1/i)).toBeInTheDocument();
@@ -112,7 +106,6 @@ describe("ProjectDetail - Behavior Tests", () => {
       const minimalProject: Project = {
         ...mockProject,
         teamSize: undefined,
-        duration: undefined,
         highlights: undefined,
         architectureNotes: undefined,
       };

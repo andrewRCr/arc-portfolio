@@ -12,7 +12,7 @@ export const projects: Project[] = [
   // PROJECT 1: CineXplorer (New Project)
   // ==========================================
   {
-    id: "cinexplorer",
+    projectType: "software",
     title: "CineXplorer",
     slug: "cinexplorer",
     description:
@@ -63,7 +63,7 @@ export const projects: Project[] = [
   // PROJECT 2: ARC Agentic Development Framework (New Project)
   // ==========================================
   {
-    id: "arc-agentic-dev-framework",
+    projectType: "software",
     title: "ARC Agentic Toolkit",
     slug: "arc-agentic-dev-framework",
     description:
@@ -127,7 +127,7 @@ export const projects: Project[] = [
   // PROJECT 3: arc-portfolio (New Project - This Portfolio)
   // ==========================================
   {
-    id: "arc-portfolio",
+    projectType: "software",
     title: "andrewRCr Portfolio",
     slug: "arc-portfolio",
     description:
@@ -179,14 +179,14 @@ export const projects: Project[] = [
       "Systematic development methodology: quality gates, pragmatic TDD, atomic commits, and ARC Framework integration",
     ],
     order: 4,
-    featured: true,
+    featured: false,
   },
 
   // ==========================================
   // PROJECT 4: TaskFocus (Squarespace Migration)
   // ==========================================
   {
-    id: "taskfocus",
+    projectType: "software",
     title: "TaskFocus",
     slug: "taskfocus",
     description:
@@ -243,14 +243,14 @@ export const projects: Project[] = [
       "Released production application (v1.0.0) with live deployment and downloadable desktop client",
     ],
     order: 2,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // PROJECT 5: PetResort (Squarespace Migration)
   // ==========================================
   {
-    id: "petresort",
+    projectType: "software",
     title: "PetResort",
     slug: "petresort",
     description:
@@ -318,7 +318,7 @@ export const projects: Project[] = [
   // PROJECT 6: DOOM NewGame+ Customizer (Squarespace Migration)
   // ==========================================
   {
-    id: "doom-newgame-plus-customizer",
+    projectType: "software",
     title: "DOOM (2016) NewGame+ Customizer",
     compactTitle: "NewGame+ Customizer",
     slug: "doom-newgame-plus-customizer",
@@ -342,7 +342,7 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer",
-      external: "https://www.nexusmods.com/doom/mods/59", // NexusMods community page
+      nexusmods: "https://www.nexusmods.com/doom/mods/59", // NexusMods community page
       // download link disabled; takes up too much space on mobile and is already available via the other two links
       // this is unique to this entry: despite being software, it also has mod download stat badges, so space is more limited than most other project entries
       // download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
@@ -395,7 +395,7 @@ export const projects: Project[] = [
   // PROJECT 7: Action RPG Project (Squarespace Migration)
   // ==========================================
   {
-    id: "action-rpg-project",
+    projectType: "game",
     title: "Action RPG Project",
     slug: "action-rpg-project",
     description:
@@ -473,14 +473,14 @@ export const projects: Project[] = [
       "Features 6 distinct enemy AI types demonstrating behavioral variety and state-based logic",
     ],
     order: 7,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // PROJECT 8: Survival Horror Project (Squarespace Migration)
   // ==========================================
   {
-    id: "survival-horror-project",
+    projectType: "game",
     title: "Survival Horror Project",
     slug: "survival-horror-project",
     description:
@@ -567,14 +567,14 @@ export const projects: Project[] = [
       "Implements production-level systems: complex animation state machines, dynamic enemy spawning, environmental puzzle mechanics, and polished player interactions",
     ],
     order: 8,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // PROJECT 9: Pong Clone (Squarespace Migration)
   // ==========================================
   {
-    id: "pong-clone",
+    projectType: "game",
     title: "Pong Clone",
     slug: "pong-clone",
     description:

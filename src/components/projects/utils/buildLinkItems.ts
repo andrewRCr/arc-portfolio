@@ -21,7 +21,7 @@ export interface IconLinkItem extends LinkItem {
  * Build display-ready link items from ProjectLinks object.
  * Filters out undefined links and provides consistent labels.
  *
- * @param links - Project links object (github, liveDemo, download, external)
+ * @param links - Project links object (github, liveDemo, download, nexusmods)
  * @param compact - Use shorter labels for compact display (default: false)
  * @returns Array of link items with href and label
  */
@@ -32,7 +32,7 @@ export function buildLinkItems(links: ProjectLinks | undefined, compact = false)
     links.github && { href: links.github, label: "GitHub" },
     links.liveDemo && { href: links.liveDemo, label: compact ? "Demo" : "Live Demo" },
     links.download && { href: links.download, label: "Download" },
-    links.external && { href: links.external, label: "NexusMods" },
+    links.nexusmods && { href: links.nexusmods, label: "NexusMods" },
   ].filter((link): link is LinkItem => Boolean(link));
 }
 
@@ -57,8 +57,8 @@ export function buildIconLinkItems(links: ProjectLinks | undefined): IconLinkIte
   if (links.download) {
     items.push({ href: links.download, label: "Download", icon: Download, ariaLabel: "Download app" });
   }
-  if (links.external) {
-    items.push({ href: links.external, label: "NexusMods", icon: NexusModsIcon, ariaLabel: "View on NexusMods" });
+  if (links.nexusmods) {
+    items.push({ href: links.nexusmods, label: "NexusMods", icon: NexusModsIcon, ariaLabel: "View on NexusMods" });
   }
 
   return items;

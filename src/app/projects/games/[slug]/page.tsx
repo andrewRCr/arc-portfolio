@@ -16,15 +16,8 @@ interface GamePageProps {
   }>;
 }
 
-/**
- * Check if a project is categorized as a game
- */
-function isGameProject(project: { category: string[] }): boolean {
-  return project.category.includes("Game");
-}
-
 // Games route only serves game projects
-const gameProjects = projects.filter((p) => isGameProject(p));
+const gameProjects = projects.filter((p) => p.projectType === "game");
 
 export async function generateStaticParams() {
   return gameProjects.map((project) => ({

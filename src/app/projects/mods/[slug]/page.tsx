@@ -3,7 +3,9 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
+import { DetailCard } from "@/components/projects/DetailCard";
 import { getBackDestination } from "@/components/projects/utils";
+import { TextLink } from "@/components/ui/text-link";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
@@ -91,7 +93,19 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
         links={mod.links}
         stats={stats}
       />
-      <ProjectDetail project={mod} />
+      <ProjectDetail
+        project={mod}
+        footer={
+          mod.links.nexusmods && (
+            <DetailCard title="More Information" className="mt-8">
+              <p className="text-muted-foreground">
+                For compatibility details, installation instructions, and additional information, visit the{" "}
+                <TextLink href={mod.links.nexusmods}>NexusMods page</TextLink>.
+              </p>
+            </DetailCard>
+          )
+        }
+      />
     </PageLayout>
   );
 }

@@ -64,7 +64,7 @@ describe("FeaturedSection", () => {
 
       const links = screen.getAllByRole("link");
       const softwareLink = links.find((link) => link.getAttribute("href")?.includes("/projects/software/cinexplorer"));
-      expect(softwareLink).toBeDefined();
+      expect(softwareLink).toBeInTheDocument();
     });
 
     it("framework projects link to /projects/software/", () => {
@@ -74,7 +74,7 @@ describe("FeaturedSection", () => {
       const frameworkLink = links.find((link) =>
         link.getAttribute("href")?.includes("/projects/software/arc-agentic-dev-framework")
       );
-      expect(frameworkLink).toBeDefined();
+      expect(frameworkLink).toBeInTheDocument();
     });
 
     it("game projects link to /projects/games/", () => {
@@ -82,7 +82,7 @@ describe("FeaturedSection", () => {
 
       const links = screen.getAllByRole("link");
       const gameLink = links.find((link) => link.getAttribute("href")?.includes("/projects/games/action-rpg-project"));
-      expect(gameLink).toBeDefined();
+      expect(gameLink).toBeInTheDocument();
     });
 
     it("mod projects link to /projects/mods/", () => {
@@ -92,7 +92,7 @@ describe("FeaturedSection", () => {
       const modLink = links.find((link) =>
         link.getAttribute("href")?.includes("/projects/mods/elden-ring-guard-parry")
       );
-      expect(modLink).toBeDefined();
+      expect(modLink).toBeInTheDocument();
     });
 
     it("all links include from=home query param", () => {
@@ -115,7 +115,7 @@ describe("FeaturedSection", () => {
   });
 
   describe("accessibility", () => {
-    it("all cards are keyboard accessible links", () => {
+    it("all cards render as visible links", () => {
       render(<FeaturedSection />);
 
       const links = screen.getAllByRole("link");

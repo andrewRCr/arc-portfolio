@@ -11,7 +11,7 @@ import ProjectCard from "../ProjectCard";
 import type { Project } from "@/types/project";
 
 const mockProject: Project = {
-  id: "test-project",
+  projectType: "software",
   title: "Test Project",
   slug: "test-project",
   description: "A comprehensive test project description with multiple paragraphs.",
@@ -34,7 +34,6 @@ const mockProject: Project = {
 
 const mockProjectSingleCategory: Project = {
   ...mockProject,
-  id: "single-category",
   title: "Single Category Project",
   slug: "single-category",
   category: ["Game"],

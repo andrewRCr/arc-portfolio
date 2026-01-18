@@ -10,21 +10,14 @@ import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 
-/**
- * Check if a project is categorized as a game
- */
-function isGameProject(project: { category: string[] }): boolean {
-  return project.category.includes("Game");
-}
-
 function ProjectsContent() {
   const searchParams = useSearchParams();
   const currentTab = FEATURES.SHOW_PROJECT_TABS ? searchParams.get("tab") || "software" : "software";
 
-  // Filter and sort projects
+  // Filter and sort projects by projectType
   const allProjects = [...projects].sort((a, b) => a.order - b.order);
-  const softwareProjects = allProjects.filter((p) => !isGameProject(p));
-  const gameProjects = allProjects.filter((p) => isGameProject(p));
+  const softwareProjects = allProjects.filter((p) => p.projectType === "software");
+  const gameProjects = allProjects.filter((p) => p.projectType === "game");
   const sortedMods = FEATURES.SHOW_PROJECT_TABS ? [...mods].sort((a, b) => a.order - b.order) : [];
 
   return (
@@ -49,7 +42,7 @@ function ProjectsContent() {
             {/* Software Projects Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {softwareProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} categoryType="software" />
+                <ProjectCard key={project.slug} project={project} categoryType="software" />
               ))}
             </div>
           </div>
@@ -61,7 +54,7 @@ function ProjectsContent() {
             {/* Games Projects Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {gameProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} categoryType="games" />
+                <ProjectCard key={project.slug} project={project} categoryType="games" />
               ))}
             </div>
           </div>
@@ -73,7 +66,7 @@ function ProjectsContent() {
             {/* Mods Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {sortedMods.map((mod) => (
-                <ProjectCard key={mod.id} project={mod} categoryType="mods" />
+                <ProjectCard key={mod.slug} project={mod} categoryType="mods" />
               ))}
             </div>
           </div>

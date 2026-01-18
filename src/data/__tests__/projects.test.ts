@@ -18,8 +18,6 @@ describe("Projects Data Validation", () => {
     it("should have all core required fields for every project", () => {
       projects.forEach((project) => {
         // Core identification
-        expect(project.id).toBeDefined();
-        expect(project.id.length).toBeGreaterThan(0);
         expect(project.title).toBeDefined();
         expect(project.title.length).toBeGreaterThan(0);
         expect(project.slug).toBeDefined();
@@ -77,22 +75,10 @@ describe("Projects Data Validation", () => {
   });
 
   describe("Referential Integrity", () => {
-    it("should have unique project IDs", () => {
-      const ids = projects.map((p) => p.id);
-      const uniqueIds = new Set(ids);
-      expect(uniqueIds.size).toBe(projects.length);
-    });
-
     it("should have unique project slugs", () => {
       const slugs = projects.map((p) => p.slug);
       const uniqueSlugs = new Set(slugs);
       expect(uniqueSlugs.size).toBe(projects.length);
-    });
-
-    it("should have id and slug match for all projects", () => {
-      projects.forEach((project) => {
-        expect(project.id).toBe(project.slug);
-      });
     });
 
     it("should have unique order values", () => {
@@ -126,8 +112,8 @@ describe("Projects Data Validation", () => {
         if (project.links.download) {
           expect(project.links.download).toMatch(/^https?:\/\//);
         }
-        if (project.links.external) {
-          expect(project.links.external).toMatch(/^https?:\/\//);
+        if (project.links.nexusmods) {
+          expect(project.links.nexusmods).toMatch(/^https?:\/\//);
         }
       });
     });
@@ -137,13 +123,6 @@ describe("Projects Data Validation", () => {
     it("should have at least one featured project", () => {
       const featuredProjects = projects.filter((p) => p.featured);
       expect(featuredProjects.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it("should have featured projects among the top-ordered projects", () => {
-      const featuredProjects = projects.filter((p) => p.featured);
-      const maxFeaturedOrder = Math.max(...featuredProjects.map((p) => p.order));
-      // Featured projects should be in the top half of the order
-      expect(maxFeaturedOrder).toBeLessThanOrEqual(Math.ceil(projects.length / 2) + 1);
     });
 
     it("should have valid optional fields when present", () => {

@@ -112,7 +112,7 @@ describe("ImageGallery - Behavior Tests", () => {
       expect(results).toHaveNoViolations();
     });
 
-    it("thumbnails are keyboard accessible", () => {
+    it("thumbnails are visible and rendered as buttons", () => {
       render(<ImageGallery images={mockScreenshots} />);
 
       const thumbnails = screen.getAllByRole("button");

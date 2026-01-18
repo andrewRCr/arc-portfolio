@@ -887,19 +887,23 @@ html[data-env-preview="false"] [data-window-container] {
 
 /* ==========================================================================
    Project Detail Page - Scrollbar Inset
-   Adds extra padding to scrollbar track to clear header and back-to-top button
+   Adds extra padding to scrollbar track to clear header and back-to-top button.
+   Values derived from DetailHeader aspect ratio (3.5:1) and component heights.
+   See: useHeaderCrossfade.ts for DETAIL_HEADER_ASPECT_RATIO constant.
    ========================================================================== */
 
 [data-page="project-detail"] .os-scrollbar-vertical {
-  /* Mobile: shorter hero (narrow screen / 3.5 aspect) + metadata sections */
+  /* Mobile (<768px): DetailHeaderCompact (~48px) + DetailBannerMobile hero + footer (~112px) */
   padding-top: 160px;
+  /* Mobile: BackToTopButton height (~44px) + spacing */
   padding-bottom: 56px;
 }
 
 @media (min-width: 768px) {
   [data-page="project-detail"] .os-scrollbar-vertical {
-    /* Desktop: wider hero with overlay layout */
+    /* Desktop: Full DetailHeader hero at 3.5:1 aspect (~200px at 700px width) + footer (~75px) */
     padding-top: 275px;
+    /* Desktop: BackToTopButton height (~44px) + extra spacing for larger viewport */
     padding-bottom: 80px;
   }
 }

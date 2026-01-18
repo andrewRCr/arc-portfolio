@@ -2,13 +2,17 @@
  * Featured projects selection utility
  *
  * Provides randomized selection of projects for the Home page Featured section.
+ * Pools are derived dynamically from projects/mods with `featured: true`.
  *
  * Slot configuration:
- * - Slot 1: Software (random from pool)
+ * - Slot 1: Software (random from featured software, excluding framework)
  * - Slot 2: Framework (ARC Framework - always)
- * - Slot 3: Game (random from pool)
- * - Slot 4: Mod (random from pool)
+ * - Slot 3: Game (random from featured games)
+ * - Slot 4: Mod (random from featured mods)
  */
+
+import { projects } from "@/data/projects";
+import { mods } from "@/data/mods";
 
 /** Project type for featured cards */
 export type FeaturedProjectType = "software" | "framework" | "game" | "mod";
@@ -19,28 +23,28 @@ export interface FeaturedProject {
   type: FeaturedProjectType;
 }
 
-/** Software projects eligible for featured slot */
-export const SOFTWARE_POOL: string[] = ["cinexplorer", "taskfocus"];
-
-/** Framework project (always shown) */
+/** Framework project slug (always shown, has dedicated slot despite being projectType: "software") */
 export const FRAMEWORK_SLUG = "arc-agentic-dev-framework";
 
-/** Game projects eligible for featured slot */
-export const GAME_POOL: string[] = ["action-rpg-project", "survival-horror-project"];
+/** Derive software pool: featured software projects excluding the framework */
+export const SOFTWARE_POOL: string[] = projects
+  .filter((p) => p.featured && p.projectType === "software" && p.slug !== FRAMEWORK_SLUG)
+  .map((p) => p.slug);
 
-/** Mod projects eligible for featured slot */
-export const MOD_POOL: string[] = [
-  "lies-of-p-hardcore-mode",
-  "sor4-improved-movement",
-  "re8-aim-dependent-crosshair",
-  "elden-ring-guard-parry",
-  "re4r-improved-weapon-balance",
-];
+/** Derive game pool: featured game projects */
+export const GAME_POOL: string[] = projects.filter((p) => p.featured && p.projectType === "game").map((p) => p.slug);
+
+/** Derive mod pool: featured mods */
+export const MOD_POOL: string[] = mods.filter((m) => m.featured).map((m) => m.slug);
 
 /**
  * Selects a random item from an array
+ * @throws Error if pool is empty
  */
 function selectRandom<T>(pool: T[]): T {
+  if (pool.length === 0) {
+    throw new Error("selectRandom called with empty pool");
+  }
   const index = Math.floor(Math.random() * pool.length);
   return pool[index];
 }

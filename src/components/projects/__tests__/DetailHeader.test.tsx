@@ -85,7 +85,7 @@ describe("DetailHeader - Behavior Tests", () => {
       expect(backLinks.length).toBeGreaterThan(0);
     });
 
-    it("back button is keyboard accessible", () => {
+    it("back button is visible", () => {
       render(<DetailHeader {...defaultProps} />);
 
       const backLinks = screen.getAllByRole("link", { name: /back to projects/i });
@@ -174,7 +174,7 @@ describe("DetailHeader - Behavior Tests", () => {
             github: "https://github.com/test",
             liveDemo: "https://demo.com",
             download: "https://download.com",
-            external: "https://nexusmods.com",
+            nexusmods: "https://nexusmods.com",
           }}
         />
       );

@@ -35,8 +35,8 @@ describe("buildLinkItems", () => {
       expect(buildLinkItems(links)).toEqual([{ href: "https://example.com/download", label: "Download" }]);
     });
 
-    it("builds link item for external (NexusMods)", () => {
-      const links: ProjectLinks = { external: "https://nexusmods.com/test" };
+    it("builds link item for nexusmods", () => {
+      const links: ProjectLinks = { nexusmods: "https://nexusmods.com/test" };
       expect(buildLinkItems(links)).toEqual([{ href: "https://nexusmods.com/test", label: "NexusMods" }]);
     });
 
@@ -45,7 +45,7 @@ describe("buildLinkItems", () => {
         github: "https://github.com/test",
         liveDemo: "https://demo.com",
         download: "https://download.com",
-        external: "https://nexusmods.com",
+        nexusmods: "https://nexusmods.com",
       };
       const result = buildLinkItems(links);
       expect(result).toHaveLength(4);
@@ -113,8 +113,8 @@ describe("buildLinkItems", () => {
       });
     });
 
-    it("builds icon link for external (NexusMods)", () => {
-      const links: ProjectLinks = { external: "https://nexusmods.com/mod" };
+    it("builds icon link for nexusmods", () => {
+      const links: ProjectLinks = { nexusmods: "https://nexusmods.com/mod" };
       const result = buildIconLinkItems(links);
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
@@ -130,7 +130,7 @@ describe("buildLinkItems", () => {
         github: "https://github.com/test",
         liveDemo: "https://demo.com",
         download: "https://download.com",
-        external: "https://nexusmods.com",
+        nexusmods: "https://nexusmods.com",
       };
       const result = buildIconLinkItems(links);
       expect(result).toHaveLength(4);
@@ -140,7 +140,7 @@ describe("buildLinkItems", () => {
     it("only includes links that are defined", () => {
       const links: ProjectLinks = {
         github: "https://github.com/test",
-        external: "https://nexusmods.com",
+        nexusmods: "https://nexusmods.com",
       };
       const result = buildIconLinkItems(links);
       expect(result).toHaveLength(2);

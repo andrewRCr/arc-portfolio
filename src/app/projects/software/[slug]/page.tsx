@@ -18,15 +18,8 @@ interface ProjectPageProps {
   }>;
 }
 
-/**
- * Check if a project is categorized as a game
- */
-function isGameProject(project: { category: string[] }): boolean {
-  return project.category.includes("Game");
-}
-
-// Software route only serves non-game projects
-const softwareProjects = projects.filter((p) => !isGameProject(p));
+// Software route only serves software projects
+const softwareProjects = projects.filter((p) => p.projectType === "software");
 
 export async function generateStaticParams() {
   return softwareProjects.map((project) => ({
@@ -57,7 +50,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
 
   // Fetch NexusMods stats if project has a NexusMods link (e.g., DOOM NG+ Customizer)
   let stats: DetailHeaderStats | undefined;
-  if (project.links?.external?.includes("nexusmods.com")) {
+  if (project.links?.nexusmods) {
     const statsResult = await getModStatsBySlug(slug);
     if (!isModStatsError(statsResult)) {
       stats = {

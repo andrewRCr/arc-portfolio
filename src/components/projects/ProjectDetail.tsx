@@ -16,6 +16,8 @@ import { TextLink } from "@/components/ui/text-link";
 
 interface ProjectDetailProps {
   project: Project;
+  /** Optional footer content for page-specific sections */
+  footer?: React.ReactNode;
 }
 
 /**
@@ -42,14 +44,9 @@ function InlineMarkdown({ children, className }: { children: string; className?:
 /**
  * Normalizes content items to a consistent format.
  * Handles both string items and typed { text, paragraph } objects.
- * Also handles legacy [p] prefix for backwards compatibility.
  */
 function normalizeContentItem(item: ContentItem): { text: string; isParagraph: boolean } {
   if (typeof item === "string") {
-    // Legacy [p] prefix support
-    if (item.startsWith("[p]")) {
-      return { text: item.slice(3), isParagraph: true };
-    }
     return { text: item, isParagraph: false };
   }
   return { text: item.text, isParagraph: item.paragraph ?? false };
@@ -93,11 +90,10 @@ function MetadataRow({ label, value }: { label: string; value?: string }) {
   );
 }
 
-export default function ProjectDetail({ project }: ProjectDetailProps) {
+export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   // Build metadata rows from available fields
   const metadataFields = [
     { label: "Team", value: project.teamSize },
-    { label: "Duration", value: project.duration },
     { label: "Role", value: project.role },
     { label: "Timeline", value: project.developmentTime },
   ];
@@ -170,15 +166,8 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         </DetailCard>
       )}
 
-      {/* More Information - links to external page (e.g., NexusMods) */}
-      {project.links.external && (
-        <DetailCard title="More Information" className="mt-8">
-          <p className="text-muted-foreground">
-            For compatibility details, installation instructions, and additional information, visit the{" "}
-            <TextLink href={project.links.external}>NexusMods page</TextLink>.
-          </p>
-        </DetailCard>
-      )}
+      {/* Optional page-specific footer content */}
+      {footer}
     </div>
   );
 }

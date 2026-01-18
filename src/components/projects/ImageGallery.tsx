@@ -53,7 +53,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
     return null;
   }
 
-  // Convert our Screenshot format to YAML's slide format (all images for lightbox)
+  // Convert our Screenshot format to YARL's slide format (all images for lightbox)
   const slides = images.map((img) => ({
     src: img.src,
     alt: img.alt,

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 /**
  * Context for sharing the scroll viewport element from PageLayout.
@@ -14,7 +14,8 @@ type ScrollContextValue = {
 const ScrollContext = createContext<ScrollContextValue>({ viewport: null });
 
 export function ScrollProvider({ children, viewport }: { children: React.ReactNode; viewport: HTMLElement | null }) {
-  return <ScrollContext.Provider value={{ viewport }}>{children}</ScrollContext.Provider>;
+  const value = useMemo(() => ({ viewport }), [viewport]);
+  return <ScrollContext.Provider value={value}>{children}</ScrollContext.Provider>;
 }
 
 export function useScrollViewport() {

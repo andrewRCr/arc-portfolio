@@ -12,7 +12,7 @@ export const mods: Project[] = [
   // LIES OF P - HARDCORE MODE
   // ==========================================
   {
-    id: "lies-of-p-hardcore-mode",
+    projectType: "mod",
     title: "Hardcore Mode",
     slug: "lies-of-p-hardcore-mode",
     description:
@@ -48,7 +48,7 @@ export const mods: Project[] = [
       highlights: "Legion Arms",
     },
     links: {
-      external: "https://www.nexusmods.com/liesofp/mods/304",
+      nexusmods: "https://www.nexusmods.com/liesofp/mods/304",
     },
     images: {
       thumbnail: "/thumbnails/lies-of-p-hardcore-mode.webp",
@@ -56,18 +56,18 @@ export const mods: Project[] = [
       screenshots: [],
     },
     order: 3,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // STREETS OF RAGE 4 - IMPROVED MOVEMENT
   // ==========================================
   {
-    id: "sor4-improved-movement",
+    projectType: "mod",
     title: "Improved Movement",
     slug: "sor4-improved-movement",
     description:
-      " This mod increases the base movement speed for all playable characters (10% by default), and addresses a common fan criticism: that Axel and Blaze - who could sprint in Streets of Rage 3 - seem to have forgotten how to do so in this installment. While other non-heavyweight characters all have *some* type of mobility move, these two (plus Estel) have nothing mapped to that input. The **EX** version of this mod enables running for all three, addressing what many players felt was an unnecessary regression.\n\n" +
+      "This mod increases the base movement speed for all playable characters (10% by default), and addresses a common fan criticism: that Axel and Blaze - who could sprint in Streets of Rage 3 - seem to have forgotten how to do so in this installment. While other non-heavyweight characters all have *some* type of mobility move, these two (plus Estel) have nothing mapped to that input. The **EX** version of this mod enables running for all three, addressing what many players felt was an unnecessary regression.\n\n" +
       "**New running sprites** for these characters are provided in the **EX** versions of the mod. Versions for each character's **default color palette + all 3 alternate palettes** are included.\n\n" +
       "Credit for the new artwork goes to [Rounak](https://www.fiverr.com/rounakdraws) (Axel / Blaze) and [Sandwitch](https://www.fiverr.com/sandwwitch) (Estel), whom I commissioned after creating the gameplay side of the mod.",
     shortDescription:
@@ -105,7 +105,7 @@ export const mods: Project[] = [
       architectureNotes: "Acknowledgements",
     },
     links: {
-      external: "https://www.nexusmods.com/streetsofrage4/mods/178",
+      nexusmods: "https://www.nexusmods.com/streetsofrage4/mods/178",
     },
     images: {
       thumbnail: "/thumbnails/sor4-improved-movement.webp",
@@ -113,14 +113,14 @@ export const mods: Project[] = [
       screenshots: [],
     },
     order: 4,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // RESIDENT EVIL VILLAGE - AIM-DEPENDENT CROSSHAIR
   // ==========================================
   {
-    id: "re8-aim-dependent-crosshair",
+    projectType: "mod",
     title: "Aim-Dependent Crosshair",
     slug: "re8-aim-dependent-crosshair",
     description:
@@ -140,7 +140,7 @@ export const mods: Project[] = [
       features: "Mod Options",
     },
     links: {
-      external: "https://www.nexusmods.com/residentevilvillage/mods/403",
+      nexusmods: "https://www.nexusmods.com/residentevilvillage/mods/403",
     },
     images: {
       thumbnail: "/thumbnails/re8-aim-dependent-crosshair.webp",
@@ -148,14 +148,14 @@ export const mods: Project[] = [
       screenshots: [],
     },
     order: 5,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // ELDEN RING - GUARD PARRY
   // ==========================================
   {
-    id: "elden-ring-guard-parry",
+    projectType: "mod",
     title: "Guard Parry",
     slug: "elden-ring-guard-parry",
     description:
@@ -183,7 +183,7 @@ export const mods: Project[] = [
       highlights: "Parry Frame Data",
     },
     links: {
-      external: "https://www.nexusmods.com/eldenring/mods/5128",
+      nexusmods: "https://www.nexusmods.com/eldenring/mods/5128",
     },
     images: {
       thumbnail: "/thumbnails/elden-ring-guard-parry.webp",
@@ -191,14 +191,14 @@ export const mods: Project[] = [
       screenshots: [],
     },
     order: 2,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // RESIDENT EVIL 4 REMAKE - IMPROVED WEAPON BALANCE
   // ==========================================
   {
-    id: "re4r-improved-weapon-balance",
+    projectType: "mod",
     title: "Improved Weapon Balance",
     slug: "re4r-improved-weapon-balance",
     description:
@@ -237,7 +237,7 @@ export const mods: Project[] = [
       architectureNotes: "Acknowledgements",
     },
     links: {
-      external: "https://www.nexusmods.com/residentevil42023/mods/3016",
+      nexusmods: "https://www.nexusmods.com/residentevil42023/mods/3016",
     },
     images: {
       thumbnail: "/thumbnails/re4r-improved-weapon-balance.webp",
@@ -245,14 +245,14 @@ export const mods: Project[] = [
       screenshots: [],
     },
     order: 1,
-    featured: false,
+    featured: true,
   },
 
   // ==========================================
   // SILENT HILL 2 REMAKE - NEVER HOLSTER WEAPONS
   // ==========================================
   {
-    id: "sh2r-never-holster-weapons",
+    projectType: "mod",
     title: "Never Holster Weapons",
     slug: "sh2r-never-holster-weapons",
     description:
@@ -278,7 +278,7 @@ export const mods: Project[] = [
       features: "Approach Comparison",
     },
     links: {
-      external: "https://www.nexusmods.com/silenthill2/mods/199",
+      nexusmods: "https://www.nexusmods.com/silenthill2/mods/199",
     },
     images: {
       thumbnail: "/thumbnails/sh2r-never-holster-weapons.webp",

@@ -65,7 +65,6 @@ async function fetchModStatsInternal(game: string, modId: number): Promise<ModSt
   try {
     const response = await fetch(url, {
       headers,
-      next: { revalidate: NEXUSMODS_CONFIG.cacheTtl },
     });
 
     if (response.status === 429) {
