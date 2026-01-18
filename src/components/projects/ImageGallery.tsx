@@ -44,6 +44,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
   // Track mount state to avoid rendering Lightbox during SSR
   // (yet-another-react-lightbox accesses document.body internally)
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- SSR guard requires sync state update on mount
     setIsMounted(true);
   }, []);
 
