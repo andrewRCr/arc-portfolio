@@ -28,6 +28,8 @@ interface ProjectDetailProps {
 function InlineMarkdown({ children, className }: { children: string; className?: string }) {
   return (
     <ReactMarkdown
+      allowedElements={["p", "strong", "em", "code", "a", "span"]}
+      unwrapDisallowed={true}
       components={{
         // Render as span to avoid block-level elements inside p tags
         p: ({ children }) => <span className={className}>{children}</span>,
@@ -55,25 +57,43 @@ function normalizeContentItem(item: ContentItem): { text: string; isParagraph: b
 
 /**
  * Renders a mixed list of bullet items and paragraphs with markdown support.
+ * Groups consecutive bullet items into semantic <ul>/<li> for accessibility.
  */
 function ContentList({ items }: { items: ContentItem[] }) {
+  // Group consecutive items by type for semantic rendering
+  const groups: Array<{ type: "bullets" | "paragraph"; items: Array<{ text: string; key: number }> }> = [];
+
+  items.forEach((item, index) => {
+    const { text, isParagraph } = normalizeContentItem(item);
+    const type = isParagraph ? "paragraph" : "bullets";
+
+    const lastGroup = groups[groups.length - 1];
+    if (lastGroup && lastGroup.type === type) {
+      lastGroup.items.push({ text, key: index });
+    } else {
+      groups.push({ type, items: [{ text, key: index }] });
+    }
+  });
+
   return (
     <div className="space-y-2">
-      {items.map((item, index) => {
-        const { text, isParagraph } = normalizeContentItem(item);
-
-        if (isParagraph) {
-          return (
-            <p key={index} className="text-muted-foreground">
+      {groups.map((group, groupIndex) => {
+        if (group.type === "paragraph") {
+          return group.items.map(({ text, key }) => (
+            <p key={key} className="text-muted-foreground">
               <InlineMarkdown>{text}</InlineMarkdown>
             </p>
-          );
+          ));
         }
 
         return (
-          <p key={index} className="text-muted-foreground">
-            • <InlineMarkdown>{text}</InlineMarkdown>
-          </p>
+          <ul key={`group-${groupIndex}`} className="space-y-1 list-disc list-inside text-muted-foreground">
+            {group.items.map(({ text, key }) => (
+              <li key={key}>
+                <InlineMarkdown>{text}</InlineMarkdown>
+              </li>
+            ))}
+          </ul>
         );
       })}
     </div>
