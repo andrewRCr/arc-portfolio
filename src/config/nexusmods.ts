@@ -121,12 +121,12 @@ export const MOD_REGISTRY: NexusModEntry[] = [
 ];
 
 /**
- * Hidden mods (not public on NexusMods but still have downloads)
+ * Hidden mods (no longer public on NexusMods)
  *
- * These contribute to author profile totals on NexusMods.
- * Included in aggregate stats to match the profile page total.
- * Note: API returns undefined for download counts on hidden mods,
- * so we track them separately with manual tallies.
+ * These mods were once public but are now hidden. They can no longer be
+ * downloaded, but their historical downloads still count toward the author
+ * profile total. API returns undefined for hidden mods, so we track them
+ * separately with manual tallies of frozen historical values.
  */
 export const HIDDEN_MODS: NexusModEntry[] = [
   { game: "thefirstberserkerkhazan", modId: 88, displayed: false },
@@ -135,18 +135,16 @@ export const HIDDEN_MODS: NexusModEntry[] = [
 ];
 
 /**
- * Manual download tally for hidden mods
+ * Frozen download tally for hidden mods
  *
- * NexusMods API returns undefined for download counts on hidden mods,
- * but they still count toward the profile total. These values were
- * captured manually from the mod pages.
+ * These are historical values captured when the mods were still public.
+ * Since hidden mods cannot be downloaded, these numbers will not change.
+ * Included in aggregate stats to match the author profile page total.
  *
- * Breakdown:
+ * Breakdown (captured 2026-01-16):
  * - thefirstberserkerkhazan/88: 83 unique, 94 total
  * - eldenringnightreign/51: 672 unique, 992 total
  * - doomthedarkages/34: 123 unique, 235 total
- *
- * Last updated: 2026-01-16
  */
 export const HIDDEN_MODS_DOWNLOAD_TALLY = {
   downloads: 1321, // 94 + 992 + 235

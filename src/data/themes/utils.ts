@@ -22,9 +22,23 @@ export function hexToRgb(hex: string): string {
 /**
  * Convert RGB space-separated string back to hex.
  * Example: "252 238 209" → "#fceed1"
+ * @throws Error if rgb is not a valid "R G B" string with values 0-255
  */
 export function rgbToHex(rgb: string): string {
-  const [r, g, b] = rgb.split(" ").map(Number);
+  const parts = rgb.split(" ");
+  if (parts.length !== 3) {
+    throw new Error(`Invalid RGB color (expected 3 components): ${rgb}`);
+  }
+
+  const values = parts.map(Number);
+  for (let i = 0; i < 3; i++) {
+    const v = values[i];
+    if (!Number.isInteger(v) || v < 0 || v > 255) {
+      throw new Error(`Invalid RGB color (component ${i} out of range): ${rgb}`);
+    }
+  }
+
+  const [r, g, b] = values;
   return `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
 }
 

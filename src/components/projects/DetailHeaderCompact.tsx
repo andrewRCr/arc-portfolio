@@ -112,7 +112,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
                   // Custom styled link matching DetailHeaderDesktop's NexusMods button
                   return (
                     <a
-                      key={link.label}
+                      key={link.href}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -126,7 +126,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
                 }
 
                 return (
-                  <TouchTarget key={link.label} align={index === iconLinks.length - 1 ? "end" : "center"}>
+                  <TouchTarget key={link.href} align={index === iconLinks.length - 1 ? "end" : "center"}>
                     <a
                       href={link.href}
                       target="_blank"

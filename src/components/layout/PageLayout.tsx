@@ -106,7 +106,7 @@ export function PageLayout({
 
   return (
     <ScrollProvider viewport={viewport}>
-      <div className="flex flex-col flex-1 min-h-0" data-page={pageId}>
+      <div className="flex flex-col flex-1 min-h-0" {...(pageId && { "data-page": pageId })}>
         {/* Fixed header area - doesn't scroll, centered with max-width */}
         {header && (
           <div className="shrink-0">

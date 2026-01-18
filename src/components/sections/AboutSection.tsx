@@ -98,7 +98,7 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
       );
     } else if (segment === "{{DOWNLOAD_COUNT}}") {
       // Use formatted count if available, otherwise fallback with "over" prefix
-      if (uniqueDownloads) {
+      if (uniqueDownloads !== undefined) {
         // Real value: style as inline code for emphasis
         parts.push(
           <code key={`count-${keyIndex++}`} className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.9em]">

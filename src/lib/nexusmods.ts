@@ -40,11 +40,8 @@ export function parseNexusModsUrl(url: string): ParsedNexusModsUrl | null {
     }
 
     const game = pathMatch[1];
+    // Safe to parse directly - regex (\d+) guarantees digits only
     const modId = parseInt(pathMatch[2], 10);
-
-    if (isNaN(modId)) {
-      return null;
-    }
 
     return { game, modId };
   } catch {
