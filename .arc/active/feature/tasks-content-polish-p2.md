@@ -139,52 +139,49 @@ skills logo system with project filtering.
 
 **Purpose:** Transform Skills page from text dump to structured, visually engaging presentation.
 
-- [ ] **3.1 Content audit**
+- [x] **3.1 Content audit & data restructuring**
 
-    **Goal:** Identify which skills to emphasize, de-emphasize, or remove.
+    - [x] **3.1.a Review skills against project portfolio**
+        - Used Explore agents to audit CineXplorer and TaskFocus repos
+        - Identified skills with project evidence vs "resume padding"
+        - Confirmed featured skills align with actual project usage
 
-    - [ ] **3.1.a Review current skills list against project portfolio**
-        - Which skills appear in actual projects?
-        - Which are "resume padding" vs genuine strengths?
-        - Are current categories logical? Any merges/splits needed?
+    - [x] **3.1.b Restructure skills data**
+        - Pruned: MySQL, v0.dev, CI/CD, GitHub (redundant), Caliburn Micro, EJS
+        - Added: Vite, TanStack Query, Dapper, Playwright, Pytest, SQLite
+        - Demoted to text-only: Bootstrap
+        - Reordered categories: Frontend, Backend, Databases, DevOps, AI, Testing
+        - Languages get special hero treatment (no card, centered row)
+        - Methodologies excluded from display
 
-    - [ ] **3.1.b Propose skill hierarchy per category**
-        - Primary skills: Get logos in DetailCard
-        - Secondary skills: Text list below logos
-        - Remove: Skills that dilute core strengths
+- [x] **3.2 SkillsSection visual implementation**
 
-    - [ ] **3.1.c Finalize featured skill selection for Home page**
-        - Confirm 6-8 core skills that best represent portfolio
-        - Update `featured` flags in data
+    - [x] **3.2.a Update SkillsSection component**
+        - Languages displayed as centered hero row above cards
+        - 6 categories in 2-column DetailCard grid
+        - Primary skills (with icons) as centered SkillLogoGrid rows
+        - Secondary skills (text-only) as linked text lists below
+        - All skills link to `/projects?skill=` filter
 
-- [ ] **3.2 Create category DetailCard layout**
+    - [x] **3.2.b Visual polish for desktop**
+        - Reduced grid gap (gap-4) to fit 1440p without scroll
+        - Centered icon grids and text lists within cards
+        - Updated page subtitle: "Proficiencies across the full stack."
 
-    - [ ] **3.2.a Write tests for skills category cards**
-        - Test: Each category renders as DetailCard
-        - Test: Primary skills show as logos
-        - Test: Secondary skills show as text list
-        - Expect tests to FAIL initially
+- [ ] **3.3 Tests & mobile verification**
 
-    - [ ] **3.2.b Update `SkillsSection` component**
-        - Replace current grid with DetailCard per category
-        - Use `SkillLogoGrid` for primary skills within each card
-        - Add text list for secondary skills
-        - File: `src/components/sections/SkillsSection.tsx`
+    - [ ] **3.3.a Write/update tests for SkillsSection**
+        - Test: Languages render as hero row (no DetailCard)
+        - Test: Categories render as DetailCards
+        - Test: Skills with icons show in SkillLogoGrid
+        - Test: Skills without icons show as text links
 
-    - [ ] **3.2.c Run tests - should now PASS**
+    - [ ] **3.3.b Verify mobile responsiveness**
+        - Cards stack to single column
+        - Logo grids wrap appropriately
+        - Touch targets adequate
 
-    - [ ] **3.2.d Run quality gates**
-
-- [ ] **3.3 Visual polish and responsiveness**
-
-    - [ ] **3.3.a Verify layout across breakpoints**
-        - Desktop: Multi-column category cards
-        - Tablet: 2-column or full-width cards
-        - Mobile: Stacked full-width cards
-
-    - [ ] **3.3.b Adjust DetailCard styling if needed**
-        - Ensure consistent with ProjectDetail cards
-        - Verify logo grid fits well within card body
+    - [ ] **3.3.c Run quality gates**
 
 ### **Phase 4:** Skills-to-Projects Filtering
 
