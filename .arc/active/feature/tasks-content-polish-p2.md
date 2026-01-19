@@ -118,15 +118,22 @@ skills logo system with project filtering.
     - Added `viewBox` field to `SkillIconData` interface for custom icon support
     - C# and OpenAI custom icons now render correctly with proper viewBox values
 
-- [ ] **2.2 Visual refinement**
+- [x] **2.2 Visual refinement**
 
-    - [ ] **2.2.a Adjust spacing between FeaturedSection and skills row**
-        - Ensure visual balance without crowding
-        - Test across viewport sizes
+    - [x] **2.2.a Adjust spacing and positioning**
+        - Implemented responsive positioning: hero on mobile, below FeaturedSection on tablet/desktop
+        - Stabilized card heights with `min-h-24` to prevent layout shift
+        - Tuned spacing: `mt-6 md:mt-16` for below-featured position
 
-    - [ ] **2.2.b Verify logo sizing and alignment**
-        - Logos should be recognizable but not dominant
-        - Consistent spacing between logos
+    - [x] **2.2.b Verify logo sizing and mobile layout**
+        - Desktop: 10 icons in single row below FeaturedSection
+        - Mobile boxed: curated 6 icons (single row) in hero
+        - Mobile fullscreen: full 10 icons (5/5 split) in hero
+        - Responsive skill selection based on viewport and layout mode
+
+    - [x] **2.2.c Add styled tooltip on skill icon hover**
+        - Added shadcn/ui Tooltip to SkillLogoGrid component
+        - Positioned below icon, shows skill name on hover
 
 ### **Phase 3:** Skills Page Reorganization
 
