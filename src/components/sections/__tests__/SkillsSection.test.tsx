@@ -3,76 +3,45 @@ import { describe, it, expect } from "vitest";
 import { SkillsSection } from "../SkillsSection";
 import { skills } from "@/data/skills";
 
-/**
- * Expected category count derived from SkillCategory union type.
- * Update if categories are added/removed in types/skills.ts.
- */
-const EXPECTED_CATEGORIES = Object.keys(skills).length;
+const CATEGORY_COUNT = Object.keys(skills).length;
 
-describe("SkillsSection - Behavior Tests", () => {
+describe("SkillsSection", () => {
   describe("Category Rendering", () => {
     it("renders all skill categories as headings", () => {
       render(<SkillsSection />);
 
-      // Verify category headings are present
-      expect(screen.getByRole("heading", { name: /languages/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /frontend/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /backend/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /databases/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /ai-assisted development/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /devops & infrastructure/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /testing & quality/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /methodologies/i })).toBeInTheDocument();
+      Object.keys(skills).forEach((category) => {
+        expect(screen.getByRole("heading", { name: new RegExp(category, "i") })).toBeInTheDocument();
+      });
     });
 
-    it("renders all skill categories", () => {
+    it("renders the correct number of category headings", () => {
       render(<SkillsSection />);
 
       const headings = screen.getAllByRole("heading", { level: 3 });
-      expect(headings.length).toBe(EXPECTED_CATEGORIES);
+      expect(headings.length).toBe(CATEGORY_COUNT);
     });
   });
 
   describe("Skills Rendering", () => {
-    it("renders skills for Languages category", () => {
+    it("renders skills from the data source", () => {
       render(<SkillsSection />);
 
-      expect(screen.getByText("TypeScript")).toBeInTheDocument();
-      expect(screen.getByText("JavaScript")).toBeInTheDocument();
-      expect(screen.getByText("Python")).toBeInTheDocument();
-      expect(screen.getByText("C#")).toBeInTheDocument();
+      // Verify a sampling of skills actually render (integration check)
+      // Using first skill from each of first 3 categories
+      const categoriesToCheck = Object.keys(skills).slice(0, 3);
+      categoriesToCheck.forEach((category) => {
+        const firstSkill = skills[category as keyof typeof skills][0];
+        expect(screen.getByText(firstSkill.name)).toBeInTheDocument();
+      });
     });
 
-    it("renders skills for Frontend category", () => {
-      render(<SkillsSection />);
-
-      expect(screen.getByText("React")).toBeInTheDocument();
-      expect(screen.getByText("Next.js")).toBeInTheDocument();
-      expect(screen.getByText("Tailwind CSS")).toBeInTheDocument();
-    });
-
-    it("renders skills for Backend category", () => {
-      render(<SkillsSection />);
-
-      expect(screen.getByText("Django")).toBeInTheDocument();
-      expect(screen.getByText("Django Ninja")).toBeInTheDocument();
-      expect(screen.getByText(".NET")).toBeInTheDocument();
-    });
-
-    it("renders skills for Databases category", () => {
-      render(<SkillsSection />);
-
-      expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
-      expect(screen.getByText("MongoDB")).toBeInTheDocument();
-    });
-
-    it("renders at least 40 total skills across all categories", () => {
+    it("renders skill count matching data", () => {
       const { container } = render(<SkillsSection />);
 
-      // Current data contains 40+ skills across 8 categories.
-      // Update threshold if skills data changes significantly.
+      const totalSkills = Object.values(skills).reduce((sum, categorySkills) => sum + categorySkills.length, 0);
       const skillElements = container.querySelectorAll("li");
-      expect(skillElements.length).toBeGreaterThanOrEqual(40);
+      expect(skillElements.length).toBe(totalSkills);
     });
   });
 
@@ -87,42 +56,20 @@ describe("SkillsSection - Behavior Tests", () => {
     it("uses list structure for skills within categories", () => {
       const { container } = render(<SkillsSection />);
 
-      // One list per category
       const lists = container.querySelectorAll("ul");
-      expect(lists.length).toBe(EXPECTED_CATEGORIES);
+      expect(lists.length).toBe(CATEGORY_COUNT);
     });
-
-    // Note: Main section heading is now provided by PageHeader at page level.
-    // SkillsSection focuses on rendering skill categories (h3 headings).
   });
 
-  describe("Data Integration", () => {
-    it("renders actual skills data from data/skills.ts", () => {
-      render(<SkillsSection />);
-
-      // Verify some specific skills from each category to ensure data integration
-      expect(screen.getByText("TypeScript")).toBeInTheDocument();
-      expect(screen.getByText("React")).toBeInTheDocument();
-      expect(screen.getByText("Django")).toBeInTheDocument();
-      expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
-      expect(screen.getByText("Claude Code")).toBeInTheDocument();
-      expect(screen.getByText("Git")).toBeInTheDocument();
-      expect(screen.getByText("Vitest")).toBeInTheDocument();
-      expect(screen.getByText("Test-Driven Development (TDD)")).toBeInTheDocument();
-    });
-
+  describe("Category Order", () => {
     it("preserves category order from data structure", () => {
       render(<SkillsSection />);
 
       const headings = screen.getAllByRole("heading", { level: 3 });
-      const categoryNames = headings.map((h) => h.textContent);
+      const renderedCategories = headings.map((h) => h.textContent);
+      const dataCategories = Object.keys(skills);
 
-      // First category should be Languages
-      expect(categoryNames[0]).toMatch(/languages/i);
-      // Second category should be Frontend
-      expect(categoryNames[1]).toMatch(/frontend/i);
-      // Third category should be Backend
-      expect(categoryNames[2]).toMatch(/backend/i);
+      expect(renderedCategories).toEqual(dataCategories);
     });
   });
 });

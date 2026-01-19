@@ -16,8 +16,8 @@ export function SkillsSection() {
             <h3 className="mb-3 text-xl font-semibold">{category}</h3>
             <ul className="space-y-1">
               {skillList.map((skill) => (
-                <li key={skill} className="text-sm text-foreground">
-                  {skill}
+                <li key={skill.name} className="text-sm text-foreground">
+                  {skill.name}
                 </li>
               ))}
             </ul>

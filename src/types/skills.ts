@@ -22,11 +22,24 @@ export type SkillCategory =
   | "Methodologies";
 
 /**
+ * Individual skill with optional metadata
+ *
+ * @property name - Display name of the skill/technology
+ * @property featured - If true, skill appears in Home page featured row
+ * @property iconSlug - Identifier for simple-icons package (e.g., "typescript", "react")
+ */
+export interface Skill {
+  name: string;
+  featured?: boolean;
+  iconSlug?: string;
+}
+
+/**
  * Skills organized by category
  *
  * Mapped type ensures only valid SkillCategory keys are allowed.
- * Each category maps to an array of skill/technology names.
+ * Each category maps to an array of Skill objects.
  */
 export type Skills = {
-  [K in SkillCategory]: string[];
+  [K in SkillCategory]: Skill[];
 };
