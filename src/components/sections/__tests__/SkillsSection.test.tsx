@@ -3,45 +3,75 @@ import { describe, it, expect } from "vitest";
 import { SkillsSection } from "../SkillsSection";
 import { skills } from "@/data/skills";
 
-const CATEGORY_COUNT = Object.keys(skills).length;
+// Categories displayed in DetailCards (excludes Languages and Methodologies)
+const CARD_CATEGORIES = Object.keys(skills).filter((cat) => cat !== "Languages" && cat !== "Methodologies");
 
 describe("SkillsSection", () => {
-  describe("Category Rendering", () => {
-    it("renders all skill categories as headings", () => {
+  describe("Languages Hero Row", () => {
+    it("renders Languages skills in hero row above cards", () => {
       render(<SkillsSection />);
 
-      Object.keys(skills).forEach((category) => {
-        expect(screen.getByRole("heading", { name: new RegExp(category, "i") })).toBeInTheDocument();
+      // Languages should render but NOT in a DetailCard (no h2 heading for Languages)
+      const headings = screen.getAllByRole("heading", { level: 2 });
+      const headingTexts = headings.map((h) => h.textContent);
+      expect(headingTexts).not.toContain("Languages");
+
+      // But Languages skills should still be present (as SVG icons via SkillLogoGrid)
+      const languageSkills = skills.Languages;
+      languageSkills.forEach((skill) => {
+        if (skill.iconSlug) {
+          // Skills with icons render as links with aria-label
+          expect(screen.getByLabelText(`View projects using ${skill.name}`)).toBeInTheDocument();
+        }
+      });
+    });
+  });
+
+  describe("Category Cards", () => {
+    it("renders DetailCards for non-excluded categories", () => {
+      render(<SkillsSection />);
+
+      // Each card category should have an h2 heading (from DetailCard)
+      CARD_CATEGORIES.forEach((category) => {
+        expect(screen.getByRole("heading", { name: category, level: 2 })).toBeInTheDocument();
       });
     });
 
-    it("renders the correct number of category headings", () => {
+    it("does not render Methodologies category", () => {
       render(<SkillsSection />);
 
-      const headings = screen.getAllByRole("heading", { level: 3 });
-      expect(headings.length).toBe(CATEGORY_COUNT);
+      expect(screen.queryByRole("heading", { name: "Methodologies" })).not.toBeInTheDocument();
+    });
+
+    it("renders correct number of category cards", () => {
+      render(<SkillsSection />);
+
+      const headings = screen.getAllByRole("heading", { level: 2 });
+      expect(headings.length).toBe(CARD_CATEGORIES.length);
     });
   });
 
   describe("Skills Rendering", () => {
-    it("renders skills from the data source", () => {
+    it("renders skills with icons as logo grid links", () => {
       render(<SkillsSection />);
 
-      // Verify a sampling of skills actually render (integration check)
-      // Using first skill from each of first 3 categories
-      const categoriesToCheck = Object.keys(skills).slice(0, 3);
-      categoriesToCheck.forEach((category) => {
-        const firstSkill = skills[category as keyof typeof skills][0];
-        expect(screen.getByText(firstSkill.name)).toBeInTheDocument();
+      // Check a sampling of skills with icons render as links
+      const skillsWithIcons = ["React", "Django", "PostgreSQL", "Docker"];
+      skillsWithIcons.forEach((skillName) => {
+        expect(screen.getByLabelText(`View projects using ${skillName}`)).toBeInTheDocument();
       });
     });
 
-    it("renders skill count matching data", () => {
-      const { container } = render(<SkillsSection />);
+    it("renders skills without icons as text links", () => {
+      render(<SkillsSection />);
 
-      const totalSkills = Object.values(skills).reduce((sum, categorySkills) => sum + categorySkills.length, 0);
-      const skillElements = container.querySelectorAll("li");
-      expect(skillElements.length).toBe(totalSkills);
+      // Check skills without icons render as text links
+      const skillsWithoutIcons = ["WPF", "Entity Framework", "SQL Server"];
+      skillsWithoutIcons.forEach((skillName) => {
+        const link = screen.getByRole("link", { name: skillName });
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute("href", `/projects?skill=${encodeURIComponent(skillName)}`);
+      });
     });
   });
 
@@ -53,11 +83,12 @@ describe("SkillsSection", () => {
       expect(section).toBeInTheDocument();
     });
 
-    it("uses list structure for skills within categories", () => {
+    it("uses list structure for secondary skills", () => {
       const { container } = render(<SkillsSection />);
 
+      // ULs are used for secondary (text-only) skills
       const lists = container.querySelectorAll("ul");
-      expect(lists.length).toBe(CATEGORY_COUNT);
+      expect(lists.length).toBeGreaterThan(0);
     });
   });
 
@@ -65,11 +96,10 @@ describe("SkillsSection", () => {
     it("preserves category order from data structure", () => {
       render(<SkillsSection />);
 
-      const headings = screen.getAllByRole("heading", { level: 3 });
+      const headings = screen.getAllByRole("heading", { level: 2 });
       const renderedCategories = headings.map((h) => h.textContent);
-      const dataCategories = Object.keys(skills);
 
-      expect(renderedCategories).toEqual(dataCategories);
+      expect(renderedCategories).toEqual(CARD_CATEGORIES);
     });
   });
 });

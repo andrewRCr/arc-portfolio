@@ -9,28 +9,28 @@
 import { Skills } from "@/types/skills";
 
 export const skills: Skills = {
+  // Special row: Languages (displayed as centered hero, no card)
   Languages: [
     { name: "TypeScript", featured: true, iconSlug: "typescript" },
     { name: "JavaScript", iconSlug: "javascript" },
     { name: "Python", featured: true, iconSlug: "python" },
     { name: "C#", featured: true, iconSlug: "csharp" },
     { name: "C++", iconSlug: "cplusplus" },
-    { name: "SQL" },
     { name: "HTML", iconSlug: "html5" },
     { name: "CSS", iconSlug: "css" },
   ],
 
+  // Row 1: Frontend + Backend
   Frontend: [
     { name: "React", featured: true, iconSlug: "react" },
     { name: "Next.js", featured: true, iconSlug: "nextdotjs" },
-    { name: "Tailwind CSS", iconSlug: "tailwindcss" },
+    { name: "TanStack Query", iconSlug: "reactquery" },
     { name: "Shadcn/ui", iconSlug: "shadcnui" },
     { name: "Chakra UI", iconSlug: "chakraui" },
-    { name: "Bootstrap", iconSlug: "bootstrap" },
     { name: "Blazor", featured: true, iconSlug: "blazor" },
     { name: "WPF" },
     { name: "MudBlazor" },
-    { name: "Caliburn Micro" },
+    { name: "Bootstrap" },
     // { name: "Framer Motion", iconSlug: "framer" }, // Planned - in development
     // { name: "React Hook Form" }, // Planned - in development
     // { name: "Zod" }, // Planned - in development
@@ -38,57 +38,54 @@ export const skills: Skills = {
 
   Backend: [
     { name: "Django", featured: true, iconSlug: "django" },
-    { name: "Django Ninja" },
     { name: ".NET", featured: true, iconSlug: "dotnet" },
     { name: "Node.js", iconSlug: "nodedotjs" },
     { name: "Express.js", iconSlug: "express" },
     { name: "Pydantic", iconSlug: "pydantic" },
+    { name: "Dapper" },
+    { name: "Django Ninja" },
     { name: "Entity Framework" },
-    { name: "EJS (Embedded JavaScript)" },
     // { name: "Celery" }, // Planned - in development
   ],
 
+  // Row 2: Databases + DevOps
   Databases: [
     { name: "PostgreSQL", iconSlug: "postgresql" },
     { name: "MongoDB", iconSlug: "mongodb" },
-    { name: "SQL Server" },
-    { name: "MySQL", iconSlug: "mysql" },
+    { name: "SQLite", iconSlug: "sqlite" },
     { name: "Redis", iconSlug: "redis" },
-  ],
-
-  "AI-Assisted Development": [
-    { name: "Claude Code", featured: true, iconSlug: "claude" },
-    { name: "GitHub Copilot", iconSlug: "githubcopilot" },
-    { name: "Warp", iconSlug: "warp" },
-    { name: "CodeRabbit" },
-    { name: "v0.dev" },
-    { name: "Gemini CLI", iconSlug: "googlegemini" },
-    { name: "Codex CLI", featured: true, iconSlug: "openai" },
+    { name: "SQL Server" },
   ],
 
   "DevOps & Infrastructure": [
     { name: "Git", iconSlug: "git" },
-    { name: "GitHub", iconSlug: "github" },
-    { name: "Azure DevOps" },
     { name: "Docker", iconSlug: "docker" },
+    { name: "Vite", iconSlug: "vite" },
     { name: "Vercel", iconSlug: "vercel" },
     { name: "Caddy", iconSlug: "caddy" },
-    { name: "CI/CD" },
     { name: "GitHub Actions", iconSlug: "githubactions" },
+    { name: "Azure DevOps" },
+  ],
+
+  // Row 3: AI + Testing
+  "AI-Assisted Development": [
+    { name: "Claude Code", featured: true, iconSlug: "claude" },
+    { name: "Codex CLI", featured: true, iconSlug: "openai" },
+    { name: "Gemini CLI", iconSlug: "googlegemini" },
+    { name: "Warp", iconSlug: "warp" },
+    { name: "GitHub Copilot", iconSlug: "githubcopilot" },
+    { name: "CodeRabbit" },
   ],
 
   "Testing & Quality": [
     { name: "Vitest", iconSlug: "vitest" },
     { name: "React Testing Library", iconSlug: "testinglibrary" },
+    { name: "Pytest", iconSlug: "pytest" },
     { name: "Postman", iconSlug: "postman" },
     { name: "Swagger", iconSlug: "swagger" },
-    // { name: "Playwright", iconSlug: "playwright" }, // Planned - in development
+    { name: "Playwright" },
   ],
 
-  // "State Management & Data Fetching": [
-  //   { name: "TanStack Query" }, // Planned - in development
-  //   { name: "Redux Toolkit", iconSlug: "redux" }, // Planned - in development
-  // ],
-
+  // Excluded from display (filtered in SkillsSection)
   Methodologies: [{ name: "Test-Driven Development (TDD)" }, { name: "Spec-Driven Development" }, { name: "Agile" }],
 };

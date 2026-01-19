@@ -58,7 +58,7 @@ export default function Home() {
 
   return (
     <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
-      <div className="flex-1 flex flex-col px-2 pb-2 md:px-8 md:pb-8">
+      <div className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8">
         <FeaturedSection />
         {!skillsInHero && (
           <div

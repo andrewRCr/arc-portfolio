@@ -62,7 +62,9 @@ export function Hero({ children }: HeroProps) {
 
       {children && <div className="mt-2 md:mt-0 flex justify-center">{children}</div>}
 
-      <h2 className={`mb-1 text-sm font-mono text-muted-foreground ${children ? "mt-4 md:mt-8" : "mt-4 md:mt-2"}`}>
+      <h2
+        className={`mb-1 md:mx-4 text-sm font-mono text-muted-foreground ${children ? "mt-4 md:mt-8" : "mt-4 md:mt-2"}`}
+      >
         Featured Projects
       </h2>
     </div>
