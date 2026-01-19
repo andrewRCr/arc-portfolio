@@ -168,20 +168,19 @@ skills logo system with project filtering.
         - Centered icon grids and text lists within cards
         - Updated page subtitle: "Proficiencies across the full stack."
 
-- [ ] **3.3 Tests & mobile verification**
+- [x] **3.3 Tests & mobile verification**
 
-    - [ ] **3.3.a Write/update tests for SkillsSection**
-        - Test: Languages render as hero row (no DetailCard)
-        - Test: Categories render as DetailCards
-        - Test: Skills with icons show in SkillLogoGrid
-        - Test: Skills without icons show as text links
+    - [x] **3.3.a Write/update tests for SkillsSection**
+        - 9 tests in `SkillsSection.test.tsx` covering all requirements
+        - Languages hero row, category cards, icon/text skill rendering, semantic structure, category order
 
-    - [ ] **3.3.b Verify mobile responsiveness**
-        - Cards stack to single column
-        - Logo grids wrap appropriately
-        - Touch targets adequate
+    - [x] **3.3.b Verify mobile responsiveness**
+        - Languages hero: curated 5 icons on mobile (TS, JS, Python, C#, C++), `responsiveLg` size, `relaxed` gap
+        - Added `useDelayedShow` fade-in to prevent hydration flash
+        - TouchTarget wrapping on secondary skill text links with `-my-2` for compact layout
+        - Cards stack single column, touch targets WCAG 44px compliant
 
-    - [ ] **3.3.c Run quality gates**
+    - [x] **3.3.c Run quality gates** - All passed (type-check, lint, format, markdown, build, 986 tests)
 
 ### **Phase 4:** Skills-to-Projects Filtering
 
