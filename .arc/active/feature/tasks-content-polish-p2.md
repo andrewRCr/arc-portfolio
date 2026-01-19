@@ -75,8 +75,8 @@ skills logo system with project filtering.
         - **C#**: Added custom icon from devicon (MIT license), re-enabled `featured: true`
         - **Claude Code**: Uses `claude` slug (already in simple-icons v16.6.0)
         - **Gemini CLI**: Uses `googlegemini` slug (already in simple-icons v16.6.0)
+        - **Codex CLI**: Added OpenAI custom icon from Wikimedia Commons (CC0, official brand)
         - **SQL Server**: Skipped - complex multi-path SVG, not a featured skill
-        - **Codex CLI**: Skipped - OpenAI not in simple-icons, not a featured skill
         - Added custom icon infrastructure to `skill-icons.ts` for future additions
         - Note: No "Clio mascot" exists for Claude - only sunburst logo
 

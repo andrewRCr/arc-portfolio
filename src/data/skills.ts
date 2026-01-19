@@ -63,7 +63,7 @@ export const skills: Skills = {
     { name: "CodeRabbit" },
     { name: "v0.dev" },
     { name: "Gemini CLI", iconSlug: "googlegemini" },
-    { name: "Codex CLI" },
+    { name: "Codex CLI", iconSlug: "openai" },
   ],
 
   "DevOps & Infrastructure": [
