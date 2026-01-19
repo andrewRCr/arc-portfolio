@@ -17,7 +17,7 @@ import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetClose } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { ScreenReaderAnnounce } from "@/components/ui/screen-reader-announce";
-import { useHasMounted } from "@/hooks/useHasMounted";
+import { useDelayedShow } from "@/hooks/useDelayedShow";
 import { useResetPreferences } from "@/hooks/useResetPreferences";
 import { usePreferenceAnnouncements } from "@/hooks/usePreferenceAnnouncements";
 import { useThemeContext } from "@/contexts/ThemeContext";
@@ -28,10 +28,8 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { ThemeSelector } from "./ThemeSelector";
 import { WallpaperPicker } from "./WallpaperPicker";
-import { ThemeControlPlaceholder } from "./ThemeControlPlaceholder";
 
 export function ThemeControlDrawer() {
-  const mounted = useHasMounted();
   const [open, setOpen] = useState(false);
   const { activeTheme, setActiveTheme } = useThemeContext();
   const { activeWallpaper, setActiveWallpaper, isWallpaperEnabled, setWallpaperEnabled } = useWallpaperContext();
@@ -39,6 +37,7 @@ export function ThemeControlDrawer() {
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
   const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
+  const showSwatch = useDelayedShow(150);
   const announcement = usePreferenceAnnouncements({
     activeTheme,
     activeWallpaper,
@@ -59,11 +58,6 @@ export function ThemeControlDrawer() {
     setLayoutMode(layoutMode === "full" ? "boxed" : "full");
   };
 
-  // Before hydration: render placeholder to avoid layout shift and color mismatch
-  if (!mounted) {
-    return <ThemeControlPlaceholder isMobile />;
-  }
-
   return (
     <>
       <ScreenReaderAnnounce message={announcement} />
@@ -74,7 +68,13 @@ export function ThemeControlDrawer() {
             aria-label="Open theme settings"
             className="group flex items-center justify-center gap-1 min-h-11 min-w-11 px-2 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
           >
-            <ThemeSwatch colors={swatchColors} size={16} />
+            {showSwatch ? (
+              <span className="animate-in fade-in duration-300">
+                <ThemeSwatch colors={swatchColors} size={16} />
+              </span>
+            ) : (
+              <span className="w-32 h-4" /> // Placeholder for layout stability
+            )}
             <ChevronDown className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" />
           </button>
         </SheetTrigger>
