@@ -80,45 +80,43 @@ skills logo system with project filtering.
         - Added custom icon infrastructure to `skill-icons.ts` for future additions
         - Note: No "Clio mascot" exists for Claude - only sunburst logo
 
-- [ ] **1.3 Create SkillLogoGrid component**
+- [x] **1.3 Create SkillLogoGrid component**
 
-    - [ ] **1.3.a Write tests for `SkillLogoGrid` component**
-        - Test: Renders correct number of logos
-        - Test: Applies correct layout class based on `layout` prop (row vs grid)
-        - Test: Logos are wrapped in links when `linkToProjects` is true
-        - Test: Handles missing icons gracefully
-        - Expect tests to FAIL initially
+    - [x] **1.3.a Write tests for `SkillLogoGrid` component**
+        - Created `src/components/skills/__tests__/SkillLogoGrid.test.tsx`
+        - 19 tests across 6 describe blocks: Logo Rendering, Layout Prop, Size Prop, Link Behavior, Missing Icons
+        Handling, Accessibility
 
-    - [ ] **1.3.b Implement `SkillLogoGrid` component**
-        - Create `src/components/skills/SkillLogoGrid.tsx`
-        - Props: `skills`, `layout` (row | grid), `size` (sm | md | lg), `linkToProjects`
-        - Use simple-icons SVG data for rendering
-        - Apply TWM-consistent styling (borders, backgrounds)
+    - [x] **1.3.b Implement `SkillLogoGrid` component**
+        - Created `src/components/skills/SkillLogoGrid.tsx`
+        - Props: `skills`, `layout` (row | grid), `size` (sm | md | lg), `linkToProjects`, `className`
+        - SVG rendering via `getSkillIcon()`, graceful skip for missing icons
+        - Optional Link wrapping to `/projects?skill=SkillName`
 
-    - [ ] **1.3.c Run tests - should now PASS**
+    - [x] **1.3.c Run tests - all 19 tests pass**
 
-    - [ ] **1.3.d Run quality gates (type-check, lint)**
+    - [x] **1.3.d Run quality gates - type-check, lint, format all pass**
 
 ### **Phase 2:** Home Page Skills Row Integration
 
 **Purpose:** Add featured skills visual to Home page below FeaturedProjects.
 
-- [ ] **2.1 Integrate SkillLogoGrid on Home page**
+- [x] **2.1 Integrate SkillLogoGrid on Home page**
 
-    - [ ] **2.1.a Update `src/app/page.tsx` to include skills row**
-        - Filter skills data for `featured: true`
-        - Render `SkillLogoGrid` with `layout="row"`, `linkToProjects={true}`
-        - Position below FeaturedSection
+    - [x] **2.1.a Update `src/app/page.tsx` to include skills row**
+        - Added `featuredSkills` extraction with explicit ecosystem ordering
+        - Order: TypeScript, React, Python, Django, C#, .NET
+        - Rendered `SkillLogoGrid` with `layout="row"`, `linkToProjects={true}`
 
-    - [ ] **2.1.b Verify no-scroll behavior on desktop (1440p)**
-        - Manual test: Page should not scroll at 1440p resolution
-        - If scrolling occurs, adjust spacing/sizing
+    - [x] **2.1.b Verify no-scroll behavior on desktop (1440p)** - Confirmed
 
-    - [ ] **2.1.c Handle mobile layout**
-        - Decide: wrap evenly at breakpoint OR skip render on mobile
-        - Implement chosen approach with appropriate Tailwind classes
+    - [x] **2.1.c Handle mobile layout** - Keep on mobile, defer sizing to 2.2
 
-    - [ ] **2.1.d Run quality gates**
+    - [x] **2.1.d Run quality gates** - All pass
+
+    **Additional fixes during integration:**
+    - Added `viewBox` field to `SkillIconData` interface for custom icon support
+    - C# and OpenAI custom icons now render correctly with proper viewBox values
 
 - [ ] **2.2 Visual refinement**
 
