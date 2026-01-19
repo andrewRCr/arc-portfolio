@@ -1,10 +1,10 @@
 # Task List: Content Polish P2 - Supporting Pages
 
-**PRD:** `.arc/backlog/feature/prd-content-polish-p2.md`
+**PRD:** `.arc/active/feature/prd-content-polish-p2.md`
 **Created:** 2026-01-19
 **Branch:** `feature/content-polish-p2`
 **Base Branch:** `main`
-**Status:** Pending
+**Status:** In Progress
 
 ## Overview
 

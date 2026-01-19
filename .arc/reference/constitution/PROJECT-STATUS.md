@@ -26,11 +26,13 @@ contemporary web development practices.
 
 **Currently Active:**
 
-- None
+- Content Polish P2 (feature) - Skills page reorganization, Contact form, About page polish
+    - Task list: `.arc/active/feature/tasks-content-polish-p2.md`
+    - Branch: `feature/content-polish-p2`
 
 **Next Priority:**
 
-- Content Polish P2 (feature) - Skills page reorganization, About/Contact copy polish
+- Visual Polish (feature) - TWM startup animation, Framer Motion transitions, micro-interactions
 
 ---
 
