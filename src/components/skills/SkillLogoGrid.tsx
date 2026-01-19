@@ -10,6 +10,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { getSkillIcon } from "@/lib/skill-icons";
 import { TouchTarget } from "@/components/ui/TouchTarget";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Skill } from "@/types/skills";
 
 type LayoutType = "row" | "grid";
@@ -32,11 +33,11 @@ const sizeClasses: Record<SizeType, string> = {
   sm: "w-6 h-6",
   md: "w-8 h-8",
   lg: "w-12 h-12",
-  responsive: "w-5 h-5 sm:w-9 sm:h-9", // 20px phone, 36px tablet+
+  responsive: "w-7 h-7 sm:w-12 sm:h-12",
 };
 
 const layoutClasses: Record<LayoutType, string> = {
-  row: "flex flex-wrap items-center gap-0 sm:gap-4", // No gap on mobile (TouchTarget provides spacing)
+  row: "flex flex-wrap items-center justify-center gap-x-2 gap-y-0 sm:gap-6",
   grid: "grid grid-cols-4 gap-4 sm:grid-cols-6 md:grid-cols-8",
 };
 
@@ -74,37 +75,51 @@ export function SkillLogoGrid({
 
   return (
     <div className={cn(layoutClasses[layout], className)}>
-      {skillsWithIcons.map((skill) => {
+      {skillsWithIcons.flatMap((skill, index) => {
         const icon = getSkillIcon(skill.iconSlug!);
-        if (!icon) return null;
+        if (!icon) return [];
 
         const logo = (
           <svg
             viewBox={icon.viewBox ?? "0 0 24 24"}
             className={cn(sizeClasses[size], "fill-current text-foreground/70")}
             aria-hidden="true"
-            role="img"
           >
-            <title>{icon.title}</title>
             <path d={icon.path} />
           </svg>
         );
 
-        if (linkToProjects) {
-          return (
-            <TouchTarget key={skill.name} className="sm:min-h-0 sm:min-w-0">
-              <Link
-                href={`/projects?skill=${encodeURIComponent(skill.name)}`}
-                className="transition-opacity hover:opacity-80"
-                aria-label={`View projects using ${skill.name}`}
-              >
-                {logo}
-              </Link>
-            </TouchTarget>
-          );
+        const element = linkToProjects ? (
+          <TouchTarget key={skill.name} className="-mx-1 sm:mx-0 sm:min-h-0 sm:min-w-0">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href={`/projects?skill=${encodeURIComponent(skill.name)}`}
+                  className="transition-opacity hover:opacity-80"
+                  aria-label={`View projects using ${skill.name}`}
+                >
+                  {logo}
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">{skill.name}</TooltipContent>
+            </Tooltip>
+          </TouchTarget>
+        ) : (
+          <Tooltip key={skill.name}>
+            <TooltipTrigger asChild>
+              <div className="cursor-default">{logo}</div>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{skill.name}</TooltipContent>
+          </Tooltip>
+        );
+
+        // Insert line break after 5th item on mobile for 10-icon layout (5/5 split)
+        // Skip for 6 or fewer icons (single row on mobile)
+        if (index === 4 && layout === "row" && skillsWithIcons.length > 6) {
+          return [element, <div key="break" className="w-full sm:hidden" aria-hidden="true" />];
         }
 
-        return <div key={skill.name}>{logo}</div>;
+        return [element];
       })}
     </div>
   );

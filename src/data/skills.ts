@@ -22,12 +22,12 @@ export const skills: Skills = {
 
   Frontend: [
     { name: "React", featured: true, iconSlug: "react" },
-    { name: "Next.js", iconSlug: "nextdotjs" },
+    { name: "Next.js", featured: true, iconSlug: "nextdotjs" },
     { name: "Tailwind CSS", iconSlug: "tailwindcss" },
     { name: "Shadcn/ui", iconSlug: "shadcnui" },
     { name: "Chakra UI", iconSlug: "chakraui" },
     { name: "Bootstrap", iconSlug: "bootstrap" },
-    { name: "Blazor", iconSlug: "blazor" },
+    { name: "Blazor", featured: true, iconSlug: "blazor" },
     { name: "WPF" },
     { name: "MudBlazor" },
     { name: "Caliburn Micro" },
@@ -57,13 +57,13 @@ export const skills: Skills = {
   ],
 
   "AI-Assisted Development": [
-    { name: "Claude Code", iconSlug: "claude" },
+    { name: "Claude Code", featured: true, iconSlug: "claude" },
     { name: "GitHub Copilot", iconSlug: "githubcopilot" },
     { name: "Warp", iconSlug: "warp" },
     { name: "CodeRabbit" },
     { name: "v0.dev" },
     { name: "Gemini CLI", iconSlug: "googlegemini" },
-    { name: "Codex CLI", iconSlug: "openai" },
+    { name: "Codex CLI", featured: true, iconSlug: "openai" },
   ],
 
   "DevOps & Infrastructure": [

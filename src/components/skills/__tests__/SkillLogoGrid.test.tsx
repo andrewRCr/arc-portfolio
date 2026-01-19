@@ -36,9 +36,9 @@ const skillsWithoutIcons: Skill[] = [{ name: "Agile" }, { name: "Scrum" }, { nam
 describe("SkillLogoGrid", () => {
   describe("Logo Rendering", () => {
     it("renders correct number of logos for skills with icons", () => {
-      render(<SkillLogoGrid skills={skillsWithIcons} />);
+      const { container } = render(<SkillLogoGrid skills={skillsWithIcons} />);
 
-      const logos = screen.getAllByRole("img", { hidden: true });
+      const logos = container.querySelectorAll("svg");
       expect(logos).toHaveLength(3);
     });
 
@@ -49,12 +49,12 @@ describe("SkillLogoGrid", () => {
       expect(svgs).toHaveLength(3);
     });
 
-    it("includes accessible title for each logo", () => {
-      render(<SkillLogoGrid skills={skillsWithIcons} />);
+    it("includes accessible labels when linkToProjects is enabled", () => {
+      render(<SkillLogoGrid skills={skillsWithIcons} linkToProjects={true} />);
 
-      expect(screen.getByTitle("TypeScript")).toBeInTheDocument();
-      expect(screen.getByTitle("React")).toBeInTheDocument();
-      expect(screen.getByTitle("Python")).toBeInTheDocument();
+      expect(screen.getByLabelText("View projects using TypeScript")).toBeInTheDocument();
+      expect(screen.getByLabelText("View projects using React")).toBeInTheDocument();
+      expect(screen.getByLabelText("View projects using Python")).toBeInTheDocument();
     });
   });
 
