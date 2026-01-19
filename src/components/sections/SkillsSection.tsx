@@ -7,24 +7,46 @@
  * Used with PageLayout + PageHeader for consistent page structure.
  */
 
+"use client";
+
 import Link from "next/link";
 import { skills } from "@/data/skills";
 import { DetailCard } from "@/components/projects/DetailCard";
 import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
+import { TouchTarget } from "@/components/ui/TouchTarget";
+import { useIsPhone } from "@/hooks/useMediaQuery";
+import { useDelayedShow } from "@/hooks/useDelayedShow";
 
 // Categories to exclude from card grid (special treatment or removed)
 const excludedCategories = ["Languages", "Methodologies"];
 
+// Mobile: curated subset (skip HTML, CSS - implied by primary languages)
+const mobileLanguageOrder = ["TypeScript", "JavaScript", "Python", "C#", "C++"];
+
 export function SkillsSection() {
-  const languages = skills.Languages ?? [];
+  const isPhone = useIsPhone();
+  const allLanguages = skills.Languages ?? [];
+
+  // Delay showing languages row to avoid hydration flash (mobile vs desktop curation)
+  const showLanguages = useDelayedShow(150);
+
+  // On mobile, show curated subset; on desktop, show all
+  const languages = isPhone
+    ? mobileLanguageOrder
+        .map((name) => allLanguages.find((l) => l.name === name))
+        .filter((skill): skill is NonNullable<typeof skill> => skill !== undefined)
+    : allLanguages;
+
   const cardCategories = Object.entries(skills).filter(([cat]) => !excludedCategories.includes(cat));
 
   return (
     <section className="px-0 md:px-4">
       {/* Languages: foundational skills, centered hero-style */}
       {languages.length > 0 && (
-        <div className="flex justify-center mb-6">
-          <SkillLogoGrid skills={languages} layout="row" size="lg" linkToProjects={true} />
+        <div
+          className={`flex justify-center mb-6 transition-opacity duration-300 ${showLanguages ? "opacity-100" : "opacity-0"}`}
+        >
+          <SkillLogoGrid skills={languages} layout="row" size="responsiveLg" gap="relaxed" linkToProjects={true} />
         </div>
       )}
 
@@ -46,16 +68,18 @@ export function SkillsSection() {
               {/* Secondary skills as text list */}
               {secondarySkills.length > 0 && (
                 <ul
-                  className={`flex flex-wrap justify-center gap-x-4 gap-y-1 ${primarySkills.length > 0 ? "mt-4 pt-4 border-t border-border" : ""}`}
+                  className={`flex flex-wrap justify-center gap-x-4 gap-y-0 ${primarySkills.length > 0 ? "mt-4 pt-4 border-t border-border" : ""}`}
                 >
                   {secondarySkills.map((skill) => (
                     <li key={skill.name}>
-                      <Link
-                        href={`/projects?skill=${encodeURIComponent(skill.name)}`}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {skill.name}
-                      </Link>
+                      <TouchTarget className="-mx-1 -my-2 sm:mx-0 sm:my-0 sm:min-h-0 sm:min-w-0">
+                        <Link
+                          href={`/projects?skill=${encodeURIComponent(skill.name)}`}
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {skill.name}
+                        </Link>
+                      </TouchTarget>
                     </li>
                   ))}
                 </ul>

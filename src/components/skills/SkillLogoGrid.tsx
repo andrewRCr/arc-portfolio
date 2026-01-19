@@ -14,7 +14,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { Skill } from "@/types/skills";
 
 type LayoutType = "row" | "grid";
-type SizeType = "sm" | "md" | "lg" | "responsive";
+type SizeType = "sm" | "md" | "lg" | "responsive" | "responsiveLg";
+type GapType = "tight" | "relaxed";
 
 interface SkillLogoGridProps {
   /** Array of skills to display logos for */
@@ -23,6 +24,8 @@ interface SkillLogoGridProps {
   layout?: LayoutType;
   /** Size of logo icons. "responsive" = smaller on phone, larger on tablet+ */
   size?: SizeType;
+  /** Gap between icons on mobile. Both use same tablet+ spacing. */
+  gap?: GapType;
   /** If true, wrap each logo in a link to /projects?skill=SkillName */
   linkToProjects?: boolean;
   /** Additional class names for the container */
@@ -34,11 +37,18 @@ const sizeClasses: Record<SizeType, string> = {
   md: "w-8 h-8",
   lg: "w-12 h-12",
   responsive: "w-7 h-7 sm:w-12 sm:h-12",
+  responsiveLg: "w-11 h-11 sm:w-12 sm:h-12",
 };
 
 const layoutClasses: Record<LayoutType, string> = {
-  row: "flex flex-wrap items-center justify-center gap-x-2 gap-y-0 sm:gap-6",
+  row: "flex flex-wrap items-center justify-center",
   grid: "grid grid-cols-4 gap-4 sm:grid-cols-6 md:grid-cols-8",
+};
+
+// Gap classes for row layout (grid has its own gap)
+const rowGapClasses: Record<GapType, string> = {
+  tight: "gap-x-2 gap-y-0 sm:gap-6",
+  relaxed: "gap-x-5 gap-y-0 sm:gap-6",
 };
 
 /**
@@ -64,6 +74,7 @@ export function SkillLogoGrid({
   skills,
   layout = "row",
   size = "md",
+  gap = "tight",
   linkToProjects = false,
   className,
 }: SkillLogoGridProps) {
@@ -73,8 +84,11 @@ export function SkillLogoGrid({
     return getSkillIcon(skill.iconSlug) !== null;
   });
 
+  // Apply row gap classes only for row layout (grid has built-in gap)
+  const gapClass = layout === "row" ? rowGapClasses[gap] : "";
+
   return (
-    <div className={cn(layoutClasses[layout], className)}>
+    <div className={cn(layoutClasses[layout], gapClass, className)}>
       {skillsWithIcons.flatMap((skill, index) => {
         const icon = getSkillIcon(skill.iconSlug!);
         if (!icon) return [];
