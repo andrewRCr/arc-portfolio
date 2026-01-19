@@ -37,41 +37,48 @@ skills logo system with project filtering.
 
 **Purpose:** Establish data structure and reusable component for skill logos.
 
-- [ ] **1.1 Enhance skills data structure**
+- [x] **1.1 Enhance skills data structure**
 
     **Approach:** Forward migration - update type, data, and all consumers together. No backward compat.
 
-    - [ ] **1.1.a Update `Skills` type in `src/types/skills.ts`**
-        - Change from flat string arrays to object arrays with metadata
-        - Add `featured?: boolean` flag for Home page display
-        - Add `iconSlug?: string` for simple-icons mapping
+    - [x] **1.1.a Update `Skills` type in `src/types/skills.ts`**
+        - Added `Skill` interface with `name`, `featured?: boolean`, `iconSlug?: string`
+        - Updated `Skills` mapped type to use `Skill[]` instead of `string[]`
 
-    - [ ] **1.1.b Update `src/data/skills.ts` with enhanced structure**
-        - Migrate all skills to new object format
-        - Add `featured` and `iconSlug` to key skills
-        - Initial featured selection: TypeScript, React, Python, Django, C#, .NET (refine later)
-        - Map icon slugs to simple-icons identifiers
+    - [x] **1.1.b Update `src/data/skills.ts` with enhanced structure**
+        - Migrated all skills to `{ name, featured?, iconSlug? }` object format
+        - Marked 6 featured: TypeScript, React, Python, Django, C#, .NET
+        - Added iconSlug mappings for ~40 skills with simple-icons identifiers
 
-    - [ ] **1.1.c Migrate all consumers to new data structure**
-        - Update `SkillsSection` component to consume new format
-        - Update any existing tests that reference skills data
-        - Search codebase for other usages: `grep -r "skills" src/`
+    - [x] **1.1.c Migrate all consumers to new data structure**
+        - Updated `SkillsSection` to render `skill.name`
+        - Refactored test files to test structure/behavior over content
+        - Removed brittle content-coupled tests from data validation
 
-    - [ ] **1.1.d Run type checking to verify all consumers updated**
-        - Type errors indicate missed consumers - fix before proceeding
+    - [x] **1.1.d Run type checking to verify all consumers updated**
+        - Type check passes, all 965 tests pass
 
-- [ ] **1.2 Install and configure simple-icons**
+- [x] **1.2 Install and configure simple-icons**
 
-    - [ ] **1.2.a Install `simple-icons` package**
-        - Run `npm install simple-icons`
-        - Verify package provides SVG paths/data
+    - [x] **1.2.a Install `simple-icons` package**
+        - Installed simple-icons v16.6.0
 
-    - [ ] **1.2.b Create utility for icon retrieval**
-        - Create `src/lib/skill-icons.ts`
-        - Export function to get SVG data by slug
-        - Handle missing icons gracefully (return null)
+    - [x] **1.2.b Create utility for icon retrieval**
+        - Created `src/lib/skill-icons.ts` with `getSkillIcon()` and `hasSkillIcon()`
+        - Lazy-initialized Map lookup by slug for efficiency
 
-    - [ ] **1.2.c Verify icons load correctly for test skills**
+    - [x] **1.2.c Verify icons load correctly for test skills**
+        - 36 valid icons, 17 skills without icons (intentional)
+        - Fixed invalid slugs: `css3`→`css`, removed non-existent slugs
+
+    - [x] **1.2.d Source custom icons for skills not in simple-icons**
+        - **C#**: Added custom icon from devicon (MIT license), re-enabled `featured: true`
+        - **Claude Code**: Uses `claude` slug (already in simple-icons v16.6.0)
+        - **Gemini CLI**: Uses `googlegemini` slug (already in simple-icons v16.6.0)
+        - **SQL Server**: Skipped - complex multi-path SVG, not a featured skill
+        - **Codex CLI**: Skipped - OpenAI not in simple-icons, not a featured skill
+        - Added custom icon infrastructure to `skill-icons.ts` for future additions
+        - Note: No "Clio mascot" exists for Claude - only sunburst logo
 
 - [ ] **1.3 Create SkillLogoGrid component**
 
@@ -134,6 +141,7 @@ skills logo system with project filtering.
     - [ ] **3.1.a Review current skills list against project portfolio**
         - Which skills appear in actual projects?
         - Which are "resume padding" vs genuine strengths?
+        - Are current categories logical? Any merges/splits needed?
 
     - [ ] **3.1.b Propose skill hierarchy per category**
         - Primary skills: Get logos in DetailCard
