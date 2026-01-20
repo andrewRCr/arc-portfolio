@@ -320,10 +320,10 @@ skills logo system with project filtering.
 
 - [ ] **4.8 Connect skill logos to filtered view (entry points)**
 
-    - [ ] **4.8.a Update `SkillLogoGrid` links**
-        - When `linkToProjects={true}`, logos link to `/projects?skills={skillName}`
+    - [x] **4.8.a Update `SkillLogoGrid` links**
+        - Changed link from `?skill=` to `?skills=` to match filtering URL format
+        - Updated docstring and test to reflect new URL structure
         - Single skill in URL (entry point), user can add more via popover
-        - Ensure skill name matches project `tags` array values exactly
 
     - [ ] **4.8.b Manual testing of full flow**
         - Click skill logo on Home → filtered Projects view with that skill
@@ -335,6 +335,26 @@ skills logo system with project filtering.
     - [ ] **4.8.c Run E2E tests for navigation and filtering flow**
 
     - [ ] **4.8.d Run full quality gates**
+
+- [ ] **4.9 Visual polish for filtering controls**
+
+    - [ ] **4.9.a Review FilterIndicator styling**
+        - Check badge sizing, spacing, dismiss button visibility
+        - Verify alignment with Filter button on right
+        - Test mobile responsiveness (wrapping behavior)
+
+    - [ ] **4.9.b Review SkillFilterPopover styling**
+        - Verify popover width and max-height on mobile
+        - Check category heading visibility and spacing
+        - Confirm search input styling matches design system
+        - Test skill counts readability
+
+    - [ ] **4.9.c Verify Crossfade transition smoothness**
+        - Test transition between tabs and FilterIndicator states
+        - Verify no layout shift during transition
+        - Check reduced motion behavior works correctly
+
+    - [ ] **4.9.d Run quality gates**
 
 ### **Phase 5:** Contact Form Implementation
 
