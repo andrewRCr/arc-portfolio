@@ -44,12 +44,12 @@ test.describe("Smoke Tests", () => {
       // Mobile: verify dropdown trigger is present
       await expect(page.getByRole("button", { name: /navigation menu/i })).toBeVisible();
     } else {
-      // Desktop: verify all nav links are visible
-      await expect(page.getByRole("link", { name: "HOME" })).toBeVisible();
-      await expect(page.getByRole("link", { name: "PROJECTS" })).toBeVisible();
-      await expect(page.getByRole("link", { name: "SKILLS" })).toBeVisible();
-      await expect(page.getByRole("link", { name: "ABOUT" })).toBeVisible();
-      await expect(page.getByRole("link", { name: "CONTACT" })).toBeVisible();
+      // Desktop: verify all nav links are visible (scoped to mainNav to avoid matching other page links)
+      await expect(mainNav.getByRole("link", { name: "HOME" })).toBeVisible();
+      await expect(mainNav.getByRole("link", { name: "PROJECTS" })).toBeVisible();
+      await expect(mainNav.getByRole("link", { name: "SKILLS" })).toBeVisible();
+      await expect(mainNav.getByRole("link", { name: "ABOUT" })).toBeVisible();
+      await expect(mainNav.getByRole("link", { name: "CONTACT" })).toBeVisible();
     }
   });
 
