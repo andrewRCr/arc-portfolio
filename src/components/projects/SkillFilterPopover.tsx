@@ -1,0 +1,164 @@
+"use client";
+
+/**
+ * SkillFilterPopover component
+ *
+ * Provides a searchable, categorized skill filter for the Projects page.
+ * Skills are organized by category and filtered to only show those with
+ * icons and matching projects.
+ */
+
+import { useMemo, useState } from "react";
+import { FilterIcon, CheckIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { skills as skillsData } from "@/data/skills";
+import { SkillCategory } from "@/types/skills";
+import { Project } from "@/types/project";
+
+interface SkillFilterPopoverProps {
+  allProjects: Project[];
+  selectedSkills: string[];
+  onSkillsChange: (skills: string[]) => void;
+}
+
+// Categories to display (excluding Methodologies)
+const DISPLAY_CATEGORIES: SkillCategory[] = [
+  "Languages",
+  "Frontend",
+  "Backend",
+  "Databases",
+  "DevOps & Infrastructure",
+  "AI-Assisted Development",
+  "Testing & Quality",
+];
+
+/**
+ * Calculate the number of projects that contain a given skill in their tags
+ */
+function getProjectCountForSkill(projects: Project[], skillName: string): number {
+  const normalizedSkill = skillName.toLowerCase();
+  return projects.filter((project) =>
+    project.tags.some((tag) => tag.toLowerCase() === normalizedSkill)
+  ).length;
+}
+
+export default function SkillFilterPopover({
+  allProjects,
+  selectedSkills,
+  onSkillsChange,
+}: SkillFilterPopoverProps) {
+  const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Build categorized skills with project counts, filtering to only those with icons and projects
+  const categorizedSkills = useMemo(() => {
+    const result: Record<string, Array<{ name: string; count: number }>> = {};
+
+    for (const category of DISPLAY_CATEGORIES) {
+      const categorySkills = skillsData[category]
+        .filter((skill) => skill.iconSlug) // Only skills with icons
+        .map((skill) => ({
+          name: skill.name,
+          count: getProjectCountForSkill(allProjects, skill.name),
+        }))
+        .filter((skill) => skill.count > 0); // Only skills with matching projects
+
+      if (categorySkills.length > 0) {
+        result[category] = categorySkills;
+      }
+    }
+
+    return result;
+  }, [allProjects]);
+
+  // Handle skill toggle
+  const handleSkillToggle = (skillName: string) => {
+    if (selectedSkills.includes(skillName)) {
+      onSkillsChange(selectedSkills.filter((s) => s !== skillName));
+    } else {
+      onSkillsChange([...selectedSkills, skillName]);
+    }
+  };
+
+  // Handle clear all
+  const handleClearAll = () => {
+    onSkillsChange([]);
+  };
+
+  // Format trigger button text
+  const triggerText =
+    selectedSkills.length > 0 ? `Filter (${selectedSkills.length})` : "Filter";
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" size="sm" aria-haspopup="dialog">
+          <FilterIcon className="size-4" />
+          {triggerText}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-72 p-0" align="end">
+        <Command shouldFilter={true}>
+          <CommandInput
+            placeholder="Search skills..."
+            value={searchQuery}
+            onValueChange={setSearchQuery}
+          />
+          <CommandList>
+            <CommandEmpty>No skills found</CommandEmpty>
+            {Object.entries(categorizedSkills).map(([category, skills]) => (
+              <CommandGroup key={category} heading={category}>
+                {skills.map((skill) => {
+                  const isSelected = selectedSkills.includes(skill.name);
+                  return (
+                    <CommandItem
+                      key={skill.name}
+                      value={skill.name}
+                      onSelect={() => handleSkillToggle(skill.name)}
+                      className="flex items-center gap-2"
+                    >
+                      <div
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        className={`flex size-4 shrink-0 items-center justify-center rounded-sm border ${
+                          isSelected
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-input"
+                        }`}
+                      >
+                        {isSelected && <CheckIcon className="size-3" />}
+                      </div>
+                      <span className="flex-1">{skill.name}</span>
+                      <span className="text-muted-foreground text-xs">({skill.count})</span>
+                    </CommandItem>
+                  );
+                })}
+              </CommandGroup>
+            ))}
+          </CommandList>
+          {selectedSkills.length > 0 && (
+            <div className="border-t p-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full"
+                onClick={handleClearAll}
+              >
+                Clear all
+              </Button>
+            </div>
+          )}
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
