@@ -246,48 +246,41 @@ skills logo system with project filtering.
 
     - [x] **4.3.c Run quality gates** - All passed (type-check, lint, 1014 tests)
 
-- [ ] **4.4 Create SkillFilterPopover component**
+- [x] **4.4 Create SkillFilterPopover component**
 
-    - [ ] **4.4.a Write tests for SkillFilterPopover**
-        - Test: Renders trigger button with filter count when active
-        - Test: Popover opens on click, shows categorized skills
-        - Test: Search filters visible skill options
-        - Test: Checkbox toggles update selected skills
-        - Test: Result counts displayed per skill
-        - Test: Accessibility: fieldset/legend, keyboard navigation, focus management
-        - Expect tests to FAIL initially
+    - [x] **4.4.a Write tests for SkillFilterPopover**
+        - Created `src/components/projects/__tests__/SkillFilterPopover.test.tsx`
+        - 22 tests across 7 describe blocks: Trigger Button, Popover Opening, Search Functionality,
+          Skill Selection, Result Counts, Accessibility, Clear All
+        - Tests cover: filter count display, categorized skills (excluding Methodologies),
+          search filtering, checkbox toggling, result counts, keyboard accessibility
 
-    - [ ] **4.4.b Install shadcn/ui Command component (if needed for search)**
-        - Evaluate if Popover + Input + Checkbox is sufficient
-        - Or use Command (combobox) for searchable list pattern
-        - Decision point: simpler is better if it meets needs
+    - [x] **4.4.b Install shadcn/ui Command component**
+        - Installed Command component via `npx shadcn@latest add command`
+        - Command provides searchable list pattern with cmdk integration
+        - Created `src/components/ui/command.tsx`
 
-    - [ ] **4.4.c Implement SkillFilterPopover component**
-        - Trigger: Button showing "Filter" or "Filter (3)" when active
-        - Content: Searchable skill list organized by category (Languages, Frontend, Backend, etc.)
-        - Each skill: Checkbox + name + result count ("React (5)")
-        - Props: `allProjects`, `selectedSkills`, `onSkillsChange`
-        - File: `src/components/projects/SkillFilterPopover.tsx`
+    - [x] **4.4.c Implement SkillFilterPopover component**
+        - Created `src/components/projects/SkillFilterPopover.tsx`
+        - Uses Popover + Command (cmdk) for searchable categorized list
+        - Filters to skills with icons AND matching projects (excludes Methodologies)
+        - Displays result counts per skill, supports checkbox selection
 
-    - [ ] **4.4.d Run tests - should now PASS**
+    - [x] **4.4.d Run tests - all 23 tests pass**
+        - Added scrollIntoView mock to test setup (required for cmdk)
 
-- [ ] **4.5 Create FilterIndicator component**
+- [x] **4.5 Create FilterIndicator component**
 
-    - [ ] **4.5.a Write tests for FilterIndicator**
-        - Test: Renders "Filtering by:" label with skill badges
-        - Test: Each badge has dismiss button (×)
-        - Test: Clicking dismiss removes that skill from filter
-        - Test: "Clear all" button clears all filters
-        - Test: Accessibility: badges are focusable, dismiss buttons labeled
-        - Expect tests to FAIL initially
+    - [x] **4.5.a Write tests for FilterIndicator**
+        - Created `src/components/projects/__tests__/FilterIndicator.test.tsx`
+        - 13 tests across 5 describe blocks: Rendering, Dismiss Buttons, Clear All, Accessibility, Empty State
 
-    - [ ] **4.5.b Implement FilterIndicator component**
-        - Layout: "Filtering by:" text + Badge chips with × buttons + Clear all link
-        - Props: `skills: string[]`, `onRemoveSkill`, `onClearAll`
-        - Uses existing Badge component
-        - File: `src/components/projects/FilterIndicator.tsx`
+    - [x] **4.5.b Implement FilterIndicator component**
+        - Created `src/components/projects/FilterIndicator.tsx`
+        - Uses Badge with dismiss buttons, "Filtering by:" label, Clear all button
+        - Returns null when skills array is empty
 
-    - [ ] **4.5.c Run tests - should now PASS**
+    - [x] **4.5.c Run tests - all 13 tests pass**
 
 - [ ] **4.6 Create state-based crossfade utility**
 
