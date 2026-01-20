@@ -5,7 +5,7 @@
  * and clear all functionality.
  */
 
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import FilterIndicator from "../FilterIndicator";
@@ -51,37 +51,33 @@ describe("FilterIndicator", () => {
     });
   });
 
-  describe("Dismiss Buttons", () => {
-    it("each badge has a dismiss button", () => {
+  describe("Dismissible Badges", () => {
+    it("each badge is clickable to dismiss", () => {
       render(<FilterIndicator {...defaultProps} />);
 
-      // Find all dismiss buttons (× icons)
+      // Badges themselves are now buttons
       const dismissButtons = screen.getAllByRole("button", { name: /remove/i });
       expect(dismissButtons).toHaveLength(2); // One for each skill
     });
 
-    it("calls onRemoveSkill with correct skill when dismiss is clicked", async () => {
+    it("calls onRemoveSkill with correct skill when badge is clicked", async () => {
       const onRemoveSkill = vi.fn();
       const user = userEvent.setup();
       render(<FilterIndicator {...defaultProps} onRemoveSkill={onRemoveSkill} />);
 
-      // Find React badge and click its dismiss button
-      const reactBadge = screen.getByText("React").closest("[data-slot='badge']");
-      const dismissButton = within(reactBadge as HTMLElement).getByRole("button");
-      await user.click(dismissButton);
+      // Click the React badge directly (badge itself is the button)
+      await user.click(screen.getByRole("button", { name: /remove react/i }));
 
       expect(onRemoveSkill).toHaveBeenCalledWith("React");
     });
 
-    it("calls onRemoveSkill with second skill when its dismiss is clicked", async () => {
+    it("calls onRemoveSkill with second skill when its badge is clicked", async () => {
       const onRemoveSkill = vi.fn();
       const user = userEvent.setup();
       render(<FilterIndicator {...defaultProps} onRemoveSkill={onRemoveSkill} />);
 
-      // Find TypeScript badge and click its dismiss button
-      const tsBadge = screen.getByText("TypeScript").closest("[data-slot='badge']");
-      const dismissButton = within(tsBadge as HTMLElement).getByRole("button");
-      await user.click(dismissButton);
+      // Click the TypeScript badge directly
+      await user.click(screen.getByRole("button", { name: /remove typescript/i }));
 
       expect(onRemoveSkill).toHaveBeenCalledWith("TypeScript");
     });

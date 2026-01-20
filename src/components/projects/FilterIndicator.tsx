@@ -22,29 +22,39 @@ export default function FilterIndicator({ skills, onRemoveSkill, onClearAll }: F
   }
 
   return (
-    <div className="mx-7 flex min-h-11 flex-wrap items-end gap-2 border-b border-border/50 pb-2">
-      <span className="text-muted-foreground text-sm pb-0.5">Filtering by:</span>
-      {skills.map((skill) => (
-        <Badge key={skill} variant="secondary" className="gap-1 pr-1">
-          {skill}
-          <button
-            type="button"
+    <div className="mx-7 flex min-h-11 flex-wrap items-center gap-x-2 gap-y-2 border-b border-border/50 pb-2 sm:items-end">
+      <span className="text-muted-foreground text-sm sm:pb-0.5">Filtering by:</span>
+      {/* Badges + Clear all grouped together so they wrap as a unit */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        {skills.map((skill) => (
+          <Badge
+            key={skill}
+            variant="secondary"
+            className="gap-1 pr-1 cursor-pointer sm:cursor-default [-webkit-tap-highlight-color:transparent]"
             onClick={() => onRemoveSkill(skill)}
-            className="ml-0.5 rounded-full p-0.5 transition-colors hover:bg-secondary-foreground/20"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onRemoveSkill(skill);
+              }
+            }}
             aria-label={`Remove ${skill} filter`}
           >
-            <XIcon className="size-3" />
-          </button>
-        </Badge>
-      ))}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={onClearAll}
-        className="h-auto px-2 py-1 text-xs text-muted-foreground hover:text-accent-foreground"
-      >
-        Clear all
-      </Button>
+            {skill}
+            <XIcon className="size-3 ml-0.5 opacity-60" aria-hidden="true" />
+          </Badge>
+        ))}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onClearAll}
+          className="min-h-11 sm:min-h-0 sm:h-auto px-2 py-1 text-xs text-muted-foreground hover:text-accent-foreground"
+        >
+          Clear all
+        </Button>
+      </div>
     </div>
   );
 }
