@@ -184,55 +184,173 @@ skills logo system with project filtering.
 
 ### **Phase 4:** Skills-to-Projects Filtering
 
-**Purpose:** Enable clicking skill logos to filter Projects page.
+**Purpose:** Enable multi-skill filtering on Projects page with popover controls and skill logo entry points.
 
-- [ ] **4.1 Implement filtered Projects view**
+**Design decisions (from UX research):**
 
-    - [ ] **4.1.a Write tests for skill filtering logic**
-        - Test: Projects filtered by `tags` array matching skill name
-        - Test: Filter applies across all project types (software, games, mods)
-        - Test: Empty result state handled gracefully
+- **OR logic** for multi-skill filtering (show projects matching ANY selected skill)
+- Filter popover always visible (right-aligned in header row)
+- When filtered: tabs hidden, filter indicator chips shown (left-aligned), smooth crossfade transition
+- Categorized skills in popover (matching Skills page organization)
+- Searchable filter list (40+ skills warrants search)
+- Result counts per skill option ("React (5)")
+- Semantic checkboxes with fieldset/legend for accessibility
+- ARIA live region for result count announcements
+
+- [x] **4.1 Implement filtered Projects view (single-skill foundation)**
+
+    - [x] **4.1.a Write tests for skill filtering logic**
+        - Created `src/lib/__tests__/project-filters.test.ts` with 14 tests
+        - Tests cover: basic filtering, case-insensitivity, sorting by order, cross-project-type filtering,
+          empty results, edge cases (spaces, special chars, partial matches, whitespace trimming)
+
+    - [x] **4.1.b Create filter utility function**
+        - Created `src/lib/project-filters.ts` with `filterProjectsBySkill()`
+        - Case-insensitive matching against project `tags` array
+        - Returns filtered results sorted by `order` field
+
+    - [x] **4.1.c Run tests - all 14 tests pass**
+
+- [x] **4.2 Extend filter utility for multi-skill support**
+
+    - [x] **4.2.a Write tests for multi-skill filtering (OR logic)**
+        - Added 14 new tests to `src/lib/__tests__/project-filters.test.ts`
+        - Tests cover: OR logic, empty array handling, sorting, deduplication, cross-project-type,
+          case-insensitivity, whitespace trimming, empty strings in array, special characters
+
+    - [x] **4.2.b Implement `filterProjectsBySkills()` function**
+        - Added to `src/lib/project-filters.ts`
+        - OR logic: project matches if `tags` contains ANY of the skills
+        - Empty array returns all projects (no filtering)
+        - Normalizes skills (trim, lowercase, filter empty)
+        - Sorted by order field
+
+    - [x] **4.2.c Run tests - all 28 tests pass**
+
+- [x] **4.3 Data audit: Ensure skill-to-project coverage**
+
+    - [x] **4.3.a Audit skills with icons vs project tags**
+        - Found 22 skills with icons not in any project tags
+        - Categories: naming mismatches, testing tools, DevOps, AI tools, basic languages
+
+    - [x] **4.3.b Update project tags to close gaps**
+        - **CineXplorer**: Added 24 tags (Vite, Vitest, RTL, Pytest, Swagger, GitHub Actions, Caddy,
+          Pydantic, TanStack Query, Redis, HTML/CSS/JS, Claude Code, Codex CLI, Copilot, Warp, CodeRabbit)
+        - **ARC Framework**: Added AI tools (Claude Code, Codex CLI, Gemini CLI, Copilot, Warp, CodeRabbit)
+        - **arc-portfolio**: Added 17 tags (testing, CI/CD, Framer Motion, AI tools, HTML/CSS/JS)
+        - **TaskFocus**: Added Swagger, Postman, HTML/CSS/JS
+        - **PetResort**: Fixed "Express" → "Express.js", added Postman, HTML/CSS/JS
+        - **SQLite**: Removed iconSlug (not used in any project)
+        - **Framer Motion**: Uncommented with conditional note (remove if startup animation not implemented)
+        - All skills with icons now have matching project tags (verified: 0 gaps)
+
+    - [x] **4.3.c Run quality gates** - All passed (type-check, lint, 1014 tests)
+
+- [ ] **4.4 Create SkillFilterPopover component**
+
+    - [ ] **4.4.a Write tests for SkillFilterPopover**
+        - Test: Renders trigger button with filter count when active
+        - Test: Popover opens on click, shows categorized skills
+        - Test: Search filters visible skill options
+        - Test: Checkbox toggles update selected skills
+        - Test: Result counts displayed per skill
+        - Test: Accessibility: fieldset/legend, keyboard navigation, focus management
         - Expect tests to FAIL initially
 
-    - [ ] **4.1.b Create filter utility function**
-        - Create filtering logic in `src/lib/project-filters.ts`
-        - Filter projects + mods by skill tag
-        - Return combined, sorted results
+    - [ ] **4.4.b Install shadcn/ui Command component (if needed for search)**
+        - Evaluate if Popover + Input + Checkbox is sufficient
+        - Or use Command (combobox) for searchable list pattern
+        - Decision point: simpler is better if it meets needs
 
-    - [ ] **4.1.c Run tests - should now PASS**
+    - [ ] **4.4.c Implement SkillFilterPopover component**
+        - Trigger: Button showing "Filter" or "Filter (3)" when active
+        - Content: Searchable skill list organized by category (Languages, Frontend, Backend, etc.)
+        - Each skill: Checkbox + name + result count ("React (5)")
+        - Props: `allProjects`, `selectedSkills`, `onSkillsChange`
+        - File: `src/components/projects/SkillFilterPopover.tsx`
 
-- [ ] **4.2 Update Projects page for filtered mode**
+    - [ ] **4.4.d Run tests - should now PASS**
 
-    - [ ] **4.2.a Write tests for filtered UI state**
-        - Test: Query param `?skill=X` triggers filtered mode
-        - Test: Tabs hidden when filtered
-        - Test: Filter indicator + clear button displayed
-        - Test: Clear button removes filter and restores tabs
+- [ ] **4.5 Create FilterIndicator component**
+
+    - [ ] **4.5.a Write tests for FilterIndicator**
+        - Test: Renders "Filtering by:" label with skill badges
+        - Test: Each badge has dismiss button (×)
+        - Test: Clicking dismiss removes that skill from filter
+        - Test: "Clear all" button clears all filters
+        - Test: Accessibility: badges are focusable, dismiss buttons labeled
         - Expect tests to FAIL initially
 
-    - [ ] **4.2.b Implement filtered mode in Projects page**
-        - Read `skill` query param via `useSearchParams()`
-        - When present: hide tabs, show all matching projects
-        - Display filter indicator: "Filtered by: {skill}" with clear button
-        - Clear button navigates to `/projects` (no params)
+    - [ ] **4.5.b Implement FilterIndicator component**
+        - Layout: "Filtering by:" text + Badge chips with × buttons + Clear all link
+        - Props: `skills: string[]`, `onRemoveSkill`, `onClearAll`
+        - Uses existing Badge component
+        - File: `src/components/projects/FilterIndicator.tsx`
+
+    - [ ] **4.5.c Run tests - should now PASS**
+
+- [ ] **4.6 Create state-based crossfade utility**
+
+    - [ ] **4.6.a Write tests for crossfade behavior**
+        - Test: Transition between two states with opacity animation
+        - Test: Respects prefers-reduced-motion
+        - Expect tests to FAIL initially
+
+    - [ ] **4.6.b Implement crossfade component or hook**
+        - Simple CSS-based approach: both elements rendered, opacity toggled
+        - Or wrapper component managing enter/exit transitions
+        - Reuse patterns from existing `useDelayedShow` where applicable
+        - File: `src/components/ui/Crossfade.tsx` or `src/hooks/useCrossfade.ts`
+
+    - [ ] **4.6.c Run tests - should now PASS**
+
+- [ ] **4.7 Update Projects page layout and state**
+
+    - [ ] **4.7.a Write tests for Projects page filtered state**
+        - Test: Query param `?skills=React,TypeScript` triggers filtered mode
+        - Test: Filter popover visible in both normal and filtered states (right-aligned)
+        - Test: Normal state: tabs visible (left), filter button (right)
+        - Test: Filtered state: tabs hidden, filter indicator visible (left), filter button (right)
+        - Test: Crossfade transition between states
+        - Test: Filtered results use `filterProjectsBySkills()` across all project types
+        - Test: ARIA live region announces result count
+        - Expect tests to FAIL initially
+
+    - [ ] **4.7.b Update Projects page header layout**
+        - Modify PageHeader children to support left/right content areas
+        - Normal: `[Tabs]` left, `[Filter Button]` right
+        - Filtered: `[FilterIndicator]` left, `[Filter Button]` right
+        - Wrap state-dependent content in Crossfade for smooth transition
         - File: `src/app/projects/page.tsx`
 
-    - [ ] **4.2.c Run tests - should now PASS**
+    - [ ] **4.7.c Implement filtered state logic**
+        - Read `skills` query param (comma-separated): `?skills=React,TypeScript`
+        - When skills present: filter all projects+mods, hide tabs, show indicator
+        - Filter popover selections update URL (triggers re-filter)
+        - Clear all navigates to `/projects` (removes query param)
+        - Add ARIA live region for "Showing X projects"
 
-    - [ ] **4.2.d Run quality gates**
+    - [ ] **4.7.d Run tests - should now PASS**
 
-- [ ] **4.3 Connect skill logos to filtered view**
+    - [ ] **4.7.e Run quality gates**
 
-    - [ ] **4.3.a Update `SkillLogoGrid` links**
-        - When `linkToProjects={true}`, logos link to `/projects?skill={skillName}`
-        - Ensure skill name matches project `tags` array values
+- [ ] **4.8 Connect skill logos to filtered view (entry points)**
 
-    - [ ] **4.3.b Manual testing of full flow**
-        - Click skill logo on Home → filtered Projects view
+    - [ ] **4.8.a Update `SkillLogoGrid` links**
+        - When `linkToProjects={true}`, logos link to `/projects?skills={skillName}`
+        - Single skill in URL (entry point), user can add more via popover
+        - Ensure skill name matches project `tags` array values exactly
+
+    - [ ] **4.8.b Manual testing of full flow**
+        - Click skill logo on Home → filtered Projects view with that skill
         - Click skill logo on Skills page → filtered Projects view
-        - Clear filter → normal tabbed view restored
+        - Open filter popover → add/remove skills → results update
+        - Clear filter → normal tabbed view restored with crossfade
+        - Verify crossfade animation is smooth, respects reduced motion
 
-    - [ ] **4.3.c Run E2E tests for navigation flow**
+    - [ ] **4.8.c Run E2E tests for navigation and filtering flow**
+
+    - [ ] **4.8.d Run full quality gates**
 
 ### **Phase 5:** Contact Form Implementation
 
