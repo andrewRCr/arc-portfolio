@@ -28,13 +28,16 @@ interface MobileDrawerProps {
   children: ReactNode;
   /** Optional aria-describedby override (set to undefined to suppress warning) */
   "aria-describedby"?: string | undefined;
+  /** If true, drawer fills to exact window container height (stable, scrollable content) */
+  fillHeight?: boolean;
 }
 
 /**
  * Window-aligned bottom drawer for mobile interfaces.
  *
  * Positioning is calculated from layout tokens to align with the main content area:
- * - maxHeight: viewport minus topBar and gaps (with border overlap)
+ * - Top: aligns with window container top (topBar + gap)
+ * - Bottom: extends to safe area bottom (accounts for iOS home indicator)
  * - left/right: inset by windowGap to show wallpaper on sides
  */
 export function MobileDrawer({
@@ -44,7 +47,13 @@ export function MobileDrawer({
   title,
   children,
   "aria-describedby": ariaDescribedBy,
+  fillHeight = false,
 }: MobileDrawerProps) {
+  // Calculate height: from window container top (with border overlap) to safe area bottom
+  // - topBarHeight + windowGap*2 - windowBorderWidth positions top to align with window container
+  // - env(safe-area-inset-bottom) reserves space for iOS home indicator (0 on other devices)
+  const containerHeight = `calc(100dvh - ${DEFAULT_LAYOUT_TOKENS.topBarHeight}px - ${DEFAULT_LAYOUT_TOKENS.windowGap * 2}px + ${DEFAULT_LAYOUT_TOKENS.windowBorderWidth}px - env(safe-area-inset-bottom, 0px))`;
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
@@ -52,17 +61,17 @@ export function MobileDrawer({
         side="bottom"
         hideCloseButton
         style={{
-          // Align with top of main content area: viewport - topBar - gaps + border overlap
-          maxHeight: `calc(100dvh - ${DEFAULT_LAYOUT_TOKENS.topBarHeight}px - ${DEFAULT_LAYOUT_TOKENS.windowGap * 2}px + ${DEFAULT_LAYOUT_TOKENS.windowBorderWidth}px)`,
+          // fillHeight: exact height, otherwise maxHeight allows content-based sizing
+          ...(fillHeight ? { height: containerHeight } : { maxHeight: containerHeight }),
           // Inset from edges to show wallpaper preview on sides (matches windowGap)
           left: DEFAULT_LAYOUT_TOKENS.windowGap,
           right: DEFAULT_LAYOUT_TOKENS.windowGap,
         }}
         aria-describedby={ariaDescribedBy}
       >
-        <div className="flex flex-col gap-2 px-4 pb-6 pt-1">
+        <div className={`flex flex-col gap-2 px-4 pb-6 pt-1 ${fillHeight ? "h-full" : ""}`}>
           {/* Header with title and close button */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between shrink-0">
             <SheetTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wide ml-3">
               {title}
             </SheetTitle>
@@ -77,8 +86,8 @@ export function MobileDrawer({
             </SheetClose>
           </div>
 
-          {/* Drawer content */}
-          {children}
+          {/* Drawer content - fills remaining space when fillHeight is true */}
+          {fillHeight ? <div className="flex-1 min-h-0 flex flex-col">{children}</div> : children}
         </div>
       </SheetContent>
     </Sheet>

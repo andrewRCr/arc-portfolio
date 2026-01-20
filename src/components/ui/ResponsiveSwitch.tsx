@@ -3,25 +3,37 @@ import type { ReactNode } from "react";
 /** Supported display types for wrapper elements */
 type DisplayType = "block" | "flex" | "inline-flex";
 
+/** Supported breakpoints for the switch */
+type Breakpoint = "sm" | "md";
+
 /**
  * Props for the ResponsiveSwitch component.
  */
 export interface ResponsiveSwitchProps {
-  /** Content to show on phone viewports (< 768px) */
+  /** Content to show on smaller viewports */
   mobile: ReactNode;
-  /** Content to show on tablet and above (>= 768px) */
+  /** Content to show on larger viewports */
   desktop: ReactNode;
   /** Optional class name for the wrapper divs */
   className?: string;
   /** Display type for wrappers when visible. Defaults to "block". Use "flex" for flex layouts. */
   display?: DisplayType;
+  /**
+   * Breakpoint at which to switch from mobile to desktop.
+   * - "sm" (640px): phone-only mobile, tablet gets desktop
+   * - "md" (768px): phone+tablet mobile, desktop only above (default)
+   */
+  breakpoint?: Breakpoint;
 }
 
-/** Maps display type to Tailwind classes for mobile (visible) and desktop (hidden→visible) */
-const displayClasses: Record<DisplayType, { mobile: string; desktop: string }> = {
-  block: { mobile: "block", desktop: "md:block" },
-  flex: { mobile: "flex", desktop: "md:flex" },
-  "inline-flex": { mobile: "inline-flex", desktop: "md:inline-flex" },
+/** Maps display type and breakpoint to Tailwind classes */
+const getDisplayClasses = (display: DisplayType, breakpoint: Breakpoint) => {
+  const bp = breakpoint; // "sm" or "md"
+  return {
+    mobile: display,
+    mobileHidden: `${bp}:hidden`,
+    desktop: `hidden ${bp}:${display}`,
+  };
 };
 
 /**
@@ -37,36 +49,42 @@ const displayClasses: Record<DisplayType, { mobile: string; desktop: string }> =
  * - Both elements render in DOM, but only one is visible via display:none
  * - CSS display:none removes elements from accessibility tree
  *
- * **Breakpoint:**
- * Uses Tailwind's `md` breakpoint (768px) to match standard responsive design.
+ * **Breakpoints:**
+ * - "md" (default): 768px - standard mobile/desktop split
+ * - "sm": 640px - phone-only mobile, tablets get desktop
  *
  * @example
  * ```tsx
- * // Default block display
+ * // Default md breakpoint
  * <ResponsiveSwitch
  *   mobile={<MobileNavigation />}
  *   desktop={<DesktopNavigation />}
  * />
  *
- * // Flex display for flex layouts
+ * // Phone-only mobile (sm breakpoint)
  * <ResponsiveSwitch
- *   display="flex"
- *   className="items-center gap-2"
- *   mobile={<MobileControls />}
- *   desktop={<DesktopControls />}
+ *   breakpoint="sm"
+ *   mobile={<PhoneDrawer />}
+ *   desktop={<TabletPopover />}
  * />
  * ```
  */
-export function ResponsiveSwitch({ mobile, desktop, className, display = "block" }: ResponsiveSwitchProps) {
-  const classes = displayClasses[display];
+export function ResponsiveSwitch({
+  mobile,
+  desktop,
+  className,
+  display = "block",
+  breakpoint = "md",
+}: ResponsiveSwitchProps) {
+  const classes = getDisplayClasses(display, breakpoint);
 
   return (
     <>
-      {/* Mobile content - visible below md breakpoint */}
-      <div className={`${classes.mobile} md:hidden ${className ?? ""}`}>{mobile}</div>
+      {/* Mobile content - visible below breakpoint */}
+      <div className={`${classes.mobile} ${classes.mobileHidden} ${className ?? ""}`}>{mobile}</div>
 
-      {/* Desktop content - visible at md breakpoint and above */}
-      <div className={`hidden ${classes.desktop} ${className ?? ""}`}>{desktop}</div>
+      {/* Desktop content - visible at breakpoint and above */}
+      <div className={`${classes.desktop} ${className ?? ""}`}>{desktop}</div>
     </>
   );
 }
