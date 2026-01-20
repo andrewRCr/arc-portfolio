@@ -4,7 +4,7 @@ import { Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ProjectTabs from "@/components/projects/ProjectTabs";
 import ProjectCard from "@/components/projects/ProjectCard";
-import SkillFilterPopover from "@/components/projects/SkillFilterPopover";
+import SkillFilterControl from "@/components/projects/SkillFilterControl";
 import FilterIndicator from "@/components/projects/FilterIndicator";
 import Crossfade from "@/components/ui/Crossfade";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -91,9 +91,9 @@ function ProjectsContent() {
       header={
         <PageHeader title="Projects" hideDivider={FEATURES.SHOW_PROJECT_TABS}>
           {FEATURES.SHOW_PROJECT_TABS && (
-            <div className="flex items-end justify-between gap-4">
-              {/* Left side: Tabs or Filter Indicator (with Crossfade) */}
-              <div className="min-w-0 flex-1 min-h-11">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+              {/* Top on phone, left on tablet+: Tabs or Filter Indicator (with Crossfade) */}
+              <div className="min-w-0 sm:flex-1 min-h-11">
                 <Crossfade
                   active={isFiltered}
                   activeContent={
@@ -107,9 +107,9 @@ function ProjectsContent() {
                 />
               </div>
 
-              {/* Right side: Filter Button (always visible) */}
-              <div className="shrink-0">
-                <SkillFilterPopover
+              {/* Bottom on phone (centered), right on tablet+: Filter Button */}
+              <div className="shrink-0 flex justify-center sm:justify-end">
+                <SkillFilterControl
                   allProjects={allProjectsAndMods}
                   selectedSkills={selectedSkills}
                   onSkillsChange={handleSkillsChange}

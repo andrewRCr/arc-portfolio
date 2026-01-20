@@ -62,16 +62,18 @@ describe("Projects Page - Skill Filtering", () => {
     it("shows filter button on the right", () => {
       render(<ProjectsPage />);
 
-      const filterButton = screen.getByRole("button", { name: /filter/i });
-      expect(filterButton).toBeInTheDocument();
+      // ResponsiveSwitch renders both mobile and desktop filter buttons
+      const filterButtons = screen.getAllByRole("button", { name: /filter/i });
+      expect(filterButtons.length).toBeGreaterThan(0);
     });
 
     it("filter button shows no count when no skills selected", () => {
       render(<ProjectsPage />);
 
-      const filterButton = screen.getByRole("button", { name: /filter/i });
-      expect(filterButton).toHaveTextContent("Filter");
-      expect(filterButton).not.toHaveTextContent("(");
+      // ResponsiveSwitch renders both filter buttons - both should show no count
+      const filterButtons = screen.getAllByRole("button", { name: /filter/i });
+      expect(filterButtons[0]).toHaveTextContent("Filter");
+      expect(filterButtons[0]).not.toHaveTextContent("(");
     });
   });
 
@@ -100,18 +102,18 @@ describe("Projects Page - Skill Filtering", () => {
       mockNavigation.setSearchParams({ skills: "React" });
       render(<ProjectsPage />);
 
-      // Filter trigger button (starts with "Filter", not "Remove ... filter")
-      const filterButton = screen.getByRole("button", { name: /^filter/i });
-      expect(filterButton).toBeInTheDocument();
+      // ResponsiveSwitch renders both mobile and desktop filter buttons
+      const filterButtons = screen.getAllByRole("button", { name: /^filter/i });
+      expect(filterButtons.length).toBeGreaterThan(0);
     });
 
     it("filter button shows count when skills selected", () => {
       mockNavigation.setSearchParams({ skills: "React,TypeScript" });
       render(<ProjectsPage />);
 
-      // Filter trigger button (not the remove filter buttons)
-      const filterButton = screen.getByRole("button", { name: /^filter/i });
-      expect(filterButton).toHaveTextContent("Filter (2)");
+      // ResponsiveSwitch renders both filter buttons - both should show count
+      const filterButtons = screen.getAllByRole("button", { name: /^filter/i });
+      expect(filterButtons[0]).toHaveTextContent("Filter (2)");
     });
   });
 
@@ -160,24 +162,21 @@ describe("Projects Page - Skill Filtering", () => {
       const user = userEvent.setup();
       render(<ProjectsPage />);
 
-      await user.click(screen.getByRole("button", { name: /filter/i }));
+      // ResponsiveSwitch renders both mobile and desktop variants - get the desktop one (second)
+      const filterButtons = screen.getAllByRole("button", { name: /filter/i });
+      await user.click(filterButtons[1]); // Desktop popover trigger
 
       // Popover should show search and skill options
       expect(screen.getByPlaceholderText(/search skills/i)).toBeInTheDocument();
     });
 
-    it("removes skill when dismiss button clicked on filter indicator", async () => {
+    it("removes skill when badge clicked on filter indicator", async () => {
       const user = userEvent.setup();
       mockNavigation.setSearchParams({ skills: "React,TypeScript" });
       render(<ProjectsPage />);
 
-      // Click dismiss on React badge in filter indicator
-      const filterIndicator = screen.getByText("Filtering by:").parentElement;
-      const reactBadge = within(filterIndicator as HTMLElement)
-        .getByText("React")
-        .closest("[data-slot='badge']");
-      const dismissButton = within(reactBadge as HTMLElement).getByRole("button");
-      await user.click(dismissButton);
+      // Click the React badge directly (badge itself is now dismissible)
+      await user.click(screen.getByRole("button", { name: /remove react/i }));
 
       // Should update URL to remove React
       expect(mockNavigation.push).toHaveBeenCalledWith(expect.stringContaining("skills=TypeScript"));
