@@ -26,7 +26,7 @@ export default function FilterIndicator({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="mx-4 flex min-h-11 flex-wrap items-end gap-2 border-b border-border/50 pb-2">
       <span className="text-muted-foreground text-sm">Filtering by:</span>
       {skills.map((skill) => (
         <Badge key={skill} variant="secondary" className="gap-1 pr-1">
@@ -34,7 +34,7 @@ export default function FilterIndicator({
           <button
             type="button"
             onClick={() => onRemoveSkill(skill)}
-            className="hover:bg-muted ml-0.5 rounded-full p-0.5 transition-colors"
+            className="ml-0.5 rounded-full p-0.5 transition-colors hover:bg-secondary-foreground/20"
             aria-label={`Remove ${skill} filter`}
           >
             <XIcon className="size-3" />
@@ -45,7 +45,7 @@ export default function FilterIndicator({
         variant="ghost"
         size="sm"
         onClick={onClearAll}
-        className="text-muted-foreground hover:text-foreground h-auto px-2 py-1 text-xs"
+        className="h-auto px-2 py-1 text-xs text-muted-foreground hover:text-accent-foreground"
       >
         Clear all
       </Button>

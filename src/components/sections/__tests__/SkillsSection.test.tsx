@@ -70,7 +70,7 @@ describe("SkillsSection", () => {
       skillsWithoutIcons.forEach((skillName) => {
         const link = screen.getByRole("link", { name: skillName });
         expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute("href", `/projects?skill=${encodeURIComponent(skillName)}`);
+        expect(link).toHaveAttribute("href", `/projects?skills=${encodeURIComponent(skillName)}`);
       });
     });
   });

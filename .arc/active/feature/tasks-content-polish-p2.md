@@ -325,12 +325,21 @@ skills logo system with project filtering.
         - Updated docstring and test to reflect new URL structure
         - Single skill in URL (entry point), user can add more via popover
 
-    - [ ] **4.8.b Manual testing of full flow**
+    - [x] **4.8.b Manual testing of full flow**
         - Click skill logo on Home → filtered Projects view with that skill
         - Click skill logo on Skills page → filtered Projects view
         - Open filter popover → add/remove skills → results update
         - Clear filter → normal tabbed view restored with crossfade
         - Verify crossfade animation is smooth, respects reduced motion
+        - **Incidental fixes during testing:**
+            - Added `showInDefaultFilters` prop to Skill type for curated filter list
+            - Curated default set: 3+ skills per category (22 total)
+            - Filter shows curated skills + any externally-applied skills
+            - Fixed Crossfade layout shift with min-h-11 on both states
+            - Fixed FilterIndicator/ProjectTabs border alignment
+            - Fixed text-only skill links (`skill=` → `skills=`)
+            - Added missing tags: Git (5 projects), Playwright (2), Azure DevOps (1)
+            - Visual polish: ghost filter button, checkbox tokens, hover states
 
     - [ ] **4.8.c Run E2E tests for navigation and filtering flow**
 

@@ -83,7 +83,7 @@ export default function ProjectTabs() {
   };
 
   return (
-    <div role="tablist" aria-label="Project categories" className="mx-4 flex items-end gap-2 border-b border-border/50">
+    <div role="tablist" aria-label="Project categories" className="mx-4 flex min-h-11 items-end gap-2 border-b border-border/50">
       {TABS.map((tab) => (
         <button
           key={tab}

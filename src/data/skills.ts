@@ -11,23 +11,23 @@ import { Skills } from "@/types/skills";
 export const skills: Skills = {
   // Special row: Languages (displayed as centered hero, no card)
   Languages: [
-    { name: "TypeScript", featured: true, iconSlug: "typescript" },
+    { name: "TypeScript", featured: true, showInDefaultFilters: true, iconSlug: "typescript" },
     { name: "JavaScript", iconSlug: "javascript" },
-    { name: "Python", featured: true, iconSlug: "python" },
-    { name: "C#", featured: true, iconSlug: "csharp" },
-    { name: "C++", iconSlug: "cplusplus" },
+    { name: "Python", featured: true, showInDefaultFilters: true, iconSlug: "python" },
+    { name: "C#", featured: true, showInDefaultFilters: true, iconSlug: "csharp" },
+    { name: "C++", showInDefaultFilters: true, iconSlug: "cplusplus" },
     { name: "HTML", iconSlug: "html5" },
     { name: "CSS", iconSlug: "css" },
   ],
 
   // Row 1: Frontend + Backend
   Frontend: [
-    { name: "React", featured: true, iconSlug: "react" },
-    { name: "Next.js", featured: true, iconSlug: "nextdotjs" },
+    { name: "React", featured: true, showInDefaultFilters: true, iconSlug: "react" },
+    { name: "Next.js", featured: true, showInDefaultFilters: true, iconSlug: "nextdotjs" },
     { name: "TanStack Query", iconSlug: "reactquery" },
     { name: "Shadcn/ui", iconSlug: "shadcnui" },
     { name: "Chakra UI", iconSlug: "chakraui" },
-    { name: "Blazor", featured: true, iconSlug: "blazor" },
+    { name: "Blazor", featured: true, showInDefaultFilters: true, iconSlug: "blazor" },
     { name: "WPF" },
     { name: "MudBlazor" },
     { name: "Bootstrap" },
@@ -37,9 +37,9 @@ export const skills: Skills = {
   ],
 
   Backend: [
-    { name: "Django", featured: true, iconSlug: "django" },
-    { name: ".NET", featured: true, iconSlug: "dotnet" },
-    { name: "Node.js", iconSlug: "nodedotjs" },
+    { name: "Django", featured: true, showInDefaultFilters: true, iconSlug: "django" },
+    { name: ".NET", featured: true, showInDefaultFilters: true, iconSlug: "dotnet" },
+    { name: "Node.js", showInDefaultFilters: true, iconSlug: "nodedotjs" },
     { name: "Express.js", iconSlug: "express" },
     { name: "Pydantic", iconSlug: "pydantic" },
     { name: "Dapper" },
@@ -50,39 +50,39 @@ export const skills: Skills = {
 
   // Row 2: Databases + DevOps
   Databases: [
-    { name: "PostgreSQL", iconSlug: "postgresql" },
-    { name: "MongoDB", iconSlug: "mongodb" },
+    { name: "PostgreSQL", showInDefaultFilters: true, iconSlug: "postgresql" },
+    { name: "MongoDB", showInDefaultFilters: true, iconSlug: "mongodb" },
     { name: "Redis", iconSlug: "redis" },
-    { name: "SQL Server" },
+    { name: "SQL Server", showInDefaultFilters: true },
   ],
 
   "DevOps & Infrastructure": [
     { name: "Git", iconSlug: "git" },
-    { name: "Docker", iconSlug: "docker" },
+    { name: "Docker", showInDefaultFilters: true, iconSlug: "docker" },
     { name: "Vite", iconSlug: "vite" },
-    { name: "Vercel", iconSlug: "vercel" },
+    { name: "Vercel", showInDefaultFilters: true, iconSlug: "vercel" },
     { name: "Caddy", iconSlug: "caddy" },
-    { name: "GitHub Actions", iconSlug: "githubactions" },
+    { name: "GitHub Actions", showInDefaultFilters: true, iconSlug: "githubactions" },
     { name: "Azure DevOps" },
   ],
 
   // Row 3: AI + Testing
   "AI-Assisted Development": [
-    { name: "Claude Code", featured: true, iconSlug: "claude" },
-    { name: "Codex CLI", featured: true, iconSlug: "openai" },
-    { name: "Gemini CLI", iconSlug: "googlegemini" },
+    { name: "Claude Code", featured: true, showInDefaultFilters: true, iconSlug: "claude" },
+    { name: "Codex CLI", featured: true, showInDefaultFilters: true, iconSlug: "openai" },
+    { name: "Gemini CLI", showInDefaultFilters: true, iconSlug: "googlegemini" },
     { name: "Warp", iconSlug: "warp" },
     { name: "GitHub Copilot", iconSlug: "githubcopilot" },
     { name: "CodeRabbit" },
   ],
 
   "Testing & Quality": [
-    { name: "Vitest", iconSlug: "vitest" },
+    { name: "Vitest", showInDefaultFilters: true, iconSlug: "vitest" },
     { name: "React Testing Library", iconSlug: "testinglibrary" },
-    { name: "Pytest", iconSlug: "pytest" },
+    { name: "Pytest", showInDefaultFilters: true, iconSlug: "pytest" },
     { name: "Postman", iconSlug: "postman" },
     { name: "Swagger", iconSlug: "swagger" },
-    { name: "Playwright" },
+    { name: "Playwright", showInDefaultFilters: true },
   ],
 
   // Excluded from display (filtered in SkillsSection)

@@ -81,13 +81,14 @@ export default function SkillFilterPopover({
     return () => document.removeEventListener("pointerdown", handlePointerDown, { capture: true });
   }, [open]);
 
-  // Build categorized skills with project counts, filtering to only those with icons and projects
+  // Build categorized skills with project counts
+  // Show skills that are: (curated for default filters OR currently selected) AND have matching projects
   const categorizedSkills = useMemo(() => {
     const result: Record<string, Array<{ name: string; count: number }>> = {};
 
     for (const category of DISPLAY_CATEGORIES) {
       const categorySkills = skillsData[category]
-        .filter((skill) => skill.iconSlug) // Only skills with icons
+        .filter((skill) => skill.showInDefaultFilters || selectedSkills.includes(skill.name))
         .map((skill) => ({
           name: skill.name,
           count: getProjectCountForSkill(allProjects, skill.name),
@@ -100,7 +101,7 @@ export default function SkillFilterPopover({
     }
 
     return result;
-  }, [allProjects]);
+  }, [allProjects, selectedSkills]);
 
   // Handle skill toggle
   const handleSkillToggle = (skillName: string) => {
@@ -116,16 +117,12 @@ export default function SkillFilterPopover({
     onSkillsChange([]);
   };
 
-  // Format trigger button text
-  const triggerText =
-    selectedSkills.length > 0 ? `Filter (${selectedSkills.length})` : "Filter";
-
   return (
     <Popover open={open} onOpenChange={setOpen} modal={true}>
       <PopoverTrigger asChild>
-        <Button ref={triggerRef} variant="outline" size="sm" aria-haspopup="dialog">
+        <Button ref={triggerRef} variant="ghost" size="sm" aria-haspopup="dialog">
           <FilterIcon className="size-4" />
-          {triggerText}
+          Filter{selectedSkills.length > 0 && ` (${selectedSkills.length})`}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72 p-0" align="end">
@@ -153,11 +150,11 @@ export default function SkillFilterPopover({
                         aria-checked={isSelected}
                         className={`flex size-4 shrink-0 items-center justify-center rounded-sm border-2 ${
                           isSelected
-                            ? "border-primary bg-primary text-primary-foreground"
+                            ? "border-secondary bg-secondary text-secondary-foreground"
                             : "border-border-strong"
                         }`}
                       >
-                        {isSelected && <CheckIcon className="size-3" />}
+                        {isSelected && <CheckIcon className="size-3 text-secondary-foreground" />}
                       </div>
                       <span className="flex-1">{skill.name}</span>
                       <span className="text-muted-foreground text-xs">({skill.count})</span>

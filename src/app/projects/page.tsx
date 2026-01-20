@@ -89,11 +89,11 @@ function ProjectsContent() {
     <PageLayout
       pageId="projects"
       header={
-        <PageHeader title="Projects" hideDivider={FEATURES.SHOW_PROJECT_TABS && !isFiltered}>
+        <PageHeader title="Projects" hideDivider={FEATURES.SHOW_PROJECT_TABS}>
           {FEATURES.SHOW_PROJECT_TABS && (
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-end justify-between gap-4">
               {/* Left side: Tabs or Filter Indicator (with Crossfade) */}
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 min-h-11">
                 <Crossfade
                   active={isFiltered}
                   activeContent={

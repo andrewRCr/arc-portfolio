@@ -27,11 +27,13 @@ export type SkillCategory =
  * @property name - Display name of the skill/technology
  * @property featured - If true, skill appears in Home page featured row
  * @property iconSlug - Identifier for simple-icons package (e.g., "typescript", "react")
+ * @property showInDefaultFilters - If true, skill appears in Projects filter popover by default
  */
 export interface Skill {
   name: string;
   featured?: boolean;
   iconSlug?: string;
+  showInDefaultFilters?: boolean;
 }
 
 /**
