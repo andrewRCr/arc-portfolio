@@ -27,7 +27,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
     <Link
       href={detailUrl}
       data-testid="project-card"
-      className="group block overflow-hidden rounded-lg border border-border bg-background/80 transition-colors hover:border-secondary/60"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border-strong transition-colors hover:border-secondary/60"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
@@ -46,8 +46,8 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         )}
       </div>
 
-      {/* Content */}
-      <div className="p-4 bg-background/80">
+      {/* Content - flex-1 fills remaining height */}
+      <div className="flex flex-1 flex-col bg-background/80 p-4">
         {/* Category/Game Badge (prominent, first) */}
         <div className="mb-2 flex flex-wrap gap-1.5">
           {categoryType === "mods" && project.game ? (
@@ -76,8 +76,8 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         {/* Short Description */}
         <p className="mb-3 text-sm text-muted-foreground">{project.shortDescription}</p>
 
-        {/* Tech Stack Tags (secondary) */}
-        <div className="flex flex-wrap gap-1.5">
+        {/* Tech Stack Tags (secondary) - pushed to bottom with mt-auto */}
+        <div className="mt-auto flex flex-wrap gap-1.5">
           {displayedTechStack.map((tech) => (
             <span
               key={tech}

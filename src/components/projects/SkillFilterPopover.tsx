@@ -12,14 +12,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FilterIcon, CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { skills as skillsData } from "@/data/skills";
 import { SkillCategory } from "@/types/skills";
 import { Project } from "@/types/project";
@@ -46,16 +39,10 @@ const DISPLAY_CATEGORIES: SkillCategory[] = [
  */
 function getProjectCountForSkill(projects: Project[], skillName: string): number {
   const normalizedSkill = skillName.toLowerCase();
-  return projects.filter((project) =>
-    project.tags.some((tag) => tag.toLowerCase() === normalizedSkill)
-  ).length;
+  return projects.filter((project) => project.tags.some((tag) => tag.toLowerCase() === normalizedSkill)).length;
 }
 
-export default function SkillFilterPopover({
-  allProjects,
-  selectedSkills,
-  onSkillsChange,
-}: SkillFilterPopoverProps) {
+export default function SkillFilterPopover({ allProjects, selectedSkills, onSkillsChange }: SkillFilterPopoverProps) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -127,11 +114,7 @@ export default function SkillFilterPopover({
       </PopoverTrigger>
       <PopoverContent className="w-72 p-0" align="end">
         <Command shouldFilter={true}>
-          <CommandInput
-            placeholder="Search skills..."
-            value={searchQuery}
-            onValueChange={setSearchQuery}
-          />
+          <CommandInput placeholder="Search skills..." value={searchQuery} onValueChange={setSearchQuery} />
           <CommandList>
             <CommandEmpty>No skills found</CommandEmpty>
             {Object.entries(categorizedSkills).map(([category, skills]) => (
@@ -157,7 +140,7 @@ export default function SkillFilterPopover({
                         {isSelected && <CheckIcon className="size-3 text-secondary-foreground" />}
                       </div>
                       <span className="flex-1">{skill.name}</span>
-                      <span className="text-muted-foreground text-xs">({skill.count})</span>
+                      <span className="text-xs opacity-60">({skill.count})</span>
                     </CommandItem>
                   );
                 })}
@@ -165,13 +148,8 @@ export default function SkillFilterPopover({
             ))}
           </CommandList>
           {selectedSkills.length > 0 && (
-            <div className="border-t p-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full"
-                onClick={handleClearAll}
-              >
+            <div className="flex justify-center border-t p-2">
+              <Button variant="ghost" size="sm" onClick={handleClearAll}>
                 Clear all
               </Button>
             </div>

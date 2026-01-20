@@ -15,19 +15,15 @@ interface FilterIndicatorProps {
   onClearAll: () => void;
 }
 
-export default function FilterIndicator({
-  skills,
-  onRemoveSkill,
-  onClearAll,
-}: FilterIndicatorProps) {
+export default function FilterIndicator({ skills, onRemoveSkill, onClearAll }: FilterIndicatorProps) {
   // Don't render anything if no skills selected
   if (skills.length === 0) {
     return null;
   }
 
   return (
-    <div className="mx-4 flex min-h-11 flex-wrap items-end gap-2 border-b border-border/50 pb-2">
-      <span className="text-muted-foreground text-sm">Filtering by:</span>
+    <div className="mx-7 flex min-h-11 flex-wrap items-end gap-2 border-b border-border/50 pb-2">
+      <span className="text-muted-foreground text-sm pb-0.5">Filtering by:</span>
       {skills.map((skill) => (
         <Badge key={skill} variant="secondary" className="gap-1 pr-1">
           {skill}
