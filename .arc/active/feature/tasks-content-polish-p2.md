@@ -318,7 +318,7 @@ skills logo system with project filtering.
 
     - [x] **4.7.e Run quality gates - type check and lint pass**
 
-- [ ] **4.8 Connect skill logos to filtered view (entry points)**
+- [x] **4.8 Connect skill logos to filtered view (entry points)**
 
     - [x] **4.8.a Update `SkillLogoGrid` links**
         - Changed link from `?skill=` to `?skills=` to match filtering URL format
@@ -341,29 +341,39 @@ skills logo system with project filtering.
             - Added missing tags: Git (5 projects), Playwright (2), Azure DevOps (1)
             - Visual polish: ghost filter button, checkbox tokens, hover states
 
-    - [ ] **4.8.c Run E2E tests for navigation and filtering flow**
+    - [x] **4.8.c Run E2E tests for navigation and filtering flow**
+        - Fixed smoke test: scoped nav link assertions to `mainNav` (SkillLogoGrid links now match "PROJECTS")
+        - Updated visual regression baselines for styling changes
+        - 199 E2E tests pass
 
-    - [ ] **4.8.d Run full quality gates**
+    - [x] **4.8.d Run full quality gates**
+        - Type check, lint, format, markdown lint, build all pass
+        - 1081 unit tests pass
 
 - [ ] **4.9 Visual polish for filtering controls**
 
-    - [ ] **4.9.a Review FilterIndicator styling**
-        - Check badge sizing, spacing, dismiss button visibility
-        - Verify alignment with Filter button on right
-        - Test mobile responsiveness (wrapping behavior)
+    - [x] **4.9.a Review FilterIndicator styling**
+        - Done incidentally during 4.8.b manual testing
+        - Badge sizing, spacing, dismiss button all verified
+        - Alignment with Filter button confirmed
 
-    - [ ] **4.9.b Review SkillFilterPopover styling**
-        - Verify popover width and max-height on mobile
-        - Check category heading visibility and spacing
-        - Confirm search input styling matches design system
-        - Test skill counts readability
+    - [x] **4.9.b Review SkillFilterPopover styling**
+        - Done incidentally during 4.8.b manual testing
+        - Fixed ghost button hover opacity in dark mode (global button.tsx fix)
+        - Fixed skill count readability on hover (uses opacity-60 instead of text-muted-foreground)
+        - Centered Clear all button in popover
 
-    - [ ] **4.9.c Verify Crossfade transition smoothness**
-        - Test transition between tabs and FilterIndicator states
-        - Verify no layout shift during transition
-        - Check reduced motion behavior works correctly
+    - [x] **4.9.c Verify Crossfade transition smoothness**
+        - Done incidentally during 4.8.b manual testing
+        - No layout shift (min-h-11 on both states)
+        - Reduced motion behavior verified
 
-    - [ ] **4.9.d Run quality gates**
+    - [ ] **4.9.d Mobile adaptation for filter controls**
+        - Filter controls need responsive layout for mobile
+        - Consider: wrapping to new row, or hiding filter (desktop-only feature)
+        - Test on mobile viewports
+
+    - [ ] **4.9.e Run quality gates**
 
 ### **Phase 5:** Contact Form Implementation
 
