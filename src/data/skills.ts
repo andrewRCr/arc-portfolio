@@ -31,7 +31,7 @@ export const skills: Skills = {
     { name: "WPF" },
     { name: "MudBlazor" },
     { name: "Bootstrap" },
-    // { name: "Framer Motion", iconSlug: "framer" }, // Planned - in development
+    { name: "Framer Motion", iconSlug: "framer" }, // Used in arc-portfolio; remove if startup animation not implemented
     // { name: "React Hook Form" }, // Planned - in development
     // { name: "Zod" }, // Planned - in development
   ],
@@ -52,7 +52,6 @@ export const skills: Skills = {
   Databases: [
     { name: "PostgreSQL", iconSlug: "postgresql" },
     { name: "MongoDB", iconSlug: "mongodb" },
-    { name: "SQLite", iconSlug: "sqlite" },
     { name: "Redis", iconSlug: "redis" },
     { name: "SQL Server" },
   ],
