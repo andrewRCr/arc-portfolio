@@ -369,11 +369,63 @@ skills logo system with project filtering.
         - Reduced motion behavior verified
 
     - [ ] **4.9.d Mobile adaptation for filter controls**
-        - Filter controls need responsive layout for mobile
-        - Consider: wrapping to new row, or hiding filter (desktop-only feature)
-        - Test on mobile viewports
 
-    - [ ] **4.9.e Run quality gates**
+        - [x] **4.9.d.1 Extract MobileDrawer component from ThemeControlDrawer**
+            - Created `src/components/ui/MobileDrawer.tsx`
+            - Window-aligned positioning using DEFAULT_LAYOUT_TOKENS
+            - Standard header with title and 44px touch-target close button
+            - Children slot for drawer body content
+
+        - [x] **4.9.d.2 Refactor ThemeControlDrawer to use MobileDrawer**
+            - Replaced Sheet/SheetContent with MobileDrawer wrapper
+            - All 21 ThemeControlDrawer tests pass
+            - Removed unused imports (X icon, Sheet components, DEFAULT_LAYOUT_TOKENS)
+
+        - [ ] **4.9.d.3 Write tests for MobileDrawer**
+            - Test: renders trigger and opens drawer on click
+            - Test: displays title and close button in header
+            - Test: close button closes drawer
+            - Test: renders children content
+            - Test: accessibility (no violations)
+
+        - [ ] **4.9.d.4 Write tests for SkillFilterDrawer (TDD)**
+            - Test: renders trigger button with filter icon
+            - Test: opens drawer on trigger click
+            - Test: displays categorized skill list
+            - Test: toggles skill selection on click
+            - Test: Clear all button clears selection
+            - Test: calls onSkillsChange with updated selection
+            - Test: touch targets meet 44px minimum
+
+        - [ ] **4.9.d.5 Implement SkillFilterDrawer**
+            - Bottom sheet using MobileDrawer
+            - Search input, categorized skill list, Clear all
+            - 44px touch targets on all interactive elements
+            - Create in `src/components/projects/SkillFilterDrawer.tsx`
+
+        - [ ] **4.9.d.6 Create SkillFilterControl wrapper with ResponsiveSwitch**
+            - Mobile: renders SkillFilterDrawer
+            - Desktop: renders SkillFilterPopover
+            - Shared props passed to both variants
+            - Update Projects page to use SkillFilterControl
+            - Note: thin wrapper, minimal tests needed (integration covered by E2E)
+
+        - [ ] **4.9.d.7 Update FilterIndicator touch targets for mobile**
+            - Badge dismiss buttons need 44px touch targets
+            - Verify layout wrapping on narrow viewports
+
+        - [ ] **4.9.d.8 Update Projects page layout for mobile filter row**
+            - Filter control wraps below tabs on mobile
+            - Tabs and filter on separate rows at mobile breakpoint
+
+        - [ ] **4.9.d.9 Manual testing on mobile viewports**
+            - Test drawer open/close, skill selection, clear all
+            - Verify touch targets meet 44px minimum
+            - Test FilterIndicator badge interactions
+
+        - [ ] **4.9.d.10 Run quality gates**
+
+    - [ ] **4.9.e Run full quality gates (phase complete)**
 
 ### **Phase 5:** Contact Form Implementation
 
