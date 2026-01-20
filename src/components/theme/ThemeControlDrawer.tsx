@@ -75,13 +75,7 @@ export function ThemeControlDrawer() {
   return (
     <>
       <ScreenReaderAnnounce message={announcement} />
-      <MobileDrawer
-        open={open}
-        onOpenChange={setOpen}
-        trigger={trigger}
-        title="Theme"
-        aria-describedby={undefined}
-      >
+      <MobileDrawer open={open} onOpenChange={setOpen} trigger={trigger} title="Theme" aria-describedby={undefined}>
         {/* Theme Selector */}
         <div className="flex justify-center">
           <ThemeSelector selectedTheme={activeTheme} onSelect={setActiveTheme} className="w-fit" />
