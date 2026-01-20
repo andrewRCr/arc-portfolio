@@ -350,7 +350,7 @@ skills logo system with project filtering.
         - Type check, lint, format, markdown lint, build all pass
         - 1081 unit tests pass
 
-- [ ] **4.9 Visual polish for filtering controls**
+- [x] **4.9 Visual polish for filtering controls**
 
     - [x] **4.9.a Review FilterIndicator styling**
         - Done incidentally during 4.8.b manual testing
@@ -368,7 +368,7 @@ skills logo system with project filtering.
         - No layout shift (min-h-11 on both states)
         - Reduced motion behavior verified
 
-    - [ ] **4.9.d Mobile adaptation for filter controls**
+    - [x] **4.9.d Mobile adaptation for filter controls**
 
         - [x] **4.9.d.1 Extract MobileDrawer component from ThemeControlDrawer**
             - Created `src/components/ui/MobileDrawer.tsx`
@@ -381,51 +381,50 @@ skills logo system with project filtering.
             - All 21 ThemeControlDrawer tests pass
             - Removed unused imports (X icon, Sheet components, DEFAULT_LAYOUT_TOKENS)
 
-        - [ ] **4.9.d.3 Write tests for MobileDrawer**
-            - Test: renders trigger and opens drawer on click
-            - Test: displays title and close button in header
-            - Test: close button closes drawer
-            - Test: renders children content
-            - Test: accessibility (no violations)
+        - [x] **4.9.d.3 Write tests for MobileDrawer**
+            - Created `src/components/ui/__tests__/MobileDrawer.test.tsx`
+            - 12 tests: rendering, close behavior, touch targets, accessibility
+            - All tests pass
 
-        - [ ] **4.9.d.4 Write tests for SkillFilterDrawer (TDD)**
-            - Test: renders trigger button with filter icon
-            - Test: opens drawer on trigger click
-            - Test: displays categorized skill list
-            - Test: toggles skill selection on click
-            - Test: Clear all button clears selection
-            - Test: calls onSkillsChange with updated selection
-            - Test: touch targets meet 44px minimum
+        - [x] **4.9.d.4 Write tests for SkillFilterDrawer (TDD)**
+            - Created `src/components/projects/__tests__/SkillFilterDrawer.test.tsx`
+            - 19 tests: trigger, drawer opening, categories, selection, clear all, close, touch targets, a11y
+            - Tests fail as expected (component not yet implemented)
 
-        - [ ] **4.9.d.5 Implement SkillFilterDrawer**
-            - Bottom sheet using MobileDrawer
-            - Search input, categorized skill list, Clear all
-            - 44px touch targets on all interactive elements
-            - Create in `src/components/projects/SkillFilterDrawer.tsx`
+        - [x] **4.9.d.5 Implement SkillFilterDrawer**
+            - Created `src/components/projects/SkillFilterDrawer.tsx`
+            - Uses MobileDrawer, categorized skill list, Clear all button
+            - 44px touch targets (min-h-11) on trigger, skill items, clear button
+            - All 20 tests pass
 
-        - [ ] **4.9.d.6 Create SkillFilterControl wrapper with ResponsiveSwitch**
-            - Mobile: renders SkillFilterDrawer
-            - Desktop: renders SkillFilterPopover
-            - Shared props passed to both variants
-            - Update Projects page to use SkillFilterControl
-            - Note: thin wrapper, minimal tests needed (integration covered by E2E)
+        - [x] **4.9.d.6 Create SkillFilterControl wrapper with ResponsiveSwitch**
+            - Created `src/components/projects/SkillFilterControl.tsx`
+            - Added `breakpoint` prop to ResponsiveSwitch (supports "sm" for phone-only)
+            - Uses `breakpoint="sm"`: phone gets drawer, tablet+ gets popover
+            - Updated Projects page to use SkillFilterControl
 
-        - [ ] **4.9.d.7 Update FilterIndicator touch targets for mobile**
-            - Badge dismiss buttons need 44px touch targets
-            - Verify layout wrapping on narrow viewports
+        - [x] **4.9.d.7 Update FilterIndicator touch targets for mobile**
+            - Badges now tappable to dismiss (entire badge is button, X is decorative)
+            - Badges grouped with Clear all so they wrap as a unit
+            - Clear all has 44px touch target on phone (`min-h-11 sm:min-h-0`)
 
-        - [ ] **4.9.d.8 Update Projects page layout for mobile filter row**
-            - Filter control wraps below tabs on mobile
-            - Tabs and filter on separate rows at mobile breakpoint
+        - [x] **4.9.d.8 Update Projects page layout for mobile filter row**
+            - Changed to flex-col on phone, flex-row on tablet+ (sm breakpoint)
+            - Filter button centered on phone, right-aligned on tablet+
 
-        - [ ] **4.9.d.9 Manual testing on mobile viewports**
-            - Test drawer open/close, skill selection, clear all
-            - Verify touch targets meet 44px minimum
-            - Test FilterIndicator badge interactions
+        - [x] **4.9.d.9 Manual testing on mobile viewports**
+            - SkillFilterDrawer: Command search, scroll shadows, OverlayScrollbars padding
+            - MobileDrawer: fillHeight prop, safe-area-inset-bottom for iOS
+            - FilterIndicator: compact badges, grouped wrapping behavior
+            - All touch targets verified
 
-        - [ ] **4.9.d.10 Run quality gates**
+        - [x] **4.9.d.10 Run quality gates and polish spacing**
+            - Fixed Projects page mobile content top padding (reduced via CSS override)
+            - Fixed ProjectTabs centering on mobile (inline-flex with border hugging tabs)
+            - All quality gates pass: type-check, lint, format, markdown, build, 1113 tests
 
-    - [ ] **4.9.e Run full quality gates (phase complete)**
+    - [x] **4.9.e Run full quality gates (phase complete)**
+        - All gates passed in 4.9.d.10
 
 ### **Phase 5:** Contact Form Implementation
 
