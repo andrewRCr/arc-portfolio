@@ -297,35 +297,26 @@ skills logo system with project filtering.
 
     - [x] **4.6.c Run tests - all 14 tests pass**
 
-- [ ] **4.7 Update Projects page layout and state**
+- [x] **4.7 Update Projects page layout and state**
 
-    - [ ] **4.7.a Write tests for Projects page filtered state**
-        - Test: Query param `?skills=React,TypeScript` triggers filtered mode
-        - Test: Filter popover visible in both normal and filtered states (right-aligned)
-        - Test: Normal state: tabs visible (left), filter button (right)
-        - Test: Filtered state: tabs hidden, filter indicator visible (left), filter button (right)
-        - Test: Crossfade transition between states
-        - Test: Filtered results use `filterProjectsBySkills()` across all project types
-        - Test: ARIA live region announces result count
-        - Expect tests to FAIL initially
+    - [x] **4.7.a Write tests for Projects page filtered state**
+        - Created `src/app/projects/__tests__/page-filtering.test.tsx`
+        - 17 tests: query param handling, header layout states, filtered results, ARIA live region, interactions
 
-    - [ ] **4.7.b Update Projects page header layout**
-        - Modify PageHeader children to support left/right content areas
-        - Normal: `[Tabs]` left, `[Filter Button]` right
-        - Filtered: `[FilterIndicator]` left, `[Filter Button]` right
-        - Wrap state-dependent content in Crossfade for smooth transition
-        - File: `src/app/projects/page.tsx`
+    - [x] **4.7.b Update Projects page header layout**
+        - Flex layout with Crossfade between Tabs (normal) and FilterIndicator (filtered)
+        - SkillFilterPopover always visible on right
+        - Updated `src/app/projects/page.tsx`
 
-    - [ ] **4.7.c Implement filtered state logic**
-        - Read `skills` query param (comma-separated): `?skills=React,TypeScript`
-        - When skills present: filter all projects+mods, hide tabs, show indicator
-        - Filter popover selections update URL (triggers re-filter)
-        - Clear all navigates to `/projects` (removes query param)
-        - Add ARIA live region for "Showing X projects"
+    - [x] **4.7.c Implement filtered state logic**
+        - Parses `?skills=React,TypeScript` query param
+        - Filters across all project types using `filterProjectsBySkills()`
+        - URL updates on skill selection/removal
+        - ARIA live region announces result count
 
-    - [ ] **4.7.d Run tests - should now PASS**
+    - [x] **4.7.d Run tests - all 27 Projects page tests pass**
 
-    - [ ] **4.7.e Run quality gates**
+    - [x] **4.7.e Run quality gates - type check and lint pass**
 
 - [ ] **4.8 Connect skill logos to filtered view (entry points)**
 
