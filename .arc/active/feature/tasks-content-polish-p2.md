@@ -282,20 +282,20 @@ skills logo system with project filtering.
 
     - [x] **4.5.c Run tests - all 13 tests pass**
 
-- [ ] **4.6 Create state-based crossfade utility**
+- [x] **4.6 Create state-based crossfade utility**
 
-    - [ ] **4.6.a Write tests for crossfade behavior**
-        - Test: Transition between two states with opacity animation
-        - Test: Respects prefers-reduced-motion
-        - Expect tests to FAIL initially
+    - [x] **4.6.a Write tests for Crossfade component**
+        - Created `src/components/ui/__tests__/Crossfade.test.tsx`
+        - 14 tests: content rendering, transition classes, reduced motion, layout, accessibility
 
-    - [ ] **4.6.b Implement crossfade component or hook**
-        - Simple CSS-based approach: both elements rendered, opacity toggled
-        - Or wrapper component managing enter/exit transitions
-        - Reuse patterns from existing `useDelayedShow` where applicable
-        - File: `src/components/ui/Crossfade.tsx` or `src/hooks/useCrossfade.ts`
+    - [x] **4.6.b Implement Crossfade component**
+        - Created `src/components/ui/Crossfade.tsx`
+        - State-driven opacity toggle with `active`, `activeContent`, `inactiveContent` props
+        - Visible content in flow, hidden content absolute (prevents layout shift)
+        - Includes motion-reduce:transition-none for accessibility
+        - Added docstring distinguishing from useDelayedShow (timer) and useHeaderCrossfade (scroll)
 
-    - [ ] **4.6.c Run tests - should now PASS**
+    - [x] **4.6.c Run tests - all 14 tests pass**
 
 - [ ] **4.7 Update Projects page layout and state**
 
