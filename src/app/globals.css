@@ -879,7 +879,14 @@ html[data-env-preview="false"] [data-window-container] {
   }
 }
 
-/* Projects listing - mobile */
+/* Projects listing - mobile: reduce content top padding (header provides sufficient spacing) */
+@media (max-width: 639px) {
+  [data-page="projects"] [data-overlayscrollbars-viewport] > div {
+    padding-top: 4px !important;
+  }
+}
+
+/* Projects listing - mobile (scrollbar) */
 [data-page="projects"] .os-scrollbar-vertical {
   padding-top: 30px;
 }
@@ -893,6 +900,12 @@ html[data-env-preview="false"] [data-window-container] {
   [data-page="project-detail"] .os-scrollbar-vertical {
     padding-top: 396px;
   }
+}
+
+/* Drawer scrollbars - inset from top/bottom edges */
+[data-drawer="skill-filter"] .os-scrollbar-vertical {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 /* ==========================================================================
