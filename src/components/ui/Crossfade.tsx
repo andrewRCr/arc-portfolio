@@ -25,12 +25,7 @@ interface CrossfadeProps {
   className?: string;
 }
 
-export default function Crossfade({
-  active,
-  activeContent,
-  inactiveContent,
-  className,
-}: CrossfadeProps) {
+export default function Crossfade({ active, activeContent, inactiveContent, className }: CrossfadeProps) {
   return (
     <div className={cn("relative", className)}>
       {/* Active content - in flow when visible, absolute when hidden */}

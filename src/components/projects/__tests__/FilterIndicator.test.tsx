@@ -42,12 +42,7 @@ describe("FilterIndicator", () => {
     });
 
     it("renders multiple badges when many skills selected", () => {
-      render(
-        <FilterIndicator
-          {...defaultProps}
-          skills={["React", "TypeScript", "Python", "Django"]}
-        />
-      );
+      render(<FilterIndicator {...defaultProps} skills={["React", "TypeScript", "Python", "Django"]} />);
 
       expect(screen.getByText("React")).toBeInTheDocument();
       expect(screen.getByText("TypeScript")).toBeInTheDocument();
@@ -147,9 +142,7 @@ describe("FilterIndicator", () => {
 
   describe("Empty State", () => {
     it("does not render when skills array is empty", () => {
-      const { container } = render(
-        <FilterIndicator {...defaultProps} skills={[]} />
-      );
+      const { container } = render(<FilterIndicator {...defaultProps} skills={[]} />);
 
       // Should not render anything
       expect(container.firstChild).toBeNull();

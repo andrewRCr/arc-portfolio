@@ -180,9 +180,7 @@ describe("Projects Page - Skill Filtering", () => {
       await user.click(dismissButton);
 
       // Should update URL to remove React
-      expect(mockNavigation.push).toHaveBeenCalledWith(
-        expect.stringContaining("skills=TypeScript")
-      );
+      expect(mockNavigation.push).toHaveBeenCalledWith(expect.stringContaining("skills=TypeScript"));
     });
 
     it("clears all filters and returns to normal mode", async () => {

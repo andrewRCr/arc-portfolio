@@ -81,9 +81,7 @@ describe("SkillFilterPopover", () => {
     });
 
     it("shows filter count when skills are selected", () => {
-      render(
-        <SkillFilterPopover {...defaultProps} selectedSkills={["React", "TypeScript", "Python"]} />
-      );
+      render(<SkillFilterPopover {...defaultProps} selectedSkills={["React", "TypeScript", "Python"]} />);
 
       const trigger = screen.getByRole("button", { name: /filter/i });
       expect(trigger).toHaveTextContent("Filter (3)");
@@ -192,13 +190,7 @@ describe("SkillFilterPopover", () => {
     it("removes skill from selection when already selected", async () => {
       const onSkillsChange = vi.fn();
       const user = userEvent.setup();
-      render(
-        <SkillFilterPopover
-          {...defaultProps}
-          selectedSkills={["React"]}
-          onSkillsChange={onSkillsChange}
-        />
-      );
+      render(<SkillFilterPopover {...defaultProps} selectedSkills={["React"]} onSkillsChange={onSkillsChange} />);
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
@@ -212,13 +204,7 @@ describe("SkillFilterPopover", () => {
     it("adds to existing selection when selecting additional skill", async () => {
       const onSkillsChange = vi.fn();
       const user = userEvent.setup();
-      render(
-        <SkillFilterPopover
-          {...defaultProps}
-          selectedSkills={["React"]}
-          onSkillsChange={onSkillsChange}
-        />
-      );
+      render(<SkillFilterPopover {...defaultProps} selectedSkills={["React"]} onSkillsChange={onSkillsChange} />);
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
@@ -350,11 +336,7 @@ describe("SkillFilterPopover", () => {
       const onSkillsChange = vi.fn();
       const user = userEvent.setup();
       render(
-        <SkillFilterPopover
-          {...defaultProps}
-          selectedSkills={["React", "Python"]}
-          onSkillsChange={onSkillsChange}
-        />
+        <SkillFilterPopover {...defaultProps} selectedSkills={["React", "Python"]} onSkillsChange={onSkillsChange} />
       );
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
