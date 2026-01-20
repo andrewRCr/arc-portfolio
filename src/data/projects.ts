@@ -258,7 +258,6 @@ export const projects: Project[] = [
       "C#",
       "HTML",
       "CSS",
-      "JavaScript",
       "Blazor",
       "WPF",
       "SQL Server",

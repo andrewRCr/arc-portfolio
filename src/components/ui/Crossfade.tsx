@@ -37,7 +37,7 @@ export default function Crossfade({
       <div
         className={cn(
           "transition-opacity duration-200 motion-reduce:transition-none",
-          active ? "opacity-100" : "opacity-0 absolute inset-0"
+          active ? "opacity-100" : "pointer-events-none absolute inset-0 opacity-0"
         )}
         aria-hidden={!active}
       >
@@ -48,7 +48,7 @@ export default function Crossfade({
       <div
         className={cn(
           "transition-opacity duration-200 motion-reduce:transition-none",
-          active ? "opacity-0 absolute inset-0" : "opacity-100"
+          active ? "pointer-events-none absolute inset-0 opacity-0" : "opacity-100"
         )}
         aria-hidden={active}
       >

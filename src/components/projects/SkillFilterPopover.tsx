@@ -8,7 +8,7 @@
  * icons and matching projects.
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FilterIcon, CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -58,6 +58,28 @@ export default function SkillFilterPopover({
 }: SkillFilterPopoverProps) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // Workaround for Radix bug #2782: after interacting inside a Popover,
+  // the first outside click is swallowed. This listener ensures single-click close.
+  // See: https://github.com/radix-ui/primitives/issues/2782
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      const target = e.target as Element;
+      const popoverContent = document.querySelector('[data-slot="popover-content"]');
+      const isInsideTrigger = triggerRef.current?.contains(target);
+      const isInsideContent = popoverContent?.contains(target);
+
+      if (!isInsideTrigger && !isInsideContent) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown, { capture: true });
+    return () => document.removeEventListener("pointerdown", handlePointerDown, { capture: true });
+  }, [open]);
 
   // Build categorized skills with project counts, filtering to only those with icons and projects
   const categorizedSkills = useMemo(() => {
@@ -99,9 +121,9 @@ export default function SkillFilterPopover({
     selectedSkills.length > 0 ? `Filter (${selectedSkills.length})` : "Filter";
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen} modal={true}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" aria-haspopup="dialog">
+        <Button ref={triggerRef} variant="outline" size="sm" aria-haspopup="dialog">
           <FilterIcon className="size-4" />
           {triggerText}
         </Button>
@@ -129,10 +151,10 @@ export default function SkillFilterPopover({
                       <div
                         role="checkbox"
                         aria-checked={isSelected}
-                        className={`flex size-4 shrink-0 items-center justify-center rounded-sm border ${
+                        className={`flex size-4 shrink-0 items-center justify-center rounded-sm border-2 ${
                           isSelected
                             ? "border-primary bg-primary text-primary-foreground"
-                            : "border-input"
+                            : "border-border-strong"
                         }`}
                       >
                         {isSelected && <CheckIcon className="size-3" />}

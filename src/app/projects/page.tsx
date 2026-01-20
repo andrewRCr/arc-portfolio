@@ -61,7 +61,9 @@ function ProjectsContent() {
     if (skills.length === 0) {
       router.push("/projects");
     } else {
-      router.push(`/projects?skills=${skills.join(",")}`);
+      // Encode each skill to handle special chars (C++, C#, etc.)
+      const encodedSkills = skills.map((s) => encodeURIComponent(s)).join(",");
+      router.push(`/projects?skills=${encodedSkills}`);
     }
   };
 
