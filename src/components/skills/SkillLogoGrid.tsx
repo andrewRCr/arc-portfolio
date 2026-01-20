@@ -26,7 +26,7 @@ interface SkillLogoGridProps {
   size?: SizeType;
   /** Gap between icons on mobile. Both use same tablet+ spacing. */
   gap?: GapType;
-  /** If true, wrap each logo in a link to /projects?skill=SkillName */
+  /** If true, wrap each logo in a link to /projects?skills=SkillName */
   linkToProjects?: boolean;
   /** Additional class names for the container */
   className?: string;
@@ -108,7 +108,7 @@ export function SkillLogoGrid({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href={`/projects?skill=${encodeURIComponent(skill.name)}`}
+                  href={`/projects?skills=${encodeURIComponent(skill.name)}`}
                   className="transition-opacity hover:opacity-80"
                   aria-label={`View projects using ${skill.name}`}
                 >

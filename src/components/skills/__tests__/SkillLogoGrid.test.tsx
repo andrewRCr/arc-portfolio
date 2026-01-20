@@ -131,9 +131,9 @@ describe("SkillLogoGrid", () => {
       render(<SkillLogoGrid skills={skillsWithIcons} linkToProjects={true} />);
 
       const links = screen.getAllByRole("link");
-      expect(links[0]).toHaveAttribute("href", "/projects?skill=TypeScript");
-      expect(links[1]).toHaveAttribute("href", "/projects?skill=React");
-      expect(links[2]).toHaveAttribute("href", "/projects?skill=Python");
+      expect(links[0]).toHaveAttribute("href", "/projects?skills=TypeScript");
+      expect(links[1]).toHaveAttribute("href", "/projects?skills=React");
+      expect(links[2]).toHaveAttribute("href", "/projects?skills=Python");
     });
 
     it("does not wrap logos in links when linkToProjects is false", () => {
