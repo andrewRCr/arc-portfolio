@@ -476,20 +476,25 @@ skills logo system with project filtering.
 
     - [x] **5.3.d Quality gates pass**
 
-- [ ] **5.4 Integrate form into Contact page**
+- [x] **5.4 Integrate form into Contact page**
 
-    - [ ] **5.4.a Update `ContactSection` component**
-        - Add `ContactForm` component
-        - Arrange with existing email/social links
-        - Determine email display format based on visual balance
+    - [x] **5.4.a Update `ContactSection` component**
+        - Added `ContactForm` import and integrated as primary contact method
+        - Two-column grid layout: form left, direct contact right (stacks on mobile)
+        - Email and social links preserved under "Or reach out directly" heading
 
-    - [ ] **5.4.b Manual testing**
-        - Submit form with valid data → verify email received
-        - Submit with invalid data → verify error states
-        - Test honeypot → verify silent rejection
-        - Rapid submissions → verify rate limiting
+    - [x] **5.4.b Manual testing**
+        - Verified form submission, validation states, honeypot, rate limiting
 
-    - [ ] **5.4.c Run E2E tests for contact flow**
+    - [x] **5.4.c Run E2E tests for contact flow**
+        - Updated visual regression baselines (contact page, rose-pine-dark-mobile)
+        - All 199 E2E tests pass
+
+    - [x] **5.4.d Visual polish**
+        - Desktop: Card layout with social links header, form body
+        - Mobile: Standalone layout with icon-only social links
+        - Email obfuscation via ObfuscatedMailtoButton (scraper protection)
+        - Consistent accent styling for social links, responsive form fields
 
 ### **Phase 6:** About Page Polish
 
