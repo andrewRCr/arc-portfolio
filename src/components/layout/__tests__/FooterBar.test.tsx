@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { checkA11y } from "@tests/test-utils";
 import { FooterBar } from "../FooterBar";
@@ -43,13 +43,16 @@ describe("FooterBar", () => {
       });
     });
 
-    it("renders Email link without target=_blank", () => {
+    it("renders Email link without target=_blank (after hydration)", async () => {
       render(<FooterBar />);
 
-      const emailLink = screen.getByRole("link", { name: /email/i });
-      expect(emailLink).toBeInTheDocument();
-      expect(emailLink).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
-      expect(emailLink).not.toHaveAttribute("target");
+      // Email link uses obfuscation - renders after hydration
+      await waitFor(() => {
+        const emailLink = screen.getByRole("link", { name: /email/i });
+        expect(emailLink).toBeInTheDocument();
+        expect(emailLink).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
+        expect(emailLink).not.toHaveAttribute("target");
+      });
     });
   });
 
