@@ -430,58 +430,51 @@ skills logo system with project filtering.
 
 **Purpose:** Build functional contact form with email delivery and spam protection.
 
-- [ ] **5.1 Environment setup**
+- [x] **5.1 Environment setup**
 
-    - [ ] **5.1.a Configure Zeptomail API key**
-        - Add `ZEPTOMAIL_API_KEY` to `.env.local` for development
-        - Document Vercel environment variable setup for production (defer actual Vercel config)
+    - [x] **5.1.a Configure Zeptomail API key**
+        - Added `ZEPTOMAIL_API_KEY` to `.env.local` (quotes required - key contains space)
+        - Updated `.env.example` with template and Vercel deployment note
 
-    - [ ] **5.1.b Install form dependencies**
-        - Run `npm install react-hook-form zod @hookform/resolvers`
-        - Verify installation
+    - [x] **5.1.b Install form dependencies**
+        - Installed react-hook-form ^7.71.1, zod ^4.3.5, @hookform/resolvers ^5.2.2
+        - Fixed pre-existing `tar` vulnerability via `npm audit fix`
 
-- [ ] **5.2 Create contact form component**
+- [x] **5.2 Create contact form component**
 
-    - [ ] **5.2.a Write tests for form validation**
-        - Test: Name required
-        - Test: Email required and valid format
-        - Test: Message required
-        - Test: Honeypot field rejection
-        - Expect tests to FAIL initially
+    - [x] **5.2.a Write tests for form validation (TDD)**
+        - 16 tests covering: rendering, required fields, email format, honeypot, submission, loading state, accessibility
+        - Tests written first per TDD protocol
 
-    - [ ] **5.2.b Implement `ContactForm` component**
-        - Create `src/components/contact/ContactForm.tsx`
-        - Use react-hook-form with zod schema validation
-        - Fields: name, email, message
-        - Hidden honeypot field
-        - Loading, success, error states
+    - [x] **5.2.b Implement `ContactForm` component**
+        - Created `src/components/contact/ContactForm.tsx`
+        - react-hook-form + zod v4 validation (required `noValidate` on form for jsdom compatibility)
+        - Fields: name, email, message + hidden honeypot
+        - States: idle, submitting, success, error
 
-    - [ ] **5.2.c Style form with TWM aesthetic**
-        - Monospace labels/hints where appropriate
-        - Styled inputs consistent with design system
-        - Clear but not overly decorative
+    - [x] **5.2.c Style form with TWM aesthetic**
+        - Monospace labels (`font-mono`) for TUI feel
+        - Theme-aware inputs: `border-input`, `focus:border-ring`
+        - Clean, minimal styling
 
-    - [ ] **5.2.d Run tests - should now PASS**
+    - [x] **5.2.d All 16 tests pass**
 
-- [ ] **5.3 Implement API route**
+- [x] **5.3 Implement API route**
 
-    - [ ] **5.3.a Write tests for API endpoint**
-        - Test: Valid submission returns success
-        - Test: Invalid data returns 400 with errors
-        - Test: Honeypot filled returns silent success (no email sent)
-        - Test: Rate limiting blocks rapid submissions
-        - Expect tests to FAIL initially
+    - [x] **5.3.a Write tests for API endpoint (TDD)**
+        - 14 tests covering: valid submission, validation errors, honeypot, rate limiting, email service errors
 
-    - [ ] **5.3.b Create `/api/contact` route**
-        - Create `src/app/api/contact/route.ts`
-        - Server-side validation with zod
-        - Honeypot check (reject silently if filled)
-        - Rate limiting (simple in-memory counter or Vercel KV)
-        - Zeptomail API call for email delivery
+    - [x] **5.3.b Create `/api/contact` route**
+        - Created `src/app/api/contact/route.ts`
+        - Server-side zod validation (same schema as client)
+        - Honeypot check (silent success, no email)
+        - Vercel KV rate limiting (5 req/min per IP) with in-memory fallback for local dev
+        - Zeptomail API integration with HTML/text email
+        - Added KV database setup to `BACKLOG-TECHNICAL.md` (deployment prerequisite)
 
-    - [ ] **5.3.c Run tests - should now PASS**
+    - [x] **5.3.c All 14 tests pass**
 
-    - [ ] **5.3.d Run quality gates**
+    - [x] **5.3.d Quality gates pass**
 
 - [ ] **5.4 Integrate form into Contact page**
 

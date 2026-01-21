@@ -10,7 +10,25 @@ create a PRD/plan in `.arc/active/technical/` and begin the standard workflow.
 
 ## High Priority
 
-*No high priority items currently.*
+### Vercel KV Database Setup (Deployment Prerequisite)
+
+**Trigger:** During initial Vercel deployment
+
+**Context:** Contact form rate limiting uses Vercel KV for distributed state across serverless functions.
+Code is implemented in `src/app/api/contact/route.ts` with graceful fallback to in-memory for local dev.
+
+**Required setup:**
+
+1. Create KV database in Vercel dashboard (Project Settings → Storage → Create Database → KV)
+2. Link to project (automatically adds `KV_REST_API_URL` and `KV_REST_API_TOKEN` env vars)
+3. Verify rate limiting works in production (submit 6+ rapid requests, expect 429 on 6th)
+
+**Cost:** Free tier includes 30K requests/month - more than sufficient for portfolio traffic.
+
+**Why tracked:** Serverless functions are stateless; in-memory rate limiting doesn't persist across
+invocations. KV provides distributed state that actually works in production.
+
+**Origin:** Contact form implementation - Task 5.3 - `tasks-content-polish-p2.md` (2026-01-21)
 
 ---
 
