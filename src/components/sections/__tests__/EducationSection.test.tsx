@@ -3,76 +3,13 @@ import { describe, it, expect } from "vitest";
 import { EducationSection } from "../EducationSection";
 import { education } from "@/data/education";
 
-describe("EducationSection - Behavior Tests", () => {
-  describe("Degree Rendering", () => {
-    it("renders all degrees", () => {
-      render(<EducationSection />);
-
-      // Verify both degrees are present
-      expect(screen.getByText(/Bachelor of Science/i)).toBeInTheDocument();
-      expect(screen.getByText(/Bachelor of Arts/i)).toBeInTheDocument();
-    });
-
-    it("renders majors for each degree", () => {
-      render(<EducationSection />);
-
-      expect(screen.getByText(/Computer Science/i)).toBeInTheDocument();
-      expect(screen.getByText(/Psychology/i)).toBeInTheDocument();
-    });
-
-    it("renders institutions for each degree", () => {
-      render(<EducationSection />);
-
-      expect(screen.getByText(/Oregon State University/i)).toBeInTheDocument();
-      expect(screen.getByText(/The University of Texas at Dallas/i)).toBeInTheDocument();
-    });
-
-    it("renders all education entries", () => {
-      render(<EducationSection />);
-
-      // Each education entry should have a data-testid
-      education.forEach((edu) => {
-        expect(screen.getByTestId(`education-${edu.id}`)).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe("Optional Fields Rendering", () => {
-    it("renders locations when provided", () => {
-      render(<EducationSection />);
-
-      expect(screen.getByText(/Corvallis, Oregon/i)).toBeInTheDocument();
-      expect(screen.getByText(/Richardson, Texas/i)).toBeInTheDocument();
-    });
-
-    it("renders graduation dates when provided", () => {
-      render(<EducationSection />);
-
-      expect(screen.getByText(/2022/)).toBeInTheDocument();
-      expect(screen.getByText(/2011/)).toBeInTheDocument();
-    });
-
-    it("renders GPA when provided", () => {
-      render(<EducationSection />);
-
-      expect(screen.getByText(/3\.74/)).toBeInTheDocument();
-      expect(screen.getByText(/3\.3/)).toBeInTheDocument();
-    });
-  });
-
-  describe("Semantic HTML Structure", () => {
+describe("EducationSection", () => {
+  describe("Structure", () => {
     it("renders within a section element", () => {
       const { container } = render(<EducationSection />);
 
       const section = container.querySelector("section");
       expect(section).toBeInTheDocument();
-    });
-
-    it("uses list structure for education entries", () => {
-      const { container } = render(<EducationSection />);
-
-      const ul = container.querySelector("ul");
-      expect(ul).toBeInTheDocument();
     });
 
     it("has a main heading for the section", () => {
@@ -81,30 +18,80 @@ describe("EducationSection - Behavior Tests", () => {
       const mainHeading = screen.getByRole("heading", { level: 2, name: /education/i });
       expect(mainHeading).toBeInTheDocument();
     });
+
+    it("renders education entries in a grid container", () => {
+      const { container } = render(<EducationSection />);
+
+      const grid = container.querySelector(".grid");
+      expect(grid).toBeInTheDocument();
+    });
   });
 
-  describe("Data Integration", () => {
-    it("renders actual education data from data/education.ts", () => {
-      render(<EducationSection />);
+  describe("Data rendering", () => {
+    it("renders one EducationCard per education entry", () => {
+      const { container } = render(<EducationSection />);
 
-      // Verify specific data from education.ts
-      expect(screen.getByText(/Bachelor of Science/i)).toBeInTheDocument();
-      expect(screen.getByText(/Computer Science/i)).toBeInTheDocument();
-      expect(screen.getByText(/Oregon State University/i)).toBeInTheDocument();
-      expect(screen.getByText(/Bachelor of Arts/i)).toBeInTheDocument();
-      expect(screen.getByText(/Psychology/i)).toBeInTheDocument();
-      expect(screen.getByText(/The University of Texas at Dallas/i)).toBeInTheDocument();
+      // Each EducationCard has border-border-strong class
+      const cards = container.querySelectorAll(".border-border-strong");
+      expect(cards.length).toBe(education.length);
     });
 
-    it("preserves degree order from data structure", () => {
+    it("renders degree headings for each education entry", () => {
       render(<EducationSection />);
 
-      // Query by stable data-testid attributes derived from education IDs
-      const entries = education.map((edu) => screen.getByTestId(`education-${edu.id}`));
+      // EducationCard renders degrees as h3 headings
+      const degreeHeadings = screen.getAllByRole("heading", { level: 3 });
+      expect(degreeHeadings.length).toBe(education.length);
+    });
 
-      // Verify order matches data structure (most recent first)
-      expect(entries[0]).toHaveTextContent(/Computer Science/i);
-      expect(entries[1]).toHaveTextContent(/Psychology/i);
+    it("renders institution in header for each entry", () => {
+      render(<EducationSection />);
+
+      // Each education entry should have its institution rendered in heading
+      education.forEach((edu) => {
+        expect(screen.getByText(edu.institution)).toBeInTheDocument();
+      });
+    });
+
+    it("renders major and degree as separate badges for each entry", () => {
+      render(<EducationSection />);
+
+      // Each entry should have major (accent badge) and degree (secondary pill) separately
+      education.forEach((edu) => {
+        expect(screen.getByText(edu.major)).toBeInTheDocument();
+        expect(screen.getByText(edu.degree)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("Optional fields", () => {
+    it("renders location badges when provided", () => {
+      render(<EducationSection />);
+
+      const entriesWithLocation = education.filter((edu) => edu.location);
+      entriesWithLocation.forEach((edu) => {
+        expect(screen.getByText(edu.location!)).toBeInTheDocument();
+      });
+    });
+
+    it("renders graduation year badges when provided", () => {
+      render(<EducationSection />);
+
+      const entriesWithDate = education.filter((edu) => edu.graduationDate);
+      entriesWithDate.forEach((edu) => {
+        expect(screen.getByText(edu.graduationDate!)).toBeInTheDocument();
+      });
+    });
+
+    it("renders GPA badges when provided", () => {
+      render(<EducationSection />);
+
+      const entriesWithGpa = education.filter((edu) => edu.gpa);
+      entriesWithGpa.forEach((edu) => {
+        // GPA renders as "GPA: X.XX" (without /4.0)
+        const gpaValue = edu.gpa!.split("/")[0];
+        expect(screen.getByText(`GPA: ${gpaValue}`)).toBeInTheDocument();
+      });
     });
   });
 });
