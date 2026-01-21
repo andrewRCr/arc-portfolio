@@ -1,0 +1,201 @@
+/**
+ * POST /api/contact
+ *
+ * Handles contact form submissions with validation, honeypot protection,
+ * rate limiting, and email delivery via Zeptomail.
+ */
+
+import { NextResponse } from "next/server";
+import { z, ZodError } from "zod";
+import { kv } from "@vercel/kv";
+
+// Validation schema (matches client-side)
+const contactSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email"),
+  message: z.string().min(1, "Message is required"),
+  website: z.string().optional(), // Honeypot field
+});
+
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW_SECONDS = 60; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 5; // 5 requests per minute
+
+// In-memory fallback for local development (when Vercel KV is not configured)
+const localRateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+// Export for testing - allows resetting rate limiter between tests
+export function _resetRateLimiter() {
+  localRateLimitMap.clear();
+}
+
+/**
+ * Check rate limit using Vercel KV (production) or in-memory fallback (local dev)
+ * Returns true if request is allowed, false if rate limited
+ */
+async function checkRateLimit(ip: string): Promise<boolean> {
+  const key = `rate_limit:contact:${ip}`;
+
+  // Try Vercel KV first (production)
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    try {
+      const count = await kv.incr(key);
+
+      // Set expiry on first request in window
+      if (count === 1) {
+        await kv.expire(key, RATE_LIMIT_WINDOW_SECONDS);
+      }
+
+      return count <= RATE_LIMIT_MAX_REQUESTS;
+    } catch (error) {
+      console.error("[contact] Vercel KV error, falling back to in-memory:", error);
+      // Fall through to in-memory fallback
+    }
+  }
+
+  // In-memory fallback for local development or KV failures
+  const now = Date.now();
+  const record = localRateLimitMap.get(ip);
+
+  if (!record || now > record.resetTime) {
+    localRateLimitMap.set(ip, {
+      count: 1,
+      resetTime: now + RATE_LIMIT_WINDOW_SECONDS * 1000,
+    });
+    return true;
+  }
+
+  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+// Get client IP from request headers
+function getClientIP(request: Request): string {
+  // Try common headers used by proxies/Vercel
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0].trim();
+  }
+
+  const realIP = request.headers.get("x-real-ip");
+  if (realIP) {
+    return realIP;
+  }
+
+  // Fallback for local development
+  return "127.0.0.1";
+}
+
+export async function POST(request: Request) {
+  try {
+    // Get client IP for rate limiting
+    const clientIP = getClientIP(request);
+
+    // Check rate limit
+    const allowed = await checkRateLimit(clientIP);
+    if (!allowed) {
+      return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
+    }
+
+    // Parse request body
+    const body = await request.json();
+
+    // Validate with zod
+    const result = contactSchema.safeParse(body);
+
+    if (!result.success) {
+      // Convert zod errors to a simpler format
+      const errors: Record<string, string> = {};
+      for (const issue of result.error.issues) {
+        const path = issue.path.join(".");
+        if (!errors[path]) {
+          errors[path] = issue.message;
+        }
+      }
+      return NextResponse.json({ errors }, { status: 400 });
+    }
+
+    const { name, email, message, website } = result.data;
+
+    // Honeypot check - silently accept but don't send email
+    if (website) {
+      return NextResponse.json({ success: true });
+    }
+
+    // Send email via Zeptomail
+    const apiKey = process.env.ZEPTOMAIL_API_KEY;
+    if (!apiKey) {
+      console.error("[contact] ZEPTOMAIL_API_KEY not configured");
+      return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
+    }
+
+    const zeptomailResponse = await fetch("https://api.zeptomail.com/v1.1/email", {
+      method: "POST",
+      headers: {
+        Authorization: apiKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: {
+          address: "noreply@andrewrcr.dev",
+          name: "Portfolio Contact Form",
+        },
+        to: [
+          {
+            email_address: {
+              address: "andrew@andrewrcr.dev",
+              name: "Andrew Creekmore",
+            },
+          },
+        ],
+        subject: `Portfolio Contact: ${name}`,
+        htmlbody: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+          <p><strong>Message:</strong></p>
+          <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>
+        `,
+        textbody: `
+New Contact Form Submission
+
+Name: ${name}
+Email: ${email}
+
+Message:
+${message}
+        `.trim(),
+      }),
+    });
+
+    if (!zeptomailResponse.ok) {
+      const errorData = await zeptomailResponse.json().catch(() => ({}));
+      console.error("[contact] Zeptomail error:", errorData);
+      return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      // Should be caught by safeParse above, but handle just in case
+      return NextResponse.json({ error: "Invalid request data" }, { status: 400 });
+    }
+
+    console.error("[contact] Unexpected error:", error);
+    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+  }
+}
+
+// Helper to escape HTML to prevent XSS in email content
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
