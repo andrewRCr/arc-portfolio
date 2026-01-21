@@ -500,54 +500,56 @@ skills logo system with project filtering.
 
 **Purpose:** Improve About page visual presentation, add photo, revise copy.
 
-- [ ] **6.1 Create EducationCard component**
+- [x] **6.1 Create EducationCard component**
 
-    - [ ] **6.1.a Write tests for `EducationCard` component**
-        - Test: Renders degree in transparent header
-        - Test: Renders institution as high-emphasis badge
-        - Test: Renders location, year, GPA as smaller badges
-        - Expect tests to FAIL initially
+    - [x] **6.1.a Write tests for `EducationCard` component**
+        - 13 tests covering header, body, optional fields, card structure, monospace styling
 
-    - [ ] **6.1.b Implement `EducationCard` component**
-        - Create `src/components/about/EducationCard.tsx`
-        - Follow DetailCard pattern: transparent header, opaque body
-        - Header: Degree name (e.g., "Bachelor of Science in Computer Science")
-        - Body: Institution badge (high-emphasis), location/year/GPA badges (muted)
+    - [x] **6.1.b Implement `EducationCard` component**
+        - Created `src/components/about/EducationCard.tsx`
+        - Header (bg-card/80): Institution name (drops "The " prefix on phone)
+        - Body (bg-background/80): Major + degree type (joined, monospace, square corners)
+        - Major uses bg-secondary/80, degree uses bg-muted - creates "structured data" aesthetic
+        - Metadata badges (rounded): location, year, GPA (right-aligned)
 
-    - [ ] **6.1.c Run tests - should now PASS**
+    - [x] **6.1.c Run tests - all pass**
 
-    - [ ] **6.1.d Update `EducationSection` to use new component**
-        - Replace current education cards with `EducationCard`
-        - Layout: Side-by-side on desktop (2-column grid)
-        - Verify responsive behavior
+    - [x] **6.1.d Update `EducationSection` to use new component**
+        - 2-column grid on md+, stacked on mobile
 
-    - [ ] **6.1.e Run quality gates**
+    - [x] **6.1.e Visual iteration and quality gates**
+        - Extensive visual prototyping via `/dev/education-variants` test page
+        - Final design: joined major/degree with monospace font, square corners
+        - Phone responsive: stacked layout, abbreviated locations (state abbrevs), shorter institution names
+        - Added `src/lib/state-abbreviations.ts` utility
+        - Created permanent `/dev/sandbox` page for future visual prototyping
+        - All quality gates pass (type-check, lint, format, build, 1154 tests)
 
-- [ ] **6.2 Add professional photo**
+- [x] **6.2 Add professional photo**
 
-    - [ ] **6.2.a Add photo to public assets**
-        - Place photo in `public/` (e.g., `public/profile-photo.webp`)
-        - Ensure appropriate size/quality for web
+    - [x] **6.2.a Add photo to public assets**
+        - Added `public/profile-photo.jpg` (original 1.6MB)
+        - Optimized to `public/profile-photo.webp` (44KB, 600x800px)
 
-    - [ ] **6.2.b Integrate photo into About page layout**
-        - Position alongside bio text
-        - Target ratio: 60-80% text, 20-40% image
-        - Add proper alt text: `alt="Andrew Creekmore, full-stack developer"`
+    - [x] **6.2.b Integrate photo into About page layout**
+        - Photo in separate pane (right on desktop, top on mobile)
+        - Photo has decorative card with caption footer: `// andrew.jpg`
+        - Alt text: "Andrew Creekmore, full-stack developer"
 
-    - [ ] **6.2.c Verify responsive layout**
-        - Desktop: Photo beside bio
-        - Mobile: Photo above or integrated appropriately
+    - [x] **6.2.c Verify responsive layout**
+        - Desktop: Photo pane on right with bg-card/80
+        - Mobile: Photo pane on top, centered
 
-- [ ] **6.3 Bio section styling**
+- [x] **6.3 Bio section styling**
 
-    - [ ] **6.3.a Update bio card with `background/80`**
-        - Add semi-transparent background to bio container
-        - Consistent with DetailCard body pattern
-        - File: `src/components/sections/AboutSection.tsx`
+    - [x] **6.3.a Update bio card with two-pane vertical split**
+        - Bio pane: bg-background/80 (main content area)
+        - Photo pane: bg-card/80 (sidebar-like)
+        - Photo card: border-2 border-secondary/80, bg-accent/80 caption footer
 
-    - [ ] **6.3.b Verify visual consistency across themes**
-        - Test with multiple themes (Remedy, Rose Pine, Gruvbox, etc.)
-        - Ensure readability and contrast
+    - [x] **6.3.b Cleanup: Remove unused highlightedAchievements feature**
+        - Removed from AboutSection.tsx, types/about.ts, data/about.ts
+        - Removed related tests from about.test.ts
 
 - [ ] **6.4 Copy revision**
 

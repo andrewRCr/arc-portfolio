@@ -1,9 +1,9 @@
 /**
  * DetailCard Component
  *
- * Section card for project detail pages with transparent header and opaque body.
- * Similar to ProjectCard pattern: unified border around both sections, header
- * transparent (larger text readable), body opaque (bg-card for body text).
+ * Section card for project detail pages with semi-transparent header and body.
+ * Header uses bg-card/80, body uses bg-background/80 for improved text readability.
+ * Both sections share a unified border with rounded corners.
  */
 
 import { cn } from "@/lib/utils";
