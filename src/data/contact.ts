@@ -12,11 +12,6 @@ export const contact: Contact = {
 
   socialLinks: [
     {
-      platform: "Email",
-      url: "mailto:andrew.creekmore@me.com",
-      icon: "mail",
-    },
-    {
       platform: "GitHub",
       url: "https://github.com/andrewRCr",
       icon: "github",

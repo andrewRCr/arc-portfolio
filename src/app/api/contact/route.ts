@@ -10,10 +10,15 @@ import { z, ZodError } from "zod";
 import { kv } from "@vercel/kv";
 
 // Validation schema (matches client-side)
+const MESSAGE_MAX_LENGTH = 2500;
+
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().min(1, "Email is required").email("Please enter a valid email"),
-  message: z.string().min(1, "Message is required"),
+  message: z
+    .string()
+    .min(1, "Message is required")
+    .max(MESSAGE_MAX_LENGTH, `Message must be ${MESSAGE_MAX_LENGTH} characters or less`),
   website: z.string().optional(), // Honeypot field
 });
 
@@ -128,8 +133,16 @@ export async function POST(request: Request) {
 
     // Send email via Zeptomail
     const apiKey = process.env.ZEPTOMAIL_API_KEY;
-    if (!apiKey) {
-      console.error("[contact] ZEPTOMAIL_API_KEY not configured");
+    const emailTo = process.env.CONTACT_EMAIL_TO;
+    const emailFrom = process.env.CONTACT_EMAIL_FROM;
+    const emailFromName = process.env.CONTACT_EMAIL_FROM_NAME || "Portfolio Contact Form";
+
+    if (!apiKey || !emailTo || !emailFrom) {
+      console.error("[contact] Email configuration missing:", {
+        hasApiKey: !!apiKey,
+        hasEmailTo: !!emailTo,
+        hasEmailFrom: !!emailFrom,
+      });
       return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
     }
 
@@ -141,13 +154,13 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         from: {
-          address: "noreply@andrewrcr.dev",
-          name: "Portfolio Contact Form",
+          address: emailFrom,
+          name: emailFromName,
         },
         to: [
           {
             email_address: {
-              address: "andrew@andrewrcr.dev",
+              address: emailTo,
               name: "Andrew Creekmore",
             },
           },

@@ -258,7 +258,8 @@ describe("Contact Data Validation", () => {
     });
 
     it("should have proper capitalization for platform names", () => {
-      const properNames = ["Email", "GitHub", "LinkedIn", "NexusMods"];
+      // Email is handled separately (contact.email), not in socialLinks
+      const properNames = ["GitHub", "LinkedIn", "NexusMods"];
 
       contact.socialLinks.forEach((link) => {
         expect(properNames).toContain(link.platform);
@@ -304,28 +305,25 @@ describe("Contact Data Validation", () => {
   });
 
   describe("Link Order", () => {
-    it("should have Email as first link", () => {
-      expect(contact.socialLinks[0].platform).toBe("Email");
+    // Note: Email is handled separately via contact.email (for obfuscation)
+    // socialLinks contains only external platform links
+
+    it("should have GitHub as first link", () => {
+      expect(contact.socialLinks[0].platform).toBe("GitHub");
     });
 
-    it("should have GitHub as second link", () => {
-      expect(contact.socialLinks[1].platform).toBe("GitHub");
+    it("should have LinkedIn as second link", () => {
+      expect(contact.socialLinks[1].platform).toBe("LinkedIn");
     });
 
-    it("should have LinkedIn as third link", () => {
-      expect(contact.socialLinks[2].platform).toBe("LinkedIn");
-    });
-
-    it("should have NexusMods as fourth link", () => {
-      expect(contact.socialLinks[3].platform).toBe("NexusMods");
+    it("should have NexusMods as third link", () => {
+      expect(contact.socialLinks[2].platform).toBe("NexusMods");
     });
 
     it("should have professional links before hobby links", () => {
-      // Email, GitHub and LinkedIn (professional) should come before NexusMods (hobby)
+      // GitHub and LinkedIn (professional) should come before NexusMods (hobby)
       const professionalIndices = contact.socialLinks
-        .map((link, index) =>
-          link.platform === "Email" || link.platform === "GitHub" || link.platform === "LinkedIn" ? index : -1
-        )
+        .map((link, index) => (link.platform === "GitHub" || link.platform === "LinkedIn" ? index : -1))
         .filter((i) => i !== -1);
 
       const hobbyIndices = contact.socialLinks

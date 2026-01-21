@@ -35,8 +35,13 @@ describe("/api/contact", () => {
     vi.clearAllMocks();
     _resetRateLimiter(); // Reset rate limiter between tests
 
-    // Mock environment variable
-    process.env = { ...originalEnv, ZEPTOMAIL_API_KEY: "test-api-key" };
+    // Mock environment variables
+    process.env = {
+      ...originalEnv,
+      ZEPTOMAIL_API_KEY: "test-api-key",
+      CONTACT_EMAIL_TO: "test@example.com",
+      CONTACT_EMAIL_FROM: "noreply@example.com",
+    };
 
     // Default: Zeptomail returns success
     mockFetch.mockResolvedValue({
