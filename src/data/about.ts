@@ -20,13 +20,4 @@ export const about: About = {
 
     "I'm eager to add value to your team's project while continuing to grow my toolkit and expand my knowledge.",
   ],
-
-  // Optional: Could add highlighted achievements in future
-  // highlightedAchievements: [
-  //   {
-  //     label: "Mod Downloads",
-  //     value: "300K+",
-  //     link: "https://next.nexusmods.com/profile/andrewRCr/mods",
-  //   },
-  // ],
 };
