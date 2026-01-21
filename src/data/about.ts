@@ -9,15 +9,14 @@ export const about: About = {
   heading: "About me",
 
   paragraphs: [
-    "I'm a recently graduated software engineer with interests and capabilities in a variety of domains, " +
-      "including both front and backend web/desktop development. I am a self-starter with high attention " +
-      "to detail and an enthusiasm for continuous learning and improvement.",
+    "Previously a graduate student in psychology, I fell in love with the craft of building software and made the switch " +
+      "to computer science - drawn by its precision, the way small decisions compound into working systems. " +
+      "I work across the stack, comfortable in both frontend and backend. My approach combines traditional engineering " +
+      "discipline with deliberate, hands-on AI collaboration - developer and agent each amplifying the other's capabilities.",
 
-    "Previously a graduate student in psychology, I fell in love with programming and pivoted to computer science. " +
-      "In my free time, I have a hobbyist interest in video game development - both programming as well as 3D modeling " +
-      "and animation. I also enjoy reverse engineering and modifying existing games, focusing on gameplay adjustments. " +
-      "My {{MODDING_LINK}} has reached {{DOWNLOAD_COUNT}} unique user downloads.",
-
-    "I'm eager to add value to your team's project while continuing to grow my toolkit and expand my knowledge.",
+    "Game development remains a hobbyist interest - both creating games and modifying existing ones. " +
+      "My {{MODDING_LINK}} has reached {{DOWNLOAD_COUNT}} unique downloads.",
   ],
+
+  tagline: "Film enthusiast. Eagle Scout.",
 };

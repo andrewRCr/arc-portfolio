@@ -13,4 +13,5 @@
 export interface About {
   heading: string; // Section heading (e.g., "About Me", "Background")
   paragraphs: string[]; // Array of paragraph text, each supporting markdown syntax
+  tagline?: string; // Optional muted flavor text (hobbies, personal notes)
 }

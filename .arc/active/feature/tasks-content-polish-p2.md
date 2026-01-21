@@ -551,20 +551,22 @@ skills logo system with project filtering.
         - Removed from AboutSection.tsx, types/about.ts, data/about.ts
         - Removed related tests from about.test.ts
 
-- [ ] **6.4 Copy revision**
+- [x] **6.4 Copy revision**
 
-    **Goal:** Collaborative revision of bio paragraphs for clarity, tone, and impact.
+    - [x] **6.4.a Review and revise bio content**
+        - Rewrote bio for confident, matter-of-fact tone (removed "recently graduated", "eager to add value")
+        - Para 1: Psychology background → craft of software → precision/compounding appeal → full-stack →
+          AI collaboration philosophy (traditional discipline + deliberate partnership)
+        - Para 2: Game dev as hobbyist interest, modding stats with squared-off badge styling
+        - Added optional `tagline` field to About type, rendered with muted styling anchored to bottom
+        - Tagline: "Film enthusiast. Eagle Scout."
+        - Sized up bio text to match ProjectDetail (`text-base sm:text-lg`)
+        - Removed unused `parseMarkdownLinks` function (simplified to placeholder-only parsing)
 
-    - [ ] **6.4.a Review and revise bio content**
-        - Read current paragraphs in `src/data/about.ts`
-        - Identify areas for improvement
-        - Revise for clarity, professional tone, and impact
-        - Preserve placeholder handling (`{{MODDING_LINK}}`, `{{DOWNLOAD_COUNT}}`)
-
-    - [ ] **6.4.b Verify rendered output**
-        - Check placeholders render correctly
-        - Verify markdown links work
-        - Manual review of final presentation
+    - [x] **6.4.b Verify rendered output**
+        - Placeholders render correctly (modding link, download count)
+        - Visual review at multiple viewport widths
+        - Tagline anchors to bottom when photo pane is taller
 
 ### **Phase 7:** Final Quality Gates and Integration Testing
 

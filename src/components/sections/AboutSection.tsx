@@ -2,13 +2,10 @@
  * AboutSection - Modular component for displaying biographical content
  *
  * Renders bio paragraphs with support for:
- * - Basic markdown links [text](url)
  * - Dynamic NexusMods download count via props
  * - TextLink component for the modding profile link
  * - Profile photo with responsive layout
  */
-
-import React from "react";
 import Image from "next/image";
 import { about } from "@/data/about";
 import { TextLink } from "@/components/ui/text-link";
@@ -33,59 +30,16 @@ function formatDownloadCountForProse(count: number): string {
 }
 
 /**
- * Simple markdown link parser
- * Converts [text](url) to <a> elements with external link attributes
- */
-function parseMarkdownLinks(text: string): React.ReactElement[] {
-  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const parts: React.ReactElement[] = [];
-  let lastIndex = 0;
-  let match;
-  let keyIndex = 0;
-
-  while ((match = linkRegex.exec(text)) !== null) {
-    // Add text before the link
-    if (match.index > lastIndex) {
-      parts.push(<span key={`text-${keyIndex++}`}>{text.substring(lastIndex, match.index)}</span>);
-    }
-
-    // Add the link
-    const linkText = match[1];
-    const url = match[2];
-    parts.push(
-      <a
-        key={`link-${keyIndex++}`}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-accent hover:text-accent/80 underline"
-      >
-        {linkText}
-      </a>
-    );
-
-    lastIndex = match.index + match[0].length;
-  }
-
-  // Add remaining text after last link
-  if (lastIndex < text.length) {
-    parts.push(<span key={`text-${keyIndex++}`}>{text.substring(lastIndex)}</span>);
-  }
-
-  return parts;
-}
-
-/**
  * Render paragraph with placeholder substitution
  * Handles {{MODDING_LINK}} and {{DOWNLOAD_COUNT}} placeholders
  */
-function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: number): React.ReactElement[] {
-  // If no placeholders, use standard markdown parsing
+function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: number): React.ReactNode {
+  // If no placeholders, render as plain text
   if (!paragraph.includes("{{")) {
-    return parseMarkdownLinks(paragraph);
+    return paragraph;
   }
 
-  const parts: React.ReactElement[] = [];
+  const parts: React.ReactNode[] = [];
   let keyIndex = 0;
 
   // Split by placeholders, keeping delimiters
@@ -103,7 +57,7 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
       if (uniqueDownloads !== undefined) {
         // Real value: style as inline code for emphasis
         parts.push(
-          <code key={`count-${keyIndex++}`} className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.9em]">
+          <code key={`count-${keyIndex++}`} className="bg-muted px-1.5 py-0.5 font-mono text-[0.9em]">
             {formatDownloadCountForProse(uniqueDownloads)}
           </code>
         );
@@ -112,10 +66,8 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
         parts.push(<span key={`count-${keyIndex++}`}>{FALLBACK_DOWNLOAD_TEXT}</span>);
       }
     } else if (segment) {
-      // Regular text - check for any remaining markdown links
-      parts.push(
-        ...parseMarkdownLinks(segment).map((el, i) => React.cloneElement(el, { key: `text-${keyIndex++}-${i}` }))
-      );
+      // Regular text
+      parts.push(<span key={`text-${keyIndex++}`}>{segment}</span>);
     }
   }
 
@@ -146,14 +98,17 @@ export function AboutSection({ uniqueDownloads }: AboutSectionProps) {
           </div>
 
           {/* Bio pane - main content area */}
-          <div className="flex-1 bg-background/80 p-6">
+          <div className="flex flex-1 flex-col bg-background/80 p-6">
             <div className="space-y-4 text-foreground">
               {about.paragraphs.map((paragraph, index) => (
-                <p key={index} className="leading-relaxed">
+                <p key={index} className="text-base leading-relaxed sm:text-lg">
                   {renderParagraphWithPlaceholders(paragraph, uniqueDownloads)}
                 </p>
               ))}
             </div>
+            {about.tagline && (
+              <p className="mt-auto pt-4 text-base leading-relaxed text-muted-foreground">{about.tagline}</p>
+            )}
           </div>
         </div>
       </div>

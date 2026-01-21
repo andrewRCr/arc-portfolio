@@ -27,8 +27,8 @@ describe("About/Bio Data Validation", () => {
   });
 
   describe("Paragraphs Structure", () => {
-    it("should have at least 3 paragraphs", () => {
-      expect(about.paragraphs.length).toBeGreaterThanOrEqual(3);
+    it("should have at least 2 paragraphs", () => {
+      expect(about.paragraphs.length).toBeGreaterThanOrEqual(2);
     });
 
     it("should have all paragraphs as non-empty strings", () => {

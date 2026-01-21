@@ -9,15 +9,26 @@ describe("AboutSection - Behavior Tests", () => {
       const { container } = render(<AboutSection />);
 
       const paragraphs = container.querySelectorAll("p");
-      expect(paragraphs.length).toBe(about.paragraphs.length);
+      // Paragraphs array + optional tagline
+      const expectedCount = about.paragraphs.length + (about.tagline ? 1 : 0);
+      expect(paragraphs.length).toBe(expectedCount);
+    });
+
+    it("renders tagline with muted styling when present", () => {
+      const { container } = render(<AboutSection />);
+
+      if (about.tagline) {
+        const taglineParagraph = container.querySelector("p.text-muted-foreground");
+        expect(taglineParagraph).toBeInTheDocument();
+        expect(taglineParagraph).toHaveTextContent(about.tagline);
+      }
     });
   });
 
-  describe("Markdown Support", () => {
-    it("renders markdown links as clickable anchor elements", () => {
+  describe("Link Behavior", () => {
+    it("renders external links in content", () => {
       render(<AboutSection />);
 
-      // Should have at least one external link (from markdown in content)
       const links = screen.queryAllByRole("link");
       expect(links.length).toBeGreaterThan(0);
     });
