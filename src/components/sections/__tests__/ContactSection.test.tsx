@@ -69,13 +69,11 @@ describe("ContactSection", () => {
     it("renders contact form with required fields", () => {
       render(<ContactSection />);
 
-      // Forms render twice due to ResponsiveSwitch, but duplicate IDs mean
-      // label association only finds first. Query by role instead.
-      // Name inputs: type="text" without specific role, so check textboxes exist
+      // Forms render twice due to ResponsiveSwitch (mobile + desktop)
+      // Each form has: name input + email input + message textarea = 3 textboxes
+      // Total: 3 × 2 = 6 textboxes
       const textInputs = screen.getAllByRole("textbox");
-      // Expected: 2 name + 2 email + 2 message (textarea is also textbox role) = 6
-      // But with duplicate IDs this may vary - just verify forms are present
-      expect(textInputs.length).toBeGreaterThanOrEqual(3); // At least one form's worth
+      expect(textInputs.length).toBe(6);
     });
 
     it("renders submit buttons for both form instances", () => {

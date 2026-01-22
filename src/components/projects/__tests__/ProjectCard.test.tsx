@@ -114,13 +114,16 @@ describe("ProjectCard - Behavior Tests", () => {
     it("displays tech tags with correct content", () => {
       const { container } = render(<ProjectCard project={mockProject} />);
       const techBadges = container.querySelectorAll('[data-testid="tech-badge"]');
+      const overflowBadge = container.querySelector('[data-testid="tech-overflow-badge"]');
 
-      // First 3 tech stack items + overflow indicator
-      expect(techBadges).toHaveLength(4);
+      // First 3 tech stack items
+      expect(techBadges).toHaveLength(3);
       expect(techBadges[0]).toHaveTextContent("React");
       expect(techBadges[1]).toHaveTextContent("TypeScript");
       expect(techBadges[2]).toHaveTextContent("Node.js");
-      expect(techBadges[3]).toHaveTextContent("+1");
+
+      // Overflow indicator separate
+      expect(overflowBadge).toHaveTextContent("+1");
     });
   });
 

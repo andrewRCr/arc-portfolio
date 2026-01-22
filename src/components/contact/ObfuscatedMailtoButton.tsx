@@ -7,17 +7,9 @@
 
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useMemo } from "react";
 import { Mail } from "lucide-react";
-
-// Hydration detection using useSyncExternalStore (React 18+ recommended pattern)
-const emptySubscribe = () => () => {};
-const getClientSnapshot = () => true;
-const getServerSnapshot = () => false;
-
-function useIsClient() {
-  return useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
-}
+import { useIsClient } from "@/hooks/useIsClient";
 
 interface ObfuscatedMailtoButtonProps {
   /** Base64-encoded email address */
@@ -31,15 +23,16 @@ interface ObfuscatedMailtoButtonProps {
 export function ObfuscatedMailtoButton({ encoded, className = "", iconOnly = false }: ObfuscatedMailtoButtonProps) {
   const isClient = useIsClient();
 
-  // Decode email only on client side
-  let email: string | null = null;
-  if (isClient) {
+  // Decode email only on client side, memoized to avoid repeated decoding/error logging
+  const email = useMemo(() => {
+    if (!isClient) return null;
     try {
-      email = atob(encoded);
+      return atob(encoded);
     } catch {
       console.error("[ObfuscatedMailtoButton] Failed to decode email");
+      return null;
     }
-  }
+  }, [isClient, encoded]);
 
   // Button styling - compact for icon-only, full for labeled (both use accent)
   const buttonClasses = iconOnly

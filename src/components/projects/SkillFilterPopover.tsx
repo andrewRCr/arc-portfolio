@@ -47,6 +47,14 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
   const [searchQuery, setSearchQuery] = useState("");
   const triggerRef = useRef<HTMLButtonElement>(null);
 
+  // Reset search when popover closes
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
+      setSearchQuery("");
+    }
+  };
+
   // Workaround for Radix bug #2782: after interacting inside a Popover,
   // the first outside click is swallowed. This listener ensures single-click close.
   // See: https://github.com/radix-ui/primitives/issues/2782
@@ -105,7 +113,7 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen} modal={true}>
+    <Popover open={open} onOpenChange={handleOpenChange} modal={true}>
       <PopoverTrigger asChild>
         <Button ref={triggerRef} variant="ghost" size="sm" aria-haspopup="dialog">
           <FilterIcon className="size-4" />

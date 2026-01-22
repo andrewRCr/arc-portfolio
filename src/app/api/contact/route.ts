@@ -107,7 +107,12 @@ export async function POST(request: Request) {
     }
 
     // Parse request body
-    const body = await request.json();
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 });
+    }
 
     // Validate with zod
     const result = contactSchema.safeParse(body);

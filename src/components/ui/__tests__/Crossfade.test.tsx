@@ -178,7 +178,7 @@ describe("Crossfade", () => {
       expect(inactiveWrapper).toHaveAttribute("aria-hidden", "true");
     });
 
-    it("does not hide visible content from screen readers", () => {
+    it("explicitly marks visible content as not hidden from screen readers", () => {
       render(
         <Crossfade
           active={true}
@@ -188,7 +188,7 @@ describe("Crossfade", () => {
       );
 
       const activeWrapper = screen.getByTestId("active").parentElement;
-      expect(activeWrapper).not.toHaveAttribute("aria-hidden", "true");
+      expect(activeWrapper).toHaveAttribute("aria-hidden", "false");
     });
   });
 

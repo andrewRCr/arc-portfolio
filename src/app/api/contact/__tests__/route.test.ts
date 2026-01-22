@@ -51,7 +51,6 @@ describe("/api/contact", () => {
   });
 
   afterEach(() => {
-    vi.useRealTimers();
     process.env = originalEnv;
   });
 

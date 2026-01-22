@@ -6,6 +6,11 @@ import { skills } from "@/data/skills";
 // Categories displayed in DetailCards (excludes Languages and Methodologies)
 const CARD_CATEGORIES = Object.keys(skills).filter((cat) => cat !== "Languages" && cat !== "Methodologies");
 
+// Derive skill samples from data for resilient tests
+const allSkills = Object.values(skills).flat();
+const sampleSkillsWithIcons = allSkills.filter((s) => s.iconSlug).slice(0, 4);
+const sampleSkillsWithoutIcons = allSkills.filter((s) => !s.iconSlug).slice(0, 3);
+
 describe("SkillsSection", () => {
   describe("Languages Hero Row", () => {
     it("renders Languages skills in hero row above cards", () => {
@@ -55,22 +60,20 @@ describe("SkillsSection", () => {
     it("renders skills with icons as logo grid links", () => {
       render(<SkillsSection />);
 
-      // Check a sampling of skills with icons render as links
-      const skillsWithIcons = ["React", "Django", "PostgreSQL", "Docker"];
-      skillsWithIcons.forEach((skillName) => {
-        expect(screen.getByLabelText(`View projects using ${skillName}`)).toBeInTheDocument();
+      // Check a sampling of skills with icons render as links (derived from data)
+      sampleSkillsWithIcons.forEach((skill) => {
+        expect(screen.getByLabelText(`View projects using ${skill.name}`)).toBeInTheDocument();
       });
     });
 
     it("renders skills without icons as text links", () => {
       render(<SkillsSection />);
 
-      // Check skills without icons render as text links
-      const skillsWithoutIcons = ["WPF", "Entity Framework", "SQL Server"];
-      skillsWithoutIcons.forEach((skillName) => {
-        const link = screen.getByRole("link", { name: skillName });
+      // Check skills without icons render as text links (derived from data)
+      sampleSkillsWithoutIcons.forEach((skill) => {
+        const link = screen.getByRole("link", { name: skill.name });
         expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute("href", `/projects?skills=${encodeURIComponent(skillName)}`);
+        expect(link).toHaveAttribute("href", `/projects?skills=${encodeURIComponent(skill.name)}`);
       });
     });
   });

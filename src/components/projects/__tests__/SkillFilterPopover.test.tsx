@@ -8,6 +8,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { checkA11y, axe } from "@tests/test-utils";
 import SkillFilterPopover from "../SkillFilterPopover";
 import { Project } from "@/types/project";
 
@@ -270,6 +271,25 @@ describe("SkillFilterPopover", () => {
   });
 
   describe("Accessibility", () => {
+    it("has no accessibility violations when closed", async () => {
+      const results = await checkA11y(<SkillFilterPopover {...defaultProps} />);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("has no accessibility violations when open", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<SkillFilterPopover {...defaultProps} />);
+
+      await user.click(screen.getByRole("button", { name: /filter/i }));
+
+      // Verify popover is open
+      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+
+      // Run a11y check on the open state
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
     it("trigger button has appropriate aria attributes", () => {
       render(<SkillFilterPopover {...defaultProps} />);
 

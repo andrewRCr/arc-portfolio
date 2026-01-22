@@ -6,20 +6,27 @@
  */
 
 /**
- * Allowed skill category names
+ * All skill category names as a const array (single source of truth)
  *
- * Constrained union provides compile-time validation of category names.
  * To add a new category: add it here, then add the corresponding data in skills.ts.
  */
-export type SkillCategory =
-  | "Languages"
-  | "Frontend"
-  | "Backend"
-  | "Databases"
-  | "AI-Assisted Development"
-  | "DevOps & Infrastructure"
-  | "Testing & Quality"
-  | "Methodologies";
+export const SKILL_CATEGORIES = [
+  "Languages",
+  "Frontend",
+  "Backend",
+  "Databases",
+  "AI-Assisted Development",
+  "DevOps & Infrastructure",
+  "Testing & Quality",
+  "Methodologies",
+] as const;
+
+/**
+ * Allowed skill category names (derived from SKILL_CATEGORIES array)
+ *
+ * Constrained union provides compile-time validation of category names.
+ */
+export type SkillCategory = (typeof SKILL_CATEGORIES)[number];
 
 /**
  * Individual skill with optional metadata

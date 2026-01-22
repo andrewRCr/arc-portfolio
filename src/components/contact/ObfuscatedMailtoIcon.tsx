@@ -7,17 +7,9 @@
 
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useMemo } from "react";
 import { Mail } from "lucide-react";
-
-// Hydration detection using useSyncExternalStore (React 18+ recommended pattern)
-const emptySubscribe = () => () => {};
-const getClientSnapshot = () => true;
-const getServerSnapshot = () => false;
-
-function useIsClient() {
-  return useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
-}
+import { useIsClient } from "@/hooks/useIsClient";
 
 interface ObfuscatedMailtoIconProps {
   /** Base64-encoded email address */
@@ -31,15 +23,16 @@ interface ObfuscatedMailtoIconProps {
 export function ObfuscatedMailtoIcon({ encoded, size = 16, className = "" }: ObfuscatedMailtoIconProps) {
   const isClient = useIsClient();
 
-  // Decode email only on client side
-  let email: string | null = null;
-  if (isClient) {
+  // Decode email only on client side, memoized to avoid repeated decoding/error logging
+  const email = useMemo(() => {
+    if (!isClient) return null;
     try {
-      email = atob(encoded);
+      return atob(encoded);
     } catch {
       console.error("[ObfuscatedMailtoIcon] Failed to decode email");
+      return null;
     }
-  }
+  }, [isClient, encoded]);
 
   // Base classes matching FooterBar social link styling
   const baseClasses =

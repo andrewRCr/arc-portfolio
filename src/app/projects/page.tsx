@@ -15,6 +15,36 @@ import { FEATURES } from "@/config/features";
 import { filterProjectsBySkills } from "@/lib/project-filters";
 import { Project } from "@/types/project";
 
+/** Reusable tab panel component for project grids */
+function TabPanel({
+  id,
+  projects,
+  categoryType,
+  withTabAttributes = true,
+}: {
+  id: string;
+  projects: Project[];
+  categoryType: "software" | "games" | "mods";
+  /** Set false when rendering without tab navigation (e.g., tabs feature disabled) */
+  withTabAttributes?: boolean;
+}) {
+  return (
+    <div
+      id={withTabAttributes ? `panel-${id}` : undefined}
+      role={withTabAttributes ? "tabpanel" : undefined}
+      aria-labelledby={withTabAttributes ? `tab-${id}` : undefined}
+      tabIndex={withTabAttributes ? 0 : undefined}
+      className="space-y-6"
+    >
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <ProjectCard key={project.slug} project={project} categoryType={categoryType} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ProjectsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -145,43 +175,19 @@ function ProjectsContent() {
         {/* Tab-based Views (when not filtered) */}
         {!isFiltered && (
           <>
-            {/* Software Tab Panel */}
             {currentTab === "software" && (
-              <div
-                id={FEATURES.SHOW_PROJECT_TABS ? "panel-software" : undefined}
-                role={FEATURES.SHOW_PROJECT_TABS ? "tabpanel" : undefined}
-                aria-labelledby={FEATURES.SHOW_PROJECT_TABS ? "tab-software" : undefined}
-                tabIndex={FEATURES.SHOW_PROJECT_TABS ? 0 : undefined}
-                className="space-y-6"
-              >
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {softwareProjects.map((project) => (
-                    <ProjectCard key={project.slug} project={project} categoryType="software" />
-                  ))}
-                </div>
-              </div>
+              <TabPanel
+                id="software"
+                projects={softwareProjects}
+                categoryType="software"
+                withTabAttributes={FEATURES.SHOW_PROJECT_TABS}
+              />
             )}
-
-            {/* Games Tab Panel */}
             {FEATURES.SHOW_PROJECT_TABS && currentTab === "games" && (
-              <div id="panel-games" role="tabpanel" aria-labelledby="tab-games" tabIndex={0} className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {gameProjects.map((project) => (
-                    <ProjectCard key={project.slug} project={project} categoryType="games" />
-                  ))}
-                </div>
-              </div>
+              <TabPanel id="games" projects={gameProjects} categoryType="games" />
             )}
-
-            {/* Mods Tab Panel */}
             {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
-              <div id="panel-mods" role="tabpanel" aria-labelledby="tab-mods" tabIndex={0} className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {sortedMods.map((mod) => (
-                    <ProjectCard key={mod.slug} project={mod} categoryType="mods" />
-                  ))}
-                </div>
-              </div>
+              <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
             )}
           </>
         )}

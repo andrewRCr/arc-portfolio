@@ -144,7 +144,7 @@ describe("SkillFilterDrawer", () => {
 
       // React has 2 projects
       const reactItem = screen.getByText("React").closest("[data-skill-item]");
-      expect(reactItem).toBeInTheDocument();
+      expect(reactItem).not.toBeNull();
       expect(within(reactItem as HTMLElement).getByText("(2)")).toBeInTheDocument();
     });
   });
@@ -159,6 +159,7 @@ describe("SkillFilterDrawer", () => {
 
       // Find and click React skill
       const reactItem = screen.getByText("React").closest("[data-skill-item]");
+      expect(reactItem).not.toBeNull();
       await user.click(reactItem!);
 
       expect(onSkillsChange).toHaveBeenCalledWith(["React"]);
@@ -173,6 +174,7 @@ describe("SkillFilterDrawer", () => {
 
       // Click React to deselect
       const reactItem = screen.getByText("React").closest("[data-skill-item]");
+      expect(reactItem).not.toBeNull();
       await user.click(reactItem!);
 
       expect(onSkillsChange).toHaveBeenCalledWith([]);
@@ -186,6 +188,7 @@ describe("SkillFilterDrawer", () => {
 
       // Find React option and verify it has checked state
       const reactItem = screen.getByText("React").closest("[data-skill-item]");
+      expect(reactItem).not.toBeNull();
       const checkbox = within(reactItem as HTMLElement).getByRole("checkbox");
       expect(checkbox).toBeChecked();
     });
@@ -262,7 +265,8 @@ describe("SkillFilterDrawer", () => {
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
       const reactItem = screen.getByText("React").closest("[data-skill-item]");
-      expect(reactItem?.className).toMatch(/min-h-11/);
+      expect(reactItem).not.toBeNull();
+      expect(reactItem!.className).toMatch(/min-h-11/);
     });
 
     it("clear all button has 44px minimum touch target", async () => {
@@ -303,6 +307,7 @@ describe("SkillFilterDrawer", () => {
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
       const reactItem = screen.getByText("React").closest("[data-skill-item]");
+      expect(reactItem).not.toBeNull();
       const checkbox = within(reactItem as HTMLElement).getByRole("checkbox");
       expect(checkbox).toHaveAttribute("aria-checked", "true");
     });

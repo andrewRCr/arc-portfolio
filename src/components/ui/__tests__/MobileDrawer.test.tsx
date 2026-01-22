@@ -52,9 +52,8 @@ describe("MobileDrawer", () => {
       const trigger = screen.getByRole("button", { name: /open drawer/i });
       await user.click(trigger);
 
-      // Sheet content should be visible
-      const sheetContent = document.querySelector('[data-slot="sheet-content"]');
-      expect(sheetContent).toBeInTheDocument();
+      // Sheet content should be visible (Radix Dialog provides role="dialog")
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
     });
 
     it("displays title in header", async () => {

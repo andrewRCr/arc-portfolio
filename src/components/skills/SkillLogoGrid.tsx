@@ -87,11 +87,14 @@ export function SkillLogoGrid({
   // Apply row gap classes only for row layout (grid has built-in gap)
   const gapClass = layout === "row" ? rowGapClasses[gap] : "";
 
+  // Calculate break index for balanced rows on mobile (e.g., 5/5 for 10, 4/4 for 8, 4/3 for 7)
+  const breakIndex = Math.ceil(skillsWithIcons.length / 2) - 1;
+
   return (
     <div className={cn(layoutClasses[layout], gapClass, className)}>
       {skillsWithIcons.flatMap((skill, index) => {
-        const icon = getSkillIcon(skill.iconSlug!);
-        if (!icon) return [];
+        // Icon guaranteed non-null by filter above
+        const icon = getSkillIcon(skill.iconSlug!)!;
 
         const logo = (
           <svg
@@ -121,15 +124,17 @@ export function SkillLogoGrid({
         ) : (
           <Tooltip key={skill.name}>
             <TooltipTrigger asChild>
-              <div className="cursor-default">{logo}</div>
+              <div role="img" aria-label={skill.name} className="cursor-default">
+                {logo}
+              </div>
             </TooltipTrigger>
             <TooltipContent side="bottom">{skill.name}</TooltipContent>
           </Tooltip>
         );
 
-        // Insert line break after 5th item on mobile for 10-icon layout (5/5 split)
+        // Insert line break on mobile for balanced rows (e.g., 5/5, 4/4, 4/3)
         // Skip for 6 or fewer icons (single row on mobile)
-        if (index === 4 && layout === "row" && skillsWithIcons.length > 6) {
+        if (index === breakIndex && layout === "row" && skillsWithIcons.length > 6) {
           return [element, <div key="break" className="w-full sm:hidden" aria-hidden="true" />];
         }
 

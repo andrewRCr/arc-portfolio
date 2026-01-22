@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 /** Supported display types for wrapper elements */
 type DisplayType = "block" | "flex" | "inline-flex";
@@ -81,10 +82,10 @@ export function ResponsiveSwitch({
   return (
     <>
       {/* Mobile content - visible below breakpoint */}
-      <div className={`${classes.mobile} ${classes.mobileHidden} ${className ?? ""}`}>{mobile}</div>
+      <div className={cn(classes.mobile, classes.mobileHidden, className)}>{mobile}</div>
 
       {/* Desktop content - visible at breakpoint and above */}
-      <div className={`${classes.desktop} ${className ?? ""}`}>{desktop}</div>
+      <div className={cn(classes.desktop, className)}>{desktop}</div>
     </>
   );
 }

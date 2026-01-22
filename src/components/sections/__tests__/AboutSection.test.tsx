@@ -21,17 +21,15 @@ describe("AboutSection - Behavior Tests", () => {
       expect(paragraphs.length).toBe(baseCount * 2);
     });
 
-    it("renders tagline with muted styling when present", () => {
+    it.skipIf(!about.tagline)("renders tagline with muted styling when present", () => {
       const { container } = render(<AboutSection />);
 
-      if (about.tagline) {
-        // Tagline appears in both mobile and desktop layouts
-        const taglineParagraphs = container.querySelectorAll("p.text-muted-foreground");
-        expect(taglineParagraphs.length).toBe(2);
-        taglineParagraphs.forEach((p) => {
-          expect(p).toHaveTextContent(about.tagline!);
-        });
-      }
+      // Tagline appears in both mobile and desktop layouts
+      const taglineParagraphs = container.querySelectorAll("p.text-muted-foreground");
+      expect(taglineParagraphs.length).toBe(2);
+      taglineParagraphs.forEach((p) => {
+        expect(p).toHaveTextContent(about.tagline!);
+      });
     });
   });
 

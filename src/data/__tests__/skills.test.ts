@@ -13,30 +13,18 @@
 
 import { describe, it, expect } from "vitest";
 import { skills } from "@/data/skills";
-import type { SkillCategory } from "@/types/skills";
-
-/** All categories defined in the SkillCategory type */
-const REQUIRED_CATEGORIES: SkillCategory[] = [
-  "Languages",
-  "Frontend",
-  "Backend",
-  "Databases",
-  "AI-Assisted Development",
-  "DevOps & Infrastructure",
-  "Testing & Quality",
-  "Methodologies",
-];
+import { SKILL_CATEGORIES } from "@/types/skills";
 
 describe("Skills Data Validation", () => {
   describe("Category Structure", () => {
     it("has all required categories", () => {
-      REQUIRED_CATEGORIES.forEach((category) => {
+      SKILL_CATEGORIES.forEach((category) => {
         expect(skills).toHaveProperty(category);
       });
     });
 
     it("has exactly the expected number of categories", () => {
-      expect(Object.keys(skills).length).toBe(REQUIRED_CATEGORIES.length);
+      expect(Object.keys(skills).length).toBe(SKILL_CATEGORIES.length);
     });
 
     it("has non-empty arrays for all categories", () => {

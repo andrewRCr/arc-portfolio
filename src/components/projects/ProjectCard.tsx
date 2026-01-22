@@ -89,7 +89,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
           ))}
           {remainingCount > 0 && (
             <span
-              data-testid="tech-badge"
+              data-testid="tech-overflow-badge"
               className="rounded border border-border bg-muted px-2 py-0.5 text-xs text-muted-foreground"
             >
               +{remainingCount}

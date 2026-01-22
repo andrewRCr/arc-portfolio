@@ -56,6 +56,11 @@ export function SkillsSection() {
           const primarySkills = skillList.filter((s) => s.iconSlug);
           const secondarySkills = skillList.filter((s) => !s.iconSlug);
 
+          // Skip empty categories
+          if (primarySkills.length === 0 && secondarySkills.length === 0) {
+            return null;
+          }
+
           return (
             <DetailCard key={category} title={category}>
               {/* Primary skills with logos */}

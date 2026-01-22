@@ -35,14 +35,7 @@ const skillsWithoutIcons: Skill[] = [{ name: "Agile" }, { name: "Scrum" }, { nam
 
 describe("SkillLogoGrid", () => {
   describe("Logo Rendering", () => {
-    it("renders correct number of logos for skills with icons", () => {
-      const { container } = render(<SkillLogoGrid skills={skillsWithIcons} />);
-
-      const logos = container.querySelectorAll("svg");
-      expect(logos).toHaveLength(3);
-    });
-
-    it("renders SVG elements for each skill with valid icon", () => {
+    it("renders SVG element for each skill with valid icon", () => {
       const { container } = render(<SkillLogoGrid skills={skillsWithIcons} />);
 
       const svgs = container.querySelectorAll("svg");

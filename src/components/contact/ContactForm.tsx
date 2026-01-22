@@ -51,6 +51,8 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
     register,
     handleSubmit,
     watch,
+    reset,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(contactSchema),
@@ -93,10 +95,24 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
     }
   };
 
+  const handleSendAnother = () => {
+    // Preserve name and email for convenience
+    const { name, email } = getValues();
+    setStatus("idle");
+    reset({ name, email, message: "", website: "" });
+  };
+
   if (status === "success") {
     return (
-      <div className="rounded-lg border text-center border-border bg-card/80 p-6">
+      <div className="rounded-lg border text-center border-border bg-card/80 p-6 space-y-4">
         <p className="text-foreground">Thank you for your message! I&apos;ll get back to you soon.</p>
+        <button
+          type="button"
+          onClick={handleSendAnother}
+          className="rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Send Another Message
+        </button>
       </div>
     );
   }
