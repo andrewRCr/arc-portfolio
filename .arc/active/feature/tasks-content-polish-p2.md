@@ -2,9 +2,10 @@
 
 **PRD:** `.arc/active/feature/prd-content-polish-p2.md`
 **Created:** 2026-01-19
+**Completed:** 2026-01-22
 **Branch:** `feature/content-polish-p2`
 **Base Branch:** `main`
-**Status:** In Progress
+**Status:** Complete
 
 ## Overview
 
@@ -590,36 +591,12 @@ skills logo system with project filtering.
 - [x] **7.2 Cross-page integration verification**
 
     - [x] **7.2.a Manual testing of full user flows** (user-verified)
+        - Additional polish discovered during verification:
+        - About page: Added ResponsiveSwitch for mobile (removes card wrapper on phone)
+        - Contact page: Reduced spacing and textarea rows for phone viewport
+        - Bio copy refined: "Game development is also a hobbyist interest..."
 
     - [x] **7.2.b Verify no regressions from P1 work** (user-verified)
-
----
-
-## Implementation Notes
-
-**Additional Polish (discovered during Phase 7 verification):**
-
-- About page: Added ResponsiveSwitch for mobile - removes card wrapper on phone, reduces visual nesting
-- Contact page: Removed py-2 from section (matches Skills), reduced form gaps and textarea rows on phone
-- Bio copy: "Game development is also a hobbyist interest, from original projects to modifying existing titles."
-
-**Skills Data Evolution (Forward Migration):**
-The skills data structure changes from flat string arrays to objects with metadata. This enables the
-`featured` flag for Home page subset and `iconSlug` for simple-icons mapping. All consumers are
-migrated forward in Task 1.1 - no backward compatibility layer. Type checking will catch any missed
-consumers; fix them before proceeding rather than adding compatibility shims.
-
-**Simple-Icons Usage:**
-The simple-icons package provides SVG path data, not React components. The `skill-icons.ts` utility
-will need to construct SVG elements from this data, handling color/sizing appropriately.
-
-**Rate Limiting Strategy:**
-For the contact form, start with simple in-memory rate limiting (requests per IP per time window).
-If more robust solution needed, Vercel KV or edge middleware can be added later.
-
-**Vercel Configuration:**
-Actual Vercel environment variable setup deferred until contact form is ready for production testing.
-Document the required variables so setup is straightforward when needed.
 
 ---
 
