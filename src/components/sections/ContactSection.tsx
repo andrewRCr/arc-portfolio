@@ -85,7 +85,7 @@ function CompactContactLinks() {
 /** Mobile layout - no card, just stacked with breathing room */
 function MobileContactSection() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       {/* Compact icon links */}
       <CompactContactLinks />
       {/* Contact form */}
@@ -112,7 +112,7 @@ function DesktopContactSection() {
 
 export function ContactSection() {
   return (
-    <section className="px-0 md:px-4 py-2">
+    <section className="px-0 md:px-4">
       <ResponsiveSwitch breakpoint="sm" mobile={<MobileContactSection />} desktop={<DesktopContactSection />} />
     </section>
   );

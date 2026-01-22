@@ -10,6 +10,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -40,6 +41,7 @@ interface ContactFormProps {
 }
 
 export function ContactForm({ variant = "standalone" }: ContactFormProps) {
+  const isPhone = useIsPhone();
   const inputBg = variant === "card" ? "bg-card/80" : "bg-transparent";
   const [status, setStatus] = useState<FormStatus>("idle");
 
@@ -100,9 +102,9 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-2 sm:space-y-6">
       {/* Name and Email fields - side by side on md+ */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
         {/* Name field */}
         <div className="space-y-2">
           <label htmlFor="name" className="block font-mono text-sm font-medium text-foreground">
@@ -153,7 +155,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
         </label>
         <textarea
           id="message"
-          rows={5}
+          rows={isPhone ? 3 : 5}
           maxLength={MESSAGE_MAX_LENGTH}
           aria-required="true"
           aria-describedby={errors.message ? "message-error message-count" : "message-count"}
