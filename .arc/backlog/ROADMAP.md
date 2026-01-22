@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-19
+**Last Updated:** 2026-01-22
 
 ---
 
@@ -39,19 +39,18 @@ Transform placeholder styling into distinctive, polished design.
    - 1002 unit tests, 199 E2E tests
    - [Archive](../reference/archive/2026-q1/feature/03_content-polish-p1/)
 
-6. **Content Polish P2** ← In Progress
-   - Task list: `.arc/active/feature/tasks-content-polish-p2.md`
-   - Branch: `feature/content-polish-p2`
-   - Scope: Skills page reorganization, Contact form, About page polish
-   - Dependencies: Content Polish P1 ✅
+6. ✅ **Content Polish P2** (2026-01-22)
+   - SkillLogoGrid, skill-to-project filtering, Contact form with Zeptomail, About page polish
+   - 1196 unit tests, 199 E2E tests
+   - [Archive](../reference/archive/2026-q1/feature/04_content-polish-p2/)
 
-7. **Visual Polish**
+7. **Visual Polish** ← Next
    - Plan: `.arc/backlog/feature/plan-visual-polish.md` (primary, app-wide scope)
    - Related: `.arc/backlog/feature/plan-twm-startup-animation.md` (detailed startup animation spec)
    - Rationale: Animation/transition layer after pages are structurally complete
    - Scope: TWM startup animation, Framer Motion transitions, micro-interactions, loading states,
      terminal vs standard aesthetic standardization (exploratory)
-   - Dependencies: Content Polish P2 (can't animate incomplete pages)
+   - Dependencies: Content Polish P2 ✅
 
 ### Phase C: Launch
 

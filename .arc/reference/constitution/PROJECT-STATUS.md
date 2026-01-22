@@ -19,16 +19,16 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ Content Polish P1 (feature) - 2026-01-18
-    - Project showcase: DetailHeader, image gallery, 3-tab Projects, NexusMods API, Featured section
-    - 1002 unit tests, 199 E2E tests
-    - [Archive](../archive/2026-q1/feature/03_content-polish-p1/)
+- ✅ Content Polish P2 (feature) - 2026-01-22
+    - Skills: SkillLogoGrid with simple-icons, skill-to-project filtering
+    - Contact: Zeptomail form with honeypot/rate limiting, email obfuscation
+    - About: EducationCard component, responsive layout polish
+    - 1196 unit tests, 199 E2E tests
+    - [Archive](../archive/2026-q1/feature/04_content-polish-p2/)
 
 **Currently Active:**
 
-- Content Polish P2 (feature) - Skills page reorganization, Contact form, About page polish
-    - Task list: `.arc/active/feature/tasks-content-polish-p2.md`
-    - Branch: `feature/content-polish-p2`
+- None
 
 **Next Priority:**
 
@@ -43,8 +43,8 @@ contemporary web development practices.
 - ✅ TWM Layout System - Three-window layout, wallpaper system, responsive adaptation
 - ✅ Theme & Wallpaper Control System - Unified controls, cookie-first SSR, 6 themes, 36 wallpapers
 - ✅ Content Polish P1 - Project showcase, DetailHeader, image gallery, 3-tab Projects, NexusMods API
-- **Content Polish P2** (next) - Skills page reorganization, About/Contact copy polish
-- **Visual Polish** - TWM startup animation, Framer Motion transitions, micro-interactions
+- ✅ Content Polish P2 - SkillLogoGrid, skill filtering, Contact form, About polish
+- **Visual Polish** (next) - TWM startup animation, Framer Motion transitions, micro-interactions
 
 ### Phase C: Launch
 
@@ -133,6 +133,15 @@ contemporary web development practices.
 - **NexusMods integration**: Server actions with 6-hour cache, live stats on mod detail pages, aggregate on About
 - **Featured section**: Redesigned Home hero with category labels, client-side randomization from pools
 - **Test coverage**: 1002 unit tests, 199 E2E tests
+
+### ✅ Content Polish P2 - Supporting Pages
+
+- **SkillLogoGrid**: SVG logos from simple-icons, responsive row/grid layouts, tooltip-wrapped links
+- **Skill filtering**: URL-based filter state, SkillFilterDrawer (mobile) / Popover (desktop), OR-logic matching
+- **Contact form**: Zeptomail integration, honeypot spam protection, rate limiting (Vercel KV), Zod validation
+- **Email obfuscation**: Base64 encoding with client-side decode, hydration-safe mailto links
+- **About page**: EducationCard component, responsive layout, state abbreviation utility
+- **Test coverage**: 1196 unit tests, 199 E2E tests
 
 ---
 
