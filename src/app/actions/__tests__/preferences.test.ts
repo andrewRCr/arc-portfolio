@@ -8,12 +8,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { setPalettePreference } from "../preferences";
 import { PALETTE_COOKIE_NAME } from "@/config/storage";
 
-// Mock cookie store
-const mockCookieStore = {
+// Mock cookie store (hoisted to avoid TDZ in vi.mock factory)
+const mockCookieStore = vi.hoisted(() => ({
   set: vi.fn(),
   get: vi.fn(),
   delete: vi.fn(),
-};
+}));
 
 // Mock next/headers
 vi.mock("next/headers", () => ({

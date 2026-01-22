@@ -119,7 +119,7 @@ export function PageLayout({
         {/* Scrollable content area with scroll shadows */}
         <div className="relative flex-1 min-h-0">
           <main ref={setElement} className="h-full overflow-auto" data-overlayscrollbars-initialize>
-            <div className="mx-auto w-full min-h-full" style={contentStyle}>
+            <div className="mx-auto w-full min-h-full" data-page-content style={contentStyle}>
               {children}
             </div>
           </main>

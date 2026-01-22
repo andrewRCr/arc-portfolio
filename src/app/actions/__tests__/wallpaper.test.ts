@@ -8,12 +8,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { syncWallpaperToCookie } from "../wallpaper";
 import { WALLPAPER_COOKIE_NAME } from "@/config/storage";
 
-// Mock cookie store
-const mockCookieStore = {
+// Use vi.hoisted to create mock at hoist-time, avoiding TDZ with vi.mock factory
+const mockCookieStore = vi.hoisted(() => ({
   set: vi.fn(),
   get: vi.fn(),
   delete: vi.fn(),
-};
+}));
 
 // Mock next/headers
 vi.mock("next/headers", () => ({

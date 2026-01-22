@@ -139,11 +139,12 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
                       key={skill.name}
                       value={skill.name}
                       onSelect={() => handleSkillToggle(skill.name)}
+                      role="checkbox"
+                      aria-checked={isSelected}
                       className="flex items-center gap-2"
                     >
                       <div
-                        role="checkbox"
-                        aria-checked={isSelected}
+                        aria-hidden="true"
                         className={`flex size-4 shrink-0 items-center justify-center rounded-sm border-2 ${
                           isSelected
                             ? "border-secondary bg-secondary text-secondary-foreground"

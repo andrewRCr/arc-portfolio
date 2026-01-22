@@ -7,20 +7,24 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ContactForm } from "../ContactForm";
 
 // Mock fetch for form submission
 const mockFetch = vi.fn();
-global.fetch = mockFetch;
 
 describe("ContactForm", () => {
   beforeEach(() => {
+    vi.stubGlobal("fetch", mockFetch);
     mockFetch.mockReset();
     mockFetch.mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({ success: true }),
     });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   describe("Form Rendering", () => {

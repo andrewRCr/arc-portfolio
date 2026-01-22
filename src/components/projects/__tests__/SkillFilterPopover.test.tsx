@@ -222,10 +222,9 @@ describe("SkillFilterPopover", () => {
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      // Find React option and verify it has checked state
+      // CommandItem has aria-checked - find by text and verify attribute
       const reactOption = screen.getByText("React").closest("[cmdk-item]");
-      const checkbox = within(reactOption as HTMLElement).getByRole("checkbox");
-      expect(checkbox).toBeChecked();
+      expect(reactOption).toHaveAttribute("aria-checked", "true");
     });
   });
 

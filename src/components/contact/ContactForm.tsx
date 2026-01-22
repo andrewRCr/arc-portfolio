@@ -18,10 +18,11 @@ import { z } from "zod";
 const MESSAGE_MAX_LENGTH = 2500;
 
 const contactSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().min(1, "Email is required").email("Please enter a valid email"),
+  name: z.string().trim().min(1, "Name is required"),
+  email: z.string().trim().min(1, "Email is required").email("Please enter a valid email"),
   message: z
     .string()
+    .trim()
     .min(1, "Message is required")
     .max(MESSAGE_MAX_LENGTH, `Message must be ${MESSAGE_MAX_LENGTH} characters or less`),
   website: z.string().optional(), // Honeypot field

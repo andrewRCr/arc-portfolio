@@ -92,7 +92,7 @@ skills logo system with project filtering.
         - Created `src/components/skills/SkillLogoGrid.tsx`
         - Props: `skills`, `layout` (row | grid), `size` (sm | md | lg), `linkToProjects`, `className`
         - SVG rendering via `getSkillIcon()`, graceful skip for missing icons
-        - Optional Link wrapping to `/projects?skill=SkillName`
+        - Optional Link wrapping to `/projects?skills=SkillName`
 
     - [x] **1.3.c Run tests - all 19 tests pass**
 
@@ -162,7 +162,7 @@ skills logo system with project filtering.
         - 6 categories in 2-column DetailCard grid
         - Primary skills (with icons) as centered SkillLogoGrid rows
         - Secondary skills (text-only) as linked text lists below
-        - All skills link to `/projects?skill=` filter
+        - All skills link to `/projects?skills=` filter
 
     - [x] **3.2.b Visual polish for desktop**
         - Reduced grid gap (gap-4) to fit 1440p without scroll

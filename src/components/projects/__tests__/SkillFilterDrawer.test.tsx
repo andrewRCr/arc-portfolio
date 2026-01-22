@@ -186,11 +186,9 @@ describe("SkillFilterDrawer", () => {
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      // Find React option and verify it has checked state
-      const reactItem = screen.getByText("React").closest("[data-skill-item]");
-      expect(reactItem).not.toBeNull();
-      const checkbox = within(reactItem as HTMLElement).getByRole("checkbox");
-      expect(checkbox).toBeChecked();
+      // CommandItem has aria-checked - find by text and verify attribute
+      const reactOption = screen.getByText("React").closest("[data-skill-item]");
+      expect(reactOption).toHaveAttribute("aria-checked", "true");
     });
   });
 
@@ -306,10 +304,9 @@ describe("SkillFilterDrawer", () => {
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      const reactItem = screen.getByText("React").closest("[data-skill-item]");
-      expect(reactItem).not.toBeNull();
-      const checkbox = within(reactItem as HTMLElement).getByRole("checkbox");
-      expect(checkbox).toHaveAttribute("aria-checked", "true");
+      // CommandItem has aria-checked - find by text and verify attribute
+      const reactOption = screen.getByText("React").closest("[data-skill-item]");
+      expect(reactOption).toHaveAttribute("aria-checked", "true");
     });
   });
 });

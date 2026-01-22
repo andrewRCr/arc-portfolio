@@ -881,14 +881,9 @@ html[data-env-preview="false"] [data-window-container] {
 
 /* Projects listing - mobile: reduce content top padding (header provides sufficient spacing) */
 @media (max-width: 639px) {
-  [data-page="projects"] [data-projects-content] {
-    padding-top: 4px !important;
+  [data-page="projects"] [data-page-content] {
+    padding-top: 8px !important;
   }
-}
-
-/* Projects listing - mobile (scrollbar) */
-[data-page="projects"] .os-scrollbar-vertical {
-  padding-top: 30px;
 }
 
 /* Project detail - mobile: 165px = DetailHeaderCompact height (~140px) + visual offset */

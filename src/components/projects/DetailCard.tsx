@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 interface DetailCardProps {
   /** Section title displayed in transparent header area */
   title: string;
-  /** Content displayed in opaque card body */
+  /** Content displayed in semi-transparent card body */
   children: React.ReactNode;
   /** Optional className for spacing/layout (e.g., "mt-8") */
   className?: string;

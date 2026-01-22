@@ -151,12 +151,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
     }
 
+    // Timeout to prevent indefinite hangs if Zeptomail is unresponsive
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     const zeptomailResponse = await fetch("https://api.zeptomail.com/v1.1/email", {
       method: "POST",
       headers: {
         Authorization: apiKey,
         "Content-Type": "application/json",
       },
+      signal: controller.signal,
       body: JSON.stringify({
         from: {
           address: emailFrom,
@@ -189,6 +194,8 @@ ${message}
         `.trim(),
       }),
     });
+
+    clearTimeout(timeoutId);
 
     if (!zeptomailResponse.ok) {
       const errorData = await zeptomailResponse.json().catch(() => ({}));

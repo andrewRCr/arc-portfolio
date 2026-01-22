@@ -51,17 +51,17 @@ export function filterProjectsBySkill(projects: Project[], skillName: string): P
  */
 export function filterProjectsBySkills(projects: Project[], skills: string[]): Project[] {
   // Normalize skills: trim whitespace, lowercase, filter out empty strings
-  const normalizedSkills = skills.map((skill) => skill.trim().toLowerCase()).filter((skill) => skill.length > 0);
+  const normalizedSkills = new Set(
+    skills.map((skill) => skill.trim().toLowerCase()).filter((skill) => skill.length > 0)
+  );
 
   // If no valid skills provided, return all projects (no filtering)
-  if (normalizedSkills.length === 0) {
+  if (normalizedSkills.size === 0) {
     return projects;
   }
 
   // Filter projects where any tag matches ANY of the skills (OR logic)
-  const filtered = projects.filter((project) =>
-    project.tags.some((tag) => normalizedSkills.includes(tag.toLowerCase()))
-  );
+  const filtered = projects.filter((project) => project.tags.some((tag) => normalizedSkills.has(tag.toLowerCase())));
 
   // Sort by order field (ascending - lower order = higher priority)
   return filtered.sort((a, b) => a.order - b.order);

@@ -24,12 +24,15 @@ const iconMap: Partial<Record<SocialIcon, IconComponent>> = {
   nexusmods: NexusModsIcon,
 };
 
+// Pre-encode email since contact.email is static
+const encodedEmail = encodeEmail(contact.email);
+
 /** Full button style with icon + label (tablet+) */
 function FullContactLinks() {
   return (
     <div className="flex flex-wrap gap-3">
       {/* Email - obfuscated mailto button */}
-      <ObfuscatedMailtoButton encoded={encodeEmail(contact.email)} />
+      <ObfuscatedMailtoButton encoded={encodedEmail} />
 
       {/* Social Links */}
       {contact.socialLinks
@@ -58,7 +61,7 @@ function CompactContactLinks() {
   return (
     <div className="flex justify-center gap-4">
       {/* Email - obfuscated mailto button, icon only */}
-      <ObfuscatedMailtoButton encoded={encodeEmail(contact.email)} iconOnly />
+      <ObfuscatedMailtoButton encoded={encodedEmail} iconOnly />
 
       {/* Social Links - icon only */}
       {contact.socialLinks

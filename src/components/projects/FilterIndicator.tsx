@@ -51,6 +51,7 @@ export default function FilterIndicator({ skills, onRemoveSkill, onClearAll }: F
           size="sm"
           onClick={onClearAll}
           className="min-h-11 sm:min-h-0 sm:h-auto px-2 py-1 text-xs text-muted-foreground hover:text-accent-foreground"
+          aria-label="Clear all filters"
         >
           Clear all
         </Button>

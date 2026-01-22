@@ -29,6 +29,7 @@ describe("Skills Interface", () => {
       expect(skillList.length).toBeGreaterThan(0);
 
       skillList.forEach((skill) => {
+        expect(skill).not.toBeNull();
         expect(typeof skill).toBe("object");
         expect(typeof skill.name).toBe("string");
         expect(skill.name.length).toBeGreaterThan(0);

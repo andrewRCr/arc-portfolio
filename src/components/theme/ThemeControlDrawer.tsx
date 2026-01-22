@@ -75,6 +75,7 @@ export function ThemeControlDrawer() {
   return (
     <>
       <ScreenReaderAnnounce message={announcement} />
+      {/* aria-describedby={undefined} explicitly passed to suppress warning when no description needed */}
       <MobileDrawer open={open} onOpenChange={setOpen} trigger={trigger} title="Theme" aria-describedby={undefined}>
         {/* Theme Selector */}
         <div className="flex justify-center">

@@ -33,7 +33,9 @@ const featuredOrderDesktop = [
 const featuredOrderMobile = ["TypeScript", "React", "Python", "Django", "C#", ".NET"];
 
 const getFeaturedSkills = (order: string[]) =>
-  order.map((name) => allFeaturedSkills.find((s) => s.name === name)).filter((s) => s !== undefined);
+  order
+    .map((name) => allFeaturedSkills.find((s) => s.name === name))
+    .filter((s): s is (typeof allFeaturedSkills)[number] => s !== undefined);
 
 export default function Home() {
   const isPhone = useIsPhone();

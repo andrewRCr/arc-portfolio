@@ -152,11 +152,12 @@ export default function SkillFilterDrawer({ allProjects, selectedSkills, onSkill
                       value={skill.name}
                       onSelect={() => handleSkillToggle(skill.name)}
                       data-skill-item
+                      role="checkbox"
+                      aria-checked={isSelected}
                       className="min-h-11 flex items-center gap-3 px-3 [-webkit-tap-highlight-color:transparent]"
                     >
                       <div
-                        role="checkbox"
-                        aria-checked={isSelected}
+                        aria-hidden="true"
                         className={`flex size-5 shrink-0 items-center justify-center rounded-sm border-2 ${
                           isSelected
                             ? "border-secondary bg-secondary text-secondary-foreground"

@@ -42,7 +42,7 @@ export function ObfuscatedMailtoButton({ encoded, className = "", iconOnly = fal
   // Server-side and decode failure: render disabled-looking button
   if (!email) {
     return (
-      <span className={`${buttonClasses} opacity-50 ${className}`} aria-label="Email">
+      <span className={`${buttonClasses} opacity-50 ${className}`} aria-label="Email (loading)" aria-disabled="true">
         <Mail className="h-5 w-5" />
         {!iconOnly && <span className="font-medium">Email</span>}
       </span>

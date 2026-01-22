@@ -24,7 +24,6 @@ of the project portfolio by technology.
 ## Metrics
 
 - **Phases Completed**: 7 phases
-- **Commits**: 63 commits on feature branch
 - **Key Components Created**:
     - `SkillLogoGrid` - SVG logo grid with tooltip and project linking
     - `SkillFilterPopover` / `SkillFilterDrawer` - Desktop/mobile filter controls

@@ -78,11 +78,14 @@ export function SkillLogoGrid({
   linkToProjects = false,
   className,
 }: SkillLogoGridProps) {
-  // Filter to skills that have valid icons
-  const skillsWithIcons = skills.filter((skill) => {
-    if (!skill.iconSlug) return false;
-    return getSkillIcon(skill.iconSlug) !== null;
-  });
+  // Precompute icons once to avoid double lookups
+  const skillsWithIcons = skills
+    .map((skill) => {
+      if (!skill.iconSlug) return null;
+      const icon = getSkillIcon(skill.iconSlug);
+      return icon ? { skill, icon } : null;
+    })
+    .filter((item): item is { skill: Skill; icon: NonNullable<ReturnType<typeof getSkillIcon>> } => item !== null);
 
   // Apply row gap classes only for row layout (grid has built-in gap)
   const gapClass = layout === "row" ? rowGapClasses[gap] : "";
@@ -92,10 +95,7 @@ export function SkillLogoGrid({
 
   return (
     <div className={cn(layoutClasses[layout], gapClass, className)}>
-      {skillsWithIcons.flatMap((skill, index) => {
-        // Icon guaranteed non-null by filter above
-        const icon = getSkillIcon(skill.iconSlug!)!;
-
+      {skillsWithIcons.flatMap(({ skill, icon }, index) => {
         const logo = (
           <svg
             viewBox={icon.viewBox ?? "0 0 24 24"}

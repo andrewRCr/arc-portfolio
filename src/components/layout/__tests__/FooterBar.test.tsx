@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { checkA11y } from "@tests/test-utils";
 import { FooterBar } from "../FooterBar";
@@ -47,12 +47,9 @@ describe("FooterBar", () => {
       render(<FooterBar />);
 
       // Email link uses obfuscation - renders after hydration
-      await waitFor(() => {
-        const emailLink = screen.getByRole("link", { name: /email/i });
-        expect(emailLink).toBeInTheDocument();
-        expect(emailLink).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
-        expect(emailLink).not.toHaveAttribute("target");
-      });
+      const emailLink = await screen.findByRole("link", { name: /email/i });
+      expect(emailLink).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
+      expect(emailLink).not.toHaveAttribute("target");
     });
   });
 
