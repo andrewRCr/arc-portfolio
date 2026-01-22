@@ -134,6 +134,7 @@ export function SkillLogoGrid({
 
         // Insert line break on mobile for balanced rows (e.g., 5/5, 4/4, 4/3)
         // Skip for 6 or fewer icons (single row on mobile)
+        // flatMap pattern: return [element] normally, [element, break] to insert break after this item
         if (index === breakIndex && layout === "row" && skillsWithIcons.length > 6) {
           return [element, <div key="break" className="w-full sm:hidden" aria-hidden="true" />];
         }

@@ -13,10 +13,11 @@ import { kv } from "@vercel/kv";
 const MESSAGE_MAX_LENGTH = 2500;
 
 const contactSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().min(1, "Email is required").email("Please enter a valid email"),
+  name: z.string().trim().min(1, "Name is required"),
+  email: z.string().trim().min(1, "Email is required").email("Please enter a valid email"),
   message: z
     .string()
+    .trim()
     .min(1, "Message is required")
     .max(MESSAGE_MAX_LENGTH, `Message must be ${MESSAGE_MAX_LENGTH} characters or less`),
   website: z.string().optional(), // Honeypot field
@@ -155,35 +156,36 @@ export async function POST(request: Request) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-    const zeptomailResponse = await fetch("https://api.zeptomail.com/v1.1/email", {
-      method: "POST",
-      headers: {
-        Authorization: apiKey,
-        "Content-Type": "application/json",
-      },
-      signal: controller.signal,
-      body: JSON.stringify({
-        from: {
-          address: emailFrom,
-          name: emailFromName,
+    try {
+      const zeptomailResponse = await fetch("https://api.zeptomail.com/v1.1/email", {
+        method: "POST",
+        headers: {
+          Authorization: apiKey,
+          "Content-Type": "application/json",
         },
-        to: [
-          {
-            email_address: {
-              address: emailTo,
-              name: "Andrew Creekmore",
-            },
+        signal: controller.signal,
+        body: JSON.stringify({
+          from: {
+            address: emailFrom,
+            name: emailFromName,
           },
-        ],
-        subject: `Portfolio Contact: ${sanitizeHeaderValue(name)}`,
-        htmlbody: `
+          to: [
+            {
+              email_address: {
+                address: emailTo,
+                name: "Andrew Creekmore",
+              },
+            },
+          ],
+          subject: `Portfolio Contact: ${sanitizeHeaderValue(name)}`,
+          htmlbody: `
           <h2>New Contact Form Submission</h2>
           <p><strong>Name:</strong> ${escapeHtml(name)}</p>
           <p><strong>Email:</strong> ${escapeHtml(email)}</p>
           <p><strong>Message:</strong></p>
           <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>
         `,
-        textbody: `
+          textbody: `
 New Contact Form Submission
 
 Name: ${name}
@@ -192,18 +194,19 @@ Email: ${email}
 Message:
 ${message}
         `.trim(),
-      }),
-    });
+        }),
+      });
 
-    clearTimeout(timeoutId);
+      if (!zeptomailResponse.ok) {
+        const errorData = await zeptomailResponse.json().catch(() => ({}));
+        console.error("[contact] Zeptomail error:", errorData);
+        return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+      }
 
-    if (!zeptomailResponse.ok) {
-      const errorData = await zeptomailResponse.json().catch(() => ({}));
-      console.error("[contact] Zeptomail error:", errorData);
-      return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+      return NextResponse.json({ success: true });
+    } finally {
+      clearTimeout(timeoutId);
     }
-
-    return NextResponse.json({ success: true });
   } catch (error) {
     if (error instanceof ZodError) {
       // Should be caught by safeParse above, but handle just in case
