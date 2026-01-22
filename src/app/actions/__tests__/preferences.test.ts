@@ -43,21 +43,13 @@ describe("setPalettePreference", () => {
     it("sets cookie for valid palette (gruvbox)", async () => {
       await setPalettePreference("gruvbox");
 
-      expect(mockCookieStore.set).toHaveBeenCalledWith(
-        PALETTE_COOKIE_NAME,
-        "gruvbox",
-        expect.any(Object)
-      );
+      expect(mockCookieStore.set).toHaveBeenCalledWith(PALETTE_COOKIE_NAME, "gruvbox", expect.any(Object));
     });
 
     it("sets cookie for valid palette (rose-pine)", async () => {
       await setPalettePreference("rose-pine");
 
-      expect(mockCookieStore.set).toHaveBeenCalledWith(
-        PALETTE_COOKIE_NAME,
-        "rose-pine",
-        expect.any(Object)
-      );
+      expect(mockCookieStore.set).toHaveBeenCalledWith(PALETTE_COOKIE_NAME, "rose-pine", expect.any(Object));
     });
 
     it("sets cookie with 1-year maxAge", async () => {

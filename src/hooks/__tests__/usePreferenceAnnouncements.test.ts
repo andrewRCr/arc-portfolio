@@ -43,10 +43,9 @@ describe("usePreferenceAnnouncements", () => {
     });
 
     it("does not announce initial values", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       // Re-render with same props shouldn't announce
       rerender(defaultProps);
@@ -57,10 +56,9 @@ describe("usePreferenceAnnouncements", () => {
 
   describe("theme changes", () => {
     it("announces theme change", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({ ...defaultProps, activeTheme: "gruvbox" });
 
@@ -68,10 +66,9 @@ describe("usePreferenceAnnouncements", () => {
     });
 
     it("formats multi-word theme names correctly", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({ ...defaultProps, activeTheme: "rose-pine" });
 
@@ -81,10 +78,9 @@ describe("usePreferenceAnnouncements", () => {
 
   describe("wallpaper changes", () => {
     it("announces wallpaper change", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({ ...defaultProps, activeWallpaper: "noise-1" });
 
@@ -94,10 +90,9 @@ describe("usePreferenceAnnouncements", () => {
 
   describe("mode changes", () => {
     it("announces mode change", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({ ...defaultProps, mode: "light" });
 
@@ -105,10 +100,9 @@ describe("usePreferenceAnnouncements", () => {
     });
 
     it("does not announce when mode becomes undefined", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({ ...defaultProps, mode: undefined });
 
@@ -118,10 +112,9 @@ describe("usePreferenceAnnouncements", () => {
 
   describe("layout changes", () => {
     it("announces layout change to full", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({ ...defaultProps, layoutMode: "full" });
 
@@ -129,10 +122,9 @@ describe("usePreferenceAnnouncements", () => {
     });
 
     it("announces layout change to boxed", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: { ...defaultProps, layoutMode: "full" as LayoutMode } }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: { ...defaultProps, layoutMode: "full" as LayoutMode },
+      });
 
       rerender({ ...defaultProps, layoutMode: "boxed" });
 
@@ -142,10 +134,9 @@ describe("usePreferenceAnnouncements", () => {
 
   describe("multiple changes", () => {
     it("combines multiple changes into single announcement", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({
         activeTheme: "gruvbox",
@@ -164,10 +155,9 @@ describe("usePreferenceAnnouncements", () => {
 
   describe("announcement clearing", () => {
     it("clears announcement after 1 second", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       rerender({ ...defaultProps, activeTheme: "gruvbox" });
       expect(result.current).toBe("Theme changed to Gruvbox");
@@ -180,10 +170,9 @@ describe("usePreferenceAnnouncements", () => {
     });
 
     it("allows repeated announcements of same value after clearing", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       // Change to gruvbox
       rerender({ ...defaultProps, activeTheme: "gruvbox" });
@@ -210,10 +199,9 @@ describe("usePreferenceAnnouncements", () => {
 
   describe("no change", () => {
     it("does not announce when props stay the same", () => {
-      const { result, rerender } = renderHook(
-        (props: HookProps) => usePreferenceAnnouncements(props),
-        { initialProps: defaultProps }
-      );
+      const { result, rerender } = renderHook((props: HookProps) => usePreferenceAnnouncements(props), {
+        initialProps: defaultProps,
+      });
 
       // Force a re-render with identical props
       rerender({ ...defaultProps });
