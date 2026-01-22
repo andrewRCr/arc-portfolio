@@ -6,7 +6,7 @@ export default function SkillsPage() {
   return (
     <PageLayout
       pageId="skills"
-      header={<PageHeader title="Skills & Technologies" subtitle="Technical proficiencies across the full stack." />}
+      header={<PageHeader title="Skills & Technologies" subtitle="Proficiencies across the full stack." />}
     >
       <SkillsSection />
     </PageLayout>

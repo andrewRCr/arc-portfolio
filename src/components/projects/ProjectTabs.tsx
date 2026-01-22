@@ -83,27 +83,33 @@ export default function ProjectTabs() {
   };
 
   return (
-    <div role="tablist" aria-label="Project categories" className="mx-4 flex items-end gap-2 border-b border-border/50">
-      {TABS.map((tab) => (
-        <button
-          key={tab}
-          ref={(el) => {
-            tabRefs.current.set(tab, el);
-          }}
-          id={`tab-${tab}`}
-          role="tab"
-          aria-selected={activeTab === tab}
-          aria-controls={`panel-${tab}`}
-          tabIndex={activeTab === tab ? 0 : -1}
-          onClick={() => handleTabChange(tab)}
-          onKeyDown={(e) => handleKeyDown(tab, e)}
-          className={`min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-mono text-sm font-semibold transition-colors ${
-            activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          {TAB_LABELS[tab]}
-        </button>
-      ))}
+    <div className="mx-4 flex justify-center sm:block">
+      <div
+        role="tablist"
+        aria-label="Project categories"
+        className="inline-flex min-h-11 items-end gap-2 border-b border-border/50 sm:flex"
+      >
+        {TABS.map((tab) => (
+          <button
+            key={tab}
+            ref={(el) => {
+              tabRefs.current.set(tab, el);
+            }}
+            id={`tab-${tab}`}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`panel-${tab}`}
+            tabIndex={activeTab === tab ? 0 : -1}
+            onClick={() => handleTabChange(tab)}
+            onKeyDown={(e) => handleKeyDown(tab, e)}
+            className={`min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-mono text-sm font-semibold transition-colors ${
+              activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {TAB_LABELS[tab]}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

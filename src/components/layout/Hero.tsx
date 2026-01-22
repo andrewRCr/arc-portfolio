@@ -1,7 +1,13 @@
 "use client";
 
+import { type ReactNode } from "react";
 import { SITE } from "@/config/site";
 import { useIsPhone } from "@/hooks/useMediaQuery";
+
+interface HeroProps {
+  /** Optional content to render between tagline and "Featured Projects" heading */
+  children?: ReactNode;
+}
 
 /**
  * Hero Component
@@ -15,7 +21,7 @@ import { useIsPhone } from "@/hooks/useMediaQuery";
  * - Tablet: Two-line tagline
  * - Desktop: Single line with pipe separator
  */
-export function Hero() {
+export function Hero({ children }: HeroProps) {
   const isPhone = useIsPhone();
 
   const renderTagline = () => {
@@ -54,7 +60,13 @@ export function Hero() {
         </div>
       </div>
 
-      <h2 className="mt-4 md:mt-2 mb-1 text-sm font-mono text-muted-foreground">Featured Projects</h2>
+      {children && <div className="mt-2 md:mt-0 flex justify-center">{children}</div>}
+
+      <h2
+        className={`mb-1 md:mx-4 text-sm font-mono text-muted-foreground ${children ? "mt-4 md:mt-8" : "mt-4 md:mt-2"}`}
+      >
+        Featured Projects
+      </h2>
     </div>
   );
 }

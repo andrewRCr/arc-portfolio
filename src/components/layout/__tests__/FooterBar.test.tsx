@@ -43,11 +43,11 @@ describe("FooterBar", () => {
       });
     });
 
-    it("renders Email link without target=_blank", () => {
+    it("renders Email link without target=_blank (after hydration)", async () => {
       render(<FooterBar />);
 
-      const emailLink = screen.getByRole("link", { name: /email/i });
-      expect(emailLink).toBeInTheDocument();
+      // Email link uses obfuscation - renders after hydration
+      const emailLink = await screen.findByRole("link", { name: /email/i });
       expect(emailLink).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
       expect(emailLink).not.toHaveAttribute("target");
     });

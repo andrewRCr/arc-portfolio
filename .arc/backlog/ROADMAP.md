@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-18
+**Last Updated:** 2026-01-19
 
 ---
 
@@ -39,16 +39,18 @@ Transform placeholder styling into distinctive, polished design.
    - 1002 unit tests, 199 E2E tests
    - [Archive](../reference/archive/2026-q1/feature/03_content-polish-p1/)
 
-6. **Content Polish P2**
-   - Plan: `.arc/backlog/feature/plan-content-polish-p2.md`
-   - Scope: Skills page reorganization, About/Contact copy polish
-   - Dependencies: Content Polish P1 (project showcase complete)
+6. **Content Polish P2** ← In Progress
+   - Task list: `.arc/active/feature/tasks-content-polish-p2.md`
+   - Branch: `feature/content-polish-p2`
+   - Scope: Skills page reorganization, Contact form, About page polish
+   - Dependencies: Content Polish P1 ✅
 
 7. **Visual Polish**
-   - Plan: `.arc/backlog/feature/plan-twm-startup-animation.md` (primary)
-   - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md` (additional items)
+   - Plan: `.arc/backlog/feature/plan-visual-polish.md` (primary, app-wide scope)
+   - Related: `.arc/backlog/feature/plan-twm-startup-animation.md` (detailed startup animation spec)
    - Rationale: Animation/transition layer after pages are structurally complete
-   - Scope: TWM startup animation, Framer Motion transitions, micro-interactions, loading states
+   - Scope: TWM startup animation, Framer Motion transitions, micro-interactions, loading states,
+     terminal vs standard aesthetic standardization (exploratory)
    - Dependencies: Content Polish P2 (can't animate incomplete pages)
 
 ### Phase C: Launch
@@ -76,11 +78,7 @@ Production readiness and deployment.
 
 Items that can wait until after initial deployment:
 
-- **Incomplete Projects** - CineXplorer, TaskFocus 2.0, ARC Framework, arc-portfolio detail page
-  (feature-flagged; enable as each project completes)
-- **Mod Portfolio Integration** - Feature flag ready, infrastructure exists
-- **Interactive Skills Filtering** - Plan exists (`plan-interactive-skills-filtering.md`)
-- **Dynamic NexusMods Stats** - API integration
+- **Incomplete Projects Strategy** - Feature-flagged until ready; enable incrementally
 - **Resume Download** - PDF generation
 - **Analytics Integration** - Vercel Analytics
 
@@ -160,6 +158,9 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Change Log
 
+- **2026-01-21**: Created `plan-visual-polish.md` as primary Visual Polish plan (app-wide scope). Includes
+  terminal vs standard aesthetic exploration. TWM startup animation plan now referenced as detailed spec.
+- **2026-01-19**: Content Polish P2 activated. PRD and task list created, moved to active, branch created.
 - **2026-01-18**: Content Polish P1 completed and archived. Split into P1 (project showcase) and P2 (skills/about/contact).
   Renumbered items 7-9 to 8-10.
 - **2026-01-13**: Theme & Wallpaper Control System completed and archived

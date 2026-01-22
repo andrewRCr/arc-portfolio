@@ -12,7 +12,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-react";
-import { useHasMounted } from "@/hooks/useHasMounted";
+import { useDelayedShow } from "@/hooks/useDelayedShow";
 import { useResetPreferences } from "@/hooks/useResetPreferences";
 import { usePreferenceAnnouncements } from "@/hooks/usePreferenceAnnouncements";
 import { useTheme } from "next-themes";
@@ -28,10 +28,8 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { ThemeSelector } from "./ThemeSelector";
 import { WallpaperPicker } from "./WallpaperPicker";
-import { ThemeControlPlaceholder } from "./ThemeControlPlaceholder";
 
 export function ThemeControl() {
-  const mounted = useHasMounted();
   const [open, setOpen] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(0);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -41,6 +39,7 @@ export function ThemeControl() {
   const { theme, setTheme } = useTheme();
   const swatchColors = useThemeSwatch();
   const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
+  const showSwatch = useDelayedShow(150);
   const { windowContainerMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const announcement = usePreferenceAnnouncements({
     activeTheme,
@@ -95,11 +94,6 @@ export function ThemeControl() {
     setLayoutMode(layoutMode === "wide" ? "boxed" : "wide");
   };
 
-  // Before hydration: render placeholder to avoid layout shift and color mismatch
-  if (!mounted) {
-    return <ThemeControlPlaceholder />;
-  }
-
   return (
     <>
       <ScreenReaderAnnounce message={announcement} />
@@ -111,7 +105,13 @@ export function ThemeControl() {
             aria-label="Open theme settings"
             className="group flex items-center gap-1 px-1.5 h-7 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
           >
-            <ThemeSwatch colors={swatchColors} size={16} />
+            {showSwatch ? (
+              <span className="animate-in fade-in duration-300">
+                <ThemeSwatch colors={swatchColors} size={16} />
+              </span>
+            ) : (
+              <span className="w-32 h-4" /> // Placeholder for layout stability
+            )}
             <ChevronDown
               data-testid="theme-control-chevron"
               className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors"

@@ -37,13 +37,33 @@ export const GAME_POOL: string[] = projects.filter((p) => p.featured && p.projec
 /** Derive mod pool: featured mods */
 export const MOD_POOL: string[] = mods.filter((m) => m.featured).map((m) => m.slug);
 
+/** localStorage key for E2E deterministic mode */
+export const E2E_DETERMINISTIC_KEY = "e2e-deterministic";
+
 /**
- * Selects a random item from an array
+ * Check if deterministic mode is enabled (for E2E visual regression tests).
+ * Returns true if localStorage flag is set, false otherwise.
+ * Safe to call in SSR context (returns false).
+ */
+function isDeterministicMode(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return localStorage.getItem(E2E_DETERMINISTIC_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Selects an item from an array - random normally, first item in deterministic mode.
  * @throws Error if pool is empty
  */
-function selectRandom<T>(pool: T[]): T {
+function selectFromPool<T>(pool: T[]): T {
   if (pool.length === 0) {
-    throw new Error("selectRandom called with empty pool");
+    throw new Error("selectFromPool called with empty pool");
+  }
+  if (isDeterministicMode()) {
+    return pool[0];
   }
   const index = Math.floor(Math.random() * pool.length);
   return pool[index];
@@ -72,9 +92,9 @@ export function selectFeaturedProjects(): FeaturedProject[] {
   }
 
   return [
-    { slug: selectRandom(SOFTWARE_POOL), type: "software" },
+    { slug: selectFromPool(SOFTWARE_POOL), type: "software" },
     { slug: FRAMEWORK_SLUG, type: "framework" },
-    { slug: selectRandom(GAME_POOL), type: "game" },
-    { slug: selectRandom(MOD_POOL), type: "mod" },
+    { slug: selectFromPool(GAME_POOL), type: "game" },
+    { slug: selectFromPool(MOD_POOL), type: "mod" },
   ];
 }

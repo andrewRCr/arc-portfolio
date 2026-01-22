@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
+import { Github, Linkedin, type LucideIcon } from "lucide-react";
 import { contact } from "@/data/contact";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import type { SocialIcon } from "@/types/contact";
 import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
+import { ObfuscatedMailtoIcon } from "@/components/contact/ObfuscatedMailtoIcon";
+import { encodeEmail } from "@/lib/email-utils";
 import { WindowContainer } from "./WindowContainer";
 import { TouchTarget } from "@/components/ui/TouchTarget";
 
@@ -13,9 +15,9 @@ type IconComponent = LucideIcon | typeof NexusModsIcon;
 /**
  * Map of icon identifiers to icon components.
  * Keys must match SocialIcon type from contact types.
+ * Note: Email is handled separately via ObfuscatedMailtoIcon for scraper protection.
  */
-const iconMap: Record<SocialIcon, IconComponent> = {
-  mail: Mail,
+const iconMap: Partial<Record<SocialIcon, IconComponent>> = {
   github: Github,
   linkedin: Linkedin,
   nexusmods: NexusModsIcon,
@@ -35,7 +37,7 @@ export interface FooterBarProps {
  *
  * Minimal footer bar for the TWM (Tiling Window Manager) layout.
  * Features:
- * - Social/contact links with icons (Email, GitHub, LinkedIn, NexusMods)
+ * - Social/contact links with icons (Email [obfuscated], GitHub, LinkedIn, NexusMods)
  * - Dev-only debug page links (theme, typography)
  * - Attribution text
  * - Wrapped in WindowContainer for consistent TWM styling
@@ -60,24 +62,31 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
       >
         {/* Social Links */}
         <nav aria-label="Social links" className="flex items-center gap-1">
-          {contact.socialLinks.map((link, index) => {
-            const Icon = iconMap[link.icon];
-            const isExternal = !link.url.startsWith("mailto:");
-            const isFirst = index === 0;
-            return (
-              <TouchTarget key={link.platform} align={isFirst ? "start" : "center"}>
-                <a
-                  href={link.url}
-                  {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
-                  aria-label={link.platform}
-                  title={link.platform}
-                  className="flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Icon size={16} aria-hidden="true" />
-                </a>
-              </TouchTarget>
-            );
-          })}
+          {/* Email - obfuscated for scraper protection */}
+          <TouchTarget>
+            <ObfuscatedMailtoIcon encoded={encodeEmail(contact.email)} />
+          </TouchTarget>
+
+          {/* Other social links */}
+          {contact.socialLinks
+            .filter((link) => iconMap[link.icon])
+            .map((link) => {
+              const Icon = iconMap[link.icon]!;
+              return (
+                <TouchTarget key={link.platform}>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.platform}
+                    title={link.platform}
+                    className="flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Icon size={16} aria-hidden="true" />
+                  </a>
+                </TouchTarget>
+              );
+            })}
         </nav>
 
         {/* Right side: Dev links (dev-only) + Attribution */}
@@ -93,6 +102,9 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
               </Link>
               <Link href="/dev/wallpaper-test" className="text-accent hover:text-accent/80 transition-colors">
                 [wallpaper]
+              </Link>
+              <Link href="/dev/sandbox" className="text-accent hover:text-accent/80 transition-colors">
+                [sandbox]
               </Link>
             </nav>
           )}

@@ -260,3 +260,12 @@ for complete formatting rules, test-first patterns, and examples.
 - Mark completed: `- [x] 1.1 Sub-task description`
 - Task list is a living document, updated throughout implementation
 - See [Task Processing Loop](3_process-task-loop.md) for execution workflow
+
+## Next Step (Optional)
+
+When ready to begin implementation, activate the work unit:
+
+**→ [activate-work-unit.md](supplemental/activate-work-unit.md)** - Create branch, move docs to active, update tracking
+
+This step can be deferred if planning ahead (e.g., creating task lists for future work). Activate when
+implementation is about to begin.

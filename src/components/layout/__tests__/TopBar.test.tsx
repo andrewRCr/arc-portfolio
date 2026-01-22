@@ -42,12 +42,12 @@ describe("TopBar", () => {
       expect(screen.getByTestId("theme-controls")).toBeInTheDocument();
     });
 
-    it("renders ThemeControl component", () => {
+    it("renders ThemeControl component", async () => {
       render(<TopBar />);
 
-      // ThemeControl renders the swatch trigger
+      // ThemeControl renders the swatch trigger after delayed show (hydration safety)
       // ResponsiveSwitch renders both mobile (drawer) and desktop (popover) in DOM
-      const swatches = screen.getAllByTestId("theme-swatch");
+      const swatches = await screen.findAllByTestId("theme-swatch");
       expect(swatches.length).toBeGreaterThanOrEqual(1);
     });
   });

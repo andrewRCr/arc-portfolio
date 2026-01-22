@@ -21,6 +21,9 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }));
 
+// Mock scrollIntoView (not available in jsdom, required by cmdk)
+Element.prototype.scrollIntoView = vi.fn();
+
 // Extend Vitest with accessibility matchers
 expect.extend(matchers);
 

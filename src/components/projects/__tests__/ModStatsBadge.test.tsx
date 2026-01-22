@@ -3,8 +3,15 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ModStatsBadge, ModStatsGroup } from "../ModStatsBadge";
+
+// Mock useIsPhone hook
+vi.mock("@/hooks/useMediaQuery", () => ({
+  useIsPhone: vi.fn(() => false), // Default to desktop
+}));
+
+import { useIsPhone } from "@/hooks/useMediaQuery";
 
 describe("ModStatsBadge", () => {
   describe("renders correct icon and value", () => {
@@ -122,5 +129,51 @@ describe("ModStatsGroup", () => {
   it("accepts custom className", () => {
     const { container } = render(<ModStatsGroup endorsements={100} className="custom-container" />);
     expect(container.firstChild).toHaveClass("custom-container");
+  });
+
+  describe("phone viewport (compact badge)", () => {
+    beforeEach(() => {
+      vi.mocked(useIsPhone).mockReturnValue(true);
+    });
+
+    afterEach(() => {
+      // Restore to desktop default (mockReset would return undefined, not false)
+      vi.mocked(useIsPhone).mockReturnValue(false);
+    });
+
+    it("renders single compact badge on phone", () => {
+      render(<ModStatsGroup uniqueDownloads={5951} endorsements={212} />);
+      // On phone, all stats combined in one badge with dot separators
+      const badge = screen.getByLabelText(/212 endorsements, 5,951 unique downloads/);
+      expect(badge).toBeInTheDocument();
+    });
+
+    it("renders all stats in compact format with separators", () => {
+      render(<ModStatsGroup downloads={1000} uniqueDownloads={500} endorsements={50} />);
+      // Should have dot separators between stats (2 separators for 3 stats)
+      const separators = screen.getAllByText("·");
+      expect(separators).toHaveLength(2);
+    });
+
+    it("shows stats in correct order in compact badge", () => {
+      render(<ModStatsGroup downloads={9000} uniqueDownloads={6000} endorsements={200} />);
+      const badge = screen.getByLabelText(/200 endorsements, 6,000 unique downloads, 9,000 total downloads/);
+      expect(badge).toBeInTheDocument();
+    });
+
+    it("formats numbers in compact badge", () => {
+      render(<ModStatsGroup uniqueDownloads={5951} />);
+      expect(screen.getByText("6K")).toBeInTheDocument();
+    });
+
+    it("returns null when no stats provided on phone", () => {
+      const { container } = render(<ModStatsGroup />);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("accepts custom className on phone", () => {
+      const { container } = render(<ModStatsGroup endorsements={100} className="phone-class" />);
+      expect(container.firstChild).toHaveClass("phone-class");
+    });
   });
 });

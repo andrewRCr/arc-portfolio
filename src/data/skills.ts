@@ -9,62 +9,82 @@
 import { Skills } from "@/types/skills";
 
 export const skills: Skills = {
-  Languages: ["TypeScript", "JavaScript", "Python", "C#", "C++", "SQL", "HTML", "CSS"],
+  // Special row: Languages (displayed as centered hero, no card)
+  Languages: [
+    { name: "TypeScript", featured: true, showInDefaultFilters: true, iconSlug: "typescript" },
+    { name: "JavaScript", iconSlug: "javascript" },
+    { name: "Python", featured: true, showInDefaultFilters: true, iconSlug: "python" },
+    { name: "C#", featured: true, showInDefaultFilters: true, iconSlug: "csharp" },
+    { name: "C++", showInDefaultFilters: true, iconSlug: "cplusplus" },
+    { name: "HTML", iconSlug: "html5" },
+    { name: "CSS", iconSlug: "css" },
+  ],
 
+  // Row 1: Frontend + Backend
   Frontend: [
-    "React",
-    "Next.js",
-    "Tailwind CSS",
-    "Shadcn/ui",
-    "Chakra UI",
-    "Bootstrap",
-    "Blazor",
-    "WPF",
-    "MudBlazor",
-    "Caliburn Micro",
-    // "Framer Motion", // Planned - in development
-    // "React Hook Form", // Planned - in development
-    // "Zod", // Planned - in development
+    { name: "React", featured: true, showInDefaultFilters: true, iconSlug: "react" },
+    { name: "Next.js", featured: true, showInDefaultFilters: true, iconSlug: "nextdotjs" },
+    { name: "TanStack Query", iconSlug: "reactquery" },
+    { name: "Shadcn/ui", iconSlug: "shadcnui" },
+    { name: "Chakra UI", iconSlug: "chakraui" },
+    { name: "Blazor", featured: true, showInDefaultFilters: true, iconSlug: "blazor" },
+    { name: "WPF" },
+    { name: "MudBlazor" },
+    { name: "Bootstrap" },
+    { name: "Framer Motion", iconSlug: "framer" }, // Used in arc-portfolio; remove if startup animation not implemented
+    // { name: "React Hook Form" }, // Planned - in development
+    // { name: "Zod" }, // Planned - in development
   ],
 
   Backend: [
-    "Django",
-    "Django Ninja",
-    ".NET",
-    "Node.js",
-    "Express.js",
-    "Pydantic",
-    "Entity Framework",
-    "EJS (Embedded JavaScript)",
-    // "Celery", // Planned - in development
+    { name: "Django", featured: true, showInDefaultFilters: true, iconSlug: "django" },
+    { name: ".NET", featured: true, showInDefaultFilters: true, iconSlug: "dotnet" },
+    { name: "Node.js", showInDefaultFilters: true, iconSlug: "nodedotjs" },
+    { name: "Express.js", iconSlug: "express" },
+    { name: "Pydantic", iconSlug: "pydantic" },
+    { name: "Dapper" },
+    { name: "Django Ninja" },
+    { name: "Entity Framework" },
+    // { name: "Celery" }, // Planned - in development
   ],
 
-  Databases: ["PostgreSQL", "MongoDB", "SQL Server", "MySQL", "Redis"],
+  // Row 2: Databases + DevOps
+  Databases: [
+    { name: "PostgreSQL", showInDefaultFilters: true, iconSlug: "postgresql" },
+    { name: "MongoDB", showInDefaultFilters: true, iconSlug: "mongodb" },
+    { name: "Redis", iconSlug: "redis" },
+    { name: "SQL Server", showInDefaultFilters: true },
+  ],
 
+  "DevOps & Infrastructure": [
+    { name: "Git", iconSlug: "git" },
+    { name: "Docker", showInDefaultFilters: true, iconSlug: "docker" },
+    { name: "Vite", iconSlug: "vite" },
+    { name: "Vercel", showInDefaultFilters: true, iconSlug: "vercel" },
+    { name: "Caddy", iconSlug: "caddy" },
+    { name: "GitHub Actions", showInDefaultFilters: true, iconSlug: "githubactions" },
+    { name: "Azure DevOps" },
+  ],
+
+  // Row 3: AI + Testing
   "AI-Assisted Development": [
-    "Claude Code",
-    "GitHub Copilot",
-    "Warp",
-    "CodeRabbit",
-    "v0.dev",
-    "Gemini CLI",
-    "Codex CLI",
+    { name: "Claude Code", featured: true, showInDefaultFilters: true, iconSlug: "claude" },
+    { name: "Codex CLI", featured: true, showInDefaultFilters: true, iconSlug: "openai" },
+    { name: "Gemini CLI", showInDefaultFilters: true, iconSlug: "googlegemini" },
+    { name: "Warp", iconSlug: "warp" },
+    { name: "GitHub Copilot", iconSlug: "githubcopilot" },
+    { name: "CodeRabbit" },
   ],
-
-  "DevOps & Infrastructure": ["Git", "GitHub", "Azure DevOps", "Docker", "Vercel", "Caddy", "CI/CD", "GitHub Actions"],
 
   "Testing & Quality": [
-    "Vitest",
-    "React Testing Library",
-    "Postman",
-    "Swagger",
-    // "Playwright", // Planned - in development
+    { name: "Vitest", showInDefaultFilters: true, iconSlug: "vitest" },
+    { name: "React Testing Library", iconSlug: "testinglibrary" },
+    { name: "Pytest", showInDefaultFilters: true, iconSlug: "pytest" },
+    { name: "Postman", iconSlug: "postman" },
+    { name: "Swagger", iconSlug: "swagger" },
+    { name: "Playwright", showInDefaultFilters: true },
   ],
 
-  // "State Management & Data Fetching": [
-  //   "TanStack Query", // Planned - in development
-  //   "Redux Toolkit", // Planned - in development
-  // ],
-
-  Methodologies: ["Test-Driven Development (TDD)", "Spec-Driven Development", "Agile"],
+  // Excluded from display (filtered in SkillsSection)
+  Methodologies: [{ name: "Test-Driven Development (TDD)" }, { name: "Spec-Driven Development" }, { name: "Agile" }],
 };

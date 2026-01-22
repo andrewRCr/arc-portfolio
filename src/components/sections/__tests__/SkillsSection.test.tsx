@@ -3,76 +3,78 @@ import { describe, it, expect } from "vitest";
 import { SkillsSection } from "../SkillsSection";
 import { skills } from "@/data/skills";
 
-/**
- * Expected category count derived from SkillCategory union type.
- * Update if categories are added/removed in types/skills.ts.
- */
-const EXPECTED_CATEGORIES = Object.keys(skills).length;
+// Categories displayed in DetailCards (excludes Languages and Methodologies)
+const CARD_CATEGORIES = Object.keys(skills).filter((cat) => cat !== "Languages" && cat !== "Methodologies");
 
-describe("SkillsSection - Behavior Tests", () => {
-  describe("Category Rendering", () => {
-    it("renders all skill categories as headings", () => {
+// Derive skill samples from data for resilient tests
+const allSkills = Object.values(skills).flat();
+const sampleSkillsWithIcons = allSkills.filter((s) => s.iconSlug).slice(0, 4);
+const sampleSkillsWithoutIcons = allSkills.filter((s) => !s.iconSlug).slice(0, 3);
+
+describe("SkillsSection", () => {
+  describe("Languages Hero Row", () => {
+    it("renders Languages skills in hero row above cards", () => {
       render(<SkillsSection />);
 
-      // Verify category headings are present
-      expect(screen.getByRole("heading", { name: /languages/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /frontend/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /backend/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /databases/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /ai-assisted development/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /devops & infrastructure/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /testing & quality/i })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: /methodologies/i })).toBeInTheDocument();
+      // Languages should render but NOT in a DetailCard (no h2 heading for Languages)
+      const headings = screen.getAllByRole("heading", { level: 2 });
+      const headingTexts = headings.map((h) => h.textContent);
+      expect(headingTexts).not.toContain("Languages");
+
+      // But Languages skills should still be present (as SVG icons via SkillLogoGrid)
+      const languageSkills = skills.Languages;
+      languageSkills.forEach((skill) => {
+        if (skill.iconSlug) {
+          // Skills with icons render as links with aria-label
+          expect(screen.getByLabelText(`View projects using ${skill.name}`)).toBeInTheDocument();
+        }
+      });
+    });
+  });
+
+  describe("Category Cards", () => {
+    it("renders DetailCards for non-excluded categories", () => {
+      render(<SkillsSection />);
+
+      // Each card category should have an h2 heading (from DetailCard)
+      CARD_CATEGORIES.forEach((category) => {
+        expect(screen.getByRole("heading", { name: category, level: 2 })).toBeInTheDocument();
+      });
     });
 
-    it("renders all skill categories", () => {
+    it("does not render Methodologies category", () => {
       render(<SkillsSection />);
 
-      const headings = screen.getAllByRole("heading", { level: 3 });
-      expect(headings.length).toBe(EXPECTED_CATEGORIES);
+      expect(screen.queryByRole("heading", { name: "Methodologies" })).not.toBeInTheDocument();
+    });
+
+    it("renders correct number of category cards", () => {
+      render(<SkillsSection />);
+
+      const headings = screen.getAllByRole("heading", { level: 2 });
+      expect(headings.length).toBe(CARD_CATEGORIES.length);
     });
   });
 
   describe("Skills Rendering", () => {
-    it("renders skills for Languages category", () => {
+    it("renders skills with icons as logo grid links", () => {
       render(<SkillsSection />);
 
-      expect(screen.getByText("TypeScript")).toBeInTheDocument();
-      expect(screen.getByText("JavaScript")).toBeInTheDocument();
-      expect(screen.getByText("Python")).toBeInTheDocument();
-      expect(screen.getByText("C#")).toBeInTheDocument();
+      // Check a sampling of skills with icons render as links (derived from data)
+      sampleSkillsWithIcons.forEach((skill) => {
+        expect(screen.getByLabelText(`View projects using ${skill.name}`)).toBeInTheDocument();
+      });
     });
 
-    it("renders skills for Frontend category", () => {
+    it("renders skills without icons as text links", () => {
       render(<SkillsSection />);
 
-      expect(screen.getByText("React")).toBeInTheDocument();
-      expect(screen.getByText("Next.js")).toBeInTheDocument();
-      expect(screen.getByText("Tailwind CSS")).toBeInTheDocument();
-    });
-
-    it("renders skills for Backend category", () => {
-      render(<SkillsSection />);
-
-      expect(screen.getByText("Django")).toBeInTheDocument();
-      expect(screen.getByText("Django Ninja")).toBeInTheDocument();
-      expect(screen.getByText(".NET")).toBeInTheDocument();
-    });
-
-    it("renders skills for Databases category", () => {
-      render(<SkillsSection />);
-
-      expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
-      expect(screen.getByText("MongoDB")).toBeInTheDocument();
-    });
-
-    it("renders at least 40 total skills across all categories", () => {
-      const { container } = render(<SkillsSection />);
-
-      // Current data contains 40+ skills across 8 categories.
-      // Update threshold if skills data changes significantly.
-      const skillElements = container.querySelectorAll("li");
-      expect(skillElements.length).toBeGreaterThanOrEqual(40);
+      // Check skills without icons render as text links (derived from data)
+      sampleSkillsWithoutIcons.forEach((skill) => {
+        const link = screen.getByRole("link", { name: skill.name });
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute("href", `/projects?skills=${encodeURIComponent(skill.name)}`);
+      });
     });
   });
 
@@ -84,45 +86,23 @@ describe("SkillsSection - Behavior Tests", () => {
       expect(section).toBeInTheDocument();
     });
 
-    it("uses list structure for skills within categories", () => {
+    it("uses list structure for secondary skills", () => {
       const { container } = render(<SkillsSection />);
 
-      // One list per category
+      // ULs are used for secondary (text-only) skills
       const lists = container.querySelectorAll("ul");
-      expect(lists.length).toBe(EXPECTED_CATEGORIES);
+      expect(lists.length).toBeGreaterThan(0);
     });
-
-    // Note: Main section heading is now provided by PageHeader at page level.
-    // SkillsSection focuses on rendering skill categories (h3 headings).
   });
 
-  describe("Data Integration", () => {
-    it("renders actual skills data from data/skills.ts", () => {
-      render(<SkillsSection />);
-
-      // Verify some specific skills from each category to ensure data integration
-      expect(screen.getByText("TypeScript")).toBeInTheDocument();
-      expect(screen.getByText("React")).toBeInTheDocument();
-      expect(screen.getByText("Django")).toBeInTheDocument();
-      expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
-      expect(screen.getByText("Claude Code")).toBeInTheDocument();
-      expect(screen.getByText("Git")).toBeInTheDocument();
-      expect(screen.getByText("Vitest")).toBeInTheDocument();
-      expect(screen.getByText("Test-Driven Development (TDD)")).toBeInTheDocument();
-    });
-
+  describe("Category Order", () => {
     it("preserves category order from data structure", () => {
       render(<SkillsSection />);
 
-      const headings = screen.getAllByRole("heading", { level: 3 });
-      const categoryNames = headings.map((h) => h.textContent);
+      const headings = screen.getAllByRole("heading", { level: 2 });
+      const renderedCategories = headings.map((h) => h.textContent);
 
-      // First category should be Languages
-      expect(categoryNames[0]).toMatch(/languages/i);
-      // Second category should be Frontend
-      expect(categoryNames[1]).toMatch(/frontend/i);
-      // Third category should be Backend
-      expect(categoryNames[2]).toMatch(/backend/i);
+      expect(renderedCategories).toEqual(CARD_CATEGORIES);
     });
   });
 });

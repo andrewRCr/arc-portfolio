@@ -1,71 +1,99 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { ContactSection } from "../ContactSection";
 import { contact } from "@/data/contact";
 
-/** Escape special regex characters in a string */
-function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+/**
+ * ContactSection tests
+ *
+ * Note: ContactSection uses ResponsiveSwitch which renders BOTH mobile and desktop
+ * versions (CSS hides one). This means most elements appear twice in the DOM.
+ * Tests use getAllBy* variants and verify counts accordingly.
+ */
+describe("ContactSection", () => {
+  const socialLinks = contact.socialLinks;
 
-describe("ContactSection - Behavior Tests", () => {
-  const emailPattern = new RegExp(escapeRegex(contact.email), "i");
-  // Filter out email since ContactSection shows it separately
-  const externalSocialLinks = contact.socialLinks.filter((link) => link.icon !== "mail");
-
-  describe("Email Rendering", () => {
-    it("renders email address", () => {
+  describe("Email Link", () => {
+    it("renders email mailto links after hydration", async () => {
       render(<ContactSection />);
 
-      expect(screen.getByText(emailPattern)).toBeInTheDocument();
-    });
+      await waitFor(() => {
+        // Email links have aria-label="Email" - expect 2 (mobile + desktop)
+        const emailLinks = screen.getAllByRole("link", { name: /^email$/i });
+        expect(emailLinks.length).toBe(2);
 
-    it("renders email as mailto link", () => {
-      render(<ContactSection />);
-
-      const emailLink = screen.getByRole("link", { name: emailPattern });
-      expect(emailLink).toHaveAttribute("href", `mailto:${contact.email}`);
+        // Both should have correct mailto href
+        emailLinks.forEach((link) => {
+          expect(link).toHaveAttribute("href", `mailto:${contact.email}`);
+        });
+      });
     });
   });
 
-  describe("Social Links Rendering", () => {
-    it("renders all external social platform links", () => {
+  describe("Social Links", () => {
+    it("renders all social platform links (mobile + desktop versions)", () => {
       render(<ContactSection />);
 
-      externalSocialLinks.forEach((link) => {
-        expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
+      socialLinks.forEach((social) => {
+        // Each social link appears twice (mobile + desktop)
+        const links = screen.getAllByRole("link", { name: new RegExp(social.platform, "i") });
+        expect(links.length).toBe(2);
       });
     });
 
     it("renders correct URLs for social links", () => {
       render(<ContactSection />);
 
-      externalSocialLinks.forEach((link) => {
-        const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
-        expect(element).toHaveAttribute("href", link.url);
+      socialLinks.forEach((social) => {
+        const links = screen.getAllByRole("link", { name: new RegExp(social.platform, "i") });
+        links.forEach((link) => {
+          expect(link).toHaveAttribute("href", social.url);
+        });
       });
     });
 
     it("opens social links in new tab with security attributes", () => {
       render(<ContactSection />);
 
-      externalSocialLinks.forEach((link) => {
-        const element = screen.getByRole("link", { name: new RegExp(link.platform, "i") });
-        expect(element).toHaveAttribute("target", "_blank");
-        expect(element).toHaveAttribute("rel", "noopener noreferrer");
+      socialLinks.forEach((social) => {
+        const links = screen.getAllByRole("link", { name: new RegExp(social.platform, "i") });
+        links.forEach((link) => {
+          expect(link).toHaveAttribute("target", "_blank");
+          expect(link).toHaveAttribute("rel", "noopener noreferrer");
+        });
       });
-    });
-
-    it("renders email link plus all external social links", () => {
-      render(<ContactSection />);
-
-      const links = screen.getAllByRole("link");
-      // Should have exactly: 1 email link + external social links
-      expect(links.length).toBe(externalSocialLinks.length + 1);
     });
   });
 
-  describe("Semantic HTML Structure", () => {
+  describe("Contact Form", () => {
+    it("renders contact form with required fields", () => {
+      render(<ContactSection />);
+
+      // Forms render twice due to ResponsiveSwitch (mobile + desktop)
+      // Each form has: name input + email input + message textarea = 3 textboxes
+      // Total: 3 × 2 = 6 textboxes
+      const textInputs = screen.getAllByRole("textbox");
+      expect(textInputs.length).toBe(6);
+    });
+
+    it("renders submit buttons for both form instances", () => {
+      render(<ContactSection />);
+
+      const submitButtons = screen.getAllByRole("button", { name: /send message/i });
+      expect(submitButtons.length).toBe(2);
+    });
+
+    it("renders form labels", () => {
+      render(<ContactSection />);
+
+      // Labels render in both forms
+      expect(screen.getAllByText(/^name$/i).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText(/^message$/i).length).toBeGreaterThanOrEqual(1);
+      // Note: "Email" text appears in form labels AND mailto button, so skip that check
+    });
+  });
+
+  describe("Semantic Structure", () => {
     it("renders within a section element", () => {
       const { container } = render(<ContactSection />);
 
@@ -74,16 +102,15 @@ describe("ContactSection - Behavior Tests", () => {
     });
   });
 
-  describe("Data Integration", () => {
-    it("renders actual contact data from data/contact.ts", () => {
+  describe("Link Count Verification", () => {
+    it("renders expected total links (email + social links, doubled for responsive)", async () => {
       render(<ContactSection />);
 
-      // Verify email from contact data
-      expect(screen.getByText(emailPattern)).toBeInTheDocument();
-
-      // Verify external social platforms from contact data
-      externalSocialLinks.forEach((link) => {
-        expect(screen.getByRole("link", { name: new RegExp(link.platform, "i") })).toBeInTheDocument();
+      await waitFor(() => {
+        const allLinks = screen.getAllByRole("link");
+        // Expected: (1 email + N social links) × 2 for ResponsiveSwitch
+        const expectedCount = (1 + socialLinks.length) * 2;
+        expect(allLinks.length).toBe(expectedCount);
       });
     });
   });

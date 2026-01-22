@@ -29,8 +29,9 @@ const PAGE_HEADER_THRESHOLD = 100;
 const HOME_HERO_THRESHOLD = 150;
 
 /**
- * Hook for coordinated crossfade between full and compact detail headers.
+ * Scroll-position driven crossfade for header transitions.
  *
+ * Hook for coordinated crossfade between full and compact detail headers.
  * Both headers use the same transition zone (based on full header height),
  * but fade in opposite directions:
  * - 'out': opacity goes 1→0 as scroll increases (for full header)

@@ -74,10 +74,11 @@ describe("ThemeControl", () => {
   });
 
   describe("Collapsed State", () => {
-    it("shows ThemeSwatch with 16px size", () => {
+    it("shows ThemeSwatch with 16px size", async () => {
       render(<ThemeControl />);
 
-      const swatch = screen.getByTestId("theme-swatch");
+      // Wait for delayed swatch to appear (avoids hydration mismatch)
+      const swatch = await screen.findByTestId("theme-swatch");
       expect(swatch).toBeInTheDocument();
 
       // Verify it's the 16px variant (8 squares at 16px = 2x2 each)

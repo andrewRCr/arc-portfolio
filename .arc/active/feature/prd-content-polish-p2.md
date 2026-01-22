@@ -1,8 +1,9 @@
 # PRD: Content Polish P2 - Supporting Pages
 
 **Type:** Feature
-**Status:** Ready for Implementation
+**Status:** Complete
 **Created:** 2026-01-19
+**Completed:** 2026-01-22
 
 ---
 
@@ -112,11 +113,11 @@ pages.
     - Use existing photo from GitHub profile
 
 14. **EducationCard Component**
-    - Create styled education cards following DetailCard pattern
-    - Transparent header: degree name
-    - Body content: school name as high-emphasis badge
-    - Smaller badges: location, graduation year, GPA
-    - Cards side-by-side on desktop (reduce horizontal footprint)
+    - Create styled education cards with header/body split
+    - Header (bg-card/80): Institution name (abbreviated on phone)
+    - Body (bg-background/80): Major + degree type joined, monospace font, square corners
+    - Metadata badges (rounded): location (state abbrev on phone), year, GPA
+    - Cards side-by-side on desktop, stacked on mobile
 
 15. **Download Stats**
     - Already functional via NexusMods API (no work needed)
@@ -124,19 +125,24 @@ pages.
 ### Cross-Page: Skills Filtering
 
 16. **Filtered Projects View**
-    - Clicking skill logo navigates to `/projects?skill={skillName}`
+    - Clicking skill logo navigates to `/projects?skills={skillName}` (single skill entry point)
     - Projects page reads query param and filters displayed projects
+    - **Multi-skill support:** Users can add/remove skills via filter popover (OR logic - matches ANY selected skill)
     - Filter applies across all tabs (Software/Games/Mods) - tabs hidden when filtered
-    - UI indicator shows active filter + clear button (in space where tabs normally appear)
+    - **Filter controls:** SkillFilterPopover (desktop) / SkillFilterDrawer (mobile) with searchable categorized list
+    - FilterIndicator shows active filter chips + clear button (crossfade transition with tabs)
     - Clear button removes filter and restores normal tabbed view
 
 ## Non-Goals (Out of Scope)
 
-- **Full filtering controls on Projects page** - Only skill-click filtering with clear; no dedicated filter UI
 - **Proficiency indicators** - No skill level bars/percentages (can feel arbitrary)
 - **Availability status / response time** - Removed from scope
 - **Blog/CMS integration** - Portfolio remains code-managed
 - **Contact form analytics** - Basic success/error logging only
+
+**Note:** Skill filtering scope expanded during implementation. Originally "skill-click only, no dedicated filter UI"
+but evolved to include SkillFilterPopover (desktop) and SkillFilterDrawer (mobile) with searchable categorized
+multi-skill selection. This was a natural expansion to provide better UX once the filtering infrastructure existed.
 
 ## Design Considerations
 
@@ -196,9 +202,10 @@ interface Skill {
 
 ### Skills Filtering
 
-- Query param: `/projects?skill=React`
-- Projects page component reads param, filters `projects` + `mods` data
+- Query param: `/projects?skills=React,TypeScript` (comma-separated for multi-skill)
+- Projects page component reads param, filters `projects` + `mods` data using OR logic
 - No persistent state needed - URL is source of truth
+- ARIA live region announces result count changes
 
 ## Success Metrics
 
@@ -207,10 +214,12 @@ interface Skill {
 - **Performance**: No regression in Lighthouse scores; logo SVGs don't bloat bundle
 - **Accessibility**: Maintains WCAG 2.1 AA compliance across all new components
 
-## Open Questions
+## Open Questions (Resolved)
 
-- **Mobile logo row behavior**: Wrap evenly vs skip render - decide during implementation when visual
-- **Exact skill selection for featured**: Finalize during content audit task
-- **About page layout iteration**: Photo placement and education card arrangement need visual experimentation
+- **Mobile logo row behavior**: Responsive approach - curated 6 icons (single row) in hero on mobile boxed,
+  full 10 icons (5/5 split) in hero on mobile fullscreen; tablet+ shows 10 icons below FeaturedSection
+- **Exact skill selection for featured**: TypeScript, React, Python, Django, C#, .NET (6 featured, ecosystem pairs)
+- **About page layout iteration**: Photo in right pane (desktop) / top pane (mobile), decorative card with
+  `// andrew.jpg` caption, bio content in left pane with bg-background/80
 
 ---
