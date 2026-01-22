@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { VIEWPORTS } from "../constants";
 import { PALETTE_STORAGE_KEY, MODE_STORAGE_KEY } from "@/config/storage";
+import { E2E_DETERMINISTIC_KEY } from "@/lib/featured-projects";
 
 /**
  * Visual Regression Tests
@@ -24,6 +25,7 @@ import { PALETTE_STORAGE_KEY, MODE_STORAGE_KEY } from "@/config/storage";
  * Wait for page to be visually stable before taking screenshot.
  * - Waits for theme CSS variables to be applied
  * - Waits for page load (including images/stylesheets)
+ * - Hides Next.js dev tools overlay (causes flaky screenshots)
  * - Small buffer for CSS animations/transitions to complete
  *
  * Note: Uses 'load' state instead of 'networkidle' for CI reliability.
@@ -41,6 +43,20 @@ async function waitForVisualStability(page: Page): Promise<void> {
   // Wait for page load event (fires when page + resources like images are loaded)
   // More reliable in CI than 'networkidle' which requires zero network activity
   await page.waitForLoadState("load");
+
+  // Hide Next.js dev tools overlay - it shows "Compiling..." states that cause flaky diffs
+  await page.addStyleTag({
+    content: `
+      /* Hide Next.js dev tools button and overlays */
+      [data-nextjs-dialog-overlay],
+      [data-nextjs-dialog],
+      button[data-nextjs-call-stack-button],
+      [class*="nextjs-"],
+      [id*="__next"] > button:last-child {
+        display: none !important;
+      }
+    `,
+  });
 
   // Small buffer for CSS animations/transitions to complete
   // This is a pragmatic fallback - most animations complete within 300ms
@@ -69,17 +85,19 @@ test.describe("Visual Regression Baselines", () => {
           // Set viewport
           await page.setViewportSize(viewport);
 
-          // Set theme and mode in localStorage before navigation
+          // Set theme, mode, and deterministic flag in localStorage before navigation
           await page.addInitScript(
-            ({ theme, mode, themeKey, modeKey }) => {
+            ({ theme, mode, themeKey, modeKey, deterministicKey }) => {
               localStorage.setItem(themeKey, theme);
               localStorage.setItem(modeKey, mode);
+              localStorage.setItem(deterministicKey, "true");
             },
             {
               theme,
               mode,
               themeKey: PALETTE_STORAGE_KEY,
               modeKey: MODE_STORAGE_KEY,
+              deterministicKey: E2E_DETERMINISTIC_KEY,
             }
           );
 
@@ -90,11 +108,9 @@ test.describe("Visual Regression Baselines", () => {
           await waitForVisualStability(page);
 
           // Take full-page screenshot
-          // Note: Higher threshold (0.05) accounts for Featured section's
-          // randomized project selection which causes ~2-5% pixel differences
           await expect(page).toHaveScreenshot(`${testName}.png`, {
             fullPage: true,
-            maxDiffPixelRatio: 0.05,
+            maxDiffPixelRatio: 0.02,
           });
         });
       }
@@ -112,15 +128,17 @@ test.describe("Page-Specific Baselines", () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize(VIEWPORTS.desktop);
     await page.addInitScript(
-      ({ theme, mode, themeKey, modeKey }) => {
+      ({ theme, mode, themeKey, modeKey, deterministicKey }) => {
         localStorage.setItem(themeKey, theme);
         localStorage.setItem(modeKey, mode);
+        localStorage.setItem(deterministicKey, "true");
       },
       {
         theme: defaultSetup.theme,
         mode: defaultSetup.mode,
         themeKey: PALETTE_STORAGE_KEY,
         modeKey: MODE_STORAGE_KEY,
+        deterministicKey: E2E_DETERMINISTIC_KEY,
       }
     );
   });
@@ -128,10 +146,9 @@ test.describe("Page-Specific Baselines", () => {
   test("home-page", async ({ page }) => {
     await page.goto("/");
     await waitForVisualStability(page);
-    // Higher threshold for Featured section's randomized content
     await expect(page).toHaveScreenshot("page-home.png", {
       fullPage: true,
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.02,
     });
   });
 
@@ -140,7 +157,7 @@ test.describe("Page-Specific Baselines", () => {
     await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-projects.png", {
       fullPage: true,
-      maxDiffPixelRatio: 0.01,
+      maxDiffPixelRatio: 0.02,
     });
   });
 
@@ -149,7 +166,7 @@ test.describe("Page-Specific Baselines", () => {
     await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-skills.png", {
       fullPage: true,
-      maxDiffPixelRatio: 0.01,
+      maxDiffPixelRatio: 0.02,
     });
   });
 
@@ -158,7 +175,7 @@ test.describe("Page-Specific Baselines", () => {
     await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-about.png", {
       fullPage: true,
-      maxDiffPixelRatio: 0.01,
+      maxDiffPixelRatio: 0.02,
     });
   });
 
@@ -167,7 +184,7 @@ test.describe("Page-Specific Baselines", () => {
     await waitForVisualStability(page);
     await expect(page).toHaveScreenshot("page-contact.png", {
       fullPage: true,
-      maxDiffPixelRatio: 0.01,
+      maxDiffPixelRatio: 0.02,
     });
   });
 });

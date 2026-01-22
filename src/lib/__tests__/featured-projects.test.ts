@@ -9,7 +9,14 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { selectFeaturedProjects, SOFTWARE_POOL, FRAMEWORK_SLUG, GAME_POOL, MOD_POOL } from "../featured-projects";
+import {
+  selectFeaturedProjects,
+  SOFTWARE_POOL,
+  FRAMEWORK_SLUG,
+  GAME_POOL,
+  MOD_POOL,
+  E2E_DETERMINISTIC_KEY,
+} from "../featured-projects";
 import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 
@@ -129,6 +136,58 @@ describe("selectFeaturedProjects", () => {
       vi.mocked(Math.random).mockReturnValue(0.99);
       const result2 = selectFeaturedProjects();
       expect(result2[3].slug).toBe(MOD_POOL[MOD_POOL.length - 1]);
+    });
+  });
+
+  describe("E2E deterministic mode", () => {
+    afterEach(() => {
+      localStorage.removeItem(E2E_DETERMINISTIC_KEY);
+    });
+
+    it("returns first item from each pool when deterministic mode enabled", () => {
+      localStorage.setItem(E2E_DETERMINISTIC_KEY, "true");
+
+      const result = selectFeaturedProjects();
+
+      expect(result[0].slug).toBe(SOFTWARE_POOL[0]);
+      expect(result[1].slug).toBe(FRAMEWORK_SLUG);
+      expect(result[2].slug).toBe(GAME_POOL[0]);
+      expect(result[3].slug).toBe(MOD_POOL[0]);
+    });
+
+    it("returns consistent results across multiple calls in deterministic mode", () => {
+      localStorage.setItem(E2E_DETERMINISTIC_KEY, "true");
+
+      const result1 = selectFeaturedProjects();
+      const result2 = selectFeaturedProjects();
+      const result3 = selectFeaturedProjects();
+
+      expect(result1).toEqual(result2);
+      expect(result2).toEqual(result3);
+    });
+
+    it("uses random selection when deterministic mode not set", () => {
+      // Don't set localStorage - should use random
+      vi.mocked(Math.random).mockReturnValue(0.99);
+
+      const result = selectFeaturedProjects();
+
+      // Should pick last items due to mocked random
+      expect(result[0].slug).toBe(SOFTWARE_POOL[SOFTWARE_POOL.length - 1]);
+      expect(result[2].slug).toBe(GAME_POOL[GAME_POOL.length - 1]);
+      expect(result[3].slug).toBe(MOD_POOL[MOD_POOL.length - 1]);
+    });
+
+    it("ignores random mock when deterministic mode enabled", () => {
+      localStorage.setItem(E2E_DETERMINISTIC_KEY, "true");
+      vi.mocked(Math.random).mockReturnValue(0.99);
+
+      const result = selectFeaturedProjects();
+
+      // Should still pick first items despite random mock
+      expect(result[0].slug).toBe(SOFTWARE_POOL[0]);
+      expect(result[2].slug).toBe(GAME_POOL[0]);
+      expect(result[3].slug).toBe(MOD_POOL[0]);
     });
   });
 

@@ -33,7 +33,7 @@ of the project portfolio by technology.
     - `MobileDrawer` - Extracted reusable drawer component
     - `ContactForm` - Form with validation and submission states
     - `EducationCard` - Styled education display component
-- **Tests Added**: 1187 unit tests total (34+ new), 207 E2E tests total (8+ new)
+- **Tests Added**: 1196 unit tests total (38+ new), 207 E2E tests total (8+ new)
 - **Quality Gates**: Type-check, ESLint, Prettier, markdownlint, build, Vitest, Playwright
 
 ## Related Documentation
