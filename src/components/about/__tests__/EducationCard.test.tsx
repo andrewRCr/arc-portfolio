@@ -1,14 +1,21 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { EducationCard } from "../EducationCard";
 import type { Education } from "@/types/education";
+
+// Mock useIsPhone hook
+vi.mock("@/hooks/useMediaQuery", () => ({
+  useIsPhone: vi.fn(() => false), // Default to desktop
+}));
+
+import { useIsPhone } from "@/hooks/useMediaQuery";
 
 const mockEducation: Education = {
   id: "test-degree",
   degree: "Bachelor of Science",
   major: "Computer Science",
   institution: "Test University",
-  location: "Test City, State",
+  location: "Portland, Oregon",
   graduationDate: "2022",
   gpa: "3.8/4.0",
 };
@@ -29,11 +36,11 @@ describe("EducationCard", () => {
     });
 
     it("renders header with correct styling (bg-card/80)", () => {
-      const { container } = render(<EducationCard education={mockEducation} />);
+      render(<EducationCard education={mockEducation} />);
 
-      // Header should have bg-card/80 class
-      const header = container.querySelector("[class*='bg-card']");
+      const header = screen.getByTestId("education-card-header");
       expect(header).toBeInTheDocument();
+      expect(header).toHaveClass("bg-card/80");
     });
   });
 
@@ -54,10 +61,10 @@ describe("EducationCard", () => {
       expect(degree).toHaveClass("font-mono");
     });
 
-    it("renders location when provided", () => {
+    it("renders full location on desktop", () => {
       render(<EducationCard education={mockEducation} />);
 
-      expect(screen.getByText("Test City, State")).toBeInTheDocument();
+      expect(screen.getByText("Portland, Oregon")).toBeInTheDocument();
     });
 
     it("renders graduation date when provided", () => {
@@ -74,11 +81,11 @@ describe("EducationCard", () => {
     });
 
     it("renders body with correct styling (bg-background/80)", () => {
-      const { container } = render(<EducationCard education={mockEducation} />);
+      render(<EducationCard education={mockEducation} />);
 
-      // Body should have bg-background/80 class
-      const body = container.querySelector("[class*='bg-background']");
+      const body = screen.getByTestId("education-card-body");
       expect(body).toBeInTheDocument();
+      expect(body).toHaveClass("bg-background/80");
     });
   });
 
@@ -122,6 +129,42 @@ describe("EducationCard", () => {
 
       const card = container.firstChild;
       expect(card).toHaveClass("rounded-lg");
+    });
+  });
+
+  describe("phone viewport", () => {
+    beforeEach(() => {
+      vi.mocked(useIsPhone).mockReturnValue(true);
+    });
+
+    afterEach(() => {
+      // Restore to desktop default (mockReset would return undefined, not false)
+      vi.mocked(useIsPhone).mockReturnValue(false);
+    });
+
+    it("abbreviates state names in location", () => {
+      render(<EducationCard education={mockEducation} />);
+
+      // "Portland, Oregon" should become "Portland, OR"
+      expect(screen.getByText("Portland, OR")).toBeInTheDocument();
+      expect(screen.queryByText("Portland, Oregon")).not.toBeInTheDocument();
+    });
+
+    it("removes leading 'The ' from institution name", () => {
+      const educationWithThe: Education = {
+        ...mockEducation,
+        institution: "The Ohio State University",
+      };
+      render(<EducationCard education={educationWithThe} />);
+
+      expect(screen.getByText("Ohio State University")).toBeInTheDocument();
+      expect(screen.queryByText("The Ohio State University")).not.toBeInTheDocument();
+    });
+
+    it("keeps institution name without leading 'The ' unchanged", () => {
+      render(<EducationCard education={mockEducation} />);
+
+      expect(screen.getByText("Test University")).toBeInTheDocument();
     });
   });
 });

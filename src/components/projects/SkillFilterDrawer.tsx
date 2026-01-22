@@ -129,7 +129,13 @@ export default function SkillFilterDrawer({ allProjects, selectedSkills, onSkill
       fillHeight
     >
       <Command shouldFilter={true} className="flex flex-col flex-1 min-h-0">
-        <CommandInput placeholder="Search..." value={searchQuery} onValueChange={setSearchQuery} className="mx-3" />
+        <CommandInput
+          placeholder="Search..."
+          aria-label="Search skills"
+          value={searchQuery}
+          onValueChange={setSearchQuery}
+          className="mx-3"
+        />
 
         {/* Scrollable skill list with scroll shadows */}
         <div className="relative flex-1 min-h-0 border-b border-border" data-drawer="skill-filter">

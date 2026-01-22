@@ -31,14 +31,14 @@ export function EducationCard({ education }: EducationCardProps) {
   const displayInstitution = isPhone && institution.startsWith("The ") ? institution.slice(4) : institution;
 
   return (
-    <div className="overflow-hidden rounded-lg border border-border-strong">
+    <div data-testid="education-card" className="overflow-hidden rounded-lg border border-border-strong">
       {/* Header - institution name */}
-      <div className="bg-card/80 px-4 py-3">
+      <div data-testid="education-card-header" className="bg-card/80 px-4 py-3">
         <h3 className="text-lg font-bold text-foreground">{displayInstitution}</h3>
       </div>
 
       {/* Body - degree info + metadata badges */}
-      <div className="bg-background/80 px-4 py-4">
+      <div data-testid="education-card-body" className="bg-background/80 px-4 py-4">
         {/* Major + degree type: stacked on phone, joined side-by-side on tablet+ */}
         <div className="flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-0">
           <span className="inline-block bg-secondary/80 px-3 py-1.5 text-base font-mono text-secondary-foreground">

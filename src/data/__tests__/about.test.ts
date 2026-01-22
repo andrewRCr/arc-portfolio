@@ -24,6 +24,13 @@ describe("About/Bio Data Validation", () => {
       expect(about.paragraphs).toBeDefined();
       expect(Array.isArray(about.paragraphs)).toBe(true);
     });
+
+    it("should have valid tagline if present", () => {
+      if (about.tagline !== undefined) {
+        expect(typeof about.tagline).toBe("string");
+        expect(about.tagline.length).toBeGreaterThan(0);
+      }
+    });
   });
 
   describe("Paragraphs Structure", () => {

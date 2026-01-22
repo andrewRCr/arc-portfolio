@@ -114,7 +114,12 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
       </PopoverTrigger>
       <PopoverContent className="w-72 p-0" align="end">
         <Command shouldFilter={true}>
-          <CommandInput placeholder="Search skills..." value={searchQuery} onValueChange={setSearchQuery} />
+          <CommandInput
+            placeholder="Search..."
+            aria-label="Search skills"
+            value={searchQuery}
+            onValueChange={setSearchQuery}
+          />
           <CommandList>
             <CommandEmpty>No skills found</CommandEmpty>
             {Object.entries(categorizedSkills).map(([category, skills]) => (

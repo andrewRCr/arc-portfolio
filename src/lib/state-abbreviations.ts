@@ -58,13 +58,17 @@ const STATE_ABBREVIATIONS: Record<string, string> = {
   Wyoming: "WY",
 };
 
+// Pre-sorted by length descending to ensure longer names match first
+// (e.g., "West Virginia" before "Virginia")
+const SORTED_STATE_ENTRIES = Object.entries(STATE_ABBREVIATIONS).sort(([a], [b]) => b.length - a.length);
+
 /**
  * Abbreviate a location string by replacing full state name with abbreviation.
  * Input: "Corvallis, Oregon" → Output: "Corvallis, OR"
  * If state not found, returns original string.
  */
 export function abbreviateLocation(location: string): string {
-  for (const [state, abbrev] of Object.entries(STATE_ABBREVIATIONS)) {
+  for (const [state, abbrev] of SORTED_STATE_ENTRIES) {
     if (location.includes(state)) {
       return location.replace(state, abbrev);
     }

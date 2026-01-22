@@ -120,7 +120,7 @@ function ProjectsContent() {
         </PageHeader>
       }
     >
-      <div className="px-4">
+      <div data-projects-content className="px-4">
         {/* ARIA Live Region for result count */}
         {isFiltered && (
           <div role="status" aria-live="polite" className="sr-only">

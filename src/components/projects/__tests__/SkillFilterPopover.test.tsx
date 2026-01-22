@@ -104,7 +104,7 @@ describe("SkillFilterPopover", () => {
       await user.click(trigger);
 
       // Popover content should be visible
-      expect(screen.getByPlaceholderText(/search skills/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
     });
 
     it("shows categorized skills when popover opens", async () => {
@@ -136,7 +136,7 @@ describe("SkillFilterPopover", () => {
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      const searchInput = screen.getByPlaceholderText(/search skills/i);
+      const searchInput = screen.getByPlaceholderText(/search/i);
       await user.type(searchInput, "React");
 
       // React should be visible
@@ -152,7 +152,7 @@ describe("SkillFilterPopover", () => {
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      const searchInput = screen.getByPlaceholderText(/search skills/i);
+      const searchInput = screen.getByPlaceholderText(/search/i);
       await user.type(searchInput, "xyz123nonexistent");
 
       expect(screen.getByText(/no skills found/i)).toBeInTheDocument();
@@ -164,7 +164,7 @@ describe("SkillFilterPopover", () => {
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      const searchInput = screen.getByPlaceholderText(/search skills/i);
+      const searchInput = screen.getByPlaceholderText(/search/i);
       await user.type(searchInput, "react");
 
       expect(screen.getByText("React")).toBeInTheDocument();
@@ -283,8 +283,10 @@ describe("SkillFilterPopover", () => {
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      const searchInput = screen.getByPlaceholderText(/search skills/i);
+      // Verify input has aria-label for accessibility (cmdk's aria-labelledby overrides accessible name)
+      const searchInput = screen.getByPlaceholderText(/search/i);
       expect(searchInput).toBeInTheDocument();
+      expect(searchInput).toHaveAttribute("aria-label", "Search skills");
     });
 
     it("checkboxes are keyboard accessible", async () => {
@@ -308,7 +310,7 @@ describe("SkillFilterPopover", () => {
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
       // Focus should be within the popover
-      const searchInput = screen.getByPlaceholderText(/search skills/i);
+      const searchInput = screen.getByPlaceholderText(/search/i);
       expect(document.activeElement).toBe(searchInput);
     });
   });

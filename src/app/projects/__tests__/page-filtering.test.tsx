@@ -167,7 +167,7 @@ describe("Projects Page - Skill Filtering", () => {
       await user.click(filterButtons[1]); // Desktop popover trigger
 
       // Popover should show search and skill options
-      expect(screen.getByPlaceholderText(/search skills/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
     });
 
     it("removes skill when badge clicked on filter indicator", async () => {

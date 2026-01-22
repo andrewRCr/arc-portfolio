@@ -165,7 +165,7 @@ export async function POST(request: Request) {
             },
           },
         ],
-        subject: `Portfolio Contact: ${name}`,
+        subject: `Portfolio Contact: ${sanitizeHeaderValue(name)}`,
         htmlbody: `
           <h2>New Contact Form Submission</h2>
           <p><strong>Name:</strong> ${escapeHtml(name)}</p>
@@ -211,4 +211,15 @@ function escapeHtml(text: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+// Helper to sanitize text for use in email headers (prevents header injection)
+function sanitizeHeaderValue(text: string, maxLength = 100): string {
+  return (
+    text
+      .replace(/[\r\n\t]/g, " ") // Replace control characters with space
+      .replace(/\s+/g, " ") // Collapse multiple spaces
+      .trim()
+      .slice(0, maxLength) || "Unknown"
+  );
 }

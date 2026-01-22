@@ -137,6 +137,7 @@ describe("ModStatsGroup", () => {
     });
 
     afterEach(() => {
+      // Restore to desktop default (mockReset would return undefined, not false)
       vi.mocked(useIsPhone).mockReturnValue(false);
     });
 

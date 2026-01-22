@@ -881,7 +881,7 @@ html[data-env-preview="false"] [data-window-container] {
 
 /* Projects listing - mobile: reduce content top padding (header provides sufficient spacing) */
 @media (max-width: 639px) {
-  [data-page="projects"] [data-overlayscrollbars-viewport] > div {
+  [data-page="projects"] [data-projects-content] {
     padding-top: 4px !important;
   }
 }

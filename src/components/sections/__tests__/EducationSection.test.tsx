@@ -1,7 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { EducationSection } from "../EducationSection";
 import { education } from "@/data/education";
+
+// Mock useIsPhone to ensure consistent desktop rendering
+// (EducationCard abbreviates location and institution on phone)
+vi.mock("@/hooks/useMediaQuery", () => ({
+  useIsPhone: vi.fn(() => false),
+}));
 
 describe("EducationSection", () => {
   describe("Structure", () => {
@@ -31,8 +37,7 @@ describe("EducationSection", () => {
     it("renders one EducationCard per education entry", () => {
       const { container } = render(<EducationSection />);
 
-      // Each EducationCard has border-border-strong class
-      const cards = container.querySelectorAll(".border-border-strong");
+      const cards = container.querySelectorAll('[data-testid="education-card"]');
       expect(cards.length).toBe(education.length);
     });
 
