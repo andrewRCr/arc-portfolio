@@ -14,7 +14,7 @@ export const about: About = {
       "I work across the stack, comfortable in both frontend and backend. My approach combines traditional engineering " +
       "discipline with deliberate, hands-on AI collaboration - developer and agent each amplifying the other's capabilities.",
 
-    "Game development remains a hobbyist interest - both creating games and modifying existing ones. " +
+    "Game development is also a hobbyist interest, from original projects to modifying existing titles. " +
       "My {{MODDING_LINK}} has reached {{DOWNLOAD_COUNT}} unique downloads.",
   ],
 

@@ -5,10 +5,12 @@
  * - Dynamic NexusMods download count via props
  * - TextLink component for the modding profile link
  * - Profile photo with responsive layout
+ * - ResponsiveSwitch for card/no-card layouts (phone vs tablet+)
  */
 import Image from "next/image";
 import { about } from "@/data/about";
 import { TextLink } from "@/components/ui/text-link";
+import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
 
 interface AboutSectionProps {
   /** Dynamic unique download count from NexusMods API (optional) */
@@ -74,44 +76,72 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
   return parts;
 }
 
-export function AboutSection({ uniqueDownloads }: AboutSectionProps) {
+/** Photo card with caption footer - shared between layouts */
+function PhotoCard() {
   return (
-    <section className="px-0 md:px-4 py-2">
-      {/* Two-pane card: vertical split with different backgrounds */}
-      <div className="overflow-hidden rounded-lg border border-border">
-        <div className="flex flex-col md:flex-row">
-          {/* Photo pane - appears first on mobile, right on desktop */}
-          <div className="order-first flex flex-shrink-0 items-center justify-center bg-card/80 p-4 md:order-last md:p-6">
-            {/* Photo card with caption footer */}
-            <div className="overflow-hidden border-2 border-secondary/80">
-              <Image
-                src="/profile-photo.webp"
-                alt="Andrew Creekmore, full-stack developer"
-                width={200}
-                height={267}
-                priority
-              />
-              <div className="flex items-center justify-center bg-accent/80 px-2 py-1">
-                <span className="py-1 font-mono text-xs text-accent-foreground">{"// andrew.jpg"}</span>
-              </div>
-            </div>
-          </div>
+    <div className="overflow-hidden border-2 border-secondary/80">
+      <Image src="/profile-photo.webp" alt="Andrew Creekmore, full-stack developer" width={200} height={267} priority />
+      <div className="flex items-center justify-center bg-accent/80 px-2 py-1">
+        <span className="py-1 font-mono text-xs text-accent-foreground">{"// andrew.jpg"}</span>
+      </div>
+    </div>
+  );
+}
 
-          {/* Bio pane - main content area */}
-          <div className="flex flex-1 flex-col bg-background/80 p-6">
-            <div className="space-y-4 text-foreground">
-              {about.paragraphs.map((paragraph, index) => (
-                <p key={index} className="text-base leading-relaxed sm:text-lg">
-                  {renderParagraphWithPlaceholders(paragraph, uniqueDownloads)}
-                </p>
-              ))}
-            </div>
-            {about.tagline && (
-              <p className="mt-auto pt-4 text-base leading-relaxed text-muted-foreground">{about.tagline}</p>
-            )}
-          </div>
+/** Bio content - shared between layouts */
+function BioContent({ uniqueDownloads }: { uniqueDownloads?: number }) {
+  return (
+    <>
+      <div className="space-y-4 text-foreground">
+        {about.paragraphs.map((paragraph, index) => (
+          <p key={index} className="text-base leading-relaxed sm:text-lg">
+            {renderParagraphWithPlaceholders(paragraph, uniqueDownloads)}
+          </p>
+        ))}
+      </div>
+      {about.tagline && <p className="mt-auto pt-4 text-base leading-relaxed text-muted-foreground">{about.tagline}</p>}
+    </>
+  );
+}
+
+/** Mobile layout - no card wrapper, stacked with breathing room */
+function MobileAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) {
+  return (
+    <div className="flex flex-col items-center space-y-6">
+      <PhotoCard />
+      <div className="flex flex-col">
+        <BioContent uniqueDownloads={uniqueDownloads} />
+      </div>
+    </div>
+  );
+}
+
+/** Desktop layout - two-pane card with different backgrounds */
+function DesktopAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) {
+  return (
+    <div className="overflow-hidden rounded-lg border border-border">
+      <div className="flex flex-col md:flex-row">
+        {/* Photo pane - right side on desktop */}
+        <div className="order-last flex flex-shrink-0 items-center justify-center bg-card/80 p-6">
+          <PhotoCard />
+        </div>
+        {/* Bio pane - main content area */}
+        <div className="flex flex-1 flex-col bg-background/80 p-6">
+          <BioContent uniqueDownloads={uniqueDownloads} />
         </div>
       </div>
+    </div>
+  );
+}
+
+export function AboutSection({ uniqueDownloads }: AboutSectionProps) {
+  return (
+    <section className="px-0 md:px-4">
+      <ResponsiveSwitch
+        breakpoint="sm"
+        mobile={<MobileAboutSection uniqueDownloads={uniqueDownloads} />}
+        desktop={<DesktopAboutSection uniqueDownloads={uniqueDownloads} />}
+      />
     </section>
   );
 }
