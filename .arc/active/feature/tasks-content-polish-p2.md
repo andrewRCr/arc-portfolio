@@ -570,35 +570,38 @@ skills logo system with project filtering.
 
 ### **Phase 7:** Final Quality Gates and Integration Testing
 
-- [ ] **7.1 Full quality gate suite**
+- [x] **7.1 Full quality gate suite**
 
-    - [ ] **7.1.a Run all quality checks**
-        - `npm run type-check` - zero errors
-        - `npm run lint` - zero violations
-        - `npm run format:check` - passes
-        - `npm run lint:md` - zero violations
-        - `npm run build` - succeeds
-        - `npm test` - all tests pass
+    - [x] **7.1.a Run all quality checks**
+        - All gates pass: type-check, lint, format, markdown lint, build, 1187 unit tests
 
-    - [ ] **7.1.b Run E2E test suite**
-        - `npm run test:e2e` - all viewports pass
+    - [x] **7.1.b Run E2E test suite**
+        - 207 passed, 69 skipped (Firefox visual regression - expected)
+        - Updated About page visual regression baseline (layout changed)
+        - Added E2E tests for skill filtering (click skill → filtered projects)
+        - Added E2E tests for contact form submission (with API mocking)
 
-- [ ] **7.2 Cross-page integration verification**
+    - [x] **7.1.c Improve unit test coverage**
+        - Target: 80% minimum, 90% critical path
+        - Hooks: 87% → 98.72% (usePreferenceAnnouncements tests added)
+        - Server actions: preferences.ts 76% → 100%, wallpaper.ts 59% → 100%
+        - ModStatsBadge: Added phone viewport tests for ModStatsCompact
 
-    - [ ] **7.2.a Manual testing of full user flows**
-        - Home → click skill logo → filtered Projects → clear → normal Projects
-        - Skills page → click skill logo → filtered Projects
-        - Contact form submission → email delivery
-        - About page visual review
+- [x] **7.2 Cross-page integration verification**
 
-    - [ ] **7.2.b Verify no regressions from P1 work**
-        - Projects page tabs still work
-        - FeaturedSection still randomizes
-        - DetailHeader scroll behavior intact
+    - [x] **7.2.a Manual testing of full user flows** (user-verified)
+
+    - [x] **7.2.b Verify no regressions from P1 work** (user-verified)
 
 ---
 
 ## Implementation Notes
+
+**Additional Polish (discovered during Phase 7 verification):**
+
+- About page: Added ResponsiveSwitch for mobile - removes card wrapper on phone, reduces visual nesting
+- Contact page: Removed py-2 from section (matches Skills), reduced form gaps and textarea rows on phone
+- Bio copy: "Game development is also a hobbyist interest, from original projects to modifying existing titles."
 
 **Skills Data Evolution (Forward Migration):**
 The skills data structure changes from flat string arrays to objects with metadata. This enables the
@@ -622,15 +625,15 @@ Document the required variables so setup is straightforward when needed.
 
 ## Success Criteria
 
-- [ ] SkillLogoGrid component renders SVG logos from simple-icons
-- [ ] Home page displays 6-8 featured skills without scrolling on desktop
-- [ ] Skills page organized with DetailCard categories and logo/text hierarchy
-- [ ] Clicking skill logo navigates to filtered Projects view
-- [ ] Contact form successfully delivers emails via Zeptomail
-- [ ] Spam protection (honeypot + rate limiting) functional
-- [ ] EducationCard component follows DetailCard visual pattern
-- [ ] About page includes professional photo with proper placement
-- [ ] Bio copy revised for clarity and impact
-- [ ] All quality gates pass (type-check, lint, format, markdown lint, build, tests)
-- [ ] No regressions in existing functionality (Projects, FeaturedSection, etc.)
-- [ ] Ready for merge to main
+- [x] SkillLogoGrid component renders SVG logos from simple-icons
+- [x] Home page displays 6-8 featured skills without scrolling on desktop
+- [x] Skills page organized with DetailCard categories and logo/text hierarchy
+- [x] Clicking skill logo navigates to filtered Projects view
+- [x] Contact form successfully delivers emails via Zeptomail
+- [x] Spam protection (honeypot + rate limiting) functional
+- [x] EducationCard component follows DetailCard visual pattern
+- [x] About page includes professional photo with proper placement
+- [x] Bio copy revised for clarity and impact
+- [x] All quality gates pass (type-check, lint, format, markdown lint, build, tests)
+- [x] No regressions in existing functionality (Projects, FeaturedSection, etc.)
+- [x] Ready for merge to main
