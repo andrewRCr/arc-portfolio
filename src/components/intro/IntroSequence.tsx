@@ -3,22 +3,25 @@
 /**
  * IntroSequence Component
  *
- * Wrapper component for the TWM startup animation. Renders as a fixed
- * overlay during the animation sequence, then unmounts when complete.
+ * Orchestrates the TWM startup animation sequence. Renders as a fixed
+ * overlay during the animation, then unmounts when complete.
+ *
+ * Animation phases:
+ * 1. entering: CommandWindow scales up, backdrop blurs
+ * 2. typing: "portfolio init" types out with cursor
+ * 3. loading: Spinner appears after typing
+ * 4. morphing: CommandWindow morphs into TopBar via layoutId
  *
  * Features:
- * - Fixed overlay covering the viewport
  * - Click/keypress to skip animation
- * - aria-hidden (animation is decorative)
- * - Automatically starts animation on mount
- *
- * The actual animation phases (CommandWindow, typing, morph, etc.) will
- * be added in subsequent implementation phases.
+ * - Cookie-based "seen" tracking
+ * - Retrigger support via TopBar branding click
+ * - prefers-reduced-motion support
  */
 
 import { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
-import { useIntroContext } from "@/contexts/IntroContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { useIntroContext, type IntroPhase } from "@/contexts/IntroContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useTypingAnimation } from "@/hooks/useTypingAnimation";
 import { CommandWindow } from "./CommandWindow";
@@ -51,32 +54,30 @@ function LoadingSpinner() {
 export interface IntroSequenceProps {
   /** Called when animation is skipped */
   onSkip?: () => void;
-  // onComplete prop will be added when animation sequence is implemented
 }
 
 /** Command text displayed during typing animation */
 const COMMAND_TEXT = "portfolio init";
 
-/** Animation sub-phases within the intro sequence */
-type IntroPhase = "entering" | "typing" | "loading" | "morphing" | "expanding" | "complete";
-
 /** Timing constants (ms) */
 const CONTENT_FADE_DELAY = 150; // Delay after window scales before content fades in
 const CURSOR_APPEAR_DELAY = 250; // Delay after content fades before cursor appears
 const TYPING_START_DELAY = 1000; // Delay after cursor appears before typing starts
+const LOADING_DURATION = 800; // How long loading spinner shows before morph starts
 
-/** Animation durations (seconds) - synced with CommandWindow */
-const SCALE_DURATION = 0.3;
+/** Animation durations (seconds) */
+const BLUR_DURATION = 0.4;
 const BLUR_AMOUNT = 8; // px
 
-export function IntroSequence({ onSkip }: IntroSequenceProps) {
+function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   const {
     state,
     shouldShow,
     reducedMotion,
     startAnimation,
     skipAnimation,
-    // completeAnimation will be called when animation sequence finishes naturally
+    completeAnimation,
+    setIntroPhase,
   } = useIntroContext();
 
   // Track client-side mount to avoid SSR/hydration mismatch.
@@ -95,8 +96,15 @@ export function IntroSequence({ onSkip }: IntroSequenceProps) {
   const [showCursor, setShowCursor] = useState(false);
 
   // Whether backdrop blur is active (animated out during morph transition)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- setBlurActive used during morph transition
   const [blurActive, setBlurActive] = useState(true);
+
+  // Controls CommandWindow presence in DOM (false triggers exit/morph animation)
+  const [showCommandWindow, setShowCommandWindow] = useState(true);
+
+  // Sync local phase to context (for TopBar layoutId coordination)
+  useEffect(() => {
+    setIntroPhase(phase);
+  }, [phase, setIntroPhase]);
 
   // Handle entrance animation completion
   const handleEntranceComplete = useCallback(() => {
@@ -134,14 +142,43 @@ export function IntroSequence({ onSkip }: IntroSequenceProps) {
     }
   }, [mounted, state, startAnimation]);
 
+  // Trigger morph after loading phase
+  useEffect(() => {
+    if (phase === "loading") {
+      const timer = setTimeout(() => {
+        setBlurActive(false); // Start fading out backdrop blur
+        setPhase("morphing");
+      }, LOADING_DURATION);
+      return () => clearTimeout(timer);
+    }
+  }, [phase]);
+
+  // After entering morph phase, wait for content to fade then trigger exit animation
+  useEffect(() => {
+    if (phase === "morphing") {
+      // Content fade takes ~150ms, wait a bit longer then exit
+      const timer = setTimeout(() => {
+        setShowCommandWindow(false);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [phase]);
+
+  // Handle morph completion - mark animation as complete after layout animation finishes
+  const handleMorphComplete = useCallback(() => {
+    // Give the layoutId morph animation time to complete before unmounting
+    // The morph takes ~500ms, add buffer for smooth finish
+    setTimeout(() => {
+      setPhase("complete");
+      completeAnimation();
+    }, 600);
+  }, [completeAnimation]);
+
   // Handle skip action
   const handleSkip = useCallback(() => {
     skipAnimation();
     onSkip?.();
   }, [skipAnimation, onSkip]);
-
-  // handleComplete will be called when animation sequence finishes naturally
-  // Currently only skip is implemented (click/keypress triggers immediate completion)
 
   // Set up click listener for skip
   useEffect(() => {
@@ -183,7 +220,12 @@ export function IntroSequence({ onSkip }: IntroSequenceProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100]" aria-hidden="true" data-intro-sequence>
+    <div
+      className="fixed inset-0 z-[100]"
+      aria-hidden="true"
+      data-intro-sequence
+      data-intro-morphing={phase === "morphing" || undefined}
+    >
       {/*
         Animation sequence:
         1. entering: Window scales up, backdrop blurs
@@ -199,17 +241,34 @@ export function IntroSequence({ onSkip }: IntroSequenceProps) {
         className="absolute inset-0"
         initial={{ backdropFilter: "blur(0px)" }}
         animate={{ backdropFilter: blurActive ? `blur(${BLUR_AMOUNT}px)` : "blur(0px)" }}
-        transition={{ duration: SCALE_DURATION, ease: "easeOut" }}
+        transition={{ duration: BLUR_DURATION, ease: "easeOut" }}
       />
 
-      <CommandWindow
-        typedText={displayedText}
-        isTypingComplete={isTypingComplete}
-        showContent={showContent}
-        showCursor={showCursor}
-        onEntranceComplete={handleEntranceComplete}
-        loadingContent={phase === "loading" ? <LoadingSpinner /> : undefined}
-      />
+      {/* CommandWindow with AnimatePresence for exit/morph animation */}
+      <AnimatePresence mode="wait" onExitComplete={handleMorphComplete}>
+        {showCommandWindow && (
+          <CommandWindow
+            key="command-window"
+            typedText={displayedText}
+            isTypingComplete={isTypingComplete}
+            showContent={showContent}
+            showCursor={showCursor}
+            isMorphing={phase === "morphing"}
+            onEntranceComplete={handleEntranceComplete}
+            loadingContent={phase === "loading" ? <LoadingSpinner /> : undefined}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
+}
+
+/**
+ * IntroSequence wrapper that applies a key based on replayCount.
+ * This forces a full remount when the animation is retriggered,
+ * resetting all internal state.
+ */
+export function IntroSequence(props: IntroSequenceProps) {
+  const { replayCount } = useIntroContext();
+  return <IntroSequenceInner key={replayCount} {...props} />;
 }

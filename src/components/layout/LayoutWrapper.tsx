@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Minimize2, Maximize2 } from "lucide-react";
+import { LayoutGroup } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
@@ -81,20 +82,22 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       {/* Background layer */}
       <WallpaperBackground imageSrc={wallpaperSrc} imageSrcHiRes={wallpaperSrcHiRes} />
 
-      {/* Three-window layout - fixed viewport, content scrolls inside */}
-      {/* h-dvh uses dynamic viewport height, accounting for mobile browser chrome */}
-      {/* Clicking gap areas (outside windows) resets active state */}
-      <div
-        className="mx-auto h-dvh w-full flex flex-col"
-        style={{ padding: `${layoutPadding}px`, gap: `${layoutGap}px`, maxWidth: containerMaxWidth }}
-        onPointerDown={() => setActiveWindow(null)}
-      >
-        {/* Top bar - visually hidden in fullscreen mode (kept mounted so drawer can stay open) */}
-        <TopBar
-          isActive={effectiveActiveWindow === "top"}
-          onActivate={() => setActiveWindow("top")}
-          className={isFullscreen ? "hidden" : undefined}
-        />
+      {/* LayoutGroup enables shared layoutId animations between TopBar and IntroSequence */}
+      <LayoutGroup>
+        {/* Three-window layout - fixed viewport, content scrolls inside */}
+        {/* h-dvh uses dynamic viewport height, accounting for mobile browser chrome */}
+        {/* Clicking gap areas (outside windows) resets active state */}
+        <div
+          className="mx-auto h-dvh w-full flex flex-col"
+          style={{ padding: `${layoutPadding}px`, gap: `${layoutGap}px`, maxWidth: containerMaxWidth }}
+          onPointerDown={() => setActiveWindow(null)}
+        >
+          {/* Top bar - visually hidden in fullscreen mode (kept mounted so drawer can stay open) */}
+          <TopBar
+            isActive={effectiveActiveWindow === "top"}
+            onActivate={() => setActiveWindow("top")}
+            className={isFullscreen ? "hidden" : undefined}
+          />
 
         {/* Main content window - fills remaining space, content scrolls inside */}
         <WindowContainer
@@ -130,9 +133,10 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         </button>
       )}
 
-      {/* Intro animation overlay - renders above layout during animation
-          Normal layout renders underneath as morph target for window transition */}
-      <IntroSequence />
+        {/* Intro animation overlay - renders above layout during animation
+            Normal layout renders underneath as morph target for window transition */}
+        <IntroSequence />
+      </LayoutGroup>
     </IntroProvider>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { SITE } from "@/config/site";
 import { useIntroContext } from "@/contexts/IntroContext";
@@ -34,10 +35,32 @@ export interface TopBarProps {
 export function TopBar({ isActive, onActivate, className }: TopBarProps) {
   const { windowBorderWidth, contentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
-  const { triggerReplay } = useIntroContext();
+  const { triggerReplay, introPhase, shouldShow } = useIntroContext();
+
+  // During intro (before morph), don't render TopBar - this allows layoutId morph to work
+  // The morph requires TopBar to "mount" when CommandWindow "unmounts"
+  const isPreMorphIntro = shouldShow && introPhase !== "morphing" && introPhase !== "idle";
+
+  // Apply layoutId during morph phase for shared element transition from CommandWindow
+  const isMorphing = introPhase === "morphing";
+
+  // Don't render during pre-morph intro - keeps space with placeholder
+  if (isPreMorphIntro) {
+    return (
+      <div
+        className={className}
+        style={{ height: topBarHeight, flexShrink: 0 }}
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
-    <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate} className={className}>
+    <motion.div
+      layoutId={isMorphing ? "topbar-window" : undefined}
+      layout={isMorphing}
+    >
+      <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate} className={className}>
       <header
         className="flex items-center justify-between px-4 mx-auto w-full"
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}
@@ -76,6 +99,7 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
           />
         </div>
       </header>
-    </WindowContainer>
+      </WindowContainer>
+    </motion.div>
   );
 }

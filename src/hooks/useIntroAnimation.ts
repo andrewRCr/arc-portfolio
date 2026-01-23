@@ -34,6 +34,8 @@ export interface UseIntroAnimationReturn {
   shouldShow: boolean;
   /** Whether user prefers reduced motion */
   reducedMotion: boolean;
+  /** Counter that increments on each replay (use as key to remount components) */
+  replayCount: number;
   /** Start the animation sequence */
   startAnimation: () => void;
   /** Skip animation immediately (user interaction) */
@@ -79,6 +81,9 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
   // Initialize state based on cookie and motion preference
   const [state, setState] = useState<IntroState>(() => getInitialState(reducedMotion));
 
+  // Counter for replay - increments each time triggerReplay is called
+  const [replayCount, setReplayCount] = useState(0);
+
   // After hydration, re-check cookie state.
   // On SSR, hasSeenIntro() returns false (no document), so state may be
   // incorrectly set to "pending". This effect corrects the state on mount.
@@ -123,6 +128,7 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
   const triggerReplay = useCallback(() => {
     clearIntroCookie();
     setState("pending");
+    setReplayCount((c) => c + 1);
   }, []);
 
   // Derived state: should the intro overlay be shown?
@@ -132,6 +138,7 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
     state,
     shouldShow,
     reducedMotion,
+    replayCount,
     startAnimation,
     skipAnimation,
     completeAnimation,

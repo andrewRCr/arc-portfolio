@@ -930,8 +930,14 @@ html[data-env-preview="false"] [data-window-container] {
 
 /* Hide layout windows during intro (wallpaper stays visible).
    Components stay mounted for Phase 3 morph targeting.
-   Excludes the intro CommandWindow itself (windowId="intro"). */
-:has([data-intro-sequence]) [data-window-container]:not([data-window-id="intro"]) {
+   Excludes the intro CommandWindow itself (windowId="intro").
+   Excludes TopBar during morph phase (needs to be visible for layoutId transition). */
+:has([data-intro-sequence]:not([data-intro-morphing])) [data-window-container]:not([data-window-id="intro"]) {
+  opacity: 0;
+}
+
+/* During morph, only TopBar is visible (other windows stay hidden) */
+:has([data-intro-morphing]) [data-window-container]:not([data-window-id="intro"]):not([data-window-id="top"]) {
   opacity: 0;
 }
 

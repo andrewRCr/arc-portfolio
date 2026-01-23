@@ -6,7 +6,7 @@
  * The initial window that appears during the intro animation sequence.
  * Displays branding and a terminal-style prompt, matching the TopBar aesthetic.
  *
- * This component will later morph into the TopBar via Framer Motion layoutId.
+ * Morphs into TopBar via Framer Motion layoutId during the intro animation.
  *
  * Features:
  * - Entrance animation: scale up, then fade in content
@@ -21,9 +21,18 @@ import { SITE } from "@/config/site";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { WindowContainer } from "@/components/layout/WindowContainer";
 
-/** Animation timing constants (ms) */
+/** Animation timing constants (seconds) */
 const SCALE_DURATION = 0.3;
 const FADE_DURATION = 0.2;
+const MORPH_DURATION = 0.5;
+
+/** Spring config for morph transition - snappy but smooth */
+const morphTransition = {
+  type: "spring" as const,
+  stiffness: 300,
+  damping: 30,
+  duration: MORPH_DURATION,
+};
 
 export interface CommandWindowProps {
   /** Text being typed (from useTypingAnimation) */
@@ -36,6 +45,8 @@ export interface CommandWindowProps {
   showContent?: boolean;
   /** Whether to show cursor - appears after branding fades in */
   showCursor?: boolean;
+  /** Whether morph transition is active - fades out command content */
+  isMorphing?: boolean;
   /** Called when entrance animation completes (scale + fade) */
   onEntranceComplete?: () => void;
   /** Additional CSS classes */
@@ -60,6 +71,7 @@ export function CommandWindow({
   loadingContent,
   showContent = true,
   showCursor = true,
+  isMorphing = false,
   onEntranceComplete,
   className,
 }: CommandWindowProps) {
@@ -67,39 +79,49 @@ export function CommandWindow({
   const innerHeight = topBarHeight - windowBorderWidth * 2;
 
   return (
-    <motion.div
-      className="fixed inset-0 flex items-start justify-center pt-[20vh]"
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: SCALE_DURATION, ease: "easeOut" }}
-      onAnimationComplete={onEntranceComplete}
-      // TODO: Add layoutId for morph transition to TopBar
-    >
-      <WindowContainer windowId="intro" className={className}>
-        <div className="flex items-center gap-4 px-4" style={{ height: innerHeight, minWidth: 320 }}>
-          {/* Content fades in after window scales up */}
-          <motion.div
-            className="flex items-center gap-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: showContent ? 1 : 0 }}
-            transition={{ duration: FADE_DURATION, delay: showContent ? 0 : 0 }}
-          >
-            {/* Branding - matches TopBar style */}
-            <div className="flex items-center gap-3">
-              <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
-              <span className="text-primary font-mono">&gt;_</span>
-            </div>
+    <div className="fixed inset-0 flex items-start justify-center pt-[20vh]">
+      <motion.div
+        layoutId="topbar-window"
+        layout
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{
+          layout: morphTransition,
+          scale: { duration: SCALE_DURATION, ease: "easeOut" },
+          opacity: { duration: SCALE_DURATION },
+        }}
+        onAnimationComplete={() => {
+          if (!isMorphing) {
+            onEntranceComplete?.();
+          }
+        }}
+      >
+        <WindowContainer windowId="intro" className={className}>
+          <div className="flex items-center gap-4 px-4" style={{ height: innerHeight, minWidth: 320 }}>
+            {/* All content disappears instantly when morph starts, fades in during entrance */}
+            <motion.div
+              className="flex items-center gap-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: showContent && !isMorphing ? 1 : 0 }}
+              transition={{ duration: isMorphing ? 0 : FADE_DURATION }}
+            >
+              {/* Branding - matches TopBar style */}
+              <div className="flex items-center gap-3">
+                <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
+                <span className="text-primary font-mono">&gt;_</span>
+              </div>
 
-            {/* Command area - typed text + cursor or loading indicator */}
-            <div className="flex items-center gap-1 font-mono text-foreground">
-              <span>{typedText}</span>
-              {!isTypingComplete && showCursor && <BlinkingCursor />}
-              {isTypingComplete && loadingContent}
-            </div>
-          </motion.div>
-        </div>
-      </WindowContainer>
-    </motion.div>
+              {/* Command area - typed text + cursor or loading indicator */}
+              <div className="flex items-center gap-1 font-mono text-foreground">
+                <span>{typedText}</span>
+                {!isTypingComplete && showCursor && <BlinkingCursor />}
+                {isTypingComplete && loadingContent}
+              </div>
+            </motion.div>
+          </div>
+        </WindowContainer>
+      </motion.div>
+    </div>
   );
 }
 
