@@ -279,48 +279,54 @@ content fills" sequence.
 
 **Purpose:** Animate the ConditionalFrame border and navigation fade-in as the final stage.
 
-- [ ] **5.1 Implement TUI frame border animation**
+- [x] **5.1 Implement TUI frame border animation**
+    - SVG stroke-dasharray approach: two paths draw simultaneously from nav gap edges, meet at bottom center
+    - ConditionalFrame now uses `useIntroContext` for animation state
+    - `generateHalfPath()` creates SVG paths matching frame shape (rounded corners, nav gap)
+    - Border draw: 0.5s duration, starts 0.25s into expanding phase
+    - Explored alternatives: CSS gradient sweep (worked but felt wrong), glow effects (clip-path conflicts)
+    - Changed main content animation from spring to tween (cleaner endpoint, fits mechanical boot aesthetic)
 
-    - [ ] **5.1.a Create SVG-based animated border**
-        - Convert ConditionalFrame border to SVG path (or overlay)
-        - Use `stroke-dasharray` and `stroke-dashoffset` for draw effect
-        - Border extends from sides, connects at bottom
+- [x] **5.2 Animate navigation fade-in**
+    - Motion wrapper on Navigation container in ConditionalFrame
+    - Sequential timing: nav fades in after border completes (0.15s overlap for smooth handoff)
+    - Duration: 0.35s fade
+    - Creates "interface completing boot sequence" effect
 
-    - [ ] **5.1.b Alternative: CSS pseudo-element animation**
-        - If SVG approach too complex, use width/height animation on pseudo-elements
-        - Four edges animate in sequence or simultaneously
-        - Document approach taken
+- [x] **5.3 Signal animation complete**
+    - Cookie set via existing `completeAnimation()` in IntroSequence
+    - IntroSequence overlay unmounts when `shouldShow` becomes false
+    - SVG border persists independently (tracked via `svgTriggered` state)
 
-    - [ ] **5.1.c Configure border animation timing**
-        - Duration: ~300-500ms
-        - Start after layout expansion settles (Phase 4 complete)
-        - Discrete phase with minimal overlap
+- [x] **5.4 Run quality checks**
+    - [x] Type-check, lint, format, markdown lint pass
+    - [x] Build succeeds
+    - [x] 1238 tests pass (updated ConditionalFrame and TopBar tests for IntroProvider)
+    - [x] Added IntroProvider to test-utils TestProviders
 
-- [ ] **5.2 Animate navigation fade-in**
+### **Phase 5.5:** Home Page Content Animation (TBD)
 
-    - [ ] **5.2.a Add motion wrapper to Navigation component**
-        - Initial state: opacity 0
-        - Positioned in gap (already correct placement)
+**Purpose:** Animate hero and body content entrance, coordinated with existing skills logo delayed show.
 
-    - [ ] **5.2.b Configure navigation entrance**
-        - Fade in after or during border animation
-        - Duration: ~200-300ms
-        - Creates "interface completing boot sequence" effect
+**Note:** This phase was identified during Phase 5 implementation. The skills logo bar already uses
+delayed show to prevent layout shift from FeaturedSection randomization. Home content animation
+should sync with this timing.
 
-- [ ] **5.3 Signal animation complete**
+- [ ] **5.5.a Define content animation approach**
+    - Option A: Hero-specific entrance animation
+    - Option B: Fade in all main content in sync
+    - Must coordinate with skills logo bar delayed show (~existing timing)
+    - Consider whether frame/nav animations should complete first or overlap
 
-    - [ ] **5.3.a Update animation state to 'complete'**
-        - Set intro cookie via `markIntroSeen()`
-        - Remove IntroSequence overlay
-        - Ensure focus flows naturally to content
+- [ ] **5.5.b Implement home content animation**
+    - Details TBD based on 5.5.a decision
 
-- [ ] **5.4 Run quality checks**
-    - [ ] 5.4.a Type-check and lint
-    - [ ] 5.4.b Full visual test of complete animation sequence
+- [ ] **5.5.c Run quality checks**
+    - Type-check, lint, visual testing
 
-### **Phase 6:** TopBar Hover State & Retrigger
+### **Phase 6:** Finishing Touches
 
-**Purpose:** Add hover hint on desktop and enable animation replay via branding click.
+**Purpose:** Polish the animation with hover hints, code cleanup, and DRY/SOLID refactoring.
 
 - [ ] **6.1 Implement TopBar branding hover hint**
 
@@ -348,10 +354,25 @@ content fills" sequence.
         - N/A: TopBar branding is the only home link in the app
         - No other navigation links route to "/" that would need differentiation
 
-- [ ] **6.3 Run quality checks**
-    - [ ] 6.3.a Type-check and lint
-    - [ ] 6.3.b Manual test: hover hint visible on desktop
-    - [ ] 6.3.c Manual test: branding click replays animation
+- [ ] **6.3 DRY/SOLID refactor pass**
+
+    - [ ] **6.3.a Review animation timing constants**
+        - Consolidate timing values across files if appropriate
+        - Consider shared config for related durations/delays
+
+    - [ ] **6.3.b Review intro-aware component patterns**
+        - ConditionalFrame, TopBar, LayoutWrapper all use IntroContext
+        - Ensure consistent patterns and naming
+
+    - [ ] **6.3.c Extract shared utilities if needed**
+        - Animation configs, phase-checking helpers, etc.
+        - Only if genuine duplication exists
+
+- [ ] **6.4 Run quality checks**
+    - [ ] 6.4.a Type-check and lint
+    - [ ] 6.4.b Manual test: hover hint visible on desktop
+    - [ ] 6.4.c Manual test: branding click replays animation
+    - [ ] 6.4.d Full visual test of animation sequence
 
 ### **Phase 7:** Accessibility
 
