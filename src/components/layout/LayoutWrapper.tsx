@@ -26,13 +26,14 @@ export interface LayoutWrapperProps {
 }
 
 /**
- * Spring animation config for main content expansion.
- * Slower/softer to let the growth register visually.
+ * Tween animation config for main content expansion.
+ * Using tween for clean endpoint without sub-pixel settling artifacts.
+ * Also fits the mechanical "boot sequence" aesthetic better than organic spring.
  */
-const mainContentSpring = {
-  type: "spring" as const,
-  stiffness: 120,
-  damping: 20,
+const mainContentTween = {
+  type: "tween" as const,
+  duration: 0.5,
+  ease: "easeOut" as const,
 };
 
 /** Delay before main content starts expanding (lets frame register first) */
@@ -121,7 +122,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
             opacity: isIntroHidingMainContent ? { type: "tween", duration: 0.15 } : { duration: 0 }, // Instant on show - no opacity transition
             scale: isIntroHidingMainContent
               ? { type: "tween", duration: 0.15 }
-              : { ...mainContentSpring, delay: MAIN_CONTENT_DELAY },
+              : { ...mainContentTween, delay: MAIN_CONTENT_DELAY },
           }}
           style={{ transformOrigin: "center" }}
         >
