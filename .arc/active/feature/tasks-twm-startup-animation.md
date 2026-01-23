@@ -113,72 +113,87 @@ TWM/TUI aesthetic and creating a memorable first impression.
 
 **Purpose:** Build the initial command window with branding, cursor, and typing effect.
 
-- [ ] **2.1 Create CommandWindow component**
+**Pulled Forward:** IntroContext and TopBar retrigger (from Phase 6) implemented early to enable
+manual testing during development. See Tasks 6.2.a-b for details.
 
-    - [ ] **2.1.a Create `src/components/intro/CommandWindow.tsx`**
-        - Use WindowContainer styling for consistency
-        - Position: centered, offset toward top
-        - Slightly horizontal aspect ratio
-        - Include motion wrapper for Framer Motion integration
+- [x] **2.1 Create CommandWindow component**
 
-    - [ ] **2.1.b Add branding elements**
-        - "andrewRCr" text matching TopBar style
-        - Prompt icon (`>_` or similar)
-        - Use theme tokens for colors
+    - [x] **2.1.a Create `src/components/intro/CommandWindow.tsx`**
+        - WindowContainer styling with motion.div wrapper
+        - Positioned at top 20vh, horizontally centered
+        - minWidth: 320px for horizontal aspect ratio
 
-- [ ] **2.2 Implement blinking cursor**
+    - [x] **2.1.b Add branding elements**
+        - SITE.handle ("andrewRCr") + ">_" prompt matching TopBar
+        - font-mono font-bold text-foreground + text-primary
 
-    - [ ] **2.2.a Create cursor element with CSS animation**
-        - Filled box style cursor
-        - Blink interval ~530ms (standard terminal rate)
-        - Use `border-primary` or appropriate theme token
-        - Respect `prefers-reduced-motion` (solid cursor, no blink)
+- [x] **2.2 Implement blinking cursor**
 
-- [ ] **2.3 Write tests for typing animation hook**
+    - [x] **2.2.a Create cursor element with CSS animation**
+        - BlinkingCursor component: w-2 h-4 bg-primary
+        - 1.06s animation (530ms on/off) via @keyframes blink in globals.css
+        - Reduced motion handled via CSS media query (not Tailwind variant)
 
-    - [ ] **2.3.a Create test file `src/hooks/__tests__/useTypingAnimation.test.ts`**
-        - Test: Returns empty string initially
-        - Test: Returns characters progressively over time
-        - Test: Returns full string when complete
-        - Test: `isComplete` is `false` during typing, `true` after
-        - Test: Respects custom delay timing
-        - Test: Calls `onComplete` callback when finished
-        - Expect tests to FAIL initially
+- [x] **2.3 Write tests for typing animation hook**
 
-    - [ ] **2.3.b Run tests and verify failures**
+    - [x] **2.3.a Create test file `src/hooks/__tests__/useTypingAnimation.test.ts`**
+        - 14 tests covering: initial state, typing progress, completion state,
+          custom timing (charDelay, initialDelay), onComplete callback,
+          edge cases (empty string, single char), start control
 
-- [ ] **2.4 Implement typing animation hook**
+    - [x] **2.3.b Run tests and verify failures**
+        - Tests fail as expected (hook not yet implemented)
 
-    - [ ] **2.4.a Create `src/hooks/useTypingAnimation.ts`**
-        - Accept text string and timing options
-        - Return current displayed text and completion state
-        - Character-by-character reveal
-        - Configurable delay per character (~50-80ms)
-        - Optional `onComplete` callback
+- [x] **2.4 Implement typing animation hook**
 
-    - [ ] **2.4.b Run tests - should now PASS**
+    - [x] **2.4.a Create `src/hooks/useTypingAnimation.ts`**
+        - Options: text, charDelay (60ms default), initialDelay, start, onComplete
+        - Returns: displayedText, isComplete
+        - Handles edge cases (empty string, single char)
 
-    - [ ] **2.4.c Integrate typing with CommandWindow**
-        - Display `portfolio init` (or configurable text)
-        - Cursor follows typed text
-        - Pause after completion (~200-400ms) before next phase
+    - [x] **2.4.b Run tests - should now PASS**
+        - 14 tests passing
 
-- [ ] **2.5 Implement loading indicator**
+    - [x] **2.4.c Integrate typing with CommandWindow**
+        - COMMAND_TEXT = "portfolio init", charDelay=60, initialDelay=300
+        - Cursor shows during typing, replaced by loading spinner after
+        - 300ms pause after typing before loading phase
 
-    - [ ] **2.5.a Create terminal-style loading animation**
-        - Options: spinning bar (`|/-\`) or animated dots (`...`)
-        - Position to right of typed text or below
-        - Brief duration before transition
+- [x] **2.5 Implement loading indicator**
 
-    - [ ] **2.5.b Wire loading indicator to phase timing**
-        - Trigger after typing completes
-        - Signal completion to advance to next phase
-        - *Note: May be cut if sequence feels sluggish - evaluate during polish*
+    - [x] **2.5.a Create terminal-style loading animation**
+        - LoadingSpinner component using dots3 pattern (braille dots)
+        - SPINNER_FRAMES array, 80ms interval
+        - Positioned to right of typed text
 
-- [ ] **2.6 Run quality checks**
-    - [ ] 2.6.a Run `npm run type-check`
-    - [ ] 2.6.b Run `npm run lint -- --fix` on new files
-    - [ ] 2.6.c Manual visual check in browser
+    - [x] **2.5.b Wire loading indicator to phase timing**
+        - IntroPhase state machine: entering → typing → loading → morphing → expanding → complete
+        - Loading phase triggered after 300ms pause post-typing
+        - *TODO (Phase 3): Wire to morph transition*
+
+    - [x] **2.5.c Hide layout windows during intro** (added during implementation)
+        - CSS rule: `:has([data-intro-sequence]) [data-window-container]:not([data-window-id="intro"])`
+        - Layout windows hidden with opacity:0 (still mounted for Phase 3 morph targets)
+        - Wallpaper remains visible behind CommandWindow
+
+    - [x] **2.5.d Entrance animation sequence** (added during implementation)
+        - Window scales up from 0.9→1.0 (SCALE_DURATION=0.3s)
+        - Content (branding) fades in after 150ms pause
+        - Cursor appears (no fade) after 250ms pause
+        - Typing begins after 1000ms pause
+        - Framer Motion orchestration via onEntranceComplete callback
+
+    - [x] **2.5.e Backdrop blur effect** (added during implementation)
+        - Animated blur layer synced with window scale-up (0→8px)
+        - `blurActive` state ready for Phase 3 to animate blur removal
+        - Provides visual focus on CommandWindow during intro
+
+- [x] **2.6 Run quality checks**
+    - [x] 2.6.a `npm run type-check` - Pass
+    - [x] 2.6.b `npm run lint -- --fix` - Pass
+    - [x] 2.6.c `npm run format` - Pass
+    - [x] 2.6.d `npm test` - 1238 tests passing (14 new from useTypingAnimation)
+    - [x] 2.6.e Manual visual check in browser
 
 ### **Phase 3:** Window Morph Transition
 
@@ -317,20 +332,20 @@ TWM/TUI aesthetic and creating a memorable first impression.
         - No hover state on touch devices
         - Branding remains clickable without hint
 
-- [ ] **6.2 Implement retrigger mechanism**
+- [x] **6.2 Implement retrigger mechanism**
+    - Pulled forward to enable manual testing during Phase 2 development
 
-    - [ ] **6.2.a Modify TopBar branding Link behavior**
-        - On click: clear intro cookie, trigger animation, navigate to home
-        - Distinguish from regular home navigation
+    - [x] **6.2.a Modify TopBar branding Link behavior**
+        - Created `IntroContext` to share animation state between components
+        - TopBar branding click calls `triggerReplay()` before navigation
+        - Updated TopBar tests to mock IntroContext
 
-    - [ ] **6.2.b Update `useIntroAnimation` for retrigger**
-        - Add `triggerReplay()` function
-        - Reset state to `'pending'`, clear cookie
-        - Begin animation sequence
+    - [x] **6.2.b Update `useIntroAnimation` for retrigger**
+        - Completed in Phase 1 (Task 1.4.a) - `triggerReplay()` already exists
 
-    - [ ] **6.2.c Ensure regular "Home" nav doesn't retrigger**
-        - Only TopBar branding click triggers replay
-        - Navigation links behave normally
+    - [x] **6.2.c Ensure regular "Home" nav doesn't retrigger**
+        - N/A: TopBar branding is the only home link in the app
+        - No other navigation links route to "/" that would need differentiation
 
 - [ ] **6.3 Run quality checks**
     - [ ] 6.3.a Type-check and lint
