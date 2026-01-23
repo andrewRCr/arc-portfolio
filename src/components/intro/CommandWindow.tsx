@@ -19,20 +19,8 @@
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { WINDOW_SCALE_DURATION, CONTENT_FADE_DURATION, MORPH_SPRING } from "@/lib/intro-timing";
 import { WindowContainer } from "@/components/layout/WindowContainer";
-
-/** Animation timing constants (seconds) */
-const SCALE_DURATION = 0.3;
-const FADE_DURATION = 0.2;
-const MORPH_DURATION = 0.5;
-
-/** Spring config for morph transition - snappy but smooth */
-const morphTransition = {
-  type: "spring" as const,
-  stiffness: 300,
-  damping: 30,
-  duration: MORPH_DURATION,
-};
 
 export interface CommandWindowProps {
   /** Text being typed (from useTypingAnimation) */
@@ -88,9 +76,9 @@ export function CommandWindow({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: isMorphing ? 1 : 0 }}
         transition={{
-          layout: morphTransition,
-          scale: { duration: SCALE_DURATION, ease: "easeOut" },
-          opacity: { duration: isMorphing ? 0.1 : SCALE_DURATION },
+          layout: MORPH_SPRING,
+          scale: { duration: WINDOW_SCALE_DURATION, ease: "easeOut" },
+          opacity: { duration: isMorphing ? 0.1 : WINDOW_SCALE_DURATION },
         }}
       >
         <WindowContainer windowId="intro-footer" className={className}>
@@ -105,9 +93,9 @@ export function CommandWindow({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{
-          layout: morphTransition,
-          scale: { duration: SCALE_DURATION, ease: "easeOut" },
-          opacity: { duration: SCALE_DURATION },
+          layout: MORPH_SPRING,
+          scale: { duration: WINDOW_SCALE_DURATION, ease: "easeOut" },
+          opacity: { duration: WINDOW_SCALE_DURATION },
         }}
         onAnimationComplete={() => {
           if (!isMorphing) {
@@ -122,7 +110,7 @@ export function CommandWindow({
               className="flex items-center gap-3"
               initial={{ opacity: 0 }}
               animate={{ opacity: showContent && !isMorphing ? 1 : 0 }}
-              transition={{ duration: isMorphing ? 0 : FADE_DURATION }}
+              transition={{ duration: isMorphing ? 0 : CONTENT_FADE_DURATION }}
             >
               {/* Branding - matches TopBar style */}
               <div className="flex items-center gap-3">

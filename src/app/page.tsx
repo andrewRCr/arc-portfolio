@@ -6,6 +6,7 @@ import { Hero } from "@/components/layout/Hero";
 import { FeaturedSection } from "@/components/sections/FeaturedSection";
 import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
 import { skills } from "@/data/skills";
+import { BODY_CONTENT_DELAY, BODY_CONTENT_DURATION, HIDE_DURATION } from "@/lib/intro-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { useIntroContext } from "@/contexts/IntroContext";
@@ -38,30 +39,10 @@ const getFeaturedSkills = (order: string[]) =>
     .map((name) => allFeaturedSkills.find((s) => s.name === name))
     .filter((s): s is (typeof allFeaturedSkills)[number] => s !== undefined);
 
-/**
- * Body content animation timing (seconds)
- * Completes after frame (~1.1s) as final element in sequence
- */
-const BODY_ANIMATION = {
-  /** When body content starts fading (after frame starts) */
-  DELAY: 0.75,
-  /** Duration of fade */
-  DURATION: 0.35,
-  /** Quick hide duration for retrigger */
-  HIDE_DURATION: 0.15,
-} as const;
-
 export default function Home() {
   const isPhone = useIsPhone();
   const { layoutMode } = useLayoutPreferences();
-  const { introPhase } = useIntroContext();
-
-  // Body content hidden until expanding phase (same as secondary hero content)
-  const isBodyHidden =
-    introPhase === "entering" ||
-    introPhase === "typing" ||
-    introPhase === "loading" ||
-    introPhase === "morphing";
+  const { isHiddenUntilMorph } = useIntroContext();
 
   // Responsive positioning: hero on phone (visible immediately), below featured on tablet/desktop
   // Mobile boxed: curated 6 skills (single row). Mobile fullscreen: full 10 (5/5 split)
@@ -82,13 +63,13 @@ export default function Home() {
       <motion.div
         className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
         initial={false}
-        animate={{ opacity: isBodyHidden ? 0 : 1 }}
+        animate={{ opacity: isHiddenUntilMorph ? 0 : 1 }}
         transition={
-          isBodyHidden
-            ? { duration: BODY_ANIMATION.HIDE_DURATION }
+          isHiddenUntilMorph
+            ? { duration: HIDE_DURATION }
             : {
-                duration: BODY_ANIMATION.DURATION,
-                delay: BODY_ANIMATION.DELAY,
+                duration: BODY_CONTENT_DURATION,
+                delay: BODY_CONTENT_DELAY,
                 ease: "easeOut",
               }
         }

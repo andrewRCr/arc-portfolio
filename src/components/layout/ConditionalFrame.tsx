@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { FRAME_FADE_DELAY, BORDER_DRAW_DURATION, NAV_FADE_TRANSITION } from "@/lib/intro-timing";
 import { useIntroContext } from "@/contexts/IntroContext";
 import { Navigation } from "./Navigation";
 
@@ -23,26 +24,8 @@ import { Navigation } from "./Navigation";
  * renders on first paint without waiting for JavaScript hydration.
  */
 
-/** Shared timing for frame elements fade-in */
-const FRAME_FADE_DELAY = 0.15; // seconds - starts partway through expansion
-const FRAME_FADE_DURATION = 0.45;
-
-/** Border draw animation duration */
-const BORDER_DRAW_DURATION = 0.8; // seconds
-
-/** Nav starts so it completes at same time as border draw */
-const NAV_FADE_DELAY = FRAME_FADE_DELAY + BORDER_DRAW_DURATION - FRAME_FADE_DURATION;
-
 /** Border radius matching rounded-lg */
 const BORDER_RADIUS = 8;
-
-/** Navigation fade-in animation config - starts after border completes */
-const navFadeTransition = {
-  type: "tween" as const,
-  duration: FRAME_FADE_DURATION,
-  delay: NAV_FADE_DELAY,
-  ease: "easeOut" as const,
-};
 
 /**
  * Generate SVG path for one half of the frame border.
@@ -86,7 +69,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDevRoute = pathname?.startsWith("/dev");
   const { navGapDepth, windowBorderWidth, contentMaxWidth, tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
-  const { introPhase, shouldShow } = useIntroContext();
+  const { introPhase, isHiddenUntilExpand } = useIntroContext();
 
   // Ref for measuring container dimensions
   const containerRef = useRef<HTMLDivElement>(null);
@@ -107,9 +90,6 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
-
-  // Frame elements hidden during intro until expansion phase (delays handle timing)
-  const isFrameHidden = shouldShow && introPhase !== "expanding" && introPhase !== "complete" && introPhase !== "idle";
 
   // Track if SVG animation has been triggered - persists until retrigger
   // Using lazy initial state to check if we should skip animation entirely
@@ -237,8 +217,8 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
               } as React.CSSProperties
             }
             initial={false}
-            animate={{ opacity: isFrameHidden ? 0 : 1 }}
-            transition={navFadeTransition}
+            animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
+            transition={NAV_FADE_TRANSITION}
             aria-hidden="true"
           />
         )}
@@ -247,8 +227,8 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
         <motion.div
           className="absolute left-1/2 -translate-x-1/2 -top-px -translate-y-1/2 px-6 z-10"
           initial={false}
-          animate={{ opacity: isFrameHidden ? 0 : 1 }}
-          transition={navFadeTransition}
+          animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
+          transition={NAV_FADE_TRANSITION}
         >
           <Navigation />
         </motion.div>

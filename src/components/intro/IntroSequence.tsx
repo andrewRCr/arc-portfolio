@@ -24,14 +24,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useIntroContext, type IntroPhase } from "@/contexts/IntroContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useTypingAnimation } from "@/hooks/useTypingAnimation";
+import {
+  CONTENT_FADE_DELAY,
+  CURSOR_APPEAR_DELAY,
+  TYPING_START_DELAY,
+  TYPING_CHAR_DELAY,
+  TYPING_COMPLETE_PAUSE,
+  LOADING_DURATION,
+  EXPANDING_DURATION,
+  BLUR_DURATION,
+  BLUR_AMOUNT,
+  MORPH_EXIT_DELAY,
+  POST_MORPH_PAUSE,
+  SPINNER_INTERVAL_MS,
+} from "@/lib/intro-timing";
 import { CommandWindow } from "./CommandWindow";
 
 /**
  * Loading spinner using dots3 pattern from cli-spinners.
- * Cycles through braille dot frames at 80ms intervals.
+ * Cycles through braille dot frames at configured interval.
  */
 const SPINNER_FRAMES = ["⠋", "⠙", "⠚", "⠞", "⠖", "⠦", "⠴", "⠲", "⠳", "⠓"];
-const SPINNER_INTERVAL = 80;
 
 function LoadingSpinner() {
   const [frameIndex, setFrameIndex] = useState(0);
@@ -39,7 +52,7 @@ function LoadingSpinner() {
   useEffect(() => {
     const timer = setInterval(() => {
       setFrameIndex((prev) => (prev + 1) % SPINNER_FRAMES.length);
-    }, SPINNER_INTERVAL);
+    }, SPINNER_INTERVAL_MS);
 
     return () => clearInterval(timer);
   }, []);
@@ -59,16 +72,8 @@ export interface IntroSequenceProps {
 /** Command text displayed during typing animation */
 const COMMAND_TEXT = "portfolio init";
 
-/** Timing constants (ms) */
-const CONTENT_FADE_DELAY = 150; // Delay after window scales before content fades in
-const CURSOR_APPEAR_DELAY = 250; // Delay after content fades before cursor appears
-const TYPING_START_DELAY = 1000; // Delay after cursor appears before typing starts
-const LOADING_DURATION = 1000; // How long loading spinner shows before morph starts
-const EXPANDING_DURATION = 500; // How long layout expansion phase lasts
-
-/** Animation durations (seconds) */
-const BLUR_DURATION = 0.4;
-const BLUR_AMOUNT = 8; // px
+/** Convert seconds to milliseconds for setTimeout */
+const toMs = (seconds: number) => seconds * 1000;
 
 function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   const { state, shouldShow, reducedMotion, startAnimation, skipAnimation, completeAnimation, setIntroPhase } =
@@ -111,21 +116,21 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
         // After cursor is visible, begin typing
         setTimeout(() => {
           setPhase("typing");
-        }, TYPING_START_DELAY);
-      }, CURSOR_APPEAR_DELAY);
-    }, CONTENT_FADE_DELAY);
+        }, toMs(TYPING_START_DELAY));
+      }, toMs(CURSOR_APPEAR_DELAY));
+    }, toMs(CONTENT_FADE_DELAY));
   }, []);
 
   // Typing animation - starts when in typing phase
   const { displayedText, isComplete: isTypingComplete } = useTypingAnimation({
     text: COMMAND_TEXT,
-    charDelay: 60,
+    charDelay: toMs(TYPING_CHAR_DELAY),
     start: phase === "typing",
     onComplete: () => {
       // Brief pause after typing completes, then transition to loading
       setTimeout(() => {
         setPhase("loading");
-      }, 300);
+      }, toMs(TYPING_COMPLETE_PAUSE));
     },
   });
 
@@ -142,7 +147,7 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
       const timer = setTimeout(() => {
         setBlurActive(false); // Start fading out backdrop blur
         setPhase("morphing");
-      }, LOADING_DURATION);
+      }, toMs(LOADING_DURATION));
       return () => clearTimeout(timer);
     }
   }, [phase]);
@@ -153,7 +158,7 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
       // Content fade takes ~150ms, wait a bit longer then exit
       const timer = setTimeout(() => {
         setShowCommandWindow(false);
-      }, 200);
+      }, toMs(MORPH_EXIT_DELAY));
       return () => clearTimeout(timer);
     }
   }, [phase]);
@@ -170,8 +175,8 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
       setTimeout(() => {
         setPhase("complete");
         completeAnimation();
-      }, EXPANDING_DURATION);
-    }, 100);
+      }, toMs(EXPANDING_DURATION));
+    }, toMs(POST_MORPH_PAUSE));
   }, [completeAnimation]);
 
   // Handle skip action

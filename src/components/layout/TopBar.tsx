@@ -35,19 +35,14 @@ export interface TopBarProps {
 export function TopBar({ isActive, onActivate, className }: TopBarProps) {
   const { windowBorderWidth, contentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
-  const { triggerReplay, introPhase, shouldShow } = useIntroContext();
-
-  // During intro (before morph), don't render TopBar - this allows layoutId morph to work
-  // The morph requires TopBar to "mount" when CommandWindow "unmounts"
-  // Once morphing starts, TopBar stays visible through expanding and complete phases
-  const isPreMorphIntro =
-    shouldShow && introPhase !== "morphing" && introPhase !== "expanding" && introPhase !== "idle";
+  const { triggerReplay, introPhase, isHiddenUntilMorph } = useIntroContext();
 
   // Apply layoutId during morph phase for shared element transition from CommandWindow
   const isMorphing = introPhase === "morphing";
 
   // Don't render during pre-morph intro - keeps space with placeholder
-  if (isPreMorphIntro) {
+  // This allows layoutId morph to work (TopBar "mounts" when CommandWindow "unmounts")
+  if (isHiddenUntilMorph) {
     return <div className={className} style={{ height: topBarHeight, flexShrink: 0 }} aria-hidden="true" />;
   }
 

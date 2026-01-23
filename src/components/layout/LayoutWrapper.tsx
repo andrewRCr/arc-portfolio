@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Minimize2, Maximize2 } from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { MAIN_CONTENT_TWEEN, MAIN_CONTENT_DELAY, HIDE_DURATION } from "@/lib/intro-timing";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { IntroProvider, useIntroContext } from "@/contexts/IntroContext";
@@ -26,27 +27,13 @@ export interface LayoutWrapperProps {
 }
 
 /**
- * Tween animation config for main content expansion.
- * Using tween for clean endpoint without sub-pixel settling artifacts.
- * Also fits the mechanical "boot sequence" aesthetic better than organic spring.
- */
-const mainContentTween = {
-  type: "tween" as const,
-  duration: 0.5,
-  ease: "easeOut" as const,
-};
-
-/** Delay before main content starts expanding (lets frame register first) */
-const MAIN_CONTENT_DELAY = 0.25;
-
-/**
  * Inner layout component that renders inside IntroProvider.
  * Handles intro-aware animation of main content and footer.
  */
 function LayoutContent({ children }: LayoutWrapperProps) {
   const { windowGap, windowContainerMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const { layoutMode, setLayoutMode, isDrawerOpen } = useLayoutPreferences();
-  const { introPhase, shouldShow } = useIntroContext();
+  const { introPhase, isHiddenUntilMorph } = useIntroContext();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
   const isMobile = useIsMobile();
 
@@ -74,23 +61,6 @@ function LayoutContent({ children }: LayoutWrapperProps) {
   const layoutPadding = isFullscreen ? 0 : windowGap;
   const layoutGap = isFullscreen ? 0 : windowGap;
 
-  // Determine visibility for layout windows during intro phases
-  // Main content: starts during "morphing" phase (same time as frame) but animates slower
-  const isIntroHidingMainContent =
-    shouldShow &&
-    introPhase !== "morphing" &&
-    introPhase !== "expanding" &&
-    introPhase !== "complete" &&
-    introPhase !== "idle";
-
-  // Footer: starts animating during "morphing" phase (splits off from CommandWindow)
-  const isIntroHidingFooter =
-    shouldShow &&
-    introPhase !== "morphing" &&
-    introPhase !== "expanding" &&
-    introPhase !== "complete" &&
-    introPhase !== "idle";
-
   return (
     <>
       {/* Three-window layout - fixed viewport, content scrolls inside */}
@@ -115,14 +85,14 @@ function LayoutContent({ children }: LayoutWrapperProps) {
           className="flex-1 min-h-0 flex flex-col"
           initial={false}
           animate={{
-            opacity: isIntroHidingMainContent ? 0 : 1,
-            scale: isIntroHidingMainContent ? 0 : 1,
+            opacity: isHiddenUntilMorph ? 0 : 1,
+            scale: isHiddenUntilMorph ? 0 : 1,
           }}
           transition={{
-            opacity: isIntroHidingMainContent ? { type: "tween", duration: 0.15 } : { duration: 0 }, // Instant on show - no opacity transition
-            scale: isIntroHidingMainContent
-              ? { type: "tween", duration: 0.15 }
-              : { ...mainContentTween, delay: MAIN_CONTENT_DELAY },
+            opacity: isHiddenUntilMorph ? { type: "tween", duration: HIDE_DURATION } : { duration: 0 }, // Instant on show - no opacity transition
+            scale: isHiddenUntilMorph
+              ? { type: "tween", duration: HIDE_DURATION }
+              : { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
           }}
           style={{ transformOrigin: "center" }}
         >
@@ -141,7 +111,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
         {/* Pre-morph: render placeholder to hold space; actual element mounts on morph for layoutId to work */}
         {/* On retrigger: quick fade out via exit animation (no reverse morph) */}
         <AnimatePresence mode="wait">
-          {isIntroHidingFooter ? (
+          {isHiddenUntilMorph ? (
             <motion.div
               key="footer-placeholder"
               style={{ height: DEFAULT_LAYOUT_TOKENS.footerHeight, flexShrink: 0 }}
@@ -152,7 +122,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
               key="footer-actual"
               layoutId={introPhase === "morphing" ? "footer-window" : undefined}
               layout={introPhase === "morphing"}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              exit={{ opacity: 0, transition: { duration: HIDE_DURATION } }}
             >
               <FooterBar
                 isActive={effectiveActiveWindow === "footer"}
