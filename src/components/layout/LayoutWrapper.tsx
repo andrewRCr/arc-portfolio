@@ -5,6 +5,7 @@ import { Minimize2, Maximize2 } from "lucide-react";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
+import { IntroProvider } from "@/contexts/IntroContext";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
@@ -76,7 +77,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const layoutGap = isFullscreen ? 0 : windowGap;
 
   return (
-    <>
+    <IntroProvider>
       {/* Background layer */}
       <WallpaperBackground imageSrc={wallpaperSrc} imageSrcHiRes={wallpaperSrcHiRes} />
 
@@ -132,6 +133,6 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       {/* Intro animation overlay - renders above layout during animation
           Normal layout renders underneath as morph target for window transition */}
       <IntroSequence />
-    </>
+    </IntroProvider>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { SITE } from "@/config/site";
+import { useIntroContext } from "@/contexts/IntroContext";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeControl, ThemeControlDrawer } from "../theme";
@@ -33,6 +34,7 @@ export interface TopBarProps {
 export function TopBar({ isActive, onActivate, className }: TopBarProps) {
   const { windowBorderWidth, contentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
+  const { triggerReplay } = useIntroContext();
 
   return (
     <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate} className={className}>
@@ -41,9 +43,14 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}
       >
         {/* Branding - links to home */}
+        {/* Branding - links to home, clicking triggers intro animation replay */}
         <div className="flex items-center gap-3">
           <TouchTarget align="start">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Link
+              href="/"
+              onClick={triggerReplay}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
               <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
             </Link>
           </TouchTarget>

@@ -21,11 +21,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import {
-  hasSeenIntro,
-  markIntroSeen,
-  clearIntroCookie,
-} from "@/lib/cookies/intro";
+import { hasSeenIntro, markIntroSeen, clearIntroCookie } from "@/lib/cookies/intro";
 
 /** Animation state machine states */
 export type IntroState = "pending" | "animating" | "complete";
@@ -81,9 +77,18 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
   const reducedMotion = useMemo(() => checkReducedMotion(), []);
 
   // Initialize state based on cookie and motion preference
-  const [state, setState] = useState<IntroState>(() =>
-    getInitialState(reducedMotion)
-  );
+  const [state, setState] = useState<IntroState>(() => getInitialState(reducedMotion));
+
+  // After hydration, re-check cookie state.
+  // On SSR, hasSeenIntro() returns false (no document), so state may be
+  // incorrectly set to "pending". This effect corrects the state on mount.
+  useEffect(() => {
+    if (hasSeenIntro() && state === "pending") {
+       
+      setState("complete");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Only run once on mount
+  }, []);
 
   // If reduced motion is preferred and state would be pending, mark as seen
   useEffect(() => {

@@ -17,6 +17,19 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
   }),
 }));
 
+// Mock IntroContext (TopBar uses triggerReplay for branding click)
+vi.mock("@/contexts/IntroContext", () => ({
+  useIntroContext: () => ({
+    state: "complete",
+    shouldShow: false,
+    reducedMotion: false,
+    startAnimation: vi.fn(),
+    skipAnimation: vi.fn(),
+    completeAnimation: vi.fn(),
+    triggerReplay: vi.fn(),
+  }),
+}));
+
 describe("TopBar", () => {
   describe("Branding", () => {
     it("renders site handle from config", () => {
