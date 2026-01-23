@@ -39,66 +39,59 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
 
   // During intro (before morph), don't render TopBar - this allows layoutId morph to work
   // The morph requires TopBar to "mount" when CommandWindow "unmounts"
-  const isPreMorphIntro = shouldShow && introPhase !== "morphing" && introPhase !== "idle";
+  // Once morphing starts, TopBar stays visible through expanding and complete phases
+  const isPreMorphIntro =
+    shouldShow && introPhase !== "morphing" && introPhase !== "expanding" && introPhase !== "idle";
 
   // Apply layoutId during morph phase for shared element transition from CommandWindow
   const isMorphing = introPhase === "morphing";
 
   // Don't render during pre-morph intro - keeps space with placeholder
   if (isPreMorphIntro) {
-    return (
-      <div
-        className={className}
-        style={{ height: topBarHeight, flexShrink: 0 }}
-        aria-hidden="true"
-      />
-    );
+    return <div className={className} style={{ height: topBarHeight, flexShrink: 0 }} aria-hidden="true" />;
   }
 
   return (
-    <motion.div
-      layoutId={isMorphing ? "topbar-window" : undefined}
-      layout={isMorphing}
-    >
+    <motion.div layoutId={isMorphing ? "topbar-window" : undefined} layout={isMorphing}>
       <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate} className={className}>
-      <header
-        className="flex items-center justify-between px-4 mx-auto w-full"
-        style={{ height: innerHeight, maxWidth: contentMaxWidth }}
-      >
-        {/* Branding - links to home */}
-        {/* Branding - links to home, clicking triggers intro animation replay */}
-        <div className="flex items-center gap-3">
-          <TouchTarget align="start">
-            <Link
-              href="/"
-              onClick={triggerReplay}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
-            </Link>
-          </TouchTarget>
-          <span className="text-primary font-mono">&gt;_</span>
-        </div>
+        <header
+          className="flex items-center justify-between px-4 mx-auto w-full"
+          style={{ height: innerHeight, maxWidth: contentMaxWidth }}
+        >
+          {/* Branding - links to home */}
+          {/* Branding - links to home, clicking triggers intro animation replay */}
+          <div className="flex items-center gap-3">
+            <TouchTarget align="start">
+              <Link
+                href="/"
+                onClick={triggerReplay}
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              >
+                <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
+              </Link>
+            </TouchTarget>
+            <span className="text-primary font-mono">&gt;_</span>
+          </div>
 
-        {/* Theme controls - responsive: drawer on mobile, popover + toggle on desktop */}
-        <div data-testid="theme-controls" className="flex items-center">
-          <ResponsiveSwitch
-            display="flex"
-            className="items-center gap-1"
-            mobile={<ThemeControlDrawer />}
-            desktop={
-              <>
-                <TouchTarget>
-                  <ThemeControl />
-                </TouchTarget>
-                <TouchTarget align="end">
-                  <ThemeToggle />
-                </TouchTarget>
-              </>
-            }
-          />
-        </div>
-      </header>
+          {/* Theme controls - responsive: drawer on mobile, popover + toggle on desktop */}
+          <div data-testid="theme-controls" className="flex items-center">
+            <ResponsiveSwitch
+              display="flex"
+              className="items-center gap-1"
+              mobile={<ThemeControlDrawer />}
+              desktop={
+                <>
+                  <TouchTarget>
+                    <ThemeControl />
+                  </TouchTarget>
+                  <TouchTarget align="end">
+                    <ThemeToggle />
+                  </TouchTarget>
+                </>
+              }
+            />
+          </div>
+        </header>
       </WindowContainer>
     </motion.div>
   );

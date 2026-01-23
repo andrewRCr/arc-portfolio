@@ -89,7 +89,6 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
   // incorrectly set to "pending". This effect corrects the state on mount.
   useEffect(() => {
     if (hasSeenIntro() && state === "pending") {
-       
       setState("complete");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Only run once on mount

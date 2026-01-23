@@ -64,21 +64,15 @@ const CONTENT_FADE_DELAY = 150; // Delay after window scales before content fade
 const CURSOR_APPEAR_DELAY = 250; // Delay after content fades before cursor appears
 const TYPING_START_DELAY = 1000; // Delay after cursor appears before typing starts
 const LOADING_DURATION = 800; // How long loading spinner shows before morph starts
+const EXPANDING_DURATION = 500; // How long layout expansion phase lasts
 
 /** Animation durations (seconds) */
 const BLUR_DURATION = 0.4;
 const BLUR_AMOUNT = 8; // px
 
 function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
-  const {
-    state,
-    shouldShow,
-    reducedMotion,
-    startAnimation,
-    skipAnimation,
-    completeAnimation,
-    setIntroPhase,
-  } = useIntroContext();
+  const { state, shouldShow, reducedMotion, startAnimation, skipAnimation, completeAnimation, setIntroPhase } =
+    useIntroContext();
 
   // Track client-side mount to avoid SSR/hydration mismatch.
   // On server, hasSeenIntro() returns false (no document), so shouldShow would
@@ -164,14 +158,20 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     }
   }, [phase]);
 
-  // Handle morph completion - mark animation as complete after layout animation finishes
+  // Handle morph completion - transition to expanding phase for layout animation
   const handleMorphComplete = useCallback(() => {
-    // Give the layoutId morph animation time to complete before unmounting
-    // The morph takes ~500ms, add buffer for smooth finish
+    // Brief pause after morph exit animation completes, then expand layout
+    // The exit is quick; we just need a moment for visual separation
     setTimeout(() => {
-      setPhase("complete");
-      completeAnimation();
-    }, 600);
+      // Transition to expanding phase - triggers main/footer entrance animations
+      setPhase("expanding");
+
+      // After layout expansion completes, mark animation as fully complete
+      setTimeout(() => {
+        setPhase("complete");
+        completeAnimation();
+      }, EXPANDING_DURATION);
+    }, 100);
   }, [completeAnimation]);
 
   // Handle skip action

@@ -80,6 +80,25 @@ export function CommandWindow({
 
   return (
     <div className="fixed inset-0 flex items-start justify-center pt-[20vh]">
+      {/* Footer morph target - positioned behind main window, morphs to FooterBar */}
+      <motion.div
+        layoutId="footer-window"
+        layout
+        className="absolute"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: isMorphing ? 1 : 0 }}
+        transition={{
+          layout: morphTransition,
+          scale: { duration: SCALE_DURATION, ease: "easeOut" },
+          opacity: { duration: isMorphing ? 0.1 : SCALE_DURATION },
+        }}
+      >
+        <WindowContainer windowId="intro-footer" className={className}>
+          <div className="flex items-center gap-4 px-4" style={{ height: innerHeight, minWidth: 320 }} />
+        </WindowContainer>
+      </motion.div>
+
+      {/* Main window - morphs to TopBar */}
       <motion.div
         layoutId="topbar-window"
         layout
