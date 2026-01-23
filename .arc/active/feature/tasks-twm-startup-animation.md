@@ -243,39 +243,37 @@ manual testing during development. See Tasks 6.2.a-b for details.
 
 ### **Phase 4:** Layout Expansion
 
-**Purpose:** Animate FooterBar appearance and main content window scaling up with push effect.
+**Purpose:** Animate FooterBar and main content window after TopBar morph completes.
 
-- [ ] **4.1 Animate FooterBar appearance**
+**Approach (evolved through iteration):** CommandWindow "splits" into TopBar (up) and FooterBar (down)
+via dual layoutId morphs, then main content expands to fill the frame. Creates cohesive "frame establishes,
+content fills" sequence.
 
-    - [ ] **4.1.a Add motion wrapper to FooterBar**
-        - Initial state: positioned but invisible/scaled down
-        - Coordinate timing with TopBar morph completion
+- [x] **4.1 Implement layout expansion animations**
 
-    - [ ] **4.1.b Configure FooterBar entrance animation**
-        - Fade in + subtle scale or slide
-        - Duration: ~200-300ms
-        - Should feel like it "settles" into place
+    - [x] **4.1.a Add dual layoutId morph for FooterBar**
+        - Added shadow element in CommandWindow with `layoutId="footer-window"`
+        - FooterBar wrapper picks up layoutId during morph phase
+        - Footer morphs from CommandWindow position (center) to final position (bottom)
+        - Uses same spring as TopBar (stiffness 300, damping 30) for synchronized feel
+        - AnimatePresence with exit animation for quick fade on retrigger (no reverse morph)
 
-- [ ] **4.2 Animate main content window**
+    - [x] **4.1.b Add motion wrapper for main content expansion**
+        - Scales from 0 → 1 from center (both X and Y)
+        - 250ms delay after morph starts (lets frame "register" first)
+        - Slower spring (stiffness 120, damping 20) for visible growth
+        - Opacity instant (no transition) - WindowContainer's 0.8 opacity shows through
+        - Quick tween (150ms) on retrigger for fast disappear
 
-    - [ ] **4.2.a Create animated wrapper for main WindowContainer**
-        - Initial state: scaled down (e.g., scaleY: 0.8) or collapsed
-        - Position: between TopBar and FooterBar
+    - [x] **4.1.c Update CSS and context integration**
+        - Removed CSS-based hiding rules (opacity now controlled by Framer Motion)
+        - Added "expanding" phase to IntroContext between "morphing" and "complete"
+        - LayoutWrapper restructured with inner LayoutContent component for context access
+        - TopBar condition updated to stay visible during "expanding" phase
 
-    - [ ] **4.2.b Implement scale-up with push effect**
-        - Main content scales up from center or top
-        - Pushes FooterBar down as it expands (TWM metaphor)
-        - Duration: ~300-500ms
-        - Easing: slight overshoot for "snappy" feel
-
-    - [ ] **4.2.c Coordinate timing with FooterBar**
-        - FooterBar appears first or simultaneously
-        - Main content expands and pushes it to final position
-        - All windows settle into final layout
-
-- [ ] **4.3 Run quality checks**
-    - [ ] 4.3.a Type-check and lint
-    - [ ] 4.3.b Visual testing - verify no layout shift after animation
+- [x] **4.2 Run quality checks**
+    - [x] 4.2.a Type-check and lint pass
+    - [x] 4.2.b Visual testing verified on desktop and mobile
 
 ### **Phase 5:** TUI Frame Assembly
 
