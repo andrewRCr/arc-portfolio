@@ -923,3 +923,36 @@ html[data-env-preview="false"] [data-window-container] {
   width: 100% !important;
   height: 100% !important;
 }
+
+/* ==========================================================================
+   Intro Animation
+   ========================================================================== */
+
+/* Hide layout windows during intro (wallpaper stays visible).
+   Components stay mounted for Phase 3 morph targeting.
+   Excludes the intro CommandWindow itself (windowId="intro"). */
+:has([data-intro-sequence]) [data-window-container]:not([data-window-id="intro"]) {
+  opacity: 0;
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1.06s step-end infinite;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink {
+    animation: none;
+  }
+}

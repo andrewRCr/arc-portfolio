@@ -6,13 +6,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  clearIntroCookie,
-  hasSeenIntro,
-  INTRO_COOKIE_EXPIRY,
-  INTRO_COOKIE_NAME,
-  markIntroSeen,
-} from "../intro";
+import { clearIntroCookie, hasSeenIntro, INTRO_COOKIE_EXPIRY, INTRO_COOKIE_NAME, markIntroSeen } from "../intro";
 
 describe("intro cookie utilities", () => {
   // Store original document.cookie descriptor
@@ -24,10 +18,7 @@ describe("intro cookie utilities", () => {
     cookieStore = {};
 
     // Save original descriptor
-    originalCookieDescriptor = Object.getOwnPropertyDescriptor(
-      document,
-      "cookie"
-    );
+    originalCookieDescriptor = Object.getOwnPropertyDescriptor(document, "cookie");
 
     // Mock document.cookie with getter/setter
     Object.defineProperty(document, "cookie", {
