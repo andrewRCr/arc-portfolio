@@ -25,13 +25,13 @@ import { Navigation } from "./Navigation";
 
 /** Shared timing for frame elements fade-in */
 const FRAME_FADE_DELAY = 0.15; // seconds - starts partway through expansion
-const FRAME_FADE_DURATION = 0.35;
+const FRAME_FADE_DURATION = 0.45;
 
 /** Border draw animation duration */
-const BORDER_DRAW_DURATION = 0.6; // seconds
+const BORDER_DRAW_DURATION = 0.8; // seconds
 
-/** Nav starts slightly before border completes (overlapping finish) */
-const NAV_FADE_DELAY = FRAME_FADE_DELAY + BORDER_DRAW_DURATION - 0.15;
+/** Nav starts so it completes at same time as border draw */
+const NAV_FADE_DELAY = FRAME_FADE_DELAY + BORDER_DRAW_DURATION - FRAME_FADE_DURATION;
 
 /** Border radius matching rounded-lg */
 const BORDER_RADIUS = 8;

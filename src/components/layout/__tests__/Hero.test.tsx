@@ -1,6 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, checkA11y } from "@tests/test-utils";
 import { describe, it, expect } from "vitest";
-import { checkA11y } from "@tests/test-utils";
 import { Hero } from "../Hero";
 import { SITE } from "@/config/site";
 

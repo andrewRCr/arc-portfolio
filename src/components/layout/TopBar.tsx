@@ -58,9 +58,9 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
           className="flex items-center justify-between px-4 mx-auto w-full"
           style={{ height: innerHeight, maxWidth: contentMaxWidth }}
         >
-          {/* Branding - links to home */}
           {/* Branding - links to home, clicking triggers intro animation replay */}
-          <div className="flex items-center gap-3">
+          {/* On desktop hover, shows "portfolio init" with blinking cursor */}
+          <div className="group flex items-center gap-3">
             <TouchTarget align="start">
               <Link
                 href="/"
@@ -70,7 +70,16 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
                 <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
               </Link>
             </TouchTarget>
-            <span className="text-primary font-mono">&gt;_</span>
+            <span className="text-primary font-mono">
+              &gt;
+              {/* Underscore decoration - fades out on desktop hover */}
+              <span className="md:group-hover:opacity-0 transition-opacity duration-200">_</span>
+            </span>
+            {/* Hover hint - desktop only, slightly smaller for visual hierarchy */}
+            <span className="hidden md:inline-flex md:items-baseline md:gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 font-mono text-foreground text-sm -ml-2">
+              <span>portfolio init</span>
+              <span className="inline-block w-1.5 h-3 bg-primary animate-blink translate-y-0.5" aria-hidden="true" />
+            </span>
           </div>
 
           {/* Theme controls - responsive: drawer on mobile, popover + toggle on desktop */}

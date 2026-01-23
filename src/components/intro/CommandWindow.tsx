@@ -119,7 +119,7 @@ export function CommandWindow({
           <div className="flex items-center gap-4 px-4" style={{ height: innerHeight, minWidth: 320 }}>
             {/* All content disappears instantly when morph starts, fades in during entrance */}
             <motion.div
-              className="flex items-center gap-4"
+              className="flex items-center gap-3"
               initial={{ opacity: 0 }}
               animate={{ opacity: showContent && !isMorphing ? 1 : 0 }}
               transition={{ duration: isMorphing ? 0 : FADE_DURATION }}
@@ -127,14 +127,16 @@ export function CommandWindow({
               {/* Branding - matches TopBar style */}
               <div className="flex items-center gap-3">
                 <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
-                <span className="text-primary font-mono">&gt;_</span>
+                <span className="text-primary font-mono">&gt;</span>
               </div>
 
               {/* Command area - typed text + cursor or loading indicator */}
-              <div className="flex items-center gap-1 font-mono text-foreground">
-                <span>{typedText}</span>
-                {!isTypingComplete && showCursor && <BlinkingCursor />}
-                {isTypingComplete && loadingContent}
+              <div className="flex items-center font-mono text-foreground">
+                <span>
+                  {typedText}
+                  {!isTypingComplete && showCursor && <BlinkingCursor />}
+                </span>
+                {isTypingComplete && <span className="ml-2">{loadingContent}</span>}
               </div>
             </motion.div>
           </div>
@@ -150,5 +152,5 @@ export function CommandWindow({
  * Terminal-style blinking cursor. Respects prefers-reduced-motion.
  */
 function BlinkingCursor() {
-  return <span className="inline-block w-2 h-4 bg-primary animate-blink" aria-hidden="true" />;
+  return <span className="inline-block w-2 h-4 bg-primary animate-blink translate-y-0.5" aria-hidden="true" />;
 }

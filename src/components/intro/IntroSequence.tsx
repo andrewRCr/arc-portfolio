@@ -63,7 +63,7 @@ const COMMAND_TEXT = "portfolio init";
 const CONTENT_FADE_DELAY = 150; // Delay after window scales before content fades in
 const CURSOR_APPEAR_DELAY = 250; // Delay after content fades before cursor appears
 const TYPING_START_DELAY = 1000; // Delay after cursor appears before typing starts
-const LOADING_DURATION = 800; // How long loading spinner shows before morph starts
+const LOADING_DURATION = 1000; // How long loading spinner shows before morph starts
 const EXPANDING_DURATION = 500; // How long layout expansion phase lasts
 
 /** Animation durations (seconds) */

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Hero } from "@/components/layout/Hero";
 import { FeaturedSection } from "@/components/sections/FeaturedSection";
@@ -7,7 +8,7 @@ import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
 import { skills } from "@/data/skills";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
-import { useDelayedShow } from "@/hooks/useDelayedShow";
+import { useIntroContext } from "@/contexts/IntroContext";
 
 // Extract featured skills from all categories
 const allFeaturedSkills = Object.values(skills)
@@ -37,18 +38,36 @@ const getFeaturedSkills = (order: string[]) =>
     .map((name) => allFeaturedSkills.find((s) => s.name === name))
     .filter((s): s is (typeof allFeaturedSkills)[number] => s !== undefined);
 
+/**
+ * Body content animation timing (seconds)
+ * Completes after frame (~1.1s) as final element in sequence
+ */
+const BODY_ANIMATION = {
+  /** When body content starts fading (after frame starts) */
+  DELAY: 0.75,
+  /** Duration of fade */
+  DURATION: 0.35,
+  /** Quick hide duration for retrigger */
+  HIDE_DURATION: 0.15,
+} as const;
+
 export default function Home() {
   const isPhone = useIsPhone();
   const { layoutMode } = useLayoutPreferences();
+  const { introPhase } = useIntroContext();
+
+  // Body content hidden until expanding phase (same as secondary hero content)
+  const isBodyHidden =
+    introPhase === "entering" ||
+    introPhase === "typing" ||
+    introPhase === "loading" ||
+    introPhase === "morphing";
 
   // Responsive positioning: hero on phone (visible immediately), below featured on tablet/desktop
   // Mobile boxed: curated 6 skills (single row). Mobile fullscreen: full 10 (5/5 split)
   const skillsInHero = isPhone;
   const useFullSkillSet = !isPhone || layoutMode === "full";
   const featuredSkills = getFeaturedSkills(useFullSkillSet ? featuredOrderDesktop : featuredOrderMobile);
-
-  // Delay showing skills grid below featured to avoid layout shift during FeaturedSection hydration
-  const showSkillsGrid = useDelayedShow(150);
 
   const heroContent = skillsInHero ? (
     <Hero>
@@ -60,18 +79,27 @@ export default function Home() {
 
   return (
     <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
-      <div className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8">
+      <motion.div
+        className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
+        initial={false}
+        animate={{ opacity: isBodyHidden ? 0 : 1 }}
+        transition={
+          isBodyHidden
+            ? { duration: BODY_ANIMATION.HIDE_DURATION }
+            : {
+                duration: BODY_ANIMATION.DURATION,
+                delay: BODY_ANIMATION.DELAY,
+                ease: "easeOut",
+              }
+        }
+      >
         <FeaturedSection />
         {!skillsInHero && (
-          <div
-            className={`mt-6 md:mt-16 flex justify-center transition-opacity duration-300 ${
-              showSkillsGrid ? "opacity-100" : "opacity-0"
-            }`}
-          >
+          <div className="mt-6 md:mt-16 flex justify-center">
             <SkillLogoGrid skills={featuredSkills} layout="row" size="responsive" linkToProjects={true} />
           </div>
         )}
-      </div>
+      </motion.div>
     </PageLayout>
   );
 }
