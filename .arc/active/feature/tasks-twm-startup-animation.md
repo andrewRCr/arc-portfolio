@@ -1,10 +1,10 @@
 # Task List: TWM Startup Animation
 
-**PRD:** `.arc/backlog/feature/prd-twm-startup-animation.md`
+**PRD:** `.arc/active/feature/prd-twm-startup-animation.md`
 **Created:** 2026-01-23
 **Branch:** `feature/twm-startup-animation`
 **Base Branch:** `main`
-**Status:** Pending
+**Status:** In Progress
 
 ## Overview
 

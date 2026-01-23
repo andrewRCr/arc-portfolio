@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-22
+**Last Updated:** 2026-01-23
 
 ---
 
@@ -44,30 +44,37 @@ Transform placeholder styling into distinctive, polished design.
    - 1196 unit tests, 199 E2E tests
    - [Archive](../reference/archive/2026-q1/feature/04_content-polish-p2/)
 
-7. **Visual Polish** ← Next
-   - Plan: `.arc/backlog/feature/plan-visual-polish.md` (primary, app-wide scope)
-   - Related: `.arc/backlog/feature/plan-twm-startup-animation.md` (detailed startup animation spec)
-   - Rationale: Animation/transition layer after pages are structurally complete
-   - Scope: TWM startup animation, Framer Motion transitions, micro-interactions, loading states,
-     terminal vs standard aesthetic standardization (exploratory)
+7. **TWM Startup Animation** ← Active
+   - Task list: `.arc/active/feature/tasks-twm-startup-animation.md`
+   - Branch: `feature/twm-startup-animation`
+   - Rationale: Separated from Visual Polish for focused iteration on animation timing/feel
+   - Scope: Terminal boot sequence animation on first home visit, 5-phase sequence, cookie tracking,
+     skip behavior, accessibility
    - Dependencies: Content Polish P2 ✅
+
+8. **Visual Polish** ← Next
+   - Plan: `.arc/backlog/feature/plan-visual-polish.md`
+   - Rationale: Remaining animation/transition work after startup animation
+   - Scope: Page transitions, micro-interactions, loading states, project hero images,
+     terminal vs standard aesthetic standardization (exploratory)
+   - Dependencies: TWM Startup Animation
 
 ### Phase C: Launch
 
 Production readiness and deployment.
 
-8. **Feature Flag System**
+9. **Feature Flag System**
    - Rationale: Unified infrastructure for dev-only content, incomplete projects, and future feature rollouts
    - Scope: Centralized flag definitions, environment-based defaults (dev vs prod), type-safe API
    - Consolidates: Dev pages visibility, mods tab gating, incomplete project hiding
    - Enables: Deploy v1.0 without waiting for all projects; enable incrementally as completed
 
-9. **SEO & Meta Tags**
-   - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
-   - Rationale: Discoverability and social sharing
-   - Scope: Open Graph (social previews), structured data (search), sitemap, robots.txt
+10. **SEO & Meta Tags**
+    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
+    - Rationale: Discoverability and social sharing
+    - Scope: Open Graph (social previews), structured data (search), sitemap, robots.txt
 
-10. **Deployment**
+11. **Deployment**
     - Rationale: Final step; requires all above complete
     - Scope: Vercel setup, domain transfer, production config
 
@@ -96,6 +103,9 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
                                                             │
                                                             ▼
                                                     Content Polish P2
+                                                            │
+                                                            ▼
+                                                TWM Startup Animation
                                                             │
                                                             ▼
                                                       Visual Polish
@@ -157,6 +167,9 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Change Log
 
+- **2026-01-23**: Split TWM Startup Animation from Visual Polish as separate work unit (item 7). Visual
+  Polish becomes item 8 with remaining scope. Activated TWM Startup Animation, created PRD and task list.
+  Renumbered Phase C items to 9-11.
 - **2026-01-21**: Created `plan-visual-polish.md` as primary Visual Polish plan (app-wide scope). Includes
   terminal vs standard aesthetic exploration. TWM startup animation plan now referenced as detailed spec.
 - **2026-01-19**: Content Polish P2 activated. PRD and task list created, moved to active, branch created.
