@@ -36,31 +36,32 @@ TWM/TUI aesthetic and creating a memorable first impression.
 
 **Purpose:** Establish the foundation - state machine, cookie tracking, and skip behavior. Test-first for logic.
 
-- [ ] **1.1 Write tests for cookie utilities**
+- [x] **1.1 Write tests for cookie utilities**
 
-    - [ ] **1.1.a Create test file `src/lib/cookies/__tests__/intro.test.ts`**
+    - [x] **1.1.a Create test file `src/lib/cookies/__tests__/intro.test.ts`**
         - Test: `hasSeenIntro()` returns `false` when no cookie
         - Test: `hasSeenIntro()` returns `true` when valid cookie exists
         - Test: `markIntroSeen()` sets cookie with correct expiry
         - Test: `clearIntroCookie()` removes the cookie
         - Expect tests to FAIL initially (no implementation yet)
 
-    - [ ] **1.1.b Run tests and verify failures**
+    - [x] **1.1.b Run tests and verify failures**
 
-- [ ] **1.2 Implement cookie utilities**
+- [x] **1.2 Implement cookie utilities**
 
-    - [ ] **1.2.a Create `src/lib/cookies/intro.ts`**
+    - [x] **1.2.a Create `src/lib/cookies/intro.ts`**
         - `INTRO_COOKIE_NAME = 'arc-intro-seen'`
         - `INTRO_COOKIE_EXPIRY = 3600` (1 hour in seconds)
         - `hasSeenIntro(): boolean` - check cookie existence and validity
         - `markIntroSeen(): void` - set cookie with expiry
         - `clearIntroCookie(): void` - for retrigger functionality
 
-    - [ ] **1.2.b Run tests - should now PASS**
+    - [x] **1.2.b Run tests - should now PASS**
+        - 13 tests passing
 
-- [ ] **1.3 Write tests for `useIntroAnimation` hook**
+- [x] **1.3 Write tests for `useIntroAnimation` hook**
 
-    - [ ] **1.3.a Create test file `src/hooks/__tests__/useIntroAnimation.test.ts`**
+    - [x] **1.3.a Create test file `src/hooks/__tests__/useIntroAnimation.test.ts`**
         - Test: Initial state is `'complete'` when cookie exists
         - Test: Initial state is `'pending'` when no cookie
         - Test: `startAnimation()` transitions to `'animating'`
@@ -70,11 +71,11 @@ TWM/TUI aesthetic and creating a memorable first impression.
         - Test: Returns `'complete'` immediately when `prefers-reduced-motion`
         - Expect tests to FAIL initially
 
-    - [ ] **1.3.b Run tests and verify failures**
+    - [x] **1.3.b Run tests and verify failures**
 
-- [ ] **1.4 Implement `useIntroAnimation` hook**
+- [x] **1.4 Implement `useIntroAnimation` hook**
 
-    - [ ] **1.4.a Create `src/hooks/useIntroAnimation.ts`**
+    - [x] **1.4.a Create `src/hooks/useIntroAnimation.ts`**
         - Define `IntroState` type: `'pending' | 'animating' | 'complete'`
         - Check cookie on mount to determine initial state
         - Check `prefers-reduced-motion` and skip if true
@@ -82,28 +83,31 @@ TWM/TUI aesthetic and creating a memorable first impression.
         - Provide `triggerReplay()` for retrigger functionality
         - Export current state and phase tracking
 
-    - [ ] **1.4.b Run tests - should now PASS**
+    - [x] **1.4.b Run tests - should now PASS**
+        - 15 tests passing
 
-- [ ] **1.5 Create IntroSequence wrapper component**
+- [x] **1.5 Create IntroSequence wrapper component**
 
-    - [ ] **1.5.a Create `src/components/intro/IntroSequence.tsx`**
+    - [x] **1.5.a Create `src/components/intro/IntroSequence.tsx`**
         - Conditionally render based on `useIntroAnimation` state
         - Fixed/absolute overlay positioning
         - Container for animation phases
         - Wire up skip handler (click/keypress listeners)
 
-    - [ ] **1.5.b Create `src/components/intro/index.ts` barrel export**
+    - [x] **1.5.b Create `src/components/intro/index.ts` barrel export**
 
-- [ ] **1.6 Integrate with LayoutWrapper**
+- [x] **1.6 Integrate with LayoutWrapper**
 
-    - [ ] **1.6.a Modify `LayoutWrapper.tsx` to include IntroSequence**
+    - [x] **1.6.a Modify `LayoutWrapper.tsx` to include IntroSequence**
         - Render IntroSequence when state is `'pending'` or `'animating'`
         - Pass animation callbacks
         - Ensure normal layout renders underneath (for morph target)
 
-    - [ ] **1.6.b Run type-check and lint on modified files**
+    - [x] **1.6.b Run type-check and lint on modified files**
 
-    - [ ] **1.6.c Run full test suite to verify no regressions**
+    - [x] **1.6.c Run full test suite to verify no regressions**
+        - Added global `matchMedia` mock to test setup
+        - 1224 tests passing
 
 ### **Phase 2:** Command Window & Typing Animation
 
