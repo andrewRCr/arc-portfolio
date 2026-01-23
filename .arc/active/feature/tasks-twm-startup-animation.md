@@ -195,48 +195,51 @@ manual testing during development. See Tasks 6.2.a-b for details.
     - [x] 2.6.d `npm test` - 1238 tests passing (14 new from useTypingAnimation)
     - [x] 2.6.e Manual visual check in browser
 
-### **Phase 3:** Window Morph Transition
+### **Phase 3:** Window Morph Transition ✓
 
 **Purpose:** Morph the command window into the TopBar using Framer Motion layoutId.
 
-- [ ] **3.1 Set up Framer Motion layoutId infrastructure**
+- [x] **3.1 Set up Framer Motion layoutId infrastructure**
 
-    - [ ] **3.1.a Add `layoutId` to CommandWindow**
-        - Use shared ID: `'topbar-window'`
-        - Wrap in `motion.div` with layout prop
+    - [x] **3.1.a Add `layoutId` to CommandWindow**
+        - Added `layoutId="topbar-window"` with `layout` prop
+        - Restructured: outer div for positioning, inner motion.div for layoutId + entrance animation
 
-    - [ ] **3.1.b Add matching `layoutId` to TopBar's WindowContainer**
-        - Conditionally apply during animation
-        - Ensure DOM structure compatibility for morph
+    - [x] **3.1.b Add matching `layoutId` to TopBar's WindowContainer**
+        - Added `introPhase` and `setIntroPhase` to IntroContext for phase coordination
+        - IntroSequence syncs local phase to context
+        - TopBar applies `layoutId="topbar-window"` when `introPhase === "morphing"`
 
-    - [ ] **3.1.c Wrap layout in AnimatePresence**
-        - Handle enter/exit transitions
-        - Coordinate timing with IntroSequence state
+    - [x] **3.1.c Wrap layout in AnimatePresence + LayoutGroup**
+        - AnimatePresence with `mode="wait"` wraps CommandWindow for exit handling
+        - LayoutGroup in LayoutWrapper enables cross-component layoutId transitions
+        - `onExitComplete` triggers morph completion flow
 
-- [ ] **3.2 Implement morph transition**
+- [x] **3.2 Implement morph transition**
 
-    - [ ] **3.2.a Configure morph animation properties**
-        - Duration: ~400-600ms (tunable)
-        - Easing: appropriate spring or ease curve
-        - Test GPU acceleration (transform-based)
+    - [x] **3.2.a Configure morph animation properties**
+        - Spring transition: stiffness 300, damping 30, ~500ms duration
+        - Content vanishes instantly when morph starts (no fade - feels more intentional)
+        - TopBar placeholder renders during pre-morph intro phases
 
-    - [ ] **3.2.b Handle content crossfade**
-        - Command window content fades out
-        - TopBar content fades in
-        - Overlap timing for smooth transition
+    - [x] **3.2.b Resolve layoutId morph issues (iteration)**
+        - **Issue**: layoutId morph requires unmount/mount cycle; TopBar was always mounted (hidden via CSS)
+        - **Research**: Used external-research-analyst agent to investigate Framer Motion patterns
+        - **Key findings**: AnimatePresence + layoutId has known bugs; both elements in DOM causes crossfade not morph
+        - **Solution**: TopBar renders placeholder div during pre-morph, mounts real component when morphing starts
+        - CSS rules updated: `data-intro-morphing` attribute controls TopBar visibility during morph
 
-- [ ] **3.3 Implement fallback transition (if morph problematic)**
+    - [x] **3.2.c Retrigger support**
+        - Added `replayCount` to useIntroAnimation, increments on `triggerReplay()`
+        - IntroSequence uses replayCount as key to force remount with fresh state
+        - Bonus: reverse morph animation plays when retriggering (TopBar → CommandWindow)
 
-    **Note:** Only implement if 3.2 proves difficult due to DOM structure differences.
+- [x] **3.3 Update tests**
+    - Added IntroContext mock to LayoutWrapper tests (TopBar renders placeholder during intro)
 
-    - [ ] **3.3.a Create fallback fade/collapse transition**
-        - Command window collapses upward and fades
-        - TopBar simultaneously fades/slides in from same position
-        - Achieves similar effect without true element morphing
-
-- [ ] **3.4 Run quality checks**
-    - [ ] 3.4.a Run type-check and lint
-    - [ ] 3.4.b Visual testing across viewports (desktop, mobile)
+- [x] **3.4 Run quality checks**
+    - [x] 3.4.a Type-check and lint pass
+    - [x] 3.4.b Visual testing: desktop and mobile verified
 
 ### **Phase 4:** Layout Expansion
 
