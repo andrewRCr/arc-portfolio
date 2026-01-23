@@ -363,25 +363,35 @@ content fills" sequence.
         - N/A: TopBar branding is the only home link in the app
         - No other navigation links route to "/" that would need differentiation
 
-- [ ] **6.3 DRY/SOLID refactor pass**
+- [x] **6.3 DRY/SOLID refactor pass**
 
-    - [ ] **6.3.a Review animation timing constants**
-        - Consolidate timing values across files if appropriate
-        - Consider shared config for related durations/delays
+    - [x] **6.3.a Create central timing + derived booleans**
+        - Created `src/lib/intro-timing.ts` with complete timeline (all timing constants, transition presets)
+        - Added derived visibility flags to IntroContext: `isHiddenUntilMorph`, `isHiddenUntilExpand`
+        - Names encode transition points (when visibility starts), preventing semantic confusion
 
-    - [ ] **6.3.b Review intro-aware component patterns**
-        - ConditionalFrame, TopBar, LayoutWrapper all use IntroContext
-        - Ensure consistent patterns and naming
+    - [x] **6.3.b Migrate core intro components to central timing**
+        - IntroSequence.tsx: Imports 12 timing constants, uses `toMs()` helper for setTimeout conversions
+        - CommandWindow.tsx: Imports `WINDOW_SCALE_DURATION`, `CONTENT_FADE_DURATION`, `MORPH_SPRING`
+        - Removed all local timing constant definitions from both files
 
-    - [ ] **6.3.c Extract shared utilities if needed**
-        - Animation configs, phase-checking helpers, etc.
-        - Only if genuine duplication exists
+    - [x] **6.3.c Migrate consuming components to derived booleans + timing**
+        - TopBar: Uses `isHiddenUntilMorph` for placeholder logic
+        - LayoutWrapper: Uses `isHiddenUntilMorph`, imports `MAIN_CONTENT_TWEEN`, `HIDE_DURATION`
+        - ConditionalFrame: Uses `isHiddenUntilExpand`, imports `NAV_FADE_TRANSITION`, `BORDER_DRAW_DURATION`
+        - Hero: Uses `isHiddenUntilExpand` (frame elements wait until expanding phase)
+        - Home: Uses `isHiddenUntilMorph`, imports `BODY_CONTENT_DELAY`, `BODY_CONTENT_DURATION`
 
-- [ ] **6.4 Run quality checks**
-    - [ ] 6.4.a Type-check and lint
-    - [ ] 6.4.b Manual test: hover hint visible on desktop
-    - [ ] 6.4.c Manual test: branding click replays animation
-    - [ ] 6.4.d Full visual test of animation sequence
+    - [x] **6.3.d Quality check**
+        - Type-check: ✓, Lint: ✓, Format: ✓, Tests: 1238 passing
+        - Fixed visibility bug (content hidden during morphing broke layoutId)
+        - Added choreography documentation to IntroContext explaining two-tier visibility
+
+- [x] **6.4 Run quality checks**
+    - [x] 6.4.a Type-check and lint - ✓ all passing
+    - [x] 6.4.b Manual test: hover hint visible on desktop - ✓
+    - [x] 6.4.c Manual test: branding click replays animation - ✓
+    - [x] 6.4.d Full visual test of animation sequence - ✓
 
 ### **Phase 7:** Accessibility
 
