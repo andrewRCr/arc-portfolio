@@ -30,6 +30,10 @@
 
 ## Active
 
-[None]
+- [ ] Copy pass on project descriptions (especially short descriptions) prior to deployment
+    - Review `src/data/projects.ts` for all project entries
+    - Focus on `shortDescription` field for each project
+    - Ensure descriptions are concise, compelling, and consistent in tone
+    - Check for typos, awkward phrasing, or overly technical language
 
 ---
