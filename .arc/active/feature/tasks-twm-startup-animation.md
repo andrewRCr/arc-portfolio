@@ -304,40 +304,49 @@ content fills" sequence.
     - [x] 1238 tests pass (updated ConditionalFrame and TopBar tests for IntroProvider)
     - [x] Added IntroProvider to test-utils TestProviders
 
-### **Phase 5.5:** Home Page Content Animation (TBD)
+### **Phase 5.5:** Home Page Content Animation
 
-**Purpose:** Animate hero and body content entrance, coordinated with existing skills logo delayed show.
+**Purpose:** Animate hero and body content entrance, coordinated with frame/nav animations.
 
-**Note:** This phase was identified during Phase 5 implementation. The skills logo bar already uses
-delayed show to prevent layout shift from FeaturedSection randomization. Home content animation
-should sync with this timing.
+**Approach (Option A):** Hero bar animation + staggered content fade, synced with frame assembly.
 
-- [ ] **5.5.a Define content animation approach**
-    - Option A: Hero-specific entrance animation
-    - Option B: Fade in all main content in sync
-    - Must coordinate with skills logo bar delayed show (~existing timing)
-    - Consider whether frame/nav animations should complete first or overlap
+- [x] **5.5.a Define content animation approach**
+    - Chose Option A: Hero-specific animation + staggered fades
+    - Hero: Left bar grows from center (scaleY 0→1), text elements stagger fade
+    - FeaturedSection + SkillLogoGrid: Fade in starting when nav fade starts
+    - All animations complete by ~950ms (synced with nav fade completion)
+    - Note: Skills logo delayed show is now moot (happens during hidden intro phase)
 
-- [ ] **5.5.b Implement home content animation**
-    - Details TBD based on 5.5.a decision
+- [x] **5.5.b Implement home content animation**
+    - Final sequence order: Hero bar → Hero text → Frame → Body
+    - Hero bar: 0.15s delay, 0.45s duration (completes ~0.6s)
+    - Hero text: starts mid-bar (0.35s), staggered 0.08s, completes ~0.86s
+    - Frame (border+nav): synced completion at ~0.95s
+    - Body content: 0.75s delay, completes ~1.1s (finale)
+    - Also tuned: border draw 0.8s, nav fade 0.45s, loading spinner 1.0s
+    - Used `initial={false}` + phase-based `animate` pattern (like LayoutWrapper)
 
-- [ ] **5.5.c Run quality checks**
-    - Type-check, lint, visual testing
+- [x] **5.5.c Run quality checks**
+    - Type-check, lint pass
+    - Updated Hero.test.tsx to use test-utils render (includes IntroProvider)
+    - 1238 tests pass
 
 ### **Phase 6:** Finishing Touches
 
 **Purpose:** Polish the animation with hover hints, code cleanup, and DRY/SOLID refactoring.
 
-- [ ] **6.1 Implement TopBar branding hover hint**
+- [x] **6.1 Implement TopBar branding hover hint**
 
-    - [ ] **6.1.a Create hover state for branding area**
-        - On hover (desktop only): show "init portfolio" text
-        - Position: adjacent to or replacing prompt icon
-        - Smooth fade transition
+    - [x] **6.1.a Create hover state for branding area**
+        - Default: `>_` prompt decoration
+        - Hover (desktop): `> portfolio init█` with blinking cursor
+        - Underscore fades out, text + cursor fades in (200ms transition)
+        - Slightly smaller text (`text-sm`) with baseline alignment
 
-    - [ ] **6.1.b Ensure mobile compatibility**
-        - No hover state on touch devices
-        - Branding remains clickable without hint
+    - [x] **6.1.b Ensure mobile compatibility**
+        - Hover hint uses `md:` breakpoint (desktop only)
+        - Mobile shows static `>_`, remains clickable
+        - Also unified CLI prompt: CommandWindow uses `>` (no `_`), block cursor does cursor work
 
 - [x] **6.2 Implement retrigger mechanism**
     - Pulled forward to enable manual testing during Phase 2 development
