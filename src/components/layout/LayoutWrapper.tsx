@@ -10,6 +10,7 @@ import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
 import { WindowContainer } from "./WindowContainer";
 import { WallpaperBackground } from "./WallpaperBackground";
+import { IntroSequence } from "@/components/intro";
 
 /** Identifiers for the three layout windows */
 type WindowId = "top" | "main" | "footer";
@@ -127,6 +128,10 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
           {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
         </button>
       )}
+
+      {/* Intro animation overlay - renders above layout during animation
+          Normal layout renders underneath as morph target for window transition */}
+      <IntroSequence />
     </>
   );
 }

@@ -24,6 +24,21 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 // Mock scrollIntoView (not available in jsdom, required by cmdk)
 Element.prototype.scrollIntoView = vi.fn();
 
+// Mock matchMedia (not available in jsdom, required by useIntroAnimation and other media query hooks)
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: vi.fn().mockImplementation((query: string) => ({
+    matches: false, // Default: no media query matches
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // Deprecated
+    removeListener: vi.fn(), // Deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
+
 // Extend Vitest with accessibility matchers
 expect.extend(matchers);
 
