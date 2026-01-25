@@ -30,6 +30,12 @@
 
 ## Active
 
+- [ ] Smooth light/dark mode transition using View Transitions API
+    - Current state: wallpaper/theme-switching has smooth transitions, but light/dark mode flip is instant/jarring
+    - Approach: Use `document.startViewTransition()` wrapping the `setTheme` call from next-themes
+    - Browser support: Chrome 111+, Safari 18+, Firefox partial
+    - Scope: Theme system coordination in ThemeControl.tsx, not wallpaper-related
+
 - [ ] Copy pass on project descriptions (especially short descriptions) prior to deployment
     - Review `src/data/projects.ts` for all project entries
     - Focus on `shortDescription` field for each project
