@@ -110,39 +110,67 @@ function WallpaperImage({ src, srcSet }: { src: string; srcSet?: string }) {
 export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgroundProps) {
   const { activeTheme } = useThemeContext();
 
+  // Track if wallpaper was enabled on initial mount (vs toggled on later)
+  // This determines whether dark overlay should animate in or appear instantly
+  const initialImageSrcRef = useRef<string | undefined>(imageSrc);
+  const wasEnabledOnMount = initialImageSrcRef.current !== undefined;
+
   // Get custom gradient stops from theme config (if defined)
   const themeConfig = themes[activeTheme];
   const customGradientStops = themeConfig?.gradientStops;
 
   // Background strategy:
-  // - Gradient is always the base layer (visible when wallpaper off or during transitions)
-  // - With image: dark overlay + image fade in on top of gradient
-  //   Dark color derived from theme's dark mode background (60% + 40% black)
-  //   Creates a "deeper than dark mode" color for cinematic fade-in
-  // - Without image: gradient shows through (user selected "Gradient" or wallpaper disabled)
+  // - Initial load with wallpaper: dark background (no gradient flash), image fades in
+  // - Toggle wallpaper on: gradient crossfades to dark+image
+  // - Toggle wallpaper off: image+dark crossfades to gradient
+  // - Without image: gradient shows (user selected "Gradient" or wallpaper disabled)
   const darkBackground = themeConfig?.dark?.background ?? "0 0 0";
-  const gradientStyle = { background: buildWallpaperGradient(customGradientStops) };
   const darkOverlayColor = `color-mix(in srgb, rgb(${darkBackground}) 60%, black)`;
+
+  // Choose base layer based on initial state:
+  // - If wallpaper was enabled on mount: dark background (cinematic initial load)
+  // - If wallpaper was disabled on mount: gradient (for smooth toggle-on crossfade)
+  const baseStyle = wasEnabledOnMount
+    ? { backgroundColor: darkOverlayColor }
+    : { background: buildWallpaperGradient(customGradientStops) };
 
   // Build srcSet if hi-res version available
   const srcSet = imageSrcHiRes ? `${imageSrc} 1920w, ${imageSrcHiRes} 2560w` : undefined;
 
   return (
-    <div className="fixed inset-0 z-[-1]" style={gradientStyle} aria-hidden="true" data-testid="wallpaper-background">
-      {/* AnimatePresence enables crossfade for both dark overlay and image */}
-      <AnimatePresence>
-        {imageSrc && (
-          <motion.div
-            key="dark-overlay"
-            className="absolute inset-0"
-            style={{ backgroundColor: darkOverlayColor }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: FADE_DURATION, ease: "easeOut" }}
-          />
-        )}
-      </AnimatePresence>
+    <div className="fixed inset-0 z-[-1]" style={baseStyle} aria-hidden="true" data-testid="wallpaper-background">
+      {/* When toggling wallpaper on (wasn't enabled on mount), fade in dark overlay */}
+      {!wasEnabledOnMount && (
+        <AnimatePresence>
+          {imageSrc && (
+            <motion.div
+              key="dark-overlay"
+              className="absolute inset-0"
+              style={{ backgroundColor: darkOverlayColor }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: FADE_DURATION, ease: "easeOut" }}
+            />
+          )}
+        </AnimatePresence>
+      )}
+      {/* When toggling wallpaper off (was enabled on mount), fade in gradient */}
+      {wasEnabledOnMount && (
+        <AnimatePresence>
+          {!imageSrc && (
+            <motion.div
+              key="gradient-overlay"
+              className="absolute inset-0"
+              style={{ background: buildWallpaperGradient(customGradientStops) }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: FADE_DURATION, ease: "easeOut" }}
+            />
+          )}
+        </AnimatePresence>
+      )}
       <AnimatePresence>{imageSrc && <WallpaperImage key={imageSrc} src={imageSrc} srcSet={srcSet} />}</AnimatePresence>
     </div>
   );
