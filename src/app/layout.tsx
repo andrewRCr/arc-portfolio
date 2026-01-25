@@ -122,7 +122,7 @@ export default async function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          disableTransitionOnChange
+          disableTransitionOnChange={false}
           serverPalette={serverPalette}
           serverWallpaper={serverWallpaper}
           serverLayoutMode={serverLayoutMode}

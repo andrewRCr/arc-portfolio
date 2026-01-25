@@ -10,7 +10,7 @@
 
 import { useState, useEffect } from "react";
 import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useThemeTransition } from "@/hooks/useThemeTransition";
 import { MobileDrawer } from "@/components/ui/MobileDrawer";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -31,7 +31,7 @@ export function ThemeControlDrawer() {
   const { activeTheme, setActiveTheme } = useThemeContext();
   const { activeWallpaper, setActiveWallpaper, isWallpaperEnabled, setWallpaperEnabled } = useWallpaperContext();
   const { layoutMode, setLayoutMode, setDrawerOpen } = useLayoutPreferences();
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme } = useThemeTransition();
   const swatchColors = useThemeSwatch();
   const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
   const showSwatch = useDelayedShow(150);
@@ -48,7 +48,7 @@ export function ThemeControlDrawer() {
   }, [open, setDrawerOpen]);
 
   const toggleMode = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    toggleTheme();
   };
 
   const toggleLayoutMode = () => {
@@ -114,7 +114,7 @@ export function ThemeControlDrawer() {
               e.currentTarget.blur();
             }}
             aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            className="gap-2 min-h-11 min-w-11 px-4"
+            className="gap-2 min-h-11 min-w-[5.25rem] px-4"
           >
             {theme === "dark" ? (
               <>

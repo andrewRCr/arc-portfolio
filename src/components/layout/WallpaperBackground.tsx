@@ -115,22 +115,34 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgr
   const customGradientStops = themeConfig?.gradientStops;
 
   // Background strategy:
-  // - With image: dark base derived from theme's dark mode background (50% + 50% black)
-  //   Creates a "deeper than dark mode" color in the same family for cinematic fade-in
-  //   Always uses dark mode background regardless of current mode (light mode fading from
-  //   light colors feels jarring)
-  // - Without image: theme gradient (user selected "Gradient" wallpaper)
+  // - Gradient is always the base layer (visible when wallpaper off or during transitions)
+  // - With image: dark overlay + image fade in on top of gradient
+  //   Dark color derived from theme's dark mode background (60% + 40% black)
+  //   Creates a "deeper than dark mode" color for cinematic fade-in
+  // - Without image: gradient shows through (user selected "Gradient" or wallpaper disabled)
   const darkBackground = themeConfig?.dark?.background ?? "0 0 0";
-  const backgroundStyle = imageSrc
-    ? { backgroundColor: `color-mix(in srgb, rgb(${darkBackground}) 60%, black)` }
-    : { background: buildWallpaperGradient(customGradientStops) };
+  const gradientStyle = { background: buildWallpaperGradient(customGradientStops) };
+  const darkOverlayColor = `color-mix(in srgb, rgb(${darkBackground}) 60%, black)`;
 
   // Build srcSet if hi-res version available
   const srcSet = imageSrcHiRes ? `${imageSrc} 1920w, ${imageSrcHiRes} 2560w` : undefined;
 
   return (
-    <div className="fixed inset-0 z-[-1]" style={backgroundStyle} aria-hidden="true" data-testid="wallpaper-background">
-      {/* AnimatePresence enables crossfade: old image fades out while new fades in */}
+    <div className="fixed inset-0 z-[-1]" style={gradientStyle} aria-hidden="true" data-testid="wallpaper-background">
+      {/* AnimatePresence enables crossfade for both dark overlay and image */}
+      <AnimatePresence>
+        {imageSrc && (
+          <motion.div
+            key="dark-overlay"
+            className="absolute inset-0"
+            style={{ backgroundColor: darkOverlayColor }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: FADE_DURATION, ease: "easeOut" }}
+          />
+        )}
+      </AnimatePresence>
       <AnimatePresence>{imageSrc && <WallpaperImage key={imageSrc} src={imageSrc} srcSet={srcSet} />}</AnimatePresence>
     </div>
   );

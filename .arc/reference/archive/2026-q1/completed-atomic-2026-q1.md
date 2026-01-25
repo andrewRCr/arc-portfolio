@@ -4,6 +4,40 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Smooth light/dark mode transition**
+    - **Outcome:** Implemented smooth CSS transitions for light/dark mode toggle. Initially tried View
+      Transitions API but encountered compositing issues with semi-transparent window containers and
+      wallpaper layering. Pivoted to CSS transitions approach which works seamlessly.
+    - **Implementation:** Added global CSS transitions for background-color, border-color, color (300ms
+      ease-out). Removed `disableTransitionOnChange` from next-themes ThemeProvider. Created
+      `useThemeTransition` hook (simplified from View Transitions version).
+    - **Files:** `globals.css`, `useThemeTransition.ts`, `ThemeControl.tsx`, `ThemeControlDrawer.tsx`,
+      `ThemeToggle.tsx`, `layout.tsx`
+
+    - **Branch:** `feature/twm-startup-animation`
+
+- [x] **Fix light/dark toggle button layout shift**
+    - **Outcome:** Added min-width to light/dark toggle button to prevent layout shift when label changes
+      between "Dark" (shorter) and "Light" (longer). Matches existing pattern used for layout mode button.
+    - **Files:** `ThemeControl.tsx`, `ThemeControlDrawer.tsx`
+
+    - **Branch:** `feature/twm-startup-animation`
+
+- [x] **Fix wallpaper toggle crossfade (on → off worked, off → on was jarring)**
+    - **Outcome:** Refactored WallpaperBackground to always render gradient as base layer. Dark overlay
+      and image now fade in on top, enabling proper crossfade in both directions.
+    - **Files:** `WallpaperBackground.tsx`
+
+    - **Branch:** `feature/twm-startup-animation`
+
+- [x] **Make wallpaper enabled state global (was per-theme)**
+    - **Outcome:** Changed wallpaper on/off toggle from per-theme storage to global storage. Users
+      disabling wallpaper now applies across all themes, matching behavior of light/dark mode and
+      layout mode preferences.
+    - **Files:** `storage.ts`, `WallpaperContext.tsx`
+
+    - **Branch:** `feature/twm-startup-animation`
+
 - [x] **Audit light mode token issues across themes**
     - **Outcome:** Fixed light mode card/popover tokens being too stark (pure white) against
       semi-transparent window background. Darkened card/popover tokens in 4 themes to harmonize

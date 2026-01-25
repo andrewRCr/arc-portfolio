@@ -837,6 +837,27 @@ html[data-env-preview="false"] [data-window-container] {
 }
 
 /* ==========================================================================
+   Light/Dark Mode Transitions
+   Smooth color transitions when toggling between light and dark mode.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color !important;
+  transition-duration: 300ms !important;
+  transition-timing-function: ease-out !important;
+}
+
+/* Disable transitions on elements that shouldn't animate */
+[data-no-transition],
+[data-no-transition] *,
+.no-transition,
+.no-transition * {
+  transition: none !important;
+}
+
+/* ==========================================================================
    OverlayScrollbars
    Theme styling and page-specific track insets.
    ========================================================================== */
