@@ -20,7 +20,7 @@
  * ```
  */
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { hasSeenIntro, markIntroSeen, clearIntroCookie } from "@/lib/cookies/intro";
 
 /** Animation state machine states */
@@ -75,31 +75,37 @@ function getInitialState(reducedMotion: boolean): IntroState {
 }
 
 export function useIntroAnimation(): UseIntroAnimationReturn {
-  // Check reduced motion preference (stable across renders)
-  const reducedMotion = useMemo(() => checkReducedMotion(), []);
+  // Reduced motion preference - starts false to match SSR, updated after hydration
+  // This prevents hydration mismatch since window.matchMedia isn't available on server
+  const [reducedMotion, setReducedMotion] = useState(false);
 
-  // Initialize state based on cookie and motion preference
-  const [state, setState] = useState<IntroState>(() => getInitialState(reducedMotion));
+  // Initialize state based on cookie only (reducedMotion checked post-mount)
+  const [state, setState] = useState<IntroState>(() => getInitialState(false));
 
   // Counter for replay - increments each time triggerReplay is called
   const [replayCount, setReplayCount] = useState(0);
 
-  // After hydration, re-check cookie state.
-  // On SSR, hasSeenIntro() returns false (no document), so state may be
-  // incorrectly set to "pending". This effect corrects the state on mount.
+  // After hydration, check reduced motion preference and cookie state.
+  // Both checks must happen post-mount to avoid SSR/client mismatch.
   useEffect(() => {
+    const prefersReducedMotion = checkReducedMotion();
+    setReducedMotion(prefersReducedMotion);
+
+    // If reduced motion is preferred, skip animation entirely
+    if (prefersReducedMotion) {
+      setState("complete");
+      if (!hasSeenIntro()) {
+        markIntroSeen();
+      }
+      return;
+    }
+
+    // Re-check cookie state (may have been incorrectly set on SSR)
     if (hasSeenIntro() && state === "pending") {
       setState("complete");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Only run once on mount
   }, []);
-
-  // If reduced motion is preferred and state would be pending, mark as seen
-  useEffect(() => {
-    if (reducedMotion && !hasSeenIntro()) {
-      markIntroSeen();
-    }
-  }, [reducedMotion]);
 
   /** Start the animation (transition pending → animating) */
   const startAnimation = useCallback(() => {
@@ -123,12 +129,16 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
     markIntroSeen();
   }, []);
 
-  /** Trigger replay: clear cookie and reset to pending */
+  /** Trigger replay: clear cookie and reset to pending (no-op if reduced motion) */
   const triggerReplay = useCallback(() => {
+    // With reduced motion, replay is disabled - user doesn't want animations
+    if (reducedMotion) {
+      return;
+    }
     clearIntroCookie();
     setState("pending");
     setReplayCount((c) => c + 1);
-  }, []);
+  }, [reducedMotion]);
 
   // Derived state: should the intro overlay be shown?
   const shouldShow = state === "pending" || state === "animating";

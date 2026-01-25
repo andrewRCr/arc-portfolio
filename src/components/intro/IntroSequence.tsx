@@ -101,9 +101,21 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   const [showCommandWindow, setShowCommandWindow] = useState(true);
 
   // Sync local phase to context (for TopBar layoutId coordination)
+  // Guard with !reducedMotion to avoid polluting state when animation is skipped
   useEffect(() => {
-    setIntroPhase(phase);
-  }, [phase, setIntroPhase]);
+    if (!reducedMotion) {
+      setIntroPhase(phase);
+    }
+  }, [phase, setIntroPhase, reducedMotion]);
+
+  // Defense in depth: if reduced motion is on and animation somehow triggers,
+  // immediately skip to complete state. This handles edge cases where state
+  // becomes "pending" despite reducedMotion (e.g., if triggerReplay guard fails).
+  useEffect(() => {
+    if (reducedMotion && shouldShow) {
+      skipAnimation();
+    }
+  }, [reducedMotion, shouldShow, skipAnimation]);
 
   // Handle entrance animation completion
   const handleEntranceComplete = useCallback(() => {
