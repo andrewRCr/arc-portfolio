@@ -15,6 +15,7 @@ import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
 import { defaultPalette, themes } from "@/data/themes";
 import { LAYOUT_MODES } from "@/config/layout";
+import { WALLPAPER_OPTIONS } from "@/data/wallpapers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -88,9 +89,27 @@ export default async function RootLayout({
       ? layoutModeCookie
       : undefined;
 
+  // Look up wallpaper image paths for preload link (prevents flicker on page load)
+  const wallpaperOption = WALLPAPER_OPTIONS.find((w) => w.id === serverWallpaper);
+  const wallpaperSrc = wallpaperOption?.src;
+  const wallpaperSrcHiRes = wallpaperOption?.srcHiRes;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Preload wallpaper image to prevent flicker on page load.
+            Starts download before CSS parsing, eliminating the discovery delay.
+            Uses imagesrcset/imagesizes for responsive preloading (correct variant for viewport). */}
+        {wallpaperSrc && (
+          <link
+            rel="preload"
+            as="image"
+            href={wallpaperSrc}
+            imageSrcSet={wallpaperSrcHiRes ? `${wallpaperSrc} 1920w, ${wallpaperSrcHiRes} 2560w` : undefined}
+            imageSizes={wallpaperSrcHiRes ? "100vw" : undefined}
+            fetchPriority="high"
+          />
+        )}
         {/* Blocking script to set theme class before paint (FOUC prevention).
             Creates unavoidable hydration mismatch on Safari dev mode - this is
             the idiomatic pattern. See: github.com/vercel/next.js/issues/34610 */}
