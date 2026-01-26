@@ -13,6 +13,7 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
+import { HydrationSignal } from "@/components/dev/HydrationSignal";
 import { defaultPalette, themes } from "@/data/themes";
 import { LAYOUT_MODES } from "@/config/layout";
 import { WALLPAPER_OPTIONS } from "@/data/wallpapers";
@@ -127,6 +128,7 @@ export default async function RootLayout({
           serverWallpaper={serverWallpaper}
           serverLayoutMode={serverLayoutMode}
         >
+          <HydrationSignal />
           <ConsoleLoggerInit />
           <LayoutWrapper>
             <ConditionalFrame>{children}</ConditionalFrame>

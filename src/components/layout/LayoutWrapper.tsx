@@ -14,6 +14,7 @@ import { FooterBar } from "./FooterBar";
 import { WindowContainer } from "./WindowContainer";
 import { WallpaperBackground } from "./WallpaperBackground";
 import { IntroSequence } from "@/components/intro";
+import { IntroStateSignal } from "@/components/dev/IntroStateSignal";
 
 /** Identifiers for the three layout windows */
 type WindowId = "top" | "main" | "footer";
@@ -33,7 +34,7 @@ export interface LayoutWrapperProps {
 function LayoutContent({ children }: LayoutWrapperProps) {
   const { windowGap, windowContainerMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const { layoutMode, setLayoutMode, isDrawerOpen } = useLayoutPreferences();
-  const { introPhase, isHiddenUntilMorph } = useIntroContext();
+  const { introPhase, isHiddenUntilMorph, shouldShow } = useIntroContext();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
   const isMobile = useIsMobile();
 
@@ -66,10 +67,12 @@ function LayoutContent({ children }: LayoutWrapperProps) {
       {/* Three-window layout - fixed viewport, content scrolls inside */}
       {/* h-dvh uses dynamic viewport height, accounting for mobile browser chrome */}
       {/* Clicking gap areas (outside windows) resets active state */}
+      {/* inert: prevents keyboard/screen reader interaction while intro overlay is active */}
       <div
         className="mx-auto h-dvh w-full flex flex-col"
         style={{ padding: `${layoutPadding}px`, gap: `${layoutGap}px`, maxWidth: containerMaxWidth }}
         onPointerDown={() => setActiveWindow(null)}
+        inert={shouldShow || undefined}
       >
         {/* Top bar - visually hidden in fullscreen mode (kept mounted so drawer can stay open) */}
         <TopBar
@@ -183,6 +186,9 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
 
   return (
     <IntroProvider>
+      {/* Signal for E2E tests to detect intro state */}
+      <IntroStateSignal />
+
       {/* Background layer */}
       <WallpaperBackground imageSrc={wallpaperSrc} imageSrcHiRes={wallpaperSrcHiRes} />
 

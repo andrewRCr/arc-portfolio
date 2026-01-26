@@ -13,6 +13,18 @@ import { MD_BREAKPOINT } from "../constants";
  */
 
 test.describe("Smoke Tests", () => {
+  // Skip intro animation for all smoke tests - set cookie before each test
+  test.beforeEach(async ({ context }) => {
+    await context.addCookies([
+      {
+        name: "arc-intro-seen",
+        value: "1",
+        domain: "localhost",
+        path: "/",
+      },
+    ]);
+  });
+
   /**
    * Helper to check if viewport is mobile (below md breakpoint)
    */

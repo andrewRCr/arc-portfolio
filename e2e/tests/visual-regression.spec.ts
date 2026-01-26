@@ -75,6 +75,18 @@ const MODES = ["light", "dark"] as const;
 const VIEWPORT_NAMES = ["desktop", "tablet", "mobile"] as const;
 
 test.describe("Visual Regression Baselines", () => {
+  // Skip intro animation for visual regression tests
+  test.beforeEach(async ({ context }) => {
+    await context.addCookies([
+      {
+        name: "arc-intro-seen",
+        value: "1",
+        domain: "localhost",
+        path: "/",
+      },
+    ]);
+  });
+
   for (const theme of THEMES) {
     for (const mode of MODES) {
       for (const viewportName of VIEWPORT_NAMES) {
@@ -125,7 +137,17 @@ test.describe("Page-Specific Baselines", () => {
     mode: "light" as const,
   };
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context }) => {
+    // Skip intro animation
+    await context.addCookies([
+      {
+        name: "arc-intro-seen",
+        value: "1",
+        domain: "localhost",
+        path: "/",
+      },
+    ]);
+
     await page.setViewportSize(VIEWPORTS.desktop);
     await page.addInitScript(
       ({ theme, mode, themeKey, modeKey, deterministicKey }) => {

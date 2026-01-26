@@ -94,6 +94,18 @@ async function getStoredWallpaperPrefs(page: Page): Promise<Record<string, unkno
 }
 
 test.describe("Theme Controls", () => {
+  // Skip intro animation for all theme control tests
+  test.beforeEach(async ({ context }) => {
+    await context.addCookies([
+      {
+        name: "arc-intro-seen",
+        value: "1",
+        domain: "localhost",
+        path: "/",
+      },
+    ]);
+  });
+
   test.describe("Preference Persistence", () => {
     test("theme selection persists across page reload", async ({ page }) => {
       await page.goto("/");
