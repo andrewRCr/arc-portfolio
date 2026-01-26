@@ -47,8 +47,8 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
   }
 
   return (
-    <motion.div layoutId={isMorphing ? "topbar-window" : undefined} layout={isMorphing}>
-      <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate} className={className}>
+    <motion.div layoutId={isMorphing ? "topbar-window" : undefined} layout={isMorphing} className={className}>
+      <WindowContainer windowId="top" isActive={isActive} onActivate={onActivate}>
         <header
           className="flex items-center justify-between px-4 mx-auto w-full"
           style={{ height: innerHeight, maxWidth: contentMaxWidth }}

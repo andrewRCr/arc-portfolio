@@ -5,16 +5,16 @@
  * All durations are in seconds (Framer Motion convention).
  *
  * Timeline Overview:
- * 1. ENTERING: Window scales up, backdrop blurs, content fades in
- * 2. TYPING: "portfolio init" types out with cursor
- * 3. LOADING: Spinner displays
- * 4. MORPHING: Window morphs into TopBar/FooterBar, blur fades
- * 5. EXPANDING: Layout expands, frame draws, content animates in
- * 6. COMPLETE: Animation finished
+ * - ENTERING: Window scales up, backdrop blurs, content fades in
+ * - TYPING: "portfolio init" types out with cursor
+ * - LOADING: Spinner displays
+ * - MORPHING: Window morphs into TopBar/FooterBar, blur fades
+ * - EXPANDING: Layout expands, frame draws, content animates in
+ * - COMPLETE: Animation finished
  */
 
 // ============================================================================
-// Phase 1: Entering (Window Entrance)
+// ENTERING - Window Entrance
 // ============================================================================
 
 /** Duration of window scale-up animation */
@@ -36,7 +36,7 @@ export const BLUR_AMOUNT = 8;
 export const BLUR_DURATION = 0.4;
 
 // ============================================================================
-// Phase 2: Typing
+// TYPING - Command Input Animation
 // ============================================================================
 
 /** Delay after cursor appears before typing starts */
@@ -49,7 +49,7 @@ export const TYPING_CHAR_DELAY = 0.06;
 export const TYPING_COMPLETE_PAUSE = 0.3;
 
 // ============================================================================
-// Phase 3: Loading
+// LOADING - Spinner Display
 // ============================================================================
 
 /** Duration spinner displays before morph starts */
@@ -59,7 +59,7 @@ export const LOADING_DURATION = 1.0;
 export const SPINNER_INTERVAL_MS = 80;
 
 // ============================================================================
-// Phase 4: Morphing
+// MORPHING - Window to Layout Transition
 // ============================================================================
 
 /** Duration of window morph transition */
@@ -80,7 +80,7 @@ export const MORPH_EXIT_DELAY = 0.2;
 export const POST_MORPH_PAUSE = 0.1;
 
 // ============================================================================
-// Phase 5: Expanding (Layout + Content Animation)
+// EXPANDING - Layout and Content Animation
 // ============================================================================
 
 // --- Main Content Window ---
@@ -133,8 +133,14 @@ export const BODY_CONTENT_DELAY = 0.75;
 export const BODY_CONTENT_DURATION = 0.35;
 
 // --- Expanding Phase Total ---
-/** Total duration of expanding phase (for phase transition timing) */
-export const EXPANDING_DURATION = 0.5;
+/** Total duration of expanding phase (derived from latest animation end time) */
+export const EXPANDING_DURATION = Math.max(
+  BODY_CONTENT_DELAY + BODY_CONTENT_DURATION, // 1.10s - body content fade
+  NAV_FADE_DELAY + FRAME_FADE_DURATION, // 0.95s - nav fade
+  FRAME_FADE_DELAY + BORDER_DRAW_DURATION, // 0.95s - border draw
+  HERO_SECONDARY_DELAY + HERO_SECONDARY_DURATION, // 0.95s - hero secondary
+  MAIN_CONTENT_DELAY + MAIN_CONTENT_DURATION // 0.75s - main content scale
+);
 
 // ============================================================================
 // Shared / Retrigger

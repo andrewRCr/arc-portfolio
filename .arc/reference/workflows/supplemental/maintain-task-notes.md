@@ -338,11 +338,8 @@ This includes:
 - Length is NOT a concern - task files can be 500-3000+ lines
 - Preserves WHAT was done at detailed level
 
-**What NO LONGER exists in modern task files:**
-- ❌ Forward pointers ("Interrupted by", spawned task lists) - remove these, they're complete
-- ❌ Temporal status notes ("Paused", "Resume at", dates)
-- ❌ Bottom-matter sections (Implementation Notes, Coordination, etc.) - old pattern
-- ❌ Completion Summary section - now in separate completion-{name}.md file
+## Success Criteria (KEEP)
+- Verification checklist of outcomes
 ```
 
 **The Three-Tier System:**
@@ -496,49 +493,23 @@ For each section in the task file, explicitly decide disposition:
 
 Use the checklists below as reference, but evaluate every section you encounter - not just those listed.
 
-**Top-Matter Sections to REMOVE:**
+**Standard Task List Structure:**
 
-- [ ] **"Why Now"** - Urgency rationale irrelevant after completion
-- [ ] **"Root Cause Analysis"** - Temporal analysis explaining why work started (not what was done)
-- [ ] **"Will Do" with checkmarks** - Redundant with actual task completions (scope without checkmarks OK)
-- [ ] **"Research Completed" summaries** - **VERIFY** content exists in strategy doc before removing
-- [ ] **"Critical Questions"** - Historical scaffolding once all answered
+- Header metadata (PRD, Created, Completed, Branch, Base Branch, Status)
+- Overview (purpose)
+- Scope (Will Do / Won't Do)
+- Tasks (phases with subtasks)
+- Success Criteria
 
-**Bottom-Matter Sections to REMOVE:**
+**Handling Non-Standard Sections:**
 
-- [ ] **"Notes" section** - Often contains stale snapshots, test counts, temporal state
-- [ ] **"Research References"** - **VERIFY** in strategy docs before removing, or confirm not reusable
-- [ ] **"Implementation Notes"** - Evaluate contents: planning scaffolding (files to create/modify,
-  iteration expectations, technical approach summaries) should be removed; substantive implementation
-  findings not captured in task completions may be kept
-- [ ] **"Completion Summary"** - Now in separate completion-{name}.md
-- [ ] **"Task List Coordination"** - Old pattern
-- [ ] **"Decision Logs"** - **VERIFY** captured in ADRs or strategy docs before removing
+If additional sections exist beyond this structure, evaluate each:
 
-**Top-Matter Sections to KEEP:**
+- **Temporal scaffolding** (urgency rationale, status snapshots, "next steps", coordination notes, critical questions) → Remove
+- **Substantive content** (implementation findings, research, architectural decisions not captured elsewhere) → Keep in place; if a notes file exists for this work, consider extracting there
+- **Completion summaries** → Should be in separate `completion-{name}.md`, not task file
 
-- Header metadata (Created, Completed, Branch, Base Branch, Status)
-- Brief context (Discovered, `Interrupts:` pointer)
-- Problem statement (what was fixed - brief historical context)
-- "Won't Do" scope exclusions (useful record of deliberate decisions)
-
-**Bottom-Matter Sections to KEEP:**
-
-- "Success Criteria" - Verification checklist of outcomes (complements completion doc's executive summary)
-
-**Research/Decision Content - Verification Required:**
-
-Before removing any research summaries, decision logs, or reference sections:
-
-1. **Identify the target location** - Which strategy doc or ADR should contain this?
-2. **Grep to verify** - `grep -i "key-term" path/to/strategy.md`
-3. **If not found**: Either migrate content to appropriate doc, or keep in task file
-4. **If found**: Safe to remove from task file
-
-Never assume content is captured elsewhere - verify before removal.
-
-**Evaluation criteria:** For each section ask: "Is this temporal scaffolding, OR have I verified this content
-exists elsewhere?" Only remove if yes to either.
+**Before removing research or decision content:** Verify it's captured in ADRs or strategy docs (grep to check). If not captured elsewhere and substantive, keep it.
 
 ---
 

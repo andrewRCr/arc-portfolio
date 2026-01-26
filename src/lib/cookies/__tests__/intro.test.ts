@@ -52,7 +52,7 @@ describe("intro cookie utilities", () => {
 
   describe("constants", () => {
     it("exports correct cookie name", () => {
-      expect(INTRO_COOKIE_NAME).toBe("arc-intro-seen");
+      expect(INTRO_COOKIE_NAME).toBe("arc-portfolio-intro-seen");
     });
 
     it("exports correct expiry time (1 hour in seconds)", () => {

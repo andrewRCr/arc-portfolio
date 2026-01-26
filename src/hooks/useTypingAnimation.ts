@@ -45,6 +45,7 @@ export function useTypingAnimation({
 }: UseTypingAnimationOptions): UseTypingAnimationReturn {
   const [charIndex, setCharIndex] = useState(0);
   const onCompleteRef = useRef(onComplete);
+  const hasSignaledCompleteRef = useRef(false);
 
   // Keep onComplete ref current to avoid stale closures
   useEffect(() => {
@@ -54,9 +55,10 @@ export function useTypingAnimation({
   // Handle empty string edge case
   const isComplete = charIndex >= text.length;
 
-  // Call onComplete when typing finishes
+  // Call onComplete when typing finishes (guarded against duplicate calls)
   useEffect(() => {
-    if (isComplete) {
+    if (isComplete && !hasSignaledCompleteRef.current) {
+      hasSignaledCompleteRef.current = true;
       onCompleteRef.current?.();
     }
   }, [isComplete]);
@@ -78,6 +80,7 @@ export function useTypingAnimation({
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: reset typing when text prop changes
     setCharIndex(0);
+    hasSignaledCompleteRef.current = false;
   }, [text]);
 
   const displayedText = text.slice(0, charIndex);

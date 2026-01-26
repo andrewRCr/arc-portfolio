@@ -277,11 +277,10 @@ test.describe("TWM Layout System", () => {
 
       // There are 2 navs with "Main navigation" - mobile (hidden) and desktop (visible at tablet+)
       // ResponsiveSwitch renders both; we want the one with visible links
-      const allNavs = page.locator('nav[aria-label="Main navigation"]');
-
       // Wait for intro animation state to settle - nav becomes visible after intro completes
       // Use web-first assertion to wait for nav links to appear (not just hydration)
-      const desktopNavLinks = allNavs.nth(1).getByRole("link"); // Desktop nav is second
+      const desktopNav = page.getByTestId("desktop-nav");
+      const desktopNavLinks = desktopNav.getByRole("link");
       const firstLink = desktopNavLinks.first();
 
       // Wait for first link to be visible (intro state settled, not mobile dropdown)

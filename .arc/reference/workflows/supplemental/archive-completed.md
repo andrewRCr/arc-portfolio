@@ -130,6 +130,7 @@ Create `completion-{name}.md` in the same directory as the task list:
 
 {Concrete outputs - components, capabilities, test coverage areas}
 {Focus on the important stuff, not exhaustive inventory}
+{Avoid volatile metrics (test counts, version numbers) - they become stale}
 
 - {Component or capability}
 - {Another deliverable}

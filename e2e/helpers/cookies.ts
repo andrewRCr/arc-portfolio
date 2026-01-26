@@ -23,6 +23,7 @@ export async function skipIntroAnimation(context: BrowserContext, baseURL: strin
       name: INTRO_COOKIE_NAME,
       value: "1",
       url: baseURL ?? "http://localhost:3000",
+      path: "/",
     },
   ]);
 }

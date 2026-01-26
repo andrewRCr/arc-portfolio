@@ -28,8 +28,12 @@ export async function waitForHydration(page: Page, timeout = 10000): Promise<voi
  * @param url - URL to navigate to (relative or absolute)
  * @param options - Additional options
  */
-export async function gotoAndWaitForHydration(page: Page, url: string, options?: { timeout?: number }): Promise<void> {
-  await page.goto(url);
+export async function gotoAndWaitForHydration(
+  page: Page,
+  url: string,
+  options?: { timeout?: number; waitUntil?: "load" | "domcontentloaded" | "networkidle" | "commit" }
+): Promise<void> {
+  await page.goto(url, { waitUntil: options?.waitUntil });
   await waitForHydration(page, options?.timeout);
 }
 

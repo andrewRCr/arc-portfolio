@@ -74,7 +74,6 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   // Refs for measuring container and SVG paths
   const containerRef = useRef<HTMLDivElement>(null);
   const leftPathRef = useRef<SVGPathElement>(null);
-  const rightPathRef = useRef<SVGPathElement>(null);
   const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, navGapHalf: 0 });
   const [measuredPathLength, setMeasuredPathLength] = useState<number | null>(null);
@@ -220,7 +219,6 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
             />
             {/* Right half - draws from right notch edge to bottom center */}
             <motion.path
-              ref={rightPathRef}
               d={rightPath}
               fill="none"
               stroke="rgb(var(--border-strong))"

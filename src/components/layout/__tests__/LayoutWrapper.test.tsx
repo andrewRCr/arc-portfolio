@@ -200,9 +200,10 @@ describe("LayoutWrapper", () => {
         </LayoutWrapper>
       );
 
-      // TopBar should have "hidden" class (kept mounted for drawer to stay open)
+      // TopBar should have "hidden" class on its wrapper (kept mounted for drawer to stay open)
+      // className is on the outer motion.div wrapper, not WindowContainer
       const topBarWindow = container.querySelector('[data-window-id="top"]');
-      expect(topBarWindow).toHaveClass("hidden");
+      expect(topBarWindow?.parentElement).toHaveClass("hidden");
     });
 
     it("hides FooterBar in fullscreen mode", () => {

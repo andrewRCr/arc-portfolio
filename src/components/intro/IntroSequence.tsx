@@ -279,8 +279,8 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     if (!shouldShow) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Skip on any key press (except modifier keys alone)
-      if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+      // Skip on any key press (except modifier keys alone and Tab for a11y navigation)
+      if (!e.metaKey && !e.ctrlKey && !e.altKey && e.key !== "Tab") {
         handleSkip();
       }
     };

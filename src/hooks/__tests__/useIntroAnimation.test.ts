@@ -17,7 +17,7 @@ vi.mock("@/lib/cookies/intro", () => ({
   hasSeenIntro: vi.fn(),
   markIntroSeen: vi.fn(),
   clearIntroCookie: vi.fn(),
-  INTRO_COOKIE_NAME: "arc-intro-seen",
+  INTRO_COOKIE_NAME: "arc-portfolio-intro-seen",
   INTRO_COOKIE_EXPIRY: 3600,
 }));
 
@@ -203,6 +203,29 @@ describe("useIntroAnimation", () => {
 
       expect(introCookies.clearIntroCookie).toHaveBeenCalled();
       expect(result.current.state).toBe("pending");
+    });
+
+    it("is a no-op when reducedMotion is true", () => {
+      setupMatchMedia(true); // User prefers reduced motion
+      vi.mocked(introCookies.hasSeenIntro).mockReturnValue(false);
+
+      const { result } = renderHook(() => useIntroAnimation());
+
+      // With reduced motion, initial state is "complete"
+      expect(result.current.state).toBe("complete");
+      expect(result.current.reducedMotion).toBe(true);
+
+      // Clear mock counts from initial render
+      vi.mocked(introCookies.clearIntroCookie).mockClear();
+
+      // Attempt to trigger replay
+      act(() => {
+        result.current.triggerReplay();
+      });
+
+      // Should be a no-op: cookie not cleared, state unchanged
+      expect(introCookies.clearIntroCookie).not.toHaveBeenCalled();
+      expect(result.current.state).toBe("complete");
     });
   });
 

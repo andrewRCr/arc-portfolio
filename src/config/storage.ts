@@ -37,4 +37,4 @@ export const LAYOUT_MODE_STORAGE_KEY = "arc-portfolio-layout-mode";
 export const LAYOUT_MODE_COOKIE_NAME = "arc-portfolio-layout-mode";
 
 /** Intro animation seen flag - cookie (persists across sessions) */
-export const INTRO_COOKIE_NAME = "arc-intro-seen";
+export const INTRO_COOKIE_NAME = "arc-portfolio-intro-seen";
