@@ -505,11 +505,14 @@ Use the checklists below as reference, but evaluate every section you encounter 
 
 If additional sections exist beyond this structure, evaluate each:
 
-- **Temporal scaffolding** (urgency rationale, status snapshots, "next steps", coordination notes, critical questions) → Remove
-- **Substantive content** (implementation findings, research, architectural decisions not captured elsewhere) → Keep in place; if a notes file exists for this work, consider extracting there
+- **Temporal scaffolding** (urgency rationale, status snapshots, "next steps", coordination notes,
+  critical questions) → Remove
+- **Substantive content** (implementation findings, research, architectural decisions not captured
+  elsewhere) → Keep in place; if a notes file exists for this work, consider extracting there
 - **Completion summaries** → Should be in separate `completion-{name}.md`, not task file
 
-**Before removing research or decision content:** Verify it's captured in ADRs or strategy docs (grep to check). If not captured elsewhere and substantive, keep it.
+**Before removing research or decision content:** Verify it's captured in ADRs or strategy docs
+(grep to check). If not captured elsewhere and substantive, keep it.
 
 ---
 

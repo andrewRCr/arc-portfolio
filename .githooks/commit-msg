@@ -157,6 +157,7 @@ else
         echo "   - Context: tasks-[name].md (Task X.Y)"
         echo "   - Context: tasks-[name].md (Tasks X.Y-X.Z)"
         echo "   - Context: tasks-[name].md (incidental - discovered during Task X.Y)"
+        echo "   - Context: tasks-[name].md (incidental - discovered during code review)"
         echo "   - Context: tasks-[name].md (planning) or (maintenance)"
         echo "   - Context: [planning|documentation|maintenance|refactor] (no associated task list)"
         echo "   - Context: [planning|documentation|maintenance|refactor] (atomic / no associated task list)"
