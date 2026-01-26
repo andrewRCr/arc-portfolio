@@ -75,41 +75,51 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, navGapHalf: 0 });
 
-  // Measure container and nav gap on mount/resize
+  // Measure container dimensions using offsetWidth/offsetHeight
+  // These return LAYOUT dimensions (before CSS transforms), unlike getBoundingClientRect
+  // which returns 0 when parent has scale(0) transform during intro animation
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
     const updateDimensions = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const computedStyle = getComputedStyle(containerRef.current);
-        const navGapHalf = parseFloat(computedStyle.getPropertyValue("--nav-gap-half")) || 70;
-        setDimensions({ width: rect.width, height: rect.height, navGapHalf });
-      }
+      // offsetWidth/offsetHeight ignore CSS transforms, giving us the actual layout size
+      // even when the parent is scaled to 0 during intro animation
+      const width = container.offsetWidth;
+      const height = container.offsetHeight;
+      const computedStyle = getComputedStyle(container);
+      const navGapHalf = parseFloat(computedStyle.getPropertyValue("--nav-gap-half")) || 70;
+      setDimensions({ width, height, navGapHalf });
     };
 
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    const resizeObserver = new ResizeObserver(() => {
+      updateDimensions();
+    });
+
+    resizeObserver.observe(container);
+    updateDimensions(); // Initial measurement
+
+    return () => resizeObserver.disconnect();
   }, []);
 
   // Track if SVG animation has been triggered - persists until retrigger
-  // Using lazy initial state to check if we should skip animation entirely
   const [svgTriggered, setSvgTriggered] = useState(false);
 
-  // Trigger SVG when entering expanding phase, reset on retrigger
-  // This is a valid state machine transition pattern - setState based on phase changes
-  const prevPhaseRef = useRef(introPhase);
+  // Trigger SVG based on current phase
+  // - "entering": Reset for new intro cycle
+  // - "expanding": Trigger the border draw animation
+  // - other phases: maintain current state
   useEffect(() => {
-    const prevPhase = prevPhaseRef.current;
-    prevPhaseRef.current = introPhase;
-
-    // Trigger when transitioning INTO expanding
-    if (introPhase === "expanding" && prevPhase !== "expanding") {
-      setSvgTriggered(true); // eslint-disable-line react-hooks/set-state-in-effect
+    if (introPhase === "entering") {
+      // New intro cycle starting - reset so border can animate again
+      setSvgTriggered(false); // eslint-disable-line react-hooks/set-state-in-effect
+    } else if (introPhase === "expanding") {
+      // Trigger the border draw animation
+      // Dimensions are valid (offsetWidth/offsetHeight ignore parent transforms)
+      setSvgTriggered(true);
     }
-    // Reset when transitioning INTO entering (retrigger)
-    if (introPhase === "entering" && prevPhase !== "entering") {
-      setSvgTriggered(false);
-    }
+    // Note: "idle", "complete", etc. don't change svgTriggered
+    // Once triggered, stays triggered until next intro cycle
   }, [introPhase]);
 
   // Show SVG border once triggered
@@ -179,11 +189,10 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
               strokeLinecap="round"
               strokeLinejoin="round"
               initial={{ strokeDasharray: halfPerimeter, strokeDashoffset: halfPerimeter }}
-              animate={{ strokeDashoffset: 0 }}
+              animate={{ strokeDasharray: halfPerimeter, strokeDashoffset: 0 }}
               transition={{
-                duration: BORDER_DRAW_DURATION,
-                delay: FRAME_FADE_DELAY,
-                ease: "easeInOut",
+                strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
+                strokeDasharray: { duration: 0 }, // Instant update on resize
               }}
             />
             {/* Right half - draws from right notch edge to bottom center */}
@@ -195,11 +204,10 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
               strokeLinecap="round"
               strokeLinejoin="round"
               initial={{ strokeDasharray: halfPerimeter, strokeDashoffset: halfPerimeter }}
-              animate={{ strokeDashoffset: 0 }}
+              animate={{ strokeDasharray: halfPerimeter, strokeDashoffset: 0 }}
               transition={{
-                duration: BORDER_DRAW_DURATION,
-                delay: FRAME_FADE_DELAY,
-                ease: "easeInOut",
+                strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
+                strokeDasharray: { duration: 0 }, // Instant update on resize
               }}
             />
           </svg>

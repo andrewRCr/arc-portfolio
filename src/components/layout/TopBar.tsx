@@ -55,8 +55,10 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
         >
           {/* Branding - links to home. With reduced motion disabled, clicking also triggers replay. */}
           {/* On desktop hover (when replay available), shows "reinitialize" with blinking cursor */}
-          <div className="group flex items-center gap-3">
-            <TouchTarget align="start">
+          {/* peer on TouchTarget so only branding hover triggers effects, not decorative elements */}
+          {/* NOTE: underscore must be direct sibling of peer for peer-hover to work (not nested) */}
+          <div className="flex items-center">
+            <TouchTarget align="start" className="peer">
               <Link
                 href="/"
                 onClick={reducedMotion ? undefined : triggerReplay}
@@ -65,16 +67,21 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
                 <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
               </Link>
             </TouchTarget>
-            <span className="text-primary font-mono">
-              &gt;
-              {/* Underscore decoration - fades out on desktop hover when replay available */}
-              <span className={reducedMotion ? undefined : "md:group-hover:opacity-0 transition-opacity duration-200"}>
-                _
-              </span>
+            <span className="ml-3 text-primary font-mono pointer-events-none">&gt;</span>
+            {/* Underscore decoration - fades out on desktop hover when replay available */}
+            {/* Must be direct sibling of peer (not nested) for peer-hover to work */}
+            <span
+              className={
+                reducedMotion
+                  ? "text-primary font-mono"
+                  : "text-primary font-mono md:peer-hover:opacity-0 transition-opacity duration-200"
+              }
+            >
+              _
             </span>
             {/* Hover hint - desktop only, hidden when reduced motion (no replay available) */}
             {!reducedMotion && (
-              <span className="hidden md:inline-flex md:items-baseline md:gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 font-mono text-foreground text-sm -ml-2">
+              <span className="pointer-events-none hidden md:inline-flex md:items-baseline md:gap-1 md:opacity-0 md:peer-hover:opacity-100 transition-opacity duration-200 font-mono text-foreground text-sm">
                 <span>reinitialize</span>
                 <span className="inline-block w-1.5 h-3 bg-primary animate-blink translate-y-0.5" aria-hidden="true" />
               </span>
