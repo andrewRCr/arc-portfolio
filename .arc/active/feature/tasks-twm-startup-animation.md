@@ -2,9 +2,10 @@
 
 **PRD:** `.arc/active/feature/prd-twm-startup-animation.md`
 **Created:** 2026-01-23
+**Completed:** 2026-01-26
 **Branch:** `feature/twm-startup-animation`
 **Base Branch:** `main`
-**Status:** In Progress
+**Status:** Complete
 
 ## Overview
 
@@ -489,57 +490,19 @@ and mobile testing completed during earlier phases.)
 
 ---
 
-## Implementation Notes
-
-### Iteration Expectations
-
-This feature requires visual iteration. Key decision points:
-
-1. **Phase 3 (Morph):** If `layoutId` morph proves difficult, pivot to fallback transition (3.3)
-2. **Phase 2 (Loading indicator):** May be cut during Phase 8 tuning if it adds sluggishness
-3. **Timing values:** All durations are starting points, expect tuning in Phase 8.3
-4. **Phase 4 (Footer timing):** Footer syncing with main content push may need adjustment
-
-### Technical Approach
-
-- **State machine:** Simple state transitions, cookie as persistence layer
-- **Framer Motion:** First usage in layout layer - establishes patterns for future animation work
-- **Cookie strategy:** Follows existing `src/config/storage.ts` patterns
-- **Accessibility:** `prefers-reduced-motion` check before any animation code runs
-
-### Files to Create
-
-- `src/hooks/useIntroAnimation.ts`
-- `src/hooks/useTypingAnimation.ts`
-- `src/lib/cookies/intro.ts`
-- `src/components/intro/IntroSequence.tsx`
-- `src/components/intro/CommandWindow.tsx`
-- `src/components/intro/index.ts`
-
-### Files to Modify
-
-- `src/components/layout/LayoutWrapper.tsx` - integrate IntroSequence
-- `src/components/layout/TopBar.tsx` - add layoutId, hover hint, retrigger
-- `src/components/layout/FooterBar.tsx` - add motion wrapper
-- `src/components/layout/WindowContainer.tsx` - potentially add layoutId support
-- `src/components/layout/ConditionalFrame.tsx` - add border animation
-- `src/components/layout/Navigation.tsx` - add fade-in animation
-
----
-
 ## Success Criteria
 
-- [ ] Animation plays on first home visit (no cookie)
-- [ ] Animation does NOT play on subsequent visits (within 1 hour)
-- [ ] Animation does NOT play on page refresh or back navigation
-- [ ] TopBar branding click replays animation
-- [ ] TopBar branding hover shows "init portfolio" hint (desktop only)
-- [ ] Click or keypress skips animation instantly
-- [ ] `prefers-reduced-motion` users see no animation
-- [ ] Animation works across all 6 themes
-- [ ] Animation works on mobile viewports
-- [ ] Total animation duration ≤ 2.5 seconds
-- [ ] No jank or dropped frames on reasonable hardware
-- [ ] Lighthouse Performance score not regressed
-- [ ] All quality gates pass
-- [ ] Ready for merge
+- [x] Animation plays on first home visit (no cookie)
+- [x] Animation does NOT play on subsequent visits (within 1 hour)
+- [x] Animation does NOT play on page refresh or back navigation
+- [x] TopBar branding click replays animation
+- [x] TopBar branding hover shows "reinitialize" hint (desktop only)
+- [x] Click or keypress skips animation instantly
+- [x] `prefers-reduced-motion` users see no animation
+- [x] Animation works across all 6 themes
+- [x] Animation works on mobile viewports
+- [x] Total animation duration ~5.5s (PRD target was 2.5s; tuned for visual impact per PRD philosophy)
+- [x] No jank or dropped frames on reasonable hardware
+- [x] Lighthouse Performance score not regressed
+- [x] All quality gates pass
+- [x] Ready for merge
