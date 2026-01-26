@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-23
+**Last Updated:** 2026-01-26
 
 ---
 
@@ -44,13 +44,11 @@ Transform placeholder styling into distinctive, polished design.
    - 1196 unit tests, 199 E2E tests
    - [Archive](../reference/archive/2026-q1/feature/04_content-polish-p2/)
 
-7. **TWM Startup Animation** ← Active
-   - Task list: `.arc/active/feature/tasks-twm-startup-animation.md`
-   - Branch: `feature/twm-startup-animation`
-   - Rationale: Separated from Visual Polish for focused iteration on animation timing/feel
-   - Scope: Terminal boot sequence animation on first home visit, 5-phase sequence, cookie tracking,
-     skip behavior, accessibility
-   - Dependencies: Content Polish P2 ✅
+7. ✅ **TWM Startup Animation** (2026-01-26)
+   - Terminal boot sequence: CommandWindow → TopBar morph, SVG frame animation
+   - Cookie-based state, skip on click/keypress, reduced-motion support, TopBar replay
+   - 1239 unit tests, 304 E2E tests
+   - [Archive](../reference/archive/2026-q1/feature/05_twm-startup-animation/)
 
 8. **Visual Polish** ← Next
    - Plan: `.arc/backlog/feature/plan-visual-polish.md`

@@ -19,18 +19,16 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ Content Polish P2 (feature) - 2026-01-22
-    - Skills: SkillLogoGrid with simple-icons, skill-to-project filtering
-    - Contact: Zeptomail form with honeypot/rate limiting, email obfuscation
-    - About: EducationCard component, responsive layout polish
-    - 1196 unit tests, 199 E2E tests
-    - [Archive](../archive/2026-q1/feature/04_content-polish-p2/)
+- ✅ TWM Startup Animation (feature) - 2026-01-26
+    - Terminal boot sequence with CommandWindow → TopBar morph
+    - Cookie-based animation state, skip on click/keypress, reduced-motion support
+    - SVG stroke-dasharray frame border animation
+    - 1239 unit tests, 304 E2E tests
+    - [Archive](../archive/2026-q1/feature/05_twm-startup-animation/)
 
 **Currently Active:**
 
-- TWM Startup Animation (feature) - Terminal boot sequence animation on first home visit
-    - Task list: `.arc/active/feature/tasks-twm-startup-animation.md`
-    - Branch: `feature/twm-startup-animation`
+- None - selecting next priority
 
 **Next Priority:**
 
@@ -46,7 +44,7 @@ contemporary web development practices.
 - ✅ Theme & Wallpaper Control System - Unified controls, cookie-first SSR, 6 themes, 36 wallpapers
 - ✅ Content Polish P1 - Project showcase, DetailHeader, image gallery, 3-tab Projects, NexusMods API
 - ✅ Content Polish P2 - SkillLogoGrid, skill filtering, Contact form, About polish
-- **TWM Startup Animation** (active) - Terminal boot sequence on first home visit
+- ✅ TWM Startup Animation - Terminal boot sequence on first home visit
 - **Visual Polish** (next) - Page transitions, micro-interactions, loading states, hero images
 
 ### Phase C: Launch
@@ -145,6 +143,16 @@ contemporary web development practices.
 - **Email obfuscation**: Base64 encoding with client-side decode, hydration-safe mailto links
 - **About page**: EducationCard component, responsive layout, state abbreviation utility
 - **Test coverage**: 1196 unit tests, 199 E2E tests
+
+### ✅ TWM Startup Animation
+
+- **Terminal boot sequence**: CommandWindow appears, types "portfolio init", morphs into TopBar
+- **Framer Motion layoutId**: Dual morph pattern (CommandWindow → TopBar up, FooterBar down)
+- **SVG frame animation**: stroke-dasharray border draw from navigation gap
+- **Cookie-based state**: 1-hour expiry, skip on click/keypress, reduced-motion support
+- **TopBar replay**: Hover hint reveals "click to replay", click clears cookie and replays
+- **Test stability**: HydrationSignal/IntroStateSignal components for deterministic E2E testing
+- **Test coverage**: 1239 unit tests, 304 E2E tests
 
 ---
 
