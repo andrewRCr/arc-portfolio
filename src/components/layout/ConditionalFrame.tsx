@@ -1,7 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { FRAME_FADE_DELAY, BORDER_DRAW_DURATION, NAV_FADE_TRANSITION } from "@/lib/intro-timing";
+import { useIntroContext } from "@/contexts/IntroContext";
 import { Navigation } from "./Navigation";
 
 /**
@@ -19,10 +23,127 @@ import { Navigation } from "./Navigation";
  * is set via media query in globals.css. This ensures the correct gap width
  * renders on first paint without waiting for JavaScript hydration.
  */
+
+/** Border radius matching rounded-lg */
+const BORDER_RADIUS = 8;
+
+/**
+ * Generate SVG path for one half of the frame border.
+ * Path starts at notch edge (top) and draws along top, down the side, across bottom to center.
+ */
+function generateHalfPath(
+  width: number,
+  height: number,
+  navGapHalf: number,
+  radius: number,
+  side: "left" | "right"
+): string {
+  const centerX = width / 2;
+
+  if (side === "left") {
+    // Start at left notch edge (top), draw left along top, down left side, across bottom to center
+    const startX = centerX - navGapHalf;
+    return `
+      M ${startX} 0
+      L ${radius} 0
+      Q 0 0, 0 ${radius}
+      L 0 ${height - radius}
+      Q 0 ${height}, ${radius} ${height}
+      L ${centerX} ${height}
+    `.trim();
+  } else {
+    // Start at right notch edge (top), draw right along top, down right side, across bottom to center
+    const startX = centerX + navGapHalf;
+    return `
+      M ${startX} 0
+      L ${width - radius} 0
+      Q ${width} 0, ${width} ${radius}
+      L ${width} ${height - radius}
+      Q ${width} ${height}, ${width - radius} ${height}
+      L ${centerX} ${height}
+    `.trim();
+  }
+}
+
 export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDevRoute = pathname?.startsWith("/dev");
   const { navGapDepth, windowBorderWidth, contentMaxWidth, tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
+  const { introPhase, isHiddenUntilExpand } = useIntroContext();
+
+  // Refs for measuring container and SVG paths
+  const containerRef = useRef<HTMLDivElement>(null);
+  const leftPathRef = useRef<SVGPathElement>(null);
+  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0, navGapHalf: 0 });
+  const [measuredPathLength, setMeasuredPathLength] = useState<number | null>(null);
+
+  // Measure container dimensions using offsetWidth/offsetHeight
+  // These return LAYOUT dimensions (before CSS transforms), unlike getBoundingClientRect
+  // which returns 0 when parent has scale(0) transform during intro animation
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateDimensions = () => {
+      // offsetWidth/offsetHeight ignore CSS transforms, giving us the actual layout size
+      // even when the parent is scaled to 0 during intro animation
+      const width = container.offsetWidth;
+      const height = container.offsetHeight;
+      const computedStyle = getComputedStyle(container);
+      const navGapHalf = parseFloat(computedStyle.getPropertyValue("--nav-gap-half")) || 70;
+      setDimensions({ width, height, navGapHalf });
+    };
+
+    // Debounce resize updates to avoid excessive state changes
+    const debouncedUpdate = () => {
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+      resizeTimeoutRef.current = setTimeout(updateDimensions, 50);
+    };
+
+    const resizeObserver = new ResizeObserver(debouncedUpdate);
+    resizeObserver.observe(container);
+    updateDimensions(); // Initial measurement (not debounced)
+
+    return () => {
+      resizeObserver.disconnect();
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+    };
+  }, []);
+
+  // Track if SVG animation has been triggered - persists until retrigger
+  const [svgTriggered, setSvgTriggered] = useState(false);
+
+  // Trigger SVG based on current phase
+  // - "entering": Reset for new intro cycle
+  // - "expanding": Trigger the border draw animation
+  // - other phases: maintain current state
+  useEffect(() => {
+    if (introPhase === "entering") {
+      // New intro cycle starting - reset so border can animate again
+      setSvgTriggered(false); // eslint-disable-line react-hooks/set-state-in-effect
+    } else if (introPhase === "expanding") {
+      // Trigger the border draw animation
+      // Dimensions are valid (offsetWidth/offsetHeight ignore parent transforms)
+      setSvgTriggered(true);
+    }
+    // Note: "idle", "complete", etc. don't change svgTriggered
+    // Once triggered, stays triggered until next intro cycle
+  }, [introPhase]);
+
+  // Show SVG border once triggered
+  const showAnimatedBorder = svgTriggered;
+
+  // Measure actual path length after SVG paths render
+  // useLayoutEffect runs synchronously after DOM mutations but before paint,
+  // ensuring we have accurate length before animation starts
+  useLayoutEffect(() => {
+    if (showAnimatedBorder && dimensions.width > 0 && leftPathRef.current) {
+      const length = leftPathRef.current.getTotalLength();
+      setMeasuredPathLength(length);
+    }
+    // Dependencies: path shape depends on dimensions (width, height, navGapHalf)
+  }, [showAnimatedBorder, dimensions]);
 
   if (isDevRoute) {
     // Dev pages: no inner frame, no navigation
@@ -55,30 +176,92 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
     0 100%
   )`;
 
+  // Generate paths for SVG border animation
+  const { width, height, navGapHalf } = dimensions;
+  const leftPath = width > 0 ? generateHalfPath(width, height, navGapHalf, BORDER_RADIUS, "left") : "";
+  const rightPath = width > 0 ? generateHalfPath(width, height, navGapHalf, BORDER_RADIUS, "right") : "";
+
+  // Use measured path length if available, otherwise fall back to estimate
+  // The estimate (width + height) is a safe overestimate for the half-perimeter
+  const pathLength = measuredPathLength ?? (width > 0 ? width + height : 1000);
+
   return (
     <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:py-6 md:px-6">
       <div
+        ref={containerRef}
         data-testid="content-wrapper"
         className="relative rounded-lg flex flex-col flex-1 min-h-0 mx-auto w-full"
         style={{ maxWidth: tuiFrameMaxWidth }}
       >
-        {/* TUI frame border - clip-path creates gap for Navigation */}
-        <div
-          className="absolute inset-0 border-solid border-border-strong rounded-lg pointer-events-none"
-          style={
-            {
-              borderWidth: windowBorderWidth,
-              WebkitClipPath: borderClipPath,
-              clipPath: borderClipPath,
-            } as React.CSSProperties
-          }
-          aria-hidden="true"
-        />
+        {/* SVG animated border - draws from notch edges to bottom center */}
+        {showAnimatedBorder && width > 0 && (
+          <svg
+            className="absolute inset-0 pointer-events-none overflow-visible"
+            width={width}
+            height={height}
+            aria-hidden="true"
+          >
+            {/* Left half - draws from left notch edge to bottom center */}
+            <motion.path
+              ref={leftPathRef}
+              d={leftPath}
+              fill="none"
+              stroke="rgb(var(--border-strong))"
+              strokeWidth={windowBorderWidth}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
+              animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
+              transition={{
+                strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
+                strokeDasharray: { duration: 0 }, // Instant update on resize
+              }}
+            />
+            {/* Right half - draws from right notch edge to bottom center */}
+            <motion.path
+              d={rightPath}
+              fill="none"
+              stroke="rgb(var(--border-strong))"
+              strokeWidth={windowBorderWidth}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
+              animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
+              transition={{
+                strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
+                strokeDasharray: { duration: 0 }, // Instant update on resize
+              }}
+            />
+          </svg>
+        )}
 
-        {/* Navigation positioned in the border gap */}
-        <div className="absolute left-1/2 -translate-x-1/2 -top-px -translate-y-1/2 px-6 z-10">
+        {/* Static CSS border - shown when not animating (or as fallback) */}
+        {!showAnimatedBorder && (
+          <motion.div
+            className="absolute inset-0 border-solid border-border-strong rounded-lg pointer-events-none"
+            style={
+              {
+                borderWidth: windowBorderWidth,
+                WebkitClipPath: borderClipPath,
+                clipPath: borderClipPath,
+              } as React.CSSProperties
+            }
+            initial={false}
+            animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
+            transition={NAV_FADE_TRANSITION}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* Navigation positioned in the border gap - fades in during intro expansion */}
+        <motion.div
+          className="absolute left-1/2 -translate-x-1/2 -top-px -translate-y-1/2 px-6 z-10"
+          initial={false}
+          animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
+          transition={NAV_FADE_TRANSITION}
+        >
           <Navigation />
-        </div>
+        </motion.div>
 
         {/* Content area - pages handle scroll via PageLayout */}
         <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-0.5 md:pt-8 md:px-6">{children}</div>

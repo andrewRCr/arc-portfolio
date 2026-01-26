@@ -9,7 +9,7 @@ import { render, screen, act } from "@testing-library/react";
 import * as React from "react";
 import { WallpaperContextProvider, useWallpaperContext } from "../WallpaperContext";
 import { ThemeContextProvider, useThemeContext } from "../ThemeContext";
-import { WALLPAPER_PREFS_STORAGE_KEY } from "@/config/storage";
+import { WALLPAPER_PREFS_STORAGE_KEY, WALLPAPER_ENABLED_STORAGE_KEY } from "@/config/storage";
 import { WALLPAPER_OPTIONS, type WallpaperId } from "@/data/wallpapers";
 import { themes } from "@/data/themes";
 
@@ -415,47 +415,44 @@ describe("WallpaperContext - Wallpaper Enabled Toggle", () => {
     });
   });
 
-  describe("Per-Theme Persistence", () => {
-    it("should persist enabled state per-theme in localStorage", async () => {
+  describe("Global Enabled State Persistence", () => {
+    it("should persist enabled state globally in localStorage", async () => {
       render(
         <TestWrapper>
           <TestConsumer />
         </TestWrapper>
       );
 
-      // Disable wallpaper on remedy (default theme)
+      // Disable wallpaper
       await act(async () => {
         screen.getByText("Disable Wallpaper").click();
       });
 
-      // Verify localStorage was updated
-      const stored = localStorage.getItem(WALLPAPER_PREFS_STORAGE_KEY);
-      expect(stored).toBeDefined();
-
-      const prefs = JSON.parse(stored!);
-      expect(prefs.remedy.enabled).toBe(false);
+      // Verify global localStorage key was updated
+      const stored = localStorage.getItem(WALLPAPER_ENABLED_STORAGE_KEY);
+      expect(stored).toBe("false");
     });
 
-    it("should restore enabled state when switching back to a theme", async () => {
+    it("should maintain enabled state when switching themes (global, not per-theme)", async () => {
       render(
         <TestWrapper>
           <TestConsumer />
         </TestWrapper>
       );
 
-      // Disable wallpaper on remedy
+      // Disable wallpaper
       await act(async () => {
         screen.getByText("Disable Wallpaper").click();
       });
       expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("false");
 
-      // Switch to gruvbox (should be enabled by default)
+      // Switch to gruvbox - should STAY disabled (global state)
       await act(async () => {
         screen.getByText("Switch to Gruvbox").click();
       });
-      expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("true");
+      expect(screen.getByTestId("wallpaper-enabled").textContent).toBe("false");
 
-      // Switch back to remedy - should restore disabled state
+      // Switch back to remedy - should still be disabled
       await act(async () => {
         screen.getByText("Switch to Remedy").click();
       });

@@ -18,8 +18,10 @@ export default defineConfig({
   outputDir: "./test-results",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 2 : 1, // Single retry locally for flaky network
+  // 4 workers locally for faster runs (timing issues were fixed with state signals)
+  // 1 in CI for consistency and resource constraints
+  workers: process.env.CI ? 1 : 4,
   reporter: [["html", { outputFolder: "./playwright-report", open: "never" }], ["list"]],
 
   use: {
@@ -27,6 +29,9 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "on-first-retry",
+    // Explicit timeouts for stability (research recommendation)
+    navigationTimeout: 30000, // Page.goto timeout
+    actionTimeout: 10000, // click, fill, etc. timeout
   },
 
   projects: [

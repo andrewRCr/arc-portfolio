@@ -2,14 +2,19 @@
 
 import { useState } from "react";
 import { Minimize2, Maximize2 } from "lucide-react";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { MAIN_CONTENT_TWEEN, MAIN_CONTENT_DELAY, HIDE_DURATION } from "@/lib/intro-timing";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
+import { IntroProvider, useIntroContext } from "@/contexts/IntroContext";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
 import { WindowContainer } from "./WindowContainer";
 import { WallpaperBackground } from "./WallpaperBackground";
+import { IntroSequence } from "@/components/intro";
+import { IntroStateSignal } from "@/components/dev/IntroStateSignal";
 
 /** Identifiers for the three layout windows */
 type WindowId = "top" | "main" | "footer";
@@ -23,30 +28,13 @@ export interface LayoutWrapperProps {
 }
 
 /**
- * LayoutWrapper Component
- *
- * Orchestrates the TWM (Tiling Window Manager) three-window layout:
- * - WallpaperBackground: Full-viewport background behind everything
- * - TopBar: Fixed header with branding and theme controls
- * - Main content: Scrollable central window
- * - FooterBar: Fixed footer with social links
- *
- * Windows are separated by consistent gaps defined by the `windowGap` layout token.
- *
- * On touch devices, clicking/tapping a window makes it "active" with a highlighted border,
- * replacing the hover effect used on desktop.
- *
- * @example
- * ```tsx
- * <LayoutWrapper>
- *   <MainContent />
- * </LayoutWrapper>
- * ```
+ * Inner layout component that renders inside IntroProvider.
+ * Handles intro-aware animation of main content and footer.
  */
-export function LayoutWrapper({ children }: LayoutWrapperProps) {
+function LayoutContent({ children }: LayoutWrapperProps) {
   const { windowGap, windowContainerMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
-  const { wallpaperSrc, wallpaperSrcHiRes } = useWallpaperContext();
   const { layoutMode, setLayoutMode, isDrawerOpen } = useLayoutPreferences();
+  const { introPhase, isHiddenUntilMorph, shouldShow } = useIntroContext();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
   const isMobile = useIsMobile();
 
@@ -76,16 +64,15 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
 
   return (
     <>
-      {/* Background layer */}
-      <WallpaperBackground imageSrc={wallpaperSrc} imageSrcHiRes={wallpaperSrcHiRes} />
-
       {/* Three-window layout - fixed viewport, content scrolls inside */}
       {/* h-dvh uses dynamic viewport height, accounting for mobile browser chrome */}
       {/* Clicking gap areas (outside windows) resets active state */}
+      {/* inert: prevents keyboard/screen reader interaction while intro overlay is active */}
       <div
         className="mx-auto h-dvh w-full flex flex-col"
         style={{ padding: `${layoutPadding}px`, gap: `${layoutGap}px`, maxWidth: containerMaxWidth }}
         onPointerDown={() => setActiveWindow(null)}
+        inert={shouldShow || undefined}
       >
         {/* Top bar - visually hidden in fullscreen mode (kept mounted so drawer can stay open) */}
         <TopBar
@@ -95,21 +82,59 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         />
 
         {/* Main content window - fills remaining space, content scrolls inside */}
-        <WindowContainer
-          windowId="main"
+        {/* Animated entrance during intro expansion phase - scales up from center to fill space */}
+        {/* On hide (retrigger): quick fade out. On show: just scale (opacity stays at 1) */}
+        <motion.div
           className="flex-1 min-h-0 flex flex-col"
-          isActive={effectiveActiveWindow === "main"}
-          onActivate={() => setActiveWindow("main")}
+          initial={false}
+          animate={{
+            opacity: isHiddenUntilMorph ? 0 : 1,
+            scale: isHiddenUntilMorph ? 0 : 1,
+          }}
+          transition={{
+            opacity: isHiddenUntilMorph ? { type: "tween", duration: HIDE_DURATION } : { duration: 0 }, // Instant on show - no opacity transition
+            scale: isHiddenUntilMorph
+              ? { type: "tween", duration: HIDE_DURATION }
+              : { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
+          }}
+          style={{ transformOrigin: "center" }}
         >
-          {children}
-        </WindowContainer>
+          <WindowContainer
+            windowId="main"
+            className="flex-1 min-h-0 flex flex-col"
+            isActive={effectiveActiveWindow === "main"}
+            onActivate={() => setActiveWindow("main")}
+          >
+            {children}
+          </WindowContainer>
+        </motion.div>
 
         {/* Footer bar - visually hidden in fullscreen mode */}
-        <FooterBar
-          isActive={effectiveActiveWindow === "footer"}
-          onActivate={() => setActiveWindow("footer")}
-          className={isFullscreen ? "hidden" : undefined}
-        />
+        {/* During morph: uses layoutId to morph from CommandWindow shadow element */}
+        {/* Pre-morph: render placeholder to hold space; actual element mounts on morph for layoutId to work */}
+        {/* On retrigger: quick fade out via exit animation (no reverse morph) */}
+        <AnimatePresence mode="wait">
+          {isHiddenUntilMorph ? (
+            <motion.div
+              key="footer-placeholder"
+              style={{ height: DEFAULT_LAYOUT_TOKENS.footerHeight, flexShrink: 0 }}
+              aria-hidden="true"
+            />
+          ) : (
+            <motion.div
+              key="footer-actual"
+              layoutId={introPhase === "morphing" ? "footer-window" : undefined}
+              layout={introPhase === "morphing"}
+              exit={{ opacity: 0, transition: { duration: HIDE_DURATION } }}
+            >
+              <FooterBar
+                isActive={effectiveActiveWindow === "footer"}
+                onActivate={() => setActiveWindow("footer")}
+                className={isFullscreen ? "hidden" : undefined}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Layout mode toggle button
@@ -127,6 +152,50 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
           {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
         </button>
       )}
+
+      {/* Intro animation overlay - renders above layout during animation
+          Normal layout renders underneath as morph target for window transition */}
+      <IntroSequence />
     </>
+  );
+}
+
+/**
+ * LayoutWrapper Component
+ *
+ * Orchestrates the TWM (Tiling Window Manager) three-window layout:
+ * - WallpaperBackground: Full-viewport background behind everything
+ * - TopBar: Fixed header with branding and theme controls
+ * - Main content: Scrollable central window
+ * - FooterBar: Fixed footer with social links
+ *
+ * Windows are separated by consistent gaps defined by the `windowGap` layout token.
+ *
+ * On touch devices, clicking/tapping a window makes it "active" with a highlighted border,
+ * replacing the hover effect used on desktop.
+ *
+ * @example
+ * ```tsx
+ * <LayoutWrapper>
+ *   <MainContent />
+ * </LayoutWrapper>
+ * ```
+ */
+export function LayoutWrapper({ children }: LayoutWrapperProps) {
+  const { wallpaperSrc, wallpaperSrcHiRes } = useWallpaperContext();
+
+  return (
+    <IntroProvider>
+      {/* Signal for E2E tests to detect intro state */}
+      <IntroStateSignal />
+
+      {/* Background layer */}
+      <WallpaperBackground imageSrc={wallpaperSrc} imageSrcHiRes={wallpaperSrcHiRes} />
+
+      {/* LayoutGroup enables shared layoutId animations between TopBar and IntroSequence */}
+      <LayoutGroup>
+        <LayoutContent>{children}</LayoutContent>
+      </LayoutGroup>
+    </IntroProvider>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import { useThemeTransition } from "@/hooks/useThemeTransition";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useHasMounted } from "@/hooks/useHasMounted";
@@ -17,7 +17,7 @@ import { useHasMounted } from "@/hooks/useHasMounted";
  * This ensures the correct icon shows immediately without waiting for JS.
  */
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme } = useThemeTransition();
   const mounted = useHasMounted();
 
   if (!mounted) {
@@ -42,7 +42,7 @@ export function ThemeToggle() {
     <Button
       variant="outline"
       size="icon-xs"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={toggleTheme}
       aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
       className="border-transparent hover:border-transparent text-muted-foreground hover:text-foreground"
     >

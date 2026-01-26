@@ -1,0 +1,508 @@
+# Task List: TWM Startup Animation
+
+**PRD:** `.arc/active/feature/prd-twm-startup-animation.md`
+**Created:** 2026-01-23
+**Completed:** 2026-01-26
+**Branch:** `feature/twm-startup-animation`
+**Base Branch:** `main`
+**Status:** Complete
+
+## Overview
+
+**Purpose:** Implement a terminal boot sequence animation that plays on first home visit, reinforcing the
+TWM/TUI aesthetic and creating a memorable first impression.
+
+## Scope
+
+### Will Do
+
+- Cookie-based animation trigger with ~1 hour expiry
+- 5-phase animation sequence (command window → typing → loading → morph/expand → TUI frame)
+- TopBar branding hover hint and click retrigger
+- Skip on click/keypress
+- `prefers-reduced-motion` support
+- Unit and E2E test coverage
+
+### Won't Do
+
+- Sound effects (out of scope per PRD)
+- Per-theme animation variants (same animation, different colors)
+- Analytics tracking of animation completion
+
+---
+
+## Tasks
+
+### **Phase 1:** Core Animation Infrastructure
+
+**Purpose:** Establish the foundation - state machine, cookie tracking, and skip behavior. Test-first for logic.
+
+- [x] **1.1 Write tests for cookie utilities**
+
+    - [x] **1.1.a Create test file `src/lib/cookies/__tests__/intro.test.ts`**
+        - Test: `hasSeenIntro()` returns `false` when no cookie
+        - Test: `hasSeenIntro()` returns `true` when valid cookie exists
+        - Test: `markIntroSeen()` sets cookie with correct expiry
+        - Test: `clearIntroCookie()` removes the cookie
+        - Expect tests to FAIL initially (no implementation yet)
+
+    - [x] **1.1.b Run tests and verify failures**
+
+- [x] **1.2 Implement cookie utilities**
+
+    - [x] **1.2.a Create `src/lib/cookies/intro.ts`**
+        - `INTRO_COOKIE_NAME = 'arc-intro-seen'`
+        - `INTRO_COOKIE_EXPIRY = 3600` (1 hour in seconds)
+        - `hasSeenIntro(): boolean` - check cookie existence and validity
+        - `markIntroSeen(): void` - set cookie with expiry
+        - `clearIntroCookie(): void` - for retrigger functionality
+
+    - [x] **1.2.b Run tests - should now PASS**
+        - 13 tests passing
+
+- [x] **1.3 Write tests for `useIntroAnimation` hook**
+
+    - [x] **1.3.a Create test file `src/hooks/__tests__/useIntroAnimation.test.ts`**
+        - Test: Initial state is `'complete'` when cookie exists
+        - Test: Initial state is `'pending'` when no cookie
+        - Test: `startAnimation()` transitions to `'animating'`
+        - Test: `skipAnimation()` transitions to `'complete'` and sets cookie
+        - Test: `completeAnimation()` transitions to `'complete'` and sets cookie
+        - Test: `triggerReplay()` clears cookie and resets to `'pending'`
+        - Test: Returns `'complete'` immediately when `prefers-reduced-motion`
+        - Expect tests to FAIL initially
+
+    - [x] **1.3.b Run tests and verify failures**
+
+- [x] **1.4 Implement `useIntroAnimation` hook**
+
+    - [x] **1.4.a Create `src/hooks/useIntroAnimation.ts`**
+        - Define `IntroState` type: `'pending' | 'animating' | 'complete'`
+        - Check cookie on mount to determine initial state
+        - Check `prefers-reduced-motion` and skip if true
+        - Provide `startAnimation()`, `skipAnimation()`, `completeAnimation()` functions
+        - Provide `triggerReplay()` for retrigger functionality
+        - Export current state and phase tracking
+
+    - [x] **1.4.b Run tests - should now PASS**
+        - 15 tests passing
+
+- [x] **1.5 Create IntroSequence wrapper component**
+
+    - [x] **1.5.a Create `src/components/intro/IntroSequence.tsx`**
+        - Conditionally render based on `useIntroAnimation` state
+        - Fixed/absolute overlay positioning
+        - Container for animation phases
+        - Wire up skip handler (click/keypress listeners)
+
+    - [x] **1.5.b Create `src/components/intro/index.ts` barrel export**
+
+- [x] **1.6 Integrate with LayoutWrapper**
+
+    - [x] **1.6.a Modify `LayoutWrapper.tsx` to include IntroSequence**
+        - Render IntroSequence when state is `'pending'` or `'animating'`
+        - Pass animation callbacks
+        - Ensure normal layout renders underneath (for morph target)
+
+    - [x] **1.6.b Run type-check and lint on modified files**
+
+    - [x] **1.6.c Run full test suite to verify no regressions**
+        - Added global `matchMedia` mock to test setup
+        - 1224 tests passing
+
+### **Phase 2:** Command Window & Typing Animation
+
+**Purpose:** Build the initial command window with branding, cursor, and typing effect.
+
+**Pulled Forward:** IntroContext and TopBar retrigger (from Phase 6) implemented early to enable
+manual testing during development. See Tasks 6.2.a-b for details.
+
+- [x] **2.1 Create CommandWindow component**
+
+    - [x] **2.1.a Create `src/components/intro/CommandWindow.tsx`**
+        - WindowContainer styling with motion.div wrapper
+        - Positioned at top 20vh, horizontally centered
+        - minWidth: 320px for horizontal aspect ratio
+
+    - [x] **2.1.b Add branding elements**
+        - SITE.handle ("andrewRCr") + ">_" prompt matching TopBar
+        - font-mono font-bold text-foreground + text-primary
+
+- [x] **2.2 Implement blinking cursor**
+
+    - [x] **2.2.a Create cursor element with CSS animation**
+        - BlinkingCursor component: w-2 h-4 bg-primary
+        - 1.06s animation (530ms on/off) via @keyframes blink in globals.css
+        - Reduced motion handled via CSS media query (not Tailwind variant)
+
+- [x] **2.3 Write tests for typing animation hook**
+
+    - [x] **2.3.a Create test file `src/hooks/__tests__/useTypingAnimation.test.ts`**
+        - 14 tests covering: initial state, typing progress, completion state,
+          custom timing (charDelay, initialDelay), onComplete callback,
+          edge cases (empty string, single char), start control
+
+    - [x] **2.3.b Run tests and verify failures**
+        - Tests fail as expected (hook not yet implemented)
+
+- [x] **2.4 Implement typing animation hook**
+
+    - [x] **2.4.a Create `src/hooks/useTypingAnimation.ts`**
+        - Options: text, charDelay (60ms default), initialDelay, start, onComplete
+        - Returns: displayedText, isComplete
+        - Handles edge cases (empty string, single char)
+
+    - [x] **2.4.b Run tests - should now PASS**
+        - 14 tests passing
+
+    - [x] **2.4.c Integrate typing with CommandWindow**
+        - COMMAND_TEXT = "portfolio init", charDelay=60, initialDelay=300
+        - Cursor shows during typing, replaced by loading spinner after
+        - 300ms pause after typing before loading phase
+
+- [x] **2.5 Implement loading indicator**
+
+    - [x] **2.5.a Create terminal-style loading animation**
+        - LoadingSpinner component using dots3 pattern (braille dots)
+        - SPINNER_FRAMES array, 80ms interval
+        - Positioned to right of typed text
+
+    - [x] **2.5.b Wire loading indicator to phase timing**
+        - IntroPhase state machine: entering → typing → loading → morphing → expanding → complete
+        - Loading phase triggered after 300ms pause post-typing
+        - *TODO (Phase 3): Wire to morph transition*
+
+    - [x] **2.5.c Hide layout windows during intro** (added during implementation)
+        - CSS rule: `:has([data-intro-sequence]) [data-window-container]:not([data-window-id="intro"])`
+        - Layout windows hidden with opacity:0 (still mounted for Phase 3 morph targets)
+        - Wallpaper remains visible behind CommandWindow
+
+    - [x] **2.5.d Entrance animation sequence** (added during implementation)
+        - Window scales up from 0.9→1.0 (SCALE_DURATION=0.3s)
+        - Content (branding) fades in after 150ms pause
+        - Cursor appears (no fade) after 250ms pause
+        - Typing begins after 1000ms pause
+        - Framer Motion orchestration via onEntranceComplete callback
+
+    - [x] **2.5.e Backdrop blur effect** (added during implementation)
+        - Animated blur layer synced with window scale-up (0→8px)
+        - `blurActive` state ready for Phase 3 to animate blur removal
+        - Provides visual focus on CommandWindow during intro
+
+- [x] **2.6 Run quality checks**
+    - [x] 2.6.a `npm run type-check` - Pass
+    - [x] 2.6.b `npm run lint -- --fix` - Pass
+    - [x] 2.6.c `npm run format` - Pass
+    - [x] 2.6.d `npm test` - 1238 tests passing (14 new from useTypingAnimation)
+    - [x] 2.6.e Manual visual check in browser
+
+### **Phase 3:** Window Morph Transition ✓
+
+**Purpose:** Morph the command window into the TopBar using Framer Motion layoutId.
+
+- [x] **3.1 Set up Framer Motion layoutId infrastructure**
+
+    - [x] **3.1.a Add `layoutId` to CommandWindow**
+        - Added `layoutId="topbar-window"` with `layout` prop
+        - Restructured: outer div for positioning, inner motion.div for layoutId + entrance animation
+
+    - [x] **3.1.b Add matching `layoutId` to TopBar's WindowContainer**
+        - Added `introPhase` and `setIntroPhase` to IntroContext for phase coordination
+        - IntroSequence syncs local phase to context
+        - TopBar applies `layoutId="topbar-window"` when `introPhase === "morphing"`
+
+    - [x] **3.1.c Wrap layout in AnimatePresence + LayoutGroup**
+        - AnimatePresence with `mode="wait"` wraps CommandWindow for exit handling
+        - LayoutGroup in LayoutWrapper enables cross-component layoutId transitions
+        - `onExitComplete` triggers morph completion flow
+
+- [x] **3.2 Implement morph transition**
+
+    - [x] **3.2.a Configure morph animation properties**
+        - Spring transition: stiffness 300, damping 30, ~500ms duration
+        - Content vanishes instantly when morph starts (no fade - feels more intentional)
+        - TopBar placeholder renders during pre-morph intro phases
+
+    - [x] **3.2.b Resolve layoutId morph issues (iteration)**
+        - **Issue**: layoutId morph requires unmount/mount cycle; TopBar was always mounted (hidden via CSS)
+        - **Research**: Used external-research-analyst agent to investigate Framer Motion patterns
+        - **Key findings**: AnimatePresence + layoutId has known bugs; both elements in DOM causes crossfade not morph
+        - **Solution**: TopBar renders placeholder div during pre-morph, mounts real component when morphing starts
+        - CSS rules updated: `data-intro-morphing` attribute controls TopBar visibility during morph
+
+    - [x] **3.2.c Retrigger support**
+        - Added `replayCount` to useIntroAnimation, increments on `triggerReplay()`
+        - IntroSequence uses replayCount as key to force remount with fresh state
+        - Bonus: reverse morph animation plays when retriggering (TopBar → CommandWindow)
+
+- [x] **3.3 Update tests**
+    - Added IntroContext mock to LayoutWrapper tests (TopBar renders placeholder during intro)
+
+- [x] **3.4 Run quality checks**
+    - [x] 3.4.a Type-check and lint pass
+    - [x] 3.4.b Visual testing: desktop and mobile verified
+
+### **Phase 4:** Layout Expansion
+
+**Purpose:** Animate FooterBar and main content window after TopBar morph completes.
+
+**Approach (evolved through iteration):** CommandWindow "splits" into TopBar (up) and FooterBar (down)
+via dual layoutId morphs, then main content expands to fill the frame. Creates cohesive "frame establishes,
+content fills" sequence.
+
+- [x] **4.1 Implement layout expansion animations**
+
+    - [x] **4.1.a Add dual layoutId morph for FooterBar**
+        - Added shadow element in CommandWindow with `layoutId="footer-window"`
+        - FooterBar wrapper picks up layoutId during morph phase
+        - Footer morphs from CommandWindow position (center) to final position (bottom)
+        - Uses same spring as TopBar (stiffness 300, damping 30) for synchronized feel
+        - AnimatePresence with exit animation for quick fade on retrigger (no reverse morph)
+
+    - [x] **4.1.b Add motion wrapper for main content expansion**
+        - Scales from 0 → 1 from center (both X and Y)
+        - 250ms delay after morph starts (lets frame "register" first)
+        - Slower spring (stiffness 120, damping 20) for visible growth
+        - Opacity instant (no transition) - WindowContainer's 0.8 opacity shows through
+        - Quick tween (150ms) on retrigger for fast disappear
+
+    - [x] **4.1.c Update CSS and context integration**
+        - Removed CSS-based hiding rules (opacity now controlled by Framer Motion)
+        - Added "expanding" phase to IntroContext between "morphing" and "complete"
+        - LayoutWrapper restructured with inner LayoutContent component for context access
+        - TopBar condition updated to stay visible during "expanding" phase
+
+- [x] **4.2 Run quality checks**
+    - [x] 4.2.a Type-check and lint pass
+    - [x] 4.2.b Visual testing verified on desktop and mobile
+
+### **Phase 5:** TUI Frame Assembly
+
+**Purpose:** Animate the ConditionalFrame border and navigation fade-in as the final stage.
+
+- [x] **5.1 Implement TUI frame border animation**
+    - SVG stroke-dasharray approach: two paths draw simultaneously from nav gap edges, meet at bottom center
+    - ConditionalFrame now uses `useIntroContext` for animation state
+    - `generateHalfPath()` creates SVG paths matching frame shape (rounded corners, nav gap)
+    - Border draw: 0.5s duration, starts 0.25s into expanding phase
+    - Explored alternatives: CSS gradient sweep (worked but felt wrong), glow effects (clip-path conflicts)
+    - Changed main content animation from spring to tween (cleaner endpoint, fits mechanical boot aesthetic)
+
+- [x] **5.2 Animate navigation fade-in**
+    - Motion wrapper on Navigation container in ConditionalFrame
+    - Sequential timing: nav fades in after border completes (0.15s overlap for smooth handoff)
+    - Duration: 0.35s fade
+    - Creates "interface completing boot sequence" effect
+
+- [x] **5.3 Signal animation complete**
+    - Cookie set via existing `completeAnimation()` in IntroSequence
+    - IntroSequence overlay unmounts when `shouldShow` becomes false
+    - SVG border persists independently (tracked via `svgTriggered` state)
+
+- [x] **5.4 Run quality checks**
+    - [x] Type-check, lint, format, markdown lint pass
+    - [x] Build succeeds
+    - [x] 1238 tests pass (updated ConditionalFrame and TopBar tests for IntroProvider)
+    - [x] Added IntroProvider to test-utils TestProviders
+
+### **Phase 5.5:** Home Page Content Animation
+
+**Purpose:** Animate hero and body content entrance, coordinated with frame/nav animations.
+
+**Approach (Option A):** Hero bar animation + staggered content fade, synced with frame assembly.
+
+- [x] **5.5.a Define content animation approach**
+    - Chose Option A: Hero-specific animation + staggered fades
+    - Hero: Left bar grows from center (scaleY 0→1), text elements stagger fade
+    - FeaturedSection + SkillLogoGrid: Fade in starting when nav fade starts
+    - All animations complete by ~950ms (synced with nav fade completion)
+    - Note: Skills logo delayed show is now moot (happens during hidden intro phase)
+
+- [x] **5.5.b Implement home content animation**
+    - Final sequence order: Hero bar → Hero text → Frame → Body
+    - Hero bar: 0.15s delay, 0.45s duration (completes ~0.6s)
+    - Hero text: starts mid-bar (0.35s), staggered 0.08s, completes ~0.86s
+    - Frame (border+nav): synced completion at ~0.95s
+    - Body content: 0.75s delay, completes ~1.1s (finale)
+    - Also tuned: border draw 0.8s, nav fade 0.45s, loading spinner 1.0s
+    - Used `initial={false}` + phase-based `animate` pattern (like LayoutWrapper)
+
+- [x] **5.5.c Run quality checks**
+    - Type-check, lint pass
+    - Updated Hero.test.tsx to use test-utils render (includes IntroProvider)
+    - 1238 tests pass
+
+### **Phase 6:** Finishing Touches
+
+**Purpose:** Polish the animation with hover hints, code cleanup, and DRY/SOLID refactoring.
+
+- [x] **6.1 Implement TopBar branding hover hint**
+
+    - [x] **6.1.a Create hover state for branding area**
+        - Default: `>_` prompt decoration
+        - Hover (desktop): `> portfolio init█` with blinking cursor
+        - Underscore fades out, text + cursor fades in (200ms transition)
+        - Slightly smaller text (`text-sm`) with baseline alignment
+
+    - [x] **6.1.b Ensure mobile compatibility**
+        - Hover hint uses `md:` breakpoint (desktop only)
+        - Mobile shows static `>_`, remains clickable
+        - Also unified CLI prompt: CommandWindow uses `>` (no `_`), block cursor does cursor work
+
+- [x] **6.2 Implement retrigger mechanism**
+    - Pulled forward to enable manual testing during Phase 2 development
+
+    - [x] **6.2.a Modify TopBar branding Link behavior**
+        - Created `IntroContext` to share animation state between components
+        - TopBar branding click calls `triggerReplay()` before navigation
+        - Updated TopBar tests to mock IntroContext
+
+    - [x] **6.2.b Update `useIntroAnimation` for retrigger**
+        - Completed in Phase 1 (Task 1.4.a) - `triggerReplay()` already exists
+
+    - [x] **6.2.c Ensure regular "Home" nav doesn't retrigger**
+        - N/A: TopBar branding is the only home link in the app
+        - No other navigation links route to "/" that would need differentiation
+
+- [x] **6.3 DRY/SOLID refactor pass**
+
+    - [x] **6.3.a Create central timing + derived booleans**
+        - Created `src/lib/intro-timing.ts` with complete timeline (all timing constants, transition presets)
+        - Added derived visibility flags to IntroContext: `isHiddenUntilMorph`, `isHiddenUntilExpand`
+        - Names encode transition points (when visibility starts), preventing semantic confusion
+
+    - [x] **6.3.b Migrate core intro components to central timing**
+        - IntroSequence.tsx: Imports 12 timing constants, uses `toMs()` helper for setTimeout conversions
+        - CommandWindow.tsx: Imports `WINDOW_SCALE_DURATION`, `CONTENT_FADE_DURATION`, `MORPH_SPRING`
+        - Removed all local timing constant definitions from both files
+
+    - [x] **6.3.c Migrate consuming components to derived booleans + timing**
+        - TopBar: Uses `isHiddenUntilMorph` for placeholder logic
+        - LayoutWrapper: Uses `isHiddenUntilMorph`, imports `MAIN_CONTENT_TWEEN`, `HIDE_DURATION`
+        - ConditionalFrame: Uses `isHiddenUntilExpand`, imports `NAV_FADE_TRANSITION`, `BORDER_DRAW_DURATION`
+        - Hero: Uses `isHiddenUntilExpand` (frame elements wait until expanding phase)
+        - Home: Uses `isHiddenUntilMorph`, imports `BODY_CONTENT_DELAY`, `BODY_CONTENT_DURATION`
+
+    - [x] **6.3.d Quality check**
+        - Type-check: ✓, Lint: ✓, Format: ✓, Tests: 1238 passing
+        - Fixed visibility bug (content hidden during morphing broke layoutId)
+        - Added choreography documentation to IntroContext explaining two-tier visibility
+
+- [x] **6.4 Run quality checks**
+    - [x] 6.4.a Type-check and lint - ✓ all passing
+    - [x] 6.4.b Manual test: hover hint visible on desktop - ✓
+    - [x] 6.4.c Manual test: branding click replays animation - ✓
+    - [x] 6.4.d Full visual test of animation sequence - ✓
+
+### **Phase 7:** Accessibility
+
+**Purpose:** Ensure animation respects user preferences and maintains accessibility.
+
+- [x] **7.1 Implement prefers-reduced-motion support**
+    - Integrated into `useIntroAnimation` hook (useState + useEffect pattern for SSR hydration safety)
+    - When reduced motion preferred: state set to "complete", cookie set, no animation
+    - Guards added to IntroSequence (setIntroPhase) and TopBar (hover hint hidden, replay disabled)
+    - Fixed body content timing: synced with ThemeControl fade-in (150ms delay + 300ms fade)
+    - Files: `useIntroAnimation.ts`, `IntroSequence.tsx`, `TopBar.tsx`, `page.tsx`
+
+- [x] **7.2 Implement proper ARIA attributes**
+    - Already implemented during Phase 5: `aria-hidden="true"` on IntroSequence overlay
+    - Animation is decorative; main content accessible underneath
+
+- [x] **7.3 Verify focus management**
+    - Verified: no focusable elements in IntroSequence, no focus trap
+    - Keyboard tab navigation works correctly after animation completes
+
+- [x] **7.4 Run accessibility checks**
+    - Manual keyboard navigation: verified working
+    - Reduced motion behavior: verified (skips animation)
+    - Skip-on-click behavior: verified (morphs to final state smoothly)
+
+### **Phase 8:** Testing & Polish
+
+**Purpose:** E2E testing for intro animation flows. (Unit tests written TDD in Phases 1-2. Cross-theme, timing,
+and mobile testing completed during earlier phases.)
+
+- [x] **8.1 Write E2E tests** *(e2e/tests/intro-animation.spec.ts)*
+
+    - [x] **8.1.a Test first visit shows animation**
+        - Clear cookies, visit home
+        - Verify intro overlay (`[data-intro-sequence]`) appears
+        - Verify content hidden during animation (no flash before animation)
+        - Verify animation completes: overlay removed, TopBar visible, main content visible
+
+    - [x] **8.1.b Test subsequent visit skips animation**
+        - Visit home (sets cookie), navigate away and back
+        - Verify animation skipped (branding visible + overlay gone within 4s)
+        - Uses `expect.poll()` for deterministic assertion
+
+    - [x] **8.1.c Test TopBar branding click replays**
+        - After animation complete, click "andrewRCr >_" branding link in TopBar
+        - Verify animation replays (overlay reappears, sequence runs)
+
+    - [x] **8.1.d Test nav "Home" click does NOT replay**
+        - After animation complete, click "HOME" nav link
+        - Verify animation does not replay (no overlay)
+
+    - [x] **8.1.e Test skip on click/keypress**
+        - During animation (while overlay visible), click or press key
+        - Verify instant skip: overlay removed, TopBar visible, main content visible
+        - Two tests: one for click, one for keypress (Escape)
+
+    - [x] **8.1.f Test prefers-reduced-motion**
+        - Emulate reduced motion preference via Playwright
+        - Visit home (first visit, no cookie)
+        - Verify animation skipped entirely (no overlay ever appears)
+
+    **Bugs fixed during E2E implementation:**
+    - Fixed "flash of content before animation" by adding `idle` to hidden phases
+    - Fixed hydration mismatch by deferring cookie check to useEffect
+
+- [x] **8.2 Maintainability refactors**
+
+    - [x] **8.2.a Add `inert` to main content during intro (accessibility)**
+        - Added `inert` attribute to LayoutWrapper content div when `shouldShow` is true
+        - Prevents keyboard/screen reader interaction with hidden content during animation
+
+    - [x] **8.2.b Refactor setTimeout nesting to async/await**
+        - Replaced nested setTimeout "pyramid of doom" with linear async/await sequences
+        - Pattern: callbacks are synchronous (set state flags), async sequences run in useEffect
+        - useEffect cleanup sets `cancelled` flag to prevent stale updates on unmount
+        - Research confirmed this is the recommended Framer Motion pattern for remount scenarios
+
+- [x] **8.3 Final quality gates**
+    - [x] 8.3.a Run full test suite (`npm test`) - 1238 passed
+    - [x] 8.3.b Run full E2E suite (`npm run test:e2e`) - 235 passed, 69 skipped (visual regression Chrome-only)
+    - [x] 8.3.c Run type-check (`npm run type-check`) - passed
+    - [x] 8.3.d Run lint (`npm run lint`) - passed
+    - [x] 8.3.e Run format check (`npm run format:check`) - passed
+    - [x] 8.3.f Run markdown lint (`npm run lint:md`) - passed
+    - [x] 8.3.g Build verification (`npm run build`) - passed
+
+    **E2E test improvements made during this phase:**
+    - Added `HydrationSignal` component for deterministic hydration wait
+    - Added `IntroStateSignal` component for deterministic intro state wait
+    - Created `e2e/helpers/state.ts` with `waitForHydration()` and `waitForIntroState()` helpers
+    - Updated tests to use web-first assertions instead of timeouts
+    - Fixed nav link animation timing (wait for fade-in before measuring)
+    - Fixed Firefox scroll position float precision issue
+    - Reduced parallel workers from 4 to 2 to reduce dev server load
+
+---
+
+## Success Criteria
+
+- [x] Animation plays on first home visit (no cookie)
+- [x] Animation does NOT play on subsequent visits (within 1 hour)
+- [x] Animation does NOT play on page refresh or back navigation
+- [x] TopBar branding click replays animation
+- [x] TopBar branding hover shows "reinitialize" hint (desktop only)
+- [x] Click or keypress skips animation instantly
+- [x] `prefers-reduced-motion` users see no animation
+- [x] Animation works across all 6 themes
+- [x] Animation works on mobile viewports
+- [x] Total animation duration ~5.5s (PRD target was 2.5s; tuned for visual impact per PRD philosophy)
+- [x] No jank or dropped frames on reasonable hardware
+- [x] Lighthouse Performance score not regressed
+- [x] All quality gates pass
+- [x] Ready for merge

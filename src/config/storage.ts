@@ -27,8 +27,14 @@ export const WALLPAPER_PREFS_STORAGE_KEY = "arc-portfolio-wallpaper-prefs";
 /** Per-theme wallpaper preferences (keyed by theme name) - cookie for SSR */
 export const WALLPAPER_COOKIE_NAME = "arc-portfolio-wallpaper-prefs";
 
+/** Global wallpaper enabled state (on/off) - localStorage */
+export const WALLPAPER_ENABLED_STORAGE_KEY = "arc-portfolio-wallpaper-enabled";
+
 /** Layout mode preference (full vs boxed) - localStorage */
 export const LAYOUT_MODE_STORAGE_KEY = "arc-portfolio-layout-mode";
 
 /** Layout mode preference - cookie for SSR */
 export const LAYOUT_MODE_COOKIE_NAME = "arc-portfolio-layout-mode";
+
+/** Intro animation seen flag - cookie (persists across sessions) */
+export const INTRO_COOKIE_NAME = "arc-portfolio-intro-seen";

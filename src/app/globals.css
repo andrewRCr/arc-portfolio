@@ -837,6 +837,27 @@ html[data-env-preview="false"] [data-window-container] {
 }
 
 /* ==========================================================================
+   Light/Dark Mode Transitions
+   Smooth color transitions when toggling between light and dark mode.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color !important;
+  transition-duration: 300ms !important;
+  transition-timing-function: ease-out !important;
+}
+
+/* Disable transitions on elements that shouldn't animate */
+[data-no-transition],
+[data-no-transition] *,
+.no-transition,
+.no-transition * {
+  transition: none !important;
+}
+
+/* ==========================================================================
    OverlayScrollbars
    Theme styling and page-specific track insets.
    ========================================================================== */
@@ -922,4 +943,34 @@ html[data-env-preview="false"] [data-window-container] {
   bottom: 0 !important;
   width: 100% !important;
   height: 100% !important;
+}
+
+/* ==========================================================================
+   Intro Animation
+   ========================================================================== */
+
+/* Note: Main content and FooterBar visibility during intro is controlled by
+   Framer Motion wrappers in LayoutWrapper (Phase 4 layout expansion animation).
+   TopBar manages its own visibility via placeholder/actual rendering logic. */
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1.06s step-end infinite;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink {
+    animation: none;
+  }
 }

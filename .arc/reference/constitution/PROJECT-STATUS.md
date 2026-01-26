@@ -28,11 +28,13 @@ contemporary web development practices.
 
 **Currently Active:**
 
-- None
+- TWM Startup Animation (feature) - Terminal boot sequence animation on first home visit
+    - Task list: `.arc/active/feature/tasks-twm-startup-animation.md`
+    - Branch: `feature/twm-startup-animation`
 
 **Next Priority:**
 
-- Visual Polish (feature) - TWM startup animation, Framer Motion transitions, micro-interactions
+- Visual Polish (feature) - Page transitions, micro-interactions, loading states, hero images
 
 ---
 
@@ -44,7 +46,8 @@ contemporary web development practices.
 - ✅ Theme & Wallpaper Control System - Unified controls, cookie-first SSR, 6 themes, 36 wallpapers
 - ✅ Content Polish P1 - Project showcase, DetailHeader, image gallery, 3-tab Projects, NexusMods API
 - ✅ Content Polish P2 - SkillLogoGrid, skill filtering, Contact form, About polish
-- **Visual Polish** (next) - TWM startup animation, Framer Motion transitions, micro-interactions
+- **TWM Startup Animation** (active) - Terminal boot sequence on first home visit
+- **Visual Polish** (next) - Page transitions, micro-interactions, loading states, hero images
 
 ### Phase C: Launch
 

@@ -1,3 +1,4 @@
+import React from "react";
 import { screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { render, checkA11y } from "@tests/test-utils";
@@ -15,6 +16,23 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
     isDrawerOpen: false,
     setDrawerOpen: vi.fn(),
   }),
+}));
+
+// Mock IntroContext (TopBar uses triggerReplay for branding click)
+vi.mock("@/contexts/IntroContext", () => ({
+  useIntroContext: () => ({
+    state: "complete",
+    shouldShow: false,
+    reducedMotion: false,
+    introPhase: "idle",
+    setIntroPhase: vi.fn(),
+    replayCount: 0,
+    startAnimation: vi.fn(),
+    skipAnimation: vi.fn(),
+    completeAnimation: vi.fn(),
+    triggerReplay: vi.fn(),
+  }),
+  IntroProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 describe("TopBar", () => {

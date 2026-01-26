@@ -22,3 +22,14 @@ export const VIEWPORTS = {
   tablet: { width: MD_BREAKPOINT, height: 1024 },
   desktop: { width: 1920, height: 1080 },
 } as const;
+
+/**
+ * Timeout constants for E2E test waits.
+ * Centralized here for easy CI tuning if tests become flaky.
+ */
+
+/** Timeout for visibility checks after hydration (allows for useEffect settle) */
+export const VISIBILITY_TIMEOUT = 2000;
+
+/** Wait time for CSS animations/transitions to complete before measuring */
+export const ANIMATION_SETTLE_MS = 500;

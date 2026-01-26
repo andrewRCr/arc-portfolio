@@ -154,7 +154,10 @@ For each parent task, define specific, actionable sub-tasks that:
     - Service layer functions
     - See [strategy-testing-methodology.md](../strategies/project/strategy-testing-methodology.md)
       and [DEVELOPMENT-RULES.md](../constitution/DEVELOPMENT-RULES.md) for complete protocol
-- **Quality gates**: Include linting and type-checking steps after significant changes
+- **Quality gates**: Include quality checkpoint tasks at appropriate stages:
+    - Tier 1 (incremental): Linting, type-checking after significant changes
+    - Tier 2 (integration): E2E checkpoint tasks when phases modify E2E-tested components (layout,
+      navigation, forms, user interactions). See [Quality Gates Strategy](../strategies/arc/strategy-quality-gates.md)
 - **Incremental validation**: Structure tasks so progress can be verified at each step
 - **No time estimates**: Task lists should NOT include time estimates (duration emojis, minute counts, etc.)
   Focus on clear scope and completion criteria instead

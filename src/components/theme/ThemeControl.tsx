@@ -15,7 +15,7 @@ import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-rea
 import { useDelayedShow } from "@/hooks/useDelayedShow";
 import { useResetPreferences } from "@/hooks/useResetPreferences";
 import { usePreferenceAnnouncements } from "@/hooks/usePreferenceAnnouncements";
-import { useTheme } from "next-themes";
+import { useThemeTransition } from "@/hooks/useThemeTransition";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -36,7 +36,7 @@ export function ThemeControl() {
   const { activeTheme, setActiveTheme } = useThemeContext();
   const { activeWallpaper, setActiveWallpaper, isWallpaperEnabled, setWallpaperEnabled } = useWallpaperContext();
   const { layoutMode, setLayoutMode } = useLayoutPreferences();
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme } = useThemeTransition();
   const swatchColors = useThemeSwatch();
   const { hasCustomPreferences, resetToDefaults } = useResetPreferences();
   const showSwatch = useDelayedShow(150);
@@ -85,10 +85,6 @@ export function ThemeControl() {
     document.addEventListener("pointerdown", handlePointerDown, { capture: true });
     return () => document.removeEventListener("pointerdown", handlePointerDown, { capture: true });
   }, [open]);
-
-  const toggleMode = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
 
   const toggleLayoutMode = () => {
     setLayoutMode(layoutMode === "wide" ? "boxed" : "wide");
@@ -151,11 +147,11 @@ export function ThemeControl() {
                 variant="outline"
                 size="sm"
                 onClick={(e) => {
-                  toggleMode();
+                  toggleTheme();
                   e.currentTarget.blur();
                 }}
                 aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-                className="gap-2"
+                className="min-w-[5.25rem] gap-2"
               >
                 {theme === "dark" ? (
                   <>

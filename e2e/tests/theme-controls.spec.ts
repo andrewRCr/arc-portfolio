@@ -6,6 +6,7 @@ import {
   LAYOUT_MODE_STORAGE_KEY,
 } from "@/config/storage";
 import { MD_BREAKPOINT } from "../constants";
+import { skipIntroAnimation } from "../helpers/cookies";
 
 /**
  * E2E tests for theme control system.
@@ -94,6 +95,11 @@ async function getStoredWallpaperPrefs(page: Page): Promise<Record<string, unkno
 }
 
 test.describe("Theme Controls", () => {
+  // Skip intro animation for all theme control tests
+  test.beforeEach(async ({ context, baseURL }) => {
+    await skipIntroAnimation(context, baseURL);
+  });
+
   test.describe("Preference Persistence", () => {
     test("theme selection persists across page reload", async ({ page }) => {
       await page.goto("/");

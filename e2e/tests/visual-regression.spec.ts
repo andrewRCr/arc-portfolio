@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { VIEWPORTS } from "../constants";
 import { PALETTE_STORAGE_KEY, MODE_STORAGE_KEY } from "@/config/storage";
+import { skipIntroAnimation } from "../helpers/cookies";
 import { E2E_DETERMINISTIC_KEY } from "@/lib/featured-projects";
 
 /**
@@ -75,6 +76,11 @@ const MODES = ["light", "dark"] as const;
 const VIEWPORT_NAMES = ["desktop", "tablet", "mobile"] as const;
 
 test.describe("Visual Regression Baselines", () => {
+  // Skip intro animation for visual regression tests
+  test.beforeEach(async ({ context, baseURL }) => {
+    await skipIntroAnimation(context, baseURL);
+  });
+
   for (const theme of THEMES) {
     for (const mode of MODES) {
       for (const viewportName of VIEWPORT_NAMES) {
@@ -125,7 +131,10 @@ test.describe("Page-Specific Baselines", () => {
     mode: "light" as const,
   };
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context, baseURL }) => {
+    // Skip intro animation
+    await skipIntroAnimation(context, baseURL);
+
     await page.setViewportSize(VIEWPORTS.desktop);
     await page.addInitScript(
       ({ theme, mode, themeKey, modeKey, deterministicKey }) => {

@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { checkA11y, axe, TestProviders } from "@tests/test-utils";
+import { render, checkA11y, axe } from "@tests/test-utils";
 import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
 import { ConditionalFrame } from "../ConditionalFrame";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
@@ -147,11 +147,9 @@ describe("ConditionalFrame", () => {
       // In real browsers, display:none removes from accessibility tree.
       // Disable landmark-unique rule for this false positive.
       const { container } = render(
-        <TestProviders>
-          <ConditionalFrame>
-            <p>Content</p>
-          </ConditionalFrame>
-        </TestProviders>
+        <ConditionalFrame>
+          <p>Content</p>
+        </ConditionalFrame>
       );
       const results = await axe(container, {
         rules: { "landmark-unique": { enabled: false } },

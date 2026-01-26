@@ -130,10 +130,30 @@ npm run test:coverage
 
 ### Testing (E2E)
 
-```bash
-# Run E2E tests (all primary viewports: Desktop, Mobile, Tablet)
-npm run test:e2e
+**Full suite (Tier 3 - pre-commit):**
 
+```bash
+# Run all E2E tests (all browsers/viewports)
+npm run test:e2e
+```
+
+**Targeted tests (Tier 2 - integration checkpoints):**
+
+```bash
+# Run specific test file (when you modified related components)
+npm run test:e2e -- e2e/tests/layout.spec.ts
+npm run test:e2e -- e2e/tests/intro-animation.spec.ts
+
+# Run on single browser for speed during development
+npm run test:e2e -- --project="Desktop Chrome" e2e/tests/layout.spec.ts
+
+# Run tests matching a pattern (if using tags)
+npm run test:e2e -- --grep "@navigation"
+```
+
+**Debugging:**
+
+```bash
 # Run on specific project/viewport
 npm run test:e2e -- --project="Desktop Chrome"
 npm run test:e2e -- --project="Mobile Chrome"
@@ -144,14 +164,13 @@ npm run test:e2e -- --headed
 
 # Run in UI mode (interactive debugging)
 npm run test:e2e:ui
-
-# Run specific test file
-npm run test:e2e -- e2e/tests/smoke.spec.ts
 ```
 
 **Notes:**
 
 - **Always use npm scripts** (not `npx playwright` directly) - ensures correct config and output paths
+- **Tiered approach:** Use targeted tests (Tier 2) during development, full suite (Tier 3) before commits.
+  See [Quality Gates Strategy](strategies/arc/strategy-quality-gates.md) for guidance.
 - E2E tests auto-start dev server if not running
 - Reports saved to `e2e/playwright-report/` (gitignored)
 - Test artifacts in `e2e/test-results/` (gitignored)

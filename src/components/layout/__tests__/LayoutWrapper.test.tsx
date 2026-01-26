@@ -1,3 +1,4 @@
+import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, checkA11y } from "@tests/test-utils";
@@ -16,6 +17,23 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
     setLayoutMode: mockSetLayoutMode,
     isDrawerOpen: mockIsDrawerOpen,
     setDrawerOpen: mockSetDrawerOpen,
+  }),
+}));
+
+// Mock IntroContext to prevent TopBar from rendering as placeholder during tests
+vi.mock("@/contexts/IntroContext", () => ({
+  IntroProvider: ({ children }: { children: React.ReactNode }) => children,
+  useIntroContext: () => ({
+    state: "complete",
+    shouldShow: false,
+    reducedMotion: false,
+    replayCount: 0,
+    introPhase: "idle",
+    startAnimation: vi.fn(),
+    skipAnimation: vi.fn(),
+    completeAnimation: vi.fn(),
+    triggerReplay: vi.fn(),
+    setIntroPhase: vi.fn(),
   }),
 }));
 
@@ -182,9 +200,10 @@ describe("LayoutWrapper", () => {
         </LayoutWrapper>
       );
 
-      // TopBar should have "hidden" class (kept mounted for drawer to stay open)
+      // TopBar should have "hidden" class on its wrapper (kept mounted for drawer to stay open)
+      // className is on the outer motion.div wrapper, not WindowContainer
       const topBarWindow = container.querySelector('[data-window-id="top"]');
-      expect(topBarWindow).toHaveClass("hidden");
+      expect(topBarWindow?.parentElement).toHaveClass("hidden");
     });
 
     it("hides FooterBar in fullscreen mode", () => {

@@ -4,7 +4,7 @@ import * as React from "react";
 import { WALLPAPER_OPTIONS, isWallpaperCompatible, type WallpaperId } from "@/data/wallpapers";
 import { themes, type ThemeName } from "@/data/themes";
 import { useThemeContext } from "./ThemeContext";
-import { WALLPAPER_PREFS_STORAGE_KEY } from "@/config/storage";
+import { WALLPAPER_PREFS_STORAGE_KEY, WALLPAPER_ENABLED_STORAGE_KEY } from "@/config/storage";
 import { syncWallpaperToCookie } from "@/app/actions/wallpaper";
 
 // Re-export for consumers that need these
@@ -82,7 +82,7 @@ function getWallpaperForTheme(
 }
 
 /**
- * Load preferences from localStorage.
+ * Load per-theme wallpaper preferences from localStorage.
  */
 function loadPreferences(): WallpaperPreferences {
   if (typeof window === "undefined") return {};
@@ -95,11 +95,32 @@ function loadPreferences(): WallpaperPreferences {
 }
 
 /**
- * Save preferences to localStorage.
+ * Save per-theme wallpaper preferences to localStorage.
  */
 function savePreferences(prefs: WallpaperPreferences): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(WALLPAPER_PREFS_STORAGE_KEY, JSON.stringify(prefs));
+}
+
+/**
+ * Load global wallpaper enabled state from localStorage.
+ */
+function loadWallpaperEnabled(): boolean {
+  if (typeof window === "undefined") return true;
+  try {
+    const stored = localStorage.getItem(WALLPAPER_ENABLED_STORAGE_KEY);
+    return stored !== "false"; // Default to true if not set
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * Save global wallpaper enabled state to localStorage.
+ */
+function saveWallpaperEnabled(enabled: boolean): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(WALLPAPER_ENABLED_STORAGE_KEY, String(enabled));
 }
 
 /**
@@ -138,6 +159,9 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
     const prefs = loadPreferences();
     const localPref = normalizePreference(prefs[activeTheme]);
 
+    // Restore global wallpaper enabled state
+    setIsWallpaperEnabledInternal(loadWallpaperEnabled());
+
     if (localPref) {
       // localStorage has explicit preference for this theme
       // Verify it's still valid (compatible), then use it
@@ -148,19 +172,15 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
           setActiveWallpaperInternal(localPref.wallpaper);
           syncWallpaperCookie(activeTheme, localPref.wallpaper);
         }
-        // Restore enabled state from localStorage
-        setIsWallpaperEnabledInternal(localPref.enabled);
       } else {
         // Saved preference is no longer valid, fall back to server/default
         if (serverWallpaper) {
           const updated: WallpaperPreferences = {
             ...prefs,
-            [activeTheme]: { wallpaper: serverWallpaper as WallpaperId, enabled: localPref.enabled },
+            [activeTheme]: { wallpaper: serverWallpaper as WallpaperId, enabled: true },
           };
           savePreferences(updated);
         }
-        // Still restore enabled state
-        setIsWallpaperEnabledInternal(localPref.enabled);
       }
     } else if (serverWallpaper && serverWallpaper !== "gradient") {
       // localStorage empty for this theme but cookie has preference
@@ -176,16 +196,16 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
     setIsHydrated(true);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // When theme changes (after hydration), restore that theme's preferred wallpaper and enabled state
+  // When theme changes (after hydration), restore that theme's preferred wallpaper
+  // Note: enabled state is global, not per-theme, so we don't change it here
   React.useEffect(() => {
     if (!isHydrated) return;
     if (prevThemeRef.current !== activeTheme) {
       prevThemeRef.current = activeTheme;
       // Read fresh from localStorage to avoid stale state race conditions
       const freshPrefs = loadPreferences();
-      const { wallpaper: newWallpaper, enabled: newEnabled } = getWallpaperForTheme(activeTheme, freshPrefs);
+      const { wallpaper: newWallpaper } = getWallpaperForTheme(activeTheme, freshPrefs);
       setActiveWallpaperInternal(newWallpaper);
-      setIsWallpaperEnabledInternal(newEnabled);
       // Sync to cookie for next SSR
       syncWallpaperCookie(activeTheme, newWallpaper);
     }
@@ -195,20 +215,25 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
   // Note: storage event only fires when localStorage is changed by a DIFFERENT tab
   React.useEffect(() => {
     function handleStorageChange(event: StorageEvent) {
+      // Handle per-theme wallpaper selection changes
       if (event.key === WALLPAPER_PREFS_STORAGE_KEY && event.newValue) {
         try {
           const newPrefs: WallpaperPreferences = JSON.parse(event.newValue);
-          const { wallpaper: newWallpaper, enabled: newEnabled } = getWallpaperForTheme(activeTheme, newPrefs);
+          const { wallpaper: newWallpaper } = getWallpaperForTheme(activeTheme, newPrefs);
           if (newWallpaper !== activeWallpaper) {
             setActiveWallpaperInternal(newWallpaper);
             // Also sync to cookie so SSR stays consistent
             syncWallpaperCookie(activeTheme, newWallpaper);
           }
-          if (newEnabled !== isWallpaperEnabled) {
-            setIsWallpaperEnabledInternal(newEnabled);
-          }
         } catch {
           // Invalid JSON, ignore
+        }
+      }
+      // Handle global wallpaper enabled state changes
+      if (event.key === WALLPAPER_ENABLED_STORAGE_KEY) {
+        const newEnabled = event.newValue !== "false";
+        if (newEnabled !== isWallpaperEnabled) {
+          setIsWallpaperEnabledInternal(newEnabled);
         }
       }
     }
@@ -235,21 +260,11 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
     [activeTheme]
   );
 
-  // Setter for enabled state
-  const setWallpaperEnabled = React.useCallback(
-    (enabled: boolean) => {
-      setIsWallpaperEnabledInternal(enabled);
-      // Update localStorage (preserve wallpaper selection)
-      const prefs = loadPreferences();
-      const currentPref = normalizePreference(prefs[activeTheme]);
-      const updated: WallpaperPreferences = {
-        ...prefs,
-        [activeTheme]: { wallpaper: currentPref?.wallpaper ?? activeWallpaper, enabled },
-      };
-      savePreferences(updated);
-    },
-    [activeTheme, activeWallpaper]
-  );
+  // Setter for enabled state (global, not per-theme)
+  const setWallpaperEnabled = React.useCallback((enabled: boolean) => {
+    setIsWallpaperEnabledInternal(enabled);
+    saveWallpaperEnabled(enabled);
+  }, []);
 
   // Dev-only override for testing wallpaper candidates
   const [devOverrideSrc, setDevOverrideSrc] = React.useState<string | null>(null);

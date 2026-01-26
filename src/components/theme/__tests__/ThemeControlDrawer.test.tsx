@@ -193,7 +193,8 @@ describe("ThemeControlDrawer", () => {
       const modeButton = screen.getByRole("button", { name: /current mode.*switch to/i });
 
       expect(modeButton.className).toMatch(/min-h-11/);
-      expect(modeButton.className).toMatch(/min-w-11/);
+      // min-w-[5.25rem] prevents layout shift when label changes between "Dark" and "Light"
+      expect(modeButton.className).toMatch(/min-w-\[5\.25rem\]/);
     });
 
     it("reset button has touch-friendly size classes", async () => {
