@@ -57,30 +57,15 @@ function checkReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-/**
- * Determine initial animation state based on cookie and motion preference.
- */
-function getInitialState(reducedMotion: boolean): IntroState {
-  // If user prefers reduced motion, skip animation entirely
-  if (reducedMotion) {
-    return "complete";
-  }
-
-  // Check if user has seen intro recently
-  if (hasSeenIntro()) {
-    return "complete";
-  }
-
-  return "pending";
-}
-
 export function useIntroAnimation(): UseIntroAnimationReturn {
   // Reduced motion preference - starts false to match SSR, updated after hydration
   // This prevents hydration mismatch since window.matchMedia isn't available on server
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  // Initialize state based on cookie only (reducedMotion checked post-mount)
-  const [state, setState] = useState<IntroState>(() => getInitialState(false));
+  // IMPORTANT: Always start with 'pending' to match SSR output.
+  // Cookie and reduced-motion checks happen in useEffect after hydration.
+  // This prevents hydration mismatch when cookie exists on client but not server.
+  const [state, setState] = useState<IntroState>("pending");
 
   // Counter for replay - increments each time triggerReplay is called
   const [replayCount, setReplayCount] = useState(0);

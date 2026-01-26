@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { themes } from "@/data/themes";
 import { useThemeContext } from "@/contexts/ThemeContext";
@@ -112,8 +112,9 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgr
 
   // Track if wallpaper was enabled on initial mount (vs toggled on later)
   // This determines whether dark overlay should animate in or appear instantly
-  const initialImageSrcRef = useRef<string | undefined>(imageSrc);
-  const wasEnabledOnMount = initialImageSrcRef.current !== undefined;
+  // Using useMemo with empty deps to capture initial value (like a ref, but safe in render)
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Intentionally capture initial value only
+  const wasEnabledOnMount = useMemo(() => imageSrc !== undefined, []);
 
   // Get custom gradient stops from theme config (if defined)
   const themeConfig = themes[activeTheme];

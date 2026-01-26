@@ -35,18 +35,24 @@ export type IntroPhase = "idle" | "entering" | "typing" | "loading" | "morphing"
 //    - Used by: ConditionalFrame (border, nav), Hero
 //
 // Timeline:
-//   entering → typing → loading → morphing → expanding → complete → idle
-//                                    ↑           ↑
-//                         isHiddenUntilMorph  isHiddenUntilExpand
-//                            becomes false      becomes false
+//   idle → entering → typing → loading → morphing → expanding → complete → idle
+//     ↑                                      ↑           ↑
+//   (waiting to start)            isHiddenUntilMorph  isHiddenUntilExpand
+//                                    becomes false      becomes false
 //
 // ============================================================================
 
 /** Phases where layout content is hidden (visible starting at morphing) */
-const HIDDEN_UNTIL_MORPH_PHASES: ReadonlySet<IntroPhase> = new Set<IntroPhase>(["entering", "typing", "loading"]);
+const HIDDEN_UNTIL_MORPH_PHASES: ReadonlySet<IntroPhase> = new Set<IntroPhase>([
+  "idle",
+  "entering",
+  "typing",
+  "loading",
+]);
 
 /** Phases where frame/nav/hero is hidden (visible starting at expanding) */
 const HIDDEN_UNTIL_EXPAND_PHASES: ReadonlySet<IntroPhase> = new Set<IntroPhase>([
+  "idle",
   "entering",
   "typing",
   "loading",
