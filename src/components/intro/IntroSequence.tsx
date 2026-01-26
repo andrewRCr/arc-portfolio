@@ -258,22 +258,6 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     onSkip?.();
   }, [skipAnimation, onSkip]);
 
-  // Set up click listener for skip
-  useEffect(() => {
-    if (!shouldShow) return;
-
-    const handleClick = () => {
-      handleSkip();
-    };
-
-    // Use capture phase to catch clicks before they bubble
-    document.addEventListener("click", handleClick, { capture: true });
-
-    return () => {
-      document.removeEventListener("click", handleClick, { capture: true });
-    };
-  }, [shouldShow, handleSkip]);
-
   // Set up keypress listener for skip
   useEffect(() => {
     if (!shouldShow) return;
@@ -303,6 +287,7 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
       aria-hidden="true"
       data-intro-sequence
       data-intro-morphing={phase === "morphing" || undefined}
+      onClick={handleSkip}
     >
       {/*
         Animation sequence:

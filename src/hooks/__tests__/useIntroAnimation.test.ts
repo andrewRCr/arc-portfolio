@@ -12,14 +12,16 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { useIntroAnimation } from "../useIntroAnimation";
 import * as introCookies from "@/lib/cookies/intro";
 
-// Mock the cookie utilities
-vi.mock("@/lib/cookies/intro", () => ({
-  hasSeenIntro: vi.fn(),
-  markIntroSeen: vi.fn(),
-  clearIntroCookie: vi.fn(),
-  INTRO_COOKIE_NAME: "arc-portfolio-intro-seen",
-  INTRO_COOKIE_EXPIRY: 3600,
-}));
+// Mock the cookie utilities (keep real constants, mock functions)
+vi.mock("@/lib/cookies/intro", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/cookies/intro")>();
+  return {
+    ...actual,
+    hasSeenIntro: vi.fn(),
+    markIntroSeen: vi.fn(),
+    clearIntroCookie: vi.fn(),
+  };
+});
 
 describe("useIntroAnimation", () => {
   let matchMediaMock: ReturnType<typeof vi.fn>;

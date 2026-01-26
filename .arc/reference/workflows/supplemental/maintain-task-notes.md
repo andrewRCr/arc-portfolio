@@ -860,3 +860,7 @@ The completion doc requires reading overview + final phases + CLEANUP-PROGRESS t
 ✅ **Notes file cleanup only at archival** (not mid-work)
 ✅ **Both files are navigable** (TOC, clear headers, no temporal confusion - after archival)
 ✅ **Future-you says "thank you"** (actually uses these docs when needed)
+
+---
+
+**Version:** 2026-01-26

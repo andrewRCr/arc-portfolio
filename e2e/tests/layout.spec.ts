@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { VIEWPORTS, VISIBILITY_TIMEOUT, ANIMATION_SETTLE_MS } from "../constants";
+import { VIEWPORTS, VISIBILITY_TIMEOUT } from "../constants";
 import { skipIntroAnimation } from "../helpers/cookies";
 import { waitForHydration } from "../helpers/state";
 
@@ -287,27 +287,35 @@ test.describe("TWM Layout System", () => {
       // Timeout allows for intro useEffect to complete after hydration
       try {
         await expect(firstLink).toBeVisible({ timeout: VISIBILITY_TIMEOUT });
-      } catch {
-        // If nav links not visible at this viewport (mobile dropdown mode), skip
-        test.skip();
-        return;
+      } catch (error) {
+        // Only skip for timeout (mobile dropdown mode) - rethrow unexpected errors
+        if (error instanceof Error && error.message.includes("Timeout")) {
+          test.skip();
+          return;
+        }
+        throw error;
       }
 
-      // Wait for nav CSS fade-in transition to complete before measuring bounding boxes
-      // Navigation uses Framer Motion fade transition (~300ms) - settle time ensures accurate measurements
-      await page.waitForTimeout(ANIMATION_SETTLE_MS);
+      // Wait for nav animation to complete - poll until link reaches expected touch target size
+      // Navigation uses Framer Motion fade transition - links animate to full size
+      await expect(async () => {
+        const box = await firstLink.boundingBox();
+        expect(box?.width).toBeGreaterThanOrEqual(44);
+      }).toPass({ timeout: VISIBILITY_TIMEOUT });
 
       const count = await desktopNavLinks.count();
       expect(count).toBeGreaterThan(0);
 
       // Check each visible link meets minimum touch target size
+      // Use 43.5 threshold to account for floating point precision (43.998... should pass)
+      const minTouchTarget = 43.5;
       for (let i = 0; i < count; i++) {
         const link = desktopNavLinks.nth(i);
         const box = await link.boundingBox();
         expect(box).not.toBeNull();
         // Touch targets should be at least 44×44px for accessibility
-        expect(box!.width).toBeGreaterThanOrEqual(44);
-        expect(box!.height).toBeGreaterThanOrEqual(44);
+        expect(box!.width).toBeGreaterThanOrEqual(minTouchTarget);
+        expect(box!.height).toBeGreaterThanOrEqual(minTouchTarget);
       }
     });
 
