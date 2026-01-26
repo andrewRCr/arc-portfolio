@@ -19,7 +19,7 @@
  * - prefers-reduced-motion support
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIntroContext, type IntroPhase } from "@/contexts/IntroContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
@@ -109,6 +109,9 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   // Flag for when morph exit completes (triggers expanding sequence)
   const [morphComplete, setMorphComplete] = useState(false);
 
+  // Ref to track typing complete timeout for cleanup on unmount
+  const typingCompleteTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Sync local phase to context (for TopBar layoutId coordination)
   // Guard with !reducedMotion to avoid polluting state when animation is skipped
   useEffect(() => {
@@ -170,11 +173,21 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     start: phase === "typing",
     onComplete: () => {
       // Brief pause after typing completes, then transition to loading
-      setTimeout(() => {
+      // Store timeout ID in ref for cleanup on unmount
+      typingCompleteTimeoutRef.current = setTimeout(() => {
         setPhase("loading");
       }, toMs(TYPING_COMPLETE_PAUSE));
     },
   });
+
+  // Cleanup typing complete timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (typingCompleteTimeoutRef.current) {
+        clearTimeout(typingCompleteTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Start animation automatically on mount (if not already complete)
   useEffect(() => {

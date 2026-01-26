@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { FRAME_FADE_DELAY, BORDER_DRAW_DURATION, NAV_FADE_TRANSITION } from "@/lib/intro-timing";
@@ -71,9 +71,13 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const { navGapDepth, windowBorderWidth, contentMaxWidth, tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const { introPhase, isHiddenUntilExpand } = useIntroContext();
 
-  // Ref for measuring container dimensions
+  // Refs for measuring container and SVG paths
   const containerRef = useRef<HTMLDivElement>(null);
+  const leftPathRef = useRef<SVGPathElement>(null);
+  const rightPathRef = useRef<SVGPathElement>(null);
+  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, navGapHalf: 0 });
+  const [measuredPathLength, setMeasuredPathLength] = useState<number | null>(null);
 
   // Measure container dimensions using offsetWidth/offsetHeight
   // These return LAYOUT dimensions (before CSS transforms), unlike getBoundingClientRect
@@ -92,14 +96,20 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
       setDimensions({ width, height, navGapHalf });
     };
 
-    const resizeObserver = new ResizeObserver(() => {
-      updateDimensions();
-    });
+    // Debounce resize updates to avoid excessive state changes
+    const debouncedUpdate = () => {
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+      resizeTimeoutRef.current = setTimeout(updateDimensions, 50);
+    };
 
+    const resizeObserver = new ResizeObserver(debouncedUpdate);
     resizeObserver.observe(container);
-    updateDimensions(); // Initial measurement
+    updateDimensions(); // Initial measurement (not debounced)
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      resizeObserver.disconnect();
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+    };
   }, []);
 
   // Track if SVG animation has been triggered - persists until retrigger
@@ -124,6 +134,17 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
 
   // Show SVG border once triggered
   const showAnimatedBorder = svgTriggered;
+
+  // Measure actual path length after SVG paths render
+  // useLayoutEffect runs synchronously after DOM mutations but before paint,
+  // ensuring we have accurate length before animation starts
+  useLayoutEffect(() => {
+    if (showAnimatedBorder && dimensions.width > 0 && leftPathRef.current) {
+      const length = leftPathRef.current.getTotalLength();
+      setMeasuredPathLength(length);
+    }
+    // Dependencies: path shape depends on dimensions (width, height, navGapHalf)
+  }, [showAnimatedBorder, dimensions]);
 
   if (isDevRoute) {
     // Dev pages: no inner frame, no navigation
@@ -161,8 +182,9 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const leftPath = width > 0 ? generateHalfPath(width, height, navGapHalf, BORDER_RADIUS, "left") : "";
   const rightPath = width > 0 ? generateHalfPath(width, height, navGapHalf, BORDER_RADIUS, "right") : "";
 
-  // Estimate path length (roughly half perimeter)
-  const halfPerimeter = width > 0 ? width + height : 1000;
+  // Use measured path length if available, otherwise fall back to estimate
+  // The estimate (width + height) is a safe overestimate for the half-perimeter
+  const pathLength = measuredPathLength ?? (width > 0 ? width + height : 1000);
 
   return (
     <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-4 md:py-6 md:px-6">
@@ -182,14 +204,15 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
           >
             {/* Left half - draws from left notch edge to bottom center */}
             <motion.path
+              ref={leftPathRef}
               d={leftPath}
               fill="none"
               stroke="rgb(var(--border-strong))"
               strokeWidth={windowBorderWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ strokeDasharray: halfPerimeter, strokeDashoffset: halfPerimeter }}
-              animate={{ strokeDasharray: halfPerimeter, strokeDashoffset: 0 }}
+              initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
+              animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
               transition={{
                 strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
                 strokeDasharray: { duration: 0 }, // Instant update on resize
@@ -197,14 +220,15 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
             />
             {/* Right half - draws from right notch edge to bottom center */}
             <motion.path
+              ref={rightPathRef}
               d={rightPath}
               fill="none"
               stroke="rgb(var(--border-strong))"
               strokeWidth={windowBorderWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ strokeDasharray: halfPerimeter, strokeDashoffset: halfPerimeter }}
-              animate={{ strokeDasharray: halfPerimeter, strokeDashoffset: 0 }}
+              initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
+              animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
               transition={{
                 strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
                 strokeDasharray: { duration: 0 }, // Instant update on resize

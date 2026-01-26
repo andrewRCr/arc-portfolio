@@ -74,6 +74,7 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
   // Both checks must happen post-mount to avoid SSR/client mismatch.
   useEffect(() => {
     const prefersReducedMotion = checkReducedMotion();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Sync with external browser state (matchMedia)
     setReducedMotion(prefersReducedMotion);
 
     // If reduced motion is preferred, skip animation entirely
@@ -86,10 +87,10 @@ export function useIntroAnimation(): UseIntroAnimationReturn {
     }
 
     // Re-check cookie state (may have been incorrectly set on SSR)
-    if (hasSeenIntro() && state === "pending") {
-      setState("complete");
+    // Use functional updater to avoid stale closure read of state
+    if (hasSeenIntro()) {
+      setState((prev) => (prev === "pending" ? "complete" : prev));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Only run once on mount
   }, []);
 
   /** Start the animation (transition pending → animating) */

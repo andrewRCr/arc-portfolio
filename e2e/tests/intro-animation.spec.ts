@@ -1,4 +1,5 @@
 import { test, expect, Page } from "@playwright/test";
+import { MD_BREAKPOINT } from "../constants";
 import { waitForHydration, waitForIntroState } from "../helpers/state";
 
 /**
@@ -16,15 +17,16 @@ import { waitForHydration, waitForIntroState } from "../helpers/state";
  * flakiness from parallel test execution.
  */
 
-/** Tailwind md breakpoint - below this is mobile */
-const MD_BREAKPOINT = 768;
-
 /**
- * Check if viewport is mobile (below md breakpoint)
+ * Check if viewport is mobile (below md breakpoint).
+ * Throws if viewport is not configured (fail-fast for test misconfiguration).
  */
 function isMobileViewport(page: Page): boolean {
   const viewport = page.viewportSize();
-  return viewport ? viewport.width < MD_BREAKPOINT : false;
+  if (!viewport) {
+    throw new Error("Viewport not configured - ensure test has a viewport set");
+  }
+  return viewport.width < MD_BREAKPOINT;
 }
 
 /** Selector for the intro overlay element */
@@ -52,9 +54,12 @@ test.describe("Intro Animation", () => {
     // Verify overlay appears first (animation starting)
     await expect(overlay).toBeAttached({ timeout: 2000 });
 
-    // While overlay is present, branding should NOT be visible (content hidden during animation)
-    // Use a very short timeout since this is checking current state, not waiting
-    await expect(branding).not.toBeVisible({ timeout: 100 });
+    // Wait for animation to be in "animating" state before checking visibility
+    // This ensures deterministic timing instead of relying on short timeouts
+    await waitForIntroState(page, "animating");
+
+    // While animation is running, branding should NOT be visible (content hidden during animation)
+    await expect(branding).not.toBeVisible();
 
     // Wait for animation to complete naturally
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });

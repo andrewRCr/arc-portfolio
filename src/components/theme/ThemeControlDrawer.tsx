@@ -47,10 +47,6 @@ export function ThemeControlDrawer() {
     setDrawerOpen(open);
   }, [open, setDrawerOpen]);
 
-  const toggleMode = () => {
-    toggleTheme();
-  };
-
   const toggleLayoutMode = () => {
     setLayoutMode(layoutMode === "full" ? "boxed" : "full");
   };
@@ -110,7 +106,7 @@ export function ThemeControlDrawer() {
           <Button
             variant="outline"
             onClick={(e) => {
-              toggleMode();
+              toggleTheme();
               e.currentTarget.blur();
             }}
             aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}

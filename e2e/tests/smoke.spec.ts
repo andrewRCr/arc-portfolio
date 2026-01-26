@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { MD_BREAKPOINT } from "../constants";
+import { skipIntroAnimation } from "../helpers/cookies";
 
 /**
  * Smoke tests for arc-portfolio.
@@ -13,16 +14,9 @@ import { MD_BREAKPOINT } from "../constants";
  */
 
 test.describe("Smoke Tests", () => {
-  // Skip intro animation for all smoke tests - set cookie before each test
-  test.beforeEach(async ({ context }) => {
-    await context.addCookies([
-      {
-        name: "arc-intro-seen",
-        value: "1",
-        domain: "localhost",
-        path: "/",
-      },
-    ]);
+  // Skip intro animation for all smoke tests
+  test.beforeEach(async ({ context, baseURL }) => {
+    await skipIntroAnimation(context, baseURL);
   });
 
   /**

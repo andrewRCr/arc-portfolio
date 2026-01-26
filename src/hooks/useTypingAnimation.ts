@@ -56,18 +56,10 @@ export function useTypingAnimation({
 
   // Call onComplete when typing finishes
   useEffect(() => {
-    if (isComplete && text.length >= 0) {
+    if (isComplete) {
       onCompleteRef.current?.();
     }
-  }, [isComplete, text.length]);
-
-  // Handle empty string - immediately complete
-  useEffect(() => {
-    if (text.length === 0 && start) {
-      // Already at index 0, isComplete will be true
-      return;
-    }
-  }, [text.length, start]);
+  }, [isComplete]);
 
   // Type characters progressively
   useEffect(() => {

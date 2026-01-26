@@ -32,6 +32,8 @@ export function useThemeTransition(): UseThemeTransitionReturn {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = useCallback(() => {
+    // Intentionally uses raw theme value - "system"/undefined maps to dark
+    // as the portfolio is primarily designed around dark mode aesthetics
     setTheme(theme === "dark" ? "light" : "dark");
   }, [theme, setTheme]);
 

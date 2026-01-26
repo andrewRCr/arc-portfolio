@@ -9,7 +9,7 @@ import { render, screen, act } from "@testing-library/react";
 import * as React from "react";
 import { WallpaperContextProvider, useWallpaperContext } from "../WallpaperContext";
 import { ThemeContextProvider, useThemeContext } from "../ThemeContext";
-import { WALLPAPER_PREFS_STORAGE_KEY } from "@/config/storage";
+import { WALLPAPER_PREFS_STORAGE_KEY, WALLPAPER_ENABLED_STORAGE_KEY } from "@/config/storage";
 import { WALLPAPER_OPTIONS, type WallpaperId } from "@/data/wallpapers";
 import { themes } from "@/data/themes";
 
@@ -429,7 +429,7 @@ describe("WallpaperContext - Wallpaper Enabled Toggle", () => {
       });
 
       // Verify global localStorage key was updated
-      const stored = localStorage.getItem("arc-portfolio-wallpaper-enabled");
+      const stored = localStorage.getItem(WALLPAPER_ENABLED_STORAGE_KEY);
       expect(stored).toBe("false");
     });
 

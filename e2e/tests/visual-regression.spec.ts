@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { VIEWPORTS } from "../constants";
 import { PALETTE_STORAGE_KEY, MODE_STORAGE_KEY } from "@/config/storage";
+import { skipIntroAnimation } from "../helpers/cookies";
 import { E2E_DETERMINISTIC_KEY } from "@/lib/featured-projects";
 
 /**
@@ -76,15 +77,8 @@ const VIEWPORT_NAMES = ["desktop", "tablet", "mobile"] as const;
 
 test.describe("Visual Regression Baselines", () => {
   // Skip intro animation for visual regression tests
-  test.beforeEach(async ({ context }) => {
-    await context.addCookies([
-      {
-        name: "arc-intro-seen",
-        value: "1",
-        domain: "localhost",
-        path: "/",
-      },
-    ]);
+  test.beforeEach(async ({ context, baseURL }) => {
+    await skipIntroAnimation(context, baseURL);
   });
 
   for (const theme of THEMES) {
@@ -137,16 +131,9 @@ test.describe("Page-Specific Baselines", () => {
     mode: "light" as const,
   };
 
-  test.beforeEach(async ({ page, context }) => {
+  test.beforeEach(async ({ page, context, baseURL }) => {
     // Skip intro animation
-    await context.addCookies([
-      {
-        name: "arc-intro-seen",
-        value: "1",
-        domain: "localhost",
-        path: "/",
-      },
-    ]);
+    await skipIntroAnimation(context, baseURL);
 
     await page.setViewportSize(VIEWPORTS.desktop);
     await page.addInitScript(

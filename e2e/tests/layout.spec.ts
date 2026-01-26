@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { VIEWPORTS } from "../constants";
+import { VIEWPORTS, VISIBILITY_TIMEOUT, ANIMATION_SETTLE_MS } from "../constants";
+import { skipIntroAnimation } from "../helpers/cookies";
 import { waitForHydration } from "../helpers/state";
 
 /**
@@ -13,16 +14,9 @@ import { waitForHydration } from "../helpers/state";
  */
 
 test.describe("TWM Layout System", () => {
-  // Skip intro animation for all layout tests - set cookie before each test
-  test.beforeEach(async ({ context }) => {
-    await context.addCookies([
-      {
-        name: "arc-intro-seen",
-        value: "1",
-        domain: "localhost",
-        path: "/",
-      },
-    ]);
+  // Skip intro animation for all layout tests
+  test.beforeEach(async ({ context, baseURL }) => {
+    await skipIntroAnimation(context, baseURL);
   });
 
   test.describe("Wallpaper Background", () => {
@@ -293,15 +287,16 @@ test.describe("TWM Layout System", () => {
       // Wait for first link to be visible (intro state settled, not mobile dropdown)
       // Timeout allows for intro useEffect to complete after hydration
       try {
-        await expect(firstLink).toBeVisible({ timeout: 2000 });
+        await expect(firstLink).toBeVisible({ timeout: VISIBILITY_TIMEOUT });
       } catch {
         // If nav links not visible at this viewport (mobile dropdown mode), skip
         test.skip();
         return;
       }
 
-      // Wait for nav fade-in animation to complete before measuring
-      await page.waitForTimeout(500);
+      // Wait for nav CSS fade-in transition to complete before measuring bounding boxes
+      // Navigation uses Framer Motion fade transition (~300ms) - settle time ensures accurate measurements
+      await page.waitForTimeout(ANIMATION_SETTLE_MS);
 
       const count = await desktopNavLinks.count();
       expect(count).toBeGreaterThan(0);

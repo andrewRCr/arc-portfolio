@@ -86,10 +86,6 @@ export function ThemeControl() {
     return () => document.removeEventListener("pointerdown", handlePointerDown, { capture: true });
   }, [open]);
 
-  const toggleMode = () => {
-    toggleTheme();
-  };
-
   const toggleLayoutMode = () => {
     setLayoutMode(layoutMode === "wide" ? "boxed" : "wide");
   };
@@ -151,7 +147,7 @@ export function ThemeControl() {
                 variant="outline"
                 size="sm"
                 onClick={(e) => {
-                  toggleMode();
+                  toggleTheme();
                   e.currentTarget.blur();
                 }}
                 aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}

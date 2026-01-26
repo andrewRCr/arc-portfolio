@@ -10,8 +10,11 @@
  * - clearIntroCookie(): Clear for retrigger (TopBar branding click)
  */
 
-/** Cookie name for intro animation tracking */
-export const INTRO_COOKIE_NAME = "arc-intro-seen";
+// Import from canonical location (single source of truth for all storage/cookie constants)
+import { INTRO_COOKIE_NAME } from "@/config/storage";
+
+// Re-export for consumers that import from this module
+export { INTRO_COOKIE_NAME };
 
 /** Cookie expiry in seconds (1 hour) */
 export const INTRO_COOKIE_EXPIRY = 3600;
