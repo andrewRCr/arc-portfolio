@@ -72,8 +72,11 @@ export interface IntroSequenceProps {
 /** Command text displayed during typing animation */
 const COMMAND_TEXT = "portfolio init";
 
-/** Convert seconds to milliseconds for setTimeout */
+/** Convert seconds to milliseconds */
 const toMs = (seconds: number) => seconds * 1000;
+
+/** Promise-based delay for async sequences */
+const delay = (seconds: number) => new Promise<void>((resolve) => setTimeout(resolve, toMs(seconds)));
 
 function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   const { state, shouldShow, reducedMotion, startAnimation, skipAnimation, completeAnimation, setIntroPhase } =
@@ -100,6 +103,12 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   // Controls CommandWindow presence in DOM (false triggers exit/morph animation)
   const [showCommandWindow, setShowCommandWindow] = useState(true);
 
+  // Flag for when entrance animation completes (triggers post-entrance sequence)
+  const [entranceComplete, setEntranceComplete] = useState(false);
+
+  // Flag for when morph exit completes (triggers expanding sequence)
+  const [morphComplete, setMorphComplete] = useState(false);
+
   // Sync local phase to context (for TopBar layoutId coordination)
   // Guard with !reducedMotion to avoid polluting state when animation is skipped
   useEffect(() => {
@@ -117,21 +126,42 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     }
   }, [reducedMotion, shouldShow, skipAnimation]);
 
-  // Handle entrance animation completion
+  // Handle entrance animation completion - just set flag (synchronous)
+  // The async sequence runs in a useEffect that properly cleans up on unmount
   const handleEntranceComplete = useCallback(() => {
-    // Brief pause, then fade in content (branding only)
-    setTimeout(() => {
-      setShowContent(true);
-      // After content fades in, cursor appears
-      setTimeout(() => {
-        setShowCursor(true);
-        // After cursor is visible, begin typing
-        setTimeout(() => {
-          setPhase("typing");
-        }, toMs(TYPING_START_DELAY));
-      }, toMs(CURSOR_APPEAR_DELAY));
-    }, toMs(CONTENT_FADE_DELAY));
+    setEntranceComplete(true);
   }, []);
+
+  // Post-entrance sequence: content fade → cursor → typing
+  // Uses local cancellation flag for proper cleanup on unmount/remount
+  useEffect(() => {
+    if (!entranceComplete) return;
+
+    let cancelled = false;
+
+    const runSequence = async () => {
+      // Brief pause, then fade in content (branding only)
+      await delay(CONTENT_FADE_DELAY);
+      if (cancelled) return;
+      setShowContent(true);
+
+      // After content fades in, cursor appears
+      await delay(CURSOR_APPEAR_DELAY);
+      if (cancelled) return;
+      setShowCursor(true);
+
+      // After cursor is visible, begin typing
+      await delay(TYPING_START_DELAY);
+      if (cancelled) return;
+      setPhase("typing");
+    };
+
+    runSequence();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [entranceComplete]);
 
   // Typing animation - starts when in typing phase
   const { displayedText, isComplete: isTypingComplete } = useTypingAnimation({
@@ -175,21 +205,39 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     }
   }, [phase]);
 
-  // Handle morph completion - transition to expanding phase for layout animation
+  // Handle morph completion - just set flag (synchronous)
   const handleMorphComplete = useCallback(() => {
-    // Brief pause after morph exit animation completes, then expand layout
-    // The exit is quick; we just need a moment for visual separation
-    setTimeout(() => {
+    setMorphComplete(true);
+  }, []);
+
+  // Post-morph sequence: expanding → complete
+  // Uses local cancellation flag for proper cleanup on unmount/remount
+  useEffect(() => {
+    if (!morphComplete) return;
+
+    let cancelled = false;
+
+    const runSequence = async () => {
+      // Brief pause after morph exit animation completes
+      await delay(POST_MORPH_PAUSE);
+      if (cancelled) return;
+
       // Transition to expanding phase - triggers main/footer entrance animations
       setPhase("expanding");
 
       // After layout expansion completes, mark animation as fully complete
-      setTimeout(() => {
-        setPhase("complete");
-        completeAnimation();
-      }, toMs(EXPANDING_DURATION));
-    }, toMs(POST_MORPH_PAUSE));
-  }, [completeAnimation]);
+      await delay(EXPANDING_DURATION);
+      if (cancelled) return;
+      setPhase("complete");
+      completeAnimation();
+    };
+
+    runSequence();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [morphComplete, completeAnimation]);
 
   // Handle skip action
   const handleSkip = useCallback(() => {
