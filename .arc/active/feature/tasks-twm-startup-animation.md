@@ -419,90 +419,73 @@ content fills" sequence.
 
 ### **Phase 8:** Testing & Polish
 
-**Purpose:** E2E testing, cross-theme validation, and timing refinement. (Unit tests written TDD in Phases 1-2.)
+**Purpose:** E2E testing for intro animation flows. (Unit tests written TDD in Phases 1-2. Cross-theme, timing,
+and mobile testing completed during earlier phases.)
 
-- [ ] **8.1 Write E2E tests**
+- [x] **8.1 Write E2E tests** *(e2e/tests/intro-animation.spec.ts)*
 
-    - [ ] **8.1.a Test first visit shows animation**
+    - [x] **8.1.a Test first visit shows animation**
         - Clear cookies, visit home
-        - Verify animation sequence plays
-        - Verify layout reaches final state
+        - Verify intro overlay (`[data-intro-sequence]`) appears
+        - Verify content hidden during animation (no flash before animation)
+        - Verify animation completes: overlay removed, TopBar visible, main content visible
 
-    - [ ] **8.1.b Test subsequent visit skips animation**
-        - Visit home (sets cookie)
-        - Reload or revisit
-        - Verify animation does not play
+    - [x] **8.1.b Test subsequent visit skips animation**
+        - Visit home (sets cookie), navigate away and back
+        - Verify animation skipped (branding visible + overlay gone within 4s)
+        - Uses `expect.poll()` for deterministic assertion
 
-    - [ ] **8.1.c Test TopBar branding click replays**
-        - After animation complete, click branding
-        - Verify animation replays
+    - [x] **8.1.c Test TopBar branding click replays**
+        - After animation complete, click "andrewRCr >_" branding link in TopBar
+        - Verify animation replays (overlay reappears, sequence runs)
 
-    - [ ] **8.1.d Test nav "Home" click does NOT replay**
-        - After animation complete, click Home nav link
-        - Verify animation does not replay
+    - [x] **8.1.d Test nav "Home" click does NOT replay**
+        - After animation complete, click "HOME" nav link
+        - Verify animation does not replay (no overlay)
 
-    - [ ] **8.1.e Test skip on click/keypress**
-        - During animation, click or press key
-        - Verify instant snap to final state
+    - [x] **8.1.e Test skip on click/keypress**
+        - During animation (while overlay visible), click or press key
+        - Verify instant skip: overlay removed, TopBar visible, main content visible
+        - Two tests: one for click, one for keypress (Escape)
 
-    - [ ] **8.1.f Test prefers-reduced-motion**
-        - Emulate reduced motion preference
-        - Verify animation skipped entirely
+    - [x] **8.1.f Test prefers-reduced-motion**
+        - Emulate reduced motion preference via Playwright
+        - Visit home (first visit, no cookie)
+        - Verify animation skipped entirely (no overlay ever appears)
 
-- [ ] **8.2 Cross-theme validation**
+    **Bugs fixed during E2E implementation:**
+    - Fixed "flash of content before animation" by adding `idle` to hidden phases
+    - Fixed hydration mismatch by deferring cookie check to useEffect
 
-    - [ ] **8.2.a Test animation across all 6 themes**
-        - Gruvbox Light/Dark
-        - Rose Pine Light/Dark
-        - Remedy Light/Dark (and other theme families)
-        - Verify colors, cursor, borders all use correct tokens
+- [x] **8.2 Maintainability refactors**
 
-    - [ ] **8.2.b Test dark/light mode transitions**
-        - Animation should work regardless of mode
-        - No flash or incorrect colors
+    - [x] **8.2.a Add `inert` to main content during intro (accessibility)**
+        - Added `inert` attribute to LayoutWrapper content div when `shouldShow` is true
+        - Prevents keyboard/screen reader interaction with hidden content during animation
 
-- [ ] **8.3 Timing tuning pass**
+    - [x] **8.2.b Refactor setTimeout nesting to async/await**
+        - Replaced nested setTimeout "pyramid of doom" with linear async/await sequences
+        - Pattern: callbacks are synchronous (set state flags), async sequences run in useEffect
+        - useEffect cleanup sets `cancelled` flag to prevent stale updates on unmount
+        - Research confirmed this is the recommended Framer Motion pattern for remount scenarios
 
-    **Goal:** Refine timing values until animation feels "snappy, not sluggish."
+- [x] **8.3 Final quality gates**
+    - [x] 8.3.a Run full test suite (`npm test`) - 1238 passed
+    - [x] 8.3.b Run full E2E suite (`npm run test:e2e`) - 235 passed, 69 skipped (visual regression Chrome-only)
+    - [x] 8.3.c Run type-check (`npm run type-check`) - passed
+    - [x] 8.3.d Run lint (`npm run lint`) - passed
+    - [x] 8.3.e Run format check (`npm run format:check`) - passed
+    - [x] 8.3.f Run markdown lint (`npm run lint:md`) - passed
+    - [x] 8.3.g Build verification (`npm run build`) - passed
 
-    - [ ] **8.3.a Review total animation duration**
-        - Target: 1.5-2.5 seconds total
-        - If over 2.5s, identify phases to tighten
-
-    - [ ] **8.3.b Tune individual phase durations**
-        - Phase 1 (command window appears): 200-400ms
-        - Phase 2 (typing): depends on character count
-        - Phase 3 (loading indicator): may cut entirely
-        - Phase 4 (morph + expansion): 400-800ms
-        - Phase 5 (TUI frame): 300-500ms
-
-    - [ ] **8.3.c Evaluate loading indicator necessity**
-        - Does it add polish or feel sluggish?
-        - Cut if sequence feels faster without it
-
-    - [ ] **8.3.d Test on slower devices/throttled CPU**
-        - Ensure no jank or dropped frames
-        - Animation should feel smooth
-
-- [ ] **8.4 Mobile viewport testing**
-
-    - [ ] **8.4.a Test animation on mobile viewport sizes**
-        - Verify window positioning works
-        - Verify typing fits within window
-        - Verify morph transition works at small sizes
-
-    - [ ] **8.4.b Test touch interactions**
-        - Tap to skip works
-        - No hover-related issues
-
-- [ ] **8.5 Final quality gates**
-    - [ ] 8.5.a Run full test suite (`npm test`)
-    - [ ] 8.5.b Run full E2E suite (`npm run test:e2e`)
-    - [ ] 8.5.c Run type-check (`npm run type-check`)
-    - [ ] 8.5.d Run lint (`npm run lint`)
-    - [ ] 8.5.e Run format check (`npm run format:check`)
-    - [ ] 8.5.f Run markdown lint (`npm run lint:md`)
-    - [ ] 8.5.g Build verification (`npm run build`)
+    **E2E test improvements made during this phase:**
+    - Added `HydrationSignal` component for deterministic hydration wait
+    - Added `IntroStateSignal` component for deterministic intro state wait
+    - Created `e2e/helpers/state.ts` with `waitForHydration()` and `waitForIntroState()` helpers
+    - Updated tests to use web-first assertions instead of timeouts
+    - Fixed nav link animation timing (wait for fade-in before measuring)
+    - Fixed Firefox scroll position float precision issue
+    - Reduced parallel workers from 4 to 2 to reduce dev server load
 
 ---
 
