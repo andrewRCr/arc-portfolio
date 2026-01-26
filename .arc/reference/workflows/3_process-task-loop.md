@@ -14,9 +14,10 @@ It ensures consistent execution, quality control, and documentation of work.
 - **Completion protocol:**
 
   1. When you finish a **single sub‑task**:
-     - **First**: Run incremental quality checks on modified files (linting, type checking)
+     - **First**: Run incremental quality checks on modified files - **Tier 1** (linting, type checking, related unit tests)
+       - See [Quality Gates Strategy](../strategies/arc/strategy-quality-gates.md) for the tiered approach
        - Task list specifies critical checkpoints, but use judgment: if changes warrant validation, run appropriate checks
-       - When task list explicitly calls for quality gates, they are mandatory
+       - When task list explicitly calls for quality gates (including E2E checkpoints), they are mandatory
      - **Second**: Mark subtask as `[x]` in task list file (task list reflects completed work when reporting)
        - Update task description to reflect actual work done (not just original plan)
        - Add completion notes with key findings/changes if work deviated from plan
@@ -54,7 +55,7 @@ It ensures consistent execution, quality control, and documentation of work.
 
     - **First**: Mark the **parent task** as `[x]` in the task list file (ensures docs reflect completion)
     - **Second**: Ensure new code has appropriate test coverage (models, APIs, complex logic)
-    - **Third**: Run the full quality gates (all tests, linting, type checks)
+    - **Third**: Run the full quality gates - **Tier 3** (all tests including E2E, linting, type checks, build)
     - **Fourth**: Check if [PROJECT-STATUS](.arc/reference/constitution/PROJECT-STATUS.md) needs updates
       (feature progress, completed functionality, updated priorities)
     - **Fifth**: Verify completion before reporting (use pre-report checklist below)

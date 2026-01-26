@@ -126,25 +126,27 @@ Create `completion-{name}.md` in the same directory as the task list:
 
 {2-3 sentences: What was accomplished and why it matters}
 
-## Key Implementation Details
+## Key Deliverables
 
-- {Major decision or pattern}
+{Concrete outputs - components, capabilities, test coverage areas}
+{Focus on the important stuff, not exhaustive inventory}
+
+- {Component or capability}
+- {Another deliverable}
+
+## Implementation Highlights
+
+{Notable technical details worth remembering}
+
+- {Major decision or pattern established}
 - {Significant challenge overcome}
-- {Notable outcome}
-
-## Metrics
-
-- **Phases Completed**: N phases
-- **Key Deliverables**: [Components, files, features - whatever makes sense for this work]
-- **Tests Added**: Y tests (if applicable)
-- **Quality Gates**: [What was validated - WCAG, type safety, etc.]
+- {Anything useful for similar future work}
 
 ## Related Documentation
 
 - {For planned work: PRD: `path/to/prd-{name}.md`}
 - Tasks: `path/to/tasks-{name}.md`
 - Notes: `path/to/notes-{name}.md` (if exists)
-- Completion: `path/to/completion-{name}.md`
 
 ## {For planned work only: Incidental Work Completed}
 

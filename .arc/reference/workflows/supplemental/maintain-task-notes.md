@@ -486,6 +486,16 @@ Do NOT skip to grep patterns - section-level evaluation catches the biggest issu
 Evaluate entire sections before diving into line-by-line cleanup. Sections are either kept, removed,
 or migrated - this is where the biggest cleanup decisions happen.
 
+**⛔ CHECKPOINT: Complete this step fully before proceeding to Step 2.**
+
+For each section in the task file, explicitly decide disposition:
+
+1. Scan the task file from top to bottom
+2. For each section heading (##, ###), decide: **KEEP**, **REMOVE**, or **EVALUATE CONTENTS**
+3. Only proceed to Step 2 (grep patterns) after ALL sections have been evaluated
+
+Use the checklists below as reference, but evaluate every section you encounter - not just those listed.
+
 **Top-Matter Sections to REMOVE:**
 
 - [ ] **"Why Now"** - Urgency rationale irrelevant after completion
@@ -498,7 +508,9 @@ or migrated - this is where the biggest cleanup decisions happen.
 
 - [ ] **"Notes" section** - Often contains stale snapshots, test counts, temporal state
 - [ ] **"Research References"** - **VERIFY** in strategy docs before removing, or confirm not reusable
-- [ ] **"Implementation Notes"** - Old pattern, now captured in task completions
+- [ ] **"Implementation Notes"** - Evaluate contents: planning scaffolding (files to create/modify,
+  iteration expectations, technical approach summaries) should be removed; substantive implementation
+  findings not captured in task completions may be kept
 - [ ] **"Completion Summary"** - Now in separate completion-{name}.md
 - [ ] **"Task List Coordination"** - Old pattern
 - [ ] **"Decision Logs"** - **VERIFY** captured in ADRs or strategy docs before removing

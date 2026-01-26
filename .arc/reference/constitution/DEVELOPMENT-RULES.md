@@ -24,33 +24,31 @@ by all contributors, including AI assistants.
 - AI reports completion, then awaits commit instructions
 - **Commit message format**: Use the `commit-format` skill for proper format (Context footer, subject length, etc.)
 
-### Quality Gates (Zero Tolerance)
+### Quality Gates
 
-Before any commit consideration, ALL of the following must pass with **zero exceptions**.
-For specific commands, see [QUICK-REFERENCE.md](../QUICK-REFERENCE.md).
+**Zero Tolerance Policy:** Whatever checks you run, they must pass. No ignoring failures, no exceptions.
 
-**Zero Tolerance Policy:** All errors, violations, and failures must be fixed. No exceptions.
+**Tiered Approach:** Quality gates follow a tiered system. The tier determines *what* to run; zero tolerance
+determines that it must *pass*. See [Quality Gates Strategy](../strategies/arc/strategy-quality-gates.md)
+for complete guidance.
 
-1. **Type Checking**: Zero errors
-   - Command: `npm run type-check`
+| Tier   | When                                      | What to Run                                                   |
+|--------|-------------------------------------------|---------------------------------------------------------------|
+| Tier 1 | Per-subtask, checkpoint commits           | Type-check, lint, format, related unit tests (modified files) |
+| Tier 2 | Per-phase (when touching E2E-tested code) | Tier 1 + targeted E2E tests                                   |
+| Tier 3 | Parent task completion, pre-PR            | Full suite (everything below)                                 |
 
-2. **Code Linting**: Zero violations
-   - Command: `npm run lint`
-   - Auto-fix: `npm run lint -- --fix`
+**Full Suite (Tier 3)** - Required for parent task completion and pre-PR commits:
 
-3. **Code Formatting**: Must pass
-   - Command: `npm run format:check`
-   - Auto-fix: `npm run format`
+1. **Type Checking**: `npm run type-check` - Zero errors
+2. **Code Linting**: `npm run lint` - Zero violations
+3. **Code Formatting**: `npm run format:check` - Must pass
+4. **Markdown Linting**: `npm run lint:md` - Zero violations
+5. **Build**: `npm run build` - Must complete
+6. **Unit Tests**: `npm test` - 100% pass rate
+7. **E2E Tests**: `npm run test:e2e` - 100% pass rate
 
-4. **Markdown Linting**: Zero violations
-   - Command: `npm run lint:md`
-   - Auto-fix: `npm run lint:md:fix`
-
-5. **Build Success**: Must complete
-   - Command: `npm run build`
-
-6. **Tests**: 100% pass rate
-   - Command: `npm test`
+For specific commands and incremental patterns, see [QUICK-REFERENCE.md](../QUICK-REFERENCE.md).
 
 ### Quality Gate Failure Protocol
 
