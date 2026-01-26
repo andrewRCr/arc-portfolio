@@ -19,9 +19,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1, // Single retry locally for flaky network
-  // Reduce parallel workers to decrease dev server load and improve stability
-  // 2 workers locally (was undefined/auto), 1 in CI for consistency
-  workers: process.env.CI ? 1 : 2,
+  // 4 workers locally for faster runs (timing issues were fixed with state signals)
+  // 1 in CI for consistency and resource constraints
+  workers: process.env.CI ? 1 : 4,
   reporter: [["html", { outputFolder: "./playwright-report", open: "never" }], ["list"]],
 
   use: {
