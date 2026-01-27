@@ -146,44 +146,45 @@ startup animation, creating a cohesive visual experience.
 
 ### **Phase 2:** Page Transitions
 
-- [ ] **2.1 Write E2E tests for page transition behavior**
+- [x] **2.1 Write E2E tests for page transition behavior** ✅
 
     **Goal:** Establish test coverage before implementing transitions.
 
-    - [ ] **2.1.a Create page transition E2E test file**
-        - Test: Navigation between routes triggers content transition
-        - Test: TopBar/FooterBar/TUI frame remain static during transition
-        - Test: Transition respects `prefers-reduced-motion`
-        - Expect tests to FAIL initially (transitions not yet implemented)
+    - [x] **2.1.a Create page transition E2E test file** ✅
+        - Created `e2e/tests/page-transitions.spec.ts`
+        - Content transition tests: fade during navigation, all main routes
+        - Frame stability tests: Navigation, TUI frame, TopBar, FooterBar, WallpaperBackground
+        - Reduced motion tests: instant transition, frame unaffected
 
-    - [ ] **2.1.b Run tests and verify failures**
-        - Confirm tests fail for expected reasons (no transition behavior yet)
+    - [x] **2.1.b Run tests and verify failures** ✅
+        - 2 content tests FAIL as expected (no transitions implemented)
+        - 7 frame stability + reduced motion tests PASS (nothing animates yet)
 
 - [ ] **2.2 Implement content-only route transitions**
 
-    - [ ] **2.2.a Add AnimatePresence to PageLayout or appropriate wrapper**
-        - Wrap route content in AnimatePresence
-        - Ensure TopBar, FooterBar, TUI frame are OUTSIDE AnimatePresence scope
-        - Use appropriate motion.div wrapper for content
+    - [x] **2.2.a Add PageTransition wrapper to ConditionalFrame** ✅
+        - Created `PageTransition` component using Framer Motion
+        - Wraps children in ConditionalFrame (both regular and dev routes)
+        - Frame elements (TopBar, FooterBar, TUI frame, Navigation) stay outside - remain static
 
-    - [ ] **2.2.b Implement basic crossfade transition**
-        - Initial: opacity 0
-        - Animate: opacity 1
-        - Exit: opacity 0
-        - Start with 300ms duration (will tune in 2.4)
+    - [x] **2.2.b Implement entry-only fade transition** ✅
+        - Entry-only approach (no exit animation) - AnimatePresence exit doesn't work
+          reliably with Next.js App Router due to LayoutRouterContext timing
+        - Researched FrozenRouter workaround but rejected due to internal API dependency
+        - Final approach: instant hide → deliberate delay → fade in
+        - Tuned to: 100ms delay + 400ms fade-in, easeInOut
 
-    - [ ] **2.2.c Add reduced motion support**
-        - Check `prefers-reduced-motion` via hook or media query
-        - When reduced motion preferred: instant transition (no animation)
+    - [x] **2.2.c Add reduced motion support** ✅
+        - Uses `useReducedMotion` hook from Framer Motion
+        - When reduced motion preferred: instant transition (duration 0, delay 0)
 
-    - [ ] **2.2.d Run E2E tests - basic transition tests should PASS**
+    - [x] **2.2.d Run E2E tests - verify transition tests pass** ✅
+        - All 9 page-transition tests pass on Desktop/Tablet/Firefox
+        - Tests skip on Mobile viewport (nav links not visible - uses dropdown)
 
-    - [ ] **2.2.e Run FULL E2E suite (structural change checkpoint)**
-        - AnimatePresence changes DOM structure - HIGH RISK for breaking existing tests
-        - Run: `npm run test:e2e` (full suite, all browsers)
-        - Catch regressions NOW while context is fresh
-        - Fix any broken tests before proceeding
-        - Do NOT defer to end of phase
+    - [x] **2.2.e Run FULL E2E suite (structural change checkpoint)** ✅
+        - 293 passed, 79 skipped, 0 failed
+        - No regressions from PageTransition structural changes
 
 - [ ] **2.3 Explore and implement header vs body timing distinction**
 
@@ -212,17 +213,27 @@ startup animation, creating a cohesive visual experience.
 
 - [ ] **2.4 Tune transition timing**
 
-    - [ ] **2.4.a Test 200ms vs 300ms durations**
-        - Try 200ms: snappier, almost instant but smoothed
-        - Try 300ms: noticeable but quick
-        - Evaluate which feels better balanced against 5.5s intro
+    **Current baseline:** 100ms delay + 400ms fade-in (tuned in 2.2)
 
-    - [ ] **2.4.b Finalize timing values**
-        - Update transition durations based on evaluation
-        - Consider adding timing constants to `intro-timing.ts` for consistency
-        - Document chosen values
+    - [ ] **2.4.a Re-evaluate timing after 2.3 header distinction**
+        - Timing may need adjustment based on header/body split
+        - Current: 100ms delay + 400ms duration feels good standalone
+        - May need faster body if header has separate timing
 
-    - [ ] **2.4.c Run quality gates**
+    - [ ] **2.4.b Sync other animated elements**
+        - Elements with existing fade animations need timing alignment:
+            - Skill logo rows (home + skills page) - hydration fade
+            - FeaturedSection (home page) - hydration fade
+            - ThemeControl in TopBar - hydration fade
+        - Export timing constants from central location (e.g., `intro-timing.ts`)
+        - Update these components to use shared constants
+        - Goal: cohesive feel, not jarring mismatched timing
+
+    - [ ] **2.4.c Finalize timing values**
+        - Document final delay/duration values
+        - Ensure constants are exported for reuse
+
+    - [ ] **2.4.d Run quality gates**
         - Type check, lint, format check
         - Run E2E tests: `npm run test:e2e`
         - All tests pass
