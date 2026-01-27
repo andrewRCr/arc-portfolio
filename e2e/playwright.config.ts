@@ -19,9 +19,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1, // Single retry locally for flaky network
-  // 4 workers locally for faster runs (timing issues were fixed with state signals)
+  // 10 workers locally (i9-12900K has 24 threads, memory allows ~10 browser instances)
   // 1 in CI for consistency and resource constraints
-  workers: process.env.CI ? 1 : 4,
+  workers: process.env.CI ? 1 : 10,
   reporter: [["html", { outputFolder: "./playwright-report", open: "never" }], ["list"]],
 
   use: {
