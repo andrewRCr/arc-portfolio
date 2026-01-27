@@ -111,6 +111,44 @@ test.describe("Intro Animation", () => {
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
   });
 
+  test("TopBar branding cursor has working blink animation (desktop)", async ({ page }) => {
+    // Skip on mobile - hover hint is desktop-only (md: breakpoint)
+    if (isMobileViewport(page)) {
+      test.skip();
+      return;
+    }
+
+    // First visit - let animation complete
+    await page.goto("/");
+    const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
+
+    // Hover over the branding link to ensure hint is visible
+    const brandingLink = page.locator("header").getByRole("link", { name: /andrewRCr/i });
+    await brandingLink.hover();
+
+    // Wait for reinitialize hint to be visible (confirms hover state active)
+    const reinitializeHint = page.locator("header").locator("text=reinitialize");
+    await expect(reinitializeHint).toBeVisible({ timeout: 1000 });
+
+    // The cursor element should have animate-blink class
+    const cursor = page.locator(".animate-blink");
+    await expect(cursor).toBeVisible();
+
+    // CRITICAL: Verify the animation is actually applied (not "none")
+    // This catches CSS compilation/caching issues that could disable the animation
+    const animationName = await cursor.evaluate((el) => {
+      return window.getComputedStyle(el).animationName;
+    });
+    expect(animationName).toBe("blink");
+
+    // Also verify animation is infinite (not a one-shot animation)
+    const animationIterationCount = await cursor.evaluate((el) => {
+      return window.getComputedStyle(el).animationIterationCount;
+    });
+    expect(animationIterationCount).toBe("infinite");
+  });
+
   test("nav Home click does NOT replay animation", async ({ page }) => {
     // First visit - let animation complete
     await page.goto("/");
