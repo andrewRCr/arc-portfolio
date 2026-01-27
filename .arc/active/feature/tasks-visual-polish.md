@@ -59,32 +59,66 @@ startup animation, creating a cohesive visual experience.
         - ✅ Hover hint only appears over branding (not prompt area)
         - ✅ E2E test passes on Desktop Chrome, Tablet, Firefox; skips on Mobile (correct)
 
-- [ ] **1.2 Refactor theme transition CSS**
+- [x] **1.2 Refactor theme transition CSS** ✅
 
-    **Goal:** Remove global `!important` overrides that could interfere with component-specific transitions.
+    **Goal:** Replace global `!important` override with scoped attribute approach, restoring component-level
+    transitions while maintaining smooth theme toggle.
 
-    - [ ] **1.2.a Analyze current implementation**
-        - Review globals.css ~line 839 (`*` selector with `!important`)
-        - Identify which components rely on this for theme toggle smoothness
-        - Check existing `data-no-transition` escape hatch usage
+    **Context:** Current impl breaks all non-color transitions (opacity, transform, scale) 100% of the time.
+    Scoped approach limits override to 300ms theme toggle window only.
 
-    - [ ] **1.2.b Implement scoped transition approach**
-        - Remove `!important` from global selector
-        - Scope transitions to `[data-theme-transition]` attribute or similar mechanism
-        - Ensure theme toggle remains smooth
-        - Allow component-specific transitions to compose/override normally
+    **Implementation Reference:** See `notes-visual-polish.md` → "Task 1.2: Theme Transition CSS Refactor"
 
-    - [ ] **1.2.c Run quality gates**
-        - Type check: `npm run type-check`
-        - Lint: `npm run lint`
-        - Verify theme toggle still works smoothly across all themes
+    - [x] **1.2.a Analyze current implementation** ✅
+        - Reviewed globals.css lines 844-858 (global `*` selector with `!important`)
+        - Identified ~30 components affected (Switch, Crossfade, ProjectCard, etc.)
+        - Confirmed `data-no-transition` escape hatch unused in codebase
+        - Researched View Transitions API failure (compositing issues with semi-transparent layers)
+        - External research validated scoped attribute approach
+        - **Finding:** Safari requires `requestAnimationFrame` delay + `setTimeout` (not transitionend)
+        - **Finding:** prefers-reduced-motion should disable transitions entirely (instant is acceptable)
 
-    - [ ] **1.2.d Run targeted E2E tests (regression checkpoint)**
-        - Global CSS changes can break existing tests unexpectedly
-        - Run: `npm run test:e2e -- e2e/tests/layout.spec.ts`
-        - Run: `npm run test:e2e -- e2e/tests/intro-animation.spec.ts`
-        - Run any theme-related E2E tests
-        - Fix any regressions before proceeding
+    - [x] **1.2.b Implement scoped CSS transition rules** ✅
+        - Replaced globals.css global `*` selector with `html[data-theme-transition] *` scoped selector
+        - Included `*::before` and `*::after` pseudo-elements
+        - Added `@media (prefers-reduced-motion: reduce)` rule to disable transitions
+        - Removed old `[data-no-transition]` escape hatch CSS (was unused)
+
+    - [x] **1.2.c Update useThemeTransition hook** ✅
+        - Added `data-theme-transition` attribute toggle logic
+        - Added Safari timing fix (`requestAnimationFrame` before attribute)
+        - Added rapid toggle handling (clear previous timeout)
+        - Using `setTimeout(300)` for cleanup (Safari transitionend unreliable)
+        - Added `useEffect` cleanup for unmount during transition
+        - Wrapped `setTheme` to apply transition for all theme changes
+        - Added unit tests: `useThemeTransition.test.ts` (12 tests)
+        - Related component tests pass (ThemeControl, ThemeToggle)
+
+    - [x] **1.2.d Manual verification** ✅
+        - Theme toggle smooth (colors fade 300ms) - verified by user
+        - Switch thumb slides (not broken by toggle) - verified
+        - Card hover scale works (not broken by toggle) - verified
+        - Rapid toggles don't break state - verified
+        - Wallpaper transitions still work (Framer Motion) - verified
+
+    - [x] **1.2.e Run quality gates** ✅
+        - Type check: pass
+        - Lint: pass
+        - Format: pass
+
+    - [x] **1.2.f Run targeted E2E tests (regression checkpoint)** ✅
+        - layout.spec.ts: pass
+        - intro-animation.spec.ts: pass
+        - theme-controls.spec.ts: pass
+        - 195 passed, 1 skipped (expected)
+
+    - [x] **1.2.g Add E2E tests for previously broken transitions** ✅
+        - Created `e2e/tests/transitions.spec.ts` (4 tests × 4 browsers = 16 tests)
+        - Switch thumb: verifies `transform` in transition-property
+        - ProjectCard image: verifies `transform` in transition-property
+        - Crossfade: verifies `opacity` in transition-property
+        - Theme toggle cleanup: verifies `data-theme-transition` attribute removed after 300ms
+        - All 16 tests pass (Desktop Chrome, Mobile Chrome, Tablet, Firefox)
 
 - [ ] **1.3 Comprehensive E2E gap audit for animations/transitions**
 
