@@ -839,22 +839,26 @@ html[data-env-preview="false"] [data-window-container] {
 /* ==========================================================================
    Light/Dark Mode Transitions
    Smooth color transitions when toggling between light and dark mode.
+   Scoped to [data-theme-transition] attribute - applied only during toggle.
+   This allows component-specific transitions (opacity, transform) to work
+   normally, while ensuring smooth color transitions during theme switch.
    ========================================================================== */
 
-*,
-*::before,
-*::after {
+html[data-theme-transition] *,
+html[data-theme-transition] *::before,
+html[data-theme-transition] *::after {
   transition-property: background-color, border-color, color !important;
   transition-duration: 300ms !important;
   transition-timing-function: ease-out !important;
 }
 
-/* Disable transitions on elements that shouldn't animate */
-[data-no-transition],
-[data-no-transition] *,
-.no-transition,
-.no-transition * {
-  transition: none !important;
+/* Respect reduced motion - instant theme change is acceptable and preferred */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-transition] *,
+  html[data-theme-transition] *::before,
+  html[data-theme-transition] *::after {
+    transition: none !important;
+  }
 }
 
 /* ==========================================================================
