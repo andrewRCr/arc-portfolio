@@ -186,30 +186,36 @@ startup animation, creating a cohesive visual experience.
         - 293 passed, 79 skipped, 0 failed
         - No regressions from PageTransition structural changes
 
-- [ ] **2.3 Explore and implement header vs body timing distinction**
+- [x] **2.3 Explore and implement header vs body timing distinction** ✅
 
     **Goal:** Add "punch" or "punctuation" to transitions with distinct header behavior.
 
-    - [ ] **2.3.a Identify header components per route**
-        - Home: Hero component (special case - has intro animation)
+    - [x] **2.3.a Identify header components per route** ✅
+        - Home: Hero component (special case - abbreviated intro on route change)
         - Projects/Skills/About/Contact: PageHeader component
         - Note: Page title hidden on phone viewports (Hero still visible)
 
-    - [ ] **2.3.b Explore timing/effect options**
-        - Option A: Header animates first, then body fades in
-        - Option B: Same timing, different easing (header snappier)
-        - Option C: Header slides/scales slightly while body fades
-        - Implement most promising option, evaluate visually
+    - [x] **2.3.b Explore timing/effect options** ✅
+        - Built sandbox tester (`/dev/sandbox`) with 8 variants (A-H)
+        - Used external-research-analyst for pattern research (Material Design, Apple HIG, etc.)
+        - Tested: stagger, easing, clip-path wipe, scale+blur, parallax, diagonal zoom
+        - Key finding: blur needs movement to register properly at fast speeds
 
-    - [ ] **2.3.c Implement chosen header distinction**
-        - Apply distinct animation to header vs body content
-        - Home Hero may use abbreviated version of intro animation
-        - Ensure reduced motion alternative works
+    - [x] **2.3.c Implement chosen header distinction** ✅
+        - **PageHeader**: Title slides down (-10px) + blur; secondary content adapts:
+            - With children (tabs): slides up (+8px) + blur (parallax)
+            - Without children (tagline): blur only (no movement)
+        - **Hero**: Abbreviated intro on route change:
+            - Bar grows from center (scaleY)
+            - Top/bottom text converge (slide down/up) + blur, synced timing
+            - Name: scale (0.95→1, origin-left) + blur, finishes last
+        - **Body**: Simple fade (0.25s delay, 0.35s duration)
+        - SSR hydration handled via mount tracking (skip animation on initial load)
 
-    - [ ] **2.3.d Manual visual evaluation**
-        - Navigate between all routes, evaluate feel
-        - Check desktop, tablet, mobile viewports
-        - Adjust if needed based on visual assessment
+    - [x] **2.3.d Manual visual evaluation** ✅
+        - All routes tested, feel balanced and professional
+        - Hero "abbreviated intro" creates signature home page moment
+        - PageHeader adapts animation weight to content type
 
 - [ ] **2.4 Tune transition timing**
 

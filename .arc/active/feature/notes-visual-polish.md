@@ -285,3 +285,112 @@ Key external research sources consulted:
 - prefers-reduced-motion: MDN, Smashing Magazine - instant change is acceptable
 - next-themes: GitHub issues on transition handling patterns
 - Framer Motion: Confirmed isolation from CSS transitions when using inline styles
+
+---
+
+## Task 2.3: Page Transition Choreography - Research & Implementation Reference
+
+**Purpose:** Document research findings that informed the header/body timing distinction implementation.
+
+### Design System Timing Recommendations
+
+**Material Design 3:**
+
+| Duration  | Use Case                            |
+|-----------|-------------------------------------|
+| 150ms     | Micro-interactions (hover, toggles) |
+| 225ms     | Entering screen elements            |
+| 250-300ms | Standard/complex transitions        |
+| 195ms     | Leaving screen elements             |
+
+**Key principle:** "Objects leaving the screen may have shorter durations, as they require less attention."
+
+**Layered Choreography (premium portfolio pattern):**
+
+- Layer 1 (Fastest): Header/nav — 200-250ms
+- Layer 2 (Medium): Primary content — 300-350ms
+- Layer 3 (Slowest): Secondary/background — 400-500ms
+
+**Stagger timing:** 50-100ms between elements (80ms is the sweet spot).
+
+### Easing Curves
+
+| Name              | Value                                    | Use Case                  |
+|-------------------|------------------------------------------|---------------------------|
+| Material standard | `cubic-bezier(0.4, 0, 0.2, 1)`           | Balanced, professional    |
+| Snappy/punchy     | `cubic-bezier(0, 0, 0.58, 1)` (ease-out) | Quick entrance            |
+| Premium bounce    | `cubic-bezier(0.34, 1.56, 0.64, 1)`      | Slight overshoot, playful |
+
+### Techniques Evaluated
+
+| Technique           | Result      | Notes                                          |
+|---------------------|-------------|------------------------------------------------|
+| Staggered fade      | Used        | Base for body content                          |
+| Clip-path wipe      | Rejected    | Too "editorial", not right for portfolio       |
+| Scale + blur        | Used        | "Focusing in" effect, works well for Hero name |
+| Parallax (y offset) | Used        | Works for heavier elements (tabs)              |
+| Blur alone          | Conditional | Needs movement to register at fast speeds      |
+| Diagonal zoom       | Rejected    | Too playful/energetic for this context         |
+
+### Key Implementation Insights
+
+**1. Visual weight determines animation intensity:**
+
+- Heavy elements (ProjectTabs, structured UI): Can handle parallax + blur
+- Light elements (text taglines): Blur only, no movement — parallax feels "try-hard"
+- This led to adaptive `PageHeader` that checks for `children` prop
+
+**2. Blur needs movement to register:**
+
+At fast speeds (<200ms), blur alone looks like a rendering artifact. Combining with movement
+(scale, translate) makes it read as intentional.
+
+**3. transform-origin matters for scale:**
+
+Default `center` origin causes element to expand in all directions. For left-aligned text,
+`origin-left` anchors to the left edge and expands rightward — pairs well with elements
+entering from the left.
+
+**4. Converging movement creates focus:**
+
+Hero uses converging animation (top text slides down, bottom slides up, name stays centered)
+to draw attention to the name as the focal point.
+
+**5. SSR hydration requires mount tracking:**
+
+Framer Motion's `initial` values applied as inline styles cause hydration mismatch. Solution:
+module-level `hasEverMounted` flag to skip animation on initial SSR render, only animate on
+route-change remounts.
+
+### Final Timing Values
+
+**PageHeader:**
+
+| Element                   | Delay | Duration | Effect                    |
+|---------------------------|-------|----------|---------------------------|
+| Title                     | 0.1s  | 0.22s    | Slide down (-10px) + blur |
+| Secondary (with children) | 0.14s | 0.25s    | Slide up (+8px) + blur    |
+| Secondary (tagline only)  | 0.14s | 0.25s    | Blur only                 |
+
+**Hero (route transition):**
+
+| Element              | Delay | Duration | Effect                             |
+|----------------------|-------|----------|------------------------------------|
+| Bar                  | 0.1s  | ~0.22s   | scaleY from center                 |
+| "> portfolio.init()" | 0.18s | 0.2s     | Slide down (-8px) + blur           |
+| Name                 | 0.2s  | 0.3s     | Scale (0.95→1, origin-left) + blur |
+| Tagline              | 0.18s | 0.2s     | Slide up (+8px) + blur             |
+| Secondary            | 0.25s | ~0.17s   | Fade                               |
+
+**Body content:**
+
+| Element | Delay | Duration | Effect    |
+|---------|-------|----------|-----------|
+| Body    | 0.25s | 0.35s    | Fade only |
+
+### Sources
+
+- Material Design 3: [Easing and Duration](https://m3.material.io/styles/motion/easing-and-duration)
+- Apple HIG: [Motion Foundations](https://developer.apple.com/design/human-interface-guidelines/foundations/motion)
+- Framer Motion: [Transition API](https://www.framer.com/motion/transition/)
+- Easings reference: [easings.net](https://easings.net/)

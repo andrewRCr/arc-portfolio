@@ -145,7 +145,7 @@ test.describe("Page Transitions", () => {
         // Try desktop nav first, fall back to mobile nav container
         const nav =
           document.querySelector('[data-testid="desktop-nav"]') ||
-          document.querySelector('[data-mobile-nav]')?.closest("nav");
+          document.querySelector("[data-mobile-nav]")?.closest("nav");
         if (!nav) return;
 
         (window as unknown as { __navMinOpacity: number }).__navMinOpacity = 1;

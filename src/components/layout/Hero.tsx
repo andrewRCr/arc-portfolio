@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import {
@@ -15,6 +15,22 @@ import {
 } from "@/lib/intro-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useIntroContext } from "@/contexts/IntroContext";
+
+// =============================================================================
+// ROUTE TRANSITION ANIMATION (abbreviated intro)
+// =============================================================================
+
+/** Track if Hero has ever mounted (for route change detection) */
+let hasEverMounted = false;
+
+/** Speed multiplier for route transitions (faster than intro) */
+const ROUTE_SPEED = 0.5;
+
+/** Base delay for route transitions */
+const ROUTE_BASE_DELAY = 0.1;
+
+/** Material Design easing */
+const MATERIAL_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 interface HeroProps {
   /** Optional content to render between tagline and "Featured Projects" heading */
@@ -41,6 +57,17 @@ export function Hero({ children }: HeroProps) {
   const isPhone = useIsPhone();
   const { isHiddenUntilExpand } = useIntroContext();
 
+  // Track if this is initial mount (intro) vs route change
+  const [isInitialMount] = useState(() => !hasEverMounted);
+
+  useEffect(() => {
+    hasEverMounted = true;
+  }, []);
+
+  // Route change: play abbreviated intro animation
+  // Initial mount: controlled by intro sequence (isHiddenUntilExpand)
+  const isRouteChange = !isInitialMount;
+
   const renderTagline = () => {
     const parts = SITE.tagline.split(" | ");
     if (parts.length !== 2) {
@@ -63,75 +90,111 @@ export function Hero({ children }: HeroProps) {
     );
   };
 
+  // ==========================================================================
+  // Animation props - route change vs intro sequence
+  // ==========================================================================
+
+  // Bar animation
+  const barProps = isRouteChange
+    ? {
+        initial: { scaleY: 0 },
+        animate: { scaleY: 1 },
+        transition: {
+          duration: HERO_BAR_DURATION * ROUTE_SPEED,
+          delay: ROUTE_BASE_DELAY,
+          ease: MATERIAL_EASE,
+        },
+      }
+    : {
+        initial: false as const,
+        animate: { scaleY: isHiddenUntilExpand ? 0 : 1 },
+        transition: isHiddenUntilExpand
+          ? { duration: HIDE_DURATION }
+          : { duration: HERO_BAR_DURATION, delay: HERO_BAR_DELAY, ease: "easeOut" as const },
+      };
+
+  // Text animation helper (staggered)
+  // Name (index 1) gets blur + slower timing as the hero element
+  // Other text uses simple fade
+  const textProps = (staggerIndex: number) => {
+    const isName = staggerIndex === 1;
+
+    if (isRouteChange) {
+      return isName
+        ? {
+            // Name: scale + blur (origin-left set on element)
+            initial: { opacity: 0, scale: 0.95, filter: "blur(4px)" },
+            animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
+            transition: {
+              duration: 0.3,
+              delay: ROUTE_BASE_DELAY + 0.1,
+              ease: MATERIAL_EASE,
+            },
+          }
+        : {
+            // Other text: slide + blur, converging simultaneously
+            // portfolio.init (0): slide down, tagline (2): slide up
+            // Same timing so they complete together
+            initial: { opacity: 0, y: staggerIndex === 0 ? -8 : 8, filter: "blur(3px)" },
+            animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+            transition: {
+              duration: 0.2,
+              delay: ROUTE_BASE_DELAY + 0.08,
+              ease: MATERIAL_EASE,
+            },
+          };
+    }
+
+    // Intro sequence (unchanged)
+    return {
+      initial: false as const,
+      animate: { opacity: isHiddenUntilExpand ? 0 : 1 },
+      transition: isHiddenUntilExpand
+        ? { duration: HIDE_DURATION }
+        : {
+            duration: HERO_TEXT_DURATION,
+            delay: HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex,
+            ease: "easeOut" as const,
+          },
+    };
+  };
+
+  // Secondary content animation
+  const secondaryProps = isRouteChange
+    ? {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        transition: {
+          duration: HERO_SECONDARY_DURATION * ROUTE_SPEED,
+          delay: ROUTE_BASE_DELAY + 0.15,
+          ease: MATERIAL_EASE,
+        },
+      }
+    : {
+        initial: false as const,
+        animate: { opacity: isHiddenUntilExpand ? 0 : 1 },
+        transition: isHiddenUntilExpand
+          ? { duration: HIDE_DURATION }
+          : { duration: HERO_SECONDARY_DURATION, delay: HERO_SECONDARY_DELAY, ease: "easeOut" as const },
+      };
+
   return (
     <div className="pt-4 px-2 md:pt-8 md:px-8">
       <div className="pl-0 md:pl-2 pb-2">
         {/* Container with relative positioning for absolute bar */}
         <div className="relative pl-6">
           {/* Animated left bar - separate element for scaleY animation */}
-          <motion.div
-            className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary origin-center"
-            initial={false}
-            animate={{ scaleY: isHiddenUntilExpand ? 0 : 1 }}
-            transition={
-              isHiddenUntilExpand
-                ? { duration: HIDE_DURATION }
-                : {
-                    duration: HERO_BAR_DURATION,
-                    delay: HERO_BAR_DELAY,
-                    ease: "easeOut",
-                  }
-            }
-          />
+          <motion.div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary origin-center" {...barProps} />
 
           <div className="space-y-4 md:mb-8">
             <div className="space-y-2">
-              <motion.p
-                className="text-xs font-mono text-muted-foreground"
-                initial={false}
-                animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
-                transition={
-                  isHiddenUntilExpand
-                    ? { duration: HIDE_DURATION }
-                    : {
-                        duration: HERO_TEXT_DURATION,
-                        delay: HERO_TEXT_DELAY,
-                        ease: "easeOut",
-                      }
-                }
-              >
+              <motion.p className="text-xs font-mono text-muted-foreground" {...textProps(0)}>
                 &gt; portfolio.init()
               </motion.p>
-              <motion.h1
-                className="text-4xl font-bold font-mono"
-                initial={false}
-                animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
-                transition={
-                  isHiddenUntilExpand
-                    ? { duration: HIDE_DURATION }
-                    : {
-                        duration: HERO_TEXT_DURATION,
-                        delay: HERO_TEXT_DELAY + HERO_TEXT_STAGGER,
-                        ease: "easeOut",
-                      }
-                }
-              >
+              <motion.h1 className="text-4xl font-bold font-mono origin-left" {...textProps(1)}>
                 {SITE.name}
               </motion.h1>
-              <motion.p
-                className="text-lg text-muted-foreground"
-                initial={false}
-                animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
-                transition={
-                  isHiddenUntilExpand
-                    ? { duration: HIDE_DURATION }
-                    : {
-                        duration: HERO_TEXT_DURATION,
-                        delay: HERO_TEXT_DELAY + HERO_TEXT_STAGGER * 2,
-                        ease: "easeOut",
-                      }
-                }
-              >
+              <motion.p className="text-lg text-muted-foreground" {...textProps(2)}>
                 {renderTagline()}
               </motion.p>
             </div>
@@ -140,37 +203,14 @@ export function Hero({ children }: HeroProps) {
       </div>
 
       {children && (
-        <motion.div
-          className="mt-2 md:mt-0 flex justify-center"
-          initial={false}
-          animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
-          transition={
-            isHiddenUntilExpand
-              ? { duration: HIDE_DURATION }
-              : {
-                  duration: HERO_SECONDARY_DURATION,
-                  delay: HERO_SECONDARY_DELAY,
-                  ease: "easeOut",
-                }
-          }
-        >
+        <motion.div className="mt-2 md:mt-0 flex justify-center" {...secondaryProps}>
           {children}
         </motion.div>
       )}
 
       <motion.h2
         className={`mb-1 md:mx-4 text-sm font-mono text-muted-foreground ${children ? "mt-4 md:mt-8" : "mt-4 md:mt-2"}`}
-        initial={false}
-        animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
-        transition={
-          isHiddenUntilExpand
-            ? { duration: HIDE_DURATION }
-            : {
-                duration: HERO_SECONDARY_DURATION,
-                delay: HERO_SECONDARY_DELAY,
-                ease: "easeOut",
-              }
-        }
+        {...secondaryProps}
       >
         Featured Projects
       </motion.h2>
