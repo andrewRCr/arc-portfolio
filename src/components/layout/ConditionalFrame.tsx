@@ -7,6 +7,7 @@ import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { FRAME_FADE_DELAY, BORDER_DRAW_DURATION, NAV_FADE_TRANSITION } from "@/lib/intro-timing";
 import { useIntroContext } from "@/contexts/IntroContext";
 import { Navigation } from "./Navigation";
+import { PageTransition } from "./PageTransition";
 
 /**
  * ConditionalFrame Component
@@ -155,7 +156,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
           className="flex flex-col flex-1 min-h-0 mx-auto w-full"
           style={{ maxWidth: contentMaxWidth }}
         >
-          {children}
+          <PageTransition>{children}</PageTransition>
         </div>
       </div>
     );
@@ -264,7 +265,10 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
         </motion.div>
 
         {/* Content area - pages handle scroll via PageLayout */}
-        <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-0.5 md:pt-8 md:px-6">{children}</div>
+        {/* PageTransition provides opacity fade during route navigation */}
+        <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-0.5 md:pt-8 md:px-6">
+          <PageTransition>{children}</PageTransition>
+        </div>
       </div>
     </div>
   );
