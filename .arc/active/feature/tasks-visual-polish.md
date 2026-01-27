@@ -120,28 +120,29 @@ startup animation, creating a cohesive visual experience.
         - Theme toggle cleanup: verifies `data-theme-transition` attribute removed after 300ms
         - All 16 tests pass (Desktop Chrome, Mobile Chrome, Tablet, Firefox)
 
-- [ ] **1.3 Comprehensive E2E gap audit for animations/transitions**
+- [x] **1.3 Comprehensive E2E gap audit for animations/transitions** ✅
 
     **Goal:** Establish solid E2E coverage baseline before adding new animations.
 
-    - [ ] **1.3.a Audit existing animation/transition E2E coverage**
-        - Review `e2e/tests/` for animation-related test coverage
-        - Catalog what IS tested: intro animation, layout transitions, theme toggle, etc.
-        - Identify gaps: behaviors that exist but aren't tested
+    - [x] **1.3.a Audit existing animation/transition E2E coverage** ✅
+        - Reviewed all 6 E2E test files for animation/transition coverage
+        - Well-covered: intro animation (8 tests), component transitions (4 tests), cursor blink
+        - Identified gaps: Sheet/Dialog open animations, BackToTopButton visibility, WallpaperBackground fade
 
-    - [ ] **1.3.b Identify practical test candidates**
-        - Focus on presence/behavior tests (element has class, animation triggers)
-        - Exclude: exact timing, pixel-perfect visuals, flaky race conditions
-        - Document gaps that aren't practical to test with rationale
+    - [x] **1.3.b Identify practical test candidates** ✅
+        - Recommended 3 tests: Sheet/Dialog animate-in, BackToTopButton opacity, WallpaperBackground image
+        - Excluded: exact timings (flaky), hover micro-interactions (visual regression), Framer Motion internals
 
-    - [ ] **1.3.c Fill identified gaps**
-        - Write E2E tests for meaningful gaps
-        - Follow existing test patterns in the codebase
-        - Ensure tests are stable and not flaky
+    - [x] **1.3.c Fill identified gaps** ✅
+        - Added to `transitions.spec.ts`:
+            - Sheet/Dialog: verify animate-in class applied when opened
+            - BackToTopButton: verify opacity controlled by scroll (pointerEvents: none when hidden)
+            - WallpaperBackground: verify image has opacity transition for fade-in
+        - All 28 tests pass (7 tests × 4 browsers)
 
-    - [ ] **1.3.d Run full E2E suite**
-        - `npm run test:e2e`
-        - All tests pass including new coverage
+    - [x] **1.3.d Run full E2E suite** ✅
+        - 266 passed, 70 skipped (visual regression baselines + expected mobile skip)
+        - All new coverage working across browsers
 
 ### **Phase 2:** Page Transitions
 
