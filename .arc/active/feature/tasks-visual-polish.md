@@ -470,6 +470,40 @@ a single source of truth.
     - [x] **3.R.5.b Run full quality gates** - All passed (type check, lint, format, 1275 unit tests, build)
     - [x] **3.R.5.c Manual verification** - All scenarios verified in 3.R.2.e
 
+- [x] **3.R.6 DRY timing helper refactor**
+
+    **Goal:** Reduce boilerplate in animation timing switches and improve SRP compliance by
+    centralizing timing logic in the animation-timing module.
+
+    - [x] **3.R.6.a Add timing helpers to animation-timing.ts**
+        - Added `HIDE_TRANSITION`, `refreshTiming()`, `skipTiming()`, `introTiming()` helpers
+        - Existing `INSTANT_TRANSITION` already present, used as-is
+        - Added `AnimationMode` type (moved from AnimationContext as authoritative source)
+
+    - [x] **3.R.6.b Add element timing functions to animation-timing.ts**
+        - Added 10 timing functions: `getHeroBarTiming`, `getHeroTextTiming`, `getHeroNameTiming`,
+          `getHeroSecondaryTiming`, `getBodyTiming`, `getNavBorderTiming`, `getBorderDrawTiming`,
+          `getPageHeaderTitleTiming`, `getPageHeaderSecondaryTiming`, `getWindowTransition`
+        - All return Framer Motion `Transition` type
+
+    - [x] **3.R.6.c Refactor consuming components**
+        - Hero.tsx: removed 4 inline timing functions (~100 lines), imports from animation-timing
+        - PageLayout.tsx: removed getBodyTiming, imports from animation-timing
+        - ConditionalFrame.tsx: removed 2 timing functions, imports from animation-timing
+        - PageHeader.tsx: removed 2 timing functions, imports from animation-timing
+        - LayoutWrapper.tsx: removed getWindowTransition, imports from animation-timing
+
+    - [x] **3.R.6.d Clean up legacy code**
+        - Removed deprecated `isHiddenUntilMorph`/`isHiddenUntilExpand` from VisibilityState
+        - Updated 9 test file mocks to use `windowVisible`/`contentVisible` only
+        - Updated AnimationContext.test.ts visibility tests for new flags
+        - Removed stale `LegacyIntroPhase` re-export
+
+    - [x] **3.R.6.e Run quality gates (Tier 1)**
+        - Type check: pass
+        - Lint: pass
+        - Unit tests: 1276 passed (added 1 new visibility test)
+
 ### **Phase 4:** Micro-Interactions
 
 - [ ] **4.1 Polish project card hover effects**
