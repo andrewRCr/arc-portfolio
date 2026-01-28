@@ -2,6 +2,7 @@
 
 import { Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ProjectTabs from "@/components/projects/ProjectTabs";
 import ProjectCard from "@/components/projects/ProjectCard";
 import SkillFilterControl from "@/components/projects/SkillFilterControl";
@@ -13,6 +14,7 @@ import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 import { filterProjectsBySkills } from "@/lib/project-filters";
+import { TAB_CONTENT_DURATION, MATERIAL_EASE } from "@/lib/animation-timing";
 import { Project } from "@/types/project";
 
 /** Reusable tab panel component for project grids */
@@ -48,6 +50,17 @@ function TabPanel({
 function ProjectsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const shouldReduceMotion = useReducedMotion();
+
+  // Tab content animation config
+  const tabContentAnimation = shouldReduceMotion
+    ? {} // No animation with reduced motion
+    : {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+        transition: { duration: TAB_CONTENT_DURATION, ease: MATERIAL_EASE },
+      };
 
   // Parse skills query param (comma-separated)
   const skillsParam = searchParams.get("skills");
@@ -174,22 +187,28 @@ function ProjectsContent() {
 
         {/* Tab-based Views (when not filtered) */}
         {!isFiltered && (
-          <>
+          <AnimatePresence mode="wait">
             {currentTab === "software" && (
-              <TabPanel
-                id="software"
-                projects={softwareProjects}
-                categoryType="software"
-                withTabAttributes={FEATURES.SHOW_PROJECT_TABS}
-              />
+              <motion.div key="software" data-tab-content {...tabContentAnimation}>
+                <TabPanel
+                  id="software"
+                  projects={softwareProjects}
+                  categoryType="software"
+                  withTabAttributes={FEATURES.SHOW_PROJECT_TABS}
+                />
+              </motion.div>
             )}
             {FEATURES.SHOW_PROJECT_TABS && currentTab === "games" && (
-              <TabPanel id="games" projects={gameProjects} categoryType="games" />
+              <motion.div key="games" data-tab-content {...tabContentAnimation}>
+                <TabPanel id="games" projects={gameProjects} categoryType="games" />
+              </motion.div>
             )}
             {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
-              <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
+              <motion.div key="mods" data-tab-content {...tabContentAnimation}>
+                <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
+              </motion.div>
             )}
-          </>
+          </AnimatePresence>
         )}
       </div>
     </PageLayout>

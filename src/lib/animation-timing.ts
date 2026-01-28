@@ -266,3 +266,20 @@ export const PAGE_BODY_FADE_ANIMATION = {
   animate: { opacity: 1 },
   transition: { delay: ROUTE_BODY_DELAY, duration: ROUTE_BODY_DURATION, ease: MATERIAL_EASE },
 };
+
+// ============================================================================
+// TAB ANIMATIONS - Tab Indicator and Content Transitions
+// ============================================================================
+
+/** Tab indicator slide duration */
+export const TAB_INDICATOR_DURATION = 0.25;
+
+/** Tab indicator transition config for Framer Motion layoutId */
+export const TAB_INDICATOR_TRANSITION = {
+  type: "tween" as const,
+  duration: TAB_INDICATOR_DURATION,
+  ease: MATERIAL_EASE,
+};
+
+/** Tab content crossfade duration */
+export const TAB_CONTENT_DURATION = 0.2;

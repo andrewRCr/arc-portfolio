@@ -7,10 +7,13 @@
  * Uses query parameters (?tab=software, ?tab=games, or ?tab=mods) for shareable/linkable state.
  *
  * Implements WAI-ARIA Tabs pattern with arrow key navigation.
+ * Features animated tab indicator that slides between tabs using Framer Motion layoutId.
  */
 
 import { useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { motion, useReducedMotion } from "framer-motion";
+import { TAB_INDICATOR_TRANSITION } from "@/lib/animation-timing";
 
 type TabValue = "software" | "games" | "mods";
 
@@ -26,6 +29,7 @@ export default function ProjectTabs() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const shouldReduceMotion = useReducedMotion();
 
   // Refs for focus management
   const tabRefs = useRef<Map<TabValue, HTMLButtonElement | null>>(new Map());
@@ -102,11 +106,20 @@ export default function ProjectTabs() {
             tabIndex={activeTab === tab ? 0 : -1}
             onClick={() => handleTabChange(tab)}
             onKeyDown={(e) => handleKeyDown(tab, e)}
-            className={`min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-mono text-sm font-semibold transition-colors ${
-              activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"
+            className={`relative min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-mono text-sm font-semibold transition-colors ${
+              activeTab === tab ? "text-accent" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {TAB_LABELS[tab]}
+            {/* Animated tab indicator - slides between tabs via layoutId */}
+            {activeTab === tab && (
+              <motion.div
+                layoutId="tab-indicator"
+                data-tab-indicator
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
+                transition={shouldReduceMotion ? { duration: 0 } : TAB_INDICATOR_TRANSITION}
+              />
+            )}
           </button>
         ))}
       </div>
