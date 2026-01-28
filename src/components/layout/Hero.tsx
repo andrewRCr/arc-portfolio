@@ -26,7 +26,6 @@ import {
 } from "@/lib/animation-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useIntroContext } from "@/contexts/IntroContext";
-import { useInitialMount } from "@/hooks/useInitialMount";
 
 interface HeroProps {
   /** Optional content to render between tagline and "Featured Projects" heading */
@@ -52,13 +51,11 @@ interface HeroProps {
 export function Hero({ children }: HeroProps) {
   const isPhone = useIsPhone();
   const { isHiddenUntilExpand, shouldShow } = useIntroContext();
-  const isInitialMount = useInitialMount("Hero");
 
-  // Route change animation plays when:
-  // - No intro sequence is active (shouldShow is false)
-  // - AND this is not the first-ever mount (we've navigated before)
-  // This ensures retrigger uses intro animation, not route animation
-  const isRouteChange = !shouldShow && !isInitialMount;
+  // Route change animation plays when no intro sequence is active.
+  // When intro IS playing (shouldShow true), use intro animation props.
+  // When intro is NOT playing (refresh, nav from other page), use route animation.
+  const isRouteChange = !shouldShow;
 
   const renderTagline = () => {
     const parts = SITE.tagline.split(" | ");
