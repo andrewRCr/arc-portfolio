@@ -271,45 +271,58 @@ startup animation, creating a cohesive visual experience.
 
 ### **Phase 3:** Tab Animations
 
-- [ ] **3.1 Write E2E tests for tab animation behavior**
+- [x] **3.1 Write E2E tests for tab animation behavior** ✅
 
-    - [ ] **3.1.a Create tab animation E2E tests**
-        - Test: Tab indicator moves/animates when switching tabs
-        - Test: Tab content transitions when switching tabs
-        - Test: Tab animations respect `prefers-reduced-motion`
-        - Expect tests to FAIL initially
+    - [x] **3.1.a Create tab animation E2E tests** ✅
+        - Created `e2e/tests/tab-animations.spec.ts` with 8 tests covering:
+        - Tab indicator existence, positioning, and movement
+        - Tab content crossfade animation
+        - Reduced motion support (instant transitions)
 
-    - [ ] **3.1.b Run tests and verify failures**
+    - [x] **3.1.b Run tests and verify failures** ✅
+        - Tests failed initially as expected (no `[data-tab-indicator]` element)
 
-- [ ] **3.2 Implement tab indicator slide animation**
+- [x] **3.2 Implement tab indicator slide animation** ✅
 
-    - [ ] **3.2.a Add animated indicator to ProjectTabs**
-        - Use Framer Motion `layoutId` for smooth position transition
-        - Indicator slides from active tab to newly selected tab
-        - Style: border-bottom accent or similar visual indicator
+    - [x] **3.2.a Add animated indicator to ProjectTabs** ✅
+        - Used Framer Motion `layoutId` for smooth position transition
+        - Indicator slides between tabs via layout animation
+        - Preserved existing border-bottom accent styling
 
-    - [ ] **3.2.b Add reduced motion support**
-        - Instant indicator move when reduced motion preferred
+    - [x] **3.2.b Add reduced motion support** ✅
+        - Uses `useReducedMotion()` hook from Framer Motion
+        - Instant indicator move (duration: 0) when reduced motion preferred
 
-    - [ ] **3.2.c Run tab indicator E2E tests - should PASS**
+    - [x] **3.2.c Run tab indicator E2E tests - should PASS** ✅
+        - All indicator tests passing
 
-- [ ] **3.3 Implement tab content crossfade**
+- [x] **3.3 Implement tab content crossfade** ✅
 
-    - [ ] **3.3.a Add CSS transition to tab content area**
-        - ~250ms opacity transition when tab content changes
-        - Consider slight translateY for subtle movement
+    - [x] **3.3.a Add crossfade to tab content area** ✅
+        - Used Framer Motion `AnimatePresence` with `mode="wait"`
+        - 200ms opacity transition on tab content change
+        - Added `data-tab-content` attribute for E2E testing
 
-    - [ ] **3.3.b Add reduced motion support**
+    - [x] **3.3.b Add reduced motion support** ✅
+        - Empty animation config when `shouldReduceMotion` is true
         - Instant content swap when reduced motion preferred
 
-    - [ ] **3.3.c Run full tab animation E2E tests - should PASS**
+    - [x] **3.3.c Run full tab animation E2E tests - should PASS** ✅
+        - All 8 tests passing (verified with 3x repetition for stability)
 
-    - [ ] **3.3.d Run quality gates and E2E regression check**
-        - Type check, lint
-        - Run: `npm run test:e2e -- e2e/tests/projects.spec.ts` (or equivalent)
-        - Run any navigation/tab-related E2E tests
-        - Tab DOM changes could affect existing project page tests
-        - Fix any regressions before proceeding to Phase 4
+    - [x] **3.3.d Run quality gates and E2E regression check** ✅
+        - Type check: pass
+        - Lint: pass
+        - Format: pass
+        - Markdown lint: pass
+        - Unit tests: 1251 passed
+        - E2E tests: 93 passed (10 flaky but all pass on retry)
+
+    **Files modified:**
+    - `src/components/projects/ProjectTabs.tsx` - Added Framer Motion indicator with `layoutId`
+    - `src/app/projects/page.tsx` - Added AnimatePresence for content crossfade
+    - `src/lib/animation-timing.ts` - Added tab animation timing constants
+    - `e2e/tests/tab-animations.spec.ts` - New E2E test file (8 tests)
 
 ### **Phase 4:** Micro-Interactions
 
