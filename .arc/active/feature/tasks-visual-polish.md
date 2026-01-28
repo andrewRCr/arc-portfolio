@@ -217,32 +217,57 @@ startup animation, creating a cohesive visual experience.
         - Hero "abbreviated intro" creates signature home page moment
         - PageHeader adapts animation weight to content type
 
-- [ ] **2.4 Tune transition timing**
+    - [x] **2.3.e Fix Hero intro animation regression** ✅
+        - **Bug:** After route navigation, retrigger showed Hero instantly (no intro animation)
+        - **Cause:** `isRouteChange` computed once at mount, not reactive to `shouldShow`
+        - **Fix:** Changed `isRouteChange = !isInitialMount` to `!shouldShow && !isInitialMount`
+        - Hero now correctly uses intro animation when `shouldShow` is true (retrigger)
+        - Added E2E tests to prevent regression:
+            - "Hero elements animate during intro (not instant)"
+            - "Hero animates during retrigger after route navigation"
+
+- [x] **2.4 Tune transition timing** ✅
 
     **Current baseline:** 100ms delay + 400ms fade-in (tuned in 2.2)
 
-    - [ ] **2.4.a Re-evaluate timing after 2.3 header distinction**
-        - Timing may need adjustment based on header/body split
-        - Current: 100ms delay + 400ms duration feels good standalone
-        - May need faster body if header has separate timing
+    - [x] **2.4.a Re-evaluate timing after 2.3 header distinction** ✅
+        - Timing tuned during 2.3 implementation via sandbox A/B testing
+        - Header/body split feels balanced, no further adjustment needed
 
-    - [ ] **2.4.b Sync other animated elements**
-        - Elements with existing fade animations need timing alignment:
-            - Skill logo rows (home + skills page) - hydration fade
-            - FeaturedSection (home page) - hydration fade
-            - ThemeControl in TopBar - hydration fade
-        - Export timing constants from central location (e.g., `intro-timing.ts`)
-        - Update these components to use shared constants
-        - Goal: cohesive feel, not jarring mismatched timing
+    - [x] **2.4.b Sync other animated elements** ✅ (moot)
+        - Original concern: Elements with hydration fades might clash with page transitions
+        - **ThemeControl**: Only animates during intro sequence, stable during route transitions → moot
+        - **Skill logo rows / FeaturedSection**: Hydration fades complete before page transitions start,
+          so they appear "pre-loaded" when route transition plays → no sync issue
+        - No timing conflicts observed in manual testing
 
-    - [ ] **2.4.c Finalize timing values**
-        - Document final delay/duration values
-        - Ensure constants are exported for reuse
+    - [x] **2.4.c DRY/consistency audit before Phase 3** ✅
+        - **Renamed** `intro-timing.ts` → `animation-timing.ts` (broader scope)
+        - **Centralized constants:**
+            - `MATERIAL_EASE` - was duplicated in 3 files
+            - `ROUTE_TRANSITION_DELAY` - was duplicated in 2 files
+            - `ENTRANCE_BLUR`, `BLUR_NONE` - standardized to 3px
+            - `INSTANT_TRANSITION` - for skip animations
+            - Route timing offsets (Hero name, text, secondary)
+        - **Moved animation objects to central file:**
+            - `PAGE_HEADER_TITLE_ANIMATION`
+            - `PAGE_HEADER_SECONDARY_WITH_CHILDREN`
+            - `PAGE_HEADER_SECONDARY_SIMPLE`
+            - `PAGE_BODY_FADE_ANIMATION`
+        - **Created `useInitialMount` hook:**
+            - Replaced module-level `hasEverMounted` pattern in 3 components
+            - Uses keyed Map for component-specific tracking
+            - Cleaner, testable, DRY
+        - **Fixed flaky E2E test:**
+            - Page transition test was checking wrong element
+            - Changed to deterministic initial/final opacity verification
 
-    - [ ] **2.4.d Run quality gates**
-        - Type check, lint, format check
-        - Run E2E tests: `npm run test:e2e`
-        - All tests pass
+    - [x] **2.4.d Run quality gates** ✅
+        - Type check: pass
+        - Lint: pass
+        - Format: pass
+        - E2E tests: 66 passed, 10 skipped (mobile)
+        - All intro-animation and page-transitions tests pass
 
 ### **Phase 3:** Tab Animations
 
