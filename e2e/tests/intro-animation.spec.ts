@@ -304,4 +304,43 @@ test.describe("Intro Animation", () => {
     // After retrigger, Hero name should be visible
     await expect(heroName).toBeVisible();
   });
+
+  test("refresh with cookie shows content animation (not instant)", async ({ page }) => {
+    // This tests the refresh animation path (Issue B regression protection)
+    // With cookie present, content should animate in - not appear instantly
+
+    // First visit - let animation complete to set cookie
+    await page.goto("/");
+    const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
+
+    // Reload the page (simulates browser refresh with cookie)
+    await page.reload();
+
+    // Wait for hydration
+    await page.waitForSelector("html.hydrated", { state: "attached", timeout: 10000 });
+
+    // CRITICAL: Immediately after hydration, check Hero content opacity
+    // With refresh animation, content should start hidden (opacity < 1) and animate in
+    // If Issue B regresses, content would be instantly visible (opacity = 1)
+    const initialOpacity = await page.evaluate(() => {
+      const heroName = document.querySelector("h1");
+      if (!heroName) return 1;
+      return parseFloat(window.getComputedStyle(heroName).opacity);
+    });
+
+    // Content should NOT be fully visible immediately after hydration
+    // The refresh animation has a delay before content fades in
+    expect(initialOpacity).toBeLessThan(1);
+
+    // Wait for animation to complete
+    await page.waitForTimeout(800); // REFRESH_CONTENT_DELAY + duration + buffer
+
+    // Verify final state: content is now fully visible
+    const heroName = page.getByRole("heading", { name: "Andrew Creekmore", level: 1 });
+    await expect(heroName).toBeVisible();
+
+    // Verify intro overlay never appeared (refresh mode, not intro mode)
+    await expect(overlay).not.toBeAttached();
+  });
 });

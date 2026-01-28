@@ -451,19 +451,18 @@ a single source of truth.
     - [x] Components use `animationMode` to select refresh timing
     - [x] Manual verification passed in 3.R.2.e
 
-- [ ] **3.R.4 E2E animation test gap audit**
+- [x] **3.R.4 E2E animation test gap audit** ✅ COMPLETE
 
-    **REASSESS:** May be partially covered by existing tests. Review before executing.
+    - [x] **3.R.4.a Audit existing E2E animation coverage**
+        - Reviewed intro-animation.spec.ts, page-transitions.spec.ts, transitions.spec.ts
+        - Existing coverage: intro sequence, skip, replay, reduced motion, route transitions
+        - Gap identified: no explicit test for refresh animation behavior (Issue B regression)
 
-    - [ ] **3.R.4.a Audit existing E2E animation coverage**
-        - Review `intro-animation.spec.ts` and related test files
-        - Identify gaps in scenario coverage (intro, refresh, route, skip)
-        - Document missing coverage
-
-    - [ ] **3.R.4.b Address identified gaps**
-        - Add tests for uncovered scenarios
-        - Update any tests broken by refactor
-        - Ensure all animation scenarios have E2E coverage
+    - [x] **3.R.4.b Address identified gaps**
+        - Added `refresh with cookie shows content animation (not instant)` test
+        - Verifies content starts hidden (opacity < 1) after hydration, then animates in
+        - Protects against Issue B regression (content appearing instantly on refresh)
+        - All 335 E2E tests pass, no tests broken by refactor
 
 - [x] **3.R.5 Cleanup and final verification** ✅ DONE AS PART OF 3.R.2
 
