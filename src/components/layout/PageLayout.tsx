@@ -3,11 +3,19 @@
 import { useLayoutEffect, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 import "overlayscrollbars/styles/overlayscrollbars.css";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { PAGE_BODY_FADE_ANIMATION, INSTANT_TRANSITION } from "@/lib/animation-timing";
+import {
+  PAGE_BODY_FADE_ANIMATION,
+  REFRESH_CONTENT_DELAY,
+  REFRESH_CONTENT_DURATION,
+  SKIP_BODY_DELAY,
+  SKIP_CONTENT_DURATION,
+  HIDE_DURATION,
+  MATERIAL_EASE,
+} from "@/lib/animation-timing";
 import { useScrollShadow } from "@/hooks/useScrollShadow";
-import { useInitialMount } from "@/hooks/useInitialMount";
+import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
 import { ScrollShadow } from "./ScrollShadow";
 import { ScrollProvider } from "./ScrollContext";
 import { BackToTopButton } from "@/components/ui/BackToTopButton";
@@ -58,14 +66,36 @@ export function PageLayout({
   // Infer header type from stickyHeader if not explicitly set
   const effectiveHeaderType = headerType ?? (stickyHeader ? "detail" : "page");
   const { contentMaxWidth, contentPaddingY, contentPaddingX } = DEFAULT_LAYOUT_TOKENS;
-  const shouldReduceMotion = useReducedMotion();
-  const isInitialMount = useInitialMount("PageLayout");
+  const { animationMode, visibility } = useAnimationContext();
 
-  // Skip animations on:
-  // - Initial SSR hydration (avoids hydration mismatch)
-  // - When user prefers reduced motion
-  // - During SSR/detection (useReducedMotion returns null)
-  const skipAnimation = isInitialMount || shouldReduceMotion !== false;
+  // Use contentVisible - accounts for initialization AND intro phase
+  // contentVisible is false during intro until "expanding" phase, then true
+  const showContent = visibility.contentVisible;
+
+  // Get body content timing based on animationMode
+  const getBodyTiming = (mode: AnimationMode) => {
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "refresh":
+        return {
+          delay: REFRESH_CONTENT_DELAY + 0.1,
+          duration: REFRESH_CONTENT_DURATION,
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          delay: SKIP_BODY_DELAY,
+          duration: SKIP_CONTENT_DURATION,
+          ease: MATERIAL_EASE,
+        };
+      case "route":
+      default:
+        return PAGE_BODY_FADE_ANIMATION.transition;
+    }
+  };
+
+  const bodyTransition = showContent ? getBodyTiming(animationMode) : { duration: HIDE_DURATION };
 
   const { ref: scrollShadowRef, showTopShadow, showBottomShadow } = useScrollShadow();
   const [element, setElement] = useState<HTMLElement | null>(null);
@@ -130,7 +160,7 @@ export function PageLayout({
         )}
 
         {/* Scrollable content area with scroll shadows */}
-        {/* Animated: fade (subtler than header) */}
+        {/* Animated: fade based on loadMode */}
         <div className="relative flex-1 min-h-0">
           <main ref={setElement} className="h-full overflow-auto" data-overlayscrollbars-initialize>
             <motion.div
@@ -138,8 +168,8 @@ export function PageLayout({
               data-page-content
               style={contentStyle}
               initial={PAGE_BODY_FADE_ANIMATION.initial}
-              animate={PAGE_BODY_FADE_ANIMATION.animate}
-              transition={skipAnimation ? INSTANT_TRANSITION : PAGE_BODY_FADE_ANIMATION.transition}
+              animate={showContent ? PAGE_BODY_FADE_ANIMATION.animate : PAGE_BODY_FADE_ANIMATION.initial}
+              transition={bodyTransition}
             >
               {children}
             </motion.div>

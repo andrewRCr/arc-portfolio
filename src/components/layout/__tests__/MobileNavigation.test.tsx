@@ -1,3 +1,4 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
@@ -7,6 +8,23 @@ import { MobileNavigation } from "../MobileNavigation";
 import { NAV_ITEMS } from "@/config/site";
 
 vi.mock("next/navigation", () => createNavigationMock());
+
+// Mock AnimationContext (required when using test-utils with AnimationProvider)
+vi.mock("@/contexts/AnimationContext", () => ({
+  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAnimationContext: () => ({
+    loadMode: "refresh",
+    animationMode: "refresh",
+    intro: { phase: "complete", isActive: false, wasSkipped: false, replayCount: 0, triggerReplay: vi.fn() },
+    route: { isAnimating: false },
+    visibility: { isHiddenUntilMorph: false, isHiddenUntilExpand: false, windowVisible: true, contentVisible: true },
+    reducedMotion: false,
+    isInitialized: true,
+  }),
+  useAnimationDispatch: () => vi.fn(),
+  markIntroSeen: vi.fn(),
+  clearIntroCookie: vi.fn(),
+}));
 
 describe("MobileNavigation", () => {
   beforeEach(() => {

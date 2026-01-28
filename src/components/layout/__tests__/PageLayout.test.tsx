@@ -4,6 +4,23 @@ import { checkA11y } from "@tests/test-utils";
 import { PageLayout } from "../PageLayout";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 
+// Mock AnimationContext (PageLayout uses useAnimationContext)
+vi.mock("@/contexts/AnimationContext", () => ({
+  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAnimationContext: () => ({
+    loadMode: "refresh",
+    animationMode: "refresh",
+    intro: { phase: "complete", isActive: false, wasSkipped: false, replayCount: 0, triggerReplay: vi.fn() },
+    route: { isAnimating: false },
+    visibility: { isHiddenUntilMorph: false, isHiddenUntilExpand: false, windowVisible: true, contentVisible: true },
+    reducedMotion: false,
+    isInitialized: true,
+  }),
+  useAnimationDispatch: () => vi.fn(),
+  markIntroSeen: vi.fn(),
+  clearIntroCookie: vi.fn(),
+}));
+
 describe("PageLayout", () => {
   beforeEach(() => {
     vi.stubGlobal(

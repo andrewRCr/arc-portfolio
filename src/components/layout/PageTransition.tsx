@@ -9,6 +9,9 @@ import { usePathname } from "next/navigation";
  * to ensure content remounts on navigation, triggering entry animations
  * in child components (PageLayout handles the actual animations).
  *
+ * Route change detection is now handled by AnimationContext (via pathname
+ * tracking), which provides correct loadMode synchronously to children.
+ *
  * Frame elements (TopBar, FooterBar, Navigation, TUI frame) remain static -
  * only the content passed as children remounts.
  *

@@ -1,13 +1,20 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   PAGE_HEADER_TITLE_ANIMATION,
   PAGE_HEADER_SECONDARY_WITH_CHILDREN,
   PAGE_HEADER_SECONDARY_SIMPLE,
-  INSTANT_TRANSITION,
+  REFRESH_CONTENT_DELAY,
+  REFRESH_CONTENT_DURATION,
+  SKIP_HERO_TEXT_DELAY,
+  SKIP_CONTENT_DURATION,
+  HIDE_DURATION,
+  MATERIAL_EASE,
+  ENTRANCE_BLUR,
+  BLUR_NONE,
 } from "@/lib/animation-timing";
-import { useInitialMount } from "@/hooks/useInitialMount";
+import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
 
 /**
  * PageHeader Component
@@ -36,17 +43,86 @@ export interface PageHeaderProps {
 }
 
 export function PageHeader({ title, subtitle, children, hideDivider = false }: PageHeaderProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const isInitialMount = useInitialMount("PageHeader");
+  const { animationMode, visibility } = useAnimationContext();
 
-  // Skip on initial SSR hydration or reduced motion preference
-  const skipAnimation = isInitialMount || shouldReduceMotion !== false;
+  // Use contentVisible - accounts for initialization and intro phases
+  const contentVisible = visibility.contentVisible;
 
   // Check if we have any secondary content (subtitle, children, or divider)
   const hasSecondaryContent = subtitle || children || !hideDivider;
 
-  // Use parallax for "heavy" content (tabs, controls), blur-only for "light" content (tagline)
-  const secondaryAnimation = children ? PAGE_HEADER_SECONDARY_WITH_CHILDREN : PAGE_HEADER_SECONDARY_SIMPLE;
+  // Get title timing based on animationMode
+  const getTitleTiming = (mode: AnimationMode) => {
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "refresh":
+        return {
+          delay: REFRESH_CONTENT_DELAY,
+          duration: REFRESH_CONTENT_DURATION,
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          delay: SKIP_HERO_TEXT_DELAY,
+          duration: SKIP_CONTENT_DURATION,
+          ease: MATERIAL_EASE,
+        };
+      case "route":
+      default:
+        return PAGE_HEADER_TITLE_ANIMATION.transition;
+    }
+  };
+
+  // Get secondary content timing
+  const getSecondaryTiming = (mode: AnimationMode) => {
+    const baseTransition = children
+      ? PAGE_HEADER_SECONDARY_WITH_CHILDREN.transition
+      : PAGE_HEADER_SECONDARY_SIMPLE.transition;
+
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "refresh":
+        return {
+          delay: REFRESH_CONTENT_DELAY + 0.05,
+          duration: REFRESH_CONTENT_DURATION,
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          delay: SKIP_HERO_TEXT_DELAY + 0.05,
+          duration: SKIP_CONTENT_DURATION,
+          ease: MATERIAL_EASE,
+        };
+      case "route":
+      default:
+        return baseTransition;
+    }
+  };
+
+  // showContent uses contentVisible directly (it already handles intro phases)
+  // During intro, contentVisible is false until "expanding" phase
+  // On non-home pages during intro, this header isn't rendered anyway (Hero is used)
+  const showContent = contentVisible;
+
+  // Hide transition
+  const hideTransition = { duration: HIDE_DURATION };
+
+  // Title animation - always use initial: {hidden}
+  const titleAnimation = {
+    initial: { opacity: 0, y: -10, filter: ENTRANCE_BLUR },
+    animate: showContent ? { opacity: 1, y: 0, filter: BLUR_NONE } : { opacity: 0, y: -10, filter: ENTRANCE_BLUR },
+    transition: showContent ? getTitleTiming(animationMode) : hideTransition,
+  };
+
+  // Secondary animation
+  const baseSecondary = children ? PAGE_HEADER_SECONDARY_WITH_CHILDREN : PAGE_HEADER_SECONDARY_SIMPLE;
+  const secondaryAnimation = {
+    initial: baseSecondary.initial,
+    animate: showContent ? baseSecondary.animate : baseSecondary.initial,
+    transition: showContent ? getSecondaryTiming(animationMode) : hideTransition,
+  };
 
   return (
     <div>
@@ -54,9 +130,9 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
       {title && (
         <motion.h1
           className="hidden sm:block font-mono text-2xl font-bold text-foreground"
-          initial={PAGE_HEADER_TITLE_ANIMATION.initial}
-          animate={PAGE_HEADER_TITLE_ANIMATION.animate}
-          transition={skipAnimation ? INSTANT_TRANSITION : PAGE_HEADER_TITLE_ANIMATION.transition}
+          initial={titleAnimation.initial}
+          animate={titleAnimation.animate}
+          transition={titleAnimation.transition}
         >
           {title}
         </motion.h1>
@@ -68,7 +144,7 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
           className={title ? "mt-1" : ""}
           initial={secondaryAnimation.initial}
           animate={secondaryAnimation.animate}
-          transition={skipAnimation ? INSTANT_TRANSITION : secondaryAnimation.transition}
+          transition={secondaryAnimation.transition}
         >
           {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
           {children && <div className={title ? "sm:mt-1" : ""}>{children}</div>}

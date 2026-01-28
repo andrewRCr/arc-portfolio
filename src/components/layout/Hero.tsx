@@ -20,12 +20,22 @@ import {
   ROUTE_HERO_NAME_DELAY_OFFSET,
   ROUTE_HERO_TEXT_DELAY_OFFSET,
   ROUTE_HERO_SECONDARY_DELAY_OFFSET,
+  // Refresh timing
+  REFRESH_HERO_BAR_DELAY,
+  REFRESH_HERO_TEXT_DELAY,
+  REFRESH_HERO_SECONDARY_DELAY,
+  REFRESH_CONTENT_DURATION,
+  // Skip timing
+  SKIP_HERO_BAR_DELAY,
+  SKIP_HERO_TEXT_DELAY,
+  SKIP_HERO_SECONDARY_DELAY,
+  SKIP_CONTENT_DURATION,
   // Shared
   ENTRANCE_BLUR,
   BLUR_NONE,
 } from "@/lib/animation-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
-import { useIntroContext } from "@/contexts/IntroContext";
+import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
 
 interface HeroProps {
   /** Optional content to render between tagline and "Featured Projects" heading */
@@ -39,9 +49,8 @@ interface HeroProps {
  * header slot (fixed above scroll area). Includes "Featured Projects" heading
  * to anchor the scroll shadow at the header boundary.
  *
- * During intro animation, hero elements animate in:
- * - Left bar grows from center (scaleY)
- * - Text elements fade in with stagger
+ * Animation timing is determined by AnimationContext's animationMode.
+ * Components use initial: {hidden} and animate based on visibility flags.
  *
  * Responsive behavior:
  * - Phone (< 640px): Condensed single-line tagline
@@ -50,12 +59,10 @@ interface HeroProps {
  */
 export function Hero({ children }: HeroProps) {
   const isPhone = useIsPhone();
-  const { isHiddenUntilExpand, shouldShow } = useIntroContext();
+  const { animationMode, visibility } = useAnimationContext();
 
-  // Route change animation plays when no intro sequence is active.
-  // When intro IS playing (shouldShow true), use intro animation props.
-  // When intro is NOT playing (refresh, nav from other page), use route animation.
-  const isRouteChange = !shouldShow;
+  // Use new visibility flag that accounts for initialization
+  const contentVisible = visibility.contentVisible;
 
   const renderTagline = () => {
     const parts = SITE.tagline.split(" | ");
@@ -80,92 +87,185 @@ export function Hero({ children }: HeroProps) {
   };
 
   // ==========================================================================
-  // Animation props - route change vs intro sequence
+  // Animation timing lookup by animationMode
   // ==========================================================================
 
-  // Bar animation
-  const barProps = isRouteChange
-    ? {
-        initial: { scaleY: 0 },
-        animate: { scaleY: 1 },
-        transition: {
+  // Get timing for bar animation based on animationMode
+  const getBarTiming = (mode: AnimationMode) => {
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "route":
+        return {
           duration: HERO_BAR_DURATION * ROUTE_TRANSITION_SPEED,
           delay: ROUTE_TRANSITION_DELAY,
           ease: MATERIAL_EASE,
-        },
-      }
-    : {
-        initial: false as const,
-        animate: { scaleY: isHiddenUntilExpand ? 0 : 1 },
-        transition: isHiddenUntilExpand
-          ? { duration: HIDE_DURATION }
-          : { duration: HERO_BAR_DURATION, delay: HERO_BAR_DELAY, ease: "easeOut" as const },
-      };
+        };
+      case "refresh":
+        return {
+          duration: HERO_BAR_DURATION,
+          delay: REFRESH_HERO_BAR_DELAY,
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          duration: SKIP_CONTENT_DURATION,
+          delay: SKIP_HERO_BAR_DELAY,
+          ease: MATERIAL_EASE,
+        };
+      case "intro":
+      default:
+        return {
+          duration: HERO_BAR_DURATION,
+          delay: HERO_BAR_DELAY,
+          ease: "easeOut" as const,
+        };
+    }
+  };
 
-  // Text animation helper (staggered)
-  // Name (index 1) gets blur + slower timing as the hero element
-  // Other text uses simple fade
+  // Get timing for text animation based on animationMode
+  const getTextTiming = (mode: AnimationMode, staggerIndex: number) => {
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "route":
+        return {
+          duration: 0.2,
+          delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_TEXT_DELAY_OFFSET,
+          ease: MATERIAL_EASE,
+        };
+      case "refresh":
+        return {
+          duration: REFRESH_CONTENT_DURATION,
+          delay: REFRESH_HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex,
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          duration: SKIP_CONTENT_DURATION,
+          delay: SKIP_HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex * 0.5,
+          ease: MATERIAL_EASE,
+        };
+      case "intro":
+      default:
+        return {
+          duration: HERO_TEXT_DURATION,
+          delay: HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex,
+          ease: "easeOut" as const,
+        };
+    }
+  };
+
+  // Get timing for name (special case with scale + blur on route)
+  const getNameTiming = (mode: AnimationMode) => {
+    if (mode === "route") {
+      return {
+        duration: 0.3,
+        delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_NAME_DELAY_OFFSET,
+        ease: MATERIAL_EASE,
+      };
+    }
+    // For other modes, use standard text timing
+    return getTextTiming(mode, 1);
+  };
+
+  // Get timing for secondary content
+  const getSecondaryTiming = (mode: AnimationMode) => {
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "route":
+        return {
+          duration: HERO_SECONDARY_DURATION * ROUTE_TRANSITION_SPEED,
+          delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_SECONDARY_DELAY_OFFSET,
+          ease: MATERIAL_EASE,
+        };
+      case "refresh":
+        return {
+          duration: REFRESH_CONTENT_DURATION,
+          delay: REFRESH_HERO_SECONDARY_DELAY,
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          duration: SKIP_CONTENT_DURATION,
+          delay: SKIP_HERO_SECONDARY_DELAY,
+          ease: MATERIAL_EASE,
+        };
+      case "intro":
+      default:
+        return {
+          duration: HERO_SECONDARY_DURATION,
+          delay: HERO_SECONDARY_DELAY,
+          ease: "easeOut" as const,
+        };
+    }
+  };
+
+  // ==========================================================================
+  // Animation props - always use initial: {hidden}, animate based on visibility
+  // ==========================================================================
+
+  // When hiding (for retrigger), use quick transition
+  const hideTransition = { duration: HIDE_DURATION };
+
+  // Bar animation
+  const barProps = {
+    initial: { scaleY: 0 },
+    animate: { scaleY: contentVisible ? 1 : 0 },
+    transition: contentVisible ? getBarTiming(animationMode) : hideTransition,
+  };
+
+  // Text animation helper
   const textProps = (staggerIndex: number) => {
     const isName = staggerIndex === 1;
 
-    if (isRouteChange) {
-      return isName
-        ? {
-            // Name: scale + blur (origin-left set on element)
-            initial: { opacity: 0, scale: 0.95, filter: ENTRANCE_BLUR },
-            animate: { opacity: 1, scale: 1, filter: BLUR_NONE },
-            transition: {
-              duration: 0.3,
-              delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_NAME_DELAY_OFFSET,
-              ease: MATERIAL_EASE,
-            },
-          }
-        : {
-            // Other text: slide + blur, converging simultaneously
-            // portfolio.init (0): slide down, tagline (2): slide up
-            // Same timing so they complete together
-            initial: { opacity: 0, y: staggerIndex === 0 ? -8 : 8, filter: ENTRANCE_BLUR },
-            animate: { opacity: 1, y: 0, filter: BLUR_NONE },
-            transition: {
-              duration: 0.2,
-              delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_TEXT_DELAY_OFFSET,
-              ease: MATERIAL_EASE,
-            },
-          };
+    // Name gets special treatment on route (scale + blur)
+    if (isName && animationMode === "route") {
+      return {
+        initial: { opacity: 0, scale: 0.95, filter: ENTRANCE_BLUR },
+        animate: contentVisible
+          ? { opacity: 1, scale: 1, filter: BLUR_NONE }
+          : { opacity: 0, scale: 0.95, filter: ENTRANCE_BLUR },
+        transition: contentVisible ? getNameTiming(animationMode) : hideTransition,
+      };
     }
 
-    // Intro sequence (unchanged)
+    // Route: slide + blur for non-name text
+    if (animationMode === "route") {
+      const yOffset = staggerIndex === 0 ? -8 : 8;
+      return {
+        initial: { opacity: 0, y: yOffset, filter: ENTRANCE_BLUR },
+        animate: contentVisible
+          ? { opacity: 1, y: 0, filter: BLUR_NONE }
+          : { opacity: 0, y: yOffset, filter: ENTRANCE_BLUR },
+        transition: contentVisible ? getTextTiming(animationMode, staggerIndex) : hideTransition,
+      };
+    }
+
+    // Refresh: fade with blur
+    if (animationMode === "refresh") {
+      return {
+        initial: { opacity: 0, filter: ENTRANCE_BLUR },
+        animate: contentVisible ? { opacity: 1, filter: BLUR_NONE } : { opacity: 0, filter: ENTRANCE_BLUR },
+        transition: contentVisible ? getTextTiming(animationMode, staggerIndex) : hideTransition,
+      };
+    }
+
+    // Other modes: simple fade
     return {
-      initial: false as const,
-      animate: { opacity: isHiddenUntilExpand ? 0 : 1 },
-      transition: isHiddenUntilExpand
-        ? { duration: HIDE_DURATION }
-        : {
-            duration: HERO_TEXT_DURATION,
-            delay: HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex,
-            ease: "easeOut" as const,
-          },
+      initial: { opacity: 0 },
+      animate: { opacity: contentVisible ? 1 : 0 },
+      transition: contentVisible ? getTextTiming(animationMode, staggerIndex) : hideTransition,
     };
   };
 
   // Secondary content animation
-  const secondaryProps = isRouteChange
-    ? {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        transition: {
-          duration: HERO_SECONDARY_DURATION * ROUTE_TRANSITION_SPEED,
-          delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_SECONDARY_DELAY_OFFSET,
-          ease: MATERIAL_EASE,
-        },
-      }
-    : {
-        initial: false as const,
-        animate: { opacity: isHiddenUntilExpand ? 0 : 1 },
-        transition: isHiddenUntilExpand
-          ? { duration: HIDE_DURATION }
-          : { duration: HERO_SECONDARY_DURATION, delay: HERO_SECONDARY_DELAY, ease: "easeOut" as const },
-      };
+  const secondaryProps = {
+    initial: { opacity: 0 },
+    animate: { opacity: contentVisible ? 1 : 0 },
+    transition: contentVisible ? getSecondaryTiming(animationMode) : hideTransition,
+  };
 
   return (
     <div className="pt-4 px-2 md:pt-8 md:px-8">

@@ -18,21 +18,32 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
   }),
 }));
 
-// Mock IntroContext (TopBar uses triggerReplay for branding click)
-vi.mock("@/contexts/IntroContext", () => ({
-  useIntroContext: () => ({
-    state: "complete",
-    shouldShow: false,
+// Mock AnimationContext (TopBar uses triggerReplay for branding click)
+vi.mock("@/contexts/AnimationContext", () => ({
+  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAnimationContext: () => ({
+    loadMode: "refresh",
+    animationMode: "refresh",
+    intro: {
+      phase: "complete",
+      isActive: false,
+      wasSkipped: false,
+      replayCount: 0,
+      triggerReplay: vi.fn(),
+    },
+    route: {
+      isAnimating: false,
+    },
+    visibility: {
+      isHiddenUntilMorph: false,
+      isHiddenUntilExpand: false,
+      windowVisible: true,
+      contentVisible: true,
+    },
     reducedMotion: false,
-    introPhase: "idle",
-    setIntroPhase: vi.fn(),
-    replayCount: 0,
-    startAnimation: vi.fn(),
-    skipAnimation: vi.fn(),
-    completeAnimation: vi.fn(),
-    triggerReplay: vi.fn(),
+    isInitialized: true,
   }),
-  IntroProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAnimationDispatch: () => vi.fn(),
 }));
 
 describe("TopBar", () => {

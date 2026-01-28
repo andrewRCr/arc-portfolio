@@ -268,6 +268,44 @@ export const PAGE_BODY_FADE_ANIMATION = {
 };
 
 // ============================================================================
+// REFRESH ANIMATIONS - Page Reload with Cookie
+// ============================================================================
+// When user refreshes with cookie, content waits for window to appear then fades in.
+// Window animation: MAIN_CONTENT_DELAY (0.25s) + MAIN_CONTENT_DURATION (0.5s) = 0.75s
+// Content must wait for window to be visible before animating.
+
+/** Delay before refresh content animations start (waits for window to appear) */
+export const REFRESH_CONTENT_DELAY = 0.8; // After window animation (0.75s) + buffer
+
+/** Duration of refresh content fade-in */
+export const REFRESH_CONTENT_DURATION = 0.35;
+
+/** Hero-specific refresh delays (staggered entrance after window appears) */
+export const REFRESH_HERO_BAR_DELAY = REFRESH_CONTENT_DELAY;
+export const REFRESH_HERO_TEXT_DELAY = REFRESH_CONTENT_DELAY + 0.08;
+export const REFRESH_HERO_SECONDARY_DELAY = REFRESH_CONTENT_DELAY + 0.15;
+
+// ============================================================================
+// SKIP ANIMATIONS - User Skipped Intro
+// ============================================================================
+// When user skips intro, window animates but hero/nav/border need to wait
+// until window is sufficiently visible before animating in.
+
+/** Delay before skip content animations start (waits for window to be ~50% visible) */
+export const SKIP_CONTENT_DELAY = MAIN_CONTENT_DELAY + MAIN_CONTENT_DURATION * 0.5; // ~0.5s
+
+/** Duration of skip content animations (compressed) */
+export const SKIP_CONTENT_DURATION = 0.3;
+
+/** Skip-specific delays for choreographed entrance */
+export const SKIP_HERO_BAR_DELAY = SKIP_CONTENT_DELAY;
+export const SKIP_HERO_TEXT_DELAY = SKIP_CONTENT_DELAY + 0.05;
+export const SKIP_HERO_SECONDARY_DELAY = SKIP_CONTENT_DELAY + 0.1;
+export const SKIP_NAV_DELAY = SKIP_CONTENT_DELAY;
+export const SKIP_BORDER_DELAY = SKIP_CONTENT_DELAY;
+export const SKIP_BODY_DELAY = SKIP_CONTENT_DELAY + 0.15;
+
+// ============================================================================
 // TAB ANIMATIONS - Tab Indicator and Content Transitions
 // ============================================================================
 

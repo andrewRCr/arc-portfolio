@@ -20,21 +20,32 @@ vi.mock("@/contexts/LayoutPreferencesContext", () => ({
   }),
 }));
 
-// Mock IntroContext to prevent TopBar from rendering as placeholder during tests
-vi.mock("@/contexts/IntroContext", () => ({
-  IntroProvider: ({ children }: { children: React.ReactNode }) => children,
-  useIntroContext: () => ({
-    state: "complete",
-    shouldShow: false,
+// Mock AnimationContext to simulate "complete" state (no intro overlay blocking interaction)
+vi.mock("@/contexts/AnimationContext", () => ({
+  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAnimationContext: () => ({
+    loadMode: "refresh",
+    animationMode: "refresh",
+    intro: {
+      phase: "complete",
+      isActive: false,
+      wasSkipped: false,
+      replayCount: 0,
+      triggerReplay: vi.fn(),
+    },
+    route: {
+      isAnimating: false,
+    },
+    visibility: {
+      isHiddenUntilMorph: false,
+      isHiddenUntilExpand: false,
+      windowVisible: true,
+      contentVisible: true,
+    },
     reducedMotion: false,
-    replayCount: 0,
-    introPhase: "idle",
-    startAnimation: vi.fn(),
-    skipAnimation: vi.fn(),
-    completeAnimation: vi.fn(),
-    triggerReplay: vi.fn(),
-    setIntroPhase: vi.fn(),
+    isInitialized: true,
   }),
+  useAnimationDispatch: () => vi.fn(),
 }));
 
 describe("LayoutWrapper", () => {

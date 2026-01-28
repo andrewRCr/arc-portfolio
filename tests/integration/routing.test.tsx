@@ -6,6 +6,7 @@
  * - Project detail header back button hrefs
  */
 
+import React from "react";
 import { render, screen } from "@tests/test-utils";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
@@ -14,6 +15,23 @@ import { createImageMock } from "@tests/mocks/next-image";
 // Apply mocks
 vi.mock("next/navigation", () => createNavigationMock());
 vi.mock("next/image", () => createImageMock());
+
+// Mock AnimationContext (required when using test-utils with AnimationProvider)
+vi.mock("@/contexts/AnimationContext", () => ({
+  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAnimationContext: () => ({
+    loadMode: "refresh",
+    animationMode: "refresh",
+    intro: { phase: "complete", isActive: false, wasSkipped: false, replayCount: 0, triggerReplay: vi.fn() },
+    route: { isAnimating: false },
+    visibility: { isHiddenUntilMorph: false, isHiddenUntilExpand: false, windowVisible: true, contentVisible: true },
+    reducedMotion: false,
+    isInitialized: true,
+  }),
+  useAnimationDispatch: () => vi.fn(),
+  markIntroSeen: vi.fn(),
+  clearIntroCookie: vi.fn(),
+}));
 
 import { Navigation } from "@/components/layout/Navigation";
 import { DetailHeader } from "@/components/projects/DetailHeader";

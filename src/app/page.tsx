@@ -6,12 +6,19 @@ import { Hero } from "@/components/layout/Hero";
 import { FeaturedSection } from "@/components/sections/FeaturedSection";
 import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
 import { skills } from "@/data/skills";
-import { BODY_CONTENT_DELAY, BODY_CONTENT_DURATION, HIDE_DURATION } from "@/lib/animation-timing";
+import {
+  BODY_CONTENT_DELAY,
+  BODY_CONTENT_DURATION,
+  HIDE_DURATION,
+  REFRESH_CONTENT_DELAY,
+  REFRESH_CONTENT_DURATION,
+  SKIP_BODY_DELAY,
+  SKIP_CONTENT_DURATION,
+  MATERIAL_EASE,
+} from "@/lib/animation-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
-import { useDelayedShow } from "@/hooks/useDelayedShow";
-import { useHasMounted } from "@/hooks/useHasMounted";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
-import { useIntroContext } from "@/contexts/IntroContext";
+import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
 
 // Extract featured skills from all categories
 const allFeaturedSkills = Object.values(skills)
@@ -44,15 +51,42 @@ const getFeaturedSkills = (order: string[]) =>
 export default function Home() {
   const isPhone = useIsPhone();
   const { layoutMode } = useLayoutPreferences();
-  const { isHiddenUntilMorph, reducedMotion, shouldShow } = useIntroContext();
+  const { animationMode, visibility } = useAnimationContext();
 
-  // Body content visibility:
-  // - Animation playing: controlled by isHiddenUntilMorph (shows during morph phase)
-  // - Animation skipped (refresh/reduced motion): use delayedShow to sync with ThemeControl
-  const mounted = useHasMounted();
-  const delayedShow = useDelayedShow(150);
-  const animationSkipped = reducedMotion || !shouldShow;
-  const showBodyContent = mounted && (animationSkipped ? delayedShow : !isHiddenUntilMorph);
+  // Use new visibility flag - accounts for initialization
+  const contentVisible = visibility.contentVisible;
+
+  // Get body content timing based on animationMode
+  const getBodyContentTiming = (mode: AnimationMode) => {
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "route":
+        // Route: body content doesn't need special timing (already visible context)
+        return { duration: 0.3, ease: MATERIAL_EASE };
+      case "refresh":
+        return {
+          duration: REFRESH_CONTENT_DURATION,
+          delay: REFRESH_CONTENT_DELAY + 0.1, // Slightly after hero
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          duration: SKIP_CONTENT_DURATION,
+          delay: SKIP_BODY_DELAY,
+          ease: MATERIAL_EASE,
+        };
+      case "intro":
+      default:
+        return {
+          duration: BODY_CONTENT_DURATION,
+          delay: BODY_CONTENT_DELAY,
+          ease: "easeOut" as const,
+        };
+    }
+  };
+
+  const bodyTransition = contentVisible ? getBodyContentTiming(animationMode) : { duration: HIDE_DURATION };
 
   // Responsive positioning: hero on phone (visible immediately), below featured on tablet/desktop
   // Mobile boxed: curated 6 skills (single row). Mobile fullscreen: full 10 (5/5 split)
@@ -73,17 +107,8 @@ export default function Home() {
       <motion.div
         className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
         initial={{ opacity: 0 }}
-        animate={{ opacity: showBodyContent ? 1 : 0 }}
-        transition={
-          // Animation playing: delayed entrance after layout expansion
-          // Animation skipped (refresh/reduced motion): synced with ThemeControl (150ms delay + 300ms fade)
-          // On hide (retrigger): quick fade out
-          showBodyContent
-            ? animationSkipped
-              ? { duration: 0.3, ease: "easeOut" }
-              : { duration: BODY_CONTENT_DURATION, delay: BODY_CONTENT_DELAY, ease: "easeOut" }
-            : { duration: HIDE_DURATION }
-        }
+        animate={{ opacity: contentVisible ? 1 : 0 }}
+        transition={bodyTransition}
       >
         <FeaturedSection />
         {!skillsInHero && (

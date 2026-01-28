@@ -16,7 +16,7 @@ import { axe } from "vitest-axe";
 import type { AxeResults } from "axe-core";
 import { ThemeContextProvider } from "@/contexts/ThemeContext";
 import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
-import { IntroProvider } from "@/contexts/IntroContext";
+import { AnimationProvider } from "@/contexts/AnimationContext";
 
 /**
  * Test wrapper that provides all necessary context providers.
@@ -24,7 +24,7 @@ import { IntroProvider } from "@/contexts/IntroContext";
  * Currently includes:
  * - ThemeContextProvider (for useThemeContext hook)
  * - WallpaperContextProvider (for useWallpaperContext hook)
- * - IntroProvider (for useIntroContext hook)
+ * - AnimationProvider (for useAnimationContext hook - centralized animation state)
  *
  * Note: We don't include NextThemesProvider here because it requires
  * browser APIs that don't work well in jsdom. Components that need
@@ -34,7 +34,7 @@ function AllProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeContextProvider>
       <WallpaperContextProvider>
-        <IntroProvider>{children}</IntroProvider>
+        <AnimationProvider>{children}</AnimationProvider>
       </WallpaperContextProvider>
     </ThemeContextProvider>
   );

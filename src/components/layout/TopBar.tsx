@@ -2,7 +2,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { SITE } from "@/config/site";
-import { useIntroContext } from "@/contexts/IntroContext";
+import { useAnimationContext } from "@/contexts/AnimationContext";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeControl, ThemeControlDrawer } from "../theme";
@@ -35,14 +35,21 @@ export interface TopBarProps {
 export function TopBar({ isActive, onActivate, className }: TopBarProps) {
   const { windowBorderWidth, contentMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
   const innerHeight = topBarHeight - windowBorderWidth * 2;
-  const { triggerReplay, introPhase, isHiddenUntilMorph, reducedMotion } = useIntroContext();
+  const { intro, visibility, reducedMotion } = useAnimationContext();
+
+  // Derive values from AnimationContext
+  const triggerReplay = intro.triggerReplay;
+  const introPhase = intro.phase;
+  // Use windowVisible which correctly handles idle phase (unlike legacy isHiddenUntilMorph)
+  const windowVisible = visibility.windowVisible;
 
   // Apply layoutId during morph phase for shared element transition from CommandWindow
   const isMorphing = introPhase === "morphing";
 
-  // Don't render during pre-morph intro - keeps space with placeholder
+  // Don't render during pre-morph intro (including idle) - keeps space with placeholder
   // This allows layoutId morph to work (TopBar "mounts" when CommandWindow "unmounts")
-  if (isHiddenUntilMorph) {
+  // Also prevents flash of TopBar before intro overlay appears
+  if (!windowVisible) {
     return <div className={className} style={{ height: topBarHeight, flexShrink: 0 }} aria-hidden="true" />;
   }
 
