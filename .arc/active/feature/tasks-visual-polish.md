@@ -324,6 +324,118 @@ startup animation, creating a cohesive visual experience.
     - `src/lib/animation-timing.ts` - Added tab animation timing constants
     - `e2e/tests/tab-animations.spec.ts` - New E2E test file (8 tests)
 
+### **Phase 3.R:** Animation Architecture Remediation
+
+**Goal:** Centralize animation decision-making to fix the refresh animation timing issue (Issue B) and improve
+animation system maintainability.
+
+**Context:** During Phase 3, we discovered that distributed decision-making across components (each independently
+interpreting `shouldShow`, `useInitialMount`, `introPhase`) prevents reliable implementation of refresh animation
+delay. This remediation addresses the architectural root cause by centralizing the "intro vs refresh vs route"
+decision at the root level, before children render.
+
+**Outcome:** All three scenarios (intro, refresh, route) will have explicit, coordinated animations driven from
+a single source of truth.
+
+- [ ] **3.R.1 Create AnimationContext with centralized state**
+
+    - [ ] **3.R.1.a Define types and state structure**
+        - `LoadMode`: `"intro" | "refresh" | "route"`
+        - `AnimationContextValue` with namespaced state: `intro`, `route`, `visibility`
+        - `intro.wasSkipped` flag for compressed timing
+
+    - [ ] **3.R.1.b Write unit tests for AnimationContext (TDD)**
+        - Test loadMode determination (no cookie → intro, cookie → refresh)
+        - Test phase transitions (idle → entering → ... → complete)
+        - Test skip handling (wasSkipped flag, phase jump)
+        - Test route change transitions (loadMode → "route")
+
+    - [ ] **3.R.1.c Implement reducer and loadMode determination**
+        - Initial loadMode based on cookie check (intro vs refresh)
+        - Transition to "route" on pathname change
+        - Handle skip action (set `wasSkipped`, jump to expanding)
+        - Tests from 3.R.1.b should pass
+
+    - [ ] **3.R.1.d Consolidate useIntroAnimation into context**
+        - Merge cookie check, reduced motion detection, phase orchestration
+        - Single source of truth for all animation state
+        - Verify tests still pass
+
+- [ ] **3.R.2 Migrate components to AnimationContext with variants**
+
+    - [ ] **3.R.2.a Update Hero.tsx**
+        - Define Hero variants: `intro-expanding`, `refresh-enter`, `route-enter`, `visible`, `hidden`
+        - Replace `!shouldShow` logic with context consumption
+        - Use variant based on `loadMode` and `intro.phase`
+        - Handle `wasSkipped` for compressed timing
+
+    - [ ] **3.R.2.b Update PageHeader.tsx**
+        - Define PageHeader variants
+        - Remove `useInitialMount` dependency
+        - Use AnimationContext for animation decisions
+
+    - [ ] **3.R.2.c Update PageLayout.tsx**
+        - Define PageLayout variants
+        - Remove `useInitialMount` dependency
+        - Use AnimationContext for animation decisions
+
+    - [ ] **3.R.2.d Update PageTransition.tsx**
+        - Signal route changes to AnimationContext
+        - Set `loadMode = "route"` and `route.isAnimating = true` on pathname change
+
+    - [ ] **3.R.2.e Manual verification of existing behavior**
+        - Intro sequence works as before
+        - Route transitions work as before
+        - Skip works (with compressed timing now)
+
+- [ ] **3.R.3 Implement refresh-enter animation (Issue B)**
+
+    - [ ] **3.R.3.a Write E2E test for refresh behavior (TDD)**
+        - Test: On refresh with cookie, content appears with animation delay
+        - Test: Content waits for window before animating in
+        - This test should fail initially (current behavior is instant appear)
+
+    - [ ] **3.R.3.b Add refresh timing constants and wire up variants**
+        - `REFRESH_CONTENT_DELAY` - delay for window to appear
+        - `REFRESH_CONTENT_DURATION` - fade-in duration
+        - Wire `refresh-enter` variants in components
+
+    - [ ] **3.R.3.c Verify refresh E2E test passes**
+        - Run test from 3.R.3.a
+        - Manual verification of refresh behavior
+
+- [ ] **3.R.4 E2E animation test gap audit**
+
+    - [ ] **3.R.4.a Audit existing E2E animation coverage**
+        - Review `intro-animation.spec.ts` and related test files
+        - Identify gaps in scenario coverage (intro, refresh, route, skip)
+        - Document missing coverage
+
+    - [ ] **3.R.4.b Address identified gaps**
+        - Add tests for uncovered scenarios
+        - Update any tests broken by refactor
+        - Ensure all animation scenarios have E2E coverage
+
+- [ ] **3.R.5 Cleanup and final verification**
+
+    - [ ] **3.R.5.a Remove deprecated code**
+        - Remove `useInitialMount` from animation logic (keep if used elsewhere)
+        - Remove old `useIntroAnimation` hook if fully merged
+        - Rename/replace IntroContext with AnimationContext
+
+    - [ ] **3.R.5.b Run full quality gates**
+        - Type check, lint, format, markdown lint
+        - Unit tests (including new AnimationContext tests)
+        - E2E tests (full suite)
+        - Build verification
+
+    - [ ] **3.R.5.c Manual verification of all scenarios**
+        - Fresh visit (intro sequence)
+        - Refresh with cookie (refresh-enter)
+        - Route navigation (route-enter)
+        - Intro skip (compressed intro-expanding)
+        - Reduced motion (respects preference)
+
 ### **Phase 4:** Micro-Interactions
 
 - [ ] **4.1 Polish project card hover effects**
