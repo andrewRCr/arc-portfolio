@@ -17,7 +17,7 @@ import { buildIconLinkItems } from "./utils/buildLinkItems";
 import { TouchTarget } from "@/components/ui/TouchTarget";
 import { ModStatsGroup } from "./ModStatsBadge";
 import type { ProjectLinks } from "@/types/project";
-import type { DetailHeaderStats } from "./DetailHeader";
+import type { DetailHeaderStats } from "./detail-header.types";
 
 export interface DetailBannerMobileProps {
   /** Category badges displayed in footer */

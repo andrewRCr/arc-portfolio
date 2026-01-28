@@ -15,7 +15,7 @@ import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeade
 import { buildIconLinkItems } from "./utils/buildLinkItems";
 import { TouchTarget } from "@/components/ui/TouchTarget";
 import { ModStatsGroup } from "./ModStatsBadge";
-import type { DetailHeaderProps } from "./DetailHeader";
+import type { DetailHeaderProps } from "./detail-header.types";
 
 export function DetailHeaderDesktop({
   title,
