@@ -1,10 +1,16 @@
 /**
- * Intro Animation Timeline Configuration
+ * Animation Timing Configuration
  *
- * Central source of truth for all intro animation timing values.
+ * Central source of truth for all animation timing values.
  * All durations are in seconds (Framer Motion convention).
  *
- * Timeline Overview:
+ * Sections:
+ * 1. SHARED - Easing curves, blur values, utility transitions
+ * 2. INTRO SEQUENCE - TWM startup animation (entering, typing, loading, morphing, expanding)
+ * 3. ROUTE TRANSITIONS - Page navigation animations (abbreviated intros)
+ * 4. PAGE HEADER - Header animation configs for route changes
+ *
+ * Intro Timeline Overview:
  * - ENTERING: Window scales up, backdrop blurs, content fades in
  * - TYPING: "portfolio init" types out with cursor
  * - LOADING: Spinner displays
@@ -14,8 +20,26 @@
  */
 
 // ============================================================================
-// ENTERING - Window Entrance
+// SHARED - Easing Curves, Blur Values, Utilities
 // ============================================================================
+
+/** Material Design standard easing - used across route transitions */
+export const MATERIAL_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
+
+/** Standard blur for entrance animations */
+export const ENTRANCE_BLUR = "blur(3px)";
+
+/** Cleared blur state */
+export const BLUR_NONE = "blur(0px)";
+
+/** Instant transition for skipping animations (SSR hydration, reduced motion) */
+export const INSTANT_TRANSITION = { duration: 0 };
+
+// ============================================================================
+// INTRO SEQUENCE - TWM Startup Animation
+// ============================================================================
+
+// --- ENTERING - Window Entrance ---
 
 /** Duration of window scale-up animation */
 export const WINDOW_SCALE_DURATION = 0.3;
@@ -173,4 +197,72 @@ export const MAIN_CONTENT_TWEEN = {
   type: "tween" as const,
   duration: MAIN_CONTENT_DURATION,
   ease: "easeOut" as const,
+};
+
+// ============================================================================
+// ROUTE TRANSITIONS - Page Navigation Animations
+// ============================================================================
+// Abbreviated versions of intro animations for route changes.
+// Faster and simpler than full intro sequence.
+
+/** Base delay before route transition animations start */
+export const ROUTE_TRANSITION_DELAY = 0.1;
+
+/** Speed multiplier for route transitions (faster than intro) */
+export const ROUTE_TRANSITION_SPEED = 0.5;
+
+// --- Hero Route Transition Timing ---
+/** Hero name animation delay offset (scale + blur effect) */
+export const ROUTE_HERO_NAME_DELAY_OFFSET = 0.1;
+
+/** Hero text animation delay offset (slide + blur) */
+export const ROUTE_HERO_TEXT_DELAY_OFFSET = 0.08;
+
+/** Hero secondary content delay offset */
+export const ROUTE_HERO_SECONDARY_DELAY_OFFSET = 0.15;
+
+// --- Body Route Transition ---
+/** Body content fade delay for route transitions */
+export const ROUTE_BODY_DELAY = 0.25;
+
+/** Body content fade duration for route transitions */
+export const ROUTE_BODY_DURATION = 0.35;
+
+// ============================================================================
+// PAGE HEADER - Route Change Animation Configs
+// ============================================================================
+// Complete animation objects for PageHeader component.
+// Separated from intro sequence - these only run on route changes.
+
+/** Title animation: slides down from above + blur clears */
+export const PAGE_HEADER_TITLE_ANIMATION = {
+  initial: { opacity: 0, y: -10, filter: ENTRANCE_BLUR },
+  animate: { opacity: 1, y: 0, filter: BLUR_NONE },
+  transition: { delay: ROUTE_TRANSITION_DELAY, duration: 0.22, ease: MATERIAL_EASE },
+};
+
+/** Secondary content with children (tabs, controls): parallax + blur */
+export const PAGE_HEADER_SECONDARY_WITH_CHILDREN = {
+  initial: { opacity: 0, y: 8, filter: ENTRANCE_BLUR },
+  animate: { opacity: 1, y: 0, filter: BLUR_NONE },
+  transition: { delay: ROUTE_TRANSITION_DELAY + 0.04, duration: 0.25, ease: MATERIAL_EASE },
+};
+
+/** Secondary content without children (tagline only): blur only, no movement */
+export const PAGE_HEADER_SECONDARY_SIMPLE = {
+  initial: { opacity: 0, filter: ENTRANCE_BLUR },
+  animate: { opacity: 1, filter: BLUR_NONE },
+  transition: { delay: ROUTE_TRANSITION_DELAY + 0.04, duration: 0.25, ease: MATERIAL_EASE },
+};
+
+// ============================================================================
+// PAGE LAYOUT - Body Animation Configs
+// ============================================================================
+// Body animations for PageLayout component.
+
+/** Body fade animation for route transitions */
+export const PAGE_BODY_FADE_ANIMATION = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { delay: ROUTE_BODY_DELAY, duration: ROUTE_BODY_DURATION, ease: MATERIAL_EASE },
 };

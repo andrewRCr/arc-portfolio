@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { FRAME_FADE_DELAY, BORDER_DRAW_DURATION, NAV_FADE_TRANSITION } from "@/lib/intro-timing";
+import { FRAME_FADE_DELAY, BORDER_DRAW_DURATION, NAV_FADE_TRANSITION } from "@/lib/animation-timing";
 import { useIntroContext } from "@/contexts/IntroContext";
 import { Navigation } from "./Navigation";
 import { PageTransition } from "./PageTransition";

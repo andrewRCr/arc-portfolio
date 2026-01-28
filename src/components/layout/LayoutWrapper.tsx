@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Minimize2, Maximize2 } from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { MAIN_CONTENT_TWEEN, MAIN_CONTENT_DELAY, HIDE_DURATION } from "@/lib/intro-timing";
+import { MAIN_CONTENT_TWEEN, MAIN_CONTENT_DELAY, HIDE_DURATION } from "@/lib/animation-timing";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { IntroProvider, useIntroContext } from "@/contexts/IntroContext";

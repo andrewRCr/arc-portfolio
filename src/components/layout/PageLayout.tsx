@@ -1,61 +1,17 @@
 "use client";
 
-import { useLayoutEffect, useState, useEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 import "overlayscrollbars/styles/overlayscrollbars.css";
 import { motion, useReducedMotion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { PAGE_BODY_FADE_ANIMATION, INSTANT_TRANSITION } from "@/lib/animation-timing";
 import { useScrollShadow } from "@/hooks/useScrollShadow";
+import { useInitialMount } from "@/hooks/useInitialMount";
 import { ScrollShadow } from "./ScrollShadow";
 import { ScrollProvider } from "./ScrollContext";
 import { BackToTopButton } from "@/components/ui/BackToTopButton";
 import type { HeaderType } from "@/hooks/useHeaderCrossfade";
-
-/**
- * Track if any PageLayout has mounted before.
- * Used to skip animation on initial SSR hydration (avoids hydration mismatch)
- * but animate on subsequent route-change remounts.
- */
-let hasEverMounted = false;
-
-// =============================================================================
-// PAGE TRANSITION ANIMATION CONFIG
-// =============================================================================
-
-/** Delay before animation starts (seconds) - creates deliberate "beat" */
-const TRANSITION_DELAY = 0.1;
-
-/** Material Design standard easing */
-const MATERIAL_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
-
-/**
- * Body transition variant:
- * - "fade": simple opacity fade (header gets the "punch", body is subtle)
- * - "parallax": body also slides up, but no blur (header still more prominent)
- */
-type BodyTransitionVariant = "fade" | "parallax";
-const BODY_VARIANT: BodyTransitionVariant = "fade";
-
-/** Animation config type */
-interface AnimationConfig {
-  initial: Record<string, number | string>;
-  animate: Record<string, number | string>;
-  transition: { delay: number; duration: number; ease: [number, number, number, number] };
-}
-
-/** Body animation variants */
-const bodyAnimations: Record<BodyTransitionVariant, AnimationConfig> = {
-  fade: {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    transition: { delay: 0.25, duration: 0.35, ease: MATERIAL_EASE },
-  },
-  parallax: {
-    initial: { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-    transition: { delay: TRANSITION_DELAY + 0.06, duration: 0.4, ease: MATERIAL_EASE },
-  },
-};
 
 /**
  * PageLayout Component
@@ -103,15 +59,7 @@ export function PageLayout({
   const effectiveHeaderType = headerType ?? (stickyHeader ? "detail" : "page");
   const { contentMaxWidth, contentPaddingY, contentPaddingX } = DEFAULT_LAYOUT_TOKENS;
   const shouldReduceMotion = useReducedMotion();
-
-  // Track if this is the first-ever mount (SSR hydration) vs route-change remount
-  // Capture at render time before effect runs - stable for this component instance
-  const [isInitialMount] = useState(() => !hasEverMounted);
-
-  // After mount, mark that we've mounted (for future route changes)
-  useEffect(() => {
-    hasEverMounted = true;
-  }, []);
+  const isInitialMount = useInitialMount("PageLayout");
 
   // Skip animations on:
   // - Initial SSR hydration (avoids hydration mismatch)
@@ -168,9 +116,6 @@ export function PageLayout({
     paddingRight: contentPaddingX,
   };
 
-  // Select body animation based on variant
-  const bodyAnimation = bodyAnimations[BODY_VARIANT];
-
   return (
     <ScrollProvider viewport={viewport}>
       <div className="flex flex-col flex-1 min-h-0" {...(pageId && { "data-page": pageId })}>
@@ -185,16 +130,16 @@ export function PageLayout({
         )}
 
         {/* Scrollable content area with scroll shadows */}
-        {/* Animated: fade or parallax up (subtler than header) */}
+        {/* Animated: fade (subtler than header) */}
         <div className="relative flex-1 min-h-0">
           <main ref={setElement} className="h-full overflow-auto" data-overlayscrollbars-initialize>
             <motion.div
               className="mx-auto w-full min-h-full"
               data-page-content
               style={contentStyle}
-              initial={bodyAnimation.initial}
-              animate={bodyAnimation.animate}
-              transition={skipAnimation ? { duration: 0 } : bodyAnimation.transition}
+              initial={PAGE_BODY_FADE_ANIMATION.initial}
+              animate={PAGE_BODY_FADE_ANIMATION.animate}
+              transition={skipAnimation ? INSTANT_TRANSITION : PAGE_BODY_FADE_ANIMATION.transition}
             >
               {children}
             </motion.div>

@@ -1,9 +1,10 @@
 "use client";
 
-import { type ReactNode, useState, useEffect } from "react";
+import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import {
+  // Intro sequence timing
   HERO_BAR_DELAY,
   HERO_BAR_DURATION,
   HERO_TEXT_DELAY,
@@ -12,25 +13,20 @@ import {
   HERO_SECONDARY_DELAY,
   HERO_SECONDARY_DURATION,
   HIDE_DURATION,
-} from "@/lib/intro-timing";
+  // Route transition timing
+  MATERIAL_EASE,
+  ROUTE_TRANSITION_DELAY,
+  ROUTE_TRANSITION_SPEED,
+  ROUTE_HERO_NAME_DELAY_OFFSET,
+  ROUTE_HERO_TEXT_DELAY_OFFSET,
+  ROUTE_HERO_SECONDARY_DELAY_OFFSET,
+  // Shared
+  ENTRANCE_BLUR,
+  BLUR_NONE,
+} from "@/lib/animation-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useIntroContext } from "@/contexts/IntroContext";
-
-// =============================================================================
-// ROUTE TRANSITION ANIMATION (abbreviated intro)
-// =============================================================================
-
-/** Track if Hero has ever mounted (for route change detection) */
-let hasEverMounted = false;
-
-/** Speed multiplier for route transitions (faster than intro) */
-const ROUTE_SPEED = 0.5;
-
-/** Base delay for route transitions */
-const ROUTE_BASE_DELAY = 0.1;
-
-/** Material Design easing */
-const MATERIAL_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
+import { useInitialMount } from "@/hooks/useInitialMount";
 
 interface HeroProps {
   /** Optional content to render between tagline and "Featured Projects" heading */
@@ -55,18 +51,14 @@ interface HeroProps {
  */
 export function Hero({ children }: HeroProps) {
   const isPhone = useIsPhone();
-  const { isHiddenUntilExpand } = useIntroContext();
+  const { isHiddenUntilExpand, shouldShow } = useIntroContext();
+  const isInitialMount = useInitialMount("Hero");
 
-  // Track if this is initial mount (intro) vs route change
-  const [isInitialMount] = useState(() => !hasEverMounted);
-
-  useEffect(() => {
-    hasEverMounted = true;
-  }, []);
-
-  // Route change: play abbreviated intro animation
-  // Initial mount: controlled by intro sequence (isHiddenUntilExpand)
-  const isRouteChange = !isInitialMount;
+  // Route change animation plays when:
+  // - No intro sequence is active (shouldShow is false)
+  // - AND this is not the first-ever mount (we've navigated before)
+  // This ensures retrigger uses intro animation, not route animation
+  const isRouteChange = !shouldShow && !isInitialMount;
 
   const renderTagline = () => {
     const parts = SITE.tagline.split(" | ");
@@ -100,8 +92,8 @@ export function Hero({ children }: HeroProps) {
         initial: { scaleY: 0 },
         animate: { scaleY: 1 },
         transition: {
-          duration: HERO_BAR_DURATION * ROUTE_SPEED,
-          delay: ROUTE_BASE_DELAY,
+          duration: HERO_BAR_DURATION * ROUTE_TRANSITION_SPEED,
+          delay: ROUTE_TRANSITION_DELAY,
           ease: MATERIAL_EASE,
         },
       }
@@ -123,11 +115,11 @@ export function Hero({ children }: HeroProps) {
       return isName
         ? {
             // Name: scale + blur (origin-left set on element)
-            initial: { opacity: 0, scale: 0.95, filter: "blur(4px)" },
-            animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
+            initial: { opacity: 0, scale: 0.95, filter: ENTRANCE_BLUR },
+            animate: { opacity: 1, scale: 1, filter: BLUR_NONE },
             transition: {
               duration: 0.3,
-              delay: ROUTE_BASE_DELAY + 0.1,
+              delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_NAME_DELAY_OFFSET,
               ease: MATERIAL_EASE,
             },
           }
@@ -135,11 +127,11 @@ export function Hero({ children }: HeroProps) {
             // Other text: slide + blur, converging simultaneously
             // portfolio.init (0): slide down, tagline (2): slide up
             // Same timing so they complete together
-            initial: { opacity: 0, y: staggerIndex === 0 ? -8 : 8, filter: "blur(3px)" },
-            animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+            initial: { opacity: 0, y: staggerIndex === 0 ? -8 : 8, filter: ENTRANCE_BLUR },
+            animate: { opacity: 1, y: 0, filter: BLUR_NONE },
             transition: {
               duration: 0.2,
-              delay: ROUTE_BASE_DELAY + 0.08,
+              delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_TEXT_DELAY_OFFSET,
               ease: MATERIAL_EASE,
             },
           };
@@ -165,8 +157,8 @@ export function Hero({ children }: HeroProps) {
         initial: { opacity: 0 },
         animate: { opacity: 1 },
         transition: {
-          duration: HERO_SECONDARY_DURATION * ROUTE_SPEED,
-          delay: ROUTE_BASE_DELAY + 0.15,
+          duration: HERO_SECONDARY_DURATION * ROUTE_TRANSITION_SPEED,
+          delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_SECONDARY_DELAY_OFFSET,
           ease: MATERIAL_EASE,
         },
       }

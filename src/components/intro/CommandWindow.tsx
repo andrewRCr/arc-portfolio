@@ -19,7 +19,7 @@
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { WINDOW_SCALE_DURATION, CONTENT_FADE_DURATION, MORPH_SPRING } from "@/lib/intro-timing";
+import { WINDOW_SCALE_DURATION, CONTENT_FADE_DURATION, MORPH_SPRING } from "@/lib/animation-timing";
 import { WindowContainer } from "@/components/layout/WindowContainer";
 
 export interface CommandWindowProps {

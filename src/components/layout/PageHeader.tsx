@@ -1,7 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import {
+  PAGE_HEADER_TITLE_ANIMATION,
+  PAGE_HEADER_SECONDARY_WITH_CHILDREN,
+  PAGE_HEADER_SECONDARY_SIMPLE,
+  INSTANT_TRANSITION,
+} from "@/lib/animation-timing";
+import { useInitialMount } from "@/hooks/useInitialMount";
 
 /**
  * PageHeader Component
@@ -18,41 +24,6 @@ import { motion, useReducedMotion } from "framer-motion";
  * Width constraint is handled by PageLayout - this component fills available width.
  */
 
-// =============================================================================
-// ANIMATION CONFIG
-// =============================================================================
-
-/** Track if any PageHeader has mounted (skip animation on initial SSR hydration) */
-let hasEverMounted = false;
-
-const TRANSITION_DELAY = 0.1;
-const MATERIAL_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
-
-/** Title animation: slides down from above + blur clears (fast) */
-const titleAnimation = {
-  initial: { opacity: 0, y: -10, filter: "blur(3px)" },
-  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-  transition: { delay: TRANSITION_DELAY, duration: 0.22, ease: MATERIAL_EASE },
-};
-
-/** Secondary content with children (tabs, controls): parallax + blur */
-const secondaryWithChildrenAnimation = {
-  initial: { opacity: 0, y: 8, filter: "blur(3px)" },
-  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-  transition: { delay: TRANSITION_DELAY + 0.04, duration: 0.25, ease: MATERIAL_EASE },
-};
-
-/** Secondary content without children (tagline, divider only): blur only, no movement */
-const secondarySimpleAnimation = {
-  initial: { opacity: 0, filter: "blur(3px)" },
-  animate: { opacity: 1, filter: "blur(0px)" },
-  transition: { delay: TRANSITION_DELAY + 0.04, duration: 0.25, ease: MATERIAL_EASE },
-};
-
-// =============================================================================
-// COMPONENT
-// =============================================================================
-
 export interface PageHeaderProps {
   /** Page title (optional if using children for full custom content) */
   title?: string;
@@ -66,21 +37,16 @@ export interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, children, hideDivider = false }: PageHeaderProps) {
   const shouldReduceMotion = useReducedMotion();
-  const [isInitialMount] = useState(() => !hasEverMounted);
-
-  useEffect(() => {
-    hasEverMounted = true;
-  }, []);
+  const isInitialMount = useInitialMount("PageHeader");
 
   // Skip on initial SSR hydration or reduced motion preference
   const skipAnimation = isInitialMount || shouldReduceMotion !== false;
-  const instantTransition = { duration: 0 };
 
   // Check if we have any secondary content (subtitle, children, or divider)
   const hasSecondaryContent = subtitle || children || !hideDivider;
 
   // Use parallax for "heavy" content (tabs, controls), blur-only for "light" content (tagline)
-  const secondaryAnimation = children ? secondaryWithChildrenAnimation : secondarySimpleAnimation;
+  const secondaryAnimation = children ? PAGE_HEADER_SECONDARY_WITH_CHILDREN : PAGE_HEADER_SECONDARY_SIMPLE;
 
   return (
     <div>
@@ -88,9 +54,9 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
       {title && (
         <motion.h1
           className="hidden sm:block font-mono text-2xl font-bold text-foreground"
-          initial={titleAnimation.initial}
-          animate={titleAnimation.animate}
-          transition={skipAnimation ? instantTransition : titleAnimation.transition}
+          initial={PAGE_HEADER_TITLE_ANIMATION.initial}
+          animate={PAGE_HEADER_TITLE_ANIMATION.animate}
+          transition={skipAnimation ? INSTANT_TRANSITION : PAGE_HEADER_TITLE_ANIMATION.transition}
         >
           {title}
         </motion.h1>
@@ -102,7 +68,7 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
           className={title ? "mt-1" : ""}
           initial={secondaryAnimation.initial}
           animate={secondaryAnimation.animate}
-          transition={skipAnimation ? instantTransition : secondaryAnimation.transition}
+          transition={skipAnimation ? INSTANT_TRANSITION : secondaryAnimation.transition}
         >
           {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
           {children && <div className={title ? "sm:mt-1" : ""}>{children}</div>}

@@ -6,7 +6,7 @@ import { Hero } from "@/components/layout/Hero";
 import { FeaturedSection } from "@/components/sections/FeaturedSection";
 import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
 import { skills } from "@/data/skills";
-import { BODY_CONTENT_DELAY, BODY_CONTENT_DURATION, HIDE_DURATION } from "@/lib/intro-timing";
+import { BODY_CONTENT_DELAY, BODY_CONTENT_DURATION, HIDE_DURATION } from "@/lib/animation-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useDelayedShow } from "@/hooks/useDelayedShow";
 import { useHasMounted } from "@/hooks/useHasMounted";

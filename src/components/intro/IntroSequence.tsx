@@ -37,7 +37,7 @@ import {
   MORPH_EXIT_DELAY,
   POST_MORPH_PAUSE,
   SPINNER_INTERVAL_MS,
-} from "@/lib/intro-timing";
+} from "@/lib/animation-timing";
 import { CommandWindow } from "./CommandWindow";
 
 /**
