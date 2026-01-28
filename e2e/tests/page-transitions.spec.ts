@@ -34,60 +34,50 @@ async function skipOnMobile(page: Page): Promise<boolean> {
 }
 
 /**
- * Capture opacity values during client-side navigation.
- * Returns the minimum opacity observed on any page-transition element.
+ * Verify content fades during client-side navigation.
+ * Uses deterministic approach: check opacity immediately after navigation completes.
+ *
+ * The animation has a 0.25s delay, so content starts at opacity 0 and stays there
+ * briefly before animating to 1. We verify the initial low opacity state.
  *
  * IMPORTANT: Uses link clicks for client-side navigation, not page.goto().
- * page.goto() causes full page reload which doesn't trigger AnimatePresence.
+ * page.goto() causes full page reload which doesn't trigger the animation.
  */
-async function captureOpacityDuringClientNavigation(page: Page, linkText: string): Promise<number> {
-  // Set up polling to track opacity changes during animation
-  await page.evaluate(() => {
-    // Store minimum opacity observed (start high to capture any drop)
-    (window as unknown as { __minOpacity: number }).__minOpacity = 1;
-    (window as unknown as { __allOpacities: number[] }).__allOpacities = [];
-
-    // Poll for opacity changes on ANY page-transition wrapper
-    // (both exiting and entering elements)
-    const interval = setInterval(() => {
-      const transitions = document.querySelectorAll('[data-testid="page-transition"]');
-      transitions.forEach((transition) => {
-        const opacity = parseFloat(window.getComputedStyle(transition).opacity);
-        (window as unknown as { __allOpacities: number[] }).__allOpacities.push(opacity);
-        if (opacity < (window as unknown as { __minOpacity: number }).__minOpacity) {
-          (window as unknown as { __minOpacity: number }).__minOpacity = opacity;
-        }
-      });
-    }, 5); // Higher frequency polling
-
-    // Store cleanup for later
-    (window as unknown as { __cleanupObserver: () => void }).__cleanupObserver = () => {
-      clearInterval(interval);
-    };
-  });
+async function verifyContentFadesDuringNavigation(page: Page, linkText: string): Promise<boolean> {
+  const currentUrl = page.url();
 
   // Navigate via link click (client-side navigation)
   await page.getByRole("link", { name: linkText }).first().click();
 
-  // Wait for transition to complete (300ms animation + buffer)
-  await page.waitForTimeout(600);
+  // Wait for URL to change (navigation complete, new content mounted)
+  await page.waitForURL((url) => url.toString() !== currentUrl, { timeout: 5000 });
 
-  // Get the minimum opacity captured and clean up
-  const result = await page.evaluate(() => {
-    const cleanup = (window as unknown as { __cleanupObserver?: () => void }).__cleanupObserver;
-    if (cleanup) cleanup();
-    return {
-      minOpacity: (window as unknown as { __minOpacity: number }).__minOpacity ?? 1,
-      allOpacities: (window as unknown as { __allOpacities: number[] }).__allOpacities ?? [],
-    };
+  // Immediately check opacity - content should be at initial state (opacity 0)
+  // or in early animation (opacity < 1) due to the 0.25s delay before fade starts
+  const initialOpacity = await page.evaluate(() => {
+    const content = document.querySelector("[data-page-content]");
+    if (!content) return 1;
+    return parseFloat(window.getComputedStyle(content).opacity);
   });
 
-  // Debug: log captured values if test might fail
-  if (result.minOpacity >= 1) {
-    console.log("Captured opacities:", result.allOpacities.slice(0, 20), "...", result.allOpacities.length, "total");
+  // Wait for animation to complete
+  await page.waitForTimeout(700); // 0.25s delay + 0.35s duration + buffer
+
+  // Verify final state is fully opaque
+  const finalOpacity = await page.evaluate(() => {
+    const content = document.querySelector("[data-page-content]");
+    if (!content) return 0;
+    return parseFloat(window.getComputedStyle(content).opacity);
+  });
+
+  // Animation worked if: started low AND ended at 1
+  const animationWorked = initialOpacity < 0.5 && finalOpacity === 1;
+
+  if (!animationWorked) {
+    console.log(`Animation check: initial=${initialOpacity}, final=${finalOpacity}`);
   }
 
-  return result.minOpacity;
+  return animationWorked;
 }
 
 test.describe("Page Transitions", () => {
@@ -103,11 +93,11 @@ test.describe("Page Transitions", () => {
       await page.goto("/projects");
       await waitForHydration(page);
 
-      // Navigate to Skills via link click (client-side navigation)
-      const minOpacity = await captureOpacityDuringClientNavigation(page, "SKILLS");
+      // Navigate to Skills via link click and verify fade animation
+      const animationWorked = await verifyContentFadesDuringNavigation(page, "SKILLS");
 
-      // Content should have faded (opacity dropped below 1 at some point)
-      expect(minOpacity).toBeLessThan(1);
+      // Content should have faded (started low, ended at 1)
+      expect(animationWorked).toBe(true);
     });
 
     test("content transition works for all main routes", async ({ page }) => {
@@ -125,10 +115,10 @@ test.describe("Page Transitions", () => {
         await page.goto(startRoute);
         await waitForHydration(page);
 
-        const minOpacity = await captureOpacityDuringClientNavigation(page, linkText);
+        const animationWorked = await verifyContentFadesDuringNavigation(page, linkText);
 
         // Each navigation should trigger a fade
-        expect(minOpacity, `Transition to ${linkText}`).toBeLessThan(1);
+        expect(animationWorked, `Transition to ${linkText}`).toBe(true);
       }
     });
   });

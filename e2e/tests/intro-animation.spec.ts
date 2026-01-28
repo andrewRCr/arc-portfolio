@@ -245,4 +245,63 @@ test.describe("Intro Animation", () => {
 
     await context.close();
   });
+
+  test("Hero elements animate during intro (not instant)", async ({ page }) => {
+    // This tests that Hero respects intro choreography (isHiddenUntilExpand)
+    // Regression: Hero could incorrectly use route-change animation, appearing instantly
+    await page.goto("/");
+
+    // Wait for animation to be in "animating" state
+    await waitForIntroState(page, "animating");
+
+    // During intro animation, Hero name should NOT be visible yet
+    // (Hero waits for "expanding" phase via isHiddenUntilExpand)
+    const heroName = page.getByRole("heading", { name: "Andrew Creekmore", level: 1 });
+    await expect(heroName).not.toBeVisible();
+
+    // Wait for animation to complete
+    const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
+
+    // After intro, Hero name should be visible
+    await expect(heroName).toBeVisible();
+  });
+
+  test("Hero animates during retrigger after route navigation", async ({ page }) => {
+    // This tests the specific regression: after navigating away and back,
+    // retriggering intro should still animate Hero (not instant appear)
+    await page.goto("/");
+
+    // Let initial animation complete
+    const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
+
+    // Navigate away and back (this sets hasEverMounted = true for Hero)
+    await page.goto("/projects");
+    await waitForHydration(page);
+    await page.goto("/");
+    await waitForHydration(page);
+
+    // Retrigger via TopBar branding
+    const brandingLink = page.locator("header").getByRole("link", { name: /andrewRCr/i });
+    await brandingLink.click();
+
+    // Verify animation replays
+    await expect(overlay).toBeAttached({ timeout: 2000 });
+
+    // Wait for "animating" state
+    await waitForIntroState(page, "animating");
+
+    // CRITICAL: During retrigger, Hero name should NOT be visible
+    // This is the regression - if Hero incorrectly uses route-change animation,
+    // it would be visible immediately instead of waiting for expanding phase
+    const heroName = page.getByRole("heading", { name: "Andrew Creekmore", level: 1 });
+    await expect(heroName).not.toBeVisible();
+
+    // Wait for retrigger to complete
+    await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
+
+    // After retrigger, Hero name should be visible
+    await expect(heroName).toBeVisible();
+  });
 });
