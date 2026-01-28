@@ -10,14 +10,6 @@ const nextConfig: NextConfig = {
     pagesBufferLength: 10, // Keep 10 pages in memory
   },
 
-  // Diagnostic logging for RSC performance analysis
-  // Shows all Server Component fetch calls with full URLs
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
-
   // Cache Server Component fetch() results during HMR to reduce RSC re-computation
   experimental: {
     serverComponentsHmrCache: true,
