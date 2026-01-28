@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Minimize2, Maximize2 } from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { MAIN_CONTENT_TWEEN, MAIN_CONTENT_DELAY, HIDE_DURATION, EXPANDING_DURATION } from "@/lib/animation-timing";
+import { getWindowTransition, HIDE_DURATION, EXPANDING_DURATION } from "@/lib/animation-timing";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { AnimationProvider, useAnimationContext, useAnimationDispatch } from "@/contexts/AnimationContext";
@@ -59,44 +59,8 @@ function LayoutContent({ children }: LayoutWrapperProps) {
     }
   }, [intro.wasSkipped, intro.phase, dispatch]);
 
-  // Window animation timing based on animationMode
-  const getWindowTransition = () => {
-    // Hiding: quick fade
-    if (!windowVisible) {
-      return {
-        opacity: { type: "tween" as const, duration: HIDE_DURATION },
-        scale: { type: "tween" as const, duration: HIDE_DURATION },
-      };
-    }
-    // Showing: timing depends on mode
-    switch (animationMode) {
-      case "instant":
-        // No animation
-        return { duration: 0 };
-      case "refresh":
-        // Refresh: scale up with standard timing
-        return {
-          opacity: { duration: 0 },
-          scale: { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
-        };
-      case "skip":
-        // Skip: same as refresh (window scales up while content waits)
-        return {
-          opacity: { duration: 0 },
-          scale: { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
-        };
-      case "route":
-        // Route: no window animation (already visible)
-        return { duration: 0 };
-      case "intro":
-      default:
-        // Intro: standard scale-up timing
-        return {
-          opacity: { duration: 0 },
-          scale: { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
-        };
-    }
-  };
+  // Timing logic centralized in animation-timing.ts (SRP compliance)
+  const windowTransition = getWindowTransition(animationMode, windowVisible);
 
   // Fullscreen mode: no bars, no gaps, content fills viewport
   const isFullscreen = layoutMode === "full";
@@ -151,7 +115,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
             opacity: windowVisible ? 1 : 0,
             scale: windowVisible ? 1 : 0,
           }}
-          transition={getWindowTransition()}
+          transition={windowTransition}
           style={{ transformOrigin: "center" }}
         >
           <WindowContainer

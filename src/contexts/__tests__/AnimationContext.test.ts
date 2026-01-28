@@ -20,11 +20,21 @@ import {
 } from "../AnimationContext";
 
 // Helper to derive visibility state from AnimationState
+// Mirrors the logic in AnimationProvider for testing purposes
 function deriveVisibility(state: AnimationState) {
-  const isIntroActive = state.loadMode === "intro" && state.introPhase !== "idle" && state.introPhase !== "complete";
+  const isInIntroMode = state.loadMode === "intro";
+
+  // Window hidden during intro until past morph phase (includes idle)
+  const windowHiddenInIntro =
+    isInIntroMode && (state.introPhase === "idle" || HIDDEN_UNTIL_MORPH_PHASES.has(state.introPhase));
+
+  // Content hidden during intro until past expand phase (includes idle)
+  const contentHiddenInIntro =
+    isInIntroMode && (state.introPhase === "idle" || HIDDEN_UNTIL_EXPAND_PHASES.has(state.introPhase));
+
   return {
-    isHiddenUntilMorph: isIntroActive && HIDDEN_UNTIL_MORPH_PHASES.has(state.introPhase),
-    isHiddenUntilExpand: isIntroActive && HIDDEN_UNTIL_EXPAND_PHASES.has(state.introPhase),
+    windowVisible: state.isInitialized && !windowHiddenInIntro,
+    contentVisible: state.isInitialized && !contentHiddenInIntro,
   };
 }
 
@@ -433,32 +443,10 @@ describe("AnimationContext", () => {
   });
 
   describe("visibility derivation", () => {
-    it("isHiddenUntilMorph is true during early intro phases", () => {
-      const phases: IntroPhase[] = ["idle", "entering", "typing", "loading"];
+    it("windowVisible is false during early intro phases (idle through loading)", () => {
+      const hiddenPhases: IntroPhase[] = ["idle", "entering", "typing", "loading"];
 
-      for (const phase of phases) {
-        const state: AnimationState = {
-          ...initialAnimationState,
-          loadMode: "intro",
-          introPhase: phase,
-          isInitialized: true,
-        };
-
-        // For idle, intro is not "active" yet
-        if (phase === "idle") {
-          const visibility = deriveVisibility(state);
-          expect(visibility.isHiddenUntilMorph).toBe(false);
-        } else {
-          const visibility = deriveVisibility(state);
-          expect(visibility.isHiddenUntilMorph).toBe(true);
-        }
-      }
-    });
-
-    it("isHiddenUntilMorph is false during morphing and later", () => {
-      const phases: IntroPhase[] = ["morphing", "expanding", "complete"];
-
-      for (const phase of phases) {
+      for (const phase of hiddenPhases) {
         const state: AnimationState = {
           ...initialAnimationState,
           loadMode: "intro",
@@ -467,14 +455,14 @@ describe("AnimationContext", () => {
         };
 
         const visibility = deriveVisibility(state);
-        expect(visibility.isHiddenUntilMorph).toBe(false);
+        expect(visibility.windowVisible).toBe(false);
       }
     });
 
-    it("isHiddenUntilExpand is true during phases before expanding", () => {
-      const phases: IntroPhase[] = ["entering", "typing", "loading", "morphing"];
+    it("windowVisible is true during morphing and later", () => {
+      const visiblePhases: IntroPhase[] = ["morphing", "expanding", "complete"];
 
-      for (const phase of phases) {
+      for (const phase of visiblePhases) {
         const state: AnimationState = {
           ...initialAnimationState,
           loadMode: "intro",
@@ -483,14 +471,14 @@ describe("AnimationContext", () => {
         };
 
         const visibility = deriveVisibility(state);
-        expect(visibility.isHiddenUntilExpand).toBe(true);
+        expect(visibility.windowVisible).toBe(true);
       }
     });
 
-    it("isHiddenUntilExpand is false during expanding and complete", () => {
-      const phases: IntroPhase[] = ["expanding", "complete"];
+    it("contentVisible is false during phases before expanding", () => {
+      const hiddenPhases: IntroPhase[] = ["idle", "entering", "typing", "loading", "morphing"];
 
-      for (const phase of phases) {
+      for (const phase of hiddenPhases) {
         const state: AnimationState = {
           ...initialAnimationState,
           loadMode: "intro",
@@ -499,11 +487,27 @@ describe("AnimationContext", () => {
         };
 
         const visibility = deriveVisibility(state);
-        expect(visibility.isHiddenUntilExpand).toBe(false);
+        expect(visibility.contentVisible).toBe(false);
       }
     });
 
-    it("visibility flags are false when loadMode is not intro", () => {
+    it("contentVisible is true during expanding and complete", () => {
+      const visiblePhases: IntroPhase[] = ["expanding", "complete"];
+
+      for (const phase of visiblePhases) {
+        const state: AnimationState = {
+          ...initialAnimationState,
+          loadMode: "intro",
+          introPhase: phase,
+          isInitialized: true,
+        };
+
+        const visibility = deriveVisibility(state);
+        expect(visibility.contentVisible).toBe(true);
+      }
+    });
+
+    it("visibility is true when loadMode is refresh", () => {
       const state: AnimationState = {
         ...initialAnimationState,
         loadMode: "refresh",
@@ -512,11 +516,11 @@ describe("AnimationContext", () => {
       };
 
       const visibility = deriveVisibility(state);
-      expect(visibility.isHiddenUntilMorph).toBe(false);
-      expect(visibility.isHiddenUntilExpand).toBe(false);
+      expect(visibility.windowVisible).toBe(true);
+      expect(visibility.contentVisible).toBe(true);
     });
 
-    it("visibility flags are false when loadMode is route", () => {
+    it("visibility is true when loadMode is route", () => {
       const state: AnimationState = {
         ...initialAnimationState,
         loadMode: "route",
@@ -526,8 +530,21 @@ describe("AnimationContext", () => {
       };
 
       const visibility = deriveVisibility(state);
-      expect(visibility.isHiddenUntilMorph).toBe(false);
-      expect(visibility.isHiddenUntilExpand).toBe(false);
+      expect(visibility.windowVisible).toBe(true);
+      expect(visibility.contentVisible).toBe(true);
+    });
+
+    it("visibility is false when not initialized", () => {
+      const state: AnimationState = {
+        ...initialAnimationState,
+        loadMode: "refresh",
+        introPhase: "complete",
+        isInitialized: false,
+      };
+
+      const visibility = deriveVisibility(state);
+      expect(visibility.windowVisible).toBe(false);
+      expect(visibility.contentVisible).toBe(false);
     });
   });
 

@@ -35,8 +35,6 @@ vi.mock("@/contexts/AnimationContext", () => ({
       isAnimating: false,
     },
     visibility: {
-      isHiddenUntilMorph: false,
-      isHiddenUntilExpand: false,
       windowVisible: true,
       contentVisible: true,
     },

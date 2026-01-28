@@ -4,20 +4,8 @@ import { usePathname } from "next/navigation";
 import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import {
-  FRAME_FADE_DELAY,
-  FRAME_FADE_DURATION,
-  BORDER_DRAW_DURATION,
-  NAV_FADE_DELAY,
-  HIDE_DURATION,
-  SKIP_NAV_DELAY,
-  SKIP_BORDER_DELAY,
-  SKIP_CONTENT_DURATION,
-  REFRESH_CONTENT_DELAY,
-  REFRESH_CONTENT_DURATION,
-  MATERIAL_EASE,
-} from "@/lib/animation-timing";
-import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
+import { getNavBorderTiming, getBorderDrawTiming, HIDE_TRANSITION } from "@/lib/animation-timing";
+import { useAnimationContext } from "@/contexts/AnimationContext";
 import { Navigation } from "./Navigation";
 import { PageTransition } from "./PageTransition";
 
@@ -89,39 +77,8 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   // Use new visibility flag that accounts for initialization
   const contentVisible = visibility.contentVisible;
 
-  // Get nav/border timing based on animationMode
-  const getNavBorderTiming = (mode: AnimationMode) => {
-    switch (mode) {
-      case "instant":
-        return { duration: 0 };
-      case "route":
-        // Route: no nav/border animation (already visible)
-        return { duration: 0 };
-      case "refresh":
-        return {
-          duration: REFRESH_CONTENT_DURATION,
-          delay: REFRESH_CONTENT_DELAY,
-          ease: MATERIAL_EASE,
-        };
-      case "skip":
-        return {
-          duration: SKIP_CONTENT_DURATION,
-          delay: SKIP_NAV_DELAY,
-          ease: MATERIAL_EASE,
-        };
-      case "intro":
-      default:
-        return {
-          type: "tween" as const,
-          duration: FRAME_FADE_DURATION,
-          delay: NAV_FADE_DELAY,
-          ease: "easeOut" as const,
-        };
-    }
-  };
-
-  // Transition for nav/border
-  const navBorderTransition = contentVisible ? getNavBorderTiming(animationMode) : { duration: HIDE_DURATION };
+  // Timing logic centralized in animation-timing.ts (SRP compliance)
+  const navBorderTransition = contentVisible ? getNavBorderTiming(animationMode) : HIDE_TRANSITION;
 
   // Refs for measuring container and SVG paths
   const containerRef = useRef<HTMLDivElement>(null);
@@ -186,24 +143,8 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   // Show SVG border for intro and skip modes (not refresh/route)
   const showAnimatedBorder = svgTriggered && (animationMode === "intro" || animationMode === "skip");
 
-  // Get border draw timing based on animationMode
-  const getBorderDrawTiming = () => {
-    if (animationMode === "skip") {
-      return {
-        duration: SKIP_CONTENT_DURATION * 1.5, // Slightly longer for visual effect
-        delay: SKIP_BORDER_DELAY,
-        ease: "easeInOut" as const,
-      };
-    }
-    // Intro mode (default)
-    return {
-      duration: BORDER_DRAW_DURATION,
-      delay: FRAME_FADE_DELAY,
-      ease: "easeInOut" as const,
-    };
-  };
-
-  const borderDrawTiming = getBorderDrawTiming();
+  // Timing logic centralized in animation-timing.ts (SRP compliance)
+  const borderDrawTiming = getBorderDrawTiming(animationMode);
 
   // Measure actual path length after SVG paths render
   // useLayoutEffect runs synchronously after DOM mutations but before paint,

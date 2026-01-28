@@ -321,3 +321,265 @@ export const TAB_INDICATOR_TRANSITION = {
 
 /** Tab content crossfade duration */
 export const TAB_CONTENT_DURATION = 0.2;
+
+// ============================================================================
+// TIMING HELPERS - DRY utilities for mode-based timing
+// ============================================================================
+// These helpers reduce boilerplate in timing functions. Components should use
+// the element timing functions below, not these helpers directly.
+
+import type { Transition } from "framer-motion";
+
+/**
+ * Animation mode for component timing lookup.
+ * Defined here (timing module) as the authoritative source.
+ * Re-exported by AnimationContext for convenience.
+ */
+export type AnimationMode = "intro" | "refresh" | "route" | "skip" | "instant";
+
+/** Quick hide transition for retrigger animations */
+export const HIDE_TRANSITION: Transition = { duration: HIDE_DURATION };
+
+/**
+ * Create refresh mode timing with MATERIAL_EASE.
+ * @param delay - Delay before animation starts
+ * @param duration - Animation duration (defaults to REFRESH_CONTENT_DURATION)
+ */
+export function refreshTiming(delay: number, duration: number = REFRESH_CONTENT_DURATION): Transition {
+  return { duration, delay, ease: MATERIAL_EASE };
+}
+
+/**
+ * Create skip mode timing with MATERIAL_EASE.
+ * @param delay - Delay before animation starts
+ * @param duration - Animation duration (defaults to SKIP_CONTENT_DURATION)
+ */
+export function skipTiming(delay: number, duration: number = SKIP_CONTENT_DURATION): Transition {
+  return { duration, delay, ease: MATERIAL_EASE };
+}
+
+/**
+ * Create intro mode timing with ease-out.
+ * @param delay - Delay before animation starts
+ * @param duration - Animation duration
+ */
+export function introTiming(delay: number, duration: number): Transition {
+  return { duration, delay, ease: "easeOut" as const };
+}
+
+// ============================================================================
+// ELEMENT TIMING FUNCTIONS - Centralized timing lookup by animationMode
+// ============================================================================
+// UI components import these functions instead of defining timing logic inline.
+// This maintains SRP: components render, timing module decides timing.
+
+// --- Hero Element Timing ---
+
+/** Get timing for hero bar animation */
+export function getHeroBarTiming(mode: AnimationMode): Transition {
+  switch (mode) {
+    case "instant":
+      return INSTANT_TRANSITION;
+    case "route":
+      return {
+        duration: HERO_BAR_DURATION * ROUTE_TRANSITION_SPEED,
+        delay: ROUTE_TRANSITION_DELAY,
+        ease: MATERIAL_EASE,
+      };
+    case "refresh":
+      return refreshTiming(REFRESH_HERO_BAR_DELAY, HERO_BAR_DURATION);
+    case "skip":
+      return skipTiming(SKIP_HERO_BAR_DELAY);
+    case "intro":
+    default:
+      return introTiming(HERO_BAR_DELAY, HERO_BAR_DURATION);
+  }
+}
+
+/** Get timing for hero text animation (staggered) */
+export function getHeroTextTiming(mode: AnimationMode, staggerIndex: number): Transition {
+  switch (mode) {
+    case "instant":
+      return INSTANT_TRANSITION;
+    case "route":
+      return {
+        duration: 0.2,
+        delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_TEXT_DELAY_OFFSET,
+        ease: MATERIAL_EASE,
+      };
+    case "refresh":
+      return refreshTiming(REFRESH_HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex);
+    case "skip":
+      return skipTiming(SKIP_HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex * 0.5);
+    case "intro":
+    default:
+      return introTiming(HERO_TEXT_DELAY + HERO_TEXT_STAGGER * staggerIndex, HERO_TEXT_DURATION);
+  }
+}
+
+/** Get timing for hero name animation (special route treatment with scale+blur) */
+export function getHeroNameTiming(mode: AnimationMode): Transition {
+  if (mode === "route") {
+    return {
+      duration: 0.3,
+      delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_NAME_DELAY_OFFSET,
+      ease: MATERIAL_EASE,
+    };
+  }
+  // For other modes, use standard text timing with staggerIndex=1 (name position)
+  return getHeroTextTiming(mode, 1);
+}
+
+/** Get timing for hero secondary content (children, heading) */
+export function getHeroSecondaryTiming(mode: AnimationMode): Transition {
+  switch (mode) {
+    case "instant":
+      return INSTANT_TRANSITION;
+    case "route":
+      return {
+        duration: HERO_SECONDARY_DURATION * ROUTE_TRANSITION_SPEED,
+        delay: ROUTE_TRANSITION_DELAY + ROUTE_HERO_SECONDARY_DELAY_OFFSET,
+        ease: MATERIAL_EASE,
+      };
+    case "refresh":
+      return refreshTiming(REFRESH_HERO_SECONDARY_DELAY);
+    case "skip":
+      return skipTiming(SKIP_HERO_SECONDARY_DELAY);
+    case "intro":
+    default:
+      return introTiming(HERO_SECONDARY_DELAY, HERO_SECONDARY_DURATION);
+  }
+}
+
+// --- PageLayout Body Timing ---
+
+/** Get timing for page body content */
+export function getBodyTiming(mode: AnimationMode): Transition {
+  switch (mode) {
+    case "instant":
+      return INSTANT_TRANSITION;
+    case "refresh":
+      return refreshTiming(REFRESH_CONTENT_DELAY + 0.1);
+    case "skip":
+      return skipTiming(SKIP_BODY_DELAY);
+    case "route":
+    default:
+      return PAGE_BODY_FADE_ANIMATION.transition;
+  }
+}
+
+// --- ConditionalFrame Timing ---
+
+/** Get timing for nav and border fade */
+export function getNavBorderTiming(mode: AnimationMode): Transition {
+  switch (mode) {
+    case "instant":
+    case "route":
+      // Route: no nav/border animation (already visible)
+      return INSTANT_TRANSITION;
+    case "refresh":
+      return refreshTiming(REFRESH_CONTENT_DELAY);
+    case "skip":
+      return skipTiming(SKIP_NAV_DELAY);
+    case "intro":
+    default:
+      return {
+        type: "tween" as const,
+        duration: FRAME_FADE_DURATION,
+        delay: NAV_FADE_DELAY,
+        ease: "easeOut" as const,
+      };
+  }
+}
+
+/** Get timing for SVG border draw animation */
+export function getBorderDrawTiming(mode: AnimationMode): Transition {
+  if (mode === "skip") {
+    return {
+      duration: SKIP_CONTENT_DURATION * 1.5, // Slightly longer for visual effect
+      delay: SKIP_BORDER_DELAY,
+      ease: "easeInOut" as const,
+    };
+  }
+  // Intro mode (default)
+  return {
+    duration: BORDER_DRAW_DURATION,
+    delay: FRAME_FADE_DELAY,
+    ease: "easeInOut" as const,
+  };
+}
+
+// --- PageHeader Timing ---
+
+/** Get timing for page header title */
+export function getPageHeaderTitleTiming(mode: AnimationMode): Transition {
+  switch (mode) {
+    case "instant":
+      return INSTANT_TRANSITION;
+    case "refresh":
+      return refreshTiming(REFRESH_CONTENT_DELAY);
+    case "skip":
+      return skipTiming(SKIP_HERO_TEXT_DELAY);
+    case "route":
+    default:
+      return PAGE_HEADER_TITLE_ANIMATION.transition;
+  }
+}
+
+/** Get timing for page header secondary content */
+export function getPageHeaderSecondaryTiming(mode: AnimationMode, hasChildren: boolean): Transition {
+  const baseTransition = hasChildren
+    ? PAGE_HEADER_SECONDARY_WITH_CHILDREN.transition
+    : PAGE_HEADER_SECONDARY_SIMPLE.transition;
+
+  switch (mode) {
+    case "instant":
+      return INSTANT_TRANSITION;
+    case "refresh":
+      return refreshTiming(REFRESH_CONTENT_DELAY + 0.05);
+    case "skip":
+      return skipTiming(SKIP_HERO_TEXT_DELAY + 0.05);
+    case "route":
+    default:
+      return baseTransition;
+  }
+}
+
+// --- LayoutWrapper Window Timing ---
+
+/**
+ * Get transition for main window animation.
+ * Returns complex transition object with separate opacity/scale timing.
+ */
+export function getWindowTransition(mode: AnimationMode, visible: boolean): Transition {
+  // Hiding: quick fade
+  if (!visible) {
+    return {
+      opacity: { type: "tween" as const, duration: HIDE_DURATION },
+      scale: { type: "tween" as const, duration: HIDE_DURATION },
+    };
+  }
+
+  // Showing: timing depends on mode
+  switch (mode) {
+    case "instant":
+      return INSTANT_TRANSITION;
+    case "refresh":
+    case "skip":
+      // Window scales up with standard timing
+      return {
+        opacity: { duration: 0 },
+        scale: { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
+      };
+    case "route":
+      // Route: no window animation (already visible)
+      return INSTANT_TRANSITION;
+    case "intro":
+    default:
+      // Intro: standard scale-up timing
+      return {
+        opacity: { duration: 0 },
+        scale: { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
+      };
+  }
+}

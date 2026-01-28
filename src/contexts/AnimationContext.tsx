@@ -24,6 +24,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
+import type { AnimationMode } from "@/lib/animation-timing";
 
 // ============================================================================
 // Types
@@ -35,11 +36,9 @@ import { usePathname } from "next/navigation";
  */
 export type LoadMode = "intro" | "refresh" | "route";
 
-/**
- * Animation mode for component timing lookup.
- * Components use this to select the appropriate timing preset.
- */
-export type AnimationMode = "intro" | "refresh" | "route" | "skip" | "instant";
+// AnimationMode is defined in animation-timing.ts (single source of truth)
+// Re-export here for convenience - consumers can import from either location
+export type { AnimationMode } from "@/lib/animation-timing";
 
 /**
  * Detailed phases within the intro sequence.
@@ -80,17 +79,6 @@ export interface RouteState {
  * Always use initial: {hidden state} for animated elements.
  */
 export interface VisibilityState {
-  /**
-   * LEGACY: True until morphing starts (intro only).
-   * @deprecated Use windowVisible instead
-   */
-  isHiddenUntilMorph: boolean;
-  /**
-   * LEGACY: True until expanding starts (intro only).
-   * @deprecated Use contentVisible instead
-   */
-  isHiddenUntilExpand: boolean;
-
   /**
    * Whether main window should be visible.
    * False until: initialized AND (not intro OR past morph phase).
@@ -492,11 +480,7 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
 
   const isIntroActive = effectiveLoadMode === "intro" && state.introPhase !== "idle" && state.introPhase !== "complete";
 
-  // Legacy visibility flags (for intro phase-based choreography)
-  const isHiddenUntilMorph = isIntroActive && HIDDEN_UNTIL_MORPH_PHASES.has(state.introPhase);
-  const isHiddenUntilExpand = isIntroActive && HIDDEN_UNTIL_EXPAND_PHASES.has(state.introPhase);
-
-  // New visibility flags (account for initialization state)
+  // Visibility flags (account for initialization state)
   // For intro mode: visibility is phase-based (hidden until appropriate phase)
   // For refresh/route: visible once initialized
   //
@@ -557,8 +541,6 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
         isAnimating: state.isRouteAnimating,
       },
       visibility: {
-        isHiddenUntilMorph,
-        isHiddenUntilExpand,
         windowVisible,
         contentVisible,
       },
@@ -575,8 +557,6 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
       state.reducedMotion,
       state.isInitialized,
       isIntroActive,
-      isHiddenUntilMorph,
-      isHiddenUntilExpand,
       windowVisible,
       contentVisible,
       triggerReplay,
@@ -599,6 +579,3 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
  * Call after INTRO_COMPLETE or INTRO_SKIP actions.
  */
 export { markIntroSeen, clearIntroCookie };
-
-// Re-export for backwards compatibility during migration
-export type { IntroPhase as LegacyIntroPhase };

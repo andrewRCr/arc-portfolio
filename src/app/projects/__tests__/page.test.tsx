@@ -21,7 +21,7 @@ vi.mock("@/contexts/AnimationContext", () => ({
     animationMode: "refresh",
     intro: { phase: "complete", isActive: false, wasSkipped: false, replayCount: 0, triggerReplay: vi.fn() },
     route: { isAnimating: false },
-    visibility: { isHiddenUntilMorph: false, isHiddenUntilExpand: false, windowVisible: true, contentVisible: true },
+    visibility: { windowVisible: true, contentVisible: true },
     reducedMotion: false,
     isInitialized: true,
   }),
