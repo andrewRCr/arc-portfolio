@@ -549,32 +549,50 @@ a single source of truth.
     - [x] **4.2.d Run quality gates**
         - Type check, lint, tests pass
 
-- [ ] **4.3 Animate layout mode transitions**
+- [x] **4.3 Animate layout mode transitions**
 
     **Goal:** Add smooth transitions when layout mode changes between boxed/wide/full states.
 
     **Context:** Layout mode affects container max-width, padding, and gap in LayoutWrapper.
     Currently changes are instant; should transition smoothly.
 
-    **Implementation approach:** Use CSS transitions (simpler than Framer Motion for this case -
-    just property interpolation, no orchestration needed). Add timing constant to animation-timing.ts
-    for consistency with rest of system.
+    **Implementation approach:** Hybrid CSS + Framer Motion. Container uses CSS transitions for
+    max-width/padding/gap. Phone fullscreen mode uses Framer Motion for TopBar/FooterBar
+    height/opacity animations. Content crossfade hides reflow during phone transitions.
 
-    - [ ] **4.3.a Add timing constant to animation-timing.ts**
-        - Add `LAYOUT_MODE_DURATION` constant (~0.3s)
-        - Document in appropriate section
+    - [x] **4.3.a Add timing constants to animation-timing.ts**
+        - Added `LAYOUT_MODE_DURATION_DESKTOP` and `LAYOUT_MODE_DURATION_MOBILE` (0.35s)
+        - Added `LAYOUT_CONTENT_FADE_DURATION` (0.1s) for crossfade timing
+        - DRY: All timing references use these constants
 
-    - [ ] **4.3.b Add CSS transitions to LayoutWrapper container**
-        - Apply `transition-[max-width,padding,gap]` with duration from constant
-        - Target the layout container div (line ~96 in LayoutWrapper.tsx)
+    - [x] **4.3.b Add transitions to LayoutWrapper**
+        - CSS transitions on container: max-width, padding, gap
+        - Framer Motion wrappers for TopBar/FooterBar height/opacity (phone fullscreen)
+        - Isolated fullscreen animation from intro animation (separate wrappers)
+        - Guard to reset layout to boxed when intro plays (edge case protection)
 
-    - [ ] **4.3.c Verify reduced motion behavior**
-        - Add `motion-reduce:transition-none` to disable under reduced motion
-        - Test with system setting enabled
+    - [x] **4.3.c Content crossfade for phone layout transitions**
+        - Added `isLayoutTransitioning` state to LayoutPreferencesContext
+        - PageLayout applies opacity crossfade to header + body (phone only)
+        - Home page: `delayedLayoutMode` delays skills list change until faded out
+        - Desktop excluded from crossfade (no reflow, smooth max-width only)
 
-    - [ ] **4.3.d Run quality gates**
-        - Type check, lint
-        - Run layout-related E2E tests
+    - [x] **4.3.d Desktop wallpaper parallax effect**
+        - WallpaperBackground scales 1.0→1.02 in wide mode (desktop only)
+        - Subtle depth effect as windows expand/contract over wallpaper
+
+    - [x] **4.3.e Sub-pixel stabilization**
+        - Added `will-change-transform` to Hero bar, ThemeControl, ThemeToggle
+        - Prevents jitter during desktop layout transitions
+
+    - [x] **4.3.f Reduced motion behavior**
+        - `motion-reduce:transition-none` on container
+        - Framer Motion respects system preference
+        - CSS animations respect `prefers-reduced-motion`
+
+    - [x] **4.3.g Quality gates**
+        - Type check, lint pass
+        - Manual verification on phone/desktop viewports
 
 - [ ] **4.4 Full E2E suite regression check**
 

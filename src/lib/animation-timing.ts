@@ -323,6 +323,21 @@ export const TAB_INDICATOR_TRANSITION = {
 export const TAB_CONTENT_DURATION = 0.2;
 
 // ============================================================================
+// LAYOUT MODE TRANSITIONS - User-triggered layout width changes
+// ============================================================================
+// Transitions when user toggles between boxed/wide/full layout modes.
+// Desktop has more distance to cover (boxed → wide), so uses longer duration.
+
+/** Layout mode transition duration for desktop (boxed ↔ wide) */
+export const LAYOUT_MODE_DURATION_DESKTOP = 0.35;
+
+/** Layout mode transition duration for mobile (boxed ↔ full) */
+export const LAYOUT_MODE_DURATION_MOBILE = 0.35;
+
+/** Content crossfade duration during layout transitions (seconds) */
+export const LAYOUT_CONTENT_FADE_DURATION = 0.1;
+
+// ============================================================================
 // TIMING HELPERS - DRY utilities for mode-based timing
 // ============================================================================
 // These helpers reduce boilerplate in timing functions. Components should use

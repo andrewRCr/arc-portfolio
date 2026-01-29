@@ -5,9 +5,16 @@ import { OverlayScrollbars } from "overlayscrollbars";
 import "overlayscrollbars/styles/overlayscrollbars.css";
 import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { PAGE_BODY_FADE_ANIMATION, getBodyTiming, HIDE_TRANSITION } from "@/lib/animation-timing";
+import {
+  PAGE_BODY_FADE_ANIMATION,
+  getBodyTiming,
+  HIDE_TRANSITION,
+  LAYOUT_CONTENT_FADE_DURATION,
+} from "@/lib/animation-timing";
 import { useScrollShadow } from "@/hooks/useScrollShadow";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useAnimationContext } from "@/contexts/AnimationContext";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { ScrollShadow } from "./ScrollShadow";
 import { ScrollProvider } from "./ScrollContext";
 import { BackToTopButton } from "@/components/ui/BackToTopButton";
@@ -59,6 +66,12 @@ export function PageLayout({
   const effectiveHeaderType = headerType ?? (stickyHeader ? "detail" : "page");
   const { contentMaxWidth, contentPaddingY, contentPaddingX } = DEFAULT_LAYOUT_TOKENS;
   const { animationMode, visibility } = useAnimationContext();
+  const { isLayoutTransitioning } = useLayoutPreferences();
+  const isPhone = useIsPhone();
+
+  // Only fade content on phone during layout transitions (to hide reflow)
+  // Desktop transitions are smooth max-width changes that don't need crossfade
+  const shouldFadeContent = isPhone && isLayoutTransitioning;
 
   // Use contentVisible - accounts for initialization AND intro phase
   // contentVisible is false during intro until "expanding" phase, then true
@@ -121,8 +134,12 @@ export function PageLayout({
       <div className="flex flex-col flex-1 min-h-0" {...(pageId && { "data-page": pageId })}>
         {/* Fixed header area - doesn't scroll, centered with max-width */}
         {/* Animation handled by PageHeader component internally */}
+        {/* Crossfade wrapper hides content reflow during layout mode transitions */}
         {header && (
-          <div className="shrink-0">
+          <div
+            className={`shrink-0 transition-opacity ${shouldFadeContent ? "opacity-0" : ""}`}
+            style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
+          >
             <div className="mx-auto w-full" style={headerStyle}>
               {header}
             </div>
@@ -133,16 +150,24 @@ export function PageLayout({
         {/* Animated: fade based on loadMode */}
         <div className="relative flex-1 min-h-0">
           <main ref={setElement} className="h-full overflow-auto" data-overlayscrollbars-initialize>
-            <motion.div
-              className="mx-auto w-full min-h-full"
-              data-page-content
-              style={contentStyle}
-              initial={PAGE_BODY_FADE_ANIMATION.initial}
-              animate={showContent ? PAGE_BODY_FADE_ANIMATION.animate : PAGE_BODY_FADE_ANIMATION.initial}
-              transition={bodyTransition}
+            {/* Outer div: CSS transition for layout mode crossfade (hides content reflow) */}
+            {/* Inner motion.div: Framer Motion for intro/route animations */}
+            {/* Separated because FM inline styles override CSS classes */}
+            <div
+              className={`transition-opacity ${shouldFadeContent ? "opacity-0" : ""}`}
+              style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
             >
-              {children}
-            </motion.div>
+              <motion.div
+                className="mx-auto w-full min-h-full"
+                data-page-content
+                style={contentStyle}
+                initial={PAGE_BODY_FADE_ANIMATION.initial}
+                animate={showContent ? PAGE_BODY_FADE_ANIMATION.animate : PAGE_BODY_FADE_ANIMATION.initial}
+                transition={bodyTransition}
+              >
+                {children}
+              </motion.div>
+            </div>
           </main>
           <ScrollShadow position="top" visible={showTopShadow} />
           <ScrollShadow position="bottom" visible={showBottomShadow} />

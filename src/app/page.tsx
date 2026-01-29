@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Hero } from "@/components/layout/Hero";
@@ -15,9 +16,10 @@ import {
   SKIP_BODY_DELAY,
   SKIP_CONTENT_DURATION,
   MATERIAL_EASE,
+  LAYOUT_CONTENT_FADE_DURATION,
 } from "@/lib/animation-timing";
 import { useIsPhone } from "@/hooks/useMediaQuery";
-import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
+import { useLayoutPreferences, type LayoutMode } from "@/contexts/LayoutPreferencesContext";
 import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
 
 // Extract featured skills from all categories
@@ -48,13 +50,29 @@ const getFeaturedSkills = (order: string[]) =>
     .map((name) => allFeaturedSkills.find((s) => s.name === name))
     .filter((s): s is (typeof allFeaturedSkills)[number] => s !== undefined);
 
+/** Content fade-out duration in ms (from animation-timing.ts) */
+const CONTENT_FADE_OUT_MS = LAYOUT_CONTENT_FADE_DURATION * 1000;
+
 export default function Home() {
   const isPhone = useIsPhone();
-  const { layoutMode } = useLayoutPreferences();
+  const { layoutMode, isLayoutTransitioning } = useLayoutPreferences();
   const { animationMode, visibility } = useAnimationContext();
 
   // Use new visibility flag - accounts for initialization
   const contentVisible = visibility.contentVisible;
+
+  // Delayed layout mode - waits for content fade-out before updating.
+  // This prevents the skills row from changing while still visible.
+  const [delayedLayoutMode, setDelayedLayoutMode] = useState<LayoutMode>(layoutMode);
+
+  useEffect(() => {
+    // Delay update when transitioning (waits for fade-out), sync immediately otherwise
+    const delay = isLayoutTransitioning ? CONTENT_FADE_OUT_MS : 0;
+    const timer = setTimeout(() => {
+      setDelayedLayoutMode(layoutMode);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [layoutMode, isLayoutTransitioning]);
 
   // Get body content timing based on animationMode
   const getBodyContentTiming = (mode: AnimationMode) => {
@@ -90,8 +108,9 @@ export default function Home() {
 
   // Responsive positioning: hero on phone (visible immediately), below featured on tablet/desktop
   // Mobile boxed: curated 6 skills (single row). Mobile fullscreen: full 10 (5/5 split)
+  // Uses delayedLayoutMode to wait for content fade-out before changing skills list
   const skillsInHero = isPhone;
-  const useFullSkillSet = !isPhone || layoutMode === "full";
+  const useFullSkillSet = !isPhone || delayedLayoutMode === "full";
   const featuredSkills = getFeaturedSkills(useFullSkillSet ? featuredOrderDesktop : featuredOrderMobile);
 
   const heroContent = skillsInHero ? (

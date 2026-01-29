@@ -99,7 +99,7 @@ export function ThemeControl() {
             ref={triggerRef}
             type="button"
             aria-label="Open theme settings"
-            className="group flex items-center gap-1 px-1.5 h-7 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
+            className="group flex items-center gap-1 px-1.5 h-7 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all will-change-transform"
           >
             {showSwatch ? (
               <span className="animate-in fade-in duration-300">
