@@ -594,17 +594,54 @@ a single source of truth.
         - Type check, lint pass
         - Manual verification on phone/desktop viewports
 
-- [ ] **4.4 Full E2E suite regression check**
+- [x] **4.4 Full E2E suite regression check**
 
     **Goal:** Verify no regressions from Phase 4 micro-interaction work.
 
-    - [ ] **4.4.a Run full E2E test suite**
-        - `npm run test:e2e` (all browsers/viewports)
-        - Document any failures
+    - [x] **4.4.a Run full E2E test suite**
+        - Initial run: 3 failures, 1 flaky (all in layout mode persistence and Firefox timing)
+        - Root cause: Race condition in Task 4.3's layout reset guard
+        - Guard checked `loadMode === "intro"` before AnimationContext initialized
 
-    - [ ] **4.4.b Address any test failures or needed updates**
-        - Fix genuine regressions
-        - Update tests if behavior intentionally changed
+    - [x] **4.4.b Address any test failures or needed updates**
+        - **Fixed:** Added `isInitialized` check to layout reset guard in LayoutWrapper.tsx
+        - Guard now waits for cookie check before deciding if intro is playing
+        - Final E2E run: 335 passed, 0 failed, 2 flaky (exit code 0)
+
+    - [x] **4.4.c (Added) Fix flaky E2E tests**
+        - smoke.spec.ts "navigation links work" - Added `waitForHydration` + `test.slow()`
+        - Now consistently passes (6/6 runs)
+
+    - [x] **4.4.d (Added) Fix pre-existing unit test failures**
+        - Added `LayoutPreferencesContextProvider` to test-utils `AllProviders`
+        - Added global `next/navigation` mock in test setup.ts
+        - Updated mocks to use `importOriginal` pattern for provider exports
+        - Updated tests to use centralized `render` from test-utils
+        - Fixed LayoutWrapper fullscreen tests (overflow:hidden vs animated styles)
+        - Final: 1276 unit tests pass, 327+ E2E tests pass
+
+    - [x] **4.4.e (Added) Eliminate remaining E2E flakiness**
+        - **Root cause:** Firefox animation timing + parallel worker contention (10 workers on WSL2)
+        - **Solution 1 - Animation completion marker:**
+            - Added `onAnimationComplete` callback to PageLayout.tsx
+            - Sets `data-animation-complete="true"` attribute when animation finishes
+            - Tests wait for attribute instead of polling CSS opacity values
+        - **Solution 2 - Worker optimization:**
+            - Reduced workers: 10→4 local, 1→2 CI (was causing resource contention)
+            - Added `resetAnimationState()` helper for test isolation
+        - **Solution 3 - CI cross-browser coverage:**
+            - Fixed oversight: Firefox and WebKit were defined in config but never run in CI
+            - Updated CI to use matrix strategy with all three browsers
+            - PRs: Chromium smoke test (fast feedback)
+            - Main: Full cross-browser suite (Chromium + Firefox + WebKit)
+        - **Files changed:**
+            - `src/components/layout/PageLayout.tsx` - Added onAnimationComplete callback
+            - `e2e/playwright.config.ts` - Reduced workers, updated comments
+            - `.github/workflows/ci.yml` - Added Firefox/WebKit, matrix strategy
+            - `e2e/helpers/isolation.ts` - New helper for animation test state reset
+            - `e2e/tests/tab-animations.spec.ts` - Added skipIntroAnimation + resetAnimationState
+            - `e2e/tests/page-transitions.spec.ts` - Uses completion marker instead of opacity polling
+        - **Result:** 337 passed, 0 failed, 0 flaky (down from 17 failures + 3 flaky)
 
 ### **Phase 5:** Project Hero Images
 

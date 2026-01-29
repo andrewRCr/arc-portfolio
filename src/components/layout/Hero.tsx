@@ -137,7 +137,10 @@ export function Hero({ children }: HeroProps) {
         <div className="relative pl-6">
           {/* Animated left bar - separate element for scaleY animation */}
           {/* will-change-transform stabilizes sub-pixel rendering during layout transitions */}
-          <motion.div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary origin-center will-change-transform" {...barProps} />
+          <motion.div
+            className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary origin-center will-change-transform"
+            {...barProps}
+          />
 
           <div className="space-y-4 md:mb-8">
             <div className="space-y-2">

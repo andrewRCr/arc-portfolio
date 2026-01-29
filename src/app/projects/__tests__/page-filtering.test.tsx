@@ -5,31 +5,13 @@
  * between normal and filtered states, and filter result display.
  */
 
-import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
+import { describe, it, expect, beforeEach } from "vitest";
+import { render, screen, within } from "@tests/test-utils";
+import { mockNavigation } from "@tests/mocks/next-navigation";
 import ProjectsPage from "../page";
 
-// Apply shared navigation mock
-vi.mock("next/navigation", () => createNavigationMock());
-
-// Mock AnimationContext (PageHeader uses useAnimationContext)
-vi.mock("@/contexts/AnimationContext", () => ({
-  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
-  useAnimationContext: () => ({
-    loadMode: "refresh",
-    animationMode: "refresh",
-    intro: { phase: "complete", isActive: false, wasSkipped: false, replayCount: 0, triggerReplay: vi.fn() },
-    route: { isAnimating: false },
-    visibility: { windowVisible: true, contentVisible: true },
-    reducedMotion: false,
-    isInitialized: true,
-  }),
-  useAnimationDispatch: () => vi.fn(),
-  markIntroSeen: vi.fn(),
-  clearIntroCookie: vi.fn(),
-}));
+// next/navigation is mocked globally in setup.ts using the shared mockNavigation object
 
 describe("Projects Page - Skill Filtering", () => {
   beforeEach(() => {

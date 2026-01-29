@@ -17,6 +17,7 @@ import type { AxeResults } from "axe-core";
 import { ThemeContextProvider } from "@/contexts/ThemeContext";
 import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
 import { AnimationProvider } from "@/contexts/AnimationContext";
+import { LayoutPreferencesContextProvider } from "@/contexts/LayoutPreferencesContext";
 
 /**
  * Test wrapper that provides all necessary context providers.
@@ -25,6 +26,7 @@ import { AnimationProvider } from "@/contexts/AnimationContext";
  * - ThemeContextProvider (for useThemeContext hook)
  * - WallpaperContextProvider (for useWallpaperContext hook)
  * - AnimationProvider (for useAnimationContext hook - centralized animation state)
+ * - LayoutPreferencesContextProvider (for useLayoutPreferences hook - layout mode, drawer state)
  *
  * Note: We don't include NextThemesProvider here because it requires
  * browser APIs that don't work well in jsdom. Components that need
@@ -34,7 +36,9 @@ function AllProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeContextProvider>
       <WallpaperContextProvider>
-        <AnimationProvider>{children}</AnimationProvider>
+        <LayoutPreferencesContextProvider>
+          <AnimationProvider>{children}</AnimationProvider>
+        </LayoutPreferencesContextProvider>
       </WallpaperContextProvider>
     </ThemeContextProvider>
   );

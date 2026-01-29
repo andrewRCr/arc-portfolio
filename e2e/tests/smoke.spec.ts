@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { MD_BREAKPOINT } from "../constants";
 import { skipIntroAnimation } from "../helpers/cookies";
+import { waitForHydration } from "../helpers/state";
 
 /**
  * Smoke tests for arc-portfolio.
@@ -28,12 +29,15 @@ test.describe("Smoke Tests", () => {
   }
 
   /**
-   * Helper to open mobile nav dropdown if on mobile viewport
+   * Helper to open mobile nav dropdown if on mobile viewport.
+   * Waits for dropdown to be fully visible before returning.
    */
   async function openMobileNavIfNeeded(page: import("@playwright/test").Page): Promise<void> {
     if (isMobileViewport(page)) {
       const navTrigger = page.getByRole("button", { name: /navigation menu/i });
       await navTrigger.click();
+      // Wait for dropdown menu to be visible (uses auto-retry)
+      await expect(page.getByRole("menu")).toBeVisible();
     }
   }
 
@@ -62,6 +66,9 @@ test.describe("Smoke Tests", () => {
   });
 
   test("navigation links work", async ({ page }) => {
+    // This test runs 5 navigation cycles - mark as slow to double timeout
+    test.slow();
+
     // Test each navigation link
     const navTests = [
       { name: "PROJECTS", expectedPath: "/projects" },
@@ -75,8 +82,9 @@ test.describe("Smoke Tests", () => {
 
     for (const { name, expectedPath } of navTests) {
       // Start from homepage each iteration to avoid inter-test coupling
+      // Wait for hydration to ensure React is ready before interacting
       await page.goto("/");
-      await page.waitForLoadState("load");
+      await waitForHydration(page);
 
       // Scope to main navigation to avoid matching other links on page
       const mainNav = page.getByRole("navigation", { name: "Main navigation" });
@@ -175,16 +183,21 @@ test.describe("Smoke Tests", () => {
       });
     });
 
-    // Go to Contact page
+    // Go to Contact page and wait for hydration (ResponsiveSwitch needs React ready)
     await page.goto("/contact");
-    await page.waitForLoadState("load");
+    await waitForHydration(page);
 
     // ResponsiveSwitch renders both mobile and desktop forms - find the visible one
-    // Use locator that finds visible form inputs
+    // Wait for form inputs to be visible before interacting
     const nameInput = page.locator('input[id="name"]:visible');
     const emailInput = page.locator('input[id="email"]:visible');
     const messageInput = page.locator('textarea[id="message"]:visible');
     const submitButton = page.locator('button[type="submit"]:visible');
+
+    // Wait for form to be ready (auto-retries)
+    await expect(nameInput).toBeVisible();
+    await expect(emailInput).toBeVisible();
+    await expect(messageInput).toBeVisible();
 
     // Fill out the form
     await nameInput.fill("Test User");
@@ -194,7 +207,7 @@ test.describe("Smoke Tests", () => {
     // Submit the form
     await submitButton.click();
 
-    // Verify success message appears (longer timeout for slower browsers)
+    // Verify success message appears (uses auto-retry with generous timeout)
     await expect(page.getByText(/thank you for your message/i)).toBeVisible({ timeout: 10000 });
   });
 });

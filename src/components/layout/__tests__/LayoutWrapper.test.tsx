@@ -11,40 +11,47 @@ let mockLayoutMode = "boxed";
 const mockSetDrawerOpen = vi.fn();
 let mockIsDrawerOpen = false;
 
-vi.mock("@/contexts/LayoutPreferencesContext", () => ({
-  useLayoutPreferences: () => ({
-    layoutMode: mockLayoutMode,
-    setLayoutMode: mockSetLayoutMode,
-    isDrawerOpen: mockIsDrawerOpen,
-    setDrawerOpen: mockSetDrawerOpen,
-  }),
-}));
+vi.mock("@/contexts/LayoutPreferencesContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/LayoutPreferencesContext")>();
+  return {
+    ...actual,
+    useLayoutPreferences: () => ({
+      layoutMode: mockLayoutMode,
+      setLayoutMode: mockSetLayoutMode,
+      isDrawerOpen: mockIsDrawerOpen,
+      setDrawerOpen: mockSetDrawerOpen,
+    }),
+  };
+});
 
 // Mock AnimationContext to simulate "complete" state (no intro overlay blocking interaction)
-vi.mock("@/contexts/AnimationContext", () => ({
-  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
-  useAnimationContext: () => ({
-    loadMode: "refresh",
-    animationMode: "refresh",
-    intro: {
-      phase: "complete",
-      isActive: false,
-      wasSkipped: false,
-      replayCount: 0,
-      triggerReplay: vi.fn(),
-    },
-    route: {
-      isAnimating: false,
-    },
-    visibility: {
-      windowVisible: true,
-      contentVisible: true,
-    },
-    reducedMotion: false,
-    isInitialized: true,
-  }),
-  useAnimationDispatch: () => vi.fn(),
-}));
+vi.mock("@/contexts/AnimationContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/AnimationContext")>();
+  return {
+    ...actual,
+    useAnimationContext: () => ({
+      loadMode: "refresh",
+      animationMode: "refresh",
+      intro: {
+        phase: "complete",
+        isActive: false,
+        wasSkipped: false,
+        replayCount: 0,
+        triggerReplay: vi.fn(),
+      },
+      route: {
+        isAnimating: false,
+      },
+      visibility: {
+        windowVisible: true,
+        contentVisible: true,
+      },
+      reducedMotion: false,
+      isInitialized: true,
+    }),
+    useAnimationDispatch: () => vi.fn(),
+  };
+});
 
 describe("LayoutWrapper", () => {
   beforeEach(() => {
@@ -202,29 +209,32 @@ describe("LayoutWrapper", () => {
       mockLayoutMode = "full";
     });
 
-    it("hides TopBar in fullscreen mode", () => {
+    it("TopBar wrapper has overflow hidden for animation clipping", () => {
       const { container } = render(
         <LayoutWrapper>
           <p>Main content</p>
         </LayoutWrapper>
       );
 
-      // TopBar should have "hidden" class on its wrapper (kept mounted for drawer to stay open)
-      // className is on the outer motion.div wrapper, not WindowContainer
+      // TopBar wrapper uses overflow:hidden so content is clipped when height animates to 0
+      // (Framer Motion animate values aren't captured in jsdom, so we verify the static setup)
+      // Structure: motion.div(overflow:hidden) > TopBar(motion.div) > WindowContainer(data-window-id)
       const topBarWindow = container.querySelector('[data-window-id="top"]');
-      expect(topBarWindow?.parentElement).toHaveClass("hidden");
+      const topBarAnimationWrapper = topBarWindow?.parentElement?.parentElement;
+      expect(topBarAnimationWrapper).toHaveStyle({ overflow: "hidden" });
     });
 
-    it("hides FooterBar in fullscreen mode", () => {
+    it("FooterBar wrapper has overflow hidden for animation clipping", () => {
       const { container } = render(
         <LayoutWrapper>
           <p>Main content</p>
         </LayoutWrapper>
       );
 
-      // FooterBar should have "hidden" class
+      // FooterBar wrapper uses overflow:hidden so content is clipped when height animates to 0
       const footerWindow = container.querySelector('[data-window-id="footer"]');
-      expect(footerWindow).toHaveClass("hidden");
+      const footerWrapper = footerWindow?.parentElement;
+      expect(footerWrapper).toHaveStyle({ overflow: "hidden" });
     });
 
     it("shows exit fullscreen button", () => {

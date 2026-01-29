@@ -57,14 +57,18 @@ vi.mock("@/hooks/useCompatibleWallpapers", () => ({
 const mockSetLayoutMode = vi.fn();
 const mockSetDrawerOpen = vi.fn();
 
-vi.mock("@/contexts/LayoutPreferencesContext", () => ({
-  useLayoutPreferences: () => ({
-    layoutMode: "boxed",
-    setLayoutMode: mockSetLayoutMode,
-    isDrawerOpen: false,
-    setDrawerOpen: mockSetDrawerOpen,
-  }),
-}));
+vi.mock("@/contexts/LayoutPreferencesContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/LayoutPreferencesContext")>();
+  return {
+    ...actual,
+    useLayoutPreferences: () => ({
+      layoutMode: "boxed",
+      setLayoutMode: mockSetLayoutMode,
+      isDrawerOpen: false,
+      setDrawerOpen: mockSetDrawerOpen,
+    }),
+  };
+});
 
 describe("ThemeControlDrawer", () => {
   beforeEach(() => {

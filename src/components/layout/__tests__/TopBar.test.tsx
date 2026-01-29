@@ -9,40 +9,47 @@ import { TopBar } from "../TopBar";
 vi.mock("next-themes", () => createNextThemesMock());
 
 // Mock LayoutPreferencesContext (required by ThemeControl)
-vi.mock("@/contexts/LayoutPreferencesContext", () => ({
-  useLayoutPreferences: () => ({
-    layoutMode: "boxed",
-    setLayoutMode: vi.fn(),
-    isDrawerOpen: false,
-    setDrawerOpen: vi.fn(),
-  }),
-}));
+vi.mock("@/contexts/LayoutPreferencesContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/LayoutPreferencesContext")>();
+  return {
+    ...actual,
+    useLayoutPreferences: () => ({
+      layoutMode: "boxed",
+      setLayoutMode: vi.fn(),
+      isDrawerOpen: false,
+      setDrawerOpen: vi.fn(),
+    }),
+  };
+});
 
 // Mock AnimationContext (TopBar uses triggerReplay for branding click)
-vi.mock("@/contexts/AnimationContext", () => ({
-  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
-  useAnimationContext: () => ({
-    loadMode: "refresh",
-    animationMode: "refresh",
-    intro: {
-      phase: "complete",
-      isActive: false,
-      wasSkipped: false,
-      replayCount: 0,
-      triggerReplay: vi.fn(),
-    },
-    route: {
-      isAnimating: false,
-    },
-    visibility: {
-      windowVisible: true,
-      contentVisible: true,
-    },
-    reducedMotion: false,
-    isInitialized: true,
-  }),
-  useAnimationDispatch: () => vi.fn(),
-}));
+vi.mock("@/contexts/AnimationContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/AnimationContext")>();
+  return {
+    ...actual,
+    useAnimationContext: () => ({
+      loadMode: "refresh",
+      animationMode: "refresh",
+      intro: {
+        phase: "complete",
+        isActive: false,
+        wasSkipped: false,
+        replayCount: 0,
+        triggerReplay: vi.fn(),
+      },
+      route: {
+        isAnimating: false,
+      },
+      visibility: {
+        windowVisible: true,
+        contentVisible: true,
+      },
+      reducedMotion: false,
+      isInitialized: true,
+    }),
+    useAnimationDispatch: () => vi.fn(),
+  };
+});
 
 describe("TopBar", () => {
   describe("Branding", () => {

@@ -35,10 +35,11 @@ async function skipOnMobile(page: Page): Promise<boolean> {
 
 /**
  * Verify content fades during client-side navigation.
- * Uses deterministic approach: check opacity immediately after navigation completes.
+ * Uses callback-based completion marker for reliable cross-browser behavior.
  *
- * The animation has a 0.25s delay, so content starts at opacity 0 and stays there
- * briefly before animating to 1. We verify the initial low opacity state.
+ * Strategy: PageLayout sets data-animation-complete="true" via onAnimationComplete
+ * callback when Framer Motion animation finishes. This is more reliable than
+ * polling getComputedStyle() which has timing variance across browsers.
  *
  * IMPORTANT: Uses link clicks for client-side navigation, not page.goto().
  * page.goto() causes full page reload which doesn't trigger the animation.
@@ -50,34 +51,41 @@ async function verifyContentFadesDuringNavigation(page: Page, linkText: string):
   await page.getByRole("link", { name: linkText }).first().click();
 
   // Wait for URL to change (navigation complete, new content mounted)
-  await page.waitForURL((url) => url.toString() !== currentUrl, { timeout: 5000 });
+  // Extended timeout for Firefox/WSL2 which can be 30-70% slower with 10 parallel workers
+  await page.waitForURL((url) => url.toString() !== currentUrl, { timeout: 15000 });
 
-  // Immediately check opacity - content should be at initial state (opacity 0)
-  // or in early animation (opacity < 1) due to the 0.25s delay before fade starts
-  const initialOpacity = await page.evaluate(() => {
-    const content = document.querySelector("[data-page-content]");
-    if (!content) return 1;
-    return parseFloat(window.getComputedStyle(content).opacity);
-  });
+  // Wait for animation completion marker set by PageLayout's onAnimationComplete
+  // Also verify the page heading matches the expected destination
+  try {
+    await expect(async () => {
+      // Check for completion marker (set by Framer Motion onAnimationComplete callback)
+      const isComplete = await page.evaluate(() => {
+        const content = document.querySelector("[data-page-content]");
+        return content?.getAttribute("data-animation-complete") === "true";
+      });
+      expect(isComplete).toBe(true);
 
-  // Wait for animation to complete
-  await page.waitForTimeout(700); // 0.25s delay + 0.35s duration + buffer
+      // Also verify page heading matches destination (ensures content has switched)
+      const heading = await page.locator("h1").first().textContent();
+      expect(heading?.toLowerCase()).toContain(linkText.toLowerCase());
+    }).toPass({
+      timeout: 8000,
+      intervals: [250, 500, 1000, 2000], // Backoff strategy with extended tail for slow systems
+    });
 
-  // Verify final state is fully opaque
-  const finalOpacity = await page.evaluate(() => {
-    const content = document.querySelector("[data-page-content]");
-    if (!content) return 0;
-    return parseFloat(window.getComputedStyle(content).opacity);
-  });
-
-  // Animation worked if: started low AND ended at 1
-  const animationWorked = initialOpacity < 0.5 && finalOpacity === 1;
-
-  if (!animationWorked) {
-    console.log(`Animation check: initial=${initialOpacity}, final=${finalOpacity}`);
+    return true;
+  } catch {
+    // If polling times out, check final state for debugging
+    const state = await page.evaluate(() => {
+      const content = document.querySelector("[data-page-content]");
+      return {
+        hasMarker: content?.getAttribute("data-animation-complete") === "true",
+        opacity: content ? parseFloat(window.getComputedStyle(content).opacity) : 0,
+      };
+    });
+    console.log(`Animation check failed: marker=${state.hasMarker}, opacity=${state.opacity}`);
+    return false;
   }
-
-  return animationWorked;
 }
 
 test.describe("Page Transitions", () => {

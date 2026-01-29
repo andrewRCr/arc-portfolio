@@ -304,24 +304,21 @@ test.describe("TWM Layout System", () => {
         throw error;
       }
 
-      // Wait for nav animation to complete - poll until link reaches expected touch target size
+      // Wait for nav animation to complete - poll until ALL links reach expected touch target size
       // Navigation uses Framer Motion fade transition - links animate to full size
       await expect(async () => {
-        const box = await firstLink.boundingBox();
-        expect(box?.width).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
+        const count = await desktopNavLinks.count();
+        expect(count).toBeGreaterThan(0);
+
+        // Check each visible link meets minimum touch target size
+        for (let i = 0; i < count; i++) {
+          const link = desktopNavLinks.nth(i);
+          const box = await link.boundingBox();
+          expect(box).not.toBeNull();
+          expect(box!.width).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
+          expect(box!.height).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
+        }
       }).toPass({ timeout: VISIBILITY_TIMEOUT });
-
-      const count = await desktopNavLinks.count();
-      expect(count).toBeGreaterThan(0);
-
-      // Check each visible link meets minimum touch target size
-      for (let i = 0; i < count; i++) {
-        const link = desktopNavLinks.nth(i);
-        const box = await link.boundingBox();
-        expect(box).not.toBeNull();
-        expect(box!.width).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
-        expect(box!.height).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
-      }
     });
 
     test("TopBar touch targets meet 44×44px minimum", async ({ page }) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 import "overlayscrollbars/styles/overlayscrollbars.css";
 import { motion } from "framer-motion";
@@ -83,6 +83,7 @@ export function PageLayout({
   const { ref: scrollShadowRef, showTopShadow, showBottomShadow } = useScrollShadow();
   const [element, setElement] = useState<HTMLElement | null>(null);
   const [viewport, setViewport] = useState<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Initialize OverlayScrollbars and connect its viewport to scroll shadow detection
   // useLayoutEffect ensures viewport is set before paint (avoids flash of missing scroll context)
@@ -158,12 +159,20 @@ export function PageLayout({
               style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
             >
               <motion.div
+                ref={contentRef}
                 className="mx-auto w-full min-h-full"
                 data-page-content
                 style={contentStyle}
                 initial={PAGE_BODY_FADE_ANIMATION.initial}
                 animate={showContent ? PAGE_BODY_FADE_ANIMATION.animate : PAGE_BODY_FADE_ANIMATION.initial}
                 transition={bodyTransition}
+                onAnimationComplete={() => {
+                  // E2E test hook: Signal animation completion for reliable test assertions
+                  // Safe: Only sets DOM attribute, no state changes, no logic impact
+                  if (showContent && contentRef.current) {
+                    contentRef.current.dataset.animationComplete = "true";
+                  }
+                }}
               >
                 {children}
               </motion.div>

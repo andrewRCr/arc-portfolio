@@ -14,6 +14,15 @@ vi.mock("overlayscrollbars/styles/overlayscrollbars.css", () => ({}));
 vi.mock("yet-another-react-lightbox/styles.css", () => ({}));
 vi.mock("yet-another-react-lightbox/plugins/counter.css", () => ({}));
 
+// Mock next/navigation globally (required by AnimationContext and other components)
+// Uses shared mockNavigation object so tests can control behavior via:
+//   mockNavigation.setPathname("/projects")
+//   mockNavigation.setSearchParams({ tab: "games" })
+vi.mock("next/navigation", async () => {
+  const { createNavigationMock } = await import("@tests/mocks/next-navigation");
+  return createNavigationMock();
+});
+
 // Mock ResizeObserver (not available in jsdom)
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),

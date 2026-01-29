@@ -88,25 +88,28 @@ export function LayoutPreferencesContextProvider({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Wrapped setter that updates localStorage immediately and syncs to cookie
-  const setLayoutMode = React.useCallback((mode: LayoutMode) => {
-    setLayoutModeInternal(mode);
-    // localStorage update (immediate) - no window check needed in client component
-    localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, mode);
-    // Cookie sync (async, fire-and-forget)
-    syncLayoutModeCookie(mode);
+  const setLayoutMode = React.useCallback(
+    (mode: LayoutMode) => {
+      setLayoutModeInternal(mode);
+      // localStorage update (immediate) - no window check needed in client component
+      localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, mode);
+      // Cookie sync (async, fire-and-forget)
+      syncLayoutModeCookie(mode);
 
-    // Trigger transitioning state for content crossfade
-    // Clear any pending timeout (handles rapid toggles)
-    if (transitionTimeoutRef.current) {
-      clearTimeout(transitionTimeoutRef.current);
-    }
-    setLayoutTransitioning(true);
-    const duration = isPhone ? LAYOUT_MODE_DURATION_MOBILE : LAYOUT_MODE_DURATION_DESKTOP;
-    transitionTimeoutRef.current = setTimeout(() => {
-      setLayoutTransitioning(false);
-      transitionTimeoutRef.current = null;
-    }, duration * 1000); // Convert seconds to ms
-  }, [isPhone]);
+      // Trigger transitioning state for content crossfade
+      // Clear any pending timeout (handles rapid toggles)
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+      setLayoutTransitioning(true);
+      const duration = isPhone ? LAYOUT_MODE_DURATION_MOBILE : LAYOUT_MODE_DURATION_DESKTOP;
+      transitionTimeoutRef.current = setTimeout(() => {
+        setLayoutTransitioning(false);
+        transitionTimeoutRef.current = null;
+      }, duration * 1000); // Convert seconds to ms
+    },
+    [isPhone]
+  );
 
   // Sync across tabs via storage event
   React.useEffect(() => {
