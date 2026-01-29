@@ -506,44 +506,87 @@ a single source of truth.
 
 ### **Phase 4:** Micro-Interactions
 
-- [ ] **4.1 Polish project card hover effects**
+- [x] **4.1 Polish project card hover effects**
 
     **Goal:** Enhance card hover feedback while maintaining minimal aesthetic.
 
-    - [ ] **4.1.a Add elevation/shadow on hover**
-        - Add subtle `shadow-md` or `drop-shadow` on card hover
-        - Use `transition-shadow` for smooth appearance
+    - [x] **4.1.a Add elevation/shadow on hover**
+        - Added `hover:shadow-md` with `transition-[border-color,box-shadow] duration-300` to ProjectCard
+        - Applied same treatment to FeaturedSection cards on home page
+        - FeaturedSection also got type tag + title scale effect (1.03, origin-left)
 
-    - [ ] **4.1.b Smooth existing image scale transition**
-        - Current: `group-hover:scale-105` (instant)
-        - Add explicit transition duration (~300ms ease-out)
+    - [x] **4.1.b Smooth existing image scale transition**
+        - Added `duration-300 ease-out` to ProjectCard image scale
+        - Explored title effects (color change, translate, underline) - settled on no title effect
+          for ProjectCard (image zoom + shadow sufficient)
 
-    - [ ] **4.1.c Manual verification**
-        - Test card hover on /projects page
-        - Verify effect feels responsive but not jarring
-        - Check reduced motion behavior (no scale/shadow animation)
+    - [x] **4.1.c Manual verification**
+        - Verified ProjectCard hover on /projects (shadow + image zoom)
+        - Verified FeaturedSection hover on home (shadow + text scale)
+        - Added `motion-reduce:group-hover:scale-100` to disable scale under reduced motion
+        - Shadow/border transitions remain active (user-triggered, non-disorienting)
 
-- [ ] **4.2 Add navigation link hover effects**
+- [x] **4.2 Add navigation link hover effects**
 
     **Goal:** Add subtle hover feedback while maintaining terminal aesthetic.
 
-    - [ ] **4.2.a Implement subtle underline or highlight effect**
-        - Options: underline slide from left, background fade, subtle scale
-        - Keep minimal to match terminal aesthetic
-        - Use CSS transitions (GPU-accelerated properties)
+    - [x] **4.2.a Implement subtle background highlight on hover**
+        - Added `hover:bg-secondary/10 dark:hover:bg-secondary/5` to non-active nav links
+        - Matches active state aesthetic but at lower opacity (intentionally subtle)
+        - Explored alternatives: same opacity as active (too strong), underline (too busy)
+        - Text color change (`hover:text-foreground`) does heavy lifting
+        - Added pending state tracking to prevent flash when cursor moves away during navigation
 
-    - [ ] **4.2.b Ensure active state remains distinct**
-        - Active nav link should be clearly distinguishable from hover state
-        - Current: `bg-secondary/40` for active
+    - [x] **4.2.b Ensure active state remains distinct**
+        - Active: `bg-secondary/40 dark:bg-secondary/20` + `text-foreground`
+        - Hover: `bg-secondary/10 dark:bg-secondary/5` + `text-foreground`
+        - Clear visual hierarchy maintained
 
-    - [ ] **4.2.c Manual verification across viewports**
-        - Test desktop horizontal nav
-        - Test mobile dropdown nav
-        - Verify reduced motion behavior
+    - [x] **4.2.c Manual verification**
+        - Desktop horizontal nav verified
+        - Mobile dropdown nav N/A (touch devices, no hover)
 
-    - [ ] **4.2.d Run quality gates**
+    - [x] **4.2.d Run quality gates**
+        - Type check, lint, tests pass
+
+- [ ] **4.3 Animate layout mode transitions**
+
+    **Goal:** Add smooth transitions when layout mode changes between boxed/wide/full states.
+
+    **Context:** Layout mode affects container max-width, padding, and gap in LayoutWrapper.
+    Currently changes are instant; should transition smoothly.
+
+    **Implementation approach:** Use CSS transitions (simpler than Framer Motion for this case -
+    just property interpolation, no orchestration needed). Add timing constant to animation-timing.ts
+    for consistency with rest of system.
+
+    - [ ] **4.3.a Add timing constant to animation-timing.ts**
+        - Add `LAYOUT_MODE_DURATION` constant (~0.3s)
+        - Document in appropriate section
+
+    - [ ] **4.3.b Add CSS transitions to LayoutWrapper container**
+        - Apply `transition-[max-width,padding,gap]` with duration from constant
+        - Target the layout container div (line ~96 in LayoutWrapper.tsx)
+
+    - [ ] **4.3.c Verify reduced motion behavior**
+        - Add `motion-reduce:transition-none` to disable under reduced motion
+        - Test with system setting enabled
+
+    - [ ] **4.3.d Run quality gates**
         - Type check, lint
-        - Run navigation-related E2E tests
+        - Run layout-related E2E tests
+
+- [ ] **4.4 Full E2E suite regression check**
+
+    **Goal:** Verify no regressions from Phase 4 micro-interaction work.
+
+    - [ ] **4.4.a Run full E2E test suite**
+        - `npm run test:e2e` (all browsers/viewports)
+        - Document any failures
+
+    - [ ] **4.4.b Address any test failures or needed updates**
+        - Fix genuine regressions
+        - Update tests if behavior intentionally changed
 
 ### **Phase 5:** Project Hero Images
 
