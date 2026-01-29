@@ -643,30 +643,230 @@ a single source of truth.
             - `e2e/tests/page-transitions.spec.ts` - Uses completion marker instead of opacity polling
         - **Result:** 337 passed, 0 failed, 0 flaky (down from 17 failures + 3 flaky)
 
-### **Phase 5:** Project Hero Images
+### **Phase 5:** Project Status System & Images
 
-- [ ] **5.1 Manual: Create hero images for complete projects**
+**Context:** Expanded scope to include in-development project handling, branding for logo-based projects,
+title removal from mod images, and comprehensive image pass across all projects.
 
-    **Note:** This is a user task - AI pauses here while user creates images.
+#### Part A: Code Implementation
 
-    - User creates 3.5:1 aspect ratio hero images from existing 16:9 thumbnails or new screenshots
-    - 8 complete projects need dedicated heroes
-    - DOOM NG+ Customizer already has dedicated hero
-    - Place images in appropriate `public/projects/[project]/` directories
+- [x] **5.1 Add project status field**
 
-- [ ] **5.2 Verify all hero images render correctly**
+    - [x] **5.1.a Add status field to Project type**
+        - Added `status?: 'released' | 'in-development'` to Project interface
+        - Default behavior: undefined/missing = released (no breaking changes)
 
-    - [ ] **5.2.a Confirm all hero images are present**
-        - Check each complete project has hero image file
-        - Verify file paths match expected pattern
+    - [x] **5.1.b Update in-development projects**
+        - Set `status: 'in-development'` on CineXplorer
+        - Set `status: 'in-development'` on ARC Framework
 
-    - [ ] **5.2.b Verify DetailHeader rendering**
+    - [x] **5.1.c Clean up non-existent image references**
+        - Cleared fake screenshot arrays from CineXplorer, ARC Framework, and arc-portfolio
+        - Updated comments to clarify image plans for each
+
+- [x] **5.2 Implement in-development visual treatment**
+
+    - [x] **5.2.a Create gray overlay treatment for ProjectCard**
+        - Added grayscale filter + 60% opacity on thumbnail for in-dev projects
+        - Centered "In Development" badge over thumbnail
+        - Placeholder text also gets reduced opacity
+
+    - [x] **5.2.b Create "In Development" badge component**
+        - Terminal aesthetic: monospace font, squared corners, uppercase
+        - Border + semi-transparent background for readability
+        - Full badge on ProjectCard, compact "In Dev" on FeaturedSection
+
+    - [x] **5.2.c Apply treatment to ProjectCard for in-dev projects**
+        - Conditionally applies based on `status === 'in-development'`
+        - Works with both placeholder and real images
+
+    - [x] **5.2.d Handle in-dev projects in FeaturedSection**
+        - Kept in rotation with visual treatment
+        - 75% opacity on card + "In Dev" badge next to type label
+        - Randomization unaffected
+
+    - [x] **5.2.e Verify DetailHeader handling for in-dev projects**
+        - Decision: No status indication on detail pages
+        - Rationale: Badge on cards serves as discovery filter; full description on detail page explains status
+        - Can revisit if needed post-deployment
+
+- [x] **5.3 Quality gates for code changes**
+
+    - [x] **5.3.a Run Tier 1 quality checks**
+        - Type check: ✓
+        - Lint: ✓
+        - Format: ✓
+        - Unit tests: 29 passed (ProjectCard + FeaturedSection)
+
+    - [x] **5.3.b Manual visual verification**
+        - User verified: treatment looks good
+        - Tweaked to monospace + squared corners per feedback
+        - Opacity tuning deferred until real images exist
+
+#### Part B: Image Creation (User Tasks)
+
+**Note:** AI assists with planning, file placement verification, and data updates.
+User creates actual images using external tools (DALL-E 3, image editors, etc.).
+
+- [ ] **5.4 Branding: ARC Framework**
+
+    - [ ] **5.4.a Create logo concept**
+        - Iterate using DALL-E 3 or similar
+        - Target audience: developers interested in AI-augmented workflows
+        - Should feel professional, clean, developer-focused
+
+    - [ ] **5.4.b Refine to final logo**
+        - Polish in vector tool if needed (Figma/Illustrator/Inkscape)
+        - Export appropriate formats
+
+    - [ ] **5.4.c Create hero image (3.5:1 ratio)**
+        - Logo-based composition
+        - Place in `public/projects/arc-agentic-dev-framework/hero.webp`
+
+    - [ ] **5.4.d Create thumbnail image (16:9 ratio)**
+        - Logo-based composition
+        - Place in `public/thumbnails/arc-agentic-dev-framework.webp`
+
+    - [ ] **5.4.e Update project data**
+        - Set thumbnail path in projects.ts
+        - Set hero path in projects.ts
+
+- [ ] **5.5 Branding: CineXplorer**
+
+    - [ ] **5.5.a Create logo concept**
+        - Movie/cinema themed
+        - Lower stakes than ARC Framework but still thoughtful
+
+    - [ ] **5.5.b Create hero image (3.5:1 ratio)**
+        - Logo-based composition
+        - Place in `public/projects/cinexplorer/hero.webp`
+
+    - [ ] **5.5.c Create thumbnail image (16:9 ratio)**
+        - Logo-based composition
+        - Place in `public/thumbnails/cinexplorer.webp`
+
+    - [ ] **5.5.d Update project data**
+        - Set thumbnail path in projects.ts
+        - Set hero path in projects.ts
+
+- [ ] **5.6 arc-portfolio images (self-referential)**
+
+    - [ ] **5.6.a Plan screenshot selection**
+        - Which pages: home, projects grid, detail page, about?
+        - Which states: light/dark theme, intro animation frames?
+        - Which viewports: desktop primary, mobile for variety?
+
+    - [ ] **5.6.b Capture screenshots**
+        - Use browser dev tools or screenshot utility
+        - Ensure high quality, appropriate resolution
+
+    - [ ] **5.6.c Create hero image (3.5:1 ratio)**
+        - Screenshot-based composition or single striking shot
+        - Place in `public/projects/arc-portfolio/hero.webp`
+
+    - [ ] **5.6.d Create thumbnail image (16:9 ratio)**
+        - Place in `public/thumbnails/arc-portfolio.webp`
+
+    - [ ] **5.6.e Create screenshots for gallery**
+        - 4-6 curated screenshots showing key features
+        - Place in `public/projects/arc-portfolio/`
+
+    - [ ] **5.6.f Update project data**
+        - Set thumbnail, hero, and screenshot paths in projects.ts
+
+- [ ] **5.7 Remove titles from mod images**
+
+    **Context:** Mod images have NexusMods-style title overlays creating "double titles"
+    in this app. Remove titles for cleaner presentation.
+
+    - [ ] **5.7.a Process mod thumbnails (6 mods)**
+        - Remove title overlays from workspace originals
+        - Re-export as WebP to `public/thumbnails/`
+        - Mods: lies-of-p, sor4, re8, elden-ring, re4r, sh2r
+
+    - [ ] **5.7.b Process mod hero images (6 mods)**
+        - Remove title overlays from workspace originals
+        - Re-export as WebP to respective `public/projects/[slug]/hero.webp`
+
+    - [ ] **5.7.c Process DOOM NG+ Customizer images**
+        - Same treatment (thumbnail + hero)
+        - This is software but uses the mod aesthetic
+
+- [ ] **5.8 Create missing hero images (software)**
+
+    - [ ] **5.8.a TaskFocus hero (3.5:1)**
+        - Create from existing screenshots or new capture
+        - Place in `public/projects/taskfocus/hero.webp`
+        - Update projects.ts
+
+    - [ ] **5.8.b PetResort hero (3.5:1)**
+        - Create from existing screenshots or new capture
+        - Place in `public/projects/petresort/hero.webp`
+        - Update projects.ts
+
+- [ ] **5.9 Create missing hero images (games)**
+
+    - [ ] **5.9.a Action RPG hero (3.5:1)**
+        - Select best screenshot or create composition
+        - Place in `public/projects/action-rpg-project/hero.webp`
+        - Update projects.ts
+
+    - [ ] **5.9.b Survival Horror hero (3.5:1)**
+        - Select best screenshot or create composition
+        - Place in `public/projects/survival-horror-project/hero.webp`
+        - Update projects.ts
+
+    - [ ] **5.9.c Pong Clone hero (3.5:1)**
+        - Only 2 screenshots available; may need creative approach
+        - Place in `public/projects/pong-clone/hero.webp`
+        - Update projects.ts
+
+- [ ] **5.10 Screenshot curation pass**
+
+    - [ ] **5.10.a Curate Action RPG screenshots**
+        - Current: 16 screenshots
+        - Target: ~6 best shots showing variety
+        - Remove excess from `public/projects/action-rpg-project/`
+        - Update projects.ts screenshot array
+
+    - [ ] **5.10.b Curate Survival Horror screenshots**
+        - Current: 22 screenshots
+        - Target: ~6 best shots showing variety
+        - Remove excess from `public/projects/survival-horror-project/`
+        - Update projects.ts screenshot array
+
+    - [ ] **5.10.c Review TaskFocus screenshots**
+        - Current: 8 screenshots
+        - Assess quality, curate if needed
+        - Update projects.ts if changes made
+
+#### Part C: Verification
+
+- [ ] **5.11 Verify all images render correctly**
+
+    - [ ] **5.11.a Check thumbnail rendering**
+        - All projects display thumbnails in grid view
+        - Placeholder fallback works for any missing
+        - In-dev overlay applies correctly
+
+    - [ ] **5.11.b Check hero rendering on detail pages**
         - Navigate to each project detail page
-        - Confirm hero image displays correctly in DetailHeader
-        - Check aspect ratio and responsive behavior
+        - Verify hero displays with correct aspect ratio
+        - Check responsive behavior across viewports
 
-    - [ ] **5.2.c Run related E2E tests**
-        - Ensure no regressions in project detail pages
+    - [ ] **5.11.c Check screenshot galleries**
+        - Verify all referenced screenshots exist and load
+        - Check gallery navigation/display
+
+- [ ] **5.12 Quality gates (Tier 2)**
+
+    - [ ] **5.12.a Run quality checks**
+        - Type check, lint, format check
+        - Unit tests for modified components
+        - E2E tests for project pages
+
+    - [ ] **5.12.b Address any issues**
+        - Fix failures before proceeding to Phase 6
 
 ### **Phase 6:** Aesthetic Exploration
 
@@ -757,7 +957,14 @@ a single source of truth.
 - [ ] Page transitions feel cohesive - snappy, content-only, with header distinction
 - [ ] Tab switching has animated indicator and content crossfade
 - [ ] Project cards and nav links have polished hover feedback
-- [ ] All complete projects have hero images that render correctly
+- [ ] In-development projects have visual treatment (gray overlay + badge)
+- [ ] In-development projects included in FeaturedSection with treatment
+- [ ] All projects have thumbnail images (no placeholders in production)
+- [ ] All projects have hero images that render correctly
+- [ ] Mod images have titles removed for cleaner presentation
+- [ ] Screenshot galleries curated to ~6 per project (games especially)
+- [ ] ARC Framework and CineXplorer have logo-based branding
+- [ ] arc-portfolio has self-referential screenshots
 - [ ] Aesthetic exploration concluded with documented decision
 - [ ] All animations respect `prefers-reduced-motion`
 - [ ] No visual regressions across pages and viewports
