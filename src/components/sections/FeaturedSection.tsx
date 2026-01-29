@@ -67,11 +67,15 @@ export function FeaturedSection() {
         <Link
           key={project.slug}
           href={`${getProjectPath(type)}/${project.slug}?from=home`}
-          className="flex flex-col border border-border rounded-sm hover:border-secondary/80 transition-colors overflow-hidden"
+          className="group flex flex-col border border-border rounded-sm hover:border-secondary/60 transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
         >
           <div className="p-4 pb-2 bg-card/80">
-            <p className="text-xs font-mono text-primary mb-1">[{type}]</p>
-            <h4 className="font-semibold">{project.title}</h4>
+            <p className="text-xs font-mono text-primary mb-1 transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
+              [{type}]
+            </p>
+            <h4 className="font-semibold transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
+              {project.title}
+            </h4>
           </div>
           <div className="flex-1 min-h-24 px-4 py-3 bg-background/80">
             <p className="text-sm text-muted-foreground">

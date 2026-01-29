@@ -27,7 +27,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
     <Link
       href={detailUrl}
       data-testid="project-card"
-      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border-strong transition-colors hover:border-secondary/60"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border-strong transition-[border-color,box-shadow] duration-300 hover:border-secondary/60 hover:shadow-md"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
@@ -37,7 +37,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
             alt={`${project.title} thumbnail`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform group-hover:scale-105"
+            className="object-cover transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-lg font-semibold text-muted-foreground">
@@ -71,7 +71,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-xl font-bold text-foreground group-hover:text-secondary">{project.title}</h3>
+        <h3 className="mb-2 text-xl font-bold text-foreground">{project.title}</h3>
 
         {/* Short Description */}
         <p className="mb-3 text-sm text-muted-foreground">{project.shortDescription}</p>
