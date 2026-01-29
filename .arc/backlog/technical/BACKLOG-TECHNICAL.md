@@ -32,6 +32,34 @@ invocations. KV provides distributed state that actually works in production.
 
 ---
 
+### NexusMods API App Registration (Deployment Prerequisite)
+
+**Trigger:** Shortly before or immediately after initial deployment (once GitHub is public)
+
+**Context:** NexusMods API integration (download counts) requires app registration per their acceptable
+use policy. Contacted NexusMods support who confirmed current usage is compliant and provided
+registration requirements.
+
+**Required for registration:**
+
+1. Application name
+2. Short description
+3. Logo suitable for viewing on dark backgrounds
+4. GitHub repository link (must be public)
+
+**Notes:**
+
+- Can optionally provide live site link if registering post-deployment
+- Registration is compliance-oriented, not blocking for functionality (API works without registration)
+- NexusMods may reach out if they notice unregistered high-volume usage
+
+**Why tracked:** Policy compliance for the NexusMods API integration implemented in Content Polish P1.
+Registration ensures continued API access and establishes good standing with the platform.
+
+**Origin:** NexusMods support correspondence (2026-01-29)
+
+---
+
 ## Medium Priority
 
 ### Lighthouse Performance & Accessibility Baseline
