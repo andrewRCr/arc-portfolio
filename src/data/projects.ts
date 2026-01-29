@@ -66,12 +66,8 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - no live demo yet
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
-      screenshots: [
-        { src: "/projects/cinexplorer/screenshot-1.jpg", alt: "CineXplorer movie discovery interface" },
-        { src: "/projects/cinexplorer/screenshot-2.jpg", alt: "Advanced filtering and search functionality" },
-        { src: "/projects/cinexplorer/screenshot-3.jpg", alt: "User watchlist and library management" },
-      ],
+      thumbnail: "/thumbnails/cinexplorer.webp",
+      screenshots: [], // In development - no screenshots yet
     },
     teamSize: "Solo project",
     role: "Full-Stack Developer",
@@ -84,6 +80,7 @@ export const projects: Project[] = [
     ],
     order: 1,
     featured: true,
+    status: "in-development",
   },
 
   // ==========================================
@@ -129,18 +126,8 @@ export const projects: Project[] = [
       liveDemo: undefined, // Not applicable - framework/documentation repo
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
-      screenshots: [
-        {
-          src: "/projects/arc-agentic-dev-framework/screenshot-1.jpg",
-          alt: "ARC Framework directory structure and documentation",
-        },
-        { src: "/projects/arc-agentic-dev-framework/screenshot-2.jpg", alt: "Template-first constitutional documents" },
-        {
-          src: "/projects/arc-agentic-dev-framework/screenshot-3.jpg",
-          alt: "Workflow documentation and process diagrams",
-        },
-      ],
+      thumbnail: "", // Empty triggers placehold.co fallback - logo-based image will be added
+      screenshots: [], // Documentation-only - no UI screenshots
     },
     teamSize: "Solo project",
     role: "Framework Author",
@@ -160,6 +147,7 @@ export const projects: Project[] = [
     ],
     order: 3,
     featured: true,
+    status: "in-development",
   },
 
   // ==========================================
@@ -214,12 +202,8 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - will be deployed to andrewcreekmore.com
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
-      screenshots: [
-        { src: "/projects/arc-portfolio/screenshot-1.jpg", alt: "arc-portfolio homepage with project showcase" },
-        { src: "/projects/arc-portfolio/screenshot-2.jpg", alt: "Type-safe content architecture and data structures" },
-        { src: "/projects/arc-portfolio/screenshot-3.jpg", alt: "Component composition and Shadcn/ui integration" },
-      ],
+      thumbnail: "", // Empty triggers placehold.co fallback - screenshots will be added
+      screenshots: [], // Self-referential - screenshots to be captured
     },
     teamSize: "Solo project",
     role: "Full-Stack Developer",

@@ -2,7 +2,7 @@
  * ProjectCard component
  *
  * Displays a project summary card with thumbnail, title, description, category badges, and tech tags.
- * Links to project detail page.
+ * Links to project detail page. Shows visual treatment for in-development projects.
  */
 
 import Link from "next/link";
@@ -22,6 +22,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
   const remainingCount = project.techStack.length - displayedTechStack.length;
 
   const hasValidThumbnail = Boolean(project.images.thumbnail);
+  const isInDevelopment = project.status === "in-development";
 
   return (
     <Link
@@ -43,6 +44,17 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
           <div className="flex h-full items-center justify-center text-lg font-semibold text-muted-foreground">
             Project Image
           </div>
+        )}
+        {/* In Development Overlay */}
+        {isInDevelopment && <div className="absolute inset-0 z-10 bg-background/50" />}
+        {/* In Development Badge */}
+        {isInDevelopment && (
+          <span
+            data-testid="in-development-badge"
+            className="absolute bottom-2 right-2 z-20 border border-border bg-background/90 px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+          >
+            In Development
+          </span>
         )}
       </div>
 

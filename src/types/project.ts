@@ -105,4 +105,5 @@ export interface Project {
   // Display properties
   order: number; // Display order (1-9, with 1 being highest priority)
   featured: boolean; // Whether to feature prominently on homepage
+  status?: "released" | "in-development"; // Development status (default: released)
 }
