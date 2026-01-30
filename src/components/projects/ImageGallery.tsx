@@ -76,8 +76,8 @@ export function ImageGallery({ images }: ImageGalleryProps) {
 
   return (
     <>
-      {/* Thumbnail Grid - 2 columns on mobile, 3 on desktop */}
-      <div data-testid="image-gallery" className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+      {/* Thumbnail Row - flex with centering for <3 images, 2 cols mobile / 3 cols desktop */}
+      <div data-testid="image-gallery" className="flex flex-wrap justify-center gap-3 sm:gap-4">
         {visibleImages.map((image, index) => {
           const isLastVisible = index === maxVisible - 1;
           const showOverlay = isLastVisible && hasMore;
@@ -88,7 +88,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
               type="button"
               onClick={() => setLightboxIndex(index)}
               aria-label={showOverlay ? `View all ${images.length} images` : `View image: ${image.alt}`}
-              className="group relative aspect-video overflow-hidden rounded-md bg-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all hover:ring-2 hover:ring-accent/50"
+              className="group relative aspect-video overflow-hidden rounded-md bg-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all hover:ring-2 hover:ring-accent/50 w-[calc(50%-6px)] sm:w-[calc(33.333%-10.667px)]"
             >
               <Image
                 src={image.src}

@@ -100,15 +100,16 @@ function ContentList({ items }: { items: ContentItem[] }) {
   );
 }
 
-/** Renders a label: value metadata row */
-function MetadataRow({ label, value }: { label: string; value?: string }) {
-  if (!value) return null;
-  return (
-    <div>
-      <span className="font-semibold text-foreground">{label}: </span>
-      <span className="text-muted-foreground">{value}</span>
-    </div>
-  );
+/** Renders inline project metadata (team, role, timeline) as subtle text */
+function ProjectMetadata({ project }: { project: Project }) {
+  // Only show role for team projects (not solo) - "Developer" is obvious for solo work
+  const isSolo = project.teamSize?.toLowerCase().includes("solo");
+  const showRole = !isSolo && project.role;
+
+  const parts = [project.teamSize, showRole ? project.role : null, project.developmentTime].filter(Boolean);
+  if (parts.length === 0) return null;
+
+  return <p className="mt-4 text-sm italic text-muted-foreground">{parts.join(" · ")}</p>;
 }
 
 export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
@@ -116,17 +117,8 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   // Smaller tech stack badges on phone for visual hierarchy
   const techBadgeTextSize = isPhone ? "text-xs" : "text-sm";
 
-  // Build metadata rows from available fields
-  const metadataFields = [
-    { label: "Team", value: project.teamSize },
-    { label: "Role", value: project.role },
-    { label: "Timeline", value: project.developmentTime },
-  ];
-  const hasMetadata = metadataFields.some((field) => field.value);
-
   // Section labels with customization support
   const labels = {
-    features: project.sectionLabels?.features ?? "Key Features",
     highlights: project.sectionLabels?.highlights ?? "Highlights",
     architectureNotes: project.sectionLabels?.architectureNotes ?? "Architecture",
   };
@@ -157,37 +149,24 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
         ))}
       </div>
 
-      {/* Screenshots Gallery - tighter spacing from description */}
+      {/* Inline metadata - subtle text below description */}
+      <ProjectMetadata project={project} />
+
+      {/* Screenshots Gallery */}
       {project.images.screenshots.length > 0 && (
         <div className="mt-6">
           <ImageGallery images={project.images.screenshots} />
         </div>
       )}
 
-      {/* Features */}
-      <DetailCard title={labels.features} className="mt-8">
-        <ContentList items={project.features} />
-      </DetailCard>
-
-      {/* Optional Metadata */}
-      {hasMetadata && (
-        <DetailCard title="Project Details" className="mt-8">
-          <div className="grid gap-2 text-sm">
-            {metadataFields.map((field) => (
-              <MetadataRow key={field.label} label={field.label} value={field.value} />
-            ))}
-          </div>
-        </DetailCard>
-      )}
-
-      {/* Highlights */}
+      {/* Highlights - primary content section (merged from features + highlights) */}
       {project.highlights && project.highlights.length > 0 && (
         <DetailCard title={labels.highlights} className="mt-8">
           <ContentList items={project.highlights} />
         </DetailCard>
       )}
 
-      {/* Architecture Notes */}
+      {/* Architecture Notes - optional technical deep-dive */}
       {project.architectureNotes && project.architectureNotes.length > 0 && (
         <DetailCard title={labels.architectureNotes} className="mt-8">
           <ContentList items={project.architectureNotes} />
