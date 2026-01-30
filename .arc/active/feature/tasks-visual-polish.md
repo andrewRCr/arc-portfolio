@@ -708,6 +708,17 @@ title removal from mod images, and comprehensive image pass across all projects.
 **Note:** AI assists with planning, file placement verification, and data updates.
 User creates actual images using external tools (DALL-E 3, image editors, etc.).
 
+**Image Size Standards** (optimized for 4K/Retina displays):
+
+| Type        | Dimensions        | Aspect Ratio | Target Size | Format |
+| ----------- | ----------------- | ------------ | ----------- | ------ |
+| Thumbnail   | 2400×1350         | 16:9         | ~150KB      | WebP   |
+| Hero        | 2800×800          | 3.5:1        | ~100KB      | WebP   |
+| Screenshots | Source resolution | Varies       | Reasonable  | WebP   |
+
+**Rationale:** Thumbnails display at 33vw on desktop; at 4K (3840px) with 2× density = ~2534px needed.
+Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality 85 balances size/quality.
+
 - [ ] **5.4 Branding: ARC Framework**
 
     - [ ] **5.4.a Create logo concept**
@@ -739,16 +750,24 @@ User creates actual images using external tools (DALL-E 3, image editors, etc.).
         - Iterated through Midjourney, refined sizing/positioning manually
 
     - [x] **5.5.b Create hero image (3.5:1 ratio)**
-        - Skipped dedicated hero; thumbnail fallback is acceptable for in-dev project
-        - Will revisit when CineXplorer is publicly released
+        - Triptych layout: projector, theater seats with logo, film reels
+        - Unsplash imagery composited for visual interest
+        - 2800×800, 97KB WebP at `public/projects/cinexplorer/hero.webp`
 
     - [x] **5.5.c Create thumbnail image (16:9 ratio)**
-        - Logo on navy background (1500x844, 20KB)
-        - Place in `public/thumbnails/cinexplorer.webp`
+        - Film strip border effect with vintage equipment background
+        - Logo/wordmark on semi-transparent bar
+        - 2400×1350, 153KB WebP at `public/thumbnails/cinexplorer.webp`
 
     - [x] **5.5.d Update project data**
-        - Thumbnail path set with cache-busting query param
-        - Configured `images.localPatterns` in next.config.ts to allow query strings
+        - Thumbnail path with cache-busting query param (`?v=7`)
+        - Hero path added
+        - Photo credits added (5 Unsplash photographers)
+
+    - [x] **5.5.e Add PhotoCredits component** (infrastructure)
+        - Created reusable `PhotoCredits` component for Unsplash attribution
+        - Added `photoCredits?: string[]` to Project type
+        - Software page auto-renders credits when present
 
 - [ ] **5.6 arc-portfolio images (self-referential)**
 
@@ -841,32 +860,53 @@ User creates actual images using external tools (DALL-E 3, image editors, etc.).
         - Assess quality, curate if needed
         - Update projects.ts if changes made
 
+- [ ] **5.11 Standardize existing image sizes**
+
+    **Goal:** Ensure all existing thumbnails and heroes meet the new size standards.
+    Re-export from source files where available.
+
+    - [ ] **5.11.a Audit current image sizes**
+        - Run `identify` on all thumbnails and heroes
+        - Flag any below standard (thumbnails <2400px, heroes <2800px)
+        - Document which have source files available for re-export
+
+    - [ ] **5.11.b Re-export undersized thumbnails**
+        - Re-export from source at 2400×1350, quality 85 WebP
+        - Replace files in `public/thumbnails/`
+
+    - [ ] **5.11.c Re-export undersized heroes**
+        - Re-export from source at 2800×800, quality 85 WebP
+        - Replace files in respective `public/projects/[slug]/`
+
+    - [ ] **5.11.d Update cache-busting query strings**
+        - Increment `?v=N` on any replaced thumbnails in projects.ts
+
 #### Part C: Verification
 
-- [ ] **5.11 Verify all images render correctly**
+- [ ] **5.12 Verify all images render correctly**
 
-    - [ ] **5.11.a Check thumbnail rendering**
+    - [ ] **5.12.a Check thumbnail rendering**
         - All projects display thumbnails in grid view
         - Placeholder fallback works for any missing
         - In-dev overlay applies correctly
 
-    - [ ] **5.11.b Check hero rendering on detail pages**
+    - [ ] **5.12.b Check hero rendering on detail pages**
         - Navigate to each project detail page
         - Verify hero displays with correct aspect ratio
         - Check responsive behavior across viewports
 
-    - [ ] **5.11.c Check screenshot galleries**
+    - [ ] **5.12.c Check screenshot galleries**
         - Verify all referenced screenshots exist and load
         - Check gallery navigation/display
 
-- [ ] **5.12 Quality gates (Tier 2)**
+- [ ] **5.13 Quality gates (Tier 2)**
 
-    - [ ] **5.12.a Run quality checks**
+    - [ ] **5.13.a Run quality checks**
         - Type check, lint, format check
         - Unit tests for modified components
         - E2E tests for project pages
 
-    - [ ] **5.12.b Address any issues**
+    - [ ] **5.13.b Address any issues**
         - Fix failures before proceeding to Phase 6
 
 ### **Phase 6:** Aesthetic Exploration

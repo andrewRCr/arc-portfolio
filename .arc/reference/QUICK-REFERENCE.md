@@ -43,6 +43,17 @@ Command patterns and environment context for arc-portfolio.
 
 **Working Directory Note**: Commands assume repository root. If in a subdirectory, adjust paths accordingly.
 
+### Image Standards
+
+Target dimensions for project images (optimized for 4K/Retina at 2× density):
+
+| Type      | Dimensions | Ratio | Format   | Target Size |
+| --------- | ---------- | ----- | -------- | ----------- |
+| Thumbnail | 2400×1350  | 16:9  | WebP q85 | ~150KB      |
+| Hero      | 2800×800   | 3.5:1 | WebP q85 | ~100KB      |
+
+Screenshots use source resolution (no resizing needed).
+
 ### Development Server
 
 **Local Development**:

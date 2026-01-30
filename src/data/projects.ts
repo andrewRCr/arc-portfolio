@@ -66,9 +66,11 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - no live demo yet
     },
     images: {
-      thumbnail: "/thumbnails/cinexplorer.webp?v=6",
+      thumbnail: "/thumbnails/cinexplorer.webp?v=7",
+      hero: "/projects/cinexplorer/hero.webp",
       screenshots: [], // In development - no screenshots yet
     },
+    photoCredits: ["Denise Jans", "Kumiko Shimizu", "Noom Peerapong", "Jeremy Yap", "Adrien Olichon"],
     teamSize: "Solo project",
     role: "Full-Stack Developer",
     developmentTime: "2024-2025",

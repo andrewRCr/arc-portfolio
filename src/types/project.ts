@@ -85,6 +85,7 @@ export interface Project {
 
   // Visual assets
   images: ProjectImages; // Thumbnail and screenshots with alt text
+  photoCredits?: string[]; // Photographer names for stock imagery attribution (e.g., Unsplash)
 
   // Optional metadata
   teamSize?: string; // Team composition (e.g., "Solo", "2 developers", "4-person team")
