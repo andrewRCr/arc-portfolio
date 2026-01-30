@@ -45,13 +45,11 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
             Project Image
           </div>
         )}
-        {/* In Development Overlay */}
-        {isInDevelopment && <div className="absolute inset-0 z-10 bg-background/50" />}
         {/* In Development Badge */}
         {isInDevelopment && (
           <span
             data-testid="in-development-badge"
-            className="absolute bottom-2 right-2 z-20 border border-border bg-background/90 px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+            className="absolute bottom-2 right-2 border border-border bg-background/90 px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground"
           >
             In Development
           </span>

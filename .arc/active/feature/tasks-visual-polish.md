@@ -731,23 +731,24 @@ User creates actual images using external tools (DALL-E 3, image editors, etc.).
         - Set thumbnail path in projects.ts
         - Set hero path in projects.ts
 
-- [ ] **5.5 Branding: CineXplorer**
+- [x] **5.5 Branding: CineXplorer**
 
-    - [ ] **5.5.a Create logo concept**
-        - Movie/cinema themed
-        - Lower stakes than ARC Framework but still thoughtful
+    - [x] **5.5.a Create logo concept**
+        - Stacked cards/film strip icon with subtle sprocket holes
+        - Paired with geometric sans-serif wordmark
+        - Iterated through Midjourney, refined sizing/positioning manually
 
-    - [ ] **5.5.b Create hero image (3.5:1 ratio)**
-        - Logo-based composition
-        - Place in `public/projects/cinexplorer/hero.webp`
+    - [x] **5.5.b Create hero image (3.5:1 ratio)**
+        - Skipped dedicated hero; thumbnail fallback is acceptable for in-dev project
+        - Will revisit when CineXplorer is publicly released
 
-    - [ ] **5.5.c Create thumbnail image (16:9 ratio)**
-        - Logo-based composition
+    - [x] **5.5.c Create thumbnail image (16:9 ratio)**
+        - Logo on navy background (1500x844, 20KB)
         - Place in `public/thumbnails/cinexplorer.webp`
 
-    - [ ] **5.5.d Update project data**
-        - Set thumbnail path in projects.ts
-        - Set hero path in projects.ts
+    - [x] **5.5.d Update project data**
+        - Thumbnail path set with cache-busting query param
+        - Configured `images.localPatterns` in next.config.ts to allow query strings
 
 - [ ] **5.6 arc-portfolio images (self-referential)**
 

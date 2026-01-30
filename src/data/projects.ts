@@ -66,7 +66,7 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - no live demo yet
     },
     images: {
-      thumbnail: "/thumbnails/cinexplorer.webp",
+      thumbnail: "/thumbnails/cinexplorer.webp?v=6",
       screenshots: [], // In development - no screenshots yet
     },
     teamSize: "Solo project",
