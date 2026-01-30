@@ -654,25 +654,26 @@ export const projects: Project[] = [
     title: "Pong Clone",
     slug: "pong-clone",
     description:
-      "Classic Pong game implementation written in C++ from scratch without using a game engine. Features single-player mode with AI opponent " +
-      "and local multiplayer for two human players. Demonstrates fundamental game programming concepts including game loop architecture, " +
-      "collision detection, input handling, basic AI logic, and audio integration with spatialized sound effects. Includes complete menu system " +
-      "with main menu and pause functionality, round/score tracking, and keyboard controls (WASD or arrow keys). Built using libsndfile and OpenAL " +
-      "for audio, showcasing low-level game development without engine abstractions.",
+      "Classic Pong implementation in raw C++ with a fully hand-rolled software renderer—no game engine, no graphics API (OpenGL/DirectX), " +
+      "just direct pixel manipulation via Win32 GDI. Features single-player mode with basic AI opponent and local two-player multiplayer. " +
+      "Demonstrates foundational game programming: custom game loop with delta timing, AABB collision detection, entity architecture, " +
+      "state machine for menus/gameplay, and 3D positional audio via OpenAL. The renderer draws everything—including bitmap text—directly " +
+      "to a memory buffer, blitted to screen each frame.",
     shortDescription:
-      "Classic Pong game in C++ without a game engine, featuring AI opponent, local multiplayer, and spatialized audio.",
+      "Pong in raw C++ with software rendering—no engine, no graphics API. Hand-rolled game loop, collision detection, and 3D positional audio.",
     category: ["Game"],
-    tags: ["C++", "Game Development", "Audio Programming", "Game AI", "No Engine"],
-    techStack: ["C++", "libsndfile", "OpenAL (openal-soft)"],
+    tags: ["C++", "Game Development", "Audio Programming", "Software Rendering", "No Engine"],
+    techStack: ["C++", "Win32", "libsndfile", "OpenAL (openal-soft)"],
     features: [
+      "Pure software rendering: direct pixel buffer writes, no OpenGL/DirectX/Vulkan",
       "Single-player mode with basic AI opponent",
       "Local multiplayer mode for two human players",
-      "Spatialized gameplay sound effects using OpenAL",
-      "Pause/resume functionality with in-game menu",
-      "Main menu and system menu navigation",
-      "Round and score tracking system",
-      "Keyboard input handling (WASD or arrow keys)",
-      "Built from scratch without game engine dependencies",
+      "3D positional audio using OpenAL for spatialized sound effects",
+      "Custom bitmap text rendering (no font libraries)",
+      "Delta-timed game loop with pause/resume functionality",
+      "AABB collision detection with paddle-spin response",
+      "Complete menu system (main menu, pause menu)",
+      "Round and score tracking with configurable win conditions",
     ],
     links: {
       github: "https://github.com/andrewRCr/PongClone",
@@ -690,19 +691,18 @@ export const projects: Project[] = [
     role: "Developer",
     developmentTime: "2023",
     architectureNotes: [
-      "Custom game loop implementation without engine framework",
-      "Collision detection system for paddle and ball physics",
-      "Basic AI logic for single-player opponent behavior",
-      "Audio system using libsndfile for loading and OpenAL for spatialized playback",
-      "Input handling system mapping keyboard events to paddle control",
-      "State management for menu navigation and gameplay transitions",
-      "Score and round tracking with game state persistence during pause",
+      "Win32 platform layer: window creation, input handling, frame timing",
+      "Software rasterizer: VirtualAlloc framebuffer, GDI StretchDIBits for display",
+      "Entity system with base class and Ball/Paddle specializations",
+      "State machine managing menu navigation and gameplay transitions",
+      "Audio subsystem wrapping OpenAL: SoundDevice, SoundLibrary, SoundPlayer",
+      "Clean separation: Framework (renderer, audio), Entities, Platforms",
     ],
     highlights: [
-      "Demonstrates fundamental game programming from first principles without engine abstractions",
-      "Showcases low-level C++ development: memory management, game loop architecture, collision detection",
-      "Implements audio programming with spatial sound using OpenAL",
-      "Features complete game experience: menus, multiple modes, AI opponent, sound effects",
+      "Pure software rendering without any graphics API—direct pixel manipulation via Win32 GDI",
+      "Handmade-style architecture: custom game loop, collision detection, entity system built from scratch",
+      "3D positional audio integration using OpenAL for spatialized gameplay sound effects",
+      "Clean layered codebase separating platform concerns from game logic",
     ],
     order: 9,
     featured: false,

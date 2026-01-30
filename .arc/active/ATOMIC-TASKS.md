@@ -30,10 +30,13 @@
 
 ## Active
 
-- [ ] Copy pass on project descriptions (especially short descriptions) prior to deployment
+- [ ] Copy pass on project content prior to deployment
     - Review `src/data/projects.ts` for all project entries
-    - Focus on `shortDescription` field for each project
-    - Ensure descriptions are concise, compelling, and consistent in tone
+    - Focus on `shortDescription` field - concise, compelling, consistent tone
+    - **Merge features → highlights:** For each project, curate best points from `features`
+      into `highlights` (features array no longer rendered but data preserved)
+    - Target ~4-6 highlights per project focusing on impressive/notable aspects
     - Check for typos, awkward phrasing, or overly technical language
+    - Consider if any highlights belong in architectureNotes instead
 
 ---
