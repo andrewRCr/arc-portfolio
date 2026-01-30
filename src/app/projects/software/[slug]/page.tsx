@@ -84,6 +84,11 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
         backLabel={backDest.label}
         links={project.links}
         stats={stats}
+        metadata={{
+          teamSize: project.teamSize,
+          role: project.role,
+          developmentTime: project.developmentTime,
+        }}
       />
       <ProjectDetail
         project={project}

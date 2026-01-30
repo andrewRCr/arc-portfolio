@@ -25,6 +25,7 @@ export function DetailHeaderDesktop({
   backLabel,
   links,
   stats,
+  metadata,
 }: DetailHeaderProps) {
   const hasCategories = categories && categories.length > 0;
   const hasStats =
@@ -32,7 +33,17 @@ export function DetailHeaderDesktop({
   const { opacity } = useHeaderCrossfade("out");
   const iconLinks = buildIconLinkItems(links);
   const hasLinks = iconLinks.length > 0;
-  const hasFooter = hasCategories || hasStats || hasLinks;
+
+  // Build metadata string - role only shows for team projects
+  const isSolo = metadata?.teamSize?.toLowerCase().includes("solo");
+  const metadataParts = [
+    metadata?.teamSize,
+    !isSolo && metadata?.role ? metadata.role : null,
+    metadata?.developmentTime,
+  ].filter(Boolean);
+  const hasMetadata = metadataParts.length > 0;
+
+  const hasFooter = hasCategories || hasStats || hasLinks || hasMetadata;
 
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
@@ -73,12 +84,12 @@ export function DetailHeaderDesktop({
         </div>
       </div>
 
-      {/* Footer: category badges (left) + icon links (right) */}
+      {/* Footer: category badges (left) + metadata + icon links (right) */}
       {/* Tighter padding for single row, more room when categories may wrap */}
       {hasFooter && (
         <div className="flex items-center justify-between gap-4 px-4 py-3 bg-card/80 rounded-b-lg">
-          {/* Category badges + stats */}
-          {hasCategories || hasStats ? (
+          {/* Category badges + stats + metadata (left side) */}
+          {hasCategories || hasStats || hasMetadata ? (
             <div data-testid="category-badges" className="flex flex-wrap items-center gap-2">
               {hasCategories &&
                 categories.map((category) => (
@@ -96,12 +107,16 @@ export function DetailHeaderDesktop({
                   endorsements={stats.endorsements}
                 />
               )}
+              {/* Project metadata - subtle text after badges */}
+              {hasMetadata && (
+                <span className="ml-2 text-sm italic text-muted-foreground">{metadataParts.join(" · ")}</span>
+              )}
             </div>
           ) : (
-            <div /> // Spacer to push links right
+            <div /> // Spacer to push content right
           )}
 
-          {/* Icon links - ghost buttons, or outline button when single NexusMods link */}
+          {/* Icon links - right side */}
           {hasLinks && (
             <div data-testid="header-links" className="flex items-center">
               {iconLinks.map((link, index) => {

@@ -18,6 +18,15 @@ export interface DetailHeaderStats {
   endorsements?: number;
 }
 
+/**
+ * Project metadata for header display (desktop only)
+ */
+export interface DetailHeaderMetadata {
+  teamSize?: string;
+  role?: string;
+  developmentTime?: string;
+}
+
 export interface DetailHeaderProps {
   /** Project title displayed as h1 */
   title: string;
@@ -33,4 +42,6 @@ export interface DetailHeaderProps {
   links?: ProjectLinks;
   /** NexusMods stats (optional, for mods) */
   stats?: DetailHeaderStats;
+  /** Project metadata - displayed in header footer on desktop */
+  metadata?: DetailHeaderMetadata;
 }

@@ -149,8 +149,8 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
         ))}
       </div>
 
-      {/* Inline metadata - subtle text below description */}
-      <ProjectMetadata project={project} />
+      {/* Inline metadata - mobile only (desktop shows in header) */}
+      {isPhone && <ProjectMetadata project={project} />}
 
       {/* Screenshots Gallery */}
       {project.images.screenshots.length > 0 && (

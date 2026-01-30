@@ -73,7 +73,7 @@ export const projects: Project[] = [
     photoCredits: ["Denise Jans", "Kumiko Shimizu", "Noom Peerapong", "Jeremy Yap", "Adrien Olichon"],
     teamSize: "Solo project",
     role: "Full-Stack Developer",
-    developmentTime: "2024-2025",
+    developmentTime: "2025-2026",
     highlights: [
       "Demonstrates modern full-stack development practices including type-safe API architecture, comprehensive testing strategies, and systematic code quality enforcement",
       "Showcases integration of bleeding-edge AI tooling (ARC Agentic Development Framework) with traditional software engineering discipline",
@@ -86,7 +86,7 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 2: ARC Agentic Development Framework (New Project)
+  // PROJECT 2: ARC Agentic Development Framework
   // ==========================================
   {
     projectType: "software",
@@ -135,7 +135,7 @@ export const projects: Project[] = [
     photoCredits: ["Alexey Ruban", "Mike Stoll", "Jason Leung"],
     teamSize: "Solo project",
     role: "Framework Author",
-    developmentTime: "2024-2025",
+    developmentTime: "2025-2026",
     architectureNotes: [
       "Documentation-only framework with no code dependencies - pure process and templates",
       "Deployable template system for project adoption via dedicated directory structure",
@@ -212,7 +212,7 @@ export const projects: Project[] = [
     },
     teamSize: "Solo project",
     role: "Full-Stack Developer",
-    developmentTime: "2024-2025",
+    developmentTime: "2025-2026",
     architectureNotes: [
       "Next.js App Router with React Server Components for optimal performance",
       "Type-safe content management: TypeScript interfaces for all portfolio data",
@@ -290,7 +290,7 @@ export const projects: Project[] = [
     },
     teamSize: "Solo project",
     role: "Full-Stack Developer",
-    developmentTime: "2024",
+    developmentTime: "2024 (v1), 2026 (v2)",
     architectureNotes: [
       ".NET 8 backend API with SQL Server and Entity Framework for data persistence",
       "Blazor Web Assembly for modern web interface with MudBlazor component library",
@@ -625,8 +625,8 @@ export const projects: Project[] = [
       ],
     },
     teamSize: "3-person team",
-    role: "Project Lead / Game Developer",
-    developmentTime: "8 weeks (2024)",
+    role: "Project Lead",
+    developmentTime: "2022",
     architectureNotes: [
       "Unreal Engine 5 with C++ core systems and Blueprint for rapid iteration",
       "Animation state machines for complex character locomotion and combat transitions",
