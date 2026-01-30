@@ -719,28 +719,30 @@ User creates actual images using external tools (DALL-E 3, image editors, etc.).
 **Rationale:** Thumbnails display at 33vw on desktop; at 4K (3840px) with 2× density = ~2534px needed.
 Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality 85 balances size/quality.
 
-- [ ] **5.4 Branding: ARC Framework**
+- [x] **5.4 Branding: ARC Framework**
 
-    - [ ] **5.4.a Create logo concept**
-        - Iterate using DALL-E 3 or similar
-        - Target audience: developers interested in AI-augmented workflows
-        - Should feel professional, clean, developer-focused
+    - [x] **5.4.a Create logo concept**
+        - Iterated through Midjourney exploring nested arcs, terminal aesthetics
+        - Final: solid arc with notch - bold, simple, SVG-convertible
+        - Lockup: logo mark + "arc" wordmark + ">_" prompt suffix
 
-    - [ ] **5.4.b Refine to final logo**
-        - Polish in vector tool if needed (Figma/Illustrator/Inkscape)
-        - Export appropriate formats
+    - [x] **5.4.b Refine to final logo**
+        - Assembled lockup manually using geometric sans-serif
+        - Navy blue brand color for logo bar
 
-    - [ ] **5.4.c Create hero image (3.5:1 ratio)**
-        - Logo-based composition
-        - Place in `public/projects/arc-agentic-dev-framework/hero.webp`
+    - [x] **5.4.c Create hero image (3.5:1 ratio)**
+        - Card catalog as dominant background (documentation metaphor)
+        - Centered logo bar with COMPUTE panel accent below
+        - 2800×800, 106KB WebP
 
-    - [ ] **5.4.d Create thumbnail image (16:9 ratio)**
-        - Logo-based composition
-        - Place in `public/thumbnails/arc-agentic-dev-framework.webp`
+    - [x] **5.4.d Create thumbnail image (16:9 ratio)**
+        - Triptych: card catalog | COMPUTE panel | mixing board
+        - Centered navy logo bar, subtle blur on background images
+        - 2400×1350, 107KB WebP
 
-    - [ ] **5.4.e Update project data**
-        - Set thumbnail path in projects.ts
-        - Set hero path in projects.ts
+    - [x] **5.4.e Update project data**
+        - Thumbnail and hero paths set in projects.ts
+        - Photo credits added (3 Unsplash photographers)
 
 - [x] **5.5 Branding: CineXplorer**
 

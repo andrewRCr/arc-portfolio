@@ -128,9 +128,11 @@ export const projects: Project[] = [
       liveDemo: undefined, // Not applicable - framework/documentation repo
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - logo-based image will be added
+      thumbnail: "/thumbnails/arc-agentic-dev-framework.webp",
+      hero: "/projects/arc-agentic-dev-framework/hero.webp",
       screenshots: [], // Documentation-only - no UI screenshots
     },
+    photoCredits: ["Alexey Ruban", "Mike Stoll", "Jason Leung"],
     teamSize: "Solo project",
     role: "Framework Author",
     developmentTime: "2024-2025",
