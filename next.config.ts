@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
       {
         pathname: "/projects/**",
       },
+      {
+        pathname: "/wallpaper/**",
+      },
+      {
+        pathname: "/*.webp",
+      },
     ],
   },
 

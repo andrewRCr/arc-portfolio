@@ -206,8 +206,9 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - will be deployed to andrewcreekmore.com
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - screenshots will be added
-      screenshots: [], // Self-referential - screenshots to be captured
+      thumbnail: "/thumbnails/arc-portfolio.webp",
+      hero: "/projects/arc-portfolio/hero.webp",
+      screenshots: [], // Intentionally empty - self-referential project
     },
     teamSize: "Solo project",
     role: "Full-Stack Developer",

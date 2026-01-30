@@ -771,30 +771,35 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Added `photoCredits?: string[]` to Project type
         - Software page auto-renders credits when present
 
-- [ ] **5.6 arc-portfolio images (self-referential)**
+- [x] **5.6 arc-portfolio images (self-referential)**
 
-    - [ ] **5.6.a Plan screenshot selection**
-        - Which pages: home, projects grid, detail page, about?
-        - Which states: light/dark theme, intro animation frames?
-        - Which viewports: desktop primary, mobile for variety?
+    - [x] **5.6.a Plan screenshot selection**
+        - Mobile viewport chosen for thumbnail/hero (fits format better)
+        - Multiple themes captured: Gruvbox dark/light, Rose Pine dark/light
+        - Pages: home, about, projects, theme controls, project detail
 
-    - [ ] **5.6.b Capture screenshots**
-        - Use browser dev tools or screenshot utility
-        - Ensure high quality, appropriate resolution
+    - [x] **5.6.b Capture screenshots**
+        - Captured ~20 screenshots across themes/pages/viewports
+        - Source files preserved outside repo for future use
 
-    - [ ] **5.6.c Create hero image (3.5:1 ratio)**
-        - Screenshot-based composition or single striking shot
-        - Place in `public/projects/arc-portfolio/hero.webp`
+    - [x] **5.6.c Create hero image (3.5:1 ratio)**
+        - 5 mobile screens showing app breadth: home, projects, about, theme picker, detail
+        - Multiple themes visible, demonstrates customization depth
+        - 2800×800, 104KB WebP
 
-    - [ ] **5.6.d Create thumbnail image (16:9 ratio)**
-        - Place in `public/thumbnails/arc-portfolio.webp`
+    - [x] **5.6.d Create thumbnail image (16:9 ratio)**
+        - 3 mobile screens: home, about, theme controls
+        - Multiple themes visible in single image
+        - 2400×1350, 85KB WebP
 
-    - [ ] **5.6.e Create screenshots for gallery**
-        - 4-6 curated screenshots showing key features
-        - Place in `public/projects/arc-portfolio/`
+    - [x] **5.6.e Create screenshots for gallery** - SKIPPED
+        - Self-referential project: user is already ON the app
+        - Hero/thumbnail provide sufficient overview
+        - No value in "here's more of what you're looking at"
 
-    - [ ] **5.6.f Update project data**
-        - Set thumbnail, hero, and screenshot paths in projects.ts
+    - [x] **5.6.f Update project data**
+        - Thumbnail and hero paths set in projects.ts
+        - No gallery screenshots (intentional)
 
 - [ ] **5.7 Remove titles from mod images**
 
