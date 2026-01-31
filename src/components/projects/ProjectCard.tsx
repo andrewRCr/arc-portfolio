@@ -8,6 +8,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Project } from "@/types/project";
+import { TechStackScroller } from "@/components/ui/TechStackScroller";
 
 interface ProjectCardProps {
   project: Project;
@@ -16,10 +17,6 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, categoryType = "software" }: ProjectCardProps) {
   const detailUrl = `/projects/${categoryType}/${project.slug}`;
-
-  // Limit tech stack display to first 3 items
-  const displayedTechStack = project.techStack.slice(0, 3);
-  const remainingCount = project.techStack.length - displayedTechStack.length;
 
   const hasValidThumbnail = Boolean(project.images.thumbnail);
   const isInDevelopment = project.status === "in-development";
@@ -87,25 +84,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         <p className="mb-3 text-sm text-muted-foreground">{project.shortDescription}</p>
 
         {/* Tech Stack Tags (secondary) - pushed to bottom with mt-auto */}
-        <div className="mt-auto flex flex-wrap gap-1.5">
-          {displayedTechStack.map((tech) => (
-            <span
-              key={tech}
-              data-testid="tech-badge"
-              className="rounded border border-border bg-muted px-2 py-0.5 text-xs text-foreground"
-            >
-              {tech}
-            </span>
-          ))}
-          {remainingCount > 0 && (
-            <span
-              data-testid="tech-overflow-badge"
-              className="rounded border border-border bg-muted px-2 py-0.5 text-xs text-muted-foreground"
-            >
-              +{remainingCount}
-            </span>
-          )}
-        </div>
+        <TechStackScroller techStack={project.techStack} size="sm" scrollable={false} className="mt-auto" />
       </div>
     </Link>
   );

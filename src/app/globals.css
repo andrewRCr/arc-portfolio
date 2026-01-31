@@ -809,6 +809,23 @@ html[data-env-preview="false"] [data-window-container] {
   background-image: radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
 }
 
+/* Horizontal scroll shadows (left/right) */
+[data-scroll-shadow="left"] {
+  background-image: radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, 0.15) 0%, transparent 100%);
+}
+
+[data-scroll-shadow="right"] {
+  background-image: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.15) 0%, transparent 100%);
+}
+
+.dark [data-scroll-shadow="left"] {
+  background-image: radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+}
+
+.dark [data-scroll-shadow="right"] {
+  background-image: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+}
+
 /* TWM Navigation gap - responsive via CSS, no JS needed (prevents hydration flash)
    Mobile: narrower gap for collapsed dropdown nav
    Desktop: wider gap for horizontal nav links */
@@ -913,7 +930,7 @@ html[data-theme-transition] *::after {
 
 /* Project detail - mobile: 165px = DetailHeaderCompact height (~140px) + visual offset */
 [data-page="project-detail"] .os-scrollbar-vertical {
-  padding-top: 165px;
+  padding-top: 204px;
 }
 /* Project detail - desktop: 396px = DetailHeader hero height (~360px) + visual offset */
 @media (min-width: 768px) {
@@ -977,4 +994,48 @@ html[data-theme-transition] *::after {
   .animate-blink {
     animation: none;
   }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+/* Hide scrollbar while maintaining scroll functionality */
+.scrollbar-none {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari, Opera */
+}
+
+/* ==========================================================================
+   Horizontal Scroll Fade Masks
+   Uses CSS mask-image to fade edges indicating scrollable content.
+   Controlled by data-scroll-fade attribute: none | left | right | both
+   Fade zone width (24px) must match scroll-padding-inline for proper snap alignment.
+   ========================================================================== */
+
+/* Scroll padding utility - offsets snap points to avoid landing under fade zones */
+.scroll-padding-inline {
+  scroll-padding-inline: 24px;
+}
+
+[data-scroll-fade="right"] {
+  -webkit-mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+  -moz-mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+}
+
+[data-scroll-fade="left"] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black 100%);
+  -moz-mask-image: linear-gradient(to right, transparent 0%, black 24px, black 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 24px, black 100%);
+}
+
+[data-scroll-fade="both"] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+  -moz-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
 }

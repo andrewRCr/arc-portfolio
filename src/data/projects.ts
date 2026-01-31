@@ -407,7 +407,7 @@ export const projects: Project[] = [
       "Python desktop application generating custom DOOM (2016) mods from player-defined gameplay configurations.",
     category: ["Desktop App", "Modding Tool"],
     tags: ["Python", "Git", "Desktop Application", "Game Modding", "Data Modeling", "Tool Development"],
-    techStack: ["Python", "CustomTkinter", "Pillow (PIL)", "pygame"],
+    techStack: ["Python", "CustomTkinter", "Pillow (PIL)"],
     features: [
       "Data modeling: Python dataclasses representing game systems (inventory, weapons, equipment, upgrades)",
       "User-friendly GUI for configuring gameplay parameters without technical knowledge",
@@ -660,7 +660,7 @@ export const projects: Project[] = [
       "state machine for menus/gameplay, and 3D positional audio via OpenAL. The renderer draws everything—including bitmap text—directly " +
       "to a memory buffer, blitted to screen each frame.",
     shortDescription:
-      "Pong in raw C++ with software rendering—no engine, no graphics API. Hand-rolled game loop, collision detection, and 3D positional audio.",
+      "Pong in raw C++ with software rendering—no engine, no graphics API. Hand-rolled game loop, collision detection, state machines, and 3D positional audio.",
     category: ["Game"],
     tags: ["C++", "Game Development", "Audio Programming", "Software Rendering", "No Engine"],
     techStack: ["C++", "Win32", "libsndfile", "OpenAL (openal-soft)"],

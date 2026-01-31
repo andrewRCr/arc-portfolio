@@ -151,7 +151,7 @@ function ProjectsContent() {
               </div>
 
               {/* Bottom on phone (centered), right on tablet+: Filter Button */}
-              <div className="shrink-0 flex justify-center sm:justify-end">
+              <div className="shrink-0 flex justify-center sm:justify-end sm:mr-4">
                 <SkillFilterControl
                   allProjects={allProjectsAndMods}
                   selectedSkills={selectedSkills}

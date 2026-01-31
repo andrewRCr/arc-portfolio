@@ -13,6 +13,7 @@ import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
 import { TextLink } from "@/components/ui/text-link";
+import { TechStackScroller } from "@/components/ui/TechStackScroller";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 
 interface ProjectDetailProps {
@@ -114,8 +115,6 @@ function ProjectMetadata({ project }: { project: Project }) {
 
 export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   const isPhone = useIsPhone();
-  // Smaller tech stack badges on phone for visual hierarchy
-  const techBadgeTextSize = isPhone ? "text-xs" : "text-sm";
 
   // Section labels with customization support
   const labels = {
@@ -129,16 +128,7 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   return (
     <div className="px-2 mt-3 mb-1 relative">
       {/* Tech Stack - tight to header */}
-      <div className="flex flex-wrap gap-2">
-        {project.techStack.map((tech) => (
-          <span
-            key={tech}
-            className={`rounded border border-border bg-muted px-3 py-1 ${techBadgeTextSize} text-foreground`}
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
+      <TechStackScroller techStack={project.techStack} size={isPhone ? "sm" : "md"} />
 
       {/* Description - supports multiple paragraphs and markdown formatting */}
       <div className="mt-6 space-y-4">

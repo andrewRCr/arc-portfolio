@@ -91,7 +91,7 @@ export default function ProjectTabs() {
       <div
         role="tablist"
         aria-label="Project categories"
-        className="inline-flex min-h-11 items-end gap-2 border-b border-border/50 sm:flex"
+        className="relative inline-flex min-h-11 items-end gap-2 sm:flex sm:w-full after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-border/50 after:via-border/50 after:via-95% after:to-transparent"
       >
         {TABS.map((tab) => (
           <button
