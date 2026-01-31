@@ -821,10 +821,10 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
 
 - [ ] **5.8 Create missing hero images (software)**
 
-    - [ ] **5.8.a TaskFocus hero (3.5:1)**
-        - Create from existing screenshots or new capture
-        - Place in `public/projects/taskfocus/hero.webp`
-        - Update projects.ts
+    - [x] **5.8.a TaskFocus hero (3.5:1)**
+        - Multi-panel composite showing various app views (today, inbox, settings, sync)
+        - Also updated thumbnail with icon overlay (placeholder until v2 rewrite)
+        - Hero: 2800×800, 49KB; Thumbnail: 2400×1350, 29KB
 
     - [ ] **5.8.b PetResort hero (3.5:1)**
         - Create from existing screenshots or new capture

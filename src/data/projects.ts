@@ -276,7 +276,8 @@ export const projects: Project[] = [
       download: "https://github.com/andrewRCr/TaskFocus/releases", // Windows desktop app
     },
     images: {
-      thumbnail: "/thumbnails/taskfocus.webp",
+      thumbnail: "/thumbnails/taskfocus.webp?v=2",
+      hero: "/projects/taskfocus/hero.webp",
       screenshots: [
         { src: "/projects/taskfocus/screenshot-1.webp", alt: "TaskFocus Today view with prioritized tasks" },
         { src: "/projects/taskfocus/screenshot-2.webp", alt: "Task organization with Projects and Contexts" },
