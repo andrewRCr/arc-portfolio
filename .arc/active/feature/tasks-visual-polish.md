@@ -815,9 +815,9 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Remove title overlays from workspace originals
         - Re-export as WebP to respective `public/projects/[slug]/hero.webp`
 
-    - [ ] **5.7.c Process DOOM NG+ Customizer images**
-        - Same treatment (thumbnail + hero)
-        - This is software but uses the mod aesthetic
+    - [x] **5.7.c Process DOOM NG+ Customizer images**
+        - Updated thumbnail (90KB) and hero (60KB)
+        - Cleaner presentation without title overlays
 
 - [x] **5.8 Create missing hero images (software)**
 
@@ -831,41 +831,27 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Hero: 2800×800, 74KB
         - Also updated PetResort thumbnail (2400×1350, 75KB) and TaskFocus hero (minor update)
 
-- [ ] **5.9 Create missing hero images (games)**
+- [x] **5.9 Create missing hero images (games)**
 
-    - [ ] **5.9.a Action RPG hero (3.5:1)**
-        - Select best screenshot or create composition
-        - Place in `public/projects/action-rpg-project/hero.webp`
-        - Update projects.ts
+    - [x] **5.9.a Action RPG hero (3.5:1)**
+        - Three-panel composite: interior, outdoor combat, inventory UI (195KB)
 
-    - [ ] **5.9.b Survival Horror hero (3.5:1)**
-        - Select best screenshot or create composition
-        - Place in `public/projects/survival-horror-project/hero.webp`
-        - Update projects.ts
+    - [x] **5.9.b Survival Horror hero (3.5:1)**
+        - Two-panel: mansion gameplay + map/inventory systems (56KB)
 
-    - [ ] **5.9.c Pong Clone hero (3.5:1)**
-        - Only 2 screenshots available; may need creative approach
-        - Place in `public/projects/pong-clone/hero.webp`
-        - Update projects.ts
+    - [x] **5.9.c Pong Clone hero (3.5:1)**
+        - Minimal gameplay-only stretch (7KB); title menu moved to screenshot-1
 
-- [ ] **5.10 Screenshot curation pass**
+- [x] **5.10 Screenshot curation pass**
 
-    - [ ] **5.10.a Curate Action RPG screenshots**
-        - Current: 16 screenshots
-        - Target: ~6 best shots showing variety
-        - Remove excess from `public/projects/action-rpg-project/`
-        - Update projects.ts screenshot array
+    - [x] **5.10.a Curate Action RPG screenshots**
+        - Reduced from 16 → 13, best shots front-loaded
 
-    - [ ] **5.10.b Curate Survival Horror screenshots**
-        - Current: 22 screenshots
-        - Target: ~6 best shots showing variety
-        - Remove excess from `public/projects/survival-horror-project/`
-        - Update projects.ts screenshot array
+    - [x] **5.10.b Curate Survival Horror screenshots**
+        - Reduced from 22 → 12, renumbered sequentially, best shots front-loaded
 
-    - [ ] **5.10.c Review TaskFocus screenshots**
-        - Current: 8 screenshots
-        - Assess quality, curate if needed
-        - Update projects.ts if changes made
+    - [x] **5.10.c Review TaskFocus screenshots**
+        - Skipped: v2 rewrite pending, images will be replaced
 
 - [ ] **5.11 Standardize existing image sizes**
 
