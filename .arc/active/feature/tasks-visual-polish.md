@@ -819,17 +819,17 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Same treatment (thumbnail + hero)
         - This is software but uses the mod aesthetic
 
-- [ ] **5.8 Create missing hero images (software)**
+- [x] **5.8 Create missing hero images (software)**
 
     - [x] **5.8.a TaskFocus hero (3.5:1)**
         - Multi-panel composite showing various app views (today, inbox, settings, sync)
         - Also updated thumbnail with icon overlay (placeholder until v2 rewrite)
         - Hero: 2800×800, 49KB; Thumbnail: 2400×1350, 29KB
 
-    - [ ] **5.8.b PetResort hero (3.5:1)**
-        - Create from existing screenshots or new capture
-        - Place in `public/projects/petresort/hero.webp`
-        - Update projects.ts
+    - [x] **5.8.b PetResort hero (3.5:1)**
+        - Created multi-panel composite with dog photo center (v3 chosen over plain logo v2)
+        - Hero: 2800×800, 74KB
+        - Also updated PetResort thumbnail (2400×1350, 75KB) and TaskFocus hero (minor update)
 
 - [ ] **5.9 Create missing hero images (games)**
 

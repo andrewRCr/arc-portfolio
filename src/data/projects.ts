@@ -277,7 +277,7 @@ export const projects: Project[] = [
     },
     images: {
       thumbnail: "/thumbnails/taskfocus.webp?v=2",
-      hero: "/projects/taskfocus/hero.webp",
+      hero: "/projects/taskfocus/hero.webp?v=2",
       screenshots: [
         { src: "/projects/taskfocus/screenshot-1.webp", alt: "TaskFocus Today view with prioritized tasks" },
         { src: "/projects/taskfocus/screenshot-2.webp", alt: "Task organization with Projects and Contexts" },
@@ -358,7 +358,8 @@ export const projects: Project[] = [
       },
     },
     images: {
-      thumbnail: "/thumbnails/petresort.webp",
+      thumbnail: "/thumbnails/petresort.webp?v=2",
+      hero: "/projects/petresort/hero.webp",
       screenshots: [
         { src: "/projects/petresort/screenshot-1.webp", alt: "PetResort dashboard with visit overview and metrics" },
         { src: "/projects/petresort/screenshot-2.webp", alt: "Guest and client management interfaces" },
