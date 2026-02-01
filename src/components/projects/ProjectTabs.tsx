@@ -41,8 +41,8 @@ export default function ProjectTabs() {
   const activeTab: TabValue = TABS.includes(currentTab as TabValue) ? (currentTab as TabValue) : "software";
 
   const handleTabChange = (tab: TabValue) => {
-    // Update URL with query parameter
-    router.push(`${pathname}?tab=${tab}`);
+    // Update URL with query parameter (scroll: false - we handle scroll manually)
+    router.push(`${pathname}?tab=${tab}`, { scroll: false });
   };
 
   const handleKeyDown = (tab: TabValue, event: React.KeyboardEvent) => {

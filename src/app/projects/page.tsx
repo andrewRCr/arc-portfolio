@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useLayoutEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ProjectTabs from "@/components/projects/ProjectTabs";
@@ -12,10 +12,33 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
+import { contact } from "@/data/contact";
+import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
 import { FEATURES } from "@/config/features";
 import { filterProjectsBySkills } from "@/lib/project-filters";
 import { TAB_CONTENT_DURATION, MATERIAL_EASE } from "@/lib/animation-timing";
 import { Project } from "@/types/project";
+import { useScrollViewport } from "@/components/layout/ScrollContext";
+
+/** Scrolls viewport to top when tab changes, synced with exit animation. Must be inside PageLayout. */
+function ScrollResetOnTabChange({ currentTab }: { currentTab: string }) {
+  const { viewport } = useScrollViewport();
+  const prevTabRef = useRef(currentTab);
+
+  useLayoutEffect(() => {
+    if (prevTabRef.current !== currentTab && viewport) {
+      // Delay scroll until exit animation completes (opacity at 0)
+      const timer = setTimeout(() => {
+        viewport.scrollTop = 0;
+      }, TAB_CONTENT_DURATION * 1000);
+      prevTabRef.current = currentTab;
+      return () => clearTimeout(timer);
+    }
+    prevTabRef.current = currentTab;
+  }, [currentTab, viewport]);
+
+  return null;
+}
 
 /** Reusable tab panel component for project grids */
 function TabPanel({
@@ -163,6 +186,9 @@ function ProjectsContent() {
         </PageHeader>
       }
     >
+      {/* Must be inside PageLayout to access ScrollContext */}
+      <ScrollResetOnTabChange currentTab={currentTab} />
+
       <div className="px-4">
         {/* ARIA Live Region for result count */}
         {isFiltered && (
@@ -206,6 +232,22 @@ function ProjectsContent() {
             {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
               <motion.div key="mods" data-tab-content {...tabContentAnimation}>
                 <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
+                {/* Footer card linking to full NexusMods profile */}
+                <div className="mt-6 flex justify-center">
+                  <div className="rounded-lg border border-border-strong bg-background/80 px-6 py-3 text-sm text-muted-foreground">
+                    <span className="sm:hidden">See more at </span>
+                    <span className="hidden sm:inline">See additional published mods at </span>
+                    <a
+                      href={contact.socialLinks.find((l) => l.platform === "NexusMods")?.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-baseline gap-1 font-medium text-foreground hover:underline"
+                    >
+                      <NexusModsIcon className="h-4 w-4 translate-y-0.5" />
+                      NexusMods
+                    </a>
+                  </div>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

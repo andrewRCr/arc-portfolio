@@ -115,6 +115,9 @@ export default async function RootLayout({
             Creates unavoidable hydration mismatch on Safari dev mode - this is
             the idiomatic pattern. See: github.com/vercel/next.js/issues/34610 */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Disable browser scroll restoration - we handle scroll manually.
+            Prevents browser from overriding scroll position on query param changes. */}
+        <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration = "manual";` }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

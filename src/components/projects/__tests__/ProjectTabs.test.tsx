@@ -99,7 +99,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       const gamesTab = screen.getByRole("tab", { name: /games/i });
       await user.click(gamesTab);
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games", { scroll: false });
     });
 
     it("updates URL when switching to Mods tab", async () => {
@@ -109,7 +109,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       const modsTab = screen.getByRole("tab", { name: /mods/i });
       await user.click(modsTab);
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods", { scroll: false });
     });
 
     it("updates URL when switching to Software tab from Games", async () => {
@@ -121,7 +121,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       const softwareTab = screen.getByRole("tab", { name: /software/i });
       await user.click(softwareTab);
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software", { scroll: false });
     });
 
     it("handles keyboard navigation (Enter key) on Games tab", async () => {
@@ -132,7 +132,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       gamesTab.focus();
       await user.keyboard("{Enter}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games", { scroll: false });
     });
 
     it("handles keyboard navigation (Space key) on Games tab", async () => {
@@ -143,7 +143,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       gamesTab.focus();
       await user.keyboard(" ");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games", { scroll: false });
     });
 
     it("handles ArrowRight from Software to Games", async () => {
@@ -154,7 +154,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       softwareTab.focus();
       await user.keyboard("{ArrowRight}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games", { scroll: false });
     });
 
     it("handles ArrowRight from Games to Mods", async () => {
@@ -166,7 +166,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       gamesTab.focus();
       await user.keyboard("{ArrowRight}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods", { scroll: false });
     });
 
     it("handles ArrowRight from Mods wraps to Software", async () => {
@@ -178,7 +178,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       modsTab.focus();
       await user.keyboard("{ArrowRight}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software", { scroll: false });
     });
 
     it("handles ArrowLeft from Software wraps to Mods", async () => {
@@ -189,7 +189,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       softwareTab.focus();
       await user.keyboard("{ArrowLeft}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods", { scroll: false });
     });
 
     it("handles ArrowLeft from Games to Software", async () => {
@@ -201,7 +201,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       gamesTab.focus();
       await user.keyboard("{ArrowLeft}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software", { scroll: false });
     });
 
     it("handles ArrowLeft from Mods to Games", async () => {
@@ -213,7 +213,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       modsTab.focus();
       await user.keyboard("{ArrowLeft}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=games", { scroll: false });
     });
 
     it("handles Home key to move to first tab (Software)", async () => {
@@ -225,7 +225,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       modsTab.focus();
       await user.keyboard("{Home}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=software", { scroll: false });
     });
 
     it("handles End key to move to last tab (Mods)", async () => {
@@ -236,7 +236,7 @@ describe("ProjectTabs - Behavior Tests", () => {
       softwareTab.focus();
       await user.keyboard("{End}");
 
-      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods");
+      expect(mockNavigation.push).toHaveBeenCalledWith("/projects?tab=mods", { scroll: false });
     });
   });
 
