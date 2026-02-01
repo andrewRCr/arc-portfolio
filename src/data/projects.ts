@@ -596,7 +596,10 @@ export const projects: Project[] = [
           src: "/projects/survival-horror-project/screenshot-1.webp?v=2",
           alt: "Survival Horror mansion exploration and puzzle-solving",
         },
-        { src: "/projects/survival-horror-project/screenshot-2.webp?v=2", alt: "Third-person combat with zombie enemies" },
+        {
+          src: "/projects/survival-horror-project/screenshot-2.webp?v=2",
+          alt: "Third-person combat with zombie enemies",
+        },
         {
           src: "/projects/survival-horror-project/screenshot-3.webp?v=2",
           alt: "Multi-floor map system and inventory management",
@@ -605,14 +608,38 @@ export const projects: Project[] = [
           src: "/projects/survival-horror-project/screenshot-4.webp?v=2",
           alt: "Environmental puzzle mechanics and key item retrieval",
         },
-        { src: "/projects/survival-horror-project/screenshot-5.webp?v=2", alt: "Survival Horror gameplay screenshot 5" },
-        { src: "/projects/survival-horror-project/screenshot-6.webp?v=2", alt: "Survival Horror gameplay screenshot 6" },
-        { src: "/projects/survival-horror-project/screenshot-7.webp?v=2", alt: "Survival Horror gameplay screenshot 7" },
-        { src: "/projects/survival-horror-project/screenshot-8.webp?v=2", alt: "Survival Horror gameplay screenshot 8" },
-        { src: "/projects/survival-horror-project/screenshot-9.webp?v=2", alt: "Survival Horror gameplay screenshot 9" },
-        { src: "/projects/survival-horror-project/screenshot-10.webp?v=2", alt: "Survival Horror gameplay screenshot 10" },
-        { src: "/projects/survival-horror-project/screenshot-11.webp?v=2", alt: "Survival Horror gameplay screenshot 11" },
-        { src: "/projects/survival-horror-project/screenshot-12.webp?v=2", alt: "Survival Horror gameplay screenshot 12" },
+        {
+          src: "/projects/survival-horror-project/screenshot-5.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 5",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-6.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 6",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-7.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 7",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-8.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 8",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-9.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 9",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-10.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 10",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-11.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 11",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-12.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 12",
+        },
       ],
     },
     teamSize: "3-person team",
