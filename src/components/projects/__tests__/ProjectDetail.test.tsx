@@ -7,10 +7,15 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import ProjectDetail from "../ProjectDetail";
 import { getBackDestination } from "../utils";
 import type { Project } from "@/types/project";
+
+// Mock useIsPhone to control viewport-dependent rendering
+vi.mock("@/hooks/useMediaQuery", () => ({
+  useIsPhone: () => true, // Simulate phone viewport to test metadata rendering
+}));
 
 const mockProject: Project = {
   projectType: "software",
@@ -58,12 +63,8 @@ describe("ProjectDetail - Behavior Tests", () => {
       expect(screen.getByText("Docker")).toBeInTheDocument();
     });
 
-    it("renders all features", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText(/User authentication/i)).toBeInTheDocument();
-      expect(screen.getByText(/Real-time updates/i)).toBeInTheDocument();
-      expect(screen.getByText(/API integration/i)).toBeInTheDocument();
-    });
+    // Note: "features" field is no longer rendered separately - content merged into highlights
+    // Highlights rendering is tested in "Optional Metadata" describe block
   });
 
   describe("Screenshots Gallery", () => {
@@ -119,8 +120,7 @@ describe("ProjectDetail - Behavior Tests", () => {
     it("has semantic headings for content sections", () => {
       render(<ProjectDetail project={mockProject} />);
       // Note: Tech Stack has no heading - badges are self-explanatory
-      expect(screen.getByRole("heading", { name: "Key Features" })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: "Project Details" })).toBeInTheDocument();
+      // Note: Features merged into Highlights, Project Details section removed
       expect(screen.getByRole("heading", { name: "Highlights" })).toBeInTheDocument();
       expect(screen.getByRole("heading", { name: "Architecture" })).toBeInTheDocument();
     });

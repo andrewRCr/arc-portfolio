@@ -88,42 +88,13 @@ describe("ProjectCard - Behavior Tests", () => {
   });
 
   describe("Tech Stack Tags", () => {
-    it("renders tech stack tags", () => {
+    it("renders all tech stack tags via TechStackScroller", () => {
       render(<ProjectCard project={mockProject} />);
-      // Check for at least first few tech tags (may be limited by design)
-      expect(screen.getByText("React")).toBeInTheDocument();
-      expect(screen.getByText("TypeScript")).toBeInTheDocument();
-    });
-
-    it("limits number of displayed tech tags to 3", () => {
-      render(<ProjectCard project={mockProject} />);
-      // Should show React, TypeScript, Node.js (first 3)
+      // TechStackScroller shows all items (scrollable on overflow)
       expect(screen.getByText("React")).toBeInTheDocument();
       expect(screen.getByText("TypeScript")).toBeInTheDocument();
       expect(screen.getByText("Node.js")).toBeInTheDocument();
-      // Should not show PostgreSQL (4th item)
-      expect(screen.queryByText("PostgreSQL")).not.toBeInTheDocument();
-    });
-
-    it("shows indicator when there are more tech tags than displayed", () => {
-      render(<ProjectCard project={mockProject} />);
-      // Should show "+1" or similar indicator (4 total - 3 shown = 1 more)
-      expect(screen.getByText("+1")).toBeInTheDocument();
-    });
-
-    it("displays tech tags with correct content", () => {
-      const { container } = render(<ProjectCard project={mockProject} />);
-      const techBadges = container.querySelectorAll('[data-testid="tech-badge"]');
-      const overflowBadge = container.querySelector('[data-testid="tech-overflow-badge"]');
-
-      // First 3 tech stack items
-      expect(techBadges).toHaveLength(3);
-      expect(techBadges[0]).toHaveTextContent("React");
-      expect(techBadges[1]).toHaveTextContent("TypeScript");
-      expect(techBadges[2]).toHaveTextContent("Node.js");
-
-      // Overflow indicator separate
-      expect(overflowBadge).toHaveTextContent("+1");
+      expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
     });
   });
 
