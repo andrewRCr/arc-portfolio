@@ -82,7 +82,7 @@ function PhotoCard() {
     <div className="overflow-hidden border-2 border-secondary/80">
       <Image src="/profile-photo.webp" alt="Andrew Creekmore, full-stack developer" width={200} height={267} priority />
       <div className="flex items-center justify-center bg-accent/80 px-2 py-1">
-        <span className="py-1 font-mono text-xs text-accent-foreground">{"// andrew.jpg"}</span>
+        <span className="py-1 font-terminal text-xs text-accent-foreground">{"// andrew.jpg"}</span>
       </div>
     </div>
   );

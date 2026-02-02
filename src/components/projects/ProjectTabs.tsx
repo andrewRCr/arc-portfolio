@@ -106,7 +106,7 @@ export default function ProjectTabs() {
             tabIndex={activeTab === tab ? 0 : -1}
             onClick={() => handleTabChange(tab)}
             onKeyDown={(e) => handleKeyDown(tab, e)}
-            className={`relative min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-mono text-sm font-semibold transition-colors ${
+            className={`relative min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-terminal text-sm font-semibold transition-colors ${
               activeTab === tab ? "text-accent" : "text-muted-foreground hover:text-foreground"
             }`}
           >

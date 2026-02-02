@@ -36,14 +36,14 @@ export function ObfuscatedMailtoButton({ encoded, className = "", iconOnly = fal
 
   // Button styling - compact for icon-only, full for labeled (both use accent)
   const buttonClasses = iconOnly
-    ? "rounded-lg border border-accent p-3 text-accent transition-colors hover:bg-accent/10"
-    : "flex items-center gap-2 rounded-lg border border-accent px-4 py-3 text-accent transition-colors hover:bg-accent/10";
+    ? "border border-accent p-3 text-accent transition-colors hover:bg-accent/10"
+    : "flex items-center gap-1.5 bg-accent px-3 py-2 font-terminal text-sm text-accent-foreground transition-colors hover:bg-accent/80";
 
   // Server-side and decode failure: render disabled-looking button
   if (!email) {
     return (
       <span className={`${buttonClasses} opacity-50 ${className}`} aria-label="Email (loading)" aria-disabled="true">
-        <Mail className="h-5 w-5" />
+        <Mail className={iconOnly ? "h-5 w-5" : "h-4 w-4"} />
         {!iconOnly && <span className="font-medium">Email</span>}
       </span>
     );
@@ -51,7 +51,7 @@ export function ObfuscatedMailtoButton({ encoded, className = "", iconOnly = fal
 
   return (
     <a href={`mailto:${email}`} className={`${buttonClasses} ${className}`} aria-label="Email">
-      <Mail className="h-5 w-5" />
+      <Mail className={iconOnly ? "h-5 w-5" : "h-4 w-4"} />
       {!iconOnly && <span className="font-medium">Email</span>}
     </a>
   );

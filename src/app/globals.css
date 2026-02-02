@@ -4,9 +4,17 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Fonts */
+  /* Fonts - base families */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Fonts - semantic slots (3-slot typography system)
+     Title: Page titles, project names, section headers
+     Terminal: Navigation, tabs, badges, labels (system UI)
+     Body: Prose content, descriptions, paragraphs */
+  --font-title: var(--font-geist-mono);
+  --font-terminal: var(--font-geist-mono);
+  --font-body: var(--font-ibm-plex-sans);
 
   /* Base colors */
   --color-background: rgb(var(--background));
@@ -775,7 +783,7 @@
     @apply overflow-hidden;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
   }
 }
 

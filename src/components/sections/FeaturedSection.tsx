@@ -70,25 +70,23 @@ export function FeaturedSection() {
           <Link
             key={project.slug}
             href={`${getProjectPath(type)}/${project.slug}?from=home`}
-            className={`group flex flex-col border border-border rounded-sm hover:border-secondary/60 transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden ${
-              isInDevelopment ? "opacity-75" : ""
-            }`}
+            className="group flex flex-col border border-border rounded-sm hover:border-secondary/60 transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
           >
             <div className="p-4 pb-2 bg-card/80">
               <div className="flex items-center justify-between mb-1">
-                <p className="text-xs font-mono text-primary transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
+                <p className="text-xs font-terminal text-primary transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
                   [{type}]
                 </p>
                 {isInDevelopment && (
                   <span
                     data-testid="in-development-badge"
-                    className="border border-border bg-muted/80 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                    className="border border-border bg-muted/80 px-1.5 py-0.5 font-terminal text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
                   >
                     In Dev
                   </span>
                 )}
               </div>
-              <h4 className="font-semibold transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
+              <h4 className="font-semibold font-title transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
                 {project.title}
               </h4>
             </div>

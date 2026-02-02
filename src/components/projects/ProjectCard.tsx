@@ -46,7 +46,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         {isInDevelopment && (
           <span
             data-testid="in-development-badge"
-            className="absolute bottom-2 right-2 border border-border bg-background/90 px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+            className="absolute bottom-2 right-2 border border-border bg-background/90 px-2 py-1 font-terminal text-xs font-semibold uppercase tracking-wider text-muted-foreground"
           >
             In Development
           </span>
@@ -60,7 +60,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
           {categoryType === "mods" && project.game ? (
             <span
               data-testid="category-badge"
-              className="rounded bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground"
+              className="bg-accent/20 px-2 py-0.5 font-terminal text-xs font-semibold text-foreground"
             >
               {project.game}
             </span>
@@ -69,7 +69,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
               <span
                 key={cat}
                 data-testid="category-badge"
-                className="rounded bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground"
+                className="bg-accent/20 px-2 py-0.5 font-terminal text-xs font-semibold text-foreground"
               >
                 {cat}
               </span>
@@ -78,7 +78,9 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-xl font-bold text-foreground">{project.title}</h3>
+        <h3 className="mb-2 w-fit bg-accent/80 px-2 py-1 text-xl font-semibold font-title text-accent-foreground transition-colors duration-300 group-hover:bg-secondary/60 group-hover:text-secondary-foreground">
+          {project.title}
+        </h3>
 
         {/* Short Description */}
         <p className="mb-3 text-sm text-muted-foreground">{project.shortDescription}</p>

@@ -30,6 +30,13 @@
 
 ## Active
 
+- [ ] Fix bg-muted contrast issues in Remedy theme (and audit others)
+    - In light mode, bg-muted appears too close to parent backgrounds
+    - Affected: EducationCard degree badges, ProjectCard tech stack badges
+    - Tech stack badges only distinguishable due to borders, otherwise blend in
+    - Audit other themes for similar issues
+    - Fix on per-theme basis by adjusting muted color values
+
 - [ ] Copy pass on project content prior to deployment
     - Review `src/data/projects.ts` for all project entries
     - Focus on `shortDescription` field - concise, compelling, consistent tone

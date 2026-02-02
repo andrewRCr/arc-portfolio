@@ -45,7 +45,7 @@ export function MobileNavigation() {
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger
           data-mobile-nav
-          className="flex items-center gap-1 px-2 py-1 text-sm font-mono font-semibold leading-[1.2] text-foreground bg-secondary/20 outline-none"
+          className="flex items-center gap-1 px-2 py-1 text-sm font-terminal font-semibold leading-[1.2] text-foreground bg-secondary/20 outline-none"
           aria-label={`Navigation menu, current page: ${currentLabel}`}
         >
           {currentLabel}
@@ -59,7 +59,7 @@ export function MobileNavigation() {
                 <Link
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`w-full font-mono font-semibold text-sm ${
+                  className={`w-full font-terminal font-semibold text-sm ${
                     active ? "text-foreground bg-secondary/20" : "text-muted-foreground"
                   }`}
                 >

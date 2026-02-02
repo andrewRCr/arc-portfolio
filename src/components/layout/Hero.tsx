@@ -144,13 +144,13 @@ export function Hero({ children }: HeroProps) {
 
           <div className="space-y-4 md:mb-8">
             <div className="space-y-2">
-              <motion.p className="text-xs font-mono text-muted-foreground" {...textProps(0)}>
+              <motion.p className="text-xs font-terminal text-muted-foreground" {...textProps(0)}>
                 &gt; portfolio.init()
               </motion.p>
-              <motion.h1 className="text-4xl font-bold font-mono origin-left" {...textProps(1)}>
+              <motion.h1 className="text-4xl font-bold font-title origin-left" {...textProps(1)}>
                 {SITE.name}
               </motion.h1>
-              <motion.p className="text-lg text-muted-foreground" {...textProps(2)}>
+              <motion.p className="text-lg font-body text-muted-foreground" {...textProps(2)}>
                 {renderTagline()}
               </motion.p>
             </div>
@@ -165,7 +165,7 @@ export function Hero({ children }: HeroProps) {
       )}
 
       <motion.h2
-        className={`mb-1 md:mx-4 text-sm font-mono text-muted-foreground ${children ? "mt-4 md:mt-8" : "mt-4 md:mt-2"}`}
+        className={`mb-1 md:mx-4 text-sm font-terminal text-muted-foreground ${children ? "mt-4 md:mt-8" : "mt-4 md:mt-2"}`}
         {...secondaryProps}
       >
         Featured Projects

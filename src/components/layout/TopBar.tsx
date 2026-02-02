@@ -71,24 +71,24 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
                 onClick={reducedMotion ? undefined : triggerReplay}
                 className="flex items-center gap-2 hover:opacity-80 transition-opacity"
               >
-                <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
+                <span className="text-foreground font-title font-bold">{SITE.handle}</span>
               </Link>
             </TouchTarget>
-            <span className="ml-3 text-primary font-mono pointer-events-none">&gt;</span>
+            <span className="ml-3 text-primary font-terminal pointer-events-none">&gt;</span>
             {/* Underscore decoration - fades out on desktop hover when replay available */}
             {/* Must be direct sibling of peer (not nested) for peer-hover to work */}
             <span
               className={
                 reducedMotion
-                  ? "text-primary font-mono"
-                  : "text-primary font-mono md:peer-hover:opacity-0 transition-opacity duration-200"
+                  ? "text-primary font-terminal"
+                  : "text-primary font-terminal md:peer-hover:opacity-0 transition-opacity duration-200"
               }
             >
               _
             </span>
             {/* Hover hint - desktop only, hidden when reduced motion (no replay available) */}
             {!reducedMotion && (
-              <span className="pointer-events-none hidden md:inline-flex md:items-baseline md:gap-1 md:opacity-0 md:peer-hover:opacity-100 transition-opacity duration-200 font-mono text-foreground text-sm">
+              <span className="pointer-events-none hidden md:inline-flex md:items-baseline md:gap-1 md:opacity-0 md:peer-hover:opacity-100 transition-opacity duration-200 font-terminal text-foreground text-sm">
                 <span>reinitialize</span>
                 <span className="inline-block w-1.5 h-3 bg-primary animate-blink translate-y-0.5" aria-hidden="true" />
               </span>

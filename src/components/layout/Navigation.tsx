@@ -57,7 +57,7 @@ export function Navigation() {
                 onClick={() => !active && setPendingHref(item.href)}
               >
                 <span
-                  className={`px-2 py-1 text-sm font-mono font-semibold leading-[1.2] transition-colors ${
+                  className={`px-2 py-1 text-sm font-terminal font-semibold leading-[1.2] transition-colors ${
                     active
                       ? "text-foreground bg-secondary/40 dark:bg-secondary/20"
                       : isPending

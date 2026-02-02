@@ -22,7 +22,7 @@ export function DetailCard({ title, children, className }: DetailCardProps) {
     <div className={cn("overflow-hidden rounded-lg border border-border-strong", className)}>
       {/* Header */}
       <div className="px-4 py-3 bg-card/80">
-        <h2 className="text-xl font-bold text-foreground">{title}</h2>
+        <h2 className="font-title text-lg font-bold text-foreground">{title}</h2>
       </div>
       {/* Body - higher contrast background for body text readability */}
       <div className="bg-background/80 px-4 py-4">{children}</div>

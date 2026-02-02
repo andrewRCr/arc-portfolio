@@ -63,6 +63,83 @@ current intuitive blend is sufficient and document that decision.
 
 ---
 
+## Phase 6: Typography System Implementation
+
+**Status:** In progress - experimenting with font choices
+
+### Guiding Principles (Decided)
+
+1. **Consistency matters** - Same element types should be styled the same way across the app. If a title
+   uses a particular font on one page, it should be likewise on another. Stylization should feel intentional,
+   not randomly applied.
+
+2. **Prominence = stylization tolerance** - Larger/more prominent elements (titles, headers) can handle more
+   stylization. Smaller, repeated elements benefit from restraint. This is the practical UX logic behind
+   the "system vs content" distinction.
+
+3. **Maximize style without sacrificing UX** - Push stylization as far as it can go while still serving
+   communication. The portfolio's purpose is to communicate to a target audience; style serves that goal,
+   not the reverse.
+
+### 3-Slot Typography System (Decided)
+
+Semantic font slots instead of raw `font-mono`/`font-sans`:
+
+| Slot            | Purpose                                     | Usage                                         |
+|-----------------|---------------------------------------------|-----------------------------------------------|
+| `font-title`    | Page titles, project names, section headers | Hero name, PageHeader, DetailHeader titles    |
+| `font-terminal` | System UI elements                          | Navigation, tabs, badges, labels, form labels |
+| `font-body`     | Prose content                               | Descriptions, paragraphs, body text           |
+
+**Implementation:**
+
+1. Define slots in `globals.css` @theme block:
+
+   ```css
+   --font-title: var(--font-fira-code);      /* or chosen font */
+   --font-terminal: var(--font-geist-mono);
+   --font-body: var(--font-ibm-plex-sans);
+   ```
+
+2. Load fonts in `layout.tsx` via next/font/google
+
+3. Use semantic classes (`font-title`, `font-terminal`, `font-body`) in components
+
+**Benefits:**
+
+- Global font changes require updating only 3 CSS variables
+- Semantic meaning (`font-title` vs `font-mono`) improves code clarity
+- Easier experimentation - swap fonts without touching components
+
+### Font Choices (Experimental - Subject to Change)
+
+Current experiment:
+
+- **Title:** Fira Code (distinctive monospace, more "obviously mono" than Geist)
+- **Terminal:** Geist Mono (refined, subtle)
+- **Body:** IBM Plex Sans (readable, pairs well with technical fonts)
+
+Test component at `/dev/typography` allows A/B comparison of font combinations.
+
+### Discovered Issues
+
+1. **Body font was never applied** - `font-sans` was defined but not used on `<body>`. Fixed by adding
+   `font-body` to body styles in globals.css.
+
+2. **Geist Mono is subtle** - Character combinations like "TaskFocus" look almost proportional, while
+   "CineXplorer" (with capital X) looks distinctively monospace. More distinctive mono fonts (JetBrains,
+   Fira Code) may better communicate the terminal aesthetic.
+
+### Remaining Work
+
+- [ ] Finalize font choices through experimentation
+- [ ] Update tests to use new semantic class names (`font-title`, `font-terminal`)
+- [ ] Update dev pages to use semantic classes (optional, low priority)
+- [ ] Consistency pass - verify all element types use appropriate slots
+- [ ] Consider whether to formalize in strategy doc or keep as implementation detail
+
+---
+
 ## Task 1.2: Theme Transition CSS Refactor - Implementation Reference
 
 **Purpose:** Detailed implementation context for the theme transition refactor. Task list contains actionable

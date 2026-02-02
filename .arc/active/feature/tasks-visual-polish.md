@@ -889,48 +889,95 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
             - `ProjectCard.test.tsx`: Updated tech stack tests to match TechStackScroller behavior
             (shows all items via scroll, no truncation/overflow indicator)
 
-### **Phase 6:** Aesthetic Exploration
+### **Phase 6:** Typography & Visual Consistency
 
-**Reference:** `notes-visual-polish.md` for detailed context on System vs Content framework.
+**Scope evolved:** Originally "Aesthetic Exploration" - became comprehensive typography system and visual hierarchy audit.
 
-- [ ] **6.1 Audit current terminal vs web styling**
+- [x] **6.1 Implement 3-slot typography system**
 
-    - [ ] **6.1.a Catalog all button/action styles across the app**
-        - Primary CTAs (form submit, etc.)
-        - Navigation/link buttons (social links, "learn more")
-        - Tab buttons, toggles, interactive controls
+    - [x] **6.1.a Create semantic font classes**
+        - `font-title`: Display/heading font (Fira Code)
+        - `font-terminal`: System/UI text (Geist Mono)
+        - `font-body`: Content/body text (IBM Plex Sans)
+        - Added to globals.css with CSS variables
 
-    - [ ] **6.1.b Document current styling patterns**
-        - Which use monospace/squared/caps (terminal aesthetic)
-        - Which use rounded/regular (web aesthetic)
-        - Identify any inconsistencies
+    - [x] **6.1.b Migrate components to semantic classes**
+        - Titles/headers → font-title (PageHeader, SectionHeader, Hero, DetailCard, ProjectCard, etc.)
+        - UI elements/badges → font-terminal (Navigation, TopBar, FooterBar, badges, buttons)
+        - Body content → font-body (user input fields, skill links without icons)
+        - Created FontComparisonSection.tsx dev tool for testing
 
-- [ ] **6.2 Evaluate System vs Content framework**
+- [x] **6.2 Establish badge/button visual consistency**
 
-    - [ ] **6.2.a Test terminal treatment on primary CTAs**
-        - Try squared corners + monospace + caps on contact form submit
-        - Evaluate: Does it strengthen the terminal metaphor?
-        - Evaluate: Does it harm accessibility or usability?
+    - [x] **6.2.a Remove rounded corners from badges**
+        - Category badges, tech stack badges, stats badges → squared
+        - Badge component base: removed rounded-full, added font-terminal
+        - Button component base: removed rounded-md, added font-terminal
 
-    - [ ] **6.2.b Assess visual consistency impact**
-        - Would applying framework create cohesion or confusion?
-        - How many components would change?
-        - Is the change meaningful or just different?
+    - [x] **6.2.b Define rounded corner rules**
+        - Squared: badges, action buttons with text, connected block elements
+        - Rounded: icon-only ghost buttons (need shape for affordance), cards/containers
 
-- [ ] **6.3 Decide and document outcome**
+- [x] **6.3 Implement color hierarchy system**
 
-    - [ ] **6.3.a Make formalization decision**
-        - If framework proves valuable: plan additions to `strategy-style-guide.md`
-        - If not valuable: document decision to maintain current intuitive approach
-        - If only 2-3 minor tweaks: apply them without over-formalizing
+    - [x] **6.3.a ProjectCard visual hierarchy**
+        - Title: bg-accent/80, hover → bg-secondary/60
+        - Category badges: bg-accent/20 (lower emphasis)
+        - Tech stack: bg-muted with border (metadata tier)
 
-    - [ ] **6.3.b Apply any decided changes**
-        - Implement agreed styling adjustments
-        - Keep changes minimal unless framework clearly improves aesthetic
+    - [x] **6.3.b ProjectDetail consistency**
+        - Category badges: bg-accent/20 (matches ProjectCard)
+        - Stats badges: bg-muted with border (metadata tier, same as tech stack)
+        - Back button + title: connected blocks pattern
 
-    - [ ] **6.3.c Run quality gates**
-        - Type check, lint
-        - Manual visual verification of any styling changes
+    - [x] **6.3.c Color semantics emerging**
+        - Accent: interactive elements, categorization (full or modified opacity)
+        - Secondary: hover/active states, emphasis
+        - Muted: metadata tier, background elements
+
+- [x] **6.4 Contact page refinement**
+
+    - [x] **6.4.a Social link buttons**
+        - Changed from outline to solid fill (bg-accent)
+        - Full-width toolbar layout (flex-1 on each)
+        - Squared corners (text+icon buttons)
+
+    - [x] **6.4.b Form styling**
+        - Squared inputs, removed rounded corners
+        - font-body for user input, font-terminal for labels/placeholders
+        - Submit button: font-terminal, uppercase, squared
+
+    - [x] **6.4.c Added decorative label**
+        - [COMPOSE MSG] in font-terminal, text-primary
+
+- [x] **6.5 Project detail header refinement**
+
+    - [x] **6.5.a Connected blocks pattern**
+        - Back button (bg-muted) + title (bg-accent/80) as unified element
+        - Applied to both compact header and desktop hero
+        - Hover: bg-muted/70, text-accent on arrow
+
+    - [x] **6.5.b Link hover treatment**
+        - Social/external links: hover:bg-accent hover:text-accent-foreground
+        - Icon-only buttons keep rounded-md for affordance
+
+- [x] **6.6 Miscellaneous consistency fixes**
+
+    - [x] TopBar branding: andrewRCR → font-title
+    - [x] Skills page: DetailCard headers → font-title, secondary skill links → font-body
+    - [x] FeaturedSection: removed opacity-75 on in-development projects (badge only)
+    - [x] EducationCard: header → font-title, metadata badges → font-terminal
+
+- [ ] **6.7 Quality gates and cleanup**
+
+    - [ ] **6.7.a Update tests for new class names**
+        - EducationCard.test.tsx, SectionHeader.test.tsx still check for font-mono
+
+    - [ ] **6.7.b Run full quality gates**
+        - Type check, lint, format, build, tests
+
+    - [ ] **6.7.c Document patterns (optional)**
+        - Consider additions to strategy-style-guide.md if patterns warrant formalization
 
 ### **Phase 7:** Final Verification
 

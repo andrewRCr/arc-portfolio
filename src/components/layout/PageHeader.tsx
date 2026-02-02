@@ -73,7 +73,7 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
       {/* Title only - slides down from above */}
       {title && (
         <motion.h1
-          className="hidden sm:block font-mono text-2xl font-bold text-foreground"
+          className="hidden sm:block font-title text-2xl font-bold text-foreground"
           initial={titleAnimation.initial}
           animate={titleAnimation.animate}
           transition={titleAnimation.transition}

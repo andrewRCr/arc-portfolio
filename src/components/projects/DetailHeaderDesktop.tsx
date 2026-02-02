@@ -69,18 +69,18 @@ export function DetailHeaderDesktop({
           <div className="absolute inset-0 bg-card" />
         )}
 
-        {/* Back button - top-left, icon only */}
-        <Link
-          href={backHref}
-          aria-label={`Back to ${backLabel}`}
-          className="absolute top-3 left-3 z-10 inline-flex items-center justify-center rounded-md bg-muted/90 p-2 text-foreground backdrop-blur-sm transition-colors hover:bg-muted"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-
-        {/* Title - bottom left */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-          <h1 className="font-mono text-3xl font-bold text-white drop-shadow-md">{title}</h1>
+        {/* Back button + Title - bottom left, connected blocks */}
+        <div className="absolute bottom-0 left-0 z-10 flex p-4">
+          <Link
+            href={backHref}
+            aria-label={`Back to ${backLabel}`}
+            className="inline-flex items-center justify-center bg-muted/90 px-3 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-muted/70 hover:text-accent"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="inline-flex items-center bg-accent/80 px-3 font-title text-3xl font-bold text-accent-foreground">
+            {title}
+          </h1>
         </div>
       </div>
 
@@ -95,7 +95,7 @@ export function DetailHeaderDesktop({
                 categories.map((category) => (
                   <span
                     key={category}
-                    className="min-h-6 rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
+                    className="min-h-6 bg-accent/20 px-2 py-0.5 font-terminal text-sm font-semibold text-foreground"
                   >
                     {category}
                   </span>
@@ -108,9 +108,7 @@ export function DetailHeaderDesktop({
                 />
               )}
               {/* Project metadata - subtle text after badges */}
-              {hasMetadata && (
-                <span className="ml-2 text-sm italic text-muted-foreground">{metadataParts.join(" · ")}</span>
-              )}
+              {hasMetadata && <span className="ml-2 text-sm text-muted-foreground">{metadataParts.join(" · ")}</span>}
             </div>
           ) : (
             <div /> // Spacer to push content right
@@ -134,7 +132,7 @@ export function DetailHeaderDesktop({
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={link.ariaLabel}
-                        className="inline-flex min-h-6 items-center gap-1.5 rounded px-2 py-0.5 text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                        className="inline-flex min-h-6 items-center gap-1.5 px-2 py-0.5 font-terminal text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                       >
                         {/* mt-px: optical alignment - SVG box model sits higher than text baseline */}
                         <Icon size={16} className="shrink-0 mt-px" />
@@ -151,7 +149,7 @@ export function DetailHeaderDesktop({
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.ariaLabel}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
+                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                     >
                       <Icon size={18} />
                     </a>

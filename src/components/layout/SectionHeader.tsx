@@ -16,7 +16,7 @@ export interface SectionHeaderProps {
 export function SectionHeader({ title }: SectionHeaderProps) {
   return (
     <div className="pb-3">
-      <h2 className="font-mono text-2xl font-bold text-foreground">{title}</h2>
+      <h2 className="font-title text-2xl font-bold text-foreground">{title}</h2>
       <div className="mt-3 border-b border-border/50" />
     </div>
   );

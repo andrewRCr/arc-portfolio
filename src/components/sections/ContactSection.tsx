@@ -30,9 +30,9 @@ const encodedEmail = encodeEmail(contact.email);
 /** Full button style with icon + label (tablet+) */
 function FullContactLinks() {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex gap-3">
       {/* Email - obfuscated mailto button */}
-      <ObfuscatedMailtoButton encoded={encodedEmail} />
+      <ObfuscatedMailtoButton encoded={encodedEmail} className="flex-1 justify-center" />
 
       {/* Social Links */}
       {contact.socialLinks
@@ -45,9 +45,9 @@ function FullContactLinks() {
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg border border-accent px-4 py-3 text-accent transition-colors hover:bg-accent/10"
+              className="flex flex-1 items-center justify-center gap-1.5 bg-accent px-3 py-2 font-terminal text-sm text-accent-foreground transition-colors hover:bg-accent/80"
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-4 w-4" />
               <span className="font-medium">{social.platform}</span>
             </a>
           );
@@ -75,7 +75,7 @@ function CompactContactLinks() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={social.platform}
-              className="rounded-lg border border-accent p-3 text-accent transition-colors hover:bg-accent/10"
+              className="border border-accent p-3 text-accent transition-colors hover:bg-accent/10"
             >
               <Icon className="h-5 w-5" />
             </a>
@@ -102,11 +102,12 @@ function DesktopContactSection() {
   return (
     <div className="mx-auto max-w-xl overflow-hidden rounded-lg border border-border-strong">
       {/* Header - social links */}
-      <div className="flex justify-center bg-card/80 px-4 py-4">
+      <div className="bg-card/80 px-6 py-5">
         <FullContactLinks />
       </div>
       {/* Body - contact form */}
-      <div className="bg-background/80 px-6 py-6">
+      <div className="bg-background/80 px-6 pt-6 pb-6">
+        <p className="mb-4 text-sm font-terminal text-primary">[COMPOSE MSG]</p>
         <ContactForm variant="card" />
       </div>
     </div>

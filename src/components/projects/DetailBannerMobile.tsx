@@ -82,7 +82,7 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
                 categories.map((category) => (
                   <span
                     key={category}
-                    className={`rounded bg-accent px-2 py-0.5 ${badgeTextSize} font-semibold text-accent-foreground`}
+                    className={`bg-accent/20 px-2 py-0.5 font-terminal ${badgeTextSize} font-semibold text-foreground`}
                   >
                     {category}
                   </span>

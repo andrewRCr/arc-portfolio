@@ -45,20 +45,17 @@ function DetailHeaderCompactMobile({
   return (
     <div>
       <div className="flex items-center py-2">
-        <div className="flex items-center min-w-0">
-          <TouchTarget align="start" className="-ml-2">
-            <Link
-              href={backHref}
-              aria-label={`Back to ${backLabel}`}
-              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-          </TouchTarget>
-
-          <div className="h-4 w-px bg-border -ml-3" aria-hidden="true" />
-
-          <h1 className="font-mono text-lg font-bold text-foreground truncate ml-3">{compactTitle || title}</h1>
+        <div className="flex min-w-0">
+          <Link
+            href={backHref}
+            aria-label={`Back to ${backLabel}`}
+            className="inline-flex h-8 items-center justify-center bg-muted px-3 text-muted-foreground transition-colors hover:bg-muted/70 hover:text-accent"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+          <h1 className="inline-flex h-8 items-center bg-accent/80 px-2 font-title text-lg font-bold text-accent-foreground truncate">
+            {compactTitle || title}
+          </h1>
         </div>
       </div>
 
@@ -86,20 +83,17 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
     >
       <div className="overflow-hidden">
         <div className="flex items-center justify-between gap-4 py-2">
-          <div className="flex items-center min-w-0">
-            <TouchTarget align="start" className="-ml-2">
-              <Link
-                href={backHref}
-                aria-label={`Back to ${backLabel}`}
-                className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </TouchTarget>
-
-            <div className="h-4 w-px bg-border -ml-3" aria-hidden="true" />
-
-            <h1 className="font-mono text-lg font-bold text-foreground truncate ml-3">{title}</h1>
+          <div className="flex min-w-0">
+            <Link
+              href={backHref}
+              aria-label={`Back to ${backLabel}`}
+              className="inline-flex h-8 items-center justify-center bg-muted px-3 text-muted-foreground transition-colors hover:bg-muted/70 hover:text-accent"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+            <h1 className="inline-flex h-8 items-center bg-accent/80 px-2 font-title text-lg font-bold text-accent-foreground truncate">
+              {title}
+            </h1>
           </div>
 
           {hasLinks && (
@@ -117,7 +111,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.ariaLabel}
-                      className="inline-flex min-h-6 items-center gap-1.5 rounded px-2 py-0.5 text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                      className="inline-flex min-h-6 items-center gap-1.5 px-2 py-0.5 font-terminal text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                     >
                       <Icon size={16} className="shrink-0 mt-px" />
                       <span>{link.label}</span>
@@ -132,7 +126,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.ariaLabel}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground"
+                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                     >
                       <Icon size={18} />
                     </a>
