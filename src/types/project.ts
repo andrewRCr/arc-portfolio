@@ -67,6 +67,7 @@ export interface Project {
   projectType: ProjectType; // Routing discriminator (software/game/mod)
   title: string; // Display title (e.g., "CineXplorer")
   compactTitle?: string; // Shorter title for space-constrained UI (e.g., mobile header)
+  cardTitle?: string; // Title variant for ProjectCard (between full and compact)
   slug: string; // URL-friendly slug (e.g., "cinexplorer")
   description: string; // Full project description (multiple paragraphs supported)
   shortDescription: string; // Brief summary for project cards (~1-2 sentences)
@@ -88,9 +89,11 @@ export interface Project {
   photoCredits?: string[]; // Photographer names for stock imagery attribution (e.g., Unsplash)
 
   // Optional metadata
-  teamSize?: string; // Team composition (e.g., "Solo", "2 developers", "4-person team")
+  teamSize?: string; // Team composition for desktop (e.g., "Solo project", "4-person team")
+  teamSizeCompact?: string; // Shorter form for mobile (e.g., "Solo", "Team of 4")
   role?: string; // Your role if team project (e.g., "Lead Developer", "Full-Stack Developer")
   developmentTime?: string; // Development timeline (e.g., "2024", "Spring 2024", "8 weeks (2024)")
+  developmentTimeCompact?: string; // Shorter form for mobile (e.g., "2024 / 2026")
 
   // Optional detailed content (supports markdown and mixed bullet/paragraph items)
   architectureNotes?: ContentItem[]; // Technical architecture details and design decisions

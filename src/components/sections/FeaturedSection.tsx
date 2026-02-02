@@ -70,7 +70,7 @@ export function FeaturedSection() {
           <Link
             key={project.slug}
             href={`${getProjectPath(type)}/${project.slug}?from=home`}
-            className="group flex flex-col border border-border rounded-sm hover:border-secondary/60 transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
+            className="group flex flex-col border border-border rounded-sm hover:border-secondary/80 transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
           >
             <div className="p-4 pb-2 bg-card/80">
               <div className="flex items-center justify-between mb-1">

@@ -937,13 +937,18 @@ html[data-theme-transition] *::after {
 }
 
 /* Project detail - mobile: 165px = DetailHeaderCompact height (~140px) + visual offset */
+/* Position from left to push scrollbar 4px outside container (right: -4px doesn't work) */
 [data-page="project-detail"] .os-scrollbar-vertical {
-  padding-top: 204px;
+  padding-top: 210px;
+  right: auto;
+  left: calc(100% - 6px); /* 10px wide scrollbar, 4px outside = 100% - 6px */
 }
 /* Project detail - desktop: 396px = DetailHeader hero height (~360px) + visual offset */
 @media (min-width: 768px) {
   [data-page="project-detail"] .os-scrollbar-vertical {
     padding-top: 396px;
+    right: 0;
+    left: calc(100% - 6px); /* 10px wide scrollbar, 4px outside = 100% - 6px */
   }
 }
 

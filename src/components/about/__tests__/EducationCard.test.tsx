@@ -45,20 +45,20 @@ describe("EducationCard", () => {
   });
 
   describe("Body rendering", () => {
-    it("renders major with monospace font", () => {
+    it("renders major with terminal font", () => {
       render(<EducationCard education={mockEducation} />);
 
       const major = screen.getByText("Computer Science");
       expect(major).toBeInTheDocument();
-      expect(major).toHaveClass("font-mono");
+      expect(major).toHaveClass("font-terminal");
     });
 
-    it("renders degree type with monospace font", () => {
+    it("renders degree type with terminal font", () => {
       render(<EducationCard education={mockEducation} />);
 
       const degree = screen.getByText("Bachelor of Science");
       expect(degree).toBeInTheDocument();
-      expect(degree).toHaveClass("font-mono");
+      expect(degree).toHaveClass("font-terminal");
     });
 
     it("renders full location on desktop", () => {

@@ -77,10 +77,11 @@ describe("ModStatsBadge", () => {
       expect(badge).toHaveClass("custom-class");
     });
 
-    it("uses secondary variant", () => {
+    it("uses muted background with border", () => {
       const { container } = render(<ModStatsBadge type="downloads" value={100} />);
       const badge = container.firstChild;
-      expect(badge).toHaveClass("bg-secondary");
+      expect(badge).toHaveClass("bg-muted");
+      expect(badge).toHaveClass("border-border");
     });
   });
 });
@@ -148,11 +149,16 @@ describe("ModStatsGroup", () => {
       expect(badge).toBeInTheDocument();
     });
 
-    it("renders all stats in compact format with separators", () => {
-      render(<ModStatsGroup downloads={1000} uniqueDownloads={500} endorsements={50} />);
-      // Should have dot separators between stats (2 separators for 3 stats)
-      const separators = screen.getAllByText("·");
-      expect(separators).toHaveLength(2);
+    it("renders all stats in compact format with gap spacing", () => {
+      const { container } = render(<ModStatsGroup downloads={1000} uniqueDownloads={500} endorsements={50} />);
+      // Stats are displayed with gap spacing (no dot separators)
+      // Verify all three values are present
+      expect(screen.getByText("50")).toBeInTheDocument();
+      expect(screen.getByText("500")).toBeInTheDocument();
+      expect(screen.getByText("1K")).toBeInTheDocument();
+      // Badge should have gap class for spacing
+      const badge = container.firstChild;
+      expect(badge).toHaveClass("gap-2.5");
     });
 
     it("shows stats in correct order in compact badge", () => {

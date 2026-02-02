@@ -471,3 +471,86 @@ route-change remounts.
 - Apple HIG: [Motion Foundations](https://developer.apple.com/design/human-interface-guidelines/foundations/motion)
 - Framer Motion: [Transition API](https://www.framer.com/motion/transition/)
 - Easings reference: [easings.net](https://easings.net/)
+
+---
+
+## Visual Design Principles (Emerging Patterns)
+
+**Purpose:** Capture rationale and guiding principles for visual design decisions discovered during polish work.
+These may be formalized into `strategy-visual-design-principles.md` if they prove valuable.
+
+### Color Semantics
+
+| Color     | Semantic Meaning             | Examples                                                           |
+|-----------|------------------------------|--------------------------------------------------------------------|
+| Primary   | System/terminal identity     | Cursor, prompt `>`, Send Message button (primary CTAs)             |
+| Secondary | Hover/active state, emphasis | Nav hover, card border hover, project title hover, thumbnail hover |
+| Accent    | Links, interactive elements  | Tabs, text links, social link buttons, category badges             |
+
+**Secondary for "active" project context:**
+
+On project detail pages, titles use `bg-secondary/80` instead of accent:
+
+- **Rationale:** The title is no longer interactive (not a link). Secondary signals "you're here now, this is
+  the active context" - matching navigation's use of secondary for active states.
+- **Progression:** Browsing (accent on cards) → Viewing (secondary on detail page)
+
+**Accent as decorative element:**
+
+ProjectCards use `accent` for project titles and category badges at varying opacity levels:
+
+- **Category badges:** Heavily dimmed (`bg-accent/20`) - subtle metadata
+- **Titles (unhovered):** More prominent (`bg-accent/80`) - primary identifier
+- **Titles (hovered):** Transitions to `bg-secondary/80` - indicates pending navigation
+
+**Rationale:**
+
+- On ProjectCards: Indicates "the whole card is navigable - click to see this project"
+- On ProjectDetail: Provides emphasis and consistency with established color usage
+
+### Border Usage Patterns
+
+**Guiding principle:** Borders define discrete content blocks; their absence signals unified composition.
+
+| Zone                                                       | Has Borders | Rationale                                  |
+|------------------------------------------------------------|-------------|--------------------------------------------|
+| **Header composition** (title, back button, categories)    | ❌          | Unified group over hero. Borders fragment. |
+| **Content blocks** (tech stack, links, cards, thumbnails)  | ✅          | Discrete elements need clear boundaries.   |
+
+**Specific patterns:**
+
+| Element                | Border          | Notes                                                                     |
+|------------------------|-----------------|---------------------------------------------------------------------------|
+| Tech stack badges      | `border-border` | Content block, needs separation from adjacent elements                    |
+| ModStats badges        | `border-border` | Data-dense, benefits from containment                                     |
+| External links toolbar | `border-border` | Content block, interactive container                                      |
+| Detail cards           | `border-border` | Content containers - subtle border keeps focus on content                 |
+| Project cards          | `border-border` | Content containers - subtle border, stronger contrast on hover            |
+| Image thumbnails       | `border-border` | Content block, matches project card pattern                               |
+| Category badges        | None            | Header zone - distinct `bg-accent/20` provides sufficient visual boundary |
+| Title "badge"          | None            | Header zone - background color is sufficient                              |
+| Back button            | None            | Header zone - part of unified composition                                 |
+
+**Border token rationale:**
+
+- `border-border` (subtle) - Default for content blocks. Less visual noise, relies on hover states for emphasis.
+- `border-border-strong` (prominent) - Reserved for elements that need stronger definition at rest (rarely used).
+
+**Hover states:**
+
+Content blocks with borders use `hover:border-secondary/80` for consistent hover feedback (project cards,
+image thumbnails, featured section cards). The `/80` opacity provides sufficient punch while maintaining
+the semi-transparent aesthetic.
+
+### Mobile Layout Patterns
+
+**ExternalLinksToolbar label flexibility:**
+
+The toolbar's label area accepts either text or custom content via `labelContent` prop:
+
+- **Regular projects (mobile):** Show metadata as text label ("Solo · 2024")
+- **Mod projects (mobile):** Show stats as inline icons (`ModStatsInline` component)
+- **Default:** "LINKS" text
+
+This eliminates layout issues where long game title badges + stats badges competed for horizontal space.
+Stats move into the toolbar, giving the game title badge the full row width.

@@ -968,15 +968,39 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
     - [x] FeaturedSection: removed opacity-75 on in-development projects (badge only)
     - [x] EducationCard: header → font-title, metadata badges → font-terminal
 
-- [ ] **6.7 Quality gates and cleanup**
+- [ ] **6.7 Per-page finishing touches**
 
-    - [ ] **6.7.a Update tests for new class names**
+    Exploratory polish pass through each page/section, addressing visual consistency, spacing, and minor
+    refinements discovered during review. Subtasks document actual work done.
+
+    - [x] **6.7.a Projects pages (`/projects`, `/projects/[type]/[slug]`)**
+        - Changed DetailCard and ProjectCard from `border-border-strong` to `border-border`
+        - Softer borders reduce visual noise, hover states provide emphasis
+        - Mobile mod layout: moved stats into ExternalLinksToolbar label area via `labelContent` prop
+        - Added `ModStatsInline` component for borderless inline stats display
+        - Documented border rationale and mobile patterns in notes-visual-polish.md
+
+    - [ ] **6.7.b Home page (`/`)**
+        - _(To be filled in during implementation)_
+
+    - [ ] **6.7.c Skills page (`/skills`)**
+        - _(To be filled in during implementation)_
+
+    - [ ] **6.7.d About page (`/about`)**
+        - _(To be filled in during implementation)_
+
+    - [ ] **6.7.e Contact page (`/contact`)**
+        - _(To be filled in during implementation)_
+
+- [ ] **6.8 Quality gates and cleanup**
+
+    - [ ] **6.8.a Update tests for new class names**
         - EducationCard.test.tsx, SectionHeader.test.tsx still check for font-mono
 
-    - [ ] **6.7.b Run full quality gates**
+    - [ ] **6.8.b Run full quality gates**
         - Type check, lint, format, build, tests
 
-    - [ ] **6.7.c Document patterns (optional)**
+    - [ ] **6.8.c Document patterns (optional)**
         - Consider additions to strategy-style-guide.md if patterns warrant formalization
 
 ### **Phase 7:** Final Verification

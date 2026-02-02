@@ -86,8 +86,10 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
         stats={stats}
         metadata={{
           teamSize: project.teamSize,
+          teamSizeCompact: project.teamSizeCompact,
           role: project.role,
           developmentTime: project.developmentTime,
+          developmentTimeCompact: project.developmentTimeCompact,
         }}
       />
       <ProjectDetail

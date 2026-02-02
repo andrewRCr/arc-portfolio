@@ -72,6 +72,7 @@ export const projects: Project[] = [
     },
     photoCredits: ["Denise Jans", "Kumiko Shimizu", "Noom Peerapong", "Jeremy Yap", "Adrien Olichon"],
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Full-Stack Developer",
     developmentTime: "2025-2026",
     highlights: [
@@ -134,6 +135,7 @@ export const projects: Project[] = [
     },
     photoCredits: ["Alexey Ruban", "Mike Stoll", "Jason Leung"],
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Framework Author",
     developmentTime: "2025-2026",
     architectureNotes: [
@@ -211,6 +213,7 @@ export const projects: Project[] = [
       screenshots: [], // Intentionally empty - self-referential project
     },
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Full-Stack Developer",
     developmentTime: "2025-2026",
     architectureNotes: [
@@ -290,8 +293,10 @@ export const projects: Project[] = [
       ],
     },
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Full-Stack Developer",
     developmentTime: "2024 (v1), 2026 (v2)",
+    developmentTimeCompact: "2024 / 2026",
     architectureNotes: [
       ".NET 8 backend API with SQL Server and Entity Framework for data persistence",
       "Blazor Web Assembly for modern web interface with MudBlazor component library",
@@ -372,6 +377,7 @@ export const projects: Project[] = [
       ],
     },
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Full-Stack Developer",
     developmentTime: "2023-2024",
     architectureNotes: [
@@ -399,6 +405,7 @@ export const projects: Project[] = [
     projectType: "software",
     title: "DOOM (2016) NewGame+ Customizer",
     compactTitle: "NewGame+ Customizer",
+    cardTitle: "DOOM NewGame+ Customizer",
     slug: "doom-newgame-plus-customizer",
     description:
       "Desktop application and mod generation tool for DOOM (2016) that translates player-defined gameplay preferences into custom .decl mod files. " +
@@ -448,6 +455,7 @@ export const projects: Project[] = [
       ],
     },
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Developer",
     developmentTime: "2023",
     architectureNotes: [
@@ -532,6 +540,7 @@ export const projects: Project[] = [
       ],
     },
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Game Developer",
     developmentTime: "2023",
     architectureNotes: [
@@ -642,7 +651,6 @@ export const projects: Project[] = [
         },
       ],
     },
-    teamSize: "3-person team",
     role: "Project Lead",
     developmentTime: "2022",
     architectureNotes: [
@@ -708,6 +716,7 @@ export const projects: Project[] = [
       ],
     },
     teamSize: "Solo project",
+    teamSizeCompact: "Solo",
     role: "Developer",
     developmentTime: "2023",
     architectureNotes: [

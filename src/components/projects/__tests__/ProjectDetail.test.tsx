@@ -86,10 +86,8 @@ describe("ProjectDetail - Behavior Tests", () => {
   // Note: External links tests moved to DetailHeader.test.tsx (links now in header)
 
   describe("Optional Metadata", () => {
-    it("renders team size when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText(/Solo/i)).toBeInTheDocument();
-    });
+    // Note: team size and other metadata are now rendered in DetailHeader (links toolbar label on mobile)
+    // Those tests belong in DetailHeader.test.tsx, not here.
 
     it("renders highlights when provided", () => {
       render(<ProjectDetail project={mockProject} />);

@@ -9,302 +9,250 @@
  * Route: /dev/sandbox
  */
 
-import { useState, useCallback } from "react";
-import { motion, Variants } from "framer-motion";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import { useHasMounted } from "@/hooks/useHasMounted";
 
 // =============================================================================
-// PAGE TRANSITION VARIANT TESTER
+// EXTERNAL LINKS BOX EXPERIMENT
 // =============================================================================
 
-type TransitionVariant = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | null;
+import { Github, Globe, ExternalLink } from "lucide-react";
 
-/** Current baseline from PageTransition.tsx */
-const BASELINE = { delay: 0.1, duration: 0.4 };
-
-/** Material Design standard easing */
-const MATERIAL_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
-/** Snappy/punchy easing */
-const SNAPPY_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-/** Premium bounce (slight overshoot) */
-const BOUNCE_EASE: [number, number, number, number] = [0.34, 1.56, 0.64, 1];
-
-/**
- * Variant definitions for header vs body timing exploration
- *
- * A-C: Original opacity-based variants
- * D-G: New techniques from research (clip-path, blur, parallax, diagonal)
- */
-const variants: Record<
-  "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H",
-  { header: Variants; body: Variants; description: string }
-> = {
-  // === ORIGINAL VARIANTS ===
-  A: {
-    description: "Staggered: header first, then body",
-    header: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { delay: BASELINE.delay, duration: BASELINE.duration * 0.6, ease: "easeOut" },
-      },
-    },
-    body: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { delay: BASELINE.delay + BASELINE.duration * 0.4, duration: BASELINE.duration, ease: "easeOut" },
-      },
-    },
-  },
-  B: {
-    description: "Same timing, header snappier easing",
-    header: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { delay: BASELINE.delay, duration: BASELINE.duration * 0.7, ease: SNAPPY_EASE },
-      },
-    },
-    body: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { delay: BASELINE.delay, duration: BASELINE.duration, ease: "easeInOut" },
-      },
-    },
-  },
-  C: {
-    description: "Header slides down + fades, body fades",
-    header: {
-      hidden: { opacity: 0, y: -8 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: { delay: BASELINE.delay, duration: BASELINE.duration * 0.8, ease: SNAPPY_EASE },
-      },
-    },
-    body: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { delay: BASELINE.delay + 0.05, duration: BASELINE.duration, ease: "easeOut" },
-      },
-    },
-  },
-
-  // === NEW VARIANTS FROM RESEARCH ===
-  D: {
-    description: "Clip-path wipe: left-to-right reveal",
-    header: {
-      hidden: { clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" },
-      visible: {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-        transition: { delay: BASELINE.delay, duration: 0.35, ease: SNAPPY_EASE },
-      },
-    },
-    body: {
-      hidden: { clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" },
-      visible: {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-        transition: { delay: BASELINE.delay + 0.08, duration: 0.4, ease: MATERIAL_EASE },
-      },
-    },
-  },
-  E: {
-    description: "Scale + blur: dimensional depth effect",
-    header: {
-      hidden: { opacity: 0, scale: 0.96, filter: "blur(4px)" },
-      visible: {
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-        transition: { delay: BASELINE.delay, duration: 0.35, ease: MATERIAL_EASE },
-      },
-    },
-    body: {
-      hidden: { opacity: 0, scale: 0.98, filter: "blur(6px)" },
-      visible: {
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-        transition: { delay: BASELINE.delay + 0.05, duration: 0.4, ease: MATERIAL_EASE },
-      },
-    },
-  },
-  F: {
-    description: "Layered parallax: header up, body up (different distances)",
-    header: {
-      hidden: { opacity: 0, y: -15 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: { delay: BASELINE.delay, duration: 0.35, ease: MATERIAL_EASE },
-      },
-    },
-    body: {
-      hidden: { opacity: 0, y: 25 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: { delay: BASELINE.delay + 0.08, duration: 0.45, ease: MATERIAL_EASE },
-      },
-    },
-  },
-  G: {
-    description: "Diagonal zoom: x/y/scale with bounce easing",
-    header: {
-      hidden: { opacity: 0, x: -20, y: -10, scale: 0.97 },
-      visible: {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        transition: { delay: BASELINE.delay, duration: 0.45, ease: BOUNCE_EASE },
-      },
-    },
-    body: {
-      hidden: { opacity: 0, x: -30, y: 15, scale: 0.95 },
-      visible: {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        transition: { delay: BASELINE.delay + 0.06, duration: 0.5, ease: BOUNCE_EASE },
-      },
-    },
-  },
-  H: {
-    description: "Parallax + blur: movement with focus-in (no scale)",
-    header: {
-      hidden: { opacity: 0, y: -15, filter: "blur(4px)" },
-      visible: {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        transition: { delay: BASELINE.delay, duration: 0.35, ease: MATERIAL_EASE },
-      },
-    },
-    body: {
-      hidden: { opacity: 0, y: 25, filter: "blur(6px)" },
-      visible: {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        transition: { delay: BASELINE.delay + 0.08, duration: 0.45, ease: MATERIAL_EASE },
-      },
-    },
-  },
-};
-
-function TransitionTester() {
-  const [activeVariant, setActiveVariant] = useState<TransitionVariant>(null);
-  const [animationKey, setAnimationKey] = useState(0);
-
-  const triggerVariant = useCallback((v: "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H") => {
-    setActiveVariant(v);
-    setAnimationKey((k) => k + 1);
-  }, []);
-
-  const reset = useCallback(() => {
-    setActiveVariant(null);
-  }, []);
-
-  const currentVariant = activeVariant ? variants[activeVariant] : null;
-
-  const allVariants = ["A", "B", "C", "D", "E", "F", "G", "H"] as const;
+function ExternalLinksBoxExperiment() {
+  // Mock links similar to what DetailHeaderDesktop would have
+  const mockLinks = [
+    { icon: Github, label: "GitHub", href: "#" },
+    { icon: Globe, label: "Live Demo", href: "#" },
+    { icon: ExternalLink, label: "Download", href: "#" },
+  ];
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <h2 className="font-mono text-lg font-semibold">Page Transition Variants</h2>
-        <div className="flex flex-wrap gap-1.5">
-          {allVariants.map((v) => (
-            <button
-              key={v}
-              onClick={() => triggerVariant(v)}
-              className={`rounded px-2.5 py-1 text-sm font-medium transition-colors ${
-                activeVariant === v
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              }`}
-            >
-              {v}
-            </button>
-          ))}
-          <button
-            onClick={reset}
-            className="rounded px-2.5 py-1 text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80"
-          >
-            Reset
-          </button>
+      <h2 className="font-mono text-lg font-semibold">External Links Box Variants</h2>
+      <p className="text-sm text-muted-foreground">
+        Connected box approach for external links - label + icon buttons in a framed container
+      </p>
+
+      <div className="space-y-6">
+        {/* Variant A: Label left, icons right, outer border only */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">A: Outer border, no internal dividers</p>
+          <div className="inline-flex items-stretch border border-border">
+            <span className="flex items-center px-3 font-terminal text-xs text-muted-foreground uppercase tracking-wider">
+              Links
+            </span>
+            <div className="flex">
+              {mockLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-label={link.label}
+                    className="flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Variant B: bg-muted label section */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">B: Label with bg-muted background</p>
+          <div className="inline-flex items-stretch border border-border">
+            <span className="flex items-center bg-muted px-3 font-terminal text-xs text-muted-foreground uppercase tracking-wider">
+              Links
+            </span>
+            <div className="flex">
+              {mockLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-label={link.label}
+                    className="flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Variant B-inv: Inverted - icons with bg-muted */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">B-inv: Icons with bg-muted background</p>
+          <div className="inline-flex items-stretch border border-border">
+            <span className="flex items-center px-3 font-terminal text-xs text-muted-foreground uppercase tracking-wider">
+              Links
+            </span>
+            <div className="flex bg-muted">
+              {mockLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-label={link.label}
+                    className="flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Variant C: Accent label like title badge */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">C: Label with bg-accent (matches title badge)</p>
+          <div className="inline-flex items-stretch border border-border">
+            <span className="flex items-center bg-accent/80 px-3 font-terminal text-xs text-accent-foreground uppercase tracking-wider">
+              Links
+            </span>
+            <div className="flex">
+              {mockLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-label={link.label}
+                    className="flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Variant D: No outer border, just connected blocks */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">
+            D: No outer border, connected blocks (like back+title)
+          </p>
+          <div className="inline-flex items-stretch">
+            <span className="flex items-center bg-muted px-3 font-terminal text-xs text-muted-foreground uppercase tracking-wider">
+              Links
+            </span>
+            <div className="flex bg-card">
+              {mockLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-label={link.label}
+                    className="flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Variant E: Subtle border, larger icons */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">E: Subtle border, larger touch targets (44px)</p>
+          <div className="inline-flex items-stretch border border-border/50">
+            <span className="flex items-center bg-muted/50 px-3 font-terminal text-xs text-muted-foreground uppercase tracking-wider">
+              Links
+            </span>
+            <div className="flex">
+              {mockLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-label={link.label}
+                    className="flex h-11 w-11 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Icon size={20} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Variant E-inv: Inverted - icons with subtle bg-muted */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">
+            E-inv: Icons with bg-muted/50, larger touch targets
+          </p>
+          <div className="inline-flex items-stretch border border-border/50">
+            <span className="flex items-center px-3 font-terminal text-xs text-muted-foreground uppercase tracking-wider">
+              Links
+            </span>
+            <div className="flex bg-muted/50">
+              {mockLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-label={link.label}
+                    className="flex h-11 w-11 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Icon size={20} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Context: How it might look in a header footer bar */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">In context: Mock header footer bar</p>
+          <div className="flex items-center justify-between gap-4 px-4 py-3 bg-card/80 rounded-lg border border-border">
+            {/* Left side: category badges */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="bg-accent/20 px-2 py-0.5 font-terminal text-sm font-semibold text-foreground">
+                Web App
+              </span>
+              <span className="bg-accent/20 px-2 py-0.5 font-terminal text-sm font-semibold text-foreground">
+                Full-Stack
+              </span>
+              <span className="ml-2 text-sm text-muted-foreground">Solo · 2024</span>
+            </div>
+
+            {/* Right side: External links box */}
+            <div className="inline-flex items-stretch border border-border">
+              <span className="flex items-center bg-muted px-3 font-terminal text-xs text-muted-foreground uppercase tracking-wider">
+                Links
+              </span>
+              <div className="flex">
+                {mockLinks.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      aria-label={link.label}
+                      className="flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                      <Icon size={18} />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Description of current variant */}
-      <p className="text-sm text-muted-foreground h-5">
-        {currentVariant ? currentVariant.description : "Click a variant to preview the transition"}
-      </p>
-
-      {/* Mock page content area */}
-      <div className="rounded-lg border border-border bg-card overflow-hidden">
-        {currentVariant === null ? (
-          // Static preview (no animation)
-          <div className="p-4">
-            <MockHeader />
-            <MockBody />
-          </div>
-        ) : (
-          // Animated preview
-          <div key={animationKey} className="p-4">
-            <motion.div initial="hidden" animate="visible" variants={currentVariant.header}>
-              <MockHeader />
-            </motion.div>
-            <motion.div initial="hidden" animate="visible" variants={currentVariant.body}>
-              <MockBody />
-            </motion.div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/** Mock PageHeader-like component */
-function MockHeader() {
-  return (
-    <div className="space-y-1 pb-3 border-b border-border/50">
-      <h1 className="font-mono text-xl font-bold text-foreground">Page Title</h1>
-      <p className="text-sm text-muted-foreground">Subtitle or description text</p>
-    </div>
-  );
-}
-
-/** Mock body content */
-function MockBody() {
-  return (
-    <div className="pt-4 space-y-4">
-      <p className="text-sm text-foreground/80">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-      </p>
-      <p className="text-sm text-foreground/80">
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-        sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-      <div className="grid grid-cols-3 gap-3">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-md bg-muted p-4 text-center text-xs text-muted-foreground">
-            Card {i}
-          </div>
-        ))}
-      </div>
-      <p className="text-sm text-foreground/80">
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-        aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-      </p>
     </div>
   );
 }
@@ -331,7 +279,7 @@ export default function SandboxPage() {
             SANDBOX AREA - Modify freely below this line
             ============================================ */}
 
-        <TransitionTester />
+        <ExternalLinksBoxExperiment />
 
         {/* ============================================
             Reference helpers (collapse or delete as needed)

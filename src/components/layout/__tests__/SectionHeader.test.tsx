@@ -20,11 +20,11 @@ describe("SectionHeader", () => {
       expect(separator).toBeInTheDocument();
     });
 
-    it("uses mono font styling", () => {
+    it("uses title font styling", () => {
       render(<SectionHeader title="Test" />);
 
       const heading = screen.getByRole("heading");
-      expect(heading).toHaveClass("font-mono");
+      expect(heading).toHaveClass("font-title");
     });
   });
 

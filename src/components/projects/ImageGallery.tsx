@@ -88,7 +88,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
               type="button"
               onClick={() => setLightboxIndex(index)}
               aria-label={showOverlay ? `View all ${images.length} images` : `View image: ${image.alt}`}
-              className="group relative aspect-video overflow-hidden rounded-md bg-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all hover:ring-2 hover:ring-accent/50 w-[calc(50%-6px)] sm:w-[calc(33.333%-10.667px)]"
+              className="group relative aspect-video overflow-hidden rounded-md border border-border bg-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[border-color] hover:border-secondary/80 w-[calc(50%-6px)] sm:w-[calc(33.333%-10.667px)]"
             >
               <Image
                 src={image.src}

@@ -69,8 +69,10 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
         links={project.links}
         metadata={{
           teamSize: project.teamSize,
+          teamSizeCompact: project.teamSizeCompact,
           role: project.role,
           developmentTime: project.developmentTime,
+          developmentTimeCompact: project.developmentTimeCompact,
         }}
       />
       <ProjectDetail project={project} />

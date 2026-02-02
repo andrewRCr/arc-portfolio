@@ -101,18 +101,6 @@ function ContentList({ items }: { items: ContentItem[] }) {
   );
 }
 
-/** Renders inline project metadata (team, role, timeline) as subtle text */
-function ProjectMetadata({ project }: { project: Project }) {
-  // Only show role for team projects (not solo) - "Developer" is obvious for solo work
-  const isSolo = project.teamSize?.toLowerCase().includes("solo");
-  const showRole = !isSolo && project.role;
-
-  const parts = [project.teamSize, showRole ? project.role : null, project.developmentTime].filter(Boolean);
-  if (parts.length === 0) return null;
-
-  return <p className="mt-4 text-sm italic text-muted-foreground">{parts.join(" · ")}</p>;
-}
-
 export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   const isPhone = useIsPhone();
 
@@ -125,13 +113,17 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   // Split description into paragraphs
   const descriptionParagraphs = project.description.split("\n\n").filter((p) => p.trim());
 
+  // Mobile: no container padding (tech stack aligns with header elements)
+  // Desktop: px-2 for visual breathing room from edges
+  const containerPadding = isPhone ? "" : "px-2";
+
   return (
-    <div className="px-2 mt-3 mb-1 relative">
-      {/* Tech Stack - tight to header */}
+    <div className={`mt-2 mb-1 relative ${containerPadding}`}>
+      {/* Tech Stack - aligns with header elements (no extra padding) */}
       <TechStackScroller techStack={project.techStack} size={isPhone ? "sm" : "md"} />
 
       {/* Description - supports multiple paragraphs and markdown formatting */}
-      <div className="mt-6 space-y-4">
+      <div className="mt-4 space-y-4">
         {descriptionParagraphs.map((paragraph, index) => (
           <p key={index} className="text-base sm:text-lg text-foreground">
             <InlineMarkdown>{paragraph}</InlineMarkdown>
@@ -139,26 +131,25 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
         ))}
       </div>
 
-      {/* Inline metadata - mobile only (desktop shows in header) */}
-      {isPhone && <ProjectMetadata project={project} />}
+      {/* Note: Mobile metadata now displayed in header's links toolbar label */}
 
       {/* Screenshots Gallery */}
       {project.images.screenshots.length > 0 && (
-        <div className="mt-6">
+        <div className="mt-4 sm:mt-6">
           <ImageGallery images={project.images.screenshots} />
         </div>
       )}
 
       {/* Highlights - primary content section (merged from features + highlights) */}
       {project.highlights && project.highlights.length > 0 && (
-        <DetailCard title={labels.highlights} className="mt-8">
+        <DetailCard title={labels.highlights} className="mt-6 sm:mt-8">
           <ContentList items={project.highlights} />
         </DetailCard>
       )}
 
       {/* Architecture Notes - optional technical deep-dive */}
       {project.architectureNotes && project.architectureNotes.length > 0 && (
-        <DetailCard title={labels.architectureNotes} className="mt-8">
+        <DetailCard title={labels.architectureNotes} className="mt-6 sm:mt-8">
           <ContentList items={project.architectureNotes} />
         </DetailCard>
       )}

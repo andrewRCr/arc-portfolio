@@ -12,8 +12,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
-import { buildIconLinkItems } from "./utils/buildLinkItems";
-import { TouchTarget } from "@/components/ui/TouchTarget";
+import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import { ModStatsGroup } from "./ModStatsBadge";
 import type { DetailHeaderProps } from "./detail-header.types";
 
@@ -31,8 +30,7 @@ export function DetailHeaderDesktop({
   const hasStats =
     stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const { opacity } = useHeaderCrossfade("out");
-  const iconLinks = buildIconLinkItems(links);
-  const hasLinks = iconLinks.length > 0;
+  const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
 
   // Build metadata string - role only shows for team projects
   const isSolo = metadata?.teamSize?.toLowerCase().includes("solo");
@@ -74,11 +72,11 @@ export function DetailHeaderDesktop({
           <Link
             href={backHref}
             aria-label={`Back to ${backLabel}`}
-            className="inline-flex items-center justify-center bg-muted/90 px-3 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-muted/70 hover:text-accent"
+            className="inline-flex items-center justify-center bg-muted/80 px-3 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-muted/70 hover:text-accent"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="inline-flex items-center bg-accent/80 px-3 font-title text-3xl font-bold text-accent-foreground">
+          <h1 className="inline-flex items-center bg-secondary/80 px-3 font-title text-3xl font-bold text-accent-foreground backdrop-blur-sm">
             {title}
           </h1>
         </div>
@@ -114,50 +112,8 @@ export function DetailHeaderDesktop({
             <div /> // Spacer to push content right
           )}
 
-          {/* Icon links - right side */}
-          {hasLinks && (
-            <div data-testid="header-links" className="flex items-center">
-              {iconLinks.map((link, index) => {
-                const Icon = link.icon;
-                const showAsButton = iconLinks.length === 1 && link.label === "NexusMods";
-
-                if (showAsButton) {
-                  // Custom styled link matching category badge sizing
-                  // leading-none eliminates line-height padding that causes icon/text misalignment
-                  // TouchTarget ensures 44px touch area for tablet accessibility
-                  return (
-                    <TouchTarget key={link.label} align="end">
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={link.ariaLabel}
-                        className="inline-flex min-h-6 items-center gap-1.5 px-2 py-0.5 font-terminal text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                      >
-                        {/* mt-px: optical alignment - SVG box model sits higher than text baseline */}
-                        <Icon size={16} className="shrink-0 mt-px" />
-                        <span>{link.label}</span>
-                      </a>
-                    </TouchTarget>
-                  );
-                }
-
-                return (
-                  <TouchTarget key={link.label} align={index === iconLinks.length - 1 ? "end" : "center"}>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.ariaLabel}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                    >
-                      <Icon size={18} />
-                    </a>
-                  </TouchTarget>
-                );
-              })}
-            </div>
-          )}
+          {/* Icon links - right side, framed box layout */}
+          {hasLinks && <ExternalLinksToolbar links={links} variant="desktop" />}
         </div>
       )}
     </div>
