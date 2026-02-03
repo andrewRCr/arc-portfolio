@@ -54,7 +54,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
       </div>
 
       {/* Content - flex-1 fills remaining height */}
-      <div className="flex flex-1 flex-col bg-background/80 p-4">
+      <div className="flex flex-1 flex-col bg-surface-background p-4">
         {/* Category/Game Badge (prominent, first) */}
         <div className="mb-2 flex flex-wrap gap-1.5">
           {categoryType === "mods" && project.game ? (

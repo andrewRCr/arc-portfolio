@@ -85,7 +85,7 @@ export function DetailHeaderDesktop({
       {/* Footer: category badges (left) + metadata + icon links (right) */}
       {/* Tighter padding for single row, more room when categories may wrap */}
       {hasFooter && (
-        <div className="flex items-center justify-between gap-4 px-4 py-3 bg-card/80 rounded-b-lg">
+        <div className="flex items-center justify-between gap-4 px-4 py-3 bg-surface-card rounded-b-lg">
           {/* Category badges + stats + metadata (left side) */}
           {hasCategories || hasStats || hasMetadata ? (
             <div data-testid="category-badges" className="flex flex-wrap items-center gap-2">

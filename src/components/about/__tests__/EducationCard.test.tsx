@@ -35,12 +35,12 @@ describe("EducationCard", () => {
       expect(screen.getByText("Test University")).toBeInTheDocument();
     });
 
-    it("renders header with correct styling (bg-card/80)", () => {
+    it("renders header with correct styling (bg-surface-card)", () => {
       render(<EducationCard education={mockEducation} />);
 
       const header = screen.getByTestId("education-card-header");
       expect(header).toBeInTheDocument();
-      expect(header).toHaveClass("bg-card/80");
+      expect(header).toHaveClass("bg-surface-card");
     });
   });
 
@@ -80,12 +80,12 @@ describe("EducationCard", () => {
       expect(screen.getByText("GPA: 3.8")).toBeInTheDocument();
     });
 
-    it("renders body with correct styling (bg-background/80)", () => {
+    it("renders body with correct styling (bg-surface-background)", () => {
       render(<EducationCard education={mockEducation} />);
 
       const body = screen.getByTestId("education-card-body");
       expect(body).toBeInTheDocument();
-      expect(body).toHaveClass("bg-background/80");
+      expect(body).toHaveClass("bg-surface-background");
     });
   });
 

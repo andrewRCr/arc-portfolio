@@ -50,9 +50,10 @@ const lightTokens: ThemeColors = {
   "muted-foreground": hexToRgb(remedyA11y.foregroundDimmed_dark), // #6E6450 (original: #8A7D64)
 
   // Default accent (cyan - cool contrast to warm orange)
-  // A11Y: cyan lightened 10% + black fg for WCAG AA (4.50:1)
-  accent: hexToRgb(remedyA11y.cyan_light), // #6E9893 (original: #5E8D87)
-  "accent-foreground": hexToRgb(remedyAccents.normal.black), // #282A2E
+  // A11Y: darkened 12.6% for WCAG AA as text on light background (4.52:1)
+  accent: hexToRgb("#527370"), // darkened from #6E9893
+  // A11Y: white foreground for accent-as-background usage (menu focus, etc.)
+  "accent-foreground": hexToRgb("#FFFFFF"),
 
   // Decorative accent variants
   // No -foreground pairs - decorative use only (borders, text color, indicators)

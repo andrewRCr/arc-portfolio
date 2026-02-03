@@ -59,7 +59,7 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
       if (uniqueDownloads !== undefined) {
         // Real value: style as inline code for emphasis
         parts.push(
-          <code key={`count-${keyIndex++}`} className="bg-muted px-1.5 py-0.5 font-mono text-[0.9em]">
+          <code key={`count-${keyIndex++}`} className="bg-surface-muted px-1.5 py-0.5 font-mono text-[0.9em]">
             {formatDownloadCountForProse(uniqueDownloads)}
           </code>
         );
@@ -122,11 +122,11 @@ function DesktopAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) 
     <div className="overflow-hidden rounded-lg border border-border">
       <div className="flex flex-col md:flex-row">
         {/* Photo pane - right side on desktop */}
-        <div className="order-last flex flex-shrink-0 items-center justify-center bg-card/80 p-6">
+        <div className="order-last flex flex-shrink-0 items-center justify-center bg-surface-card p-6">
           <PhotoCard />
         </div>
         {/* Bio pane - main content area */}
-        <div className="flex flex-1 flex-col bg-background/80 p-6">
+        <div className="flex flex-1 flex-col bg-surface-background p-6">
           <BioContent uniqueDownloads={uniqueDownloads} />
         </div>
       </div>

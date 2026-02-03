@@ -52,6 +52,17 @@ export function meetsAANormalText(rgb1: string, rgb2: string): boolean {
 }
 
 /**
+ * Check if contrast ratio meets WCAG AA for large text (3:1).
+ * Large text is defined as 18pt (24px) or 14pt (18.67px) bold.
+ */
+export function meetsAALargeText(rgb1: string, rgb2: string): boolean {
+  const hex1 = rgbToHex(rgb1);
+  const hex2 = rgbToHex(rgb2);
+  // fontSize 24 triggers large text requirement (3:1)
+  return ccc.isLevelAA(hex1, hex2, 24);
+}
+
+/**
  * Parse RGB space-separated string to array of numbers.
  * Example: "251 241 199" → [251, 241, 199]
  * @throws Error if input is not valid "R G B" format with 0-255 integer values

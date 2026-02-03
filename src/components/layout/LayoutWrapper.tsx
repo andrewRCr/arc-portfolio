@@ -205,7 +205,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
           type="button"
           onClick={toggleLayoutMode}
           aria-label={isFullscreen ? "Exit fullscreen mode" : "Enter fullscreen mode"}
-          className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
+          className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-surface-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
           style={{ top: isFullscreen ? 16 : topBarHeight + windowGap + 16 }}
         >
           {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}

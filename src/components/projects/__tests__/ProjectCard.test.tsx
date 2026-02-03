@@ -62,13 +62,14 @@ describe("ProjectCard - Behavior Tests", () => {
   describe("Category Badges", () => {
     it("renders all category badges for project with multiple categories", () => {
       render(<ProjectCard project={mockProject} />);
-      expect(screen.getByText("Web App")).toBeInTheDocument();
-      expect(screen.getByText("Desktop App")).toBeInTheDocument();
+      // Categories render in bracket format: [category]
+      expect(screen.getByText("[web app]")).toBeInTheDocument();
+      expect(screen.getByText("[desktop app]")).toBeInTheDocument();
     });
 
     it("renders single category badge for project with one category", () => {
       render(<ProjectCard project={mockProjectSingleCategory} />);
-      expect(screen.getByText("Game")).toBeInTheDocument();
+      expect(screen.getByText("[game]")).toBeInTheDocument();
     });
 
     it("renders category badges before tech stack tags", () => {
@@ -76,13 +77,13 @@ describe("ProjectCard - Behavior Tests", () => {
       const categoryBadges = container.querySelectorAll('[data-testid="category-badge"]');
 
       expect(categoryBadges).toHaveLength(2);
-      expect(categoryBadges[0]).toHaveTextContent("Web App");
-      expect(categoryBadges[1]).toHaveTextContent("Desktop App");
+      expect(categoryBadges[0]).toHaveTextContent("[web app]");
+      expect(categoryBadges[1]).toHaveTextContent("[desktop app]");
     });
 
     it("displays category badges prominently (distinct styling)", () => {
       render(<ProjectCard project={mockProject} />);
-      const categoryBadge = screen.getByText("Web App").closest("[data-testid]");
+      const categoryBadge = screen.getByText("[web app]").closest("[data-testid]");
       expect(categoryBadge).toHaveAttribute("data-testid", expect.stringContaining("category"));
     });
   });

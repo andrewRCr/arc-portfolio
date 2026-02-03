@@ -51,9 +51,10 @@ const lightTokens: ThemeColors = {
   "muted-foreground": hexToRgb(ayuA11y.fgMutedDarkened20), // #68727f
 
   // Default accent (orange - warm highlight, occasional decorative use)
-  // A11Y: using bgDark as foreground for WCAG AA on bright orange (6.80:1)
-  accent: hexToRgb(ayuLight.keyword), // #FF7E33
-  "accent-foreground": hexToRgb(ayuMirage.bgDark), // #171B24
+  // A11Y: darkened 20.1% for WCAG AA as text on light background (4.50:1)
+  accent: hexToRgb("#CB4B00"), // darkened from #FF7E33
+  // A11Y: white foreground for accent-as-background usage (menu focus, etc.)
+  "accent-foreground": hexToRgb("#FFFFFF"),
 
   // Decorative accent variants
   "accent-red": hexToRgb(ayuLight.markup), // #F07171

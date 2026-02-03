@@ -55,9 +55,10 @@ const lightTokens: ThemeColors = {
   "muted-foreground": hexToRgb(p.dark3), // #665c54
 
   // Default accent (official "aqua", visually mint green)
-  // A11Y: foreground changed from dark1 to dark0 for WCAG AA (4.65:1)
-  accent: hexToRgb(p.neutral_aqua), // #689d6a
-  "accent-foreground": hexToRgb(p.dark0), // #282828
+  // A11Y: darkened 12.5% for WCAG AA as text on light background (4.54:1)
+  accent: hexToRgb("#4E774F"), // darkened from #689d6a
+  // A11Y: white foreground for accent-as-background usage (menu focus, etc.)
+  "accent-foreground": hexToRgb("#FFFFFF"),
 
   // Decorative accent variants (all faded for light mode)
   // No -foreground pairs - decorative use only (borders, text color, indicators)

@@ -103,11 +103,11 @@ function DesktopContactSection() {
   return (
     <div className="mx-auto max-w-xl overflow-hidden rounded-lg border border-border-strong">
       {/* Header - social links */}
-      <div className="bg-card/80 px-6 py-5">
+      <div className="bg-surface-card px-6 py-5">
         <FullContactLinks />
       </div>
       {/* Body - contact form */}
-      <div className="bg-background/80 px-6 pt-6 pb-6">
+      <div className="bg-surface-background px-6 pt-6 pb-6">
         <p className="mb-4 text-sm font-terminal text-muted-foreground">[COMPOSE MSG]</p>
         <ContactForm variant="card" />
       </div>

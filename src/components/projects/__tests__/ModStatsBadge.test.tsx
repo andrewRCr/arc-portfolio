@@ -77,10 +77,10 @@ describe("ModStatsBadge", () => {
       expect(badge).toHaveClass("custom-class");
     });
 
-    it("uses muted background with border", () => {
+    it("uses surface-muted background with border", () => {
       const { container } = render(<ModStatsBadge type="downloads" value={100} />);
       const badge = container.firstChild;
-      expect(badge).toHaveClass("bg-muted");
+      expect(badge).toHaveClass("bg-surface-muted");
       expect(badge).toHaveClass("border-border");
     });
   });

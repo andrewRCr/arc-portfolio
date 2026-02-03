@@ -98,7 +98,7 @@ export function TechStackScroller({
       {techStack.map((tech) => (
         <span
           key={tech}
-          className={`shrink-0 ${badgeSnapClass} border border-border bg-muted font-terminal ${badgeClasses} text-foreground`}
+          className={`shrink-0 ${badgeSnapClass} border border-border bg-surface-muted font-terminal ${badgeClasses} text-foreground`}
         >
           {tech}
         </span>

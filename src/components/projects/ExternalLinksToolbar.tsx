@@ -80,14 +80,14 @@ export function ExternalLinksToolbar({
     >
       <div
         className={cn(
-          "flex items-center bg-muted px-3 text-xs text-muted-foreground",
+          "flex items-center bg-surface-muted px-3 text-xs text-muted-foreground",
           isDefaultLabel && "font-terminal uppercase tracking-wider",
           fullWidth && "flex-1"
         )}
       >
         {labelContent ?? label}
       </div>
-      <div className="flex bg-background">
+      <div className="flex bg-surface-background">
         {iconLinks.map((link, index) => {
           const Icon = link.icon;
           const isLast = index === iconLinks.length - 1;

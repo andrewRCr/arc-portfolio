@@ -235,7 +235,7 @@ function ProjectsContent() {
                 <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
                 {/* Footer card linking to full NexusMods profile */}
                 <div className="mt-6 flex justify-center">
-                  <div className="rounded-lg border border-border bg-background/80 px-6 py-3 text-sm text-muted-foreground">
+                  <div className="rounded-lg border border-border bg-surface-background px-6 py-3 text-sm text-muted-foreground">
                     <span className="sm:hidden">See more at </span>
                     <span className="hidden sm:inline">See additional published mods at </span>
                     <TextLink href={contact.socialLinks.find((l) => l.platform === "NexusMods")?.url ?? "#"}>

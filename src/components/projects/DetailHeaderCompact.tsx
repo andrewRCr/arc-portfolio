@@ -82,7 +82,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
             <Link
               href={backHref}
               aria-label={`Back to ${backLabel}`}
-              className="inline-flex h-8 items-center justify-center bg-muted px-3 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
+              className="inline-flex h-8 items-center justify-center bg-surface-muted px-3 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>

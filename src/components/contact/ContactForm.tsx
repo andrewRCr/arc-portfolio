@@ -43,7 +43,7 @@ interface ContactFormProps {
 
 export function ContactForm({ variant = "standalone" }: ContactFormProps) {
   const isPhone = useIsPhone();
-  const inputBg = variant === "card" ? "bg-card/80" : "bg-transparent";
+  const inputBg = variant === "card" ? "bg-surface-card" : "bg-transparent";
   const [status, setStatus] = useState<FormStatus>("idle");
 
   // Note: Don't use useForm<ContactFormData> - explicit generic type breaks zod v4 compatibility
@@ -105,7 +105,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
 
   if (status === "success") {
     return (
-      <div className="border text-center border-border bg-card/80 p-6 space-y-4">
+      <div className="border text-center border-border bg-surface-card p-6 space-y-4">
         <p className="text-foreground">Thank you for your message! I&apos;ll get back to you soon.</p>
         <button
           type="button"

@@ -119,8 +119,9 @@ describe("ProjectDetail - Behavior Tests", () => {
       render(<ProjectDetail project={mockProject} />);
       // Note: Tech Stack has no heading - badges are self-explanatory
       // Note: Features merged into Highlights, Project Details section removed
-      expect(screen.getByRole("heading", { name: "Highlights" })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: "Architecture" })).toBeInTheDocument();
+      // Headings render in bracket format: [section]
+      expect(screen.getByRole("heading", { name: "[highlights]" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "[architecture]" })).toBeInTheDocument();
     });
 
     // Note: External link accessibility tests moved to DetailHeader.test.tsx

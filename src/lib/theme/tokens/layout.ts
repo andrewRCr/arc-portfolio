@@ -133,7 +133,7 @@ export interface LayoutTokens {
 export const DEFAULT_LAYOUT_TOKENS: LayoutTokens = {
   windowGap: 8,
   windowBorderWidth: 2,
-  windowOpacity: 0.8,
+  windowOpacity: 0.8, // frosted glass effect - lets wallpaper show through
   topBarHeight: 48, // 44px touch target + 4px borders
   footerHeight: 48, // 44px touch target + 4px borders
   navGapHalf: 190,

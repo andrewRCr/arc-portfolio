@@ -72,13 +72,13 @@ export function FeaturedSection() {
             href={`${getProjectPath(type)}/${project.slug}?from=home`}
             className="group flex flex-col border border-border rounded-sm hover:border-secondary-high transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
           >
-            <div className="p-4 pb-2 bg-card/80">
+            <div className="p-4 pb-2 bg-surface-card">
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-xs font-terminal text-foreground">[{type}]</span>
                 {isInDevelopment && (
                   <span
                     data-testid="in-development-badge"
-                    className="border border-border bg-muted/80 px-1.5 py-0.5 font-terminal text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                    className="border border-border bg-surface-muted/80 px-1.5 py-0.5 font-terminal text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
                   >
                     In Dev
                   </span>
@@ -90,7 +90,7 @@ export function FeaturedSection() {
                 </span>
               </h4>
             </div>
-            <div className="flex-1 min-h-24 px-4 py-3 bg-background/80">
+            <div className="flex-1 min-h-24 px-4 py-3 bg-surface-background">
               <p className="text-sm text-muted-foreground">
                 {type === "mod" && project.game && (
                   <>

@@ -51,8 +51,8 @@ const lightTokens: ThemeColors = {
   "muted-foreground": hexToRgb(rougeA11y.fgMutedDarkened10), // #5a6771
 
   // Default accent (peach - warm complement, heavily used)
-  // A11Y: peach darkened 5% for WCAG AA (4.29 → 4.69)
-  accent: hexToRgb(rougeA11y.peachDarkened5), // #926d3d
+  // A11Y: darkened 0.9% for WCAG AA on light background (4.54:1)
+  accent: hexToRgb("#8F6A3C"), // darkened from #926d3d
   "accent-foreground": hexToRgb("#ffffff"),
 
   // Decorative accent variants

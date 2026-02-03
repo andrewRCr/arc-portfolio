@@ -26,6 +26,27 @@
   --color-popover: rgb(var(--popover));
   --color-popover-foreground: rgb(var(--popover-foreground));
 
+  /* Surface tokens - mode-aware for layered surfaces
+     Use these instead of bg-card/80 or bg-background/80 for consistent hierarchy.
+     Supports both opacity and darkening adjustments via CSS variables.
+     Base variables (--surface-*-base) allow light mode to swap card/background
+     for proper hierarchy (headers lighter than bodies). */
+  --color-surface-card: color-mix(
+    in oklch,
+    rgb(var(--surface-card-base) / var(--surface-opacity)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
+  --color-surface-background: color-mix(
+    in oklch,
+    rgb(var(--surface-background-base) / var(--surface-opacity)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
+  --color-surface-muted: color-mix(
+    in oklch,
+    rgb(var(--muted) / var(--surface-opacity)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
+
   /* Primary/Secondary/Muted */
   --color-primary: rgb(var(--primary));
   --color-primary-foreground: rgb(var(--primary-foreground));
@@ -98,6 +119,19 @@
 
 :root {
   --radius: 0.625rem;
+
+  /* Surface tokens - controls card/background appearance for layered surfaces
+     --surface-opacity: transparency (0-1), higher = more solid
+     --surface-darken: mix percentage with foreground (0%-20%), higher = darker/more grounded
+     --surface-*-base: which color token to use (light mode swaps these for hierarchy) */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Window tokens - controls window container background
+     --window-darken: mix percentage with foreground (0%-15%), higher = darker window bg */
+  --window-darken: 0%;
 
   /* Accent opacity levels - defaults for most themes (rouge/rose-pine/ayu override) */
   --accent-high-opacity: 0.8;
@@ -253,8 +287,8 @@
   --muted-foreground: 110 100 80;
 
   /* Accent colors */
-  --accent: 110 152 147;
-  --accent-foreground: 40 42 46;
+  --accent: 82 115 112;
+  --accent-foreground: 255 255 255;
 
   /* Decorative accents */
   --accent-red: 165 66 66;
@@ -461,8 +495,8 @@
   --muted-foreground: 102 92 84;
 
   /* Accent colors */
-  --accent: 104 157 106;
-  --accent-foreground: 40 40 40;
+  --accent: 78 119 79;
+  --accent-foreground: 255 255 255;
 
   /* Decorative accents */
   --accent-red: 157 0 6;
@@ -565,8 +599,8 @@
   --muted-foreground: 104 114 127;
 
   /* Accent colors */
-  --accent: 255 126 51;
-  --accent-foreground: 23 27 36;
+  --accent: 203 75 0;
+  --accent-foreground: 255 255 255;
 
   /* Decorative accents */
   --accent-red: 240 113 113;
@@ -669,7 +703,7 @@
   --muted-foreground: 90 103 113;
 
   /* Accent colors */
-  --accent: 146 109 61;
+  --accent: 143 106 60;
   --accent-foreground: 255 255 255;
 
   /* Decorative accents */
@@ -837,6 +871,52 @@
   --accent-decorative-opacity: 0.9;
 }
 
+/* Dark mode accent opacity fixes for WCAG AA compliance
+   These themes need higher opacity in dark mode to meet 4.5:1 contrast */
+.remedy.dark {
+  --accent-mid-opacity: 0.76;
+}
+
+.gruvbox.dark {
+  --accent-mid-opacity: 0.74;
+}
+
+.mariana.dark {
+  --accent-high-opacity: 0.94;
+  --accent-mid-opacity: 0.94;
+}
+
+/* Light mode accent opacity hierarchy - shifted floor for WCAG AA compliance
+   Dark mode uses lower opacities (0.8/0.6/0.2) because bright accents on dark bg have good contrast.
+   Light mode needs higher opacities (1.0/0.9/0.8) because accents blend toward light bg.
+   Foregrounds flip to background token since higher opacity = darker accent backgrounds. */
+.remedy.light,
+.gruvbox.light,
+.rouge.light {
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+}
+
+.rose-pine.light,
+.ayu.light {
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.85;
+  --accent-low-opacity: 0.75;
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+}
+
+.mariana.light {
+  --accent-high-opacity: 0.95;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.75;
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -850,15 +930,75 @@
   }
 }
 
-/* TWM Window Container background opacity
-   Token value injected via --window-bg-opacity from WindowContainer component */
+/* TWM Window Container background
+   Token value injected via --window-bg-opacity from WindowContainer component.
+   --window-darken mixes foreground color for light mode hierarchy fix. */
 [data-window-container] {
-  background-color: rgb(var(--background) / var(--window-bg-opacity));
+  background-color: color-mix(
+    in oklch,
+    rgb(var(--background) / var(--window-bg-opacity)) calc(100% - var(--window-darken)),
+    rgb(var(--foreground)) var(--window-darken)
+  );
 }
 
 /* Environment Preview toggle for dev pages - when OFF, use full opacity */
 html[data-env-preview="false"] [data-window-container] {
   --window-bg-opacity: 1 !important;
+}
+
+/* Light mode surface adjustments
+   Multiple levers to fix hierarchy:
+   1. --surface-opacity: More transparent to let darkened wallpaper show through
+   2. --surface-darken: Mix in foreground color to reduce brightness
+   3. --window-darken: Darken window container for grounding
+   4. Stronger borders and shadows for visual definition
+   Combined with wallpaper overlay, this creates proper hierarchy. */
+.light {
+  --surface-opacity: 0.7;
+  --surface-darken: 5%;
+  --window-darken: 15%;
+  /* Light mode accent foreground overrides: semi-transparent accent backgrounds
+     need light text (background color) for contrast, not white (accent-foreground)
+     or dark (foreground). This matches the pattern used for accent badges/buttons. */
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  /* Light mode surface hierarchy swap: most themes have card darker than background,
+     but for two-tone cards we want headers (surface-card) lighter than bodies
+     (surface-background). Swap the base colors to achieve correct hierarchy. */
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+}
+
+/* Gruvbox exception: already has card lighter than background in light mode,
+   so don't swap (use default relationship) */
+.gruvbox.light {
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+}
+
+/* Light mode window opacity override */
+.light [data-window-container] {
+  --window-bg-opacity: 0.7 !important;
+}
+
+/* Light mode surface visual definition - stronger borders and shadows */
+.light .bg-surface-card,
+.light .bg-surface-background,
+.light .bg-surface-muted,
+.light .bg-muted {
+  border-color: rgb(var(--border-strong));
+  box-shadow: var(--shadow-md);
+}
+
+/* Light mode wallpaper overlay - darkens wallpaper to provide contrast base */
+.light [data-testid="wallpaper-background"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 /* Scroll shadow affordance gradients

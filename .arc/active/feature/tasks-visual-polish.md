@@ -1027,20 +1027,43 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
 
 - [ ] **6.8 Light mode color pass**
 
-    Light mode is available but not the default. Before calling visual polish complete,
-    review and tune light mode colors for consistency and readability.
+    Built comprehensive mode-aware surface hierarchy system to fix light mode "wash out"
+    where transparency stacking inverted visual hierarchy (cards lighter than windows).
 
-    - [ ] **6.8.a Review all themes in light mode**
-        - Check each theme's light variant across all pages
-        - Note any colors that feel too harsh, too muted, or inconsistent
+    - [x] **6.8.a Review all themes in light mode**
+        - Identified fundamental issue: opacity stacking creates different effects in
+          light vs dark mode (light+light → brighter, dark+dark → grounded)
+        - External research confirmed industry patterns: reduce transparency, add
+          darkening/tinting, strengthen borders/shadows in light mode
+        - Built tuning sandbox (`/dev/sandbox`) with 7 controls for rapid A/B testing
 
-    - [ ] **6.8.b Tune problematic colors**
-        - Adjust theme-specific overrides as needed
-        - Focus on contrast, readability, and visual harmony
+    - [x] **6.8.b Implement mode-aware surface system**
+        - Created CSS variables: `--surface-opacity`, `--surface-darken`, `--window-darken`
+        - Added Tailwind tokens: `bg-surface-card`, `bg-surface-background`, `bg-surface-muted`
+        - Light mode values: 0.80α/5%dk surfaces, 0.70α/15%dk windows, +30% wallpaper overlay
+        - Dark mode values: 0.80α/0%dk surfaces, 0.80α/0%dk windows
+        - Added `.light` overrides for stronger borders (`border-strong`) and shadows (`shadow-md`)
+        - Light mode accent foreground overrides: `accent-high/mid/low-foreground` use `background`
+          color for proper contrast on semi-transparent accent backgrounds
+        - Light mode surface hierarchy swap: `--surface-card-base` and `--surface-background-base`
+          swapped in light mode so headers (surface-card) are lighter than bodies (surface-background)
+        - Gruvbox exception: already had correct card/background relationship, doesn't need swap
 
-    - [ ] **6.8.c Verify accent-decorative in light mode**
-        - Check that decorative accents work well in light variants
-        - Tune opacity or color overrides if needed
+    - [x] **6.8.c Update components to use surface tokens**
+        - Migrated components to surface tokens: EducationCard, DetailCard, ProjectCard,
+          AboutSection, ContactSection, FeaturedSection, ExternalLinksToolbar, TechStackScroller,
+          ModStatsBadge, LayoutWrapper (layout toggle), BackToTopButton
+        - Updated tests for bracket heading format: ProjectCard, ProjectDetail, SkillsSection
+        - Updated ModStatsBadge test for `bg-surface-muted` class
+
+    - [ ] **6.8.d Address contrast issues and improve test suite**
+        - Added missing `meetsAALargeText` utility (was imported but not exported)
+        - Current contrast tests (31 failures) were written early in development with
+          abstract scenarios; need to align with actual in-app usage patterns
+        - Light mode accent foreground changes affect test expectations
+        - Review which test scenarios reflect real UI usage vs theoretical edge cases
+        - Update or remove tests that don't match actual component usage
+        - Ensure remaining tests verify meaningful WCAG compliance for real UI patterns
 
 - [ ] **6.9 Quality gates and cleanup**
 

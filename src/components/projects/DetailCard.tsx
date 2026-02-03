@@ -2,7 +2,7 @@
  * DetailCard Component
  *
  * Section card for project detail pages with semi-transparent header and body.
- * Header uses bg-card/80, body uses bg-background/80 for improved text readability.
+ * Header uses bg-accent-low, body uses bg-surface-background for improved text readability.
  * Both sections share a unified border with rounded corners.
  */
 
@@ -22,10 +22,10 @@ export function DetailCard({ title, children, className }: DetailCardProps) {
     <div className={cn("overflow-hidden rounded-lg border border-border", className)}>
       {/* Header */}
       <div className="px-4 py-3 bg-accent-low">
-        <h2 className="font-terminal text-md font-bold text-foreground">[{title.toLocaleLowerCase()}]</h2>
+        <h2 className="font-terminal text-md font-bold text-accent-low-foreground">[{title.toLocaleLowerCase()}]</h2>
       </div>
       {/* Body - higher contrast background for body text readability */}
-      <div className="bg-background/80 px-4 py-4">{children}</div>
+      <div className="bg-surface-background px-4 py-4">{children}</div>
     </div>
   );
 }
