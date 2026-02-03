@@ -107,7 +107,7 @@ export default function ProjectTabs() {
             onClick={() => handleTabChange(tab)}
             onKeyDown={(e) => handleKeyDown(tab, e)}
             className={`relative min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-terminal text-sm font-semibold transition-colors ${
-              activeTab === tab ? "text-accent" : "text-muted-foreground hover:text-foreground"
+              activeTab === tab ? "text-accent-high" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {TAB_LABELS[tab]}
@@ -116,7 +116,7 @@ export default function ProjectTabs() {
               <motion.div
                 layoutId="tab-indicator"
                 data-tab-indicator
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-high"
                 transition={shouldReduceMotion ? { duration: 0 } : TAB_INDICATOR_TRANSITION}
               />
             )}

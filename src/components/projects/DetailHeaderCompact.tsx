@@ -47,11 +47,11 @@ function DetailHeaderCompactMobile({
         <Link
           href={backHref}
           aria-label={`Back to ${backLabel}`}
-          className="inline-flex h-8 shrink-0 items-center justify-center bg-muted px-2 text-muted-foreground transition-colors hover:bg-muted/70 hover:text-accent"
+          className="inline-flex h-8 shrink-0 items-center justify-center bg-muted px-2 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
         </Link>
-        <h1 className="flex h-8 flex-1 items-center bg-secondary/80 px-2 font-title text-lg font-bold text-secondary-foreground truncate">
+        <h1 className="flex h-8 flex-1 items-center bg-secondary-high px-2 font-title text-lg font-bold text-secondary-foreground truncate">
           {compactTitle || title}
         </h1>
       </div>
@@ -82,11 +82,11 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
             <Link
               href={backHref}
               aria-label={`Back to ${backLabel}`}
-              className="inline-flex h-8 items-center justify-center bg-muted px-3 text-muted-foreground transition-colors hover:bg-muted/70 hover:text-accent"
+              className="inline-flex h-8 items-center justify-center bg-muted px-3 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>
-            <h1 className="inline-flex h-8 items-center bg-secondary/80 px-2 font-title text-lg font-bold text-secondary-foreground truncate">
+            <h1 className="inline-flex h-8 items-center bg-secondary-high px-2 font-title text-lg font-bold text-secondary-foreground truncate">
               {title}
             </h1>
           </div>

@@ -90,7 +90,7 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
           animate={secondaryAnimation.animate}
           transition={secondaryAnimation.transition}
         >
-          {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+          {subtitle && <p className="text-sm font-body text-muted-foreground">{subtitle}</p>}
           {children && <div className={title ? "sm:mt-1" : ""}>{children}</div>}
           {!hideDivider && <div className="mt-3 mx-4 border-b border-border/50" />}
         </motion.div>

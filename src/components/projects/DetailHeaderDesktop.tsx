@@ -72,11 +72,11 @@ export function DetailHeaderDesktop({
           <Link
             href={backHref}
             aria-label={`Back to ${backLabel}`}
-            className="inline-flex items-center justify-center bg-muted/80 px-3 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-muted/70 hover:text-accent"
+            className="inline-flex items-center justify-center bg-muted/80 px-3 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="inline-flex items-center bg-secondary/80 px-3 font-title text-3xl font-bold text-accent-foreground backdrop-blur-sm">
+          <h1 className="inline-flex items-center bg-secondary-high px-3 font-title text-3xl font-bold text-accent-foreground backdrop-blur-sm">
             {title}
           </h1>
         </div>
@@ -93,7 +93,7 @@ export function DetailHeaderDesktop({
                 categories.map((category) => (
                   <span
                     key={category}
-                    className="min-h-6 bg-accent/20 px-2 py-0.5 font-terminal text-sm font-semibold text-foreground"
+                    className="min-h-6 bg-accent-low px-2 py-0.5 font-terminal text-sm font-semibold text-accent-low-foreground"
                   >
                     {category}
                   </span>

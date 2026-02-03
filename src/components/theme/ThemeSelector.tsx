@@ -100,7 +100,7 @@ export function ThemeSelector({ selectedTheme, onSelect, className }: ThemeSelec
             )}
           >
             <ThemeSwatch colors={swatchColors} size={20} />
-            <span className="text-sm font-medium">{theme.label}</span>
+            <span className="text-xs font-semibold font-terminal">{theme.label}</span>
           </div>
         );
       })}

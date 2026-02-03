@@ -14,6 +14,7 @@ import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 import { contact } from "@/data/contact";
 import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
+import { TextLink } from "@/components/ui/text-link";
 import { FEATURES } from "@/config/features";
 import { filterProjectsBySkills } from "@/lib/project-filters";
 import { TAB_CONTENT_DURATION, MATERIAL_EASE } from "@/lib/animation-timing";
@@ -234,18 +235,13 @@ function ProjectsContent() {
                 <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
                 {/* Footer card linking to full NexusMods profile */}
                 <div className="mt-6 flex justify-center">
-                  <div className="rounded-lg border border-border-strong bg-background/80 px-6 py-3 text-sm text-muted-foreground">
+                  <div className="rounded-lg border border-border bg-background/80 px-6 py-3 text-sm text-muted-foreground">
                     <span className="sm:hidden">See more at </span>
                     <span className="hidden sm:inline">See additional published mods at </span>
-                    <a
-                      href={contact.socialLinks.find((l) => l.platform === "NexusMods")?.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-baseline gap-1 font-medium text-foreground hover:underline"
-                    >
-                      <NexusModsIcon className="h-4 w-4 translate-y-0.5" />
-                      NexusMods
-                    </a>
+                    <TextLink href={contact.socialLinks.find((l) => l.platform === "NexusMods")?.url ?? "#"}>
+                      <NexusModsIcon className="inline-block h-3.5 w-3.5 align-[-0.125rem]" />
+                      {" NexusMods"}
+                    </TextLink>
                   </div>
                 </div>
               </motion.div>

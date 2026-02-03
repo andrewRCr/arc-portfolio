@@ -55,16 +55,16 @@ export function ThemeControlDrawer() {
     <button
       type="button"
       aria-label="Open theme settings"
-      className="group flex items-center justify-center gap-1 min-h-11 min-w-11 px-2 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
+      className="group flex items-center justify-center gap-1 min-h-11 min-w-11 px-2 rounded-md outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
     >
       {showSwatch ? (
-        <span className="animate-in fade-in duration-300">
+        <span className="animate-in fade-in duration-300 group-hover:opacity-70 transition-opacity">
           <ThemeSwatch colors={swatchColors} size={16} />
         </span>
       ) : (
         <span className="w-32 h-4" /> // Placeholder for layout stability
       )}
-      <ChevronDown className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" />
+      <ChevronDown className="w-3 h-3 text-muted-foreground group-hover:text-accent-mid transition-colors" />
     </button>
   );
 
@@ -81,7 +81,7 @@ export function ThemeControlDrawer() {
         {/* Wallpaper Picker Section */}
         <div>
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide ml-3">Wallpaper</h3>
+            <h3 className="text-xs font-terminal text-foreground uppercase tracking-wide ml-3">Wallpaper</h3>
             <label
               className="min-h-11 min-w-11 flex items-center justify-center cursor-pointer"
               data-testid="wallpaper-toggle-touch-target"
@@ -104,58 +104,58 @@ export function ThemeControlDrawer() {
         {/* Mode Toggle, Layout & Reset - touch-friendly sizes */}
         <div className="flex justify-center gap-3 mt-2">
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={(e) => {
               toggleTheme();
               e.currentTarget.blur();
             }}
             aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            className="gap-2 min-h-11 min-w-[5.25rem] px-4"
+            className="gap-1.5 min-h-11 min-w-[5.25rem] px-4 font-terminal text-xs border-2 border-border text-accent-high hover:bg-transparent hover:text-accent-high"
           >
             {theme === "dark" ? (
               <>
-                <Moon className="h-5 w-5" />
+                <Moon className="h-4 w-4" />
                 <span>Dark</span>
               </>
             ) : (
               <>
-                <Sun className="h-5 w-5" />
+                <Sun className="h-4 w-4" />
                 <span>Light</span>
               </>
             )}
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={(e) => {
               toggleLayoutMode();
               e.currentTarget.blur();
             }}
             aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "full" ? "boxed" : "full"} layout`}
-            className="gap-2 min-h-11 min-w-[5.25rem] px-4"
+            className="gap-1.5 min-h-11 min-w-[5.25rem] px-4 font-terminal text-xs border-2 border-border text-accent-high hover:bg-transparent hover:text-accent-high"
           >
             {layoutMode === "full" ? (
               <>
-                <Maximize2 className="h-5 w-5" />
+                <Maximize2 className="h-4 w-4" />
                 <span>Full</span>
               </>
             ) : (
               <>
-                <Square className="h-5 w-5" />
+                <Square className="h-4 w-4" />
                 <span>Boxed</span>
               </>
             )}
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={(e) => {
               resetToDefaults();
               e.currentTarget.blur();
             }}
             aria-label="Reset all preferences to defaults"
             disabled={!hasCustomPreferences}
-            className="gap-2 min-h-11 min-w-11 px-4"
+            className="gap-1.5 min-h-11 min-w-11 px-4 font-terminal text-xs border-2 border-border text-accent-high hover:bg-transparent hover:text-accent-high"
           >
-            <RotateCcw className="h-5 w-5" />
+            <RotateCcw className="h-4 w-4" />
             <span>Reset</span>
           </Button>
         </div>

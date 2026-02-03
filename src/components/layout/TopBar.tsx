@@ -69,9 +69,9 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
               <Link
                 href="/"
                 onClick={reducedMotion ? undefined : triggerReplay}
-                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                className="flex items-center gap-2 text-foreground hover:text-accent-mid transition-colors"
               >
-                <span className="text-foreground font-title font-bold">{SITE.handle}</span>
+                <span className="font-title font-bold">{SITE.handle}</span>
               </Link>
             </TouchTarget>
             <span className="ml-3 text-primary font-terminal pointer-events-none">&gt;</span>

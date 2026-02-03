@@ -99,7 +99,7 @@ export function SkillLogoGrid({
         const logo = (
           <svg
             viewBox={icon.viewBox ?? "0 0 24 24"}
-            className={cn(sizeClasses[size], "fill-current text-foreground/70")}
+            className={cn(sizeClasses[size], "fill-current")}
             aria-hidden="true"
           >
             <path d={icon.path} />
@@ -112,7 +112,7 @@ export function SkillLogoGrid({
               <TooltipTrigger asChild>
                 <Link
                   href={`/projects?skills=${encodeURIComponent(skill.name)}`}
-                  className="transition-opacity hover:opacity-80"
+                  className="text-foreground/70 transition-colors hover:text-accent-mid"
                   aria-label={`View projects using ${skill.name}`}
                 >
                   {logo}
@@ -124,7 +124,7 @@ export function SkillLogoGrid({
         ) : (
           <Tooltip key={skill.name}>
             <TooltipTrigger asChild>
-              <div role="img" aria-label={skill.name} className="cursor-default">
+              <div role="img" aria-label={skill.name} className="cursor-default text-foreground/70">
                 {logo}
               </div>
             </TooltipTrigger>

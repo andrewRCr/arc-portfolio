@@ -41,7 +41,7 @@ export function EducationCard({ education }: EducationCardProps) {
       <div data-testid="education-card-body" className="bg-background/80 px-4 py-4">
         {/* Major + degree type: stacked on phone, joined side-by-side on tablet+ */}
         <div className="flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-0">
-          <span className="inline-block bg-secondary/80 px-3 py-1.5 text-base font-terminal text-secondary-foreground">
+          <span className="inline-block bg-secondary-high px-3 py-1.5 text-base font-terminal text-secondary-foreground">
             {major}
           </span>
           <span className="inline-block bg-muted px-3 py-1.5 text-base font-terminal text-muted-foreground">

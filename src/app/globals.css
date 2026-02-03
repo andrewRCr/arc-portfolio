@@ -37,6 +37,18 @@
   /* Accent colors */
   --color-accent: rgb(var(--accent));
   --color-accent-foreground: rgb(var(--accent-foreground));
+  /* Accent opacity variants - theme-aware (rouge/rose-pine/ayu use higher values) */
+  --color-accent-high: rgb(var(--accent) / var(--accent-high-opacity));
+  --color-accent-mid: rgb(var(--accent) / var(--accent-mid-opacity));
+  --color-accent-low: rgb(var(--accent) / var(--accent-low-opacity));
+  --color-accent-high-foreground: rgb(var(--accent-high-foreground));
+  --color-accent-mid-foreground: rgb(var(--accent-mid-foreground));
+  --color-accent-low-foreground: rgb(var(--accent-low-foreground));
+  /* Secondary opacity variants - theme-aware (ayu uses lower value) */
+  --color-secondary-high: rgb(var(--secondary) / var(--secondary-high-opacity));
+  /* Semantic decorative accent - non-interactive visual interest (defaults to primary, themes can override) */
+  --color-accent-decorative: rgb(var(--accent-decorative) / var(--accent-decorative-opacity));
+  --color-accent-decorative-foreground: rgb(var(--accent-decorative-foreground));
   /* Decorative accents - no foreground pairs (decorative use only) */
   --color-accent-red: rgb(var(--accent-red));
   --color-accent-orange: rgb(var(--accent-orange));
@@ -86,6 +98,21 @@
 
 :root {
   --radius: 0.625rem;
+
+  /* Accent opacity levels - defaults for most themes (rouge/rose-pine/ayu override) */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.6;
+  --accent-low-opacity: 0.2;
+  /* Accent variant foregrounds - defaults based on opacity (high needs contrast, mid/low use foreground) */
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--foreground);
+  --accent-low-foreground: var(--foreground);
+  /* Secondary opacity levels - defaults for most themes (ayu overrides to 0.6) */
+  --secondary-high-opacity: 0.8;
+  /* Decorative accent - defaults to primary (themes can override for visual variety) */
+  --accent-decorative: var(--primary);
+  --accent-decorative-foreground: var(--primary-foreground);
+  --accent-decorative-opacity: 1;
 
   /* AUTO-GENERATED THEME DEFAULTS - DO NOT EDIT MANUALLY */
   /* Source: themes["remedy"].dark from src/data/themes */
@@ -773,6 +800,42 @@
 }
 
 /* END AUTO-GENERATED THEME VARIANTS */
+
+/* Theme-specific accent opacity overrides
+   Rouge, Rose Pine, and Ayu have muted accent colors that need higher opacity */
+.rouge,
+.rose-pine,
+.ayu {
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.4;
+  --accent-mid-foreground: var(--accent-foreground);
+}
+
+/* Ayu-specific overrides - secondary and accent-high both need toning down */
+.ayu {
+  --accent-high-opacity: 0.9;
+  --secondary-high-opacity: 0.6;
+  --accent-decorative-opacity: 0.8;
+}
+
+/* Rose Pine-specific overrides - use iris (purple) for decorative accent */
+.rose-pine {
+  --accent-decorative: var(--accent-purple);
+  --accent-decorative-foreground: var(--background);
+}
+
+/* Mariana-specific overrides - toning down */
+.mariana {
+  --accent-high-opacity: 0.9;
+  --secondary-high-opacity: 0.7;
+  --accent-decorative-opacity: 0.9;
+}
+
+/* Remedy-specific overrides - toning down */
+.remedy {
+  --accent-decorative-opacity: 0.9;
+}
 
 @layer base {
   * {

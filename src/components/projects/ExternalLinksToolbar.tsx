@@ -58,7 +58,7 @@ export function ExternalLinksToolbar({
   links,
   variant = "desktop",
   fullWidth = false,
-  label = "Links",
+  label = "External",
   labelContent,
   maxLinks,
   className,
@@ -71,7 +71,7 @@ export function ExternalLinksToolbar({
   }
 
   const styles = variantStyles[variant];
-  const isDefaultLabel = !labelContent && label === "Links";
+  const isDefaultLabel = !labelContent && label === "External";
 
   return (
     <div
@@ -99,7 +99,7 @@ export function ExternalLinksToolbar({
               rel="noopener noreferrer"
               aria-label={link.ariaLabel}
               className={cn(
-                "flex items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
+                "flex items-center justify-center text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground",
                 styles.size,
                 styles.showDividers && !isLast && "border-r border-border"
               )}

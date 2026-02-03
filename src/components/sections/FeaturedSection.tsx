@@ -70,13 +70,11 @@ export function FeaturedSection() {
           <Link
             key={project.slug}
             href={`${getProjectPath(type)}/${project.slug}?from=home`}
-            className="group flex flex-col border border-border rounded-sm hover:border-secondary/80 transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
+            className="group flex flex-col border border-border rounded-sm hover:border-secondary-high transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
           >
             <div className="p-4 pb-2 bg-card/80">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-xs font-terminal text-primary transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
-                  [{type}]
-                </p>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-terminal text-foreground">[{type}]</span>
                 {isInDevelopment && (
                   <span
                     data-testid="in-development-badge"
@@ -86,8 +84,10 @@ export function FeaturedSection() {
                   </span>
                 )}
               </div>
-              <h4 className="font-semibold font-title transition-transform duration-300 origin-left group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
-                {project.title}
+              <h4 className="font-semibold font-title">
+                <span className="bg-accent-low px-1.5 py-0.5 text-accent-low-foreground transition-colors duration-300 box-decoration-clone group-hover:bg-secondary-high group-hover:text-secondary-foreground">
+                  {project.title}
+                </span>
               </h4>
             </div>
             <div className="flex-1 min-h-24 px-4 py-3 bg-background/80">

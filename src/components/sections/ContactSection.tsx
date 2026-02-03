@@ -45,7 +45,7 @@ function FullContactLinks() {
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-1 items-center justify-center gap-1.5 bg-accent px-3 py-2 font-terminal text-sm text-accent-foreground transition-colors hover:bg-accent/80"
+              className="flex flex-1 items-center justify-center gap-1.5 bg-accent-mid px-3 py-2 font-terminal text-sm text-accent-mid-foreground transition-colors hover:bg-accent-low hover:text-accent-low-foreground"
             >
               <Icon className="h-4 w-4" />
               <span className="font-medium">{social.platform}</span>
@@ -56,31 +56,32 @@ function FullContactLinks() {
   );
 }
 
-/** Compact icon-only style (phone) */
+/** Compact icon-only style (phone) - toolbar layout with internal dividers */
 function CompactContactLinks() {
+  const socialLinks = contact.socialLinks.filter((social) => iconMap[social.icon]);
+
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex border border-border">
       {/* Email - obfuscated mailto button, icon only */}
-      <ObfuscatedMailtoButton encoded={encodedEmail} iconOnly />
+      <ObfuscatedMailtoButton encoded={encodedEmail} iconOnly className="flex-1 border-r border-border" />
 
       {/* Social Links - icon only */}
-      {contact.socialLinks
-        .filter((social) => iconMap[social.icon])
-        .map((social) => {
-          const Icon = iconMap[social.icon]!;
-          return (
-            <a
-              key={social.platform}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.platform}
-              className="border border-accent p-3 text-accent transition-colors hover:bg-accent/10"
-            >
-              <Icon className="h-5 w-5" />
-            </a>
-          );
-        })}
+      {socialLinks.map((social, index) => {
+        const Icon = iconMap[social.icon]!;
+        const isLast = index === socialLinks.length - 1;
+        return (
+          <a
+            key={social.platform}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={social.platform}
+            className={`flex flex-1 items-center justify-center bg-accent-mid p-3 text-accent-mid-foreground transition-colors hover:bg-accent-low hover:text-accent-low-foreground ${!isLast ? "border-r border-border" : ""}`}
+          >
+            <Icon className="h-5 w-5" />
+          </a>
+        );
+      })}
     </div>
   );
 }
@@ -107,7 +108,7 @@ function DesktopContactSection() {
       </div>
       {/* Body - contact form */}
       <div className="bg-background/80 px-6 pt-6 pb-6">
-        <p className="mb-4 text-sm font-terminal text-primary">[COMPOSE MSG]</p>
+        <p className="mb-4 text-sm font-terminal text-muted-foreground">[COMPOSE MSG]</p>
         <ContactForm variant="card" />
       </div>
     </div>

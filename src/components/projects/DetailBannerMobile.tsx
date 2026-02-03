@@ -90,7 +90,7 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
           {categories.map((category) => (
             <span
               key={category}
-              className={`bg-accent/20 px-2 py-0.5 font-terminal ${badgeTextSize} font-semibold text-foreground`}
+              className={`bg-accent-low px-2 py-0.5 font-terminal ${badgeTextSize} font-semibold text-accent-low-foreground`}
             >
               {category}
             </span>

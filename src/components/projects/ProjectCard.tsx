@@ -25,7 +25,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
     <Link
       href={detailUrl}
       data-testid="project-card"
-      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border transition-[border-color,box-shadow] duration-300 hover:border-secondary/80 hover:shadow-md"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border transition-[border-color,box-shadow] duration-300 hover:border-secondary-high hover:shadow-md"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
@@ -60,7 +60,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
           {categoryType === "mods" && project.game ? (
             <span
               data-testid="category-badge"
-              className="bg-accent/20 px-2 py-0.5 font-terminal text-xs font-semibold text-foreground"
+              className="bg-accent-low px-2 py-0.5 font-terminal text-xs font-semibold text-accent-low-foreground"
             >
               {project.game}
             </span>
@@ -69,9 +69,9 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
               <span
                 key={cat}
                 data-testid="category-badge"
-                className="bg-accent/20 px-2 py-0.5 font-terminal text-xs font-semibold text-foreground"
+                className="font-terminal text-xs font-semibold text-foreground"
               >
-                {cat}
+                [{cat.toLocaleLowerCase()}]
               </span>
             ))
           )}
@@ -79,7 +79,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
 
         {/* Title */}
         <h3 className="mb-2 text-lg font-semibold leading-relaxed font-title">
-          <span className="bg-accent/80 px-2 py-0.5 text-accent-foreground transition-colors duration-300 box-decoration-clone group-hover:bg-secondary/80 group-hover:text-secondary-foreground">
+          <span className="bg-accent-low px-2 py-0.5 text-accent-low-foreground transition-colors duration-300 box-decoration-clone group-hover:bg-secondary-high group-hover:text-secondary-foreground">
             {project.cardTitle ?? project.title}
           </span>
         </h3>

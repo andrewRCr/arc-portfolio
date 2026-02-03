@@ -79,10 +79,10 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
 /** Photo card with caption footer - shared between layouts */
 function PhotoCard() {
   return (
-    <div className="overflow-hidden border-2 border-secondary/80">
+    <div className="overflow-hidden border-2 border-secondary-high">
       <Image src="/profile-photo.webp" alt="Andrew Creekmore, full-stack developer" width={200} height={267} priority />
-      <div className="flex items-center justify-center bg-accent/80 px-2 py-1">
-        <span className="py-1 font-terminal text-xs text-accent-foreground">{"// andrew.jpg"}</span>
+      <div className="flex items-center justify-center bg-accent-decorative px-2 py-1">
+        <span className="py-1 font-terminal text-xs text-accent-decorative-foreground">{"// andrew.jpg"}</span>
       </div>
     </div>
   );

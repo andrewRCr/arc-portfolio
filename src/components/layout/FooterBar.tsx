@@ -80,7 +80,7 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
                     rel="noopener noreferrer"
                     aria-label={link.platform}
                     title={link.platform}
-                    className="flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-accent-mid transition-colors"
                   >
                     <Icon size={16} aria-hidden="true" />
                   </a>

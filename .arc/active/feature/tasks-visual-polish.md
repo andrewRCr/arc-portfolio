@@ -968,10 +968,26 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
     - [x] FeaturedSection: removed opacity-75 on in-development projects (badge only)
     - [x] EducationCard: header → font-title, metadata badges → font-terminal
 
-- [ ] **6.7 Per-page finishing touches**
+- [x] **6.7 Per-page finishing touches**
 
     Exploratory polish pass through each page/section, addressing visual consistency, spacing, and minor
     refinements discovered during review. Subtasks document actual work done.
+
+    **Global work (affects all pages):**
+    - Created semantic accent tokens: `accent-high` (80), `accent-mid` (60), `accent-low` (20)
+    - Created `secondary-high` token (80, Ayu uses 60)
+    - Created `accent-decorative` semantic token for non-interactive visual accents
+        - Defaults to `primary`, Rose Pine overrides to iris/purple
+        - Opacity support: Ayu/Mariana/Remedy get tuned values
+        - Added to `SemanticColorTokens` in `lib/theme/tokens/colors.ts`
+    - Theme-specific overrides: Rouge/Rose Pine/Ayu get raised opacity values
+    - Standardized button hovers: outline/ghost variants use `accent-high`
+    - Header/footer elements: `hover:text-accent-mid` pattern for small icons
+    - ProjectTabs: `accent-high` instead of full accent
+    - ExternalLinksToolbar: `accent-high` hover, label changed to "External"
+    - ThemeControl triggers: swatch dims on hover, chevron gets accent-mid
+    - TextLink component: updated to `accent-mid` → `hover:accent-high` (no underline)
+    - DetailCard headers: full-width `bg-accent-low` with brackets + lowercase styling
 
     - [x] **6.7.a Projects pages (`/projects`, `/projects/[type]/[slug]`)**
         - Changed DetailCard and ProjectCard from `border-border-strong` to `border-border`
@@ -980,27 +996,61 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Added `ModStatsInline` component for borderless inline stats display
         - Documented border rationale and mobile patterns in notes-visual-polish.md
 
-    - [ ] **6.7.b Home page (`/`)**
-        - _(To be filled in during implementation)_
+    - [x] **6.7.b Home page (`/`)**
+        - FeaturedSection titles: `accent-low` with `secondary-high` hover (via new tokens)
+        - Branding hover: `text-accent-mid` instead of opacity change
 
-    - [ ] **6.7.c Skills page (`/skills`)**
-        - _(To be filled in during implementation)_
+    - [x] **6.7.c Skills page (`/skills`)**
+        - DetailCard headers: full-width `bg-accent-low` with brackets + lowercase
+        - Skill logos: `hover:text-accent-mid` for linked logos
+        - Secondary skill text links: `hover:text-accent-mid` (was `hover:text-foreground`)
 
-    - [ ] **6.7.d About page (`/about`)**
-        - _(To be filled in during implementation)_
+    - [x] **6.7.d About page (`/about`)**
+        - EducationCard: `bg-secondary-high` (Ayu-aware)
+        - PhotoCard: `border-secondary-high`, `bg-accent-decorative` for label
+        - TextLink in bio: updated styling via component change
 
-    - [ ] **6.7.e Contact page (`/contact`)**
-        - _(To be filled in during implementation)_
+    - [x] **6.7.e Contact page (`/contact`)**
+        - Link buttons: `bg-accent-mid` default, `bg-accent-low` hover (theme-aware)
+        - Mobile: segmented toolbar layout with internal dividers
 
-- [ ] **6.8 Quality gates and cleanup**
+    - [x] **6.7.f Mods tab footer link**
+        - NexusMods profile link: converted to TextLink component
+        - Icon alignment: `inline-block` with `align-[-0.125rem]` for baseline
 
-    - [ ] **6.8.a Update tests for new class names**
+    - [x] **6.7.g ThemeControl/ThemeControlDrawer typography**
+        - Section headers ("Theme", "Wallpaper"): `font-terminal text-foreground`
+        - Theme selector labels: `text-xs font-semibold font-terminal`
+        - Utility buttons: `font-terminal text-xs` with reduced icon sizes
+        - Drawer buttons: `variant="ghost"` with `border-2 border-border text-accent-high`
+        - MobileDrawer title: override SheetTitle's `font-semibold` with `font-normal`
+
+- [ ] **6.8 Light mode color pass**
+
+    Light mode is available but not the default. Before calling visual polish complete,
+    review and tune light mode colors for consistency and readability.
+
+    - [ ] **6.8.a Review all themes in light mode**
+        - Check each theme's light variant across all pages
+        - Note any colors that feel too harsh, too muted, or inconsistent
+
+    - [ ] **6.8.b Tune problematic colors**
+        - Adjust theme-specific overrides as needed
+        - Focus on contrast, readability, and visual harmony
+
+    - [ ] **6.8.c Verify accent-decorative in light mode**
+        - Check that decorative accents work well in light variants
+        - Tune opacity or color overrides if needed
+
+- [ ] **6.9 Quality gates and cleanup**
+
+    - [ ] **6.9.a Update tests for new class names**
         - EducationCard.test.tsx, SectionHeader.test.tsx still check for font-mono
 
-    - [ ] **6.8.b Run full quality gates**
+    - [ ] **6.9.b Run full quality gates**
         - Type check, lint, format, build, tests
 
-    - [ ] **6.8.c Document patterns (optional)**
+    - [ ] **6.9.c Document patterns (optional)**
         - Consider additions to strategy-style-guide.md if patterns warrant formalization
 
 ### **Phase 7:** Final Verification
