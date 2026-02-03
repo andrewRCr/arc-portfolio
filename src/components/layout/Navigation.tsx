@@ -26,6 +26,17 @@ import { MobileNavigation } from "./MobileNavigation";
 export function Navigation() {
   const pathname = usePathname();
   const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [lastPathname, setLastPathname] = useState(pathname);
+
+  // State derivation pattern: reset pending state when pathname changes
+  // Setting state during render (not in effect) is the React-recommended approach
+  // See: https://react.dev/learn/you-might-not-need-an-effect
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
+    if (pendingHref !== null) {
+      setPendingHref(null);
+    }
+  }
 
   const isActive = (href: string) => {
     if (!pathname) return false;

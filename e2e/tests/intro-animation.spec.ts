@@ -220,6 +220,48 @@ test.describe("Intro Animation", () => {
     await expect(page.locator("main")).toBeVisible();
   });
 
+  test("skip completes all animations (Hero visible, TUI frame drawn)", async ({ page }) => {
+    // This test verifies the complete skip state to catch regressions where
+    // animations get stuck mid-way (e.g., Hero remaining blurred, TUI frame not appearing)
+    await page.goto("/");
+
+    // Wait for animation to start
+    const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).toBeAttached({ timeout: 2000 });
+
+    // Skip immediately via keypress
+    await page.keyboard.press("Escape");
+
+    // DETERMINISTIC WAIT: Wait for intro state to reach "complete"
+    // This is based on actual React state, not arbitrary timeout
+    await waitForIntroState(page, "complete");
+
+    // Verify Hero h1 is fully visible (opacity should be 1)
+    const heroName = page.getByRole("heading", { name: "Andrew Creekmore", level: 1 });
+    await expect(heroName).toBeVisible();
+
+    // Verify Hero h1 is NOT blurred
+    // Skip mode uses simple fade (no blur), so filter should be "none" or not set
+    const heroFilter = await heroName.evaluate((el) => {
+      return window.getComputedStyle(el).filter;
+    });
+    expect(heroFilter === "none" || heroFilter === "" || heroFilter === "blur(0px)").toBe(true);
+
+    // Verify TUI frame border is rendered (SVG paths exist in content-wrapper)
+    const contentWrapper = page.locator('[data-testid="content-wrapper"]');
+    await expect(contentWrapper).toBeVisible();
+
+    // The SVG border should be present and have drawn (strokeDashoffset: 0)
+    const svgPath = contentWrapper.locator("svg path").first();
+    await expect(svgPath).toBeAttached();
+
+    // Verify stroke animation completed (dashoffset should be 0 or very close)
+    const strokeDashoffset = await svgPath.evaluate((el) => {
+      return parseFloat(window.getComputedStyle(el).strokeDashoffset) || 0;
+    });
+    expect(strokeDashoffset).toBeLessThanOrEqual(1); // Allow small rounding
+  });
+
   test("prefers-reduced-motion skips animation entirely", async ({ browser }) => {
     // Create context with reduced motion preference
     const context = await browser.newContext({

@@ -91,7 +91,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
             </h1>
           </div>
 
-          <ExternalLinksToolbar links={links} variant="desktop" />
+          <ExternalLinksToolbar links={links} variant="compact" />
         </div>
 
         <div className="mx-4 border-b border-border/50" />

@@ -8,7 +8,8 @@
  *
  * Variants:
  * - desktop: 40px buttons, no internal borders (DetailHeaderDesktop)
- * - touch: 44px touch targets with internal borders (mobile ProjectDetail)
+ * - compact: 32px buttons, no internal borders (DetailHeaderCompact)
+ * - touch: 36px touch targets with internal borders (mobile ProjectDetail)
  */
 
 import { cn } from "@/lib/utils";
@@ -16,12 +17,12 @@ import { buildIconLinkItems } from "./utils/buildLinkItems";
 import type { ProjectLinks } from "@/types/project";
 import type { ReactNode } from "react";
 
-type ToolbarVariant = "desktop" | "touch";
+type ToolbarVariant = "desktop" | "compact" | "touch";
 
 interface ExternalLinksToolbarProps {
   /** Project links to display */
   links?: ProjectLinks;
-  /** Size variant */
+  /** Size variant: desktop (40px), compact (32px), touch (36px with dividers) */
   variant?: ToolbarVariant;
   /** Stretch to full width (label left, icons right) */
   fullWidth?: boolean;
@@ -39,6 +40,11 @@ const variantStyles: Record<ToolbarVariant, { size: string; iconSize: number; sh
   desktop: {
     size: "h-10 w-10",
     iconSize: 18,
+    showDividers: false,
+  },
+  compact: {
+    size: "h-8 w-8",
+    iconSize: 16,
     showDividers: false,
   },
   touch: {
@@ -74,8 +80,8 @@ export function ExternalLinksToolbar({
     >
       <div
         className={cn(
-          "flex items-center bg-muted px-3",
-          isDefaultLabel && "font-terminal text-xs text-muted-foreground uppercase tracking-wider",
+          "flex items-center bg-muted px-3 text-xs text-muted-foreground",
+          isDefaultLabel && "font-terminal uppercase tracking-wider",
           fullWidth && "flex-1"
         )}
       >
