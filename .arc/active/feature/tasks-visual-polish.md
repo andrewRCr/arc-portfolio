@@ -1095,30 +1095,42 @@ contrast testing.
   per-theme overrides) must be fully migrated to data for test imports.
 - "No visual change" requires a strict 1:1 migration of all CSS overrides (theme and mode).
 
-- [ ] **7.1 Extend theme types for opacity configuration**
-    - Add `ThemeOpacities` interface to types.ts
-    - Define accent opacity levels (high/mid/low) per mode
-    - Define secondary opacity levels per mode
-    - Define accent decorative opacity
-    - Include foreground token overrides (which themes use accent-foreground vs foreground)
+- [x] **7.1 Extend theme types for opacity configuration**
+    - Added `ThemeOpacities` interface to types.ts with light/dark mode configs
+    - Added `ModeOpacityConfig` for per-mode opacity and foreground settings
+    - Added `OpacityLevels` (high/mid/low) for accent and secondary variants
+    - Added `AccentForegroundMapping` for accent variant foreground tokens
+    - Added `AccentDecorativeConfig` for decorative accent color/foreground overrides
+    - Added `ForegroundToken` type: "foreground" | "background" | "accent-foreground"
+    - Added optional `opacities` property to `Theme` interface
+    - Exported all new types from themes/index.ts
 
-- [ ] **7.2 Extend theme types for light mode surface adjustments**
-    - Add `ThemeLightModeAdjustments` interface
-    - Define surface opacity, surface darken, window darken
-    - Define surface hierarchy ("normal" vs "swapped")
-    - Handle gruvbox exception cleanly in data
+- [x] **7.2 Extend theme types for surface adjustments**
+    - Added `ThemeSurfaces` interface with light/dark mode configs
+    - Added `ModeSurfaceConfig` for surfaceOpacity, surfaceDarken, windowDarken, surfaceHierarchy
+    - Added `SurfaceHierarchy` type: "normal" | "swapped"
+    - Added optional `surfaces` property to `Theme` interface
+    - Gruvbox exception handled via surfaceHierarchy: "normal" in light mode config
+    - Exported all new types from themes/index.ts
 
-- [ ] **7.3 Add opacity and surface config to theme definitions**
-    - Update each theme definition (remedy, rose-pine, gruvbox, ayu, rouge, mariana)
-    - Migrate values from CSS overrides to theme definitions
-    - Ensure values match current CSS exactly (no visual change yet)
+- [x] **7.3 Add opacity and surface config to theme definitions**
+    - Updated all 6 theme definitions with `opacities` and `surfaces` configs
+    - Remedy: dark mid=0.76 (WCAG), accentDecorativeOpacity=0.9
+    - Rose-Pine: dark high=1/mid=0.8/low=0.4, accentDecorative uses accent-purple
+    - Gruvbox: dark mid=0.74 (WCAG), light surfaceHierarchy="normal" (exception)
+    - Ayu: secondary-high=0.6, accentDecorativeOpacity=0.8
+    - Rouge: dark high=1/mid=0.8/low=0.4
+    - Mariana: dark high=0.94/mid=0.94 (WCAG), secondary-high=0.7
+    - Values match current CSS overrides exactly
 
-- [ ] **7.4 Update CSS generation script**
-    - Extend `generate-css-defaults.ts` to emit opacity overrides
-    - Extend to emit light mode surface adjustments
-    - Extend to emit theme-specific foreground overrides
-    - Confirm explicit `color-mix` space usage stays in sync with test math
-    - Verify generated CSS matches current hand-coded CSS
+- [x] **7.4 Update CSS generation script**
+    - Extended `generate-css-defaults.ts` with `generateOpacityCssVariables()` function
+    - Extended with `generateSurfaceCssVariables()` function
+    - Theme variants now include opacity config (accent/secondary opacities, foreground tokens)
+    - Theme variants now include surface config (opacity, darken, hierarchy)
+    - Decorative accent token/foreground overrides generated for Rose-Pine
+    - Verified: Gruvbox light has "normal" hierarchy, others have "swapped"
+    - Generated CSS matches current hand-coded CSS values
 
 - [ ] **7.5 Remove hand-coded CSS overrides**
     - Delete theme-specific opacity override selectors (grouped by theme/mode)

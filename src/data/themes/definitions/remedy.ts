@@ -17,8 +17,30 @@
  */
 
 import { remedyBright, remedyDark, remedyAccents, remedyA11y } from "../palettes/remedy";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration - mirrors CSS overrides for single source of truth
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.9, low: 0.8 },
+    secondary: { high: 0.8, mid: 0.4, low: 0.2 },
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 0.9,
+  },
+  dark: {
+    accent: { high: 0.8, mid: 0.76, low: 0.2 }, // mid bumped for WCAG AA
+    secondary: { high: 0.8, mid: 0.2, low: 0.1 },
+    accentForeground: { high: "accent-foreground", mid: "foreground", low: "foreground" },
+    accentDecorativeOpacity: 0.9,
+  },
+};
+
+// Surface configuration - controls visual layering
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowDarken: 10, surfaceHierarchy: "swapped" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowDarken: 0, surfaceHierarchy: "normal" },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -156,4 +178,7 @@ export const remedyTheme: Theme = {
     default: "green",
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
 } as const;

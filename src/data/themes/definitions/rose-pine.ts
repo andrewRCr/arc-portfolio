@@ -20,8 +20,32 @@
  */
 
 import { rosePineMain, rosePineDawn, rosePineA11y } from "../palettes/rose-pine";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration - Rose Pine has muted accents, needs higher opacities
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.85, low: 0.75 },
+    secondary: { high: 0.8, mid: 0.4, low: 0.2 },
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 1,
+  },
+  dark: {
+    accent: { high: 1, mid: 0.8, low: 0.4 },
+    secondary: { high: 0.8, mid: 0.2, low: 0.1 },
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "foreground" },
+    accentDecorativeOpacity: 1,
+  },
+  // Use iris (purple) for decorative accent instead of primary
+  accentDecorative: { token: "accent-purple", foreground: "background" },
+};
+
+// Surface configuration - controls visual layering
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowDarken: 10, surfaceHierarchy: "swapped" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowDarken: 0, surfaceHierarchy: "normal" },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -160,4 +184,7 @@ export const rosePineTheme: Theme = {
     default: "red", // Rose Pine signature is rose/love (mauve-red)
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
 } as const;

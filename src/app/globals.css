@@ -263,6 +263,25 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.76;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
 }
 
 .remedy.light {
@@ -315,6 +334,25 @@
   --shadow-sm: 0 1px 2px rgba(92, 77, 46, 0.08);
   --shadow-md: 0 2px 8px rgba(92, 77, 46, 0.12);
   --shadow-lg: 0 4px 16px rgba(92, 77, 46, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
 }
 
 .rose-pine.dark {
@@ -367,6 +405,27 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.4;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+  --accent-decorative: var(--accent-purple);
+  --accent-decorative-foreground: var(--background);
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
 }
 
 .rose-pine.light {
@@ -419,6 +478,27 @@
   --shadow-sm: 0 1px 2px rgba(87, 82, 121, 0.08);
   --shadow-md: 0 2px 8px rgba(87, 82, 121, 0.12);
   --shadow-lg: 0 4px 16px rgba(87, 82, 121, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.85;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+  --accent-decorative: var(--accent-purple);
+  --accent-decorative-foreground: var(--background);
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
 }
 
 .gruvbox.dark {
@@ -471,6 +551,25 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.74;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
 }
 
 .gruvbox.light {
@@ -523,6 +622,25 @@
   --shadow-sm: 0 1px 2px rgba(60, 56, 54, 0.08);
   --shadow-md: 0 2px 8px rgba(60, 56, 54, 0.12);
   --shadow-lg: 0 4px 16px rgba(60, 56, 54, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-darken: 10%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
 }
 
 .ayu.dark {
@@ -575,6 +693,25 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.9;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.4;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.6;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.8;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
 }
 
 .ayu.light {
@@ -627,6 +764,25 @@
   --shadow-sm: 0 1px 2px rgba(92, 97, 102, 0.08);
   --shadow-md: 0 2px 8px rgba(92, 97, 102, 0.12);
   --shadow-lg: 0 4px 16px rgba(92, 97, 102, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.85;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.6;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.8;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
 }
 
 .rouge.dark {
@@ -679,6 +835,25 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.4;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
 }
 
 .rouge.light {
@@ -731,6 +906,25 @@
   --shadow-sm: 0 1px 2px rgba(45, 55, 72, 0.08);
   --shadow-md: 0 2px 8px rgba(45, 55, 72, 0.12);
   --shadow-lg: 0 4px 16px rgba(45, 55, 72, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
 }
 
 .mariana.dark {
@@ -783,6 +977,25 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.94;
+  --accent-mid-opacity: 0.94;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.7;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
 }
 
 .mariana.light {
@@ -835,6 +1048,25 @@
   --shadow-sm: 0 1px 2px rgba(48, 56, 65, 0.08);
   --shadow-md: 0 2px 8px rgba(48, 56, 65, 0.12);
   --shadow-lg: 0 4px 16px rgba(48, 56, 65, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.95;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.7;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
 }
 
 /* END AUTO-GENERATED THEME VARIANTS */

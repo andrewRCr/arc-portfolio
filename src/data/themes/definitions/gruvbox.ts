@@ -24,8 +24,30 @@
  */
 
 import { gruvboxPalette as p, gruvboxA11y } from "../palettes/gruvbox";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.9, low: 0.8 },
+    secondary: { high: 0.8, mid: 0.4, low: 0.2 },
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 1,
+  },
+  dark: {
+    accent: { high: 0.8, mid: 0.74, low: 0.2 }, // mid bumped for WCAG AA
+    secondary: { high: 0.8, mid: 0.2, low: 0.1 },
+    accentForeground: { high: "accent-foreground", mid: "foreground", low: "foreground" },
+    accentDecorativeOpacity: 1,
+  },
+};
+
+// Surface configuration - Gruvbox light keeps "normal" hierarchy (exception)
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowDarken: 10, surfaceHierarchy: "normal" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowDarken: 0, surfaceHierarchy: "normal" },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -162,4 +184,7 @@ export const gruvboxTheme: Theme = {
     default: "green",
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
 } as const;

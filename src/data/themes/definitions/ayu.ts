@@ -16,8 +16,30 @@
  */
 
 import { ayuMirage, ayuLight, ayuA11y } from "../palettes/ayu";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration - Ayu has muted accents, needs adjusted opacities
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.85, low: 0.75 },
+    secondary: { high: 0.6, mid: 0.4, low: 0.2 }, // secondary-high toned down
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 0.8,
+  },
+  dark: {
+    accent: { high: 0.9, mid: 0.8, low: 0.4 }, // accent-high toned down
+    secondary: { high: 0.6, mid: 0.2, low: 0.1 }, // secondary-high toned down
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "foreground" },
+    accentDecorativeOpacity: 0.8,
+  },
+};
+
+// Surface configuration - controls visual layering
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowDarken: 10, surfaceHierarchy: "swapped" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowDarken: 0, surfaceHierarchy: "normal" },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -154,4 +176,7 @@ export const ayuTheme: Theme = {
     default: "orange", // Yellow/orange family is signature
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
 } as const;
