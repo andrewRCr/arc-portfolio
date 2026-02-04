@@ -72,7 +72,7 @@ export function Navigation() {
                     active
                       ? "text-secondary-foreground bg-secondary-mid dark:text-foreground"
                       : isPending
-                        ? "text-secondary-foreground bg-secondary-low"
+                        ? "text-secondary-foreground bg-secondary-low dark:text-muted-foreground"
                         : "text-muted-foreground hover:text-secondary-foreground dark:hover:text-foreground hover:bg-secondary-low"
                   }`}
                 >

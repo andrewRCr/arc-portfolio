@@ -1025,7 +1025,7 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Drawer buttons: `variant="ghost"` with `border-2 border-border text-accent-high`
         - MobileDrawer title: override SheetTitle's `font-semibold` with `font-normal`
 
-- [ ] **6.8 Light mode color pass**
+- [x] **6.8 Light mode color pass**
 
     Built comprehensive mode-aware surface hierarchy system to fix light mode "wash out"
     where transparency stacking inverted visual hierarchy (cards lighter than windows).
@@ -1071,36 +1071,90 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - ThemeSelector: active state uses `color-mix` lightening with theme foreground color
           (5% light / 15% dark) for subtle, theme-harmonious highlight
 
-    - [ ] **6.8.e Address contrast issues and improve test suite**
-        - Added missing `meetsAALargeText` utility (was imported but not exported)
-        - Current contrast tests (31 failures) were written early in development with
-          abstract scenarios; need to align with actual in-app usage patterns
-        - Light mode accent foreground changes affect test expectations
-        - Review which test scenarios reflect real UI usage vs theoretical edge cases
-        - Update or remove tests that don't match actual component usage
-        - Ensure remaining tests verify meaningful WCAG compliance for real UI patterns
+### **Phase 7:** Theme System Consolidation
 
-- [ ] **6.9 Quality gates and cleanup**
+**Goal:** Centralize opacity and surface configuration in theme definitions, eliminate
+CSS override sprawl, and enable contrast tests to import from single source of truth.
 
-    - [ ] **6.9.a Update tests for new class names**
-        - EducationCard.test.tsx, SectionHeader.test.tsx still check for font-mono
+**Context:** Emerged from Phase 6 analysis - the current system has opacity values defined
+in 3 places (CSS :root, CSS overrides, test constants). Surface adjustments and light mode
+fixes are scattered CSS selectors. Refactoring creates a clean foundation for accurate
+contrast testing.
 
-    - [ ] **6.9.b Run full quality gates**
-        - Type check, lint, format, build, tests
+**Refactor risks & watch-outs:**
 
-    - [ ] **6.9.c Document patterns (optional)**
-        - Consider additions to strategy-style-guide.md if patterns warrant formalization
+- CSS generator parity: `scripts/generate-css-defaults.ts` currently emits only `ThemeColors`.
+  New opacity/surface/foreground override data must be emitted or it won't become authoritative.
+- Manual regeneration during dev: The generator runs at build time (`prebuild`), so during
+  development run `npm run generate:css-defaults` manually after changing theme definitions.
+- Color-mix parity: `color-mix` defaults (implicit `srgb`) must be mirrored in test math to
+  avoid subtle mismatches. Prefer explicit color space if needed for clarity.
+- Layering baseline: every surface sits on `WindowContainer` (window opacity + darkening).
+  Contrast tests should include the window layer before surface compositing.
+- Foreground override mapping: theme-specific `accent-*-foreground` switches (light mode and
+  per-theme overrides) must be fully migrated to data for test imports.
+- "No visual change" requires a strict 1:1 migration of all CSS overrides (theme and mode).
 
-### **Phase 7:** Final Verification
+- [ ] **7.1 Extend theme types for opacity configuration**
+    - Add `ThemeOpacities` interface to types.ts
+    - Define accent opacity levels (high/mid/low) per mode
+    - Define secondary opacity levels per mode
+    - Define accent decorative opacity
+    - Include foreground token overrides (which themes use accent-foreground vs foreground)
 
-- [ ] **7.1 Visual regression check**
+- [ ] **7.2 Extend theme types for light mode surface adjustments**
+    - Add `ThemeLightModeAdjustments` interface
+    - Define surface opacity, surface darken, window darken
+    - Define surface hierarchy ("normal" vs "swapped")
+    - Handle gruvbox exception cleanly in data
 
-    - [ ] **7.1.a Check all pages across viewports**
+- [ ] **7.3 Add opacity and surface config to theme definitions**
+    - Update each theme definition (remedy, rose-pine, gruvbox, ayu, rouge, mariana)
+    - Migrate values from CSS overrides to theme definitions
+    - Ensure values match current CSS exactly (no visual change yet)
+
+- [ ] **7.4 Update CSS generation script**
+    - Extend `generate-css-defaults.ts` to emit opacity overrides
+    - Extend to emit light mode surface adjustments
+    - Extend to emit theme-specific foreground overrides
+    - Confirm explicit `color-mix` space usage stays in sync with test math
+    - Verify generated CSS matches current hand-coded CSS
+
+- [ ] **7.5 Remove hand-coded CSS overrides**
+    - Delete theme-specific opacity override selectors (grouped by theme/mode)
+    - Delete light mode surface override selectors
+    - Keep only base system CSS and generated output
+    - Run visual regression check
+
+- [ ] **7.6 Export theme configuration for test consumption**
+    - Create exportable opacity constants from theme definitions
+    - Create exportable foreground override mappings
+    - Ensure type-safe imports available
+
+- [ ] **7.7 Update contrast test suite**
+    - Import opacity values from theme definitions (remove ACCENT_OPACITIES constant)
+    - Import foreground overrides (remove ACCENT_MID_USES_ACCENT_FG constant)
+    - Update tests per Option C analysis:
+        - Keep passing semantic pair and card surface tests
+        - Update accent-mid/accent-low tests with realistic surface compositing OR
+        - Adjust thresholds for decorative/large text elements
+        - Add tests for real patterns (nav states, surface-aware text)
+    - Verify all tests pass or document accepted limitations
+
+- [ ] **7.8 Quality gates and documentation**
+    - Update tests for new class names (EducationCard, SectionHeader font-mono → font-terminal)
+    - Run full quality gates (type-check, lint, format, build, tests)
+
+### **Phase 8:** Final Verification
+
+- [ ] **8.1 Visual regression check**
+
+    - [ ] **8.1.a Check all pages across viewports**
         - Desktop, tablet, mobile for: /, /projects, /skills, /about, /contact
         - Project detail pages (sample of complete projects)
         - Verify no unintended visual changes
 
-    - [ ] **7.1.b Verify all animations work correctly**
+    - [ ] **8.1.b Verify all animations work correctly**
         - Page transitions
         - Tab animations
         - Card hover effects
@@ -1108,13 +1162,13 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Theme toggle transitions
         - Intro animation (if applicable)
 
-    - [ ] **7.1.c Test reduced motion preference**
+    - [ ] **8.1.c Test reduced motion preference**
         - Enable `prefers-reduced-motion: reduce`
         - Verify all animations have appropriate alternatives
 
-- [ ] **7.2 Full quality gates (Tier 3)**
+- [ ] **8.2 Full quality gates (Tier 3)**
 
-    - [ ] **7.2.a Run complete quality gate suite**
+    - [ ] **8.2.a Run complete quality gate suite**
         - `npm run type-check` - zero errors
         - `npm run lint` - zero violations
         - `npm run format:check` - must pass
@@ -1123,7 +1177,7 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - `npm test` - 100% pass rate
         - `npm run test:e2e` - 100% pass rate
 
-    - [ ] **7.2.b Address any failures**
+    - [ ] **8.2.b Address any failures**
         - Fix any issues discovered
         - Re-run affected checks
 
