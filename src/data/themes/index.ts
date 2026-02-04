@@ -69,6 +69,7 @@ export type {
 
 // Re-export test utilities for contrast tests
 export {
+  // Opacity accessors
   getAccentOpacities,
   getSecondaryOpacities,
   getAccentMidForeground,
@@ -76,4 +77,19 @@ export {
   getAccentForegroundMappings,
   buildAccentOpacitiesMap,
   getThemesUsingAccentForegroundForMid,
+  // Surface compositing utilities
+  colorMix,
+  getSurfaceHierarchy,
+  getSurfaceConfig,
+  getWindowConfig,
+  getSurfaceBaseToken,
+  getEffectiveSurface,
+  getEffectiveWindowBackground,
+  getAccentOnSurface,
+  getAccentOnRawBackground,
+  getWallpaperExtremes,
+  getWindowOverWallpaper,
 } from "./test-utils";
+
+// Re-export surface types for test use
+export type { SurfaceType, AccentLevel } from "./test-utils";
