@@ -1,8 +1,8 @@
 /**
  * TextLink Component
  *
- * Inline text link with accent color styling. Uses accent-mid by default,
- * accent-high on hover for clear interactive feedback without underline noise.
+ * Inline text link with accent color styling. Uses full accent in light mode,
+ * toned-down accent-high in dark mode. Underline appears on hover.
  */
 
 import { AnchorHTMLAttributes } from "react";
@@ -21,7 +21,7 @@ export function TextLink({ href, external = true, className, children, ...props 
   return (
     <a
       href={href}
-      className={cn("text-accent-high transition-colors hover:text-accent-mid", className)}
+      className={cn("text-accent dark:text-accent-high hover:underline", className)}
       {...props}
       {...externalProps}
     >

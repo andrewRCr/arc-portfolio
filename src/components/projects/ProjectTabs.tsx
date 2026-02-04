@@ -7,10 +7,10 @@
  * Uses query parameters (?tab=software, ?tab=games, or ?tab=mods) for shareable/linkable state.
  *
  * Implements WAI-ARIA Tabs pattern with arrow key navigation.
- * Features animated tab indicator that slides between tabs using Framer Motion layoutId.
+ * Features animated tab indicator that slides between tabs.
  */
 
-import { useRef } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import { TAB_INDICATOR_TRANSITION } from "@/lib/animation-timing";
@@ -31,14 +31,40 @@ export default function ProjectTabs() {
   const searchParams = useSearchParams();
   const shouldReduceMotion = useReducedMotion();
 
-  // Refs for focus management
+  // Refs for focus management and position measurement
+  const tablistRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<Map<TabValue, HTMLButtonElement | null>>(new Map());
+
+  // Indicator position state
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
 
   // Get current tab from query param, default to 'software'
   const currentTab = searchParams.get("tab") as TabValue | null;
 
   // Validate and normalize tab value - only accept valid tab values
   const activeTab: TabValue = TABS.includes(currentTab as TabValue) ? (currentTab as TabValue) : "software";
+
+  // Measure and update indicator position
+  const updateIndicatorPosition = useCallback(() => {
+    const tablist = tablistRef.current;
+    const activeButton = tabRefs.current.get(activeTab);
+    if (!tablist || !activeButton) return;
+
+    const tablistRect = tablist.getBoundingClientRect();
+    const buttonRect = activeButton.getBoundingClientRect();
+
+    setIndicatorStyle({
+      left: buttonRect.left - tablistRect.left,
+      width: buttonRect.width,
+    });
+  }, [activeTab]);
+
+  // Update indicator on tab change and resize
+  useEffect(() => {
+    updateIndicatorPosition();
+    window.addEventListener("resize", updateIndicatorPosition);
+    return () => window.removeEventListener("resize", updateIndicatorPosition);
+  }, [updateIndicatorPosition]);
 
   const handleTabChange = (tab: TabValue) => {
     // Update URL with query parameter (scroll: false - we handle scroll manually)
@@ -89,6 +115,7 @@ export default function ProjectTabs() {
   return (
     <div className="mx-4 flex justify-center sm:block">
       <div
+        ref={tablistRef}
         role="tablist"
         aria-label="Project categories"
         className="relative inline-flex min-h-11 items-end gap-2 sm:flex sm:w-full after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-border/50 after:via-border/50 after:via-95% after:to-transparent"
@@ -107,21 +134,23 @@ export default function ProjectTabs() {
             onClick={() => handleTabChange(tab)}
             onKeyDown={(e) => handleKeyDown(tab, e)}
             className={`relative min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-terminal text-sm font-semibold transition-colors ${
-              activeTab === tab ? "text-accent-high" : "text-muted-foreground hover:text-foreground"
+              activeTab === tab ? "text-accent dark:text-accent-high" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {TAB_LABELS[tab]}
-            {/* Animated tab indicator - slides between tabs via layoutId */}
-            {activeTab === tab && (
-              <motion.div
-                layoutId="tab-indicator"
-                data-tab-indicator
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-high"
-                transition={shouldReduceMotion ? { duration: 0 } : TAB_INDICATOR_TRANSITION}
-              />
-            )}
           </button>
         ))}
+        {/* Animated tab indicator - single element that slides between tabs */}
+        <motion.div
+          data-tab-indicator
+          className="pointer-events-none absolute bottom-0 z-10 h-0.5 bg-accent-high"
+          initial={false}
+          animate={{
+            left: indicatorStyle.left,
+            width: indicatorStyle.width,
+          }}
+          transition={shouldReduceMotion ? { duration: 0 } : TAB_INDICATOR_TRANSITION}
+        />
       </div>
     </div>
   );
