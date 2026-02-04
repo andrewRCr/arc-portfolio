@@ -1056,7 +1056,22 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
         - Updated tests for bracket heading format: ProjectCard, ProjectDetail, SkillsSection
         - Updated ModStatsBadge test for `bg-surface-muted` class
 
-    - [ ] **6.8.d Address contrast issues and improve test suite**
+    - [x] **6.8.d Light mode component fixes and token refinements**
+        - ImageGallery: lightbox backdrop uses `surface-card-base` with darkening formula,
+          thumbnails changed to `bg-surface-muted`
+        - ContactForm: fixed focus ring invisibility in light mode (surface shadow CSS was
+          overriding focus ring shadow); added `:not(:focus)` to surface shadow rule
+        - ContactForm: focus ring now uses `secondary-mid` token for theme consistency
+        - Popover/Sheet: added CSS darkening rule for `[data-slot="popover-content"]` and
+          `[data-slot="sheet-content"]` using `color-mix` with foreground (solid, no transparency)
+        - Command: changed to `bg-transparent` to inherit parent's darkened background
+        - Added `secondary-mid` (40%/20%) and `secondary-low` (20%/10%) tokens with light
+          mode overrides, matching accent token pattern
+        - Navigation/MobileNavigation: refactored hardcoded opacities to use new tokens
+        - ThemeSelector: active state uses `color-mix` lightening with theme foreground color
+          (5% light / 15% dark) for subtle, theme-harmonious highlight
+
+    - [ ] **6.8.e Address contrast issues and improve test suite**
         - Added missing `meetsAALargeText` utility (was imported but not exported)
         - Current contrast tests (31 failures) were written early in development with
           abstract scenarios; need to align with actual in-app usage patterns
