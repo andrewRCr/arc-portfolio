@@ -110,7 +110,9 @@ describe("Interactive Text on Background", () => {
             const passes = meetsAALargeText(bg, fg);
 
             if (!passes) {
-              console.log(`  FAIL: ${themeName}/${mode} accent on background - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`);
+              console.log(
+                `  FAIL: ${themeName}/${mode} accent on background - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`
+              );
               console.log(`    bg: ${bg} (${rgbToHex(bg)})`);
               console.log(`    accent: ${fg} (${rgbToHex(fg)})`);
             }
@@ -143,9 +145,7 @@ describe("Interactive Text on Background", () => {
 
             if (!passes) {
               const label = mode === "light" ? "accent" : "accent-high";
-              console.log(
-                `  FAIL: ${themeName}/${mode} ${label} on window - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`
-              );
+              console.log(`  FAIL: ${themeName}/${mode} ${label} on window - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`);
               console.log(`    window bg: ${windowBg} (${rgbToHex(windowBg)})`);
               console.log(`    ${label}: ${effectiveFg} (${rgbToHex(effectiveFg)})`);
             }
@@ -227,7 +227,9 @@ describe("Button Variants", () => {
             const passes = meetsAALargeText(effectiveBg, effectiveFg);
 
             if (!passes) {
-              console.log(`  FAIL: ${themeName}/${mode} accent-mid button on card - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`);
+              console.log(
+                `  FAIL: ${themeName}/${mode} accent-mid button on card - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`
+              );
               console.log(`    accent-mid bg: ${effectiveBg} (${rgbToHex(effectiveBg)})`);
               console.log(`    foreground: ${effectiveFg} (${rgbToHex(effectiveFg)})`);
             }
@@ -270,7 +272,9 @@ describe("Badges and Indicators", () => {
             const passes = meetsAALargeText(effectiveBg, effectiveFg);
 
             if (!passes) {
-              console.log(`  FAIL: ${themeName}/${mode} accent-low badge on card - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`);
+              console.log(
+                `  FAIL: ${themeName}/${mode} accent-low badge on card - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`
+              );
               console.log(`    accent-low bg: ${effectiveBg} (${rgbToHex(effectiveBg)})`);
               console.log(`    fg: ${effectiveFg} (${rgbToHex(effectiveFg)})`);
             }

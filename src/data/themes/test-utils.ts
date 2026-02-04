@@ -108,10 +108,7 @@ export function getAccentForegroundMappings(
  * // { high: 0.8, mid: 0.76, low: 0.2 }
  * ```
  */
-export function buildAccentOpacitiesMap(): Record<
-  ThemeName,
-  Record<"light" | "dark", OpacityLevels>
-> {
+export function buildAccentOpacitiesMap(): Record<ThemeName, Record<"light" | "dark", OpacityLevels>> {
   const result = {} as Record<ThemeName, Record<"light" | "dark", OpacityLevels>>;
 
   for (const themeName of Object.keys(themes) as ThemeName[]) {
@@ -187,9 +184,7 @@ export function getSurfaceConfig(
   const theme = themes[themeName];
   if (!theme.surfaces) {
     // Defaults from CSS
-    return mode === "dark"
-      ? { surfaceOpacity: 0.8, surfaceDarken: 0 }
-      : { surfaceOpacity: 0.7, surfaceDarken: 20 };
+    return mode === "dark" ? { surfaceOpacity: 0.8, surfaceDarken: 0 } : { surfaceOpacity: 0.7, surfaceDarken: 20 };
   }
   return {
     surfaceOpacity: theme.surfaces[mode].surfaceOpacity,
@@ -207,9 +202,7 @@ export function getWindowConfig(
   const theme = themes[themeName];
   if (!theme.surfaces) {
     // Defaults from CSS
-    return mode === "dark"
-      ? { windowOpacity: 0.8, windowDarken: 0 }
-      : { windowOpacity: 0.7, windowDarken: 10 };
+    return mode === "dark" ? { windowOpacity: 0.8, windowDarken: 0 } : { windowOpacity: 0.7, windowDarken: 10 };
   }
   return {
     windowOpacity: theme.surfaces[mode].windowOpacity,
@@ -317,11 +310,7 @@ export function getSurfaceBaseToken(
  * // Returns the computed card surface color with opacity and darkening applied
  * ```
  */
-export function getEffectiveSurface(
-  surfaceType: SurfaceType,
-  themeName: ThemeName,
-  mode: "light" | "dark"
-): string {
+export function getEffectiveSurface(surfaceType: SurfaceType, themeName: ThemeName, mode: "light" | "dark"): string {
   const theme = themes[themeName];
   const colors = theme[mode];
   const { surfaceOpacity, surfaceDarken } = getSurfaceConfig(themeName, mode);
@@ -515,11 +504,7 @@ export function getWallpaperExtremes(mode: "light" | "dark"): { darkest: string;
  * @param mode - Light or dark mode
  * @returns Effective window background as RGB string
  */
-export function getWindowOverWallpaper(
-  wallpaperColor: string,
-  themeName: ThemeName,
-  mode: "light" | "dark"
-): string {
+export function getWindowOverWallpaper(wallpaperColor: string, themeName: ThemeName, mode: "light" | "dark"): string {
   const theme = themes[themeName];
   const colors = theme[mode];
   const surfaces = theme.surfaces?.[mode];

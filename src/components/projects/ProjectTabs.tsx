@@ -8,12 +8,17 @@
  *
  * Implements WAI-ARIA Tabs pattern with arrow key navigation.
  * Features animated tab indicator that slides between tabs.
+ *
+ * KNOWN ISSUE: Tab indicator doesn't appear on initial page load/refresh.
+ * Works correctly after user interaction (clicking a tab).
+ * See CURRENT-SESSION.md for debugging notes and research findings.
  */
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import { TAB_INDICATOR_TRANSITION } from "@/lib/animation-timing";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 type TabValue = "software" | "games" | "mods";
 
@@ -30,6 +35,7 @@ export default function ProjectTabs() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const shouldReduceMotion = useReducedMotion();
+  const hasMounted = useHasMounted();
 
   // Refs for focus management and position measurement
   const tablistRef = useRef<HTMLDivElement | null>(null);
@@ -53,18 +59,29 @@ export default function ProjectTabs() {
     const tablistRect = tablist.getBoundingClientRect();
     const buttonRect = activeButton.getBoundingClientRect();
 
-    setIndicatorStyle({
-      left: buttonRect.left - tablistRect.left,
-      width: buttonRect.width,
-    });
+    // Only update if dimensions are valid (element is rendered and visible)
+    if (buttonRect.width > 0) {
+      setIndicatorStyle({
+        left: buttonRect.left - tablistRect.left,
+        width: buttonRect.width,
+      });
+    }
   }, [activeTab]);
 
-  // Update indicator on tab change and resize
+  // Update indicator position after mount and on tab/resize changes
   useEffect(() => {
+    if (!hasMounted) return;
+
+    // Initial measurement
     updateIndicatorPosition();
+
+    // Re-measure on resize
     window.addEventListener("resize", updateIndicatorPosition);
-    return () => window.removeEventListener("resize", updateIndicatorPosition);
-  }, [updateIndicatorPosition]);
+
+    return () => {
+      window.removeEventListener("resize", updateIndicatorPosition);
+    };
+  }, [hasMounted, activeTab, updateIndicatorPosition]);
 
   const handleTabChange = (tab: TabValue) => {
     // Update URL with query parameter (scroll: false - we handle scroll manually)

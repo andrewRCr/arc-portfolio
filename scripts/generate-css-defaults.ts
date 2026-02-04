@@ -116,11 +116,7 @@ function foregroundTokenToCss(token: string): string {
  * @param mode - "light" or "dark"
  * @param indent - Indentation string
  */
-function generateOpacityCssVariables(
-  opacities: ThemeOpacities,
-  mode: "light" | "dark",
-  indent = "  "
-): string {
+function generateOpacityCssVariables(opacities: ThemeOpacities, mode: "light" | "dark", indent = "  "): string {
   const config = opacities[mode];
   const lines: string[] = [];
 
@@ -149,7 +145,9 @@ function generateOpacityCssVariables(
     lines.push(`${indent}--accent-decorative: var(--${opacities.accentDecorative.token});`);
   }
   if (opacities.accentDecorative?.foreground) {
-    lines.push(`${indent}--accent-decorative-foreground: ${foregroundTokenToCss(opacities.accentDecorative.foreground)};`);
+    lines.push(
+      `${indent}--accent-decorative-foreground: ${foregroundTokenToCss(opacities.accentDecorative.foreground)};`
+    );
   }
 
   return lines.join("\n");
@@ -161,11 +159,7 @@ function generateOpacityCssVariables(
  * @param mode - "light" or "dark"
  * @param indent - Indentation string
  */
-function generateSurfaceCssVariables(
-  surfaces: ThemeSurfaces,
-  mode: "light" | "dark",
-  indent = "  "
-): string {
+function generateSurfaceCssVariables(surfaces: ThemeSurfaces, mode: "light" | "dark", indent = "  "): string {
   const config = surfaces[mode];
   const lines: string[] = [];
 

@@ -33,9 +33,9 @@ interface ValueSet {
 }
 
 const DEFAULT_DARK: ValueSet = {
-  surfaceOpacity: 0.80,
+  surfaceOpacity: 0.8,
   surfaceDarken: 0,
-  windowOpacity: 0.80,
+  windowOpacity: 0.8,
   windowDarken: 0,
   borderMode: "normal",
   shadowLevel: "none",
@@ -45,7 +45,7 @@ const DEFAULT_DARK: ValueSet = {
 const DEFAULT_LIGHT: ValueSet = {
   surfaceOpacity: 0.92,
   surfaceDarken: 5,
-  windowOpacity: 0.70,
+  windowOpacity: 0.7,
   windowDarken: 3, // slight darken for window bg
   borderMode: "strong",
   shadowLevel: "md",
@@ -176,19 +176,26 @@ function SurfaceOpacityComparison() {
   // Border class based on mode
   const getBorderClass = (mode: BorderMode) => {
     switch (mode) {
-      case "normal": return "border-border";
-      case "strong": return "border-border-strong";
-      case "boosted": return "border-foreground/30"; // Even stronger for light mode
+      case "normal":
+        return "border-border";
+      case "strong":
+        return "border-border-strong";
+      case "boosted":
+        return "border-foreground/30"; // Even stronger for light mode
     }
   };
 
   // Shadow class based on level
   const getShadowClass = (level: ShadowLevel) => {
     switch (level) {
-      case "none": return "";
-      case "sm": return "shadow-sm";
-      case "md": return "shadow-md";
-      case "lg": return "shadow-lg";
+      case "none":
+        return "";
+      case "sm":
+        return "shadow-sm";
+      case "md":
+        return "shadow-md";
+      case "lg":
+        return "shadow-lg";
     }
   };
 
@@ -204,7 +211,9 @@ function SurfaceOpacityComparison() {
       {/* Mode candidate sets */}
       <div className="grid md:grid-cols-2 gap-4">
         {/* Dark mode set */}
-        <div className={`p-4 border rounded-lg ${editingMode === "dark" ? "border-accent bg-accent/10" : "border-border"}`}>
+        <div
+          className={`p-4 border rounded-lg ${editingMode === "dark" ? "border-accent bg-accent/10" : "border-border"}`}
+        >
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-terminal text-sm font-semibold">Dark Mode Set</h3>
             <div className="flex gap-2">
@@ -223,13 +232,22 @@ function SurfaceOpacityComparison() {
             </div>
           </div>
           <div className="text-xs font-mono text-muted-foreground space-y-1">
-            <div>surface: {darkModeSet.surfaceOpacity.toFixed(2)}α {darkModeSet.surfaceDarken}%dk | window: {darkModeSet.windowOpacity.toFixed(2)}α {darkModeSet.windowDarken}%dk</div>
-            <div>border: {darkModeSet.borderMode} | shadow: {darkModeSet.shadowLevel} | wallpaper: {darkModeSet.wallpaperOverlay > 0 ? "+" : ""}{darkModeSet.wallpaperOverlay}%</div>
+            <div>
+              surface: {darkModeSet.surfaceOpacity.toFixed(2)}α {darkModeSet.surfaceDarken}%dk | window:{" "}
+              {darkModeSet.windowOpacity.toFixed(2)}α {darkModeSet.windowDarken}%dk
+            </div>
+            <div>
+              border: {darkModeSet.borderMode} | shadow: {darkModeSet.shadowLevel} | wallpaper:{" "}
+              {darkModeSet.wallpaperOverlay > 0 ? "+" : ""}
+              {darkModeSet.wallpaperOverlay}%
+            </div>
           </div>
         </div>
 
         {/* Light mode set */}
-        <div className={`p-4 border rounded-lg ${editingMode === "light" ? "border-accent bg-accent/10" : "border-border"}`}>
+        <div
+          className={`p-4 border rounded-lg ${editingMode === "light" ? "border-accent bg-accent/10" : "border-border"}`}
+        >
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-terminal text-sm font-semibold">Light Mode Set</h3>
             <div className="flex gap-2">
@@ -248,8 +266,15 @@ function SurfaceOpacityComparison() {
             </div>
           </div>
           <div className="text-xs font-mono text-muted-foreground space-y-1">
-            <div>surface: {lightModeSet.surfaceOpacity.toFixed(2)}α {lightModeSet.surfaceDarken}%dk | window: {lightModeSet.windowOpacity.toFixed(2)}α {lightModeSet.windowDarken}%dk</div>
-            <div>border: {lightModeSet.borderMode} | shadow: {lightModeSet.shadowLevel} | wallpaper: {lightModeSet.wallpaperOverlay > 0 ? "+" : ""}{lightModeSet.wallpaperOverlay}%</div>
+            <div>
+              surface: {lightModeSet.surfaceOpacity.toFixed(2)}α {lightModeSet.surfaceDarken}%dk | window:{" "}
+              {lightModeSet.windowOpacity.toFixed(2)}α {lightModeSet.windowDarken}%dk
+            </div>
+            <div>
+              border: {lightModeSet.borderMode} | shadow: {lightModeSet.shadowLevel} | wallpaper:{" "}
+              {lightModeSet.wallpaperOverlay > 0 ? "+" : ""}
+              {lightModeSet.wallpaperOverlay}%
+            </div>
           </div>
         </div>
       </div>
@@ -261,7 +286,7 @@ function SurfaceOpacityComparison() {
         </summary>
         <div className="px-4 py-3 border-t border-border">
           <pre className="text-xs font-mono bg-muted/50 p-3 rounded overflow-x-auto whitespace-pre-wrap">
-{`:root {
+            {`:root {
   --surface-opacity: ${darkModeSet.surfaceOpacity.toFixed(2)};
   --surface-darken: ${darkModeSet.surfaceDarken}%;
   --window-darken: ${darkModeSet.windowDarken}%;
@@ -322,9 +347,7 @@ function SurfaceOpacityComparison() {
       <div className="p-4 border border-border rounded-lg bg-muted/50 space-y-4">
         {/* Surface opacity */}
         <label className="flex items-center gap-4">
-          <span className="font-terminal text-sm text-muted-foreground w-48">
-            --surface-opacity:
-          </span>
+          <span className="font-terminal text-sm text-muted-foreground w-48">--surface-opacity:</span>
           <input
             type="range"
             min="0.7"
@@ -339,9 +362,7 @@ function SurfaceOpacityComparison() {
 
         {/* Surface darkening */}
         <label className="flex items-center gap-4">
-          <span className="font-terminal text-sm text-muted-foreground w-48">
-            --surface-darken:
-          </span>
+          <span className="font-terminal text-sm text-muted-foreground w-48">--surface-darken:</span>
           <input
             type="range"
             min="0"
@@ -356,9 +377,7 @@ function SurfaceOpacityComparison() {
 
         {/* Window opacity */}
         <label className="flex items-center gap-4">
-          <span className="font-terminal text-sm text-muted-foreground w-48">
-            --window-bg-opacity:
-          </span>
+          <span className="font-terminal text-sm text-muted-foreground w-48">--window-bg-opacity:</span>
           <input
             type="range"
             min="0.4"
@@ -373,9 +392,7 @@ function SurfaceOpacityComparison() {
 
         {/* Window darken */}
         <label className="flex items-center gap-4">
-          <span className="font-terminal text-sm text-muted-foreground w-48">
-            --window-darken:
-          </span>
+          <span className="font-terminal text-sm text-muted-foreground w-48">--window-darken:</span>
           <input
             type="range"
             min="0"
@@ -390,9 +407,7 @@ function SurfaceOpacityComparison() {
 
         {/* Wallpaper overlay */}
         <label className="flex items-center gap-4">
-          <span className="font-terminal text-sm text-muted-foreground w-48">
-            Wallpaper overlay:
-          </span>
+          <span className="font-terminal text-sm text-muted-foreground w-48">Wallpaper overlay:</span>
           <input
             type="range"
             min="-30"
@@ -473,9 +488,7 @@ function SurfaceOpacityComparison() {
             <div className="p-4 pb-2 bg-card/80">
               <span className="text-xs font-terminal text-foreground">[software]</span>
               <h4 className="font-semibold font-title mt-1">
-                <span className="bg-accent-low px-1.5 py-0.5 text-accent-low-foreground">
-                  Project Title
-                </span>
+                <span className="bg-accent-low px-1.5 py-0.5 text-accent-low-foreground">Project Title</span>
               </h4>
             </div>
             <div className="min-h-20 px-4 py-3 bg-background/80">
@@ -503,13 +516,13 @@ function SurfaceOpacityComparison() {
           <h3 className="font-terminal text-sm text-muted-foreground">[NEW] Mode-aware + definition</h3>
 
           {/* Simulated card like FeaturedSection */}
-          <div className={`border rounded-sm overflow-hidden ${getBorderClass(borderMode)} ${getShadowClass(shadowLevel)}`}>
+          <div
+            className={`border rounded-sm overflow-hidden ${getBorderClass(borderMode)} ${getShadowClass(shadowLevel)}`}
+          >
             <div className="p-4 pb-2 bg-surface-card">
               <span className="text-xs font-terminal text-foreground">[software]</span>
               <h4 className="font-semibold font-title mt-1">
-                <span className="bg-accent-low px-1.5 py-0.5 text-accent-low-foreground">
-                  Project Title
-                </span>
+                <span className="bg-accent-low px-1.5 py-0.5 text-accent-low-foreground">Project Title</span>
               </h4>
             </div>
             <div className="min-h-20 px-4 py-3 bg-surface-background">
@@ -520,7 +533,9 @@ function SurfaceOpacityComparison() {
           </div>
 
           {/* Another card variant */}
-          <div className={`rounded-lg overflow-hidden border ${getBorderClass(borderMode)} ${getShadowClass(shadowLevel)}`}>
+          <div
+            className={`rounded-lg overflow-hidden border ${getBorderClass(borderMode)} ${getShadowClass(shadowLevel)}`}
+          >
             <div className="bg-surface-card px-4 py-3">
               <h3 className="font-title text-lg font-bold">Detail Card Header</h3>
             </div>
@@ -567,7 +582,9 @@ function SurfaceOpacityComparison() {
               <div className="absolute inset-2 bg-background/80 rounded">
                 {/* Card layer - uses surface opacity */}
                 <div className="absolute inset-3 bg-surface-card rounded flex items-center justify-center">
-                  <span className="text-xs font-terminal">{lightOpacity.toFixed(2)}α + {lightDarken}%dk</span>
+                  <span className="text-xs font-terminal">
+                    {lightOpacity.toFixed(2)}α + {lightDarken}%dk
+                  </span>
                 </div>
               </div>
             </div>
@@ -580,12 +597,12 @@ function SurfaceOpacityComparison() {
         <span className="text-xs font-terminal text-muted-foreground">Presets:</span>
         <div className="flex flex-wrap gap-2">
           {[
-            { label: "Dark mode default", o: 0.80, d: 0, b: "normal" as BorderMode, s: "none" as ShadowLevel },
+            { label: "Dark mode default", o: 0.8, d: 0, b: "normal" as BorderMode, s: "none" as ShadowLevel },
             { label: "Subtle fix", o: 0.85, d: 3, b: "normal" as BorderMode, s: "none" as ShadowLevel },
-            { label: "Darken only", o: 0.80, d: 8, b: "normal" as BorderMode, s: "none" as ShadowLevel },
+            { label: "Darken only", o: 0.8, d: 8, b: "normal" as BorderMode, s: "none" as ShadowLevel },
             { label: "Strong borders", o: 0.85, d: 5, b: "strong" as BorderMode, s: "none" as ShadowLevel },
             { label: "With shadows", o: 0.85, d: 5, b: "normal" as BorderMode, s: "md" as ShadowLevel },
-            { label: "Full treatment", o: 0.90, d: 6, b: "strong" as BorderMode, s: "sm" as ShadowLevel },
+            { label: "Full treatment", o: 0.9, d: 6, b: "strong" as BorderMode, s: "sm" as ShadowLevel },
             { label: "Material-ish", o: 0.95, d: 4, b: "normal" as BorderMode, s: "md" as ShadowLevel },
             { label: "Max definition", o: 0.92, d: 8, b: "boosted" as BorderMode, s: "md" as ShadowLevel },
           ].map(({ label, o, d, b, s }) => (

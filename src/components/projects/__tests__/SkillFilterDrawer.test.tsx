@@ -102,13 +102,13 @@ describe("SkillFilterDrawer", () => {
       expect(sheetContent).toBeInTheDocument();
     });
 
-    it("displays 'Filter Skills' title in drawer header", async () => {
+    it("displays 'Filter' title in drawer header", async () => {
       const user = userEvent.setup();
       render(<SkillFilterDrawer {...defaultProps} />);
 
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
-      expect(screen.getByText("Filter Skills")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /filter/i })).toBeInTheDocument();
     });
   });
 
@@ -236,14 +236,14 @@ describe("SkillFilterDrawer", () => {
 
       // Open drawer
       await user.click(screen.getByRole("button", { name: /filter/i }));
-      expect(screen.getByText("Filter Skills")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /filter/i })).toBeInTheDocument();
 
       // Close via close button
       const closeButton = screen.getByRole("button", { name: /close/i });
       await user.click(closeButton);
 
       // Drawer should be closed
-      expect(screen.queryByText("Filter Skills")).not.toBeInTheDocument();
+      expect(screen.queryByRole("heading", { name: /filter/i })).not.toBeInTheDocument();
     });
   });
 
@@ -291,7 +291,7 @@ describe("SkillFilterDrawer", () => {
       await user.click(screen.getByRole("button", { name: /filter/i }));
 
       // Verify drawer is open
-      expect(screen.getByText("Filter Skills")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /filter/i })).toBeInTheDocument();
 
       // Run a11y check on the open state
       const results = await axe(container);
