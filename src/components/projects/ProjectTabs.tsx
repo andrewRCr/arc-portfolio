@@ -7,18 +7,12 @@
  * Uses query parameters (?tab=software, ?tab=games, or ?tab=mods) for shareable/linkable state.
  *
  * Implements WAI-ARIA Tabs pattern with arrow key navigation.
- * Features animated tab indicator that slides between tabs.
- *
- * KNOWN ISSUE: Tab indicator doesn't appear on initial page load/refresh.
- * Works correctly after user interaction (clicking a tab).
- * See CURRENT-SESSION.md for debugging notes and research findings.
+ * Features animated tab indicator that slides between tabs using CSS transitions.
  */
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useLayoutEffect, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
-import { TAB_INDICATOR_TRANSITION } from "@/lib/animation-timing";
-import { useHasMounted } from "@/hooks/useHasMounted";
+import { useReducedMotion } from "framer-motion";
 
 type TabValue = "software" | "games" | "mods";
 
@@ -35,14 +29,10 @@ export default function ProjectTabs() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const shouldReduceMotion = useReducedMotion();
-  const hasMounted = useHasMounted();
 
-  // Refs for focus management and position measurement
-  const tablistRef = useRef<HTMLDivElement | null>(null);
+  // Refs for focus management and indicator positioning
   const tabRefs = useRef<Map<TabValue, HTMLButtonElement | null>>(new Map());
-
-  // Indicator position state
-  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const indicatorRef = useRef<HTMLDivElement | null>(null);
 
   // Get current tab from query param, default to 'software'
   const currentTab = searchParams.get("tab") as TabValue | null;
@@ -50,38 +40,33 @@ export default function ProjectTabs() {
   // Validate and normalize tab value - only accept valid tab values
   const activeTab: TabValue = TABS.includes(currentTab as TabValue) ? (currentTab as TabValue) : "software";
 
-  // Measure and update indicator position
-  const updateIndicatorPosition = useCallback(() => {
-    const tablist = tablistRef.current;
+  // Update indicator position directly via ref (bypasses React state)
+  // Uses offsetLeft/offsetWidth instead of getBoundingClientRect - works during Suspense hydration
+  const updateIndicator = useCallback(() => {
     const activeButton = tabRefs.current.get(activeTab);
-    if (!tablist || !activeButton) return;
+    const indicator = indicatorRef.current;
+    if (!activeButton || !indicator) return;
 
-    const tablistRect = tablist.getBoundingClientRect();
-    const buttonRect = activeButton.getBoundingClientRect();
+    // offsetWidth works during hydration when getBoundingClientRect returns 0
+    const width = activeButton.offsetWidth;
+    const left = activeButton.offsetLeft;
 
-    // Only update if dimensions are valid (element is rendered and visible)
-    if (buttonRect.width > 0) {
-      setIndicatorStyle({
-        left: buttonRect.left - tablistRect.left,
-        width: buttonRect.width,
-      });
+    if (width > 0) {
+      indicator.style.left = `${left}px`;
+      indicator.style.width = `${width}px`;
     }
   }, [activeTab]);
 
-  // Update indicator position after mount and on tab/resize changes
-  useEffect(() => {
-    if (!hasMounted) return;
+  // Update on mount and when active tab changes
+  useLayoutEffect(() => {
+    updateIndicator();
+  }, [updateIndicator]);
 
-    // Initial measurement
-    updateIndicatorPosition();
-
-    // Re-measure on resize
-    window.addEventListener("resize", updateIndicatorPosition);
-
-    return () => {
-      window.removeEventListener("resize", updateIndicatorPosition);
-    };
-  }, [hasMounted, activeTab, updateIndicatorPosition]);
+  // Update on resize
+  useLayoutEffect(() => {
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [updateIndicator]);
 
   const handleTabChange = (tab: TabValue) => {
     // Update URL with query parameter (scroll: false - we handle scroll manually)
@@ -132,7 +117,6 @@ export default function ProjectTabs() {
   return (
     <div className="mx-4 flex justify-center sm:block">
       <div
-        ref={tablistRef}
         role="tablist"
         aria-label="Project categories"
         className="relative inline-flex min-h-11 items-end gap-2 sm:flex sm:w-full after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-border/50 after:via-border/50 after:via-95% after:to-transparent"
@@ -157,16 +141,14 @@ export default function ProjectTabs() {
             {TAB_LABELS[tab]}
           </button>
         ))}
-        {/* Animated tab indicator - single element that slides between tabs */}
-        <motion.div
+        {/* Tab indicator - CSS transition for smooth sliding */}
+        <div
+          ref={indicatorRef}
           data-tab-indicator
           className="pointer-events-none absolute bottom-0 z-10 h-0.5 bg-accent-high"
-          initial={false}
-          animate={{
-            left: indicatorStyle.left,
-            width: indicatorStyle.width,
+          style={{
+            transition: shouldReduceMotion ? "none" : "left 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
-          transition={shouldReduceMotion ? { duration: 0 } : TAB_INDICATOR_TRANSITION}
         />
       </div>
     </div>

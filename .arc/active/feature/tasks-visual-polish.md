@@ -1202,9 +1202,14 @@ contrast testing.
     - [x] **7.7.e Verify all tests pass**
         - All 228 contrast tests passing
 
-- [ ] **7.8 Quality gates and documentation**
-    - Update tests for new class names (EducationCard, SectionHeader font-mono → font-terminal)
-    - Run full quality gates (type-check, lint, format, build, tests)
+- [x] **7.8 Quality gates and documentation**
+    - Fixed SkillFilterDrawer tests ("Filter Skills" → "Filter" title change)
+    - Updated 14 visual regression baselines after Task 7.7 contrast fixes
+    - **Fixed tab indicator initial render bug**: Replaced `getBoundingClientRect()` with
+      `offsetLeft`/`offsetWidth` - the former returns zeros during Next.js Suspense hydration
+      while the latter provides layout dimensions immediately
+    - Switched from Framer Motion layoutId to CSS transitions (eliminates doubling artifact)
+    - All quality gates pass: type-check, lint, format, build, unit tests (1366), E2E (341 passed)
 
 ### **Phase 8:** Final Verification
 
