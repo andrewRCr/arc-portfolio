@@ -31,7 +31,7 @@ const opacities: ThemeOpacities = {
   dark: {
     accent: { high: 0.94, mid: 0.94, low: 0.2 }, // high/mid bumped for WCAG AA
     secondary: { high: 0.7, mid: 0.2, low: 0.1 }, // secondary-high toned down
-    accentForeground: { high: "accent-foreground", mid: "foreground", low: "foreground" },
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "foreground" },
     accentDecorativeOpacity: 0.9,
   },
 };

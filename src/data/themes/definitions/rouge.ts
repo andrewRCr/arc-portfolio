@@ -30,9 +30,9 @@ const opacities: ThemeOpacities = {
     accentDecorativeOpacity: 1,
   },
   dark: {
-    accent: { high: 1, mid: 0.8, low: 0.4 },
+    accent: { high: 1, mid: 0.8, low: 0.65 }, // low bumped from 0.4 for badge contrast
     secondary: { high: 0.8, mid: 0.2, low: 0.1 },
-    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "foreground" },
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "accent-foreground" }, // low uses dark text for contrast
     accentDecorativeOpacity: 1,
   },
 };

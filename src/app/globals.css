@@ -276,7 +276,7 @@
   --accent-mid-opacity: 0.76;
   --accent-low-opacity: 0.2;
   --accent-high-foreground: var(--accent-foreground);
-  --accent-mid-foreground: var(--foreground);
+  --accent-mid-foreground: var(--accent-foreground);
   --accent-low-foreground: var(--foreground);
   --secondary-high-opacity: 0.8;
   --secondary-mid-opacity: 0.2;
@@ -418,10 +418,10 @@
   /* Opacity configuration */
   --accent-high-opacity: 1;
   --accent-mid-opacity: 0.8;
-  --accent-low-opacity: 0.4;
+  --accent-low-opacity: 0.6;
   --accent-high-foreground: var(--accent-foreground);
   --accent-mid-foreground: var(--accent-foreground);
-  --accent-low-foreground: var(--foreground);
+  --accent-low-foreground: var(--accent-foreground);
   --secondary-high-opacity: 0.8;
   --secondary-mid-opacity: 0.2;
   --secondary-low-opacity: 0.1;
@@ -568,7 +568,7 @@
   --accent-mid-opacity: 0.74;
   --accent-low-opacity: 0.2;
   --accent-high-foreground: var(--accent-foreground);
-  --accent-mid-foreground: var(--foreground);
+  --accent-mid-foreground: var(--accent-foreground);
   --accent-low-foreground: var(--foreground);
   --secondary-high-opacity: 0.8;
   --secondary-mid-opacity: 0.2;
@@ -751,7 +751,7 @@
 
   /* Muted colors */
   --muted: 248 249 250;
-  --muted-foreground: 104 114 127;
+  --muted-foreground: 95 105 116;
 
   /* Accent colors */
   --accent: 203 75 0;
@@ -854,10 +854,10 @@
   /* Opacity configuration */
   --accent-high-opacity: 1;
   --accent-mid-opacity: 0.8;
-  --accent-low-opacity: 0.4;
+  --accent-low-opacity: 0.65;
   --accent-high-foreground: var(--accent-foreground);
   --accent-mid-foreground: var(--accent-foreground);
-  --accent-low-foreground: var(--foreground);
+  --accent-low-foreground: var(--accent-foreground);
   --secondary-high-opacity: 0.8;
   --secondary-mid-opacity: 0.2;
   --secondary-low-opacity: 0.1;
@@ -1000,7 +1000,7 @@
   --accent-mid-opacity: 0.94;
   --accent-low-opacity: 0.2;
   --accent-high-foreground: var(--accent-foreground);
-  --accent-mid-foreground: var(--foreground);
+  --accent-mid-foreground: var(--accent-foreground);
   --accent-low-foreground: var(--foreground);
   --secondary-high-opacity: 0.7;
   --secondary-mid-opacity: 0.2;
