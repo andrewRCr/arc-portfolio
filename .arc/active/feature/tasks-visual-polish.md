@@ -1156,10 +1156,16 @@ contrast testing.
         - Updated Sheet component to use `bg-surface-popover`
         - Removed `.light [data-slot="popover-content/sheet-content"]` CSS override
 
-- [ ] **7.6 Export theme configuration for test consumption**
-    - Create exportable opacity constants from theme definitions
-    - Create exportable foreground override mappings
-    - Ensure type-safe imports available
+- [x] **7.6 Export theme configuration for test consumption**
+    - Created `src/data/themes/test-utils.ts` with type-safe accessors:
+        - `getAccentOpacities(themeName, mode)` - returns accent high/mid/low values
+        - `getSecondaryOpacities(themeName, mode)` - returns secondary high/mid/low values
+        - `getAccentMidForeground(themeName, mode)` - returns foreground token for accent-mid
+        - `usesAccentForegroundForMid(themeName, mode)` - boolean check
+        - `getAccentForegroundMappings(themeName, mode)` - all foreground mappings
+        - `buildAccentOpacitiesMap()` - full lookup matching old ACCENT_OPACITIES format
+        - `getThemesUsingAccentForegroundForMid(mode)` - list of theme names
+    - Exported utilities from themes index for test imports
 
 - [ ] **7.7 Update contrast test suite**
     - Import opacity values from theme definitions (remove ACCENT_OPACITIES constant)

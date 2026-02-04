@@ -66,3 +66,14 @@ export type {
   ModeSurfaceConfig,
   SurfaceHierarchy,
 } from "./types";
+
+// Re-export test utilities for contrast tests
+export {
+  getAccentOpacities,
+  getSecondaryOpacities,
+  getAccentMidForeground,
+  usesAccentForegroundForMid,
+  getAccentForegroundMappings,
+  buildAccentOpacitiesMap,
+  getThemesUsingAccentForegroundForMid,
+} from "./test-utils";
