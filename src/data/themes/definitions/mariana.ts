@@ -38,8 +38,8 @@ const opacities: ThemeOpacities = {
 
 // Surface configuration - controls visual layering
 const surfaces: ThemeSurfaces = {
-  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowDarken: 10, surfaceHierarchy: "swapped" },
-  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowDarken: 0, surfaceHierarchy: "normal" },
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
 };
 
 // Define tokens as standalone objects to enable swatch derivation

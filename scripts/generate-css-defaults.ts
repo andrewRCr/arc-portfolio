@@ -172,6 +172,7 @@ function generateSurfaceCssVariables(
   lines.push(`${indent}/* Surface configuration */`);
   lines.push(`${indent}--surface-opacity: ${config.surfaceOpacity};`);
   lines.push(`${indent}--surface-darken: ${config.surfaceDarken}%;`);
+  lines.push(`${indent}--window-bg-opacity: ${config.windowOpacity};`);
   lines.push(`${indent}--window-darken: ${config.windowDarken}%;`);
 
   // Surface hierarchy determines which tokens to use for card/background bases

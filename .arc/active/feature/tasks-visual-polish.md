@@ -1132,11 +1132,29 @@ contrast testing.
     - Verified: Gruvbox light has "normal" hierarchy, others have "swapped"
     - Generated CSS matches current hand-coded CSS values
 
-- [ ] **7.5 Remove hand-coded CSS overrides**
-    - Delete theme-specific opacity override selectors (grouped by theme/mode)
-    - Delete light mode surface override selectors
-    - Keep only base system CSS and generated output
-    - Run visual regression check
+- [x] **7.5 Remove hand-coded CSS overrides**
+    - Deleted theme-specific opacity override selectors (~80 lines):
+        - `.rouge, .rose-pine, .ayu` group overrides
+        - Individual theme overrides (.ayu, .rose-pine, .mariana, .remedy)
+        - Dark mode WCAG fixes (.remedy.dark, .gruvbox.dark, .mariana.dark)
+        - Light mode opacity hierarchy (.remedy.light, etc.)
+    - Deleted generic `.light` block (~25 lines) - now generated per-theme
+    - Deleted `.gruvbox.light` surface hierarchy exception - now in theme definition
+    - Kept CSS-level rules: window container, surface visual definition, popover darkening
+    - Build passes, visual output unchanged
+
+    - [x] **7.5.a Clean up window opacity override**
+        - Added `windowOpacity` to `ModeSurfaceConfig` interface and all 6 theme definitions
+        - Updated CSS generation to emit `--window-bg-opacity` in theme variants
+        - Updated WindowContainer to rely on CSS variable (removed inline style injection)
+        - Removed `.light [data-window-container]` CSS override
+        - Updated WindowContainer test to verify CSS-based approach
+
+    - [x] **7.5.b Add surface-popover token for consistency**
+        - Added `--color-surface-popover` computed token in @theme inline (with foreground darkening)
+        - Updated Popover component to use `bg-surface-popover`
+        - Updated Sheet component to use `bg-surface-popover`
+        - Removed `.light [data-slot="popover-content/sheet-content"]` CSS override
 
 - [ ] **7.6 Export theme configuration for test consumption**
     - Create exportable opacity constants from theme definitions

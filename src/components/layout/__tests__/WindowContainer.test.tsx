@@ -67,7 +67,7 @@ describe("WindowContainer", () => {
       expect(wrapper).toHaveAttribute("data-window-container");
     });
 
-    it("injects windowOpacity token as CSS variable", () => {
+    it("relies on CSS --window-bg-opacity variable (generated per-theme)", () => {
       const { container } = render(
         <WindowContainer>
           <p>Content</p>
@@ -75,8 +75,11 @@ describe("WindowContainer", () => {
       );
 
       const wrapper = container.firstChild as HTMLElement;
-      // Token value injected as CSS variable, used by globals.css for background-color
-      expect(wrapper.style.getPropertyValue("--window-bg-opacity")).toBe(String(DEFAULT_LAYOUT_TOKENS.windowOpacity));
+      // --window-bg-opacity is now generated per-theme in globals.css (not injected inline)
+      // Component relies on data-window-container attribute for CSS targeting
+      expect(wrapper).toHaveAttribute("data-window-container");
+      // No inline style override - CSS handles opacity via theme variants
+      expect(wrapper.style.getPropertyValue("--window-bg-opacity")).toBe("");
     });
   });
 

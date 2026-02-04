@@ -26,7 +26,7 @@ export interface WindowContainerProps {
  *
  * **Styling:**
  * - Border width from layout tokens (`windowBorderWidth`)
- * - Semi-transparent background via `windowOpacity` token (injected as CSS variable)
+ * - Semi-transparent background via CSS `--window-bg-opacity` (generated per theme)
  * - Theme-aware border color via `border-strong`, primary on hover (desktop) or active (touch)
  * - Square corners (no border-radius)
  * - Backdrop blur for depth effect
@@ -42,7 +42,7 @@ export interface WindowContainerProps {
  * ```
  */
 export function WindowContainer({ children, className, isActive, onActivate, windowId }: WindowContainerProps) {
-  const { windowBorderWidth, windowOpacity } = DEFAULT_LAYOUT_TOKENS;
+  const { windowBorderWidth } = DEFAULT_LAYOUT_TOKENS;
 
   const handlePointerDown = (e: React.PointerEvent) => {
     e.stopPropagation(); // Prevent event from bubbling to parent (deactivate handler)
@@ -56,13 +56,10 @@ export function WindowContainer({ children, className, isActive, onActivate, win
       data-active={isActive || undefined}
       onPointerDown={handlePointerDown}
       className={cn("border-border-strong backdrop-blur-lg transition-colors", className)}
-      style={
-        {
-          borderWidth: `${windowBorderWidth}px`,
-          borderStyle: "solid",
-          "--window-bg-opacity": windowOpacity,
-        } as React.CSSProperties
-      }
+      style={{
+        borderWidth: `${windowBorderWidth}px`,
+        borderStyle: "solid",
+      }}
     >
       {children}
     </div>

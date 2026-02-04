@@ -46,6 +46,11 @@
     rgb(var(--muted) / var(--surface-opacity)) calc(100% - var(--surface-darken)),
     rgb(var(--foreground)) var(--surface-darken)
   );
+  --color-surface-popover: color-mix(
+    in oklch,
+    rgb(var(--popover)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
 
   /* Primary/Secondary/Muted */
   --color-primary: rgb(var(--primary));
@@ -132,7 +137,9 @@
   --surface-background-base: var(--background);
 
   /* Window tokens - controls window container background
+     --window-bg-opacity: background transparency (0-1), higher = more solid
      --window-darken: mix percentage with foreground (0%-15%), higher = darker window bg */
+  --window-bg-opacity: 0.8;
   --window-darken: 0%;
 
   /* Accent opacity levels - defaults for most themes (rouge/rose-pine/ayu override) */
@@ -279,6 +286,7 @@
   /* Surface configuration */
   --surface-opacity: 0.8;
   --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
@@ -350,6 +358,7 @@
   /* Surface configuration */
   --surface-opacity: 0.7;
   --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
@@ -423,6 +432,7 @@
   /* Surface configuration */
   --surface-opacity: 0.8;
   --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
@@ -496,6 +506,7 @@
   /* Surface configuration */
   --surface-opacity: 0.7;
   --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
@@ -567,6 +578,7 @@
   /* Surface configuration */
   --surface-opacity: 0.8;
   --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
@@ -638,6 +650,7 @@
   /* Surface configuration */
   --surface-opacity: 0.7;
   --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
   --window-darken: 10%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
@@ -709,6 +722,7 @@
   /* Surface configuration */
   --surface-opacity: 0.8;
   --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
@@ -780,6 +794,7 @@
   /* Surface configuration */
   --surface-opacity: 0.7;
   --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
@@ -851,6 +866,7 @@
   /* Surface configuration */
   --surface-opacity: 0.8;
   --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
@@ -922,6 +938,7 @@
   /* Surface configuration */
   --surface-opacity: 0.7;
   --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
@@ -993,6 +1010,7 @@
   /* Surface configuration */
   --surface-opacity: 0.8;
   --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
@@ -1064,94 +1082,13 @@
   /* Surface configuration */
   --surface-opacity: 0.7;
   --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
 }
 
 /* END AUTO-GENERATED THEME VARIANTS */
-
-/* Theme-specific accent opacity overrides
-   Rouge, Rose Pine, and Ayu have muted accent colors that need higher opacity */
-.rouge,
-.rose-pine,
-.ayu {
-  --accent-high-opacity: 1;
-  --accent-mid-opacity: 0.8;
-  --accent-low-opacity: 0.4;
-  --accent-mid-foreground: var(--accent-foreground);
-}
-
-/* Ayu-specific overrides - secondary and accent-high both need toning down */
-.ayu {
-  --accent-high-opacity: 0.9;
-  --secondary-high-opacity: 0.6;
-  --accent-decorative-opacity: 0.8;
-}
-
-/* Rose Pine-specific overrides - use iris (purple) for decorative accent */
-.rose-pine {
-  --accent-decorative: var(--accent-purple);
-  --accent-decorative-foreground: var(--background);
-}
-
-/* Mariana-specific overrides - toning down */
-.mariana {
-  --accent-high-opacity: 0.9;
-  --secondary-high-opacity: 0.7;
-  --accent-decorative-opacity: 0.9;
-}
-
-/* Remedy-specific overrides - toning down */
-.remedy {
-  --accent-decorative-opacity: 0.9;
-}
-
-/* Dark mode accent opacity fixes for WCAG AA compliance
-   These themes need higher opacity in dark mode to meet 4.5:1 contrast */
-.remedy.dark {
-  --accent-mid-opacity: 0.76;
-}
-
-.gruvbox.dark {
-  --accent-mid-opacity: 0.74;
-}
-
-.mariana.dark {
-  --accent-high-opacity: 0.94;
-  --accent-mid-opacity: 0.94;
-}
-
-/* Light mode accent opacity hierarchy - shifted floor for WCAG AA compliance
-   Dark mode uses lower opacities (0.8/0.6/0.2) because bright accents on dark bg have good contrast.
-   Light mode needs higher opacities (1.0/0.9/0.8) because accents blend toward light bg.
-   Foregrounds flip to background token since higher opacity = darker accent backgrounds. */
-.remedy.light,
-.gruvbox.light,
-.rouge.light {
-  --accent-high-opacity: 1;
-  --accent-mid-opacity: 0.9;
-  --accent-low-opacity: 0.8;
-  --accent-mid-foreground: var(--background);
-  --accent-low-foreground: var(--background);
-}
-
-.rose-pine.light,
-.ayu.light {
-  --accent-high-opacity: 1;
-  --accent-mid-opacity: 0.85;
-  --accent-low-opacity: 0.75;
-  --accent-mid-foreground: var(--background);
-  --accent-low-foreground: var(--background);
-}
-
-.mariana.light {
-  --accent-high-opacity: 0.95;
-  --accent-mid-opacity: 0.8;
-  --accent-low-opacity: 0.75;
-  --accent-mid-foreground: var(--background);
-  --accent-low-foreground: var(--background);
-}
 
 @layer base {
   * {
@@ -1182,45 +1119,6 @@ html[data-env-preview="false"] [data-window-container] {
   --window-bg-opacity: 1 !important;
 }
 
-/* Light mode surface adjustments
-   Multiple levers to fix hierarchy:
-   1. --surface-opacity: More transparent to let darkened wallpaper show through
-   2. --surface-darken: Mix in foreground color to reduce brightness
-   3. --window-darken: Darken window container for grounding
-   4. Stronger borders and shadows for visual definition
-   Combined with wallpaper overlay, this creates proper hierarchy. */
-.light {
-  --surface-opacity: 0.7;
-  --surface-darken: 20%;
-  --window-darken: 10%;
-  /* Light mode accent foreground overrides: semi-transparent accent backgrounds
-     need light text (background color) for contrast, not white (accent-foreground)
-     or dark (foreground). This matches the pattern used for accent badges/buttons. */
-  --accent-high-foreground: var(--background);
-  --accent-mid-foreground: var(--background);
-  --accent-low-foreground: var(--background);
-  /* Light mode secondary opacity overrides: higher opacities needed for visibility */
-  --secondary-mid-opacity: 0.4;
-  --secondary-low-opacity: 0.2;
-  /* Light mode surface hierarchy swap: most themes have card darker than background,
-     but for two-tone cards we want headers (surface-card) lighter than bodies
-     (surface-background). Swap the base colors to achieve correct hierarchy. */
-  --surface-card-base: var(--background);
-  --surface-background-base: var(--card);
-}
-
-/* Gruvbox exception: already has card lighter than background in light mode,
-   so don't swap (use default relationship) */
-.gruvbox.light {
-  --surface-card-base: var(--card);
-  --surface-background-base: var(--background);
-}
-
-/* Light mode window opacity override */
-.light [data-window-container] {
-  --window-bg-opacity: 0.7 !important;
-}
-
 /* Light mode surface visual definition - stronger borders and shadows
    Excludes focused elements so focus ring shadows can take precedence */
 .light .bg-surface-card:not(:focus),
@@ -1230,22 +1128,6 @@ html[data-env-preview="false"] [data-window-container] {
   border-color: rgb(var(--border-strong));
   box-shadow: var(--shadow-md);
 }
-
-/* Light mode popover/sheet darkening - solid backgrounds with foreground mix */
-.light [data-slot="popover-content"],
-.light [data-slot="sheet-content"] {
-  background-color: color-mix(in srgb, rgb(var(--popover)), rgb(var(--foreground)) var(--surface-darken));
-}
-
-/* Light mode wallpaper overlay - darkens wallpaper to provide contrast base */
-/* .light [data-testid="wallpaper-background"]::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 1;
-} */
 
 /* Scroll shadow affordance gradients
    CSS-only implementation avoids hydration mismatches from useTheme() */

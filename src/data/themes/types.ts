@@ -338,7 +338,7 @@ export type SurfaceHierarchy = "normal" | "swapped";
  *
  * These values map to CSS variables:
  * - --surface-opacity, --surface-darken
- * - --window-darken
+ * - --window-bg-opacity, --window-darken
  * - --surface-card-base, --surface-background-base (via hierarchy)
  */
 export interface ModeSurfaceConfig {
@@ -347,6 +347,9 @@ export interface ModeSurfaceConfig {
 
   /** Surface darkening via foreground mix (0-100%). Higher = darker. Default: 0% dark, 20% light */
   readonly surfaceDarken: number;
+
+  /** Window container background opacity (0-1). Default: 0.8 dark, 0.7 light */
+  readonly windowOpacity: number;
 
   /** Window container darkening via foreground mix (0-100%). Default: 0% dark, 10% light */
   readonly windowDarken: number;
