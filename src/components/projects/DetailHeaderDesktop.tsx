@@ -76,7 +76,7 @@ export function DetailHeaderDesktop({
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="inline-flex items-center bg-secondary-high px-3 font-title text-3xl font-bold text-accent-foreground backdrop-blur-sm">
+          <h1 className="inline-flex items-center bg-secondary-high px-3 font-title text-3xl font-bold text-secondary-foreground backdrop-blur-sm">
             {title}
           </h1>
         </div>

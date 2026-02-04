@@ -60,7 +60,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
           {categoryType === "mods" && project.game ? (
             <span
               data-testid="category-badge"
-              className="bg-accent-low px-2 py-0.5 font-terminal text-xs font-semibold text-accent-low-foreground"
+              className="bg-surface-card px-2 py-0.5 font-terminal text-xs font-semibold text-surface-card-foreground"
             >
               {project.game}
             </span>

@@ -145,7 +145,7 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
                     >
                       <div
                         aria-hidden="true"
-                        className={`flex size-4 shrink-0 items-center justify-center rounded-sm border-2 ${
+                        className={`flex size-4 shrink-0 items-center justify-center border-2 ${
                           isSelected
                             ? "border-secondary bg-secondary text-secondary-foreground"
                             : "border-border-strong"
@@ -153,7 +153,7 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
                       >
                         {isSelected && <CheckIcon className="size-3 text-secondary-foreground" />}
                       </div>
-                      <span className="flex-1">{skill.name}</span>
+                      <span className="flex-1 ml-1">{skill.name}</span>
                       <span className="text-xs opacity-60">({skill.count})</span>
                     </CommandItem>
                   );

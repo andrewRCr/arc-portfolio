@@ -67,6 +67,8 @@
   --color-accent-low-foreground: rgb(var(--accent-low-foreground));
   /* Secondary opacity variants - theme-aware (ayu uses lower value) */
   --color-secondary-high: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --color-secondary-mid: rgb(var(--secondary) / var(--secondary-mid-opacity));
+  --color-secondary-low: rgb(var(--secondary) / var(--secondary-low-opacity));
   /* Semantic decorative accent - non-interactive visual interest (defaults to primary, themes can override) */
   --color-accent-decorative: rgb(var(--accent-decorative) / var(--accent-decorative-opacity));
   --color-accent-decorative-foreground: rgb(var(--accent-decorative-foreground));
@@ -141,8 +143,10 @@
   --accent-high-foreground: var(--accent-foreground);
   --accent-mid-foreground: var(--foreground);
   --accent-low-foreground: var(--foreground);
-  /* Secondary opacity levels - defaults for most themes (ayu overrides to 0.6) */
+  /* Secondary opacity levels - defaults for most themes (ayu overrides high to 0.6) */
   --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
   /* Decorative accent - defaults to primary (themes can override for visual variety) */
   --accent-decorative: var(--primary);
   --accent-decorative-foreground: var(--primary-foreground);
@@ -955,14 +959,17 @@ html[data-env-preview="false"] [data-window-container] {
    Combined with wallpaper overlay, this creates proper hierarchy. */
 .light {
   --surface-opacity: 0.7;
-  --surface-darken: 5%;
-  --window-darken: 15%;
+  --surface-darken: 20%;
+  --window-darken: 10%;
   /* Light mode accent foreground overrides: semi-transparent accent backgrounds
      need light text (background color) for contrast, not white (accent-foreground)
      or dark (foreground). This matches the pattern used for accent badges/buttons. */
   --accent-high-foreground: var(--background);
   --accent-mid-foreground: var(--background);
   --accent-low-foreground: var(--background);
+  /* Light mode secondary opacity overrides: higher opacities needed for visibility */
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
   /* Light mode surface hierarchy swap: most themes have card darker than background,
      but for two-tone cards we want headers (surface-card) lighter than bodies
      (surface-background). Swap the base colors to achieve correct hierarchy. */
@@ -982,24 +989,31 @@ html[data-env-preview="false"] [data-window-container] {
   --window-bg-opacity: 0.7 !important;
 }
 
-/* Light mode surface visual definition - stronger borders and shadows */
-.light .bg-surface-card,
-.light .bg-surface-background,
-.light .bg-surface-muted,
-.light .bg-muted {
+/* Light mode surface visual definition - stronger borders and shadows
+   Excludes focused elements so focus ring shadows can take precedence */
+.light .bg-surface-card:not(:focus),
+.light .bg-surface-background:not(:focus),
+.light .bg-surface-muted:not(:focus),
+.light .bg-muted:not(:focus) {
   border-color: rgb(var(--border-strong));
   box-shadow: var(--shadow-md);
 }
 
+/* Light mode popover/sheet darkening - solid backgrounds with foreground mix */
+.light [data-slot="popover-content"],
+.light [data-slot="sheet-content"] {
+  background-color: color-mix(in srgb, rgb(var(--popover)), rgb(var(--foreground)) var(--surface-darken));
+}
+
 /* Light mode wallpaper overlay - darkens wallpaper to provide contrast base */
-.light [data-testid="wallpaper-background"]::after {
+/* .light [data-testid="wallpaper-background"]::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: rgba(0, 0, 0, 0.3);
   z-index: 1;
-}
+} */
 
 /* Scroll shadow affordance gradients
    CSS-only implementation avoids hydration mismatches from useTheme() */

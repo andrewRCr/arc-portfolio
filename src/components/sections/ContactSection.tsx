@@ -108,7 +108,7 @@ function DesktopContactSection() {
       </div>
       {/* Body - contact form */}
       <div className="bg-surface-background px-6 pt-6 pb-6">
-        <p className="mb-4 text-sm font-terminal text-muted-foreground">[COMPOSE MSG]</p>
+        <p className="mb-6 text-sm font-terminal text-muted-foreground">[COMPOSE MSG]</p>
         <ContactForm variant="card" />
       </div>
     </div>

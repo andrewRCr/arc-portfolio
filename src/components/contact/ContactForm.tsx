@@ -133,7 +133,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
             aria-required="true"
             aria-describedby={errors.name ? "name-error" : undefined}
             aria-invalid={errors.name ? "true" : "false"}
-            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary`}
+            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
             {...register("name")}
           />
           {errors.name && (
@@ -154,7 +154,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
             aria-required="true"
             aria-describedby={errors.email ? "email-error" : undefined}
             aria-invalid={errors.email ? "true" : "false"}
-            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary`}
+            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
             {...register("email")}
           />
           {errors.email && (
@@ -177,7 +177,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
           aria-required="true"
           aria-describedby={errors.message ? "message-error message-count" : "message-count"}
           aria-invalid={errors.message ? "true" : "false"}
-          className={`w-full resize-none border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary`}
+          className={`w-full resize-none border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
           {...register("message")}
         />
         <div className="flex justify-between text-sm">

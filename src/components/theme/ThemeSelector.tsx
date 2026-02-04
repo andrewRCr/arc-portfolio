@@ -96,7 +96,8 @@ export function ThemeSelector({ selectedTheme, onSelect, className }: ThemeSelec
               "flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer",
               "transition-colors duration-150",
               "border border-transparent hover:border-foreground/60 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-              isSelected && "bg-background border-primary/60 ring-1 ring-primary/30"
+              isSelected &&
+                "bg-[color-mix(in_oklch,var(--color-surface-card),rgb(var(--foreground))_5%)] dark:bg-[color-mix(in_oklch,rgb(var(--card)),rgb(var(--foreground))_15%)] border-primary/60 ring-1 ring-primary/30"
             )}
           >
             <ThemeSwatch colors={swatchColors} size={20} />

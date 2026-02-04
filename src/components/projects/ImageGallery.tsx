@@ -88,7 +88,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
               type="button"
               onClick={() => setLightboxIndex(index)}
               aria-label={showOverlay ? `View all ${images.length} images` : `View image: ${image.alt}`}
-              className="group relative aspect-video overflow-hidden rounded-md border border-border bg-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[border-color] hover:border-secondary-high w-[calc(50%-6px)] sm:w-[calc(33.333%-10.667px)]"
+              className="group relative aspect-video overflow-hidden rounded-md border border-border bg-surface-muted outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[border-color] hover:border-secondary-high w-[calc(50%-6px)] sm:w-[calc(33.333%-10.667px)]"
             >
               <Image
                 src={image.src}
@@ -128,7 +128,9 @@ export function ImageGallery({ images }: ImageGalleryProps) {
           }}
           styles={{
             root: {
-              "--yarl__color_backdrop": "rgb(var(--card) / 0.9)",
+              // Use surface-card-base (mode-aware) with surface darkening formula
+              "--yarl__color_backdrop":
+                "color-mix(in srgb, rgb(var(--surface-card-base) / 0.9), black var(--surface-darken))",
               "--yarl__color_button": "rgb(var(--muted-foreground))",
               "--yarl__color_button_active": "rgb(var(--accent))",
             },

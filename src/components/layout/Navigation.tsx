@@ -70,10 +70,10 @@ export function Navigation() {
                 <span
                   className={`px-2 py-1 text-sm font-terminal font-semibold leading-[1.2] transition-colors ${
                     active
-                      ? "text-foreground bg-secondary/40 dark:bg-secondary/20"
+                      ? "text-secondary-foreground bg-secondary-mid dark:text-foreground"
                       : isPending
-                        ? "text-foreground bg-secondary/10 dark:bg-secondary/5"
-                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/10 dark:hover:bg-secondary/5"
+                        ? "text-secondary-foreground bg-secondary-low"
+                        : "text-muted-foreground hover:text-secondary-foreground dark:hover:text-foreground hover:bg-secondary-low"
                   }`}
                 >
                   {item.label}
