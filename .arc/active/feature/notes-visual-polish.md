@@ -1,10 +1,25 @@
-# Notes: Visual Polish - Aesthetic Exploration
+# Notes: Visual Polish
 
-**Purpose:** Reference material for the aesthetic exploration phase of Visual Polish work unit.
+**Status:** Complete
+**Completed:** 2026-02-05
+**Related Tasks:** `tasks-visual-polish.md`
+
+**Purpose:** Reference material for visual polish work — aesthetic exploration, typography system,
+theme transitions, page transition choreography, and visual design principles.
 
 ---
 
-## Terminal vs Standard Aesthetic Standardization
+## Table of Contents
+
+- [Terminal vs Standard Aesthetic Analysis](#terminal-vs-standard-aesthetic-analysis)
+- [Typography System](#typography-system)
+- [Theme Transition CSS Refactor](#theme-transition-css-refactor)
+- [Page Transition Choreography](#page-transition-choreography)
+- [Visual Design Principles](#visual-design-principles)
+
+---
+
+## Terminal vs Standard Aesthetic Analysis
 
 **Context:** The portfolio blends TWM/terminal aesthetic with standard web design patterns. Currently this
 blend is intuitive but not formally codified. This creates occasional ambiguity about when to use terminal
@@ -38,13 +53,11 @@ Buttons straddle both categories (human-facing verbs + system commands). Possibl
 - **Primary commands** (form submit, destructive actions): Squared + monospace + caps → `[EXECUTE]` feel
 - **Navigation/links** (social links, "learn more"): Rounded + regular → friendly destinations
 
-### Evaluation Checklist
+### Outcome
 
-- [ ] Audit all button/action styles across the app
-- [ ] Test squared+monospace+caps treatment for primary CTAs
-- [ ] Evaluate visual consistency and whether it enhances or detracts from UX
-- [ ] If viable, codify in `strategy-style-guide.md` as formal guidance
-- [ ] If not viable, document decision and maintain current approach
+Maintained current intuitive approach after audit. The TWM aesthetic is coherent without
+rigid formalization. The "System vs Content" framework was useful as an analytical lens but
+didn't warrant codification — only 2-3 minor adjustments resulted.
 
 ### Guiding Principles
 
@@ -63,9 +76,7 @@ current intuitive blend is sufficient and document that decision.
 
 ---
 
-## Phase 6: Typography System Implementation
-
-**Status:** In progress - experimenting with font choices
+## Typography System
 
 ### Guiding Principles (Decided)
 
@@ -96,7 +107,7 @@ Semantic font slots instead of raw `font-mono`/`font-sans`:
 1. Define slots in `globals.css` @theme block:
 
    ```css
-   --font-title: var(--font-fira-code);      /* or chosen font */
+   --font-title: var(--font-geist-mono);      /* same as terminal for now; slot preserved for future differentiation */
    --font-terminal: var(--font-geist-mono);
    --font-body: var(--font-ibm-plex-sans);
    ```
@@ -111,15 +122,16 @@ Semantic font slots instead of raw `font-mono`/`font-sans`:
 - Semantic meaning (`font-title` vs `font-mono`) improves code clarity
 - Easier experimentation - swap fonts without touching components
 
-### Font Choices (Experimental - Subject to Change)
+### Font Choices
 
-Current experiment:
+Current selection:
 
-- **Title:** Fira Code (distinctive monospace, more "obviously mono" than Geist)
+- **Title:** Geist Mono (same as terminal for now — slot preserved for future differentiation)
 - **Terminal:** Geist Mono (refined, subtle)
 - **Body:** IBM Plex Sans (readable, pairs well with technical fonts)
 
 Test component at `/dev/typography` allows A/B comparison of font combinations.
+Fira Code was evaluated as a more distinctive title option but not adopted yet.
 
 ### Discovered Issues
 
@@ -127,23 +139,15 @@ Test component at `/dev/typography` allows A/B comparison of font combinations.
    `font-body` to body styles in globals.css.
 
 2. **Geist Mono is subtle** - Character combinations like "TaskFocus" look almost proportional, while
-   "CineXplorer" (with capital X) looks distinctively monospace. More distinctive mono fonts (JetBrains,
-   Fira Code) may better communicate the terminal aesthetic.
-
-### Remaining Work
-
-- [ ] Finalize font choices through experimentation
-- [ ] Update tests to use new semantic class names (`font-title`, `font-terminal`)
-- [ ] Update dev pages to use semantic classes (optional, low priority)
-- [ ] Consistency pass - verify all element types use appropriate slots
-- [ ] Consider whether to formalize in strategy doc or keep as implementation detail
+   "CineXplorer" (with capital X) looks distinctively monospace. A more distinctive mono font for
+   titles remains an open option via the `font-title` slot.
 
 ---
 
-## Task 1.2: Theme Transition CSS Refactor - Implementation Reference
+## Theme Transition CSS Refactor
 
-**Purpose:** Detailed implementation context for the theme transition refactor. Task list contains actionable
-steps; this section contains the "why" and technical details needed during implementation.
+**Context:** Replaced global `!important` CSS override with scoped `data-theme-transition` attribute approach.
+Task list contains actionable steps; this section contains the "why" and technical details.
 
 ### Problem Statement
 
@@ -317,14 +321,6 @@ export function useThemeTransition(): UseThemeTransitionReturn {
 | prefers-reduced-motion             | Media query disables transitions entirely         |
 | Pseudo-elements (::before/::after) | Included in CSS selector                          |
 
-### Dev Page Consideration
-
-The wallpaper-test dev page (`src/app/dev/wallpaper-test/page.tsx`) calls `setTheme` directly from `useTheme()`
-rather than using `useThemeTransition`. Options:
-
-1. **Update to use hook** (preferred) - ensures consistent behavior
-2. **Leave as-is** - dev pages don't need smooth transitions; instant is fine for testing
-
 ### Components with Own Transitions (Reference)
 
 These components have explicit `transition-property` and may not smoothly transition colors during the 300ms
@@ -339,19 +335,6 @@ toggle window. This is acceptable but documented for awareness:
 | `button.tsx`       | `transition-all`               | Depends on specificity          |
 | `ScrollShadow.tsx` | `transition-opacity`           | Opacity works, colors instant   |
 
-### Verification Checklist
-
-After implementation, verify:
-
-- [ ] Theme toggle is smooth (colors fade over 300ms)
-- [ ] Switch thumb slides smoothly (not affected by theme toggle)
-- [ ] Card hover scale works smoothly (not affected by theme toggle)
-- [ ] Crossfade opacity transitions work (not affected by theme toggle)
-- [ ] Rapid theme toggles don't break anything
-- [ ] prefers-reduced-motion: theme changes are instant, no motion
-- [ ] Wallpaper transitions still work (Framer Motion, unaffected)
-- [ ] E2E tests pass (layout, intro-animation, theme-controls)
-
 ### Sources
 
 Key external research sources consulted:
@@ -365,9 +348,9 @@ Key external research sources consulted:
 
 ---
 
-## Task 2.3: Page Transition Choreography - Research & Implementation Reference
+## Page Transition Choreography
 
-**Purpose:** Document research findings that informed the header/body timing distinction implementation.
+**Context:** Research findings that informed the header/body timing distinction implementation.
 
 ### Design System Timing Recommendations
 
@@ -474,10 +457,9 @@ route-change remounts.
 
 ---
 
-## Visual Design Principles (Emerging Patterns)
+## Visual Design Principles
 
-**Purpose:** Capture rationale and guiding principles for visual design decisions discovered during polish work.
-These may be formalized into `strategy-visual-design-principles.md` if they prove valuable.
+**Context:** Rationale and guiding principles for visual design decisions discovered during polish work.
 
 ### Color Semantics
 

@@ -1,7 +1,7 @@
 # PRD: Visual Polish
 
 **Type:** Feature
-**Status:** Ready for Implementation
+**Status:** Complete
 **Created:** 2026-01-27
 
 ---
@@ -193,10 +193,13 @@ snappy transitions and micro-interactions throughout the app while maintaining t
 - Reduced motion testing: verify alternatives work correctly
 - Cross-viewport testing (desktop, tablet, mobile)
 
-## Open Questions
+## Open Questions (Resolved)
 
-1. Exact page transition timing (200ms vs 300ms) - to be determined through visual testing
-2. Header vs body effect choice - to be determined through exploration
-3. Aesthetic exploration outcome - may result in formalization or maintain status quo
+1. ~~Exact page transition timing~~ - Landed on 100ms delay + 400ms fade-in
+   (entry-only, no exit animation due to Next.js App Router limitations)
+2. ~~Header vs body effect choice~~ - PageHeader: title slides down + blur, secondary adapts
+   by content type. Hero: abbreviated intro replay. Body: simple delayed fade.
+3. ~~Aesthetic exploration outcome~~ - Maintained current intuitive approach after Phase 6
+   audit; no formalization needed. TWM aesthetic is coherent without rigid rules.
 
 ---

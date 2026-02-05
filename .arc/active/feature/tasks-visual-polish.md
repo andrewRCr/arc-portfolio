@@ -4,7 +4,8 @@
 **Created:** 2026-01-27
 **Branch:** `feature/visual-polish`
 **Base Branch:** `main`
-**Status:** In Progress
+**Status:** Complete
+**Completed:** 2026-02-05
 
 ## Overview
 
@@ -160,7 +161,7 @@ startup animation, creating a cohesive visual experience.
         - 2 content tests FAIL as expected (no transitions implemented)
         - 7 frame stability + reduced motion tests PASS (nothing animates yet)
 
-- [ ] **2.2 Implement content-only route transitions**
+- [x] **2.2 Implement content-only route transitions** ✅
 
     - [x] **2.2.a Add PageTransition wrapper to ConditionalFrame** ✅
         - Created `PageTransition` component using Framer Motion
@@ -896,7 +897,7 @@ Heroes span full viewport; 2800px covers 4K single-density well. WebP at quality
 - [x] **6.1 Implement 3-slot typography system**
 
     - [x] **6.1.a Create semantic font classes**
-        - `font-title`: Display/heading font (Fira Code)
+        - `font-title`: Display/heading font (Geist Mono — same as terminal for now, slot preserved)
         - `font-terminal`: System/UI text (Geist Mono)
         - `font-body`: Content/body text (IBM Plex Sans)
         - Added to globals.css with CSS variables
@@ -1238,22 +1239,22 @@ contrast testing.
 
 ## Success Criteria
 
-- [ ] TopBar cursor blinks on branding hover (regression fixed)
-- [ ] Theme transitions work without `!important` global override
-- [ ] E2E coverage gaps filled for existing animations/transitions
-- [ ] Page transitions feel cohesive - snappy, content-only, with header distinction
-- [ ] Tab switching has animated indicator and content crossfade
-- [ ] Project cards and nav links have polished hover feedback
-- [ ] In-development projects have visual treatment (gray overlay + badge)
-- [ ] In-development projects included in FeaturedSection with treatment
-- [ ] All projects have thumbnail images (no placeholders in production)
-- [ ] All projects have hero images that render correctly
-- [ ] Mod images have titles removed for cleaner presentation
-- [ ] Screenshot galleries curated to ~6 per project (games especially)
-- [ ] ARC Framework and CineXplorer have logo-based branding
-- [ ] arc-portfolio has self-referential screenshots
-- [ ] Aesthetic exploration concluded with documented decision
-- [ ] All animations respect `prefers-reduced-motion`
-- [ ] No visual regressions across pages and viewports
-- [ ] All quality gates pass (Tier 3)
-- [ ] Ready for merge to main
+- [x] TopBar cursor blinks on branding hover (regression fixed)
+- [x] Theme transitions work without `!important` global override
+- [x] E2E coverage gaps filled for existing animations/transitions
+- [x] Page transitions feel cohesive - snappy, content-only, with header distinction
+- [x] Tab switching has animated indicator and content crossfade
+- [x] Project cards and nav links have polished hover feedback
+- [x] In-development projects have visual treatment (gray overlay + badge)
+- [x] In-development projects included in FeaturedSection with treatment
+- [x] All projects have thumbnail images (no placeholders in production)
+- [x] All projects have hero images that render correctly
+- [x] Mod images have titles removed for cleaner presentation
+- [x] Screenshot galleries curated to ~6 per project (games especially)
+- [x] ARC Framework and CineXplorer have logo-based branding
+- [x] arc-portfolio has self-referential screenshots
+- [x] Aesthetic exploration concluded with documented decision
+- [x] All animations respect `prefers-reduced-motion`
+- [x] No visual regressions across pages and viewports
+- [x] All quality gates pass (Tier 3)
+- [x] Ready for merge to main
