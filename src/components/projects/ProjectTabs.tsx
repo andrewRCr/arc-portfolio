@@ -147,7 +147,9 @@ export default function ProjectTabs() {
           data-tab-indicator
           className="pointer-events-none absolute bottom-0 z-10 h-0.5 bg-accent-high"
           style={{
-            transition: shouldReduceMotion ? "none" : "left 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+            transition: shouldReduceMotion
+              ? "none"
+              : "left 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         />
       </div>
