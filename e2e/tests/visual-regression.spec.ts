@@ -75,6 +75,13 @@ test.beforeEach(async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
 });
 
+/** Shared screenshot options for consistent tuning across all baselines */
+const SCREENSHOT_OPTIONS = {
+  fullPage: true,
+  maxDiffPixelRatio: 0.02,
+  timeout: 15000,
+} as const;
+
 const THEMES = ["remedy", "rose-pine", "gruvbox"] as const;
 const MODES = ["light", "dark"] as const;
 const VIEWPORT_NAMES = ["desktop", "tablet", "mobile"] as const;
@@ -118,11 +125,7 @@ test.describe("Visual Regression Baselines", () => {
           await waitForVisualStability(page);
 
           // Take full-page screenshot
-          await expect(page).toHaveScreenshot(`${testName}.png`, {
-            fullPage: true,
-            maxDiffPixelRatio: 0.02,
-            timeout: 15000,
-          });
+          await expect(page).toHaveScreenshot(`${testName}.png`, SCREENSHOT_OPTIONS);
         });
       }
     }
@@ -160,50 +163,30 @@ test.describe("Page-Specific Baselines", () => {
   test("home-page", async ({ page }) => {
     await page.goto("/");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-home.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-      timeout: 15000,
-    });
+    await expect(page).toHaveScreenshot("page-home.png", SCREENSHOT_OPTIONS);
   });
 
   test("projects-page", async ({ page }) => {
     await page.goto("/projects");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-projects.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-      timeout: 15000,
-    });
+    await expect(page).toHaveScreenshot("page-projects.png", SCREENSHOT_OPTIONS);
   });
 
   test("skills-page", async ({ page }) => {
     await page.goto("/skills");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-skills.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-      timeout: 15000,
-    });
+    await expect(page).toHaveScreenshot("page-skills.png", SCREENSHOT_OPTIONS);
   });
 
   test("about-page", async ({ page }) => {
     await page.goto("/about");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-about.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-      timeout: 15000,
-    });
+    await expect(page).toHaveScreenshot("page-about.png", SCREENSHOT_OPTIONS);
   });
 
   test("contact-page", async ({ page }) => {
     await page.goto("/contact");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-contact.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-      timeout: 15000,
-    });
+    await expect(page).toHaveScreenshot("page-contact.png", SCREENSHOT_OPTIONS);
   });
 });

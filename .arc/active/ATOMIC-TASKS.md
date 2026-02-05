@@ -35,6 +35,10 @@
     - Match pattern of existing dev tools (`/dev/typography`, `/dev/theme`, `/dev/wallpaper`)
     - Clean up variable naming (e.g., `lightOpacity` → `currentSurfaceOpacity`)
     - Add `useEffect` cleanup for DOM-injected `data-sandbox-overlay`
+    - Snapshot and restore CSS variables on unmount (--surface-opacity, --surface-darken,
+      --window-darken, per-element --window-bg-opacity) to prevent style leaks on navigation
+    - Fix `exportCss` wallpaper overlay: emit per-mode color/opacity variables so dark and
+      light modes with opposite overlay signs produce correct styles independently
     - Remove the component from sandbox page after extraction
 
 - [ ] Copy pass on project content prior to deployment
