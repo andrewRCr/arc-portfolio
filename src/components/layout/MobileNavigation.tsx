@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { NAV_ITEMS } from "@/config/site";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,9 +60,10 @@ export function MobileNavigation() {
                 <Link
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`w-full font-terminal font-semibold text-sm ${
+                  className={cn(
+                    "w-full font-terminal font-semibold text-sm",
                     active ? "text-foreground bg-secondary-low" : "text-muted-foreground"
-                  }`}
+                  )}
                 >
                   {item.label}
                 </Link>

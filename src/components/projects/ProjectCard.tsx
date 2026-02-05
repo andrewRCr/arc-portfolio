@@ -71,7 +71,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
                 data-testid="category-badge"
                 className="font-terminal text-xs font-semibold text-foreground"
               >
-                [{cat.toLocaleLowerCase()}]
+                [{cat.toLowerCase()}]
               </span>
             ))
           )}

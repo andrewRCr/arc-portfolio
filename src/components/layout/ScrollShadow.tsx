@@ -5,8 +5,9 @@
  * Uses radial gradients that are intense at center and fade at edges,
  * creating a subtle shadow effect that works well with bordered containers.
  *
- * Positioned absolutely at the top or bottom of a relative container that
- * wraps the scrollable area (must be placed outside the scroll container).
+ * Positioned absolutely at an edge (top/bottom/left/right) of a relative
+ * container that wraps the scrollable area (must be placed outside the
+ * scroll container).
  *
  * Uses CSS variables for theme-aware opacity to avoid hydration mismatches.
  * The gradient opacity is defined in globals.css via --scroll-shadow-opacity.

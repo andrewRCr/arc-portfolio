@@ -69,7 +69,7 @@ export function TechStackScroller({
       }
     };
 
-    element.addEventListener("scroll", evaluate);
+    element.addEventListener("scroll", evaluate, { passive: true });
     const resizeObserver = new ResizeObserver(evaluate);
     resizeObserver.observe(element);
     evaluate();

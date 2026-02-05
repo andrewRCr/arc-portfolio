@@ -156,7 +156,7 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgr
       style={{
         ...baseStyle,
         transform: isWideMode ? "scale(1.02)" : "scale(1)",
-        transition: `transform ${LAYOUT_MODE_DURATION_DESKTOP}s ease-in-out`,
+        transition: reducedMotion ? "none" : `transform ${LAYOUT_MODE_DURATION_DESKTOP}s ease-in-out`,
       }}
       aria-hidden="true"
       data-testid="wallpaper-background"

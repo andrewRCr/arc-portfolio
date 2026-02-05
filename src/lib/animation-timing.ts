@@ -19,6 +19,8 @@
  * - COMPLETE: Animation finished
  */
 
+import type { Transition } from "framer-motion";
+
 // ============================================================================
 // SHARED - Easing Curves, Blur Values, Utilities
 // ============================================================================
@@ -205,6 +207,9 @@ export const MAIN_CONTENT_TWEEN = {
 // Abbreviated versions of intro animations for route changes.
 // Faster and simpler than full intro sequence.
 
+/** Total duration of route change animation (ms) — used by AnimationContext to schedule ROUTE_CHANGE_COMPLETE */
+export const ROUTE_ANIMATION_DURATION_MS = 500;
+
 /** Base delay before route transition animations start */
 export const ROUTE_TRANSITION_DELAY = 0.1;
 
@@ -326,7 +331,7 @@ export const TAB_CONTENT_DURATION = 0.2;
 // LAYOUT MODE TRANSITIONS - User-triggered layout width changes
 // ============================================================================
 // Transitions when user toggles between boxed/wide/full layout modes.
-// Desktop has more distance to cover (boxed → wide), so uses longer duration.
+// Both use the same duration — 0.35s feels snappy across all viewport sizes.
 
 /** Layout mode transition duration for desktop (boxed ↔ wide) */
 export const LAYOUT_MODE_DURATION_DESKTOP = 0.35;
@@ -342,8 +347,6 @@ export const LAYOUT_CONTENT_FADE_DURATION = 0.1;
 // ============================================================================
 // These helpers reduce boilerplate in timing functions. Components should use
 // the element timing functions below, not these helpers directly.
-
-import type { Transition } from "framer-motion";
 
 /**
  * Animation mode for component timing lookup.
@@ -473,6 +476,8 @@ export function getBodyTiming(mode: AnimationMode): Transition {
   switch (mode) {
     case "instant":
       return INSTANT_TRANSITION;
+    case "intro":
+      return introTiming(BODY_CONTENT_DELAY, BODY_CONTENT_DURATION);
     case "refresh":
       return refreshTiming(REFRESH_CONTENT_DELAY + 0.1);
     case "skip":
@@ -578,20 +583,14 @@ export function getWindowTransition(mode: AnimationMode, visible: boolean): Tran
   // Showing: timing depends on mode
   switch (mode) {
     case "instant":
+    case "route":
+      // Instant or route: no window animation (already visible)
       return INSTANT_TRANSITION;
     case "refresh":
     case "skip":
-      // Window scales up with standard timing
-      return {
-        opacity: { duration: 0 },
-        scale: { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
-      };
-    case "route":
-      // Route: no window animation (already visible)
-      return INSTANT_TRANSITION;
     case "intro":
     default:
-      // Intro: standard scale-up timing
+      // Window scales up with standard timing
       return {
         opacity: { duration: 0 },
         scale: { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },

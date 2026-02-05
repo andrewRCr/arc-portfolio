@@ -24,33 +24,10 @@ vi.mock("@/contexts/LayoutPreferencesContext", async (importOriginal) => {
   };
 });
 
-// Mock AnimationContext to simulate "complete" state (no intro overlay blocking interaction)
 vi.mock("@/contexts/AnimationContext", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/contexts/AnimationContext")>();
-  return {
-    ...actual,
-    useAnimationContext: () => ({
-      loadMode: "refresh",
-      animationMode: "refresh",
-      intro: {
-        phase: "complete",
-        isActive: false,
-        wasSkipped: false,
-        replayCount: 0,
-        triggerReplay: vi.fn(),
-      },
-      route: {
-        isAnimating: false,
-      },
-      visibility: {
-        windowVisible: true,
-        contentVisible: true,
-      },
-      reducedMotion: false,
-      isInitialized: true,
-    }),
-    useAnimationDispatch: () => vi.fn(),
-  };
+  const { createAnimationContextOverrides } = await import("@tests/mocks/animation-context");
+  return { ...actual, ...createAnimationContextOverrides() };
 });
 
 describe("LayoutWrapper", () => {

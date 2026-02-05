@@ -237,9 +237,6 @@ export function FontComparisonSection() {
                       CineXplorer
                     </h2>
                   </span>
-                  {/* <span className="inline-block bg-muted px-3 py-1.5 text-base font-mono text-muted-foreground">
-                    Web App
-                  </span> */}
 
                   {/* Description - Body slot */}
                   <p className="text-sm text-muted-foreground" style={{ fontFamily: bodyFamily }}>

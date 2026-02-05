@@ -131,8 +131,6 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
         ))}
       </div>
 
-      {/* Note: Mobile metadata now displayed in header's links toolbar label */}
-
       {/* Screenshots Gallery */}
       {project.images.screenshots.length > 0 && (
         <div className="mt-4 sm:mt-6">

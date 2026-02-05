@@ -8,23 +8,9 @@ import { MobileNavigation } from "../MobileNavigation";
 import { NAV_ITEMS } from "@/config/site";
 
 vi.mock("next/navigation", () => createNavigationMock());
-
-// Mock AnimationContext (required when using test-utils with AnimationProvider)
-vi.mock("@/contexts/AnimationContext", () => ({
-  AnimationProvider: ({ children }: { children: React.ReactNode }) => children,
-  useAnimationContext: () => ({
-    loadMode: "refresh",
-    animationMode: "refresh",
-    intro: { phase: "complete", isActive: false, wasSkipped: false, replayCount: 0, triggerReplay: vi.fn() },
-    route: { isAnimating: false },
-    visibility: { windowVisible: true, contentVisible: true },
-    reducedMotion: false,
-    isInitialized: true,
-  }),
-  useAnimationDispatch: () => vi.fn(),
-  markIntroSeen: vi.fn(),
-  clearIntroCookie: vi.fn(),
-}));
+vi.mock("@/contexts/AnimationContext", async () =>
+  (await import("@tests/mocks/animation-context")).createAnimationContextMock()
+);
 
 describe("MobileNavigation", () => {
   beforeEach(() => {

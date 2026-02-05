@@ -101,7 +101,7 @@ test.describe("Component Transitions", () => {
       const modeButton = themeContent.getByRole("button", { name: /switch to .* mode/i });
       await modeButton.click();
 
-      // Wait for transition to complete (300ms + buffer)
+      // Wait for transition to complete (TRANSITION_DURATION in useThemeTransition.ts = 300ms, + 100ms buffer)
       await page.waitForTimeout(400);
 
       // Verify switch thumb still has transform transition

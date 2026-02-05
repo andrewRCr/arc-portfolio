@@ -149,7 +149,7 @@ test.describe("Smoke Tests", () => {
   test("skill click navigates to filtered projects", async ({ page }) => {
     // Go to Skills page
     await page.goto("/skills");
-    await page.waitForLoadState("load");
+    await waitForHydration(page);
 
     // Find a skill logo link (they link to /projects?skills=SkillName)
     // Use first visible link that matches the pattern

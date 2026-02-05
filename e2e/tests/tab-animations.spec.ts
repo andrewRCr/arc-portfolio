@@ -151,38 +151,40 @@ test.describe("Tab Animations", () => {
       const context = await browser.newContext({
         reducedMotion: "reduce",
       });
-      const page = await context.newPage();
+      try {
+        const page = await context.newPage();
 
-      await page.goto("/projects");
-      await waitForHydration(page);
+        await page.goto("/projects");
+        await waitForHydration(page);
 
-      const softwareTab = page.getByRole("tab", { name: /software/i });
-      const gamesTab = page.getByRole("tab", { name: /games/i });
-      const indicator = page.locator(TAB_INDICATOR_SELECTOR);
+        const softwareTab = page.getByRole("tab", { name: /software/i });
+        const gamesTab = page.getByRole("tab", { name: /games/i });
+        const indicator = page.locator(TAB_INDICATOR_SELECTOR);
 
-      // Poll until indicator is under Software tab
-      await expect(async () => {
-        const softwareBox = await softwareTab.boundingBox();
-        const initialBox = await indicator.boundingBox();
-        expect(softwareBox).not.toBeNull();
-        expect(initialBox).not.toBeNull();
-        expect(initialBox!.x).toBeGreaterThanOrEqual(softwareBox!.x - 2);
-      }).toPass({ timeout: 2000 });
+        // Poll until indicator is under Software tab
+        await expect(async () => {
+          const softwareBox = await softwareTab.boundingBox();
+          const initialBox = await indicator.boundingBox();
+          expect(softwareBox).not.toBeNull();
+          expect(initialBox).not.toBeNull();
+          expect(initialBox!.x).toBeGreaterThanOrEqual(softwareBox!.x - 2);
+        }).toPass({ timeout: 2000 });
 
-      // Click Games tab
-      await gamesTab.click();
-      await page.waitForURL(/tab=games/);
+        // Click Games tab
+        await gamesTab.click();
+        await page.waitForURL(/tab=games/);
 
-      // With reduced motion, position should change quickly - use short timeout
-      await expect(async () => {
-        const gamesBox = await gamesTab.boundingBox();
-        const finalBox = await indicator.boundingBox();
-        expect(gamesBox).not.toBeNull();
-        expect(finalBox).not.toBeNull();
-        expect(finalBox!.x).toBeGreaterThanOrEqual(gamesBox!.x - 2);
-      }).toPass({ timeout: 500 });
-
-      await context.close();
+        // With reduced motion, position should change quickly - use short timeout
+        await expect(async () => {
+          const gamesBox = await gamesTab.boundingBox();
+          const finalBox = await indicator.boundingBox();
+          expect(gamesBox).not.toBeNull();
+          expect(finalBox).not.toBeNull();
+          expect(finalBox!.x).toBeGreaterThanOrEqual(gamesBox!.x - 2);
+        }).toPass({ timeout: 500 });
+      } finally {
+        await context.close();
+      }
     });
 
     test("tab indicator position updates immediately with reduced motion", async ({ browser }) => {
@@ -190,61 +192,65 @@ test.describe("Tab Animations", () => {
       const context = await browser.newContext({
         reducedMotion: "reduce",
       });
-      const page = await context.newPage();
+      try {
+        const page = await context.newPage();
 
-      await page.goto("/projects");
-      await waitForHydration(page);
+        await page.goto("/projects");
+        await waitForHydration(page);
 
-      const gamesTab = page.getByRole("tab", { name: /games/i });
-      const indicator = page.locator(TAB_INDICATOR_SELECTOR);
+        const gamesTab = page.getByRole("tab", { name: /games/i });
+        const indicator = page.locator(TAB_INDICATOR_SELECTOR);
 
-      // Click and wait for URL to change
-      await gamesTab.click();
-      await page.waitForURL(/tab=games/);
+        // Click and wait for URL to change
+        await gamesTab.click();
+        await page.waitForURL(/tab=games/);
 
-      // With reduced motion, should settle quickly
-      await expect(indicator).toBeVisible();
+        // With reduced motion, should settle quickly
+        await expect(indicator).toBeVisible();
 
-      await expect(async () => {
-        const box = await indicator.boundingBox();
-        const gamesBox = await gamesTab.boundingBox();
-        expect(box).not.toBeNull();
-        expect(gamesBox).not.toBeNull();
-        expect(box!.x).toBeGreaterThanOrEqual(gamesBox!.x - 2);
-        expect(box!.x + box!.width).toBeLessThanOrEqual(gamesBox!.x + gamesBox!.width + 2);
-      }).toPass({ timeout: 500 });
-
-      await context.close();
+        await expect(async () => {
+          const box = await indicator.boundingBox();
+          const gamesBox = await gamesTab.boundingBox();
+          expect(box).not.toBeNull();
+          expect(gamesBox).not.toBeNull();
+          expect(box!.x).toBeGreaterThanOrEqual(gamesBox!.x - 2);
+          expect(box!.x + box!.width).toBeLessThanOrEqual(gamesBox!.x + gamesBox!.width + 2);
+        }).toPass({ timeout: 500 });
+      } finally {
+        await context.close();
+      }
     });
 
     test("tab content switches instantly with reduced motion", async ({ browser }) => {
       const context = await browser.newContext({
         reducedMotion: "reduce",
       });
-      const page = await context.newPage();
+      try {
+        const page = await context.newPage();
 
-      await page.goto("/projects");
-      await waitForHydration(page);
+        await page.goto("/projects");
+        await waitForHydration(page);
 
-      // Click Games tab
-      const gamesTab = page.getByRole("tab", { name: /games/i });
-      await gamesTab.click();
-      await page.waitForURL(/tab=games/);
+        // Click Games tab
+        const gamesTab = page.getByRole("tab", { name: /games/i });
+        await gamesTab.click();
+        await page.waitForURL(/tab=games/);
 
-      // Games panel should be visible
-      const gamesPanel = page.locator("#panel-games");
-      await expect(gamesPanel).toBeVisible();
+        // Games panel should be visible
+        const gamesPanel = page.locator("#panel-games");
+        await expect(gamesPanel).toBeVisible();
 
-      // With reduced motion, content wrapper should reach full opacity quickly
-      const contentWrapper = page.locator(TAB_CONTENT_SELECTOR);
-      await expect(async () => {
-        const opacity = await contentWrapper.evaluate((el) => {
-          return parseFloat(window.getComputedStyle(el).opacity);
-        });
-        expect(opacity).toBeGreaterThanOrEqual(0.99);
-      }).toPass({ timeout: 500 });
-
-      await context.close();
+        // With reduced motion, content wrapper should reach full opacity quickly
+        const contentWrapper = page.locator(TAB_CONTENT_SELECTOR);
+        await expect(async () => {
+          const opacity = await contentWrapper.evaluate((el) => {
+            return parseFloat(window.getComputedStyle(el).opacity);
+          });
+          expect(opacity).toBeGreaterThanOrEqual(0.99);
+        }).toPass({ timeout: 500 });
+      } finally {
+        await context.close();
+      }
     });
   });
 });

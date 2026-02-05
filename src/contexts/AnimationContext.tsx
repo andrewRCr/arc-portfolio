@@ -24,6 +24,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
+import { ROUTE_ANIMATION_DURATION_MS } from "@/lib/animation-timing";
 import type { AnimationMode } from "@/lib/animation-timing";
 
 // ============================================================================
@@ -449,7 +450,7 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
       // Complete route animation after duration
       const timer = setTimeout(() => {
         dispatch({ type: "ROUTE_CHANGE_COMPLETE" });
-      }, 500);
+      }, ROUTE_ANIMATION_DURATION_MS);
 
       return () => clearTimeout(timer);
     }

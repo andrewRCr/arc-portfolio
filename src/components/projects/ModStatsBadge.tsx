@@ -88,6 +88,23 @@ export function ModStatsBadge({ value, type, className, showRaw = false }: ModSt
   );
 }
 
+/** Build formatted stat entries from optional stat values, deriving icons/labels from statConfig */
+function buildStatEntries(downloads?: number, uniqueDownloads?: number, endorsements?: number) {
+  const entries: Array<{ type: ModStatType; value: number }> = [];
+  if (endorsements !== undefined) entries.push({ type: "endorsements", value: endorsements });
+  if (uniqueDownloads !== undefined) entries.push({ type: "uniqueDownloads", value: uniqueDownloads });
+  if (downloads !== undefined) entries.push({ type: "downloads", value: downloads });
+
+  return entries.map(({ type, value }) => {
+    const config = statConfig[type];
+    return {
+      icon: config.icon,
+      value: formatStatNumber(value),
+      label: config.ariaLabel(value),
+    };
+  });
+}
+
 /**
  * Compact badge combining multiple stats in one (for phone viewports)
  * Renders: [👍 212 · 👥 6K · ⬇️ 9K]
@@ -100,20 +117,7 @@ interface ModStatsCompactProps {
 }
 
 function ModStatsCompact({ downloads, uniqueDownloads, endorsements, className }: ModStatsCompactProps) {
-  // Build array of stats to display, deriving from shared statConfig
-  const entries: Array<{ type: ModStatType; value: number }> = [];
-  if (endorsements !== undefined) entries.push({ type: "endorsements", value: endorsements });
-  if (uniqueDownloads !== undefined) entries.push({ type: "uniqueDownloads", value: uniqueDownloads });
-  if (downloads !== undefined) entries.push({ type: "downloads", value: downloads });
-
-  const stats = entries.map(({ type, value }) => {
-    const config = statConfig[type];
-    return {
-      icon: config.icon,
-      value: formatStatNumber(value),
-      label: config.ariaLabel(value),
-    };
-  });
+  const stats = buildStatEntries(downloads, uniqueDownloads, endorsements);
 
   if (stats.length === 0) return null;
 
@@ -203,21 +207,9 @@ interface ModStatsInlineProps {
 }
 
 export function ModStatsInline({ downloads, uniqueDownloads, endorsements, className }: ModStatsInlineProps) {
-  const entries: Array<{ type: ModStatType; value: number }> = [];
-  if (endorsements !== undefined) entries.push({ type: "endorsements", value: endorsements });
-  if (uniqueDownloads !== undefined) entries.push({ type: "uniqueDownloads", value: uniqueDownloads });
-  if (downloads !== undefined) entries.push({ type: "downloads", value: downloads });
+  const stats = buildStatEntries(downloads, uniqueDownloads, endorsements);
 
-  if (entries.length === 0) return null;
-
-  const stats = entries.map(({ type, value }) => {
-    const config = statConfig[type];
-    return {
-      icon: config.icon,
-      value: formatStatNumber(value),
-      label: config.ariaLabel(value),
-    };
-  });
+  if (stats.length === 0) return null;
 
   const ariaLabel = stats.map((s) => s.label).join(", ");
 

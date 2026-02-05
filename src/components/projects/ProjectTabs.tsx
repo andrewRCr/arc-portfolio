@@ -57,13 +57,9 @@ export default function ProjectTabs() {
     }
   }, [activeTab]);
 
-  // Update on mount and when active tab changes
+  // Update on mount, when active tab changes, and on resize
   useLayoutEffect(() => {
     updateIndicator();
-  }, [updateIndicator]);
-
-  // Update on resize
-  useLayoutEffect(() => {
     window.addEventListener("resize", updateIndicator);
     return () => window.removeEventListener("resize", updateIndicator);
   }, [updateIndicator]);

@@ -87,8 +87,8 @@ describe("theme validation utilities", () => {
     it("returns invalid with missing colors listed", () => {
       const theme = createValidTheme("test");
       // Remove a required color
-      delete (theme.light as Record<string, unknown>)["primary"];
-      delete (theme.dark as Record<string, unknown>)["accent-red"];
+      delete (theme.light as unknown as Record<string, unknown>)["primary"];
+      delete (theme.dark as unknown as Record<string, unknown>)["accent-red"];
 
       const result = validateTheme(theme);
 
@@ -99,8 +99,8 @@ describe("theme validation utilities", () => {
 
     it("checks both light and dark modes", () => {
       const theme = createValidTheme("test");
-      delete (theme.light as Record<string, unknown>)["border"];
-      delete (theme.dark as Record<string, unknown>)["ring"];
+      delete (theme.light as unknown as Record<string, unknown>)["border"];
+      delete (theme.dark as unknown as Record<string, unknown>)["ring"];
 
       const result = validateTheme(theme);
 
