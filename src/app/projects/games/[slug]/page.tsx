@@ -68,9 +68,8 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
         backLabel={backDest.label}
         links={project.links}
         metadata={{
-          teamSize: project.teamSize,
-          teamSizeCompact: project.teamSizeCompact,
-          role: project.role,
+          teamRole: project.teamRole,
+          teamRoleCompact: project.teamRoleCompact,
           developmentTime: project.developmentTime,
           developmentTimeCompact: project.developmentTimeCompact,
         }}

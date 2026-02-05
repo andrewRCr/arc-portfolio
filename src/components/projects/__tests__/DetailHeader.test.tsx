@@ -53,17 +53,19 @@ describe("DetailHeader - Behavior Tests", () => {
       expect(screen.getAllByText("Game").length).toBeGreaterThan(0);
     });
 
-    it("does not render category section when categories is empty array", () => {
+    it("does not render category badges when categories is empty array", () => {
       render(<DetailHeader {...defaultProps} categories={[]} />);
 
-      // Neither version should have badge elements
-      expect(screen.queryAllByTestId("category-badges")).toHaveLength(0);
+      // No badge text should render (container may still exist for metadata)
+      expect(screen.queryByText("Web App")).not.toBeInTheDocument();
+      expect(screen.queryByText("Desktop App")).not.toBeInTheDocument();
     });
 
-    it("does not render category section when categories is undefined", () => {
+    it("does not render category badges when categories is undefined", () => {
       render(<DetailHeader {...defaultProps} />);
 
-      expect(screen.queryAllByTestId("category-badges")).toHaveLength(0);
+      expect(screen.queryByText("Web App")).not.toBeInTheDocument();
+      expect(screen.queryByText("Desktop App")).not.toBeInTheDocument();
     });
   });
 
@@ -162,8 +164,8 @@ describe("DetailHeader - Behavior Tests", () => {
       // Links should render even without categories
       const githubLinks = screen.getAllByRole("link", { name: "View on GitHub" });
       expect(githubLinks.length).toBeGreaterThan(0);
-      // Category badges should not exist
-      expect(screen.queryAllByTestId("category-badges")).toHaveLength(0);
+      // No category badge text should render
+      expect(screen.queryByText("Web App")).not.toBeInTheDocument();
     });
 
     it("renders all link types", () => {

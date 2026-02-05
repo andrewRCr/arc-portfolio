@@ -28,7 +28,7 @@ export interface DetailBannerMobileProps {
   links?: ProjectLinks;
   /** NexusMods stats (optional, for mods) */
   stats?: DetailHeaderStats;
-  /** Project metadata (team size, role, timeline) */
+  /** Project metadata (team role, timeline) */
   metadata?: DetailHeaderMetadata;
 }
 
@@ -47,11 +47,9 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
   // Uses compact versions for mobile, falls back to full versions
   const formatMetadataLabel = (): string | undefined => {
     if (!metadata) return undefined;
-    const teamSize = metadata.teamSizeCompact || metadata.teamSize;
+    const teamRole = metadata.teamRoleCompact || metadata.teamRole || "Solo";
     const devTime = metadata.developmentTimeCompact || metadata.developmentTime;
-    const isSolo = teamSize?.toLowerCase().includes("solo");
-    const showRole = !isSolo && metadata.role;
-    const parts = [teamSize, showRole ? metadata.role : null, devTime].filter(Boolean);
+    const parts = [teamRole, devTime].filter(Boolean);
     return parts.length > 0 ? parts.join(" · ") : undefined;
   };
   const metadataLabel = formatMetadataLabel();

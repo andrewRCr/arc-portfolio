@@ -71,9 +71,6 @@ export const projects: Project[] = [
       screenshots: [], // In development - no screenshots yet
     },
     photoCredits: ["Denise Jans", "Kumiko Shimizu", "Noom Peerapong", "Jeremy Yap", "Adrien Olichon"],
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Full-Stack Developer",
     developmentTime: "2025-2026",
     highlights: [
       "Demonstrates modern full-stack development practices including type-safe API architecture, comprehensive testing strategies, and systematic code quality enforcement",
@@ -134,9 +131,6 @@ export const projects: Project[] = [
       screenshots: [], // Documentation-only - no UI screenshots
     },
     photoCredits: ["Alexey Ruban", "Mike Stoll", "Jason Leung"],
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Framework Author",
     developmentTime: "2025-2026",
     architectureNotes: [
       "Documentation-only framework with no code dependencies - pure process and templates",
@@ -212,9 +206,6 @@ export const projects: Project[] = [
       hero: "/projects/arc-portfolio/hero.webp",
       screenshots: [], // Intentionally empty - self-referential project
     },
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Full-Stack Developer",
     developmentTime: "2025-2026",
     architectureNotes: [
       "Next.js App Router with React Server Components for optimal performance",
@@ -292,9 +283,6 @@ export const projects: Project[] = [
         { src: "/projects/taskfocus/screenshot-8.webp", alt: "TaskFocus feature screenshot 8" },
       ],
     },
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Full-Stack Developer",
     developmentTime: "2024 (v1), 2026 (v2)",
     developmentTimeCompact: "2024 / 2026",
     architectureNotes: [
@@ -376,9 +364,6 @@ export const projects: Project[] = [
         { src: "/projects/petresort/screenshot-8.webp", alt: "PetResort feature screenshot 8" },
       ],
     },
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Full-Stack Developer",
     developmentTime: "2023-2024",
     architectureNotes: [
       "Express.js backend API with MongoDB for data persistence",
@@ -454,9 +439,6 @@ export const projects: Project[] = [
         },
       ],
     },
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Developer",
     developmentTime: "2023",
     architectureNotes: [
       "Python dataclasses for domain modeling: structured representation of DOOM's internal game systems",
@@ -539,9 +521,6 @@ export const projects: Project[] = [
         { src: "/projects/action-rpg-project/screenshot-13.webp?v=2", alt: "Action RPG gameplay screenshot 13" },
       ],
     },
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Game Developer",
     developmentTime: "2023",
     architectureNotes: [
       "Unreal Engine 4 with C++ core systems and Blueprint for rapid iteration",
@@ -651,7 +630,7 @@ export const projects: Project[] = [
         },
       ],
     },
-    role: "Project Lead",
+    teamRole: "Project Lead",
     developmentTime: "2022",
     architectureNotes: [
       "Unreal Engine 5 with C++ core systems and Blueprint for rapid iteration",
@@ -715,9 +694,6 @@ export const projects: Project[] = [
         { src: "/projects/pong-clone/screenshot-3.webp?v=2", alt: "In-game pause menu" },
       ],
     },
-    teamSize: "Solo project",
-    teamSizeCompact: "Solo",
-    role: "Developer",
     developmentTime: "2023",
     architectureNotes: [
       "Win32 platform layer: window creation, input handling, frame timing",

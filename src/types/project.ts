@@ -89,9 +89,8 @@ export interface Project {
   photoCredits?: string[]; // Photographer names for stock imagery attribution (e.g., Unsplash)
 
   // Optional metadata
-  teamSize?: string; // Team composition for desktop (e.g., "Solo project", "4-person team")
-  teamSizeCompact?: string; // Shorter form for mobile (e.g., "Solo", "Team of 4")
-  role?: string; // Your role if team project (e.g., "Lead Developer", "Full-Stack Developer")
+  teamRole?: string; // Team context for desktop (e.g., "Solo project", "Project Lead")
+  teamRoleCompact?: string; // Shorter form for mobile (e.g., "Solo", "Project Lead")
   developmentTime?: string; // Development timeline (e.g., "2024", "Spring 2024", "8 weeks (2024)")
   developmentTimeCompact?: string; // Shorter form for mobile (e.g., "2024 / 2026")
 

@@ -42,7 +42,6 @@ const mockProject: Project = {
   },
   order: 1,
   featured: true,
-  teamSize: "Solo",
   highlights: ["Achievement 1", "Achievement 2"],
   architectureNotes: ["Architecture note 1", "Architecture note 2"],
 };
@@ -104,7 +103,7 @@ describe("ProjectDetail - Behavior Tests", () => {
     it("does not render optional sections when not provided", () => {
       const minimalProject: Project = {
         ...mockProject,
-        teamSize: undefined,
+        teamRole: undefined,
         highlights: undefined,
         architectureNotes: undefined,
       };

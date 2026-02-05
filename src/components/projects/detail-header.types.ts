@@ -22,9 +22,8 @@ export interface DetailHeaderStats {
  * Project metadata for header display
  */
 export interface DetailHeaderMetadata {
-  teamSize?: string; // Full form for desktop (e.g., "Solo project")
-  teamSizeCompact?: string; // Short form for mobile (e.g., "Solo")
-  role?: string;
+  teamRole?: string; // Full form for desktop (e.g., "Solo project", "Project Lead")
+  teamRoleCompact?: string; // Short form for mobile (e.g., "Solo")
   developmentTime?: string; // Full form for desktop
   developmentTimeCompact?: string; // Short form for mobile
 }

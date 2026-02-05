@@ -32,13 +32,8 @@ export function DetailHeaderDesktop({
   const { opacity } = useHeaderCrossfade("out");
   const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
 
-  // Build metadata string - role only shows for team projects
-  const isSolo = metadata?.teamSize?.toLowerCase().includes("solo");
-  const metadataParts = [
-    metadata?.teamSize,
-    !isSolo && metadata?.role ? metadata.role : null,
-    metadata?.developmentTime,
-  ].filter(Boolean);
+  // Build metadata string (default to "Solo project" when no team role specified)
+  const metadataParts = [metadata?.teamRole ?? "Solo project", metadata?.developmentTime].filter(Boolean);
   const hasMetadata = metadataParts.length > 0;
 
   const hasFooter = hasCategories || hasStats || hasLinks || hasMetadata;
