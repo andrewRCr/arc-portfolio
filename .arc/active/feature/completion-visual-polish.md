@@ -63,3 +63,4 @@ animated experience that respects reduced-motion preferences throughout.
 
 - In-development project detail pages have no status indication (badge on cards only) — revisit
   post-deployment if needed
+- Extract surface-tuning sandbox tool to dedicated `/dev/surface` page (see `ATOMIC-TASKS.md`)

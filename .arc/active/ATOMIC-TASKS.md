@@ -37,6 +37,13 @@
     - Audit other themes for similar issues
     - Fix on per-theme basis by adjusting muted color values
 
+- [ ] Extract surface-tuning sandbox tool to dedicated dev page
+    - Promote `SurfaceOpacityComparison` from `/dev/sandbox` to its own `/dev/surface` page
+    - Match pattern of existing dev tools (`/dev/typography`, `/dev/theme`, `/dev/wallpaper`)
+    - Clean up variable naming (e.g., `lightOpacity` → `currentSurfaceOpacity`)
+    - Add `useEffect` cleanup for DOM-injected `data-sandbox-overlay`
+    - Remove the component from sandbox page after extraction
+
 - [ ] Copy pass on project content prior to deployment
     - Review `src/data/projects.ts` for all project entries
     - Focus on `shortDescription` field - concise, compelling, consistent tone

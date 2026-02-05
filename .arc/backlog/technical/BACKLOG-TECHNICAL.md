@@ -32,7 +32,7 @@ invocations. KV provides distributed state that actually works in production.
 
 ---
 
-### NexusMods API App Registration (Deployment Prerequisite)
+### NexusMods API App Registration (Post-Deployment Compliance)
 
 **Trigger:** Shortly before or immediately after initial deployment (once GitHub is public)
 
