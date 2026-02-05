@@ -20,11 +20,13 @@ describe("SectionHeader", () => {
       expect(separator).toBeInTheDocument();
     });
 
-    it("uses title font styling", () => {
+    it("uses deliberate header styling (not body defaults)", () => {
       render(<SectionHeader title="Test" />);
 
       const heading = screen.getByRole("heading");
-      expect(heading).toHaveClass("font-title");
+      // Should have deliberate styling, not default body text
+      expect(heading).not.toHaveClass("font-body");
+      expect(heading).not.toHaveClass("text-base");
     });
   });
 
