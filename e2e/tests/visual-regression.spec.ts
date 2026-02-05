@@ -59,8 +59,10 @@ async function waitForVisualStability(page: Page): Promise<void> {
     `,
   });
 
-  // Buffer for image decode and final paint after animations are suppressed
-  await page.waitForTimeout(300);
+  // Buffer for React render cycle (AnimationContext initializes via useEffect,
+  // causing hidden→visible transition) + image decode + final paint.
+  // CI runners need more time than local dev for rendering to settle.
+  await page.waitForTimeout(1500);
 }
 
 // Skip visual regression tests on non-Desktop Chrome projects.
@@ -119,6 +121,7 @@ test.describe("Visual Regression Baselines", () => {
           await expect(page).toHaveScreenshot(`${testName}.png`, {
             fullPage: true,
             maxDiffPixelRatio: 0.02,
+            timeout: 15000,
           });
         });
       }
@@ -160,6 +163,7 @@ test.describe("Page-Specific Baselines", () => {
     await expect(page).toHaveScreenshot("page-home.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.02,
+      timeout: 15000,
     });
   });
 
@@ -169,6 +173,7 @@ test.describe("Page-Specific Baselines", () => {
     await expect(page).toHaveScreenshot("page-projects.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.02,
+      timeout: 15000,
     });
   });
 
@@ -178,6 +183,7 @@ test.describe("Page-Specific Baselines", () => {
     await expect(page).toHaveScreenshot("page-skills.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.02,
+      timeout: 15000,
     });
   });
 
@@ -187,6 +193,7 @@ test.describe("Page-Specific Baselines", () => {
     await expect(page).toHaveScreenshot("page-about.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.02,
+      timeout: 15000,
     });
   });
 
@@ -196,6 +203,7 @@ test.describe("Page-Specific Baselines", () => {
     await expect(page).toHaveScreenshot("page-contact.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.02,
+      timeout: 15000,
     });
   });
 });

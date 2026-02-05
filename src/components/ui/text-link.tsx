@@ -2,7 +2,7 @@
  * TextLink Component
  *
  * Inline text link with accent color styling. Uses full accent in light mode,
- * toned-down accent-high in dark mode. Underline appears on hover.
+ * toned-down accent-high in dark mode. Underline appears on hover and keyboard focus.
  */
 
 import { AnchorHTMLAttributes } from "react";

@@ -514,19 +514,26 @@ export function getNavBorderTiming(mode: AnimationMode): Transition {
 
 /** Get timing for SVG border draw animation */
 export function getBorderDrawTiming(mode: AnimationMode): Transition {
-  if (mode === "skip") {
-    return {
-      duration: SKIP_CONTENT_DURATION * 1.5, // Slightly longer for visual effect
-      delay: SKIP_BORDER_DELAY,
-      ease: "easeInOut" as const,
-    };
+  switch (mode) {
+    case "instant":
+    case "route":
+      // Route/instant: no border animation (already visible)
+      return INSTANT_TRANSITION;
+    case "skip":
+      return {
+        duration: SKIP_CONTENT_DURATION * 1.5, // Slightly longer for visual effect
+        delay: SKIP_BORDER_DELAY,
+        ease: "easeInOut" as const,
+      };
+    case "refresh":
+    case "intro":
+    default:
+      return {
+        duration: BORDER_DRAW_DURATION,
+        delay: FRAME_FADE_DELAY,
+        ease: "easeInOut" as const,
+      };
   }
-  // Intro mode (default)
-  return {
-    duration: BORDER_DRAW_DURATION,
-    delay: FRAME_FADE_DELAY,
-    ease: "easeInOut" as const,
-  };
 }
 
 // --- PageHeader Timing ---

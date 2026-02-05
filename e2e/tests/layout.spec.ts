@@ -314,9 +314,9 @@ test.describe("TWM Layout System", () => {
         for (let i = 0; i < count; i++) {
           const link = desktopNavLinks.nth(i);
           const box = await link.boundingBox();
-          expect(box).not.toBeNull();
-          expect(box!.width).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
-          expect(box!.height).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
+          expect(box, `Nav link ${i} should have bounding box`).not.toBeNull();
+          expect(box!.width, `Nav link ${i} width`).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
+          expect(box!.height, `Nav link ${i} height`).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET);
         }
       }).toPass({ timeout: VISIBILITY_TIMEOUT });
     });

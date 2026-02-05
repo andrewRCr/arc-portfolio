@@ -285,8 +285,8 @@ function SurfaceOpacityComparison() {
           Export CSS (click to expand)
         </summary>
         <div className="px-4 py-3 border-t border-border">
-          <pre className="text-xs font-mono bg-muted/50 p-3 rounded overflow-x-auto whitespace-pre-wrap">
-            {`:root {
+          {(() => {
+            const exportCss = `:root {
   --surface-opacity: ${darkModeSet.surfaceOpacity.toFixed(2)};
   --surface-darken: ${darkModeSet.surfaceDarken}%;
   --window-darken: ${darkModeSet.windowDarken}%;
@@ -317,29 +317,21 @@ function SurfaceOpacityComparison() {
 }
 
 /* Note: border "${lightModeSet.borderMode}" and shadow "${lightModeSet.shadowLevel}"
-   require component updates (not pure CSS) */`}
-          </pre>
-          <button
-            onClick={() => {
-              const css = `:root {
-  --surface-opacity: ${darkModeSet.surfaceOpacity.toFixed(2)};
-  --surface-darken: ${darkModeSet.surfaceDarken}%;
-}
-
-.light {
-  --surface-opacity: ${lightModeSet.surfaceOpacity.toFixed(2)};
-  --surface-darken: ${lightModeSet.surfaceDarken}%;
-}
-
-.light [data-window-container] {
-  --window-bg-opacity: ${lightModeSet.windowOpacity.toFixed(2)} !important;
-}`;
-              navigator.clipboard.writeText(css);
-            }}
-            className="mt-2 px-3 py-1 text-xs font-terminal border border-border rounded hover:border-accent/50"
-          >
-            Copy CSS to clipboard
-          </button>
+   require component updates (not pure CSS) */`;
+            return (
+              <>
+                <pre className="text-xs font-mono bg-muted/50 p-3 rounded overflow-x-auto whitespace-pre-wrap">
+                  {exportCss}
+                </pre>
+                <button
+                  onClick={() => navigator.clipboard.writeText(exportCss)}
+                  className="mt-2 px-3 py-1 text-xs font-terminal border border-border rounded hover:border-accent/50"
+                >
+                  Copy CSS to clipboard
+                </button>
+              </>
+            );
+          })()}
         </div>
       </details>
 
