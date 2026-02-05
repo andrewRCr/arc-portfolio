@@ -75,7 +75,7 @@ export function useHorizontalScrollShadow(): UseHorizontalScrollShadowResult {
     };
 
     // Listen for scroll events
-    element.addEventListener("scroll", evaluate);
+    element.addEventListener("scroll", evaluate, { passive: true });
 
     // Observe size changes
     const resizeObserver = new ResizeObserver(evaluate);

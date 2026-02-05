@@ -47,7 +47,7 @@ function DetailHeaderCompactMobile({
         <Link
           href={backHref}
           aria-label={`Back to ${backLabel}`}
-          className="inline-flex h-8 shrink-0 items-center justify-center bg-muted px-2 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
+          className="relative inline-flex h-8 shrink-0 items-center justify-center bg-muted px-2 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground after:absolute after:inset-x-0 after:-top-1.5 after:-bottom-1.5 after:content-['']"
         >
           <ArrowLeft className="h-4 w-4" />
         </Link>
@@ -82,7 +82,7 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
             <Link
               href={backHref}
               aria-label={`Back to ${backLabel}`}
-              className="inline-flex h-8 items-center justify-center bg-surface-muted px-3 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
+              className="relative inline-flex h-8 items-center justify-center bg-surface-muted px-3 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground after:absolute after:inset-x-0 after:-top-1.5 after:-bottom-1.5 after:content-['']"
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>

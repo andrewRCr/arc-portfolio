@@ -77,7 +77,7 @@ describe("useThemeTransition", () => {
       expect(mockSetTheme).toHaveBeenCalledWith("dark");
     });
 
-    it("treats undefined/system theme as dark (toggles to light)", () => {
+    it("treats undefined/system theme as non-dark (toggles to dark)", () => {
       mockTheme.mockReturnValue(undefined as unknown as string);
       const { result } = renderHook(() => useThemeTransition());
 

@@ -56,7 +56,7 @@ function SurfaceOpacityComparison() {
   // Current working values
   const [lightOpacity, setLightOpacity] = useState(0.92);
   const [lightDarken, setLightDarken] = useState(5);
-  const [windowOpacity, setWindowOpacity] = useState(0.8);
+  const [windowOpacity, setWindowOpacity] = useState(0.7);
   const [windowDarken, setWindowDarken] = useState(3);
   const [borderMode, setBorderMode] = useState<BorderMode>("strong");
   const [shadowLevel, setShadowLevel] = useState<ShadowLevel>("md");

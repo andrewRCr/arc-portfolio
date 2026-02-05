@@ -21,7 +21,7 @@ export function TextLink({ href, external = true, className, children, ...props 
   return (
     <a
       href={href}
-      className={cn("text-accent dark:text-accent-high hover:underline", className)}
+      className={cn("text-accent dark:text-accent-high hover:underline focus-visible:underline", className)}
       {...props}
       {...externalProps}
     >

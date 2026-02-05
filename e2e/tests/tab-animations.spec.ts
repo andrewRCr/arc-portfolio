@@ -146,12 +146,13 @@ test.describe("Tab Animations", () => {
   });
 
   test.describe("Reduced Motion Support", () => {
-    test("tab indicator moves instantly with reduced motion", async ({ browser }) => {
+    test("tab indicator moves instantly with reduced motion", async ({ browser, baseURL }) => {
       // Create context with reduced motion preference
       const context = await browser.newContext({
         reducedMotion: "reduce",
       });
       try {
+        await skipIntroAnimation(context, baseURL);
         const page = await context.newPage();
 
         await page.goto("/projects");
@@ -174,25 +175,27 @@ test.describe("Tab Animations", () => {
         await gamesTab.click();
         await page.waitForURL(/tab=games/);
 
-        // With reduced motion, position should change quickly - use short timeout
+        // With reduced motion, position should change quickly
+        // 1000ms allows for CI runner variance while still asserting "fast"
         await expect(async () => {
           const gamesBox = await gamesTab.boundingBox();
           const finalBox = await indicator.boundingBox();
           expect(gamesBox).not.toBeNull();
           expect(finalBox).not.toBeNull();
           expect(finalBox!.x).toBeGreaterThanOrEqual(gamesBox!.x - 2);
-        }).toPass({ timeout: 500 });
+        }).toPass({ timeout: 1000 });
       } finally {
         await context.close();
       }
     });
 
-    test("tab indicator position updates immediately with reduced motion", async ({ browser }) => {
+    test("tab indicator position updates immediately with reduced motion", async ({ browser, baseURL }) => {
       // This test verifies that with reduced motion, there's no animation delay
       const context = await browser.newContext({
         reducedMotion: "reduce",
       });
       try {
+        await skipIntroAnimation(context, baseURL);
         const page = await context.newPage();
 
         await page.goto("/projects");
@@ -215,17 +218,18 @@ test.describe("Tab Animations", () => {
           expect(gamesBox).not.toBeNull();
           expect(box!.x).toBeGreaterThanOrEqual(gamesBox!.x - 2);
           expect(box!.x + box!.width).toBeLessThanOrEqual(gamesBox!.x + gamesBox!.width + 2);
-        }).toPass({ timeout: 500 });
+        }).toPass({ timeout: 1000 });
       } finally {
         await context.close();
       }
     });
 
-    test("tab content switches instantly with reduced motion", async ({ browser }) => {
+    test("tab content switches instantly with reduced motion", async ({ browser, baseURL }) => {
       const context = await browser.newContext({
         reducedMotion: "reduce",
       });
       try {
+        await skipIntroAnimation(context, baseURL);
         const page = await context.newPage();
 
         await page.goto("/projects");

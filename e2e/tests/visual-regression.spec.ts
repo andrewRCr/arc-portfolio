@@ -27,11 +27,11 @@ import { E2E_DETERMINISTIC_KEY } from "@/lib/featured-projects";
  * - Waits for theme CSS variables to be applied
  * - Waits for page load (including images/stylesheets)
  * - Hides Next.js dev tools overlay (causes flaky screenshots)
- * - Small buffer for CSS animations/transitions to complete
+ * - Small buffer for final rendering to settle
  *
- * Note: Uses 'load' state instead of 'networkidle' for CI reliability.
- * 'networkidle' is flaky in CI environments where background network
- * activity (analytics, prefetching, lazy loading) may never fully settle.
+ * Relies on reduced motion emulation (set in beforeEach) to suppress
+ * Framer Motion and CSS animations. Without reduced motion, the page has
+ * animations extending to ~1.1s+ that cause "unstable screenshot" failures.
  */
 async function waitForVisualStability(page: Page): Promise<void> {
   // Wait for theme CSS variables to be applied
@@ -59,16 +59,18 @@ async function waitForVisualStability(page: Page): Promise<void> {
     `,
   });
 
-  // Small buffer for CSS animations/transitions to complete
-  // This is a pragmatic fallback - most animations complete within 300ms
+  // Buffer for image decode and final paint after animations are suppressed
   await page.waitForTimeout(300);
 }
 
-// Skip visual regression tests on non-Desktop Chrome projects
-test.beforeEach(async ({}, testInfo) => {
+// Skip visual regression tests on non-Desktop Chrome projects.
+// Force reduced motion so Framer Motion + CSS animations complete instantly,
+// preventing "unstable screenshot" failures from in-flight animations.
+test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.project.name !== "Desktop Chrome") {
     test.skip();
   }
+  await page.emulateMedia({ reducedMotion: "reduce" });
 });
 
 const THEMES = ["remedy", "rose-pine", "gruvbox"] as const;

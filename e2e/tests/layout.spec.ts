@@ -19,7 +19,7 @@ import { waitForHydration } from "../helpers/state";
  * sub-pixel rendering differences across browsers (Firefox can
  * render ~43.16px vs Chrome's 44px due to font metrics).
  */
-const MIN_TOUCH_TARGET = 43;
+const MIN_TOUCH_TARGET = 43; // 44px target with 1px tolerance for sub-pixel rendering
 
 test.describe("TWM Layout System", () => {
   // Skip intro animation for all layout tests

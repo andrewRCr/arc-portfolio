@@ -207,9 +207,6 @@ export const MAIN_CONTENT_TWEEN = {
 // Abbreviated versions of intro animations for route changes.
 // Faster and simpler than full intro sequence.
 
-/** Total duration of route change animation (ms) — used by AnimationContext to schedule ROUTE_CHANGE_COMPLETE */
-export const ROUTE_ANIMATION_DURATION_MS = 500;
-
 /** Base delay before route transition animations start */
 export const ROUTE_TRANSITION_DELAY = 0.1;
 
@@ -232,6 +229,9 @@ export const ROUTE_BODY_DELAY = 0.25;
 
 /** Body content fade duration for route transitions */
 export const ROUTE_BODY_DURATION = 0.35;
+
+/** Total duration of route change animation (ms) — used by AnimationContext to schedule ROUTE_CHANGE_COMPLETE */
+export const ROUTE_ANIMATION_DURATION_MS = (ROUTE_BODY_DELAY + ROUTE_BODY_DURATION) * 1000;
 
 // ============================================================================
 // PAGE HEADER - Route Change Animation Configs

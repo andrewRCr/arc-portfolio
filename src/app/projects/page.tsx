@@ -24,19 +24,21 @@ import { useScrollViewport } from "@/components/layout/ScrollContext";
 /** Scrolls viewport to top when tab changes, synced with exit animation. Must be inside PageLayout. */
 function ScrollResetOnTabChange({ currentTab }: { currentTab: string }) {
   const { viewport } = useScrollViewport();
+  const reducedMotion = useReducedMotion();
   const prevTabRef = useRef(currentTab);
 
   useLayoutEffect(() => {
     if (prevTabRef.current !== currentTab && viewport) {
       // Delay scroll until exit animation completes (opacity at 0)
+      const delayMs = reducedMotion ? 0 : TAB_CONTENT_DURATION * 1000;
       const timer = setTimeout(() => {
         viewport.scrollTop = 0;
-      }, TAB_CONTENT_DURATION * 1000);
+      }, delayMs);
       prevTabRef.current = currentTab;
       return () => clearTimeout(timer);
     }
     prevTabRef.current = currentTab;
-  }, [currentTab, viewport]);
+  }, [currentTab, viewport, reducedMotion]);
 
   return null;
 }
