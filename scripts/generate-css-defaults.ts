@@ -17,7 +17,13 @@
 import * as fs from "fs";
 import * as path from "path";
 import { themes, defaultPalette } from "../src/data/themes";
-import type { ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../src/data/themes/types";
+import type {
+  ForegroundToken,
+  ThemeColors,
+  ThemeOpacities,
+  ThemeSurfaces,
+  ThemeHoverConfig,
+} from "../src/data/themes/types";
 import { DEFAULT_LAYOUT_TOKENS } from "../src/lib/theme/tokens/layout";
 
 const GLOBALS_CSS_PATH = path.join(__dirname, "../src/app/globals.css");
@@ -103,7 +109,9 @@ function generateThemeCssVariables(themeColors: ThemeColors, indent = "  "): str
 /**
  * Map foreground token to CSS variable reference.
  */
-function foregroundTokenToCss(token: string): string {
+function foregroundTokenToCss(
+  token: ForegroundToken | "primary-foreground" | "secondary-foreground" | "foreground-lightened"
+): string {
   if (token === "primary-foreground") {
     return "var(--primary-foreground)";
   }

@@ -30,13 +30,6 @@
 
 ## Active
 
-- [ ] Fix bg-muted contrast issues in Remedy theme (and audit others)
-    - In light mode, bg-muted appears too close to parent backgrounds
-    - Affected: EducationCard degree badges, ProjectCard tech stack badges
-    - Tech stack badges only distinguishable due to borders, otherwise blend in
-    - Audit other themes for similar issues
-    - Fix on per-theme basis by adjusting muted color values
-
 - [ ] Extract surface-tuning sandbox tool to dedicated dev page
     - Promote `SurfaceOpacityComparison` from `/dev/sandbox` to its own `/dev/surface` page
     - Match pattern of existing dev tools (`/dev/typography`, `/dev/theme`, `/dev/wallpaper`)
@@ -45,12 +38,16 @@
     - Remove the component from sandbox page after extraction
 
 - [ ] Copy pass on project content prior to deployment
-    - Review `src/data/projects.ts` for all project entries
+    - Review `src/data/projects.ts` and `src/data/mods.ts` for all entries
     - Focus on `shortDescription` field - concise, compelling, consistent tone
     - **Merge features → highlights:** For each project, curate best points from `features`
       into `highlights` (features array no longer rendered but data preserved)
+    - **Priority:** `re8-aim-dependent-crosshair` and `sh2r-never-holster-weapons` have
+      features but no highlights — their detail pages currently show no content sections
     - Target ~4-6 highlights per project focusing on impressive/notable aspects
     - Check for typos, awkward phrasing, or overly technical language
     - Consider if any highlights belong in architectureNotes instead
+    - **Cleanup after merge:** Remove `features` from `Project` type, `sectionLabels.features`
+      from type and data, update docstring in `ProjectDetail.tsx`
 
 ---

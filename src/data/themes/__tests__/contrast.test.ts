@@ -21,7 +21,6 @@ import { describe, it, expect } from "vitest";
 import {
   themes,
   getAccentOpacities,
-  getEffectiveSurface,
   getEffectiveWindowBackground,
   getAccentOnSurface,
 } from "../index";
@@ -300,7 +299,7 @@ describe("Badges and Indicators", () => {
 // =============================================================================
 
 describe("Card Surface Contrast", () => {
-  Object.entries(themes).forEach(([themeName, theme]) => {
+  Object.values(themes).forEach((theme) => {
     describe(`${theme.label}`, () => {
       (["light", "dark"] as const).forEach((mode) => {
         describe(`${mode}`, () => {

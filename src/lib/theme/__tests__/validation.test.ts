@@ -6,7 +6,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { getTheme, isValidThemeName, validateTheme, type ValidationResult } from "../validation";
+import { getTheme, isValidThemeName, validateTheme } from "../validation";
 import type { Theme } from "@/data/themes/types";
 
 // Minimal valid theme for testing

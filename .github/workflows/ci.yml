@@ -111,11 +111,11 @@ jobs:
       matrix:
         include:
           - browser: chromium
-            projects: '"Desktop Chrome" "Mobile Chrome" "Tablet"'
+            projects: '--project="Desktop Chrome" --project="Mobile Chrome" --project="Tablet"'
           - browser: firefox
-            projects: '"Firefox"'
+            projects: '--project="Firefox"'
           - browser: webkit
-            projects: '"WebKit"'
+            projects: '--project="WebKit"'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -133,7 +133,7 @@ jobs:
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run E2E tests (${{ matrix.browser }})
-        run: npm run test:e2e -- --project=${{ matrix.projects }}
+        run: npm run test:e2e -- ${{ matrix.projects }}
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
