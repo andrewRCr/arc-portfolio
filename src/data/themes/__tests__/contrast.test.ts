@@ -18,12 +18,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  themes,
-  getAccentOpacities,
-  getEffectiveWindowBackground,
-  getAccentOnSurface,
-} from "../index";
+import { themes, getAccentOpacities, getEffectiveWindowBackground, getAccentOnSurface } from "../index";
 import type { ThemeName } from "../index";
 import type { ThemeColors } from "../types";
 import { rgbToHex, getContrastRatio, meetsAANormalText, meetsAALargeText, alphaComposite } from "@/lib/theme/utils";
