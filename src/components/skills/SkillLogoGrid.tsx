@@ -112,7 +112,7 @@ export function SkillLogoGrid({
               <TooltipTrigger asChild>
                 <Link
                   href={`/projects?skills=${encodeURIComponent(skill.name)}`}
-                  className="text-foreground/70 transition-colors hover:text-accent-mid"
+                  className="text-foreground/70 transition-colors hover:text-secondary dark:hover:text-secondary-high"
                   aria-label={`View projects using ${skill.name}`}
                 >
                   {logo}

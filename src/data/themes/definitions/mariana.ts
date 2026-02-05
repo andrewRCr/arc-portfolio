@@ -17,7 +17,7 @@
  */
 
 import { marianaDark, marianaLight, marianaA11y } from "../palettes/mariana";
-import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
 
 // Opacity configuration - Mariana needs high opacities for WCAG compliance
@@ -40,6 +40,21 @@ const opacities: ThemeOpacities = {
 const surfaces: ThemeSurfaces = {
   light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
   dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to secondary, accent-mid darkens in-family
+// Mariana: Blue primary → Yellow/Orange secondary (cool→warm complement)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 30, // fallback
+    accentMidDarken: 40,
+    primaryHoverColor: "secondary",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "secondary-high",
+  },
 };
 
 // Define tokens as standalone objects to enable swatch derivation
@@ -167,9 +182,10 @@ export const marianaTheme: Theme = {
   defaultWallpaper: "diana-prundeanu",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
@@ -187,4 +203,5 @@ export const marianaTheme: Theme = {
 
   opacities,
   surfaces,
+  hover,
 } as const;

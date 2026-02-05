@@ -1,6 +1,6 @@
 # Strategy: Style Guide
 
-**Version:** 1.6 | **Updated:** 2026-02-04
+**Version:** 1.7 | **Updated:** 2026-02-05
 
 This document is the authoritative style reference for arc-portfolio, covering design philosophy,
 token conventions, the TWM layout system, and component patterns.
@@ -625,6 +625,49 @@ src/lib/theme/tokens/
 (`accent-high/mid/low`, `secondary-high/mid/low`) and surface tokens (`surface-card`, `surface-background`)
 are computed via CSS `color-mix()` from base tokens. See `globals.css` for these definitions.
 Theme-specific values are configured in `src/data/themes/definitions/` via `opacities` and `surfaces` configs.
+
+### Adding Theme-Aware Computed Tokens
+
+For tokens that need **per-theme, per-mode values** (like opacity variants or color-mix adjustments),
+follow this single-source-of-truth pattern:
+
+**1. Add type definition** (`src/data/themes/types.ts`):
+
+```typescript
+// Add to existing interface or create new config interface
+interface ModeOpacityConfig {
+  readonly accent: OpacityLevels;  // { high, mid, low }
+  // ... add new properties here
+}
+```
+
+**2. Add values to each theme definition** (`src/data/themes/definitions/*.ts`):
+
+```typescript
+const opacities: ThemeOpacities = {
+  light: { accent: { high: 1, mid: 0.9, low: 0.8 }, /* ... */ },
+  dark: { accent: { high: 0.8, mid: 0.76, low: 0.2 }, /* ... */ },
+};
+```
+
+**3. Update CSS generator** (`scripts/generate-css-defaults.ts`):
+
+```typescript
+// Add emission of new CSS variables from theme config
+function generateOpacityCssVariables(config: ModeOpacityConfig): string {
+  return `--accent-high-opacity: ${config.accent.high};`;
+}
+```
+
+**4. Define CSS formula in globals.css** (`@theme inline` block):
+
+```css
+--color-accent-high: rgb(var(--accent) / var(--accent-high-opacity));
+```
+
+**Key principle:** Values live in theme definitions (TypeScript), CSS generator emits them per
+theme/mode, CSS formulas reference the generated variables. Never hardcode values in globals.css
+for theme-aware tokens.
 
 ---
 

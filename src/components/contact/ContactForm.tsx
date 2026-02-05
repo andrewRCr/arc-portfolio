@@ -110,7 +110,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
         <button
           type="button"
           onClick={handleSendAnother}
-          className="bg-primary px-4 py-2 font-terminal font-medium uppercase text-primary-foreground transition-colors hover:bg-primary/90"
+          className="bg-primary px-4 py-2 font-terminal font-medium uppercase text-primary-foreground transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground"
         >
           Send Another Message
         </button>
@@ -119,9 +119,9 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-2 sm:space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-3 sm:space-y-6">
       {/* Name and Email fields - side by side on md+ */}
-      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-6 md:grid-cols-2">
         {/* Name field */}
         <div className="space-y-2">
           <label htmlFor="name" className="block font-terminal text-sm font-medium text-foreground">
@@ -172,7 +172,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
         </label>
         <textarea
           id="message"
-          rows={isPhone ? 3 : 5}
+          rows={isPhone ? 3 : 6}
           maxLength={MESSAGE_MAX_LENGTH}
           aria-required="true"
           aria-describedby={errors.message ? "message-error message-count" : "message-count"}
@@ -210,7 +210,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full bg-primary px-4 py-2 font-terminal font-medium uppercase text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full bg-primary px-4 py-1.5 font-terminal font-medium uppercase text-primary-foreground transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground disabled:cursor-not-allowed disabled:opacity-50"
       >
         {status === "submitting" ? "Sending..." : "Send Message"}
       </button>

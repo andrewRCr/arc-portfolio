@@ -20,7 +20,7 @@
  */
 
 import { rosePineMain, rosePineDawn, rosePineA11y } from "../palettes/rose-pine";
-import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
 
 // Opacity configuration - Rose Pine has muted accents, needs higher opacities
@@ -45,6 +45,25 @@ const opacities: ThemeOpacities = {
 const surfaces: ThemeSurfaces = {
   light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
   dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to accent-decorative (iris/purple), accent-mid darkens in-family
+// Rose Pine: Secondary (foam/cyan) is too close to primary (pine/teal), so we use
+//            accent-decorative (iris/purple) for a distinct complementary shift
+// Primary: Pine (teal) → Iris (purple)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 40, // fallback
+    accentMidDarken: 40,
+    primaryHoverColor: "accent-decorative",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "accent-decorative-high",
+    // Rose Pine dark: Flip to light foreground for contrast on dimmed rose
+    accentMidHoverForeground: "foreground",
+  },
 };
 
 // Define tokens as standalone objects to enable swatch derivation
@@ -175,9 +194,10 @@ export const rosePineTheme: Theme = {
   defaultWallpaper: "jr-korpa-2",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
@@ -187,4 +207,5 @@ export const rosePineTheme: Theme = {
 
   opacities,
   surfaces,
+  hover,
 } as const;

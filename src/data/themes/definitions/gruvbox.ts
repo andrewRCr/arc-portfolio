@@ -24,7 +24,7 @@
  */
 
 import { gruvboxPalette as p, gruvboxA11y } from "../palettes/gruvbox";
-import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
 
 // Opacity configuration
@@ -47,6 +47,21 @@ const opacities: ThemeOpacities = {
 const surfaces: ThemeSurfaces = {
   light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "normal" },
   dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to secondary, accent-mid darkens in-family
+// Gruvbox: Green (lime) primary → Orange/Yellow secondary (cool→warm)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 20, // fallback
+    accentMidDarken: 20,
+    primaryHoverColor: "secondary",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "secondary-high",
+  },
 };
 
 // Define tokens as standalone objects to enable swatch derivation
@@ -173,9 +188,10 @@ export const gruvboxTheme: Theme = {
   defaultWallpaper: "c-shi",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
@@ -187,4 +203,5 @@ export const gruvboxTheme: Theme = {
 
   opacities,
   surfaces,
+  hover,
 } as const;

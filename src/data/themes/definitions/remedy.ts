@@ -17,7 +17,7 @@
  */
 
 import { remedyBright, remedyDark, remedyAccents, remedyA11y } from "../palettes/remedy";
-import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
 
 // Opacity configuration - mirrors CSS overrides for single source of truth
@@ -40,6 +40,21 @@ const opacities: ThemeOpacities = {
 const surfaces: ThemeSurfaces = {
   light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
   dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to secondary, accent-mid darkens in-family
+// Remedy: Orange primary → Yellow secondary (warm family, cohesive)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 20, // fallback
+    accentMidDarken: 40,
+    primaryHoverColor: "secondary",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "secondary-high",
+  },
 };
 
 // Define tokens as standalone objects to enable swatch derivation
@@ -168,9 +183,10 @@ export const remedyTheme: Theme = {
   defaultWallpaper: "karolis-milisauskas",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
@@ -181,4 +197,5 @@ export const remedyTheme: Theme = {
 
   opacities,
   surfaces,
+  hover,
 } as const;

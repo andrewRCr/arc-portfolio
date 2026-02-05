@@ -34,10 +34,10 @@ export function ObfuscatedMailtoButton({ encoded, className = "", iconOnly = fal
     }
   }, [isClient, encoded]);
 
-  // Button styling - compact for icon-only, full for labeled (both use accent-mid default, accent-low hover)
+  // Button styling - compact for icon-only, full for labeled (both use accent-mid with hover darkening)
   const buttonClasses = iconOnly
-    ? "flex items-center justify-center bg-accent-mid p-3 text-accent-mid-foreground transition-colors hover:bg-accent-low hover:text-accent-low-foreground"
-    : "flex items-center gap-1.5 bg-accent-mid px-3 py-2 font-terminal text-sm text-accent-mid-foreground transition-colors hover:bg-accent-low hover:text-accent-low-foreground";
+    ? "flex items-center justify-center bg-accent-mid p-3 text-accent-mid-foreground transition-colors hover:bg-accent-mid-hover hover:text-accent-mid-hover-foreground"
+    : "flex items-center gap-1.5 bg-accent-mid px-3 py-2 font-terminal text-sm text-accent-mid-foreground transition-colors hover:bg-accent-mid-hover hover:text-accent-mid-hover-foreground";
 
   // Server-side and decode failure: render disabled-looking button
   if (!email) {

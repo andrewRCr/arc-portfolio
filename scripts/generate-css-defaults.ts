@@ -17,7 +17,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { themes, defaultPalette } from "../src/data/themes";
-import type { ThemeColors, ThemeOpacities, ThemeSurfaces, Theme } from "../src/data/themes/types";
+import type { ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../src/data/themes/types";
 import { DEFAULT_LAYOUT_TOKENS } from "../src/lib/theme/tokens/layout";
 
 const GLOBALS_CSS_PATH = path.join(__dirname, "../src/app/globals.css");
@@ -107,6 +107,9 @@ function foregroundTokenToCss(token: string): string {
   if (token === "primary-foreground") {
     return "var(--primary-foreground)";
   }
+  if (token === "foreground-lightened") {
+    return "color-mix(in oklch, rgb(var(--foreground)) 90%, white 10%)";
+  }
   return `var(--${token})`;
 }
 
@@ -182,6 +185,108 @@ function generateSurfaceCssVariables(surfaces: ThemeSurfaces, mode: "light" | "d
 }
 
 /**
+ * Generate CSS variable declarations from theme hover configuration.
+ *
+ * Supports two approaches:
+ * 1. Color swap: Hover swaps to secondary color (when hoverColor is set)
+ * 2. Darkening: Hover darkens the original color (fallback)
+ *    - Dark mode: Opacity-based (85% for primary, accent-low for accent-mid)
+ *    - Light mode: Color-mix with foreground
+ *
+ * @param hover - Theme hover configuration
+ * @param mode - "light" or "dark"
+ * @param indent - Indentation string
+ */
+function generateHoverCssVariables(hover: ThemeHoverConfig, mode: "light" | "dark", indent = "  "): string {
+  const config = hover[mode];
+  const lines: string[] = [];
+
+  lines.push(`${indent}/* Hover configuration */`);
+
+  // === Primary hover ===
+  if (config.primaryHoverColor) {
+    // Color swap approach
+    const hoverColor = config.primaryHoverColor;
+    if (hoverColor === "secondary") {
+      lines.push(`${indent}--primary-hover-value: rgb(var(--secondary));`);
+    } else if (hoverColor === "secondary-high") {
+      lines.push(`${indent}--primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));`);
+    } else if (hoverColor === "accent-decorative") {
+      lines.push(`${indent}--primary-hover-value: rgb(var(--accent-decorative, var(--primary)));`);
+    } else if (hoverColor === "accent-decorative-high") {
+      lines.push(`${indent}--primary-hover-value: rgb(var(--accent-decorative, var(--primary)) / 0.8);`);
+    }
+    // Foreground: use override if specified, else infer from hover color
+    let defaultFg = "var(--secondary-foreground)";
+    if (hoverColor === "accent-decorative" || hoverColor === "accent-decorative-high") {
+      defaultFg = "var(--accent-decorative-foreground, var(--primary-foreground))";
+    }
+    const primaryFg = config.primaryHoverForeground ? foregroundTokenToCss(config.primaryHoverForeground) : defaultFg;
+    lines.push(`${indent}--primary-hover-foreground-value: ${primaryFg};`);
+  } else if (mode === "dark") {
+    // Dark mode darkening: opacity-based
+    lines.push(`${indent}--primary-hover-value: rgb(var(--primary) / 0.85);`);
+    const primaryFg = config.primaryHoverForeground
+      ? foregroundTokenToCss(config.primaryHoverForeground)
+      : "var(--primary-foreground)";
+    lines.push(`${indent}--primary-hover-foreground-value: ${primaryFg};`);
+  } else {
+    // Light mode darkening: color-mix
+    const primaryDarken = config.primaryDarken;
+    lines.push(
+      `${indent}--primary-hover-value: color-mix(in oklch, rgb(var(--primary)) ${100 - primaryDarken}%, rgb(var(--foreground)) ${primaryDarken}%);`
+    );
+    const primaryFg = config.primaryHoverForeground
+      ? foregroundTokenToCss(config.primaryHoverForeground)
+      : "var(--primary-foreground)";
+    lines.push(`${indent}--primary-hover-foreground-value: ${primaryFg};`);
+  }
+
+  // === Accent-mid hover ===
+  if (config.accentMidHoverColor) {
+    // Color swap approach
+    const hoverColor = config.accentMidHoverColor;
+    if (hoverColor === "secondary") {
+      lines.push(`${indent}--accent-mid-hover-value: rgb(var(--secondary));`);
+    } else if (hoverColor === "secondary-high") {
+      lines.push(`${indent}--accent-mid-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));`);
+    } else if (hoverColor === "accent-decorative") {
+      lines.push(`${indent}--accent-mid-hover-value: rgb(var(--accent-decorative, var(--accent)));`);
+    } else if (hoverColor === "accent-decorative-high") {
+      lines.push(`${indent}--accent-mid-hover-value: rgb(var(--accent-decorative, var(--accent)) / 0.8);`);
+    }
+    // Foreground: use override if specified, else infer from hover color
+    let defaultFg = "var(--secondary-foreground)";
+    if (hoverColor === "accent-decorative" || hoverColor === "accent-decorative-high") {
+      defaultFg = "var(--accent-decorative-foreground, var(--accent-foreground))";
+    }
+    const accentFg = config.accentMidHoverForeground
+      ? foregroundTokenToCss(config.accentMidHoverForeground)
+      : defaultFg;
+    lines.push(`${indent}--accent-mid-hover-foreground-value: ${accentFg};`);
+  } else if (mode === "dark") {
+    // Dark mode darkening: opacity-based (accent-low)
+    lines.push(`${indent}--accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));`);
+    const accentFg = config.accentMidHoverForeground
+      ? foregroundTokenToCss(config.accentMidHoverForeground)
+      : "var(--accent-low-foreground)";
+    lines.push(`${indent}--accent-mid-hover-foreground-value: ${accentFg};`);
+  } else {
+    // Light mode darkening: color-mix
+    const accentDarken = config.accentMidDarken;
+    lines.push(
+      `${indent}--accent-mid-hover-value: color-mix(in oklch, rgb(var(--accent) / var(--accent-mid-opacity)) ${100 - accentDarken}%, rgb(var(--foreground)) ${accentDarken}%);`
+    );
+    const accentFg = config.accentMidHoverForeground
+      ? foregroundTokenToCss(config.accentMidHoverForeground)
+      : "var(--accent-mid-foreground)";
+    lines.push(`${indent}--accent-mid-hover-foreground-value: ${accentFg};`);
+  }
+
+  return lines.join("\n");
+}
+
+/**
  * Generate all theme class variants.
  * Creates .{themeName}.dark and .{themeName}.light for each theme.
  * Includes color tokens, opacity configuration, and surface configuration.
@@ -204,6 +309,11 @@ function generateThemeVariants(): string {
       darkBlock += `\n\n${generateSurfaceCssVariables(theme.surfaces, "dark", "  ")}`;
     }
 
+    // Add hover config if present
+    if (theme.hover) {
+      darkBlock += `\n\n${generateHoverCssVariables(theme.hover, "dark", "  ")}`;
+    }
+
     darkBlock += "\n}";
     blocks.push(darkBlock);
 
@@ -219,6 +329,11 @@ function generateThemeVariants(): string {
     // Add surface config if present
     if (theme.surfaces) {
       lightBlock += `\n\n${generateSurfaceCssVariables(theme.surfaces, "light", "  ")}`;
+    }
+
+    // Add hover config if present
+    if (theme.hover) {
+      lightBlock += `\n\n${generateHoverCssVariables(theme.hover, "light", "  ")}`;
     }
 
     lightBlock += "\n}";

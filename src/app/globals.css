@@ -55,6 +55,11 @@
   /* Primary/Secondary/Muted */
   --color-primary: rgb(var(--primary));
   --color-primary-foreground: rgb(var(--primary-foreground));
+  /* Primary hover variant - computed per mode:
+     Dark mode: opacity-based (subtle, consistent with accent pattern)
+     Light mode: color-mix darkening (opacity goes wrong direction) */
+  --color-primary-hover: var(--primary-hover-value);
+  --color-primary-hover-foreground: rgb(var(--primary-hover-foreground-value));
   --color-secondary: rgb(var(--secondary));
   --color-secondary-foreground: rgb(var(--secondary-foreground));
   --color-muted: rgb(var(--muted));
@@ -70,6 +75,11 @@
   --color-accent-high-foreground: rgb(var(--accent-high-foreground));
   --color-accent-mid-foreground: rgb(var(--accent-mid-foreground));
   --color-accent-low-foreground: rgb(var(--accent-low-foreground));
+  /* Accent-mid hover variant - computed per mode:
+     Dark mode: opacity-based (accent-low equivalent, includes foreground swap)
+     Light mode: color-mix darkening (opacity goes wrong direction) */
+  --color-accent-mid-hover: var(--accent-mid-hover-value);
+  --color-accent-mid-hover-foreground: rgb(var(--accent-mid-hover-foreground-value));
   /* Secondary opacity variants - theme-aware (ayu uses lower value) */
   --color-secondary-high: rgb(var(--secondary) / var(--secondary-high-opacity));
   --color-secondary-mid: rgb(var(--secondary) / var(--secondary-mid-opacity));
@@ -154,6 +164,13 @@
   --secondary-high-opacity: 0.8;
   --secondary-mid-opacity: 0.2;
   --secondary-low-opacity: 0.1;
+  /* Hover configuration - computed values differ by mode:
+     Dark mode: opacity-based hover (consistent with accent-mid→low pattern)
+     Light mode: color-mix darkening (opacity gives wrong visual direction) */
+  --primary-hover-value: rgb(var(--primary) / 0.85);
+  --primary-hover-foreground-value: var(--primary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
   /* Decorative accent - defaults to primary (themes can override for visual variety) */
   --accent-decorative: var(--primary);
   --accent-decorative-foreground: var(--primary-foreground);
@@ -290,6 +307,12 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
 }
 
 .remedy.light {
@@ -362,6 +385,16 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .rose-pine.dark {
@@ -436,6 +469,12 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--accent-decorative, var(--primary)) / 0.8);
+  --primary-hover-foreground-value: var(--accent-decorative-foreground, var(--primary-foreground));
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--foreground);
 }
 
 .rose-pine.light {
@@ -510,6 +549,16 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--accent-decorative, var(--primary)));
+  --primary-hover-foreground-value: var(--accent-decorative-foreground, var(--primary-foreground));
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .gruvbox.dark {
@@ -582,6 +631,12 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
 }
 
 .gruvbox.light {
@@ -654,6 +709,16 @@
   --window-darken: 10%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .ayu.dark {
@@ -726,6 +791,12 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: color-mix(in oklch, rgb(var(--foreground)) 90%, white 10%);
 }
 
 .ayu.light {
@@ -798,6 +869,16 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .rouge.dark {
@@ -870,6 +951,12 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: color-mix(in oklch, rgb(var(--foreground)) 90%, white 10%);
 }
 
 .rouge.light {
@@ -942,6 +1029,16 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .mariana.dark {
@@ -1014,6 +1111,12 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
 }
 
 .mariana.light {
@@ -1086,6 +1189,16 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 /* END AUTO-GENERATED THEME VARIANTS */
@@ -1218,6 +1331,34 @@ html[data-theme-transition] *::after {
 }
 
 /* ==========================================================================
+   Page Content Layout
+   Mobile-specific padding adjustments for content areas.
+   Baseline inline padding is 24px (from layout tokens); reduced on mobile.
+   ========================================================================== */
+
+/* Mobile baseline: reduce content top padding for all pages */
+@media (max-width: 639px) {
+  [data-page-content] {
+    padding-top: 12px !important;
+  }
+}
+
+/* Skills/About - mobile: slightly more padding than baseline */
+@media (max-width: 639px) {
+  [data-page="skills"] [data-page-content],
+  [data-page="about"] [data-page-content] {
+    padding-top: 16px !important;
+  }
+}
+
+/* Projects listing - mobile: further reduced (header provides sufficient spacing) */
+@media (max-width: 639px) {
+  [data-page="projects"] [data-page-content] {
+    padding-top: 8px !important;
+  }
+}
+
+/* ==========================================================================
    OverlayScrollbars
    Theme styling and page-specific track insets.
    ========================================================================== */
@@ -1257,13 +1398,6 @@ html[data-theme-transition] *::after {
   [data-page] .os-scrollbar-vertical {
     padding-top: 40px;
     padding-bottom: 64px;
-  }
-}
-
-/* Projects listing - mobile: reduce content top padding (header provides sufficient spacing) */
-@media (max-width: 639px) {
-  [data-page="projects"] [data-page-content] {
-    padding-top: 8px !important;
   }
 }
 

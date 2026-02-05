@@ -205,6 +205,8 @@ export interface Theme {
   readonly opacities?: ThemeOpacities;
   /** Surface and window configuration for visual layering (optional) */
   readonly surfaces?: ThemeSurfaces;
+  /** Hover darkening configuration for interactive elements (optional) */
+  readonly hover?: ThemeHoverConfig;
 }
 
 /**
@@ -373,4 +375,87 @@ export interface ThemeSurfaces {
 
   /** Dark mode surface configuration */
   readonly dark: ModeSurfaceConfig;
+}
+
+// =============================================================================
+// HOVER CONFIGURATION
+// =============================================================================
+
+/**
+ * Hover color swap options.
+ * - "secondary": Use secondary color at full opacity
+ * - "secondary-high": Use secondary color at secondary-high-opacity (0.8)
+ * - "accent-decorative": Use accent-decorative token at full opacity
+ * - "accent-decorative-high": Use accent-decorative token at 0.8 opacity
+ */
+export type HoverColorSwap = "secondary" | "secondary-high" | "accent-decorative" | "accent-decorative-high";
+
+/**
+ * Mode-specific hover configuration.
+ * Controls how interactive elements change on hover.
+ *
+ * Two approaches available:
+ * 1. **Color swap** (recommended): Hover swaps to secondary color
+ *    - More intentional, consistent across themes
+ *    - Set `primaryHoverColor` and/or `accentMidHoverColor`
+ *
+ * 2. **Darkening** (fallback): Hover darkens the original color
+ *    - Dark mode: opacity-based (85% for primary, accent-low for accent-mid)
+ *    - Light mode: color-mix with foreground at specified percentage
+ *    - Used when hoverColor properties are not set
+ *
+ * Foreground overrides allow per-theme customization for contrast needs.
+ */
+export interface ModeHoverConfig {
+  /** Percentage to darken primary color on hover (0-100). Used when primaryHoverColor not set. */
+  readonly primaryDarken: number;
+
+  /** Percentage to darken accent-mid color on hover (0-100). Used when accentMidHoverColor not set. */
+  readonly accentMidDarken: number;
+
+  /**
+   * Swap primary to secondary on hover instead of darkening.
+   * - "secondary": Use secondary at full opacity
+   * - "secondary-high": Use secondary at secondary-high-opacity (toned down)
+   */
+  readonly primaryHoverColor?: HoverColorSwap;
+
+  /**
+   * Swap accent-mid to secondary on hover instead of darkening.
+   * - "secondary": Use secondary at full opacity
+   * - "secondary-high": Use secondary at secondary-high-opacity (toned down)
+   */
+  readonly accentMidHoverColor?: HoverColorSwap;
+
+  /**
+   * Override foreground for primary hover. If not specified:
+   * - With hoverColor: uses secondary-foreground
+   * - Without hoverColor: uses primary-foreground (no change)
+   */
+  readonly primaryHoverForeground?: ForegroundToken | "primary-foreground" | "secondary-foreground";
+
+  /**
+   * Override foreground for accent-mid hover. If not specified:
+   * - With hoverColor: uses secondary-foreground
+   * - Without hoverColor (dark): uses accent-low-foreground
+   * - Without hoverColor (light): uses accent-mid-foreground
+   *
+   * Special values:
+   * - "foreground-lightened": foreground mixed with 10% white (for dark mode contrast boost)
+   */
+  readonly accentMidHoverForeground?: ForegroundToken | "secondary-foreground" | "foreground-lightened";
+}
+
+/**
+ * Complete theme hover configuration for both modes.
+ *
+ * Enables per-theme, per-mode control over hover darkening percentages.
+ * Most themes use identical values; some may need adjustment for contrast.
+ */
+export interface ThemeHoverConfig {
+  /** Light mode hover configuration */
+  readonly light: ModeHoverConfig;
+
+  /** Dark mode hover configuration */
+  readonly dark: ModeHoverConfig;
 }

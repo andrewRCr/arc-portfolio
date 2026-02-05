@@ -80,7 +80,7 @@ export function SkillsSection() {
                       <TouchTarget className="-mx-1 -my-2 sm:mx-0 sm:my-0 sm:min-h-0 sm:min-w-0">
                         <Link
                           href={`/projects?skills=${encodeURIComponent(skill.name)}`}
-                          className="font-body text-sm text-muted-foreground hover:text-accent-mid transition-colors"
+                          className="font-body text-sm text-muted-foreground transition-colors hover:text-secondary dark:hover:text-secondary-high"
                         >
                           {skill.name}
                         </Link>
