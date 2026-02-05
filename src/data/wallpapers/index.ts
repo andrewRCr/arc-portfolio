@@ -72,10 +72,10 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
   // =====================
 
   {
-    id: "jr-korpa-8",
-    src: "/wallpaper/optimized-1080/jr-korpa-8.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-8.webp",
-    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-8.webp",
+    id: "jr-korpa-2",
+    src: "/wallpaper/optimized-1080/jr-korpa-2.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-2.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-2.webp",
     compatibleThemes: ["rose-pine"],
   },
   {
@@ -100,10 +100,10 @@ export const WALLPAPER_OPTIONS: readonly WallpaperOption[] = [
     compatibleThemes: ["rose-pine"],
   },
   {
-    id: "jr-korpa-2",
-    src: "/wallpaper/optimized-1080/jr-korpa-2.webp",
-    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-2.webp",
-    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-2.webp",
+    id: "jr-korpa-8",
+    src: "/wallpaper/optimized-1080/jr-korpa-8.webp",
+    thumbnailSrc: "/wallpaper/thumbnails/jr-korpa-8.webp",
+    srcHiRes: "/wallpaper/optimized-1440/jr-korpa-8.webp",
     compatibleThemes: ["rose-pine"],
   },
   {

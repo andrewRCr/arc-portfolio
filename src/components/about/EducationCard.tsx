@@ -34,17 +34,19 @@ export function EducationCard({ education }: EducationCardProps) {
     <div data-testid="education-card" className="overflow-hidden rounded-lg border border-border">
       {/* Header - institution name */}
       <div data-testid="education-card-header" className="bg-surface-card px-4 py-3">
-        <h3 className="font-title text-lg font-bold text-foreground">{displayInstitution}</h3>
+        <h3 className="font-body sm:font-terminal text-md sm:text-lg font-bold text-foreground">
+          {displayInstitution}
+        </h3>
       </div>
 
       {/* Body - degree info + metadata badges */}
       <div data-testid="education-card-body" className="bg-surface-background px-4 py-4">
         {/* Major + degree type: stacked on phone, joined side-by-side on tablet+ */}
         <div className="flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-0">
-          <span className="inline-block bg-secondary-high px-3 py-1.5 text-base font-terminal text-secondary-foreground">
+          <span className="inline-block bg-secondary-high px-3 py-1.5 text-sm sm:text-base font-terminal text-secondary-foreground">
             {major}
           </span>
-          <span className="inline-block bg-surface-muted px-3 py-1.5 text-base font-terminal text-muted-foreground">
+          <span className="inline-block bg-surface-muted px-3 py-1.5 text-sm sm:text-base font-terminal text-muted-foreground">
             {degree}
           </span>
         </div>
@@ -53,17 +55,17 @@ export function EducationCard({ education }: EducationCardProps) {
         {hasMetadata && (
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {displayLocation && (
-              <span className="border border-border bg-surface-muted px-2.5 py-0.5 font-terminal text-sm text-muted-foreground">
+              <span className="border border-border bg-surface-muted px-2.5 py-0.5 font-body sm:font-terminal text-xs sm:text-sm text-muted-foreground">
                 {displayLocation}
               </span>
             )}
             {graduationDate && (
-              <span className="border border-border bg-surface-muted px-2.5 py-0.5 font-terminal text-sm text-muted-foreground">
+              <span className="border border-border bg-surface-muted px-2.5 py-0.5 font-body sm:font-terminal text-xs sm:text-sm text-muted-foreground">
                 {graduationDate}
               </span>
             )}
             {gpa && (
-              <span className="ml-auto border border-border bg-surface-muted px-2.5 py-0.5 font-terminal text-sm text-muted-foreground">
+              <span className="ml-auto border border-border bg-surface-muted px-2.5 py-0.5 font-body sm:font-terminal text-xs sm:text-sm text-muted-foreground">
                 GPA: {gpa.split("/")[0]}
               </span>
             )}

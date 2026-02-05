@@ -52,6 +52,8 @@ export interface PageLayoutProps {
   pageId?: string;
   /** Header type for back-to-top button threshold (inferred from stickyHeader if not set) */
   headerType?: HeaderType;
+  /** Vertically center content in viewport (default: false) */
+  centerContent?: boolean;
 }
 
 export function PageLayout({
@@ -61,6 +63,7 @@ export function PageLayout({
   stickyHeader = false,
   pageId,
   headerType,
+  centerContent = false,
 }: PageLayoutProps) {
   // Infer header type from stickyHeader if not explicitly set
   const effectiveHeaderType = headerType ?? (stickyHeader ? "detail" : "page");
@@ -155,12 +158,12 @@ export function PageLayout({
             {/* Inner motion.div: Framer Motion for intro/route animations */}
             {/* Separated because FM inline styles override CSS classes */}
             <div
-              className={`transition-opacity ${shouldFadeContent ? "opacity-0" : ""}`}
+              className={`transition-opacity ${centerContent ? "h-full" : ""} ${shouldFadeContent ? "opacity-0" : ""}`}
               style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
             >
               <motion.div
                 ref={contentRef}
-                className="mx-auto w-full min-h-full"
+                className={`mx-auto w-full min-h-full ${centerContent ? "flex flex-col justify-center" : ""}`}
                 data-page-content
                 style={contentStyle}
                 initial={PAGE_BODY_FADE_ANIMATION.initial}

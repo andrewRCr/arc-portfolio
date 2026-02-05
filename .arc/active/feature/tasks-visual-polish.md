@@ -1213,24 +1213,14 @@ contrast testing.
 
 ### **Phase 8:** Final Verification
 
-- [ ] **8.1 Visual regression check**
+- [x] **8.1 Visual regression check**
 
-    - [ ] **8.1.a Check all pages across viewports**
-        - Desktop, tablet, mobile for: /, /projects, /skills, /about, /contact
-        - Project detail pages (sample of complete projects)
-        - Verify no unintended visual changes
+    Manual browser verification across all themes and modes. Discovered and fixed several
+    hover system issues and visual polish items during review.
 
-    - [ ] **8.1.b Verify all animations work correctly**
-        - Page transitions
-        - Tab animations
-        - Card hover effects
-        - Navigation hover effects
-        - Theme toggle transitions
-        - Intro animation (if applicable)
-
-    - [ ] **8.1.c Test reduced motion preference**
-        - Enable `prefers-reduced-motion: reduce`
-        - Verify all animations have appropriate alternatives
+    - [x] **8.1.a Check all pages across viewports** - Verified
+    - [x] **8.1.b Verify all animations work correctly** - Verified
+    - [x] **8.1.c Test reduced motion preference** - Verified
 
 - [ ] **8.2 Full quality gates (Tier 3)**
 

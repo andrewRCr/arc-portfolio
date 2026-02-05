@@ -62,38 +62,34 @@ export function TopBar({ isActive, onActivate, className }: TopBarProps) {
         >
           {/* Branding - links to home. With reduced motion disabled, clicking also triggers replay. */}
           {/* On desktop hover (when replay available), shows "reinitialize" with blinking cursor */}
-          {/* peer on TouchTarget so only branding hover triggers effects, not decorative elements */}
-          {/* NOTE: underscore must be direct sibling of peer for peer-hover to work (not nested) */}
-          <div className="flex items-center">
-            <TouchTarget align="start" className="peer">
-              <Link
-                href="/"
-                onClick={reducedMotion ? undefined : triggerReplay}
-                className="flex items-center gap-2 text-foreground hover:text-accent-mid transition-colors"
-              >
-                <span className="font-title font-bold">{SITE.handle}</span>
-              </Link>
-            </TouchTarget>
+          {/* Link has peer class; decorative siblings use peer-hover to react only to Link hover */}
+          <TouchTarget align="start" className="relative">
+            <Link
+              href="/"
+              onClick={reducedMotion ? undefined : triggerReplay}
+              className="peer font-title font-bold text-foreground hover:text-accent-mid transition-colors"
+            >
+              {SITE.handle}
+            </Link>
             <span className="ml-3 text-primary font-terminal pointer-events-none">&gt;</span>
             {/* Underscore decoration - fades out on desktop hover when replay available */}
-            {/* Must be direct sibling of peer (not nested) for peer-hover to work */}
             <span
               className={
                 reducedMotion
-                  ? "text-primary font-terminal"
-                  : "text-primary font-terminal md:peer-hover:opacity-0 transition-opacity duration-200"
+                  ? "text-primary font-terminal pointer-events-none"
+                  : "text-primary font-terminal pointer-events-none md:peer-hover:opacity-0 transition-opacity duration-200"
               }
             >
               _
             </span>
-            {/* Hover hint - desktop only, hidden when reduced motion (no replay available) */}
+            {/* Hover hint - desktop only, absolute positioned so it doesn't expand hover area */}
             {!reducedMotion && (
-              <span className="pointer-events-none hidden md:inline-flex md:items-baseline md:gap-1 md:opacity-0 md:peer-hover:opacity-100 transition-opacity duration-200 font-terminal text-foreground text-sm">
+              <span className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 hidden md:inline-flex md:items-baseline md:gap-1 md:opacity-0 md:peer-hover:opacity-100 transition-opacity duration-200 font-terminal text-foreground text-sm">
                 <span>reinitialize</span>
                 <span className="inline-block w-1.5 h-3 bg-primary animate-blink translate-y-0.5" aria-hidden="true" />
               </span>
             )}
-          </div>
+          </TouchTarget>
 
           {/* Theme controls - responsive: drawer on mobile, popover + toggle on desktop */}
           <div data-testid="theme-controls" className="flex items-center">

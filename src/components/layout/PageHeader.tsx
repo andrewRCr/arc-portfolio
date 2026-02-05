@@ -85,14 +85,16 @@ export function PageHeader({ title, subtitle, children, hideDivider = false }: P
       {/* Secondary content - parallax+blur for children, blur-only for tagline */}
       {hasSecondaryContent && (
         <motion.div
-          className={title ? "mt-1" : ""}
+          className={title ? "sm:mt-1" : ""}
           initial={secondaryAnimation.initial}
           animate={secondaryAnimation.animate}
           transition={secondaryAnimation.transition}
         >
-          {subtitle && <p className="text-sm font-body text-muted-foreground">{subtitle}</p>}
+          {subtitle && (
+            <p className="text-sm font-body text-muted-foreground text-center sm:text-left sm:ml-px">{subtitle}</p>
+          )}
           {children && <div className={title ? "sm:mt-1" : ""}>{children}</div>}
-          {!hideDivider && <div className="mt-3 mx-4 border-b border-border/50" />}
+          {!hideDivider && <div className="mt-2 sm:mt-3 mx-4 border-b border-border/50" />}
         </motion.div>
       )}
     </div>
