@@ -66,7 +66,7 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - no live demo yet
     },
     images: {
-      thumbnail: "/thumbnails/cinexplorer.webp?v=7",
+      thumbnail: "/thumbnails/cinexplorer.webp",
       hero: "/projects/cinexplorer/hero.webp",
       screenshots: [], // In development - no screenshots yet
     },
@@ -270,8 +270,8 @@ export const projects: Project[] = [
       download: "https://github.com/andrewRCr/TaskFocus/releases", // Windows desktop app
     },
     images: {
-      thumbnail: "/thumbnails/taskfocus.webp?v=2",
-      hero: "/projects/taskfocus/hero.webp?v=2",
+      thumbnail: "/thumbnails/taskfocus.webp",
+      hero: "/projects/taskfocus/hero.webp",
       screenshots: [
         { src: "/projects/taskfocus/screenshot-1.webp", alt: "TaskFocus Today view with prioritized tasks" },
         { src: "/projects/taskfocus/screenshot-2.webp", alt: "Task organization with Projects and Contexts" },
@@ -351,7 +351,7 @@ export const projects: Project[] = [
       },
     },
     images: {
-      thumbnail: "/thumbnails/petresort.webp?v=2",
+      thumbnail: "/thumbnails/petresort.webp",
       hero: "/projects/petresort/hero.webp",
       screenshots: [
         { src: "/projects/petresort/screenshot-1.webp", alt: "PetResort dashboard with visit overview and metrics" },
@@ -418,8 +418,8 @@ export const projects: Project[] = [
       // download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
     },
     images: {
-      thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp?v=2",
-      hero: "/projects/doom-newgame-plus-customizer/hero.webp?v=2",
+      thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
+      hero: "/projects/doom-newgame-plus-customizer/hero.webp",
       screenshots: [
         {
           src: "/projects/doom-newgame-plus-customizer/screenshot-1.webp",
@@ -498,27 +498,27 @@ export const projects: Project[] = [
       hero: "/projects/action-rpg-project/hero.webp",
       screenshots: [
         {
-          src: "/projects/action-rpg-project/screenshot-1.webp?v=2",
+          src: "/projects/action-rpg-project/screenshot-1.webp",
           alt: "Action RPG combat encounter with posture-break mechanics",
         },
         {
-          src: "/projects/action-rpg-project/screenshot-2.webp?v=2",
+          src: "/projects/action-rpg-project/screenshot-2.webp",
           alt: "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues",
         },
         {
-          src: "/projects/action-rpg-project/screenshot-3.webp?v=2",
+          src: "/projects/action-rpg-project/screenshot-3.webp",
           alt: "Dungeon exploration and idol statue checkpoint",
         },
-        { src: "/projects/action-rpg-project/screenshot-4.webp?v=2", alt: "Boss battle with Large Skeletal Warrior" },
-        { src: "/projects/action-rpg-project/screenshot-5.webp?v=2", alt: "Action RPG gameplay screenshot 5" },
-        { src: "/projects/action-rpg-project/screenshot-6.webp?v=2", alt: "Action RPG gameplay screenshot 6" },
-        { src: "/projects/action-rpg-project/screenshot-7.webp?v=2", alt: "Action RPG gameplay screenshot 7" },
-        { src: "/projects/action-rpg-project/screenshot-8.webp?v=2", alt: "Action RPG gameplay screenshot 8" },
-        { src: "/projects/action-rpg-project/screenshot-9.webp?v=2", alt: "Action RPG gameplay screenshot 9" },
-        { src: "/projects/action-rpg-project/screenshot-10.webp?v=2", alt: "Action RPG gameplay screenshot 10" },
-        { src: "/projects/action-rpg-project/screenshot-11.webp?v=2", alt: "Action RPG gameplay screenshot 11" },
-        { src: "/projects/action-rpg-project/screenshot-12.webp?v=2", alt: "Action RPG gameplay screenshot 12" },
-        { src: "/projects/action-rpg-project/screenshot-13.webp?v=2", alt: "Action RPG gameplay screenshot 13" },
+        { src: "/projects/action-rpg-project/screenshot-4.webp", alt: "Boss battle with Large Skeletal Warrior" },
+        { src: "/projects/action-rpg-project/screenshot-5.webp", alt: "Action RPG gameplay screenshot 5" },
+        { src: "/projects/action-rpg-project/screenshot-6.webp", alt: "Action RPG gameplay screenshot 6" },
+        { src: "/projects/action-rpg-project/screenshot-7.webp", alt: "Action RPG gameplay screenshot 7" },
+        { src: "/projects/action-rpg-project/screenshot-8.webp", alt: "Action RPG gameplay screenshot 8" },
+        { src: "/projects/action-rpg-project/screenshot-9.webp", alt: "Action RPG gameplay screenshot 9" },
+        { src: "/projects/action-rpg-project/screenshot-10.webp", alt: "Action RPG gameplay screenshot 10" },
+        { src: "/projects/action-rpg-project/screenshot-11.webp", alt: "Action RPG gameplay screenshot 11" },
+        { src: "/projects/action-rpg-project/screenshot-12.webp", alt: "Action RPG gameplay screenshot 12" },
+        { src: "/projects/action-rpg-project/screenshot-13.webp", alt: "Action RPG gameplay screenshot 13" },
       ],
     },
     developmentTime: "2023",
@@ -581,51 +581,51 @@ export const projects: Project[] = [
       hero: "/projects/survival-horror-project/hero.webp",
       screenshots: [
         {
-          src: "/projects/survival-horror-project/screenshot-1.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-1.webp",
           alt: "Survival Horror mansion exploration and puzzle-solving",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-2.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-2.webp",
           alt: "Third-person combat with zombie enemies",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-3.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-3.webp",
           alt: "Multi-floor map system and inventory management",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-4.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-4.webp",
           alt: "Environmental puzzle mechanics and key item retrieval",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-5.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-5.webp",
           alt: "Survival Horror gameplay screenshot 5",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-6.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-6.webp",
           alt: "Survival Horror gameplay screenshot 6",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-7.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-7.webp",
           alt: "Survival Horror gameplay screenshot 7",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-8.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-8.webp",
           alt: "Survival Horror gameplay screenshot 8",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-9.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-9.webp",
           alt: "Survival Horror gameplay screenshot 9",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-10.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-10.webp",
           alt: "Survival Horror gameplay screenshot 10",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-11.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-11.webp",
           alt: "Survival Horror gameplay screenshot 11",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-12.webp?v=2",
+          src: "/projects/survival-horror-project/screenshot-12.webp",
           alt: "Survival Horror gameplay screenshot 12",
         },
       ],
@@ -687,11 +687,11 @@ export const projects: Project[] = [
     },
     images: {
       thumbnail: "/thumbnails/pong-clone.webp",
-      hero: "/projects/pong-clone/hero.webp?v=3",
+      hero: "/projects/pong-clone/hero.webp",
       screenshots: [
-        { src: "/projects/pong-clone/screenshot-1.webp?v=3", alt: "Main menu and game options" },
-        { src: "/projects/pong-clone/screenshot-2.webp?v=5", alt: "Single-player gameplay against AI" },
-        { src: "/projects/pong-clone/screenshot-3.webp?v=2", alt: "In-game pause menu" },
+        { src: "/projects/pong-clone/screenshot-1.webp", alt: "Main menu and game options" },
+        { src: "/projects/pong-clone/screenshot-2.webp", alt: "Single-player gameplay against AI" },
+        { src: "/projects/pong-clone/screenshot-3.webp", alt: "In-game pause menu" },
       ],
     },
     developmentTime: "2023",
