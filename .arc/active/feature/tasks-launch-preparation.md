@@ -257,16 +257,20 @@ dual-domain configuration.
           terminal` on h3 subheaders, `font-body` on chrome descriptions)
 
     - [x] **1.5.f Align style guide with production patterns**
-        - Fixed Button Variants table: outline and ghost hover →
-          `hover:bg-accent-high hover:text-accent-high-foreground`
-        - Expanded Token Categories table: added Computed Surfaces, Opacity
-          Variants, border-strong, and Hover rows (10 categories total)
-        - Fixed Focus Indicator Strategy: form inputs now document
-          `focus:border-secondary focus:ring-2 focus:ring-secondary-mid`
-        - Added new "Interaction Emphasis Tiers" section with 4 tiers
-          (Ambient, Focal, Primary CTA, Area hover) + subtle emphasis
-        - Updated ToC (16 entries), version bumped to 1.8
-        - Markdown lint passes clean
+        - **v1.8** (initial pass): Fixed Button/Focus tables, expanded Token
+          Categories (10 rows), added Emphasis Tiers section (4 tiers +
+          subtle emphasis)
+        - **v2.0** (full overhaul): Restructured 16 scattered sections → 6
+          organized sections (Philosophy, Token System, TWM Layout, Component
+          Patterns, Extending, References). 858 → 397 lines (54% reduction).
+          Fixed accuracy: topBarHeight/footerHeight 42/36→48/48, corrected
+          CSS variable name `--window-bg-opacity`, split Tier 1 into text
+          (accent-mid hover) vs action button (accent-high hover) sub-patterns,
+          renamed "Ambient"→"Understated" to avoid muted-token confusion.
+          Cut: rationale paragraphs, generic Tailwind examples, unused variant
+          docs (destructive buttons, sizing table), shadcn/ui usage section.
+          Kept: all token definitions, emphasis tiers with accurate component
+          assignments, extending pipeline with code snippets
 
     - [x] **1.5.g Align typography dev page + upgrade FontComparisonSection**
         - Applied font slots to typography page chrome: `font-title` on
@@ -288,11 +292,11 @@ dual-domain configuration.
         - Markdown lint: task list and style guide pass
         - Unit tests: 1390/1390 pass
 
-- [ ] **1.6 Phase 1 quality gates**
-    - [ ] 1.6.a Type-check modified files
-    - [ ] 1.6.b Lint modified files
-    - [ ] 1.6.c Run related unit tests
-    - [ ] 1.6.d Run E2E tests for affected areas (layout, navigation)
+- [x] **1.6 Phase 1 quality gates**
+    - [x] 1.6.a Type-check — zero errors (verified in 1.5.h, no code changes since)
+    - [x] 1.6.b Lint — zero violations (verified in 1.5.h, no code changes since)
+    - [x] 1.6.c Unit tests — 1390/1390 pass (verified in 1.5.h, no code changes since)
+    - [x] 1.6.d E2E — 108/108 pass (layout + navigation, 4 browsers/viewports)
 
 ### **Phase 2:** Content & Copy
 
