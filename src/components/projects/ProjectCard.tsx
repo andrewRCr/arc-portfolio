@@ -9,7 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Project } from "@/types/project";
 import { InDevelopmentBadge } from "@/components/projects/InDevelopmentBadge";
-import { TechStackScroller } from "@/components/ui/TechStackScroller";
+import { TechStackScroller } from "@/components/projects/TechStackScroller";
 
 interface ProjectCardProps {
   project: Project;

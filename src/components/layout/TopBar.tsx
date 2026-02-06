@@ -6,8 +6,8 @@ import { useAnimationContext } from "@/contexts/AnimationContext";
 import { WindowContainer } from "./WindowContainer";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeControl, ThemeControlDrawer } from "../theme";
-import { TouchTarget } from "../ui/TouchTarget";
-import { ResponsiveSwitch } from "../ui/ResponsiveSwitch";
+import { TouchTarget } from "../common/TouchTarget";
+import { ResponsiveSwitch } from "../common/ResponsiveSwitch";
 
 export interface TopBarProps {
   /** Whether this window is currently active (for touch devices) */

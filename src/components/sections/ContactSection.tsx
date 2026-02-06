@@ -12,7 +12,7 @@ import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ObfuscatedMailtoButton } from "@/components/contact/ObfuscatedMailtoButton";
 import { encodeEmail } from "@/lib/email-utils";
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 
 /** Icon component type that accepts className prop */
 type IconComponent = LucideIcon | typeof NexusModsIcon;

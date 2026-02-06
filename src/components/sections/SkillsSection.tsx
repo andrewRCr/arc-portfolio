@@ -13,7 +13,7 @@ import Link from "next/link";
 import { skills } from "@/data/skills";
 import { DetailCard } from "@/components/projects/DetailCard";
 import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
-import { TouchTarget } from "@/components/ui/TouchTarget";
+import { TouchTarget } from "@/components/common/TouchTarget";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useDelayedShow } from "@/hooks/useDelayedShow";
 

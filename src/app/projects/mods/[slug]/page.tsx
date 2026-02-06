@@ -5,7 +5,7 @@ import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { DetailCard } from "@/components/projects/DetailCard";
 import { getBackDestination } from "@/components/projects/utils";
-import { TextLink } from "@/components/ui/text-link";
+import { TextLink } from "@/components/common/TextLink";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";

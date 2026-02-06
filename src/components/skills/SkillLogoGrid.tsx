@@ -9,7 +9,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { getSkillIcon } from "@/lib/skill-icons";
-import { TouchTarget } from "@/components/ui/TouchTarget";
+import { TouchTarget } from "@/components/common/TouchTarget";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Skill } from "@/types/skills";
 

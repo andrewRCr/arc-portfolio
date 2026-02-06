@@ -13,7 +13,7 @@
  * @see DetailHeaderDesktop - Desktop overlay layout with crossfade
  */
 
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 import { DetailBannerMobile } from "./DetailBannerMobile";
 import { DetailHeaderDesktop } from "./DetailHeaderDesktop";
 import type { DetailHeaderProps } from "./detail-header.types";

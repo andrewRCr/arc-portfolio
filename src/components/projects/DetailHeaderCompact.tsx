@@ -15,7 +15,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade } from "@/hooks/useHeaderCrossfade";
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import type { ProjectLinks } from "@/types/project";
 

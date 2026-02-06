@@ -7,7 +7,7 @@ import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
 import { ObfuscatedMailtoIcon } from "@/components/contact/ObfuscatedMailtoIcon";
 import { encodeEmail } from "@/lib/email-utils";
 import { WindowContainer } from "./WindowContainer";
-import { TouchTarget } from "@/components/ui/TouchTarget";
+import { TouchTarget } from "@/components/common/TouchTarget";
 
 /** Icon component type that accepts size prop */
 type IconComponent = LucideIcon | typeof NexusModsIcon;

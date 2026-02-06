@@ -12,8 +12,8 @@ import ReactMarkdown from "react-markdown";
 import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
-import { TextLink } from "@/components/ui/text-link";
-import { TechStackScroller } from "@/components/ui/TechStackScroller";
+import { TextLink } from "@/components/common/TextLink";
+import { TechStackScroller } from "@/components/projects/TechStackScroller";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 
 interface ProjectDetailProps {

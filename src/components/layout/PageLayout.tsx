@@ -17,7 +17,7 @@ import { useAnimationContext } from "@/contexts/AnimationContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { ScrollShadow } from "./ScrollShadow";
 import { ScrollProvider } from "./ScrollContext";
-import { BackToTopButton } from "@/components/ui/BackToTopButton";
+import { BackToTopButton } from "@/components/common/BackToTopButton";
 import type { HeaderType } from "@/hooks/useHeaderCrossfade";
 
 /**

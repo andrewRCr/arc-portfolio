@@ -9,8 +9,8 @@
  */
 import Image from "next/image";
 import { about } from "@/data/about";
-import { TextLink } from "@/components/ui/text-link";
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { TextLink } from "@/components/common/TextLink";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 
 interface AboutSectionProps {
   /** Dynamic unique download count from NexusMods API (optional) */
