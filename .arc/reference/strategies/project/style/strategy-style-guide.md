@@ -1,6 +1,6 @@
 # Strategy: Style Guide
 
-**Version:** 1.7 | **Updated:** 2026-02-05
+**Version:** 1.8 | **Updated:** 2026-02-06
 
 This document is the authoritative style reference for arc-portfolio, covering design philosophy,
 token conventions, the TWM layout system, and component patterns.
@@ -14,14 +14,15 @@ token conventions, the TWM layout system, and component patterns.
 5. [Shadow-Based Elevation](#shadow-based-elevation)
 6. [TWM Layout System](#twm-layout-system)
 7. [Interactive States](#interactive-states)
-8. [Button Variants](#button-variants)
-9. [Focus Indicator Strategy](#focus-indicator-strategy)
-10. [shadcn/ui Component Usage](#shadcnui-component-usage)
-11. [Extending the Token System](#extending-the-token-system)
-12. [Typography System](#typography-system)
-13. [Light Mode Surface Layering](#light-mode-surface-layering)
-14. [Color Semantic Refinements](#color-semantic-refinements)
-15. [Border Usage Patterns](#border-usage-patterns)
+8. [Interaction Emphasis Tiers](#interaction-emphasis-tiers)
+9. [Button Variants](#button-variants)
+10. [Focus Indicator Strategy](#focus-indicator-strategy)
+11. [shadcn/ui Component Usage](#shadcnui-component-usage)
+12. [Extending the Token System](#extending-the-token-system)
+13. [Typography System](#typography-system)
+14. [Light Mode Surface Layering](#light-mode-surface-layering)
+15. [Color Semantic Refinements](#color-semantic-refinements)
+16. [Border Usage Patterns](#border-usage-patterns)
 
 ---
 
@@ -58,15 +59,18 @@ extensions for genuine gaps. This decision is documented in ADR-001.
 
 ### Token Categories
 
-| Category       | Tokens                                          | Purpose                              |
-|----------------|-------------------------------------------------|--------------------------------------|
-| **Base**       | `background`, `foreground`                      | Page background and default text     |
-| **Surfaces**   | `card`, `popover`                               | Container and overlay surfaces       |
-| **Semantic**   | `primary`, `secondary`, `accent`, `destructive` | Functional meaning (actions, states) |
-| **Decorative** | `accent-red/orange/green/blue/purple`           | Palette access (styling, no meaning) |
-| **Muted**      | `muted`, `muted-foreground`                     | Deemphasized content                 |
-| **UI**         | `border`, `input`, `ring`                       | Borders, inputs, focus rings         |
-| **Shadows**    | `shadow-sm/md/lg`                               | Elevation shadows (extension)        |
+| Category              | Tokens                                                                   | Purpose                                            |
+|-----------------------|--------------------------------------------------------------------------|----------------------------------------------------|
+| **Base**              | `background`, `foreground`                                               | Page background and default text                   |
+| **Raw Surfaces**      | `card`, `popover`                                                        | Container and overlay base values                  |
+| **Computed Surfaces** | `surface-card`, `surface-background`, `surface-muted`, `surface-popover` | Production hierarchy (per-theme opacity/darkening) |
+| **Semantic**          | `primary`, `secondary`, `accent`, `destructive`                          | Functional meaning (actions, states)               |
+| **Opacity Variants**  | `accent-high/mid/low`, `secondary-high/mid/low`                          | Theme-aware opacity levels (per-theme, per-mode)   |
+| **Decorative**        | `accent-red/orange/green/blue/purple`                                    | Palette access (styling, no meaning)               |
+| **Muted**             | `muted`, `muted-foreground`                                              | Deemphasized content                               |
+| **UI**                | `border`, `border-strong`, `input`, `ring`                               | Borders, inputs, focus rings                       |
+| **Shadows**           | `shadow-sm/md/lg`                                                        | Elevation shadows (extension)                      |
+| **Hover**             | `primary-hover`, `accent-mid-hover`                                      | Theme-aware hover color overrides                  |
 
 ### Foreground Pairing Convention
 
@@ -173,12 +177,12 @@ extension.
 
 ### Action Tokens
 
-| Token         | Semantic Meaning     | Usage                                     |
-|---------------|----------------------|-------------------------------------------|
-| `primary`     | Main call-to-action  | Submit buttons, key links, frame hover    |
-| `secondary`   | Interactive feedback | Hover borders, nav active, gradient       |
-| `accent`      | Decorative emphasis  | Callouts, highlights, special features    |
-| `destructive` | Danger/error states  | Delete buttons, error messages            |
+| Token         | Semantic Meaning     | Usage                                  |
+|---------------|----------------------|----------------------------------------|
+| `primary`     | Main call-to-action  | Submit buttons, key links, frame hover |
+| `secondary`   | Interactive feedback | Hover borders, nav active, gradient    |
+| `accent`      | Decorative emphasis  | Callouts, highlights, special features |
+| `destructive` | Danger/error states  | Delete buttons, error messages         |
 
 ### Muted Token
 
@@ -274,7 +278,7 @@ Windows are separated by consistent **gaps** that reveal the wallpaper backgroun
 Layout tokens are defined in `src/lib/theme/tokens/layout.ts` and control window appearance:
 
 | Token                   | Default | Purpose                                    |
-| ----------------------- | ------- | ------------------------------------------ |
+|-------------------------|---------|--------------------------------------------|
 | `windowGap`             | 8px     | Gap between windows and from viewport edge |
 | `windowBorderWidth`     | 2px     | Border width for window containers         |
 | `windowOpacity`         | 0.8     | Background opacity for semi-transparency   |
@@ -325,11 +329,11 @@ The gap serves two purposes:
 
 The TWM layout uses transparency for depth perception:
 
-| Layer              | Opacity | Purpose                               |
-| ------------------ | ------- | ------------------------------------- |
-| Wallpaper          | 100%    | Full opacity background               |
-| Window backgrounds | 80%     | Semi-transparent, wallpaper visible   |
-| Content            | 100%    | Full opacity for readability          |
+| Layer              | Opacity | Purpose                             |
+|--------------------|---------|-------------------------------------|
+| Wallpaper          | 100%    | Full opacity background             |
+| Window backgrounds | 80%     | Semi-transparent, wallpaper visible |
+| Content            | 100%    | Full opacity for readability        |
 
 The `backdrop-blur-lg` on windows creates a frosted glass effect, ensuring content remains
 readable while maintaining the layered aesthetic.
@@ -341,13 +345,13 @@ compromise text readability. 80% balances both concerns.
 
 The layout uses Tailwind's default breakpoints:
 
-| Breakpoint | Width  | Viewport   | Layout Adaptations                    |
-| ---------- | ------ | ---------- | ------------------------------------- |
-| Default    | < 640  | Phone      | Single-column, dropdown nav           |
-| `sm`       | 640px  | Small      | Minor spacing adjustments             |
-| `md`       | 768px  | Tablet     | Horizontal nav, larger touch targets  |
-| `lg`       | 1024px | Desktop    | Full layout, hover states             |
-| `xl`       | 1280px | Wide       | Content max-width constraint applies  |
+| Breakpoint | Width  | Viewport | Layout Adaptations                   |
+|------------|--------|----------|--------------------------------------|
+| Default    | < 640  | Phone    | Single-column, dropdown nav          |
+| `sm`       | 640px  | Small    | Minor spacing adjustments            |
+| `md`       | 768px  | Tablet   | Horizontal nav, larger touch targets |
+| `lg`       | 1024px | Desktop  | Full layout, hover states            |
+| `xl`       | 1280px | Wide     | Content max-width constraint applies |
 
 **Key responsive behaviors:**
 
@@ -427,6 +431,53 @@ modifiers. These tokens have per-theme opacity values defined in theme configura
 
 ---
 
+## Interaction Emphasis Tiers
+
+Interactive elements follow context-dependent emphasis tiers rather than fixed component
+defaults. The tier determines default and hover token choices based on the element's role
+in its surrounding context.
+
+### Tier 1 — Ambient
+
+**Tokens**: muted default → `accent-high` on hover
+
+Low-key elements in supporting context that shouldn't compete for attention until interacted
+with. Examples: TopBar theme toggle, FooterBar social links, ExternalLinksToolbar, back button
+(DetailHeader), filter button (Projects).
+
+### Tier 2 — Focal
+
+**Tokens**: `accent-mid` default → `accent-mid-hover` on hover
+
+The element IS the focus — user is looking at it. Examples: ContactForm social links.
+Uses accent-mid for stronger presence than ambient, with theme-aware hover transition.
+
+### Tier 3 — Primary CTA
+
+**Tokens**: `primary` default → `primary-hover` on hover
+
+Single most important action on the page. Currently only ContactForm submit button. Uses
+primary for maximum visual weight. One instance per page maximum to maintain hierarchy.
+
+### Tier 4 — Area Hover
+
+**Tokens**: `border-border` → `border-secondary-high` + `shadow-md` on hover
+
+Larger interactive surfaces where accent would be overwhelming. Used on FeaturedSection
+project cards and ProjectCard. Secondary provides subtle feedback appropriate for cards
+with substantial content.
+
+### Subtle Emphasis (Non-Interactive)
+
+**Token**: `accent-low` background
+
+Provides visual weight without implying interactivity. Used on ProjectCard titles and category
+badges on ProjectDetail. Interactivity, when present, comes from hover behavior layered on top
+(e.g., ProjectCard titles transition to `secondary-high` on card hover) — not from the
+accent-low itself.
+
+---
+
 ## Button Variants
 
 Button patterns follow semantic token usage with consistent sizing and hover states.
@@ -435,14 +486,14 @@ Button patterns follow semantic token usage with consistent sizing and hover sta
 
 Following shadcn/ui conventions, with theme-aware tokens for secondary:
 
-| Variant     | Background       | Text                     | Hover                         | Use Case                   |
-|-------------|------------------|--------------------------|-------------------------------|----------------------------|
-| default     | `bg-primary`     | `primary-foreground`     | `hover:bg-primary/90`         | Main CTAs, submit actions  |
-| secondary   | `bg-secondary`   | `secondary-foreground`   | `hover:bg-secondary-high`     | Alternative actions        |
-| destructive | `bg-destructive` | `destructive-foreground` | `hover:bg-destructive/90`     | Delete, dangerous actions  |
-| outline     | `border-border`  | `foreground`             | `hover:border-secondary-high` | Subtle actions, social     |
-| ghost       | transparent      | `foreground`             | `hover:bg-accent`             | Back buttons, subtle links |
-| link        | transparent      | `accent`                 | `hover:underline`             | Inline text links          |
+| Variant     | Background       | Text                     | Hover                                                    | Use Case                   |
+|-------------|------------------|--------------------------|----------------------------------------------------------|----------------------------|
+| default     | `bg-primary`     | `primary-foreground`     | `hover:bg-secondary-high`                                | Main CTAs, submit actions  |
+| secondary   | `bg-secondary`   | `secondary-foreground`   | `hover:bg-secondary-mid`                                 | Alternative actions        |
+| destructive | `bg-destructive` | `destructive-foreground` | `hover:bg-destructive/90`                                | Delete, dangerous actions  |
+| outline     | `border-border`  | `foreground`             | `hover:bg-accent-high hover:text-accent-high-foreground` | Subtle actions, social     |
+| ghost       | transparent      | `foreground`             | `hover:bg-accent-high hover:text-accent-high-foreground` | Back buttons, subtle links |
+| link        | transparent      | `accent`                 | `hover:underline`                                        | Inline text links          |
 
 ### Sizing Classes
 
@@ -480,14 +531,17 @@ Focus indicators use different patterns for different interaction contexts.
 
 ### Form Inputs (Mouse + Keyboard)
 
-Form inputs show focus via **border color change** (no ring):
+Form inputs show focus via **border color change + subtle ring** using secondary tokens:
 
 ```tsx
-<input className="border border-input focus:border-ring focus:outline-none" />
+<Input className="..." />
+// Primitive defaults: focus:border-secondary focus:ring-2 focus:ring-secondary-mid
 ```
 
-**Rationale**: Form inputs already have visible borders. Changing the border color to `ring` provides
-clear focus indication without adding visual noise. Works for both mouse and keyboard users.
+**Rationale**: Secondary focus provides consistent visual language with the app's interactive
+feedback system (secondary = "interactive feedback"). The ring adds a subtle glow that reinforces
+focus without competing with accent-colored elements. Works for both mouse and keyboard users.
+The Input and Textarea primitives in `components/ui/` include this as their default focus style.
 
 ### Buttons and Links (Keyboard-Only)
 
@@ -536,12 +590,12 @@ Tailwind markup when a suitable component exists.
 
 ### Why Use shadcn Components?
 
-| Raw Tailwind                              | shadcn Component                             |
-| ----------------------------------------- | -------------------------------------------- |
-| Verbose class strings repeated everywhere | Semantic, reusable components                |
-| Manual variant management                 | Built-in variant system (size, variant props)|
-| Inconsistent patterns across codebase     | Consistent API and styling                   |
-| Higher maintenance burden                 | Single source of truth in `components/ui/`   |
+| Raw Tailwind                              | shadcn Component                              |
+|-------------------------------------------|-----------------------------------------------|
+| Verbose class strings repeated everywhere | Semantic, reusable components                 |
+| Manual variant management                 | Built-in variant system (size, variant props) |
+| Inconsistent patterns across codebase     | Consistent API and styling                    |
+| Higher maintenance burden                 | Single source of truth in `components/ui/`    |
 
 ### Example Comparison
 
@@ -678,11 +732,14 @@ This enables global font changes without touching individual components.
 
 ### Font Slots
 
-| Slot            | Purpose                        | Default Font    | Usage Examples                            |
-|-----------------|--------------------------------|-----------------|-------------------------------------------|
-| `font-title`    | Page titles, project names     | Fira Code       | Hero name, PageHeader, project titles     |
-| `font-terminal` | System UI elements             | Geist Mono      | Navigation, tabs, badges, labels          |
-| `font-body`     | Prose content                  | IBM Plex Sans   | Descriptions, paragraphs, body text       |
+| Slot            | Purpose                    | Default Font  | Usage Examples                        |
+|-----------------|----------------------------|---------------|---------------------------------------|
+| `font-title`    | Page titles, project names | Geist Mono    | Hero name, PageHeader, project titles |
+| `font-terminal` | System UI elements         | Geist Mono    | Navigation, tabs, badges, labels      |
+| `font-body`     | Prose content              | IBM Plex Sans | Descriptions, paragraphs, body text   |
+
+*Note*: font-title and font-terminal are currently identical; font-body is distinct.
+Structure remains to support potential future differentiation.
 
 ### Guiding Principle
 
@@ -695,7 +752,7 @@ terminal-for-UI, standard-for-content distinction.
 Font slots are defined in `globals.css` and loaded via `next/font/google` in `layout.tsx`:
 
 ```css
---font-title: var(--font-fira-code);
+--font-title: var(--font-geist-mono);
 --font-terminal: var(--font-geist-mono);
 --font-body: var(--font-ibm-plex-sans);
 ```
@@ -717,12 +774,12 @@ this is a common issue requiring explicit compensation.
 
 Light mode applies **surface darkening** and **reduced opacity** to ground surfaces:
 
-| Token              | Dark Mode | Light Mode | Purpose                                    |
-|--------------------|-----------|------------|--------------------------------------------|
-| `--surface-opacity`| 0.8       | 0.7        | More solid surfaces in light mode          |
-| `--surface-darken` | 0%        | 20%        | Mix foreground color to darken surfaces    |
-| `--window-opacity` | 0.8       | 0.7        | Match surface treatment for windows        |
-| `--window-darken`  | 0%        | 10%        | Subtle window darkening                    |
+| Token               | Dark Mode | Light Mode | Purpose                                 |
+|---------------------|-----------|------------|-----------------------------------------|
+| `--surface-opacity` | 0.8       | 0.7        | More solid surfaces in light mode       |
+| `--surface-darken`  | 0%        | 20%        | Mix foreground color to darken surfaces |
+| `--window-opacity`  | 0.8       | 0.7        | Match surface treatment for windows     |
+| `--window-darken`   | 0%        | 10%        | Subtle window darkening                 |
 
 ### Surface Hierarchy Swap
 
@@ -758,11 +815,11 @@ On detail pages (project, skill), titles use `bg-secondary-high` instead of acce
 Components use semantic opacity tokens (`accent-high`, `accent-mid`, `accent-low`) instead of
 hardcoded opacity modifiers. These tokens are theme-aware and defined per-mode in theme definitions.
 
-| Token        | Purpose                                    | Example Usage                    |
-|--------------|--------------------------------------------|----------------------------------|
-| `accent-high`| Full/near-full opacity, primary emphasis   | Active tabs, primary identifiers |
-| `accent-mid` | Medium opacity, interactive elements       | Hover states, links              |
-| `accent-low` | Low opacity, subtle backgrounds            | Category badges, decorative      |
+| Token         | Purpose                                  | Example Usage                    |
+|---------------|------------------------------------------|----------------------------------|
+| `accent-high` | Full/near-full opacity, primary emphasis | Active tabs, primary identifiers |
+| `accent-mid`  | Medium opacity, interactive elements     | Hover states, links              |
+| `accent-low`  | Low opacity, subtle backgrounds          | Category badges, decorative      |
 
 The same pattern applies to secondary tokens: `secondary-high`, `secondary-mid`, `secondary-low`.
 
@@ -774,15 +831,15 @@ The same pattern applies to secondary tokens: `secondary-high`, `secondary-mid`,
 
 ### Header Zone vs Content Blocks
 
-| Zone             | Has Borders | Rationale                                         |
-|------------------|-------------|---------------------------------------------------|
-| Header elements  | ❌          | Title, back button, categories form unified group |
-| Content blocks   | ✅          | Cards, tech badges, links need clear boundaries   |
+| Zone            | Has Borders | Rationale                                         |
+|-----------------|-------------|---------------------------------------------------|
+| Header elements | ❌          | Title, back button, categories form unified group |
+| Content blocks  | ✅          | Cards, tech badges, links need clear boundaries   |
 
 ### Border Tokens
 
 | Token           | Usage                                           |
-|-----------------|------------------------------------------------ |
+|-----------------|-------------------------------------------------|
 | `border-border` | Default for content blocks (subtle)             |
 | `border-strong` | Window frames, elements needing more definition |
 

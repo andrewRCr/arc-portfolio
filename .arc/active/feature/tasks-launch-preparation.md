@@ -180,11 +180,119 @@ dual-domain configuration.
         - Full quality gates pass: type-check, lint, format, lint:md, build,
           1390/1390 tests
 
-- [ ] **1.5 Phase 1 quality gates**
-    - [ ] 1.5.a Type-check modified files
-    - [ ] 1.5.b Lint modified files
-    - [ ] 1.5.c Run related unit tests
-    - [ ] 1.5.d Run E2E tests for affected areas (layout, navigation)
+- [x] **1.5 Theme system alignment & debug page overhaul**
+
+    **Goal:** Align UI primitives, theme-debug page, and style guide with actual
+    production patterns. The theme-debug page predates surface tokens, opacity
+    variants, hover tokens, and the typography slot system — it demos generic
+    shadcn patterns rather than the app's real usage. Primitives (Input, Textarea,
+    Badge) have stale defaults that production code overrides or bypasses entirely.
+
+    **Scope:** Primitive alignment (Input/Textarea focus, Badge secondary), ContactForm
+    migration to primitives, theme-debug page overhaul (new sections + fix misaligned
+    sections), style guide alignment, typography dev page verification.
+
+    - [x] **1.5.a Align Input/Textarea focus to production pattern**
+        - Updated Input and Textarea primitives: replaced
+          `focus-visible:border-ring` (and ring-ring/50 on Input) with
+          `focus:border-secondary focus:ring-2 focus:ring-secondary-mid`
+        - Other components (Button, Badge, Checkbox, Switch) correctly retain
+          `focus-visible:` for keyboard-only focus per style guide
+        - No existing tests assert on focus class names; lint passes
+
+    - [x] **1.5.b Align Badge secondary variant to production pattern**
+        - Updated secondary: `border-transparent bg-secondary
+          text-secondary-foreground` → `border border-border bg-surface-muted
+          text-foreground`
+        - Removed redundant overrides from ModStatsBadge (2 sites) and
+          ModStatsCompact — classes now come from variant default
+        - FilterIndicator inherits new defaults without changes
+        - 35 tests pass (22 ModStatsBadge + 13 FilterIndicator), lint clean
+
+    - [x] **1.5.c Migrate ContactForm to use Input/Textarea primitives**
+        - Updated Input/Textarea primitives comprehensively to match TWM
+          aesthetic: removed rounded-md, shadow-xs, h-9/min-h-16,
+          border-input, dark:bg-input/30; added font-body, text-foreground,
+          placeholder:font-terminal, px-4 py-2; Textarea gets resize-none
+        - Replaced 2 raw `<input>` and 1 raw `<textarea>` in ContactForm
+          with `<Input>` and `<Textarea>` — only override is conditional
+          `inputBg` class
+        - Honeypot field left as raw `<input>` (hidden, no styling needed)
+        - 25 tests pass (16 ContactForm + 9 ContactSection), lint clean
+
+    - [x] **1.5.d Add missing token sections to theme-debug**
+        - New SurfaceTokensSection: production hierarchy demo (EducationCard
+          pattern) + individual surface swatches (card, background, muted,
+          popover)
+        - New OpacityVariantsSection: accent-high/mid/low and
+          secondary-high/mid/low swatches with foreground pairs + production
+          usage reference
+        - New ShadowElevationSection: shadow-sm/md/lg side-by-side + border
+          vs border-strong comparison
+        - Added border-strong swatch to ColorPaletteSection
+        - Expanded COLOR_VARS from 24 to 44 entries (opacity, surface, hover
+          config); reordered JUMP_LINKS with tokens-first layout
+        - Type-check and lint pass on all new/modified files
+
+    - [x] **1.5.e Fix misaligned theme-debug sections**
+        - FormControlsSection: rewrote to use Input/Textarea primitives
+          (secondary focus now built-in), added error states (aria-invalid +
+          destructive ring/border), added card variant demo (bg-surface-card)
+        - InteractiveStatesSection: reorganized around 4 interaction emphasis
+          tiers (Ambient, Focal, Primary CTA, Area hover) + subtle emphasis
+          (accent-low) + nav link states (default→hover→active→pending) +
+          production TextLink pattern. All demos use semantic tokens.
+        - CardsLayoutSection: replaced generic card fills with production
+          surface hierarchy (EducationCard pattern + ProjectCard pattern with
+          group hover), badges shown in card context using aligned secondary
+          variant
+        - All hardcoded `hover:border-secondary/60` replaced with
+          `hover:border-secondary-high`
+        - Verification polish: fixed jump links (DevPageHeader targeted
+          `.overflow-auto` but OverlayScrollbars takes over host; now
+          targets `[data-overlayscrollbars-viewport]`), switched
+          ColorPaletteSection grids to flex for lone-item centering,
+          reduced ColorSwatch height h-24→h-16, applied typography slots
+          to all 11 section files (`font-title` on CardTitle, `font-
+          terminal` on h3 subheaders, `font-body` on chrome descriptions)
+
+    - [x] **1.5.f Align style guide with production patterns**
+        - Fixed Button Variants table: outline and ghost hover →
+          `hover:bg-accent-high hover:text-accent-high-foreground`
+        - Expanded Token Categories table: added Computed Surfaces, Opacity
+          Variants, border-strong, and Hover rows (10 categories total)
+        - Fixed Focus Indicator Strategy: form inputs now document
+          `focus:border-secondary focus:ring-2 focus:ring-secondary-mid`
+        - Added new "Interaction Emphasis Tiers" section with 4 tiers
+          (Ambient, Focal, Primary CTA, Area hover) + subtle emphasis
+        - Updated ToC (16 entries), version bumped to 1.8
+        - Markdown lint passes clean
+
+    - [x] **1.5.g Align typography dev page + upgrade FontComparisonSection**
+        - Applied font slots to typography page chrome: `font-title` on
+          CardTitle headers, `font-terminal` on line-height labels and
+          accent spans, `font-body` on heading/body/size/weight/color demos
+        - Upgraded FontComparisonSection to production-aware experimentation
+          tool (follows `/dev/surface` pattern): live CSS variable
+          manipulation (entire page updates), correct production preset
+          (Geist Mono + IBM Plex Sans, was stale "Geist all"), reset-to-
+          production with dirty tracking + "Modified" badge, collapsible
+          CSS export with copy-to-clipboard and unloaded font warnings,
+          unmount cleanup. Replaced inline `style={{fontFamily}}` with
+          `font-title`/`font-terminal`/`font-body` CSS classes on previews
+
+    - [x] **1.5.h Run incremental quality gates on all modified files**
+        - Type-check: zero errors
+        - Lint: zero violations
+        - Format: all files pass (7 auto-formatted by Prettier)
+        - Markdown lint: task list and style guide pass
+        - Unit tests: 1390/1390 pass
+
+- [ ] **1.6 Phase 1 quality gates**
+    - [ ] 1.6.a Type-check modified files
+    - [ ] 1.6.b Lint modified files
+    - [ ] 1.6.c Run related unit tests
+    - [ ] 1.6.d Run E2E tests for affected areas (layout, navigation)
 
 ### **Phase 2:** Content & Copy
 
