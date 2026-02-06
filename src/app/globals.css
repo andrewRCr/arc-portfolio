@@ -152,6 +152,12 @@
   --window-bg-opacity: 0.8;
   --window-darken: 0%;
 
+  /* Surface border/shadow tokens - controls visual weight of surface elements
+     --surface-border-color: border color (border-strong for light, border for dark)
+     --surface-shadow: shadow level (shadow-md for light, none for dark) */
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
+
   /* Accent opacity levels - defaults for most themes (rouge/rose-pine/ayu override) */
   --accent-high-opacity: 0.8;
   --accent-mid-opacity: 0.6;
@@ -307,6 +313,8 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
@@ -385,6 +393,8 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary));
@@ -469,6 +479,8 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--accent-decorative, var(--primary)) / 0.8);
@@ -549,6 +561,8 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--accent-decorative, var(--primary)));
@@ -631,6 +645,8 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
@@ -709,6 +725,8 @@
   --window-darken: 10%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary));
@@ -791,6 +809,8 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
@@ -869,6 +889,8 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary));
@@ -951,6 +973,8 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
@@ -1029,6 +1053,8 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary));
@@ -1111,6 +1137,8 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
@@ -1189,6 +1217,8 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
   --primary-hover-value: rgb(var(--secondary));
@@ -1232,14 +1262,14 @@ html[data-env-preview="false"] [data-window-container] {
   --window-bg-opacity: 1 !important;
 }
 
-/* Light mode surface visual definition - stronger borders and shadows
+/* Surface visual definition - border and shadow driven by surface tokens
    Excludes focused elements so focus ring shadows can take precedence */
-.light .bg-surface-card:not(:focus),
-.light .bg-surface-background:not(:focus),
-.light .bg-surface-muted:not(:focus),
-.light .bg-muted:not(:focus) {
-  border-color: rgb(var(--border-strong));
-  box-shadow: var(--shadow-md);
+.bg-surface-card:not(:focus),
+.bg-surface-background:not(:focus),
+.bg-surface-muted:not(:focus),
+.bg-muted:not(:focus) {
+  border-color: var(--surface-border-color);
+  box-shadow: var(--surface-shadow);
 }
 
 /* Scroll shadow affordance gradients

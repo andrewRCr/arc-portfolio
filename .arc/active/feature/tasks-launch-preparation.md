@@ -128,36 +128,57 @@ dual-domain configuration.
         - Unit tests: 1384/1384 pass (81 test files)
         - Build: pass (verified with flag both on and off)
 
-- [ ] **1.4 Extract surface-tuning sandbox to `/dev/surface`**
+- [x] **1.4 Build surface-tuning dev tool at `/dev/surface`**
 
-    **Goal:** Stable, isolated dev tool for tweaking theme surfaces post-deployment.
+    **Goal:** Robust, isolated dev tool for comparing current production surface values
+    with experimental ones, previewing changes live, and exporting new values as
+    TypeScript for easy theme definition updates.
 
-    - [ ] **1.4.a Create `/dev/surface` page with `SurfaceOpacityComparison`**
-        - Create `src/app/dev/surface/page.tsx` following existing dev page pattern
-          (`useHasMounted`, `PageLayout`, `DevPageHeader` with jump links)
-        - Move `SurfaceOpacityComparison` component from sandbox
-        - Clean up variable naming (e.g., `lightOpacity` → `currentSurfaceOpacity`)
+    - [x] **1.4.a Promote light-mode border/shadow to surface tokens**
+        - Added `SurfaceShadow` type and `surfaceBorderStrong`/`surfaceShadow` fields
+          to `ModeSurfaceConfig` in `types.ts`
+        - Updated all 6 theme definitions (light: `true`/`"md"`, dark: `false`/`"none"`)
+        - Updated `generate-css-defaults.ts` to emit `--surface-border-color` and
+          `--surface-shadow` per mode; added `:root` fallback defaults
+        - Replaced hardcoded `.light .bg-surface-card` CSS rule with universal
+          variable-driven rule referencing new tokens
+        - Fixed `InDevelopmentBadge` — removed `dark:bg-background/80` override
+        - Type-check and lint pass
 
-    - [ ] **1.4.b Add CSS variable snapshot/restore lifecycle**
-        - Snapshot CSS variables on mount (`--surface-opacity`, `--surface-darken`,
-          `--window-darken`, per-element `--window-bg-opacity`)
-        - Restore original values on unmount to prevent style leaks on navigation
-        - Add `useEffect` cleanup for DOM-injected `data-sandbox-overlay` attribute
+    - [x] **1.4.b Create `/dev/surface` page scaffold**
+        - Created `src/app/dev/surface/page.tsx` with `useHasMounted`, `PageLayout`,
+          `DevPageHeader` (with `showEnvPreview`)
+        - Reads active theme's `surfaces` config via `useThemeContext` + `themes` registry
+        - CSS variable overrides applied on mount, removed on unmount via `removeCssOverrides()`
+        - Re-syncs experimental values when theme palette changes
 
-    - [ ] **1.4.c Fix `exportCss` wallpaper overlay per-mode emission**
-        - Emit per-mode color/opacity variables so dark and light modes with opposite
-          overlay signs produce correct styles independently
-        - Current behavior: exports single-mode values that break the opposite mode
+    - [x] **1.4.c Build surface tuning UI**
+        - 4 `SliderControl` components for opacity/darken params with live prod comparison
+        - Toggle buttons for `surfaceBorderStrong` and `surfaceShadow`
+        - Dark/light mode switcher via `useThemeTransition`
+        - "Reset to production" button (disabled when values match)
+        - Side-by-side production vs experimental `ValueDisplay` panels
+        - Changes always apply live to all page surfaces (no separate toggle needed —
+          production values are visible in the comparison panel)
 
-    - [ ] **1.4.d Remove `SurfaceOpacityComparison` from sandbox page**
-        - Remove component and its imports from `/dev/sandbox`
-        - Verify sandbox page still renders with remaining content
+    - [x] **1.4.d Add TypeScript export**
+        - `formatExport()` produces complete `ThemeSurfaces` object with `surfaceHierarchy`
+          from production, ready to paste into a theme definition
+        - Copy-to-clipboard with confirmation feedback
+        - Shows "(has changes)" / "(no changes)" status
 
-    - [ ] **1.4.e Verify extraction manually**
-        - `/dev/surface` loads and functions correctly
-        - CSS variable changes don't leak after navigation
-        - `exportCss` produces valid output for both light and dark modes
-        - `/dev/sandbox` still works without the extracted component
+    - [x] **1.4.e Remove `SurfaceOpacityComparison` from sandbox**
+        - Removed entire `SurfaceOpacityComparison` component and all related code
+          (ValueSet type, defaults, helpers) from `sandbox/page.tsx`
+        - Sandbox page now renders as empty scratch space
+        - Added `[surface]` link to `FooterBar.tsx` dev nav alongside existing dev page links
+        - Both routes return 200, type-check and lint pass
+
+    - [x] **1.4.f Manual verification**
+        - Verified tool loads with production values, sliders apply live,
+          border/shadow visible on preview cards and control panel
+        - Full quality gates pass: type-check, lint, format, lint:md, build,
+          1390/1390 tests
 
 - [ ] **1.5 Phase 1 quality gates**
     - [ ] 1.5.a Type-check modified files

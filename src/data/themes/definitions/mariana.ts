@@ -38,8 +38,24 @@ const opacities: ThemeOpacities = {
 
 // Surface configuration - controls visual layering
 const surfaces: ThemeSurfaces = {
-  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
-  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+  light: {
+    surfaceOpacity: 0.7,
+    surfaceDarken: 20,
+    windowOpacity: 0.7,
+    windowDarken: 10,
+    surfaceHierarchy: "swapped",
+    surfaceBorderStrong: true,
+    surfaceShadow: "md",
+  },
+  dark: {
+    surfaceOpacity: 0.8,
+    surfaceDarken: 0,
+    windowOpacity: 0.8,
+    windowDarken: 0,
+    surfaceHierarchy: "normal",
+    surfaceBorderStrong: false,
+    surfaceShadow: "none",
+  },
 };
 
 // Hover configuration - primary swaps to secondary, accent-mid darkens in-family
