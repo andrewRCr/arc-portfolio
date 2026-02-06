@@ -59,20 +59,11 @@ Transform placeholder styling into distinctive, polished design.
 
 Production readiness and deployment.
 
-9. **Feature Flag System**
-   - Rationale: Unified infrastructure for dev-only content, incomplete projects, and future feature rollouts
-   - Scope: Centralized flag definitions, environment-based defaults (dev vs prod), type-safe API
-   - Consolidates: Dev pages visibility, mods tab gating, incomplete project hiding
-   - Enables: Deploy v1.0 without waiting for all projects; enable incrementally as completed
-
-10. **SEO & Meta Tags**
-    - Backlog: `.arc/backlog/feature/BACKLOG-FEATURE.md`
-    - Rationale: Discoverability and social sharing
-    - Scope: Open Graph (social previews), structured data (search), sitemap, robots.txt
-
-11. **Deployment**
-    - Rationale: Final step; requires all above complete
-    - Scope: Vercel setup, domain transfer, production config
+9. **Launch Preparation** ← Next
+   - Consolidates originally planned items 9-11 (Feature Flags, SEO, Deployment)
+   - PRD: `.arc/backlog/feature/prd-launch-preparation.md`
+   - Scope: Dev infrastructure, content copy pass, custom error pages, SEO & metadata,
+     Vercel deployment with multi-domain (`andrewcreekmore.dev` primary)
 
 ---
 
@@ -80,9 +71,9 @@ Production readiness and deployment.
 
 Items that can wait until after initial deployment:
 
-- **Incomplete Projects Strategy** - Feature-flagged until ready; enable incrementally
-- **Resume Download** - PDF generation
-- **Analytics Integration** - Vercel Analytics
+- **Resume Download** - PDF generation (portfolio is primary artifact; TBD if needed)
+- **Analytics Integration** - Vercel Analytics (trivial post-launch addition)
+- **Blog / Content Feature** - Feature flag infrastructure supports future addition
 
 ---
 
@@ -107,13 +98,8 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
                                                       Visual Polish
                                                             │
                                                             ▼
-                                                  Feature Flag System
-                                                            │
-                                                            ▼
-                                                    SEO & Meta Tags
-                                                            │
-                                                            ▼
-                                                       Deployment
+                                                   Launch Preparation
+                                               (flags, SEO, deployment)
 ```
 
 ---
@@ -132,37 +118,42 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ### Deferred Post-v1.0
 
-| Item                | Rationale                    | When                        |
-|---------------------|------------------------------|-----------------------------|
-| Incomplete Projects | Feature-flagged until ready  | Enable as each completes    |
-| Mod Portfolio       | Undecided on inclusion       | After v1.0, if wanted       |
-| Skills Filtering    | Enhancement, not core        | Post-launch                 |
-| Advanced animations | Polish, not essential        | Iterative improvement       |
+| Item            | Rationale                  | When                    |
+|-----------------|----------------------------|-------------------------|
+| Resume Download | Portfolio is primary asset | If needed for job apps  |
+| Blog            | Scope TBD                  | Post-v1.0, flag-gated   |
+| Analytics       | Trivial addition           | Post-launch             |
 
 ### Skipped
 
-| Item            | Rationale                               |
-|-----------------|-----------------------------------------|
-| CMS integration | Static content sufficient for portfolio |
-| User accounts   | Not needed for portfolio                |
-| Blog            | Out of scope for v1.0                   |
+| Item              | Rationale                               |
+|-------------------|-----------------------------------------|
+| CMS integration   | Static content sufficient for portfolio |
+| User accounts     | Not needed for portfolio                |
+| Project search    | Superseded by tabs + skill filtering    |
+| Semantic tokens   | Single form doesn't justify token system|
 
 ---
 
 ## Open Questions
 
-- Mod portfolio: Include in v1.0 or defer entirely?
+*No open questions.*
 
 **Resolved:**
 
-- ~~Incomplete projects strategy~~: Feature-flagged; deploy v1.0 without waiting, enable incrementally (2026-01-01)
+- ~~Mod portfolio~~: Included in v1.0 (mods tab, NexusMods API integration complete) (2026-01-18)
+- ~~Incomplete projects strategy~~: In-development badge on cards + feature flags for future use (2026-02-05)
 - ~~Contact form placement~~: Included in Content Polish work unit (2026-01-01)
-- ~~Mods tab implementation~~: Deferred via feature flag (2025-12-26)
+- ~~Mods tab implementation~~: Included via `SHOW_PROJECT_TABS` flag (2026-01-18)
+- ~~Feature Flags / SEO / Deployment split~~: Consolidated into single Launch Preparation work unit (2026-02-06)
 
 ---
 
 ## Change Log
 
+- **2026-02-06**: Consolidated Phase C items 9-11 (Feature Flags, SEO, Deployment) into single
+  Launch Preparation work unit (item 9). Cleaned stale backlog entries (Mod Portfolio complete,
+  Project Search superseded). Phase B marked complete (Visual Polish archived).
 - **2026-01-23**: Split TWM Startup Animation from Visual Polish as separate work unit (item 7). Visual
   Polish becomes item 8 with remaining scope. Activated TWM Startup Animation, created PRD and task list.
   Renumbered Phase C items to 9-11.

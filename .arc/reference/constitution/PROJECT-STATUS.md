@@ -48,15 +48,16 @@ contemporary web development practices.
 
 ### Phase C: Launch
 
-- **Feature Flag System** - Unified infrastructure for dev-only content, incomplete projects
-- **SEO & Meta Tags** - Open Graph, structured data, sitemap
-- **Deployment** - Vercel setup, domain transfer
+- **Launch Preparation** ← Next
+    - Dev infrastructure, content copy pass, custom error pages
+    - SEO & metadata (OG, sitemap, structured data, favicon)
+    - Vercel deployment with multi-domain (`andrewcreekmore.dev` primary)
 
 ### Post-v1.0 (Backlog)
 
-- Incomplete Projects (feature-flagged, enable incrementally)
-- Mod Portfolio Integration
-- Interactive Skills Filtering
+- Resume Download (TBD)
+- Blog / Content Feature (flag-gated)
+- Vercel Analytics
 
 ---
 
