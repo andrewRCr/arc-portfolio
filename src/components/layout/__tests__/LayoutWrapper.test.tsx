@@ -11,31 +11,24 @@ let mockLayoutMode = "boxed";
 const mockSetDrawerOpen = vi.fn();
 let mockIsDrawerOpen = false;
 
-vi.mock("@/contexts/LayoutPreferencesContext", () => ({
-  useLayoutPreferences: () => ({
-    layoutMode: mockLayoutMode,
-    setLayoutMode: mockSetLayoutMode,
-    isDrawerOpen: mockIsDrawerOpen,
-    setDrawerOpen: mockSetDrawerOpen,
-  }),
-}));
+vi.mock("@/contexts/LayoutPreferencesContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/LayoutPreferencesContext")>();
+  return {
+    ...actual,
+    useLayoutPreferences: () => ({
+      layoutMode: mockLayoutMode,
+      setLayoutMode: mockSetLayoutMode,
+      isDrawerOpen: mockIsDrawerOpen,
+      setDrawerOpen: mockSetDrawerOpen,
+    }),
+  };
+});
 
-// Mock IntroContext to prevent TopBar from rendering as placeholder during tests
-vi.mock("@/contexts/IntroContext", () => ({
-  IntroProvider: ({ children }: { children: React.ReactNode }) => children,
-  useIntroContext: () => ({
-    state: "complete",
-    shouldShow: false,
-    reducedMotion: false,
-    replayCount: 0,
-    introPhase: "idle",
-    startAnimation: vi.fn(),
-    skipAnimation: vi.fn(),
-    completeAnimation: vi.fn(),
-    triggerReplay: vi.fn(),
-    setIntroPhase: vi.fn(),
-  }),
-}));
+vi.mock("@/contexts/AnimationContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/AnimationContext")>();
+  const { createAnimationContextOverrides } = await import("@tests/mocks/animation-context");
+  return { ...actual, ...createAnimationContextOverrides() };
+});
 
 describe("LayoutWrapper", () => {
   beforeEach(() => {
@@ -193,29 +186,32 @@ describe("LayoutWrapper", () => {
       mockLayoutMode = "full";
     });
 
-    it("hides TopBar in fullscreen mode", () => {
+    it("TopBar wrapper has overflow hidden for animation clipping", () => {
       const { container } = render(
         <LayoutWrapper>
           <p>Main content</p>
         </LayoutWrapper>
       );
 
-      // TopBar should have "hidden" class on its wrapper (kept mounted for drawer to stay open)
-      // className is on the outer motion.div wrapper, not WindowContainer
+      // TopBar wrapper uses overflow:hidden so content is clipped when height animates to 0
+      // (Framer Motion animate values aren't captured in jsdom, so we verify the static setup)
+      // Structure: motion.div(overflow:hidden) > TopBar(motion.div) > WindowContainer(data-window-id)
       const topBarWindow = container.querySelector('[data-window-id="top"]');
-      expect(topBarWindow?.parentElement).toHaveClass("hidden");
+      const topBarAnimationWrapper = topBarWindow?.parentElement?.parentElement;
+      expect(topBarAnimationWrapper).toHaveStyle({ overflow: "hidden" });
     });
 
-    it("hides FooterBar in fullscreen mode", () => {
+    it("FooterBar wrapper has overflow hidden for animation clipping", () => {
       const { container } = render(
         <LayoutWrapper>
           <p>Main content</p>
         </LayoutWrapper>
       );
 
-      // FooterBar should have "hidden" class
+      // FooterBar wrapper uses overflow:hidden so content is clipped when height animates to 0
       const footerWindow = container.querySelector('[data-window-id="footer"]');
-      expect(footerWindow).toHaveClass("hidden");
+      const footerWrapper = footerWindow?.parentElement;
+      expect(footerWrapper).toHaveStyle({ overflow: "hidden" });
     });
 
     it("shows exit fullscreen button", () => {

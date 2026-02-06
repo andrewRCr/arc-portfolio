@@ -6,14 +6,16 @@
  * - Project detail header back button hrefs
  */
 
+import React from "react";
 import { render, screen } from "@tests/test-utils";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
 import { createImageMock } from "@tests/mocks/next-image";
-
-// Apply mocks
 vi.mock("next/navigation", () => createNavigationMock());
 vi.mock("next/image", () => createImageMock());
+vi.mock("@/contexts/AnimationContext", async () =>
+  (await import("@tests/mocks/animation-context")).createAnimationContextMock()
+);
 
 import { Navigation } from "@/components/layout/Navigation";
 import { DetailHeader } from "@/components/projects/DetailHeader";

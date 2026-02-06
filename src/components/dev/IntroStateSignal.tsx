@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useIntroContext } from "@/contexts/IntroContext";
+import { useAnimationContext } from "@/contexts/AnimationContext";
 
 /**
  * IntroStateSignal Component
@@ -30,15 +30,25 @@ import { useIntroContext } from "@/contexts/IntroContext";
  * - Tests can wait for specific states deterministically
  */
 export function IntroStateSignal() {
-  const { state } = useIntroContext();
+  const { loadMode, intro, isInitialized } = useAnimationContext();
+
+  // Derive state for E2E test compatibility:
+  // - "pending": not initialized, or in intro mode waiting to start
+  // - "animating": intro is actively playing
+  // - "complete": intro finished, skipped, or not in intro mode
+  const introState: "pending" | "animating" | "complete" = intro.isActive
+    ? "animating"
+    : !isInitialized || (loadMode === "intro" && intro.phase === "idle")
+      ? "pending"
+      : "complete";
 
   useEffect(() => {
-    document.documentElement.dataset.introState = state;
+    document.documentElement.dataset.introState = introState;
 
     return () => {
       delete document.documentElement.dataset.introState;
     };
-  }, [state]);
+  }, [introState]);
 
   return null;
 }

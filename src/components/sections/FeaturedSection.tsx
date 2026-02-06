@@ -63,28 +63,46 @@ export function FeaturedSection() {
 
   return (
     <div className="grid md:grid-cols-2 gap-4 mt-3">
-      {featuredProjects.map(({ project, type }) => (
-        <Link
-          key={project.slug}
-          href={`${getProjectPath(type)}/${project.slug}?from=home`}
-          className="flex flex-col border border-border rounded-sm hover:border-secondary/80 transition-colors overflow-hidden"
-        >
-          <div className="p-4 pb-2 bg-card/80">
-            <p className="text-xs font-mono text-primary mb-1">[{type}]</p>
-            <h4 className="font-semibold">{project.title}</h4>
-          </div>
-          <div className="flex-1 min-h-24 px-4 py-3 bg-background/80">
-            <p className="text-sm text-muted-foreground">
-              {type === "mod" && project.game && (
-                <>
-                  {project.category[0]} mod for {project.game}.{" "}
-                </>
-              )}
-              {project.shortDescription}
-            </p>
-          </div>
-        </Link>
-      ))}
+      {featuredProjects.map(({ project, type }) => {
+        const isInDevelopment = project.status === "in-development";
+
+        return (
+          <Link
+            key={project.slug}
+            href={`${getProjectPath(type)}/${project.slug}?from=home`}
+            className="group flex flex-col border border-border rounded-sm hover:border-secondary-high transition-[border-color,box-shadow] duration-300 hover:shadow-md overflow-hidden"
+          >
+            <div className="p-4 pb-2 bg-surface-card">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-terminal text-foreground">[{type}]</span>
+                {isInDevelopment && (
+                  <span
+                    data-testid="in-development-badge"
+                    className="border border-border bg-surface-muted/80 px-1.5 py-0.5 font-terminal text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                  >
+                    In Dev
+                  </span>
+                )}
+              </div>
+              <h4 className="font-semibold font-title">
+                <span className="bg-accent-low px-1.5 py-0.5 text-accent-low-foreground transition-colors duration-300 box-decoration-clone group-hover:bg-secondary-high group-hover:text-secondary-foreground">
+                  {project.title}
+                </span>
+              </h4>
+            </div>
+            <div className="flex-1 min-h-24 px-4 py-3 bg-surface-background">
+              <p className="text-sm text-muted-foreground">
+                {type === "mod" && project.game && (
+                  <>
+                    {project.category[0]} mod for {project.game}.{" "}
+                  </>
+                )}
+                {project.shortDescription}
+              </p>
+            </div>
+          </Link>
+        );
+      })}
     </div>
   );
 }

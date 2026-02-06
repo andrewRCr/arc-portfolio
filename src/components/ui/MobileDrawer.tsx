@@ -72,7 +72,7 @@ export function MobileDrawer({
         <div className={`flex flex-col gap-2 px-4 pb-6 pt-1 ${fillHeight ? "h-full" : ""}`}>
           {/* Header with title and close button */}
           <div className="flex items-center justify-between shrink-0">
-            <SheetTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wide ml-3">
+            <SheetTitle className="text-xs font-terminal font-normal text-foreground uppercase tracking-wide ml-3">
               {title}
             </SheetTitle>
             <SheetClose asChild>

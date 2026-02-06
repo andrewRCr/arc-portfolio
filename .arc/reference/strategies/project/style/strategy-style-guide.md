@@ -1,6 +1,6 @@
 # Strategy: Style Guide
 
-**Version:** 1.5 | **Updated:** 2026-01-13
+**Version:** 1.7 | **Updated:** 2026-02-05
 
 This document is the authoritative style reference for arc-portfolio, covering design philosophy,
 token conventions, the TWM layout system, and component patterns.
@@ -18,6 +18,10 @@ token conventions, the TWM layout system, and component patterns.
 9. [Focus Indicator Strategy](#focus-indicator-strategy)
 10. [shadcn/ui Component Usage](#shadcnui-component-usage)
 11. [Extending the Token System](#extending-the-token-system)
+12. [Typography System](#typography-system)
+13. [Light Mode Surface Layering](#light-mode-surface-layering)
+14. [Color Semantic Refinements](#color-semantic-refinements)
+15. [Border Usage Patterns](#border-usage-patterns)
 
 ---
 
@@ -376,9 +380,11 @@ The layout uses Tailwind's default breakpoints:
 
 ## Interactive States
 
-Interactive states use **opacity modifiers**, not separate color tokens.
+Interactive states use two patterns depending on the token type:
 
-### Opacity Modifier Pattern
+### Base Color Modifiers (Primary, Destructive)
+
+For `primary` and `destructive` colors, use **opacity modifiers** directly:
 
 ```tsx
 // Button hover: reduce opacity by 10%
@@ -386,19 +392,7 @@ Interactive states use **opacity modifiers**, not separate color tokens.
 
 // Active state: reduce opacity by 20%
 <button className="bg-primary active:bg-primary/80">
-
-// Semi-transparent surfaces (TWM windows)
-<div className="bg-card/85 hover:bg-card/90">
 ```
-
-### Why Opacity Over Separate Colors?
-
-1. **Single source of truth** - No need to define separate hover colors
-2. **Predictable** - 10-20% opacity shift is consistent across components
-3. **Theme-agnostic** - Works with any color, respects theme changes
-4. **Simpler tokens** - No `layer-hover-01`, `layer-active-02`, etc.
-
-### Standard Interactive Shifts
 
 | State    | Opacity Shift | Example                |
 |----------|---------------|------------------------|
@@ -406,23 +400,30 @@ Interactive states use **opacity modifiers**, not separate color tokens.
 | Active   | -20%          | `active:bg-primary/80` |
 | Disabled | 50% overall   | `disabled:opacity-50`  |
 
-### Border Hover Pattern
+### Semantic Opacity Tokens (Secondary, Accent)
 
-For bordered elements (cards, outline buttons, social links), use `secondary` with 60% opacity:
+For `secondary` and `accent` colors, use **theme-aware opacity tokens** instead of hardcoded
+modifiers. These tokens have per-theme opacity values defined in theme configurations:
 
 ```tsx
-// Standard border hover (cards, outline buttons)
-<div className="border border-border hover:border-secondary/60">
+// Card border hover - uses semantic token
+<div className="border border-border hover:border-secondary-high">
 
-// Nav active state uses background with 20% opacity
-<span className="bg-secondary/20">
+// Nav background - uses semantic token
+<span className="bg-secondary-low">
+
+// Accent backgrounds at varying emphasis
+<span className="bg-accent-high">   // Full emphasis
+<span className="bg-accent-mid">    // Medium emphasis
+<span className="bg-accent-low">    // Subtle/decorative
 ```
 
-**Why secondary/60?**
+**Why two patterns?**
 
-- Consistent with nav active pattern (`bg-secondary/20`)
-- Softer than full-strength secondary in strong theme combos
-- Border-only is cleaner than border + background hover
+- **Primary/destructive**: Simple modifiers work well; these colors rarely need theme-specific
+  opacity tuning for contrast
+- **Secondary/accent**: Theme-aware tokens allow per-theme WCAG contrast fixes (e.g., Gruvbox
+  dark needs different accent opacity than Rose Pine dark)
 
 ---
 
@@ -432,16 +433,16 @@ Button patterns follow semantic token usage with consistent sizing and hover sta
 
 ### Variant Definitions
 
-Following shadcn/ui conventions:
+Following shadcn/ui conventions, with theme-aware tokens for secondary:
 
-| Variant     | Background       | Text                      | Hover                     | Use Case                   |
-|-------------|------------------|---------------------------|---------------------------|----------------------------|
-| default     | `bg-primary`     | `primary-foreground`      | `hover:bg-primary/90`     | Main CTAs, submit actions  |
-| secondary   | `bg-secondary`   | `secondary-foreground`    | `hover:bg-secondary/80`   | Alternative actions        |
-| destructive | `bg-destructive` | `destructive-foreground`  | `hover:bg-destructive/90` | Delete, dangerous actions  |
-| outline     | `border-border`  | `foreground`              | `hover:bg-accent`         | Subtle actions, social     |
-| ghost       | transparent      | `foreground`              | `hover:bg-accent`         | Back buttons, subtle links |
-| link        | transparent      | `accent`                  | `hover:underline`         | Inline text links          |
+| Variant     | Background       | Text                     | Hover                         | Use Case                   |
+|-------------|------------------|--------------------------|-------------------------------|----------------------------|
+| default     | `bg-primary`     | `primary-foreground`     | `hover:bg-primary/90`         | Main CTAs, submit actions  |
+| secondary   | `bg-secondary`   | `secondary-foreground`   | `hover:bg-secondary-high`     | Alternative actions        |
+| destructive | `bg-destructive` | `destructive-foreground` | `hover:bg-destructive/90`     | Delete, dangerous actions  |
+| outline     | `border-border`  | `foreground`             | `hover:border-secondary-high` | Subtle actions, social     |
+| ghost       | transparent      | `foreground`             | `hover:bg-accent`             | Back buttons, subtle links |
+| link        | transparent      | `accent`                 | `hover:underline`             | Inline text links          |
 
 ### Sizing Classes
 
@@ -460,13 +461,13 @@ Following shadcn/ui conventions:
 </button>
 
 // Outline button (social links, subtle actions)
-<a className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary/60">
+<a className="flex items-center gap-2 rounded-lg border border-border px-4 py-3 transition-colors hover:border-secondary-high">
   <Icon className="h-5 w-5" />
   <span className="font-medium">Platform</span>
 </a>
 
 // Ghost button (back navigation)
-<button className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent">
+<button className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent-mid">
   ← Back
 </button>
 ```
@@ -612,12 +613,183 @@ Extensions should only be added when a concrete use case arises with no shadcn e
 
 ```
 src/lib/theme/tokens/
-├── colors.ts   - SemanticColorTokens (empty placeholder for extensions)
-├── layout.ts   - LayoutTokens (WINDOW_GAP, WINDOW_BORDER_WIDTH, etc.)
+├── colors.ts   - SemanticColorTokens interface + extension guidance
+├── layout.ts   - LayoutTokens (windowGap, windowBorderWidth, opacity, etc.)
 ├── spacing.ts  - SpacingTokens (CONTENT_PADDING, SECTION_GAP, etc.)
-├── shadows.ts  - ShadowTokens (shadow-sm/md/lg)
+├── shadows.ts  - ShadowTokens (shadow-sm/md/lg, mode-aware defaults)
+├── wallpaper.ts - WallpaperTokens (filename patterns, metadata)
 └── index.ts    - Re-exports + DesignTokens combined type
 ```
+
+**Note:** Many semantic tokens are CSS-derived rather than TypeScript-defined. Opacity variants
+(`accent-high/mid/low`, `secondary-high/mid/low`) and surface tokens (`surface-card`, `surface-background`)
+are computed via CSS `color-mix()` from base tokens. See `globals.css` for these definitions.
+Theme-specific values are configured in `src/data/themes/definitions/` via `opacities` and `surfaces` configs.
+
+### Adding Theme-Aware Computed Tokens
+
+For tokens that need **per-theme, per-mode values** (like opacity variants or color-mix adjustments),
+follow this single-source-of-truth pattern:
+
+**1. Add type definition** (`src/data/themes/types.ts`):
+
+```typescript
+// Add to existing interface or create new config interface
+interface ModeOpacityConfig {
+  readonly accent: OpacityLevels;  // { high, mid, low }
+  // ... add new properties here
+}
+```
+
+**2. Add values to each theme definition** (`src/data/themes/definitions/*.ts`):
+
+```typescript
+const opacities: ThemeOpacities = {
+  light: { accent: { high: 1, mid: 0.9, low: 0.8 }, /* ... */ },
+  dark: { accent: { high: 0.8, mid: 0.76, low: 0.2 }, /* ... */ },
+};
+```
+
+**3. Update CSS generator** (`scripts/generate-css-defaults.ts`):
+
+```typescript
+// Add emission of new CSS variables from theme config
+function generateOpacityCssVariables(config: ModeOpacityConfig): string {
+  return `--accent-high-opacity: ${config.accent.high};`;
+}
+```
+
+**4. Define CSS formula in globals.css** (`@theme inline` block):
+
+```css
+--color-accent-high: rgb(var(--accent) / var(--accent-high-opacity));
+```
+
+**Key principle:** Values live in theme definitions (TypeScript), CSS generator emits them per
+theme/mode, CSS formulas reference the generated variables. Never hardcode values in globals.css
+for theme-aware tokens.
+
+---
+
+## Typography System
+
+arc-portfolio uses a **3-slot semantic font system** instead of raw `font-mono`/`font-sans` classes.
+This enables global font changes without touching individual components.
+
+### Font Slots
+
+| Slot            | Purpose                        | Default Font    | Usage Examples                            |
+|-----------------|--------------------------------|-----------------|-------------------------------------------|
+| `font-title`    | Page titles, project names     | Fira Code       | Hero name, PageHeader, project titles     |
+| `font-terminal` | System UI elements             | Geist Mono      | Navigation, tabs, badges, labels          |
+| `font-body`     | Prose content                  | IBM Plex Sans   | Descriptions, paragraphs, body text       |
+
+### Guiding Principle
+
+**Prominence = stylization tolerance.** Larger elements (titles, headers) handle more stylization.
+Smaller, repeated elements benefit from restraint. This is the practical UX logic behind the
+terminal-for-UI, standard-for-content distinction.
+
+### Implementation
+
+Font slots are defined in `globals.css` and loaded via `next/font/google` in `layout.tsx`:
+
+```css
+--font-title: var(--font-fira-code);
+--font-terminal: var(--font-geist-mono);
+--font-body: var(--font-ibm-plex-sans);
+```
+
+---
+
+## Light Mode Surface Layering
+
+The TWM layout's semi-transparent windows (80% opacity) create layering challenges in light mode.
+Without adjustments, surfaces inside windows appear too elevated and disconnected.
+
+### The Problem
+
+In dark mode, layered surfaces naturally recede into the window background. In light mode, they
+"float" prominently, breaking visual unity. Research on semi-transparent UI in light mode confirmed
+this is a common issue requiring explicit compensation.
+
+### The Solution
+
+Light mode applies **surface darkening** and **reduced opacity** to ground surfaces:
+
+| Token              | Dark Mode | Light Mode | Purpose                                    |
+|--------------------|-----------|------------|--------------------------------------------|
+| `--surface-opacity`| 0.8       | 0.7        | More solid surfaces in light mode          |
+| `--surface-darken` | 0%        | 20%        | Mix foreground color to darken surfaces    |
+| `--window-opacity` | 0.8       | 0.7        | Match surface treatment for windows        |
+| `--window-darken`  | 0%        | 10%        | Subtle window darkening                    |
+
+### Surface Hierarchy Swap
+
+Light mode typically **swaps** the card/background token assignment:
+
+- **Dark mode**: `--surface-card-base: var(--card)` (standard)
+- **Light mode**: `--surface-card-base: var(--background)` (swapped)
+
+This ensures proper visual hierarchy where headers appear lighter than content bodies.
+
+### Implementation
+
+Surface tokens are defined per-theme in `src/data/themes/definitions/` via the `surfaces` config,
+then applied as CSS custom properties. Use `bg-surface-card` or `bg-surface-background` instead
+of raw `bg-card/80` for automatic mode-aware behavior.
+
+---
+
+## Color Semantic Refinements
+
+Building on the base semantic tokens, these patterns emerged for specific contexts:
+
+### Secondary for Active Context
+
+On detail pages (project, skill), titles use `bg-secondary-high` instead of accent:
+
+- **Rationale**: The title is no longer interactive. Secondary signals "you're here now" - matching
+  navigation's use of secondary for active states.
+- **Progression**: Browsing (accent on cards) → Viewing (secondary on detail page)
+
+### Accent Token Hierarchy
+
+Components use semantic opacity tokens (`accent-high`, `accent-mid`, `accent-low`) instead of
+hardcoded opacity modifiers. These tokens are theme-aware and defined per-mode in theme definitions.
+
+| Token        | Purpose                                    | Example Usage                    |
+|--------------|--------------------------------------------|----------------------------------|
+| `accent-high`| Full/near-full opacity, primary emphasis   | Active tabs, primary identifiers |
+| `accent-mid` | Medium opacity, interactive elements       | Hover states, links              |
+| `accent-low` | Low opacity, subtle backgrounds            | Category badges, decorative      |
+
+The same pattern applies to secondary tokens: `secondary-high`, `secondary-mid`, `secondary-low`.
+
+---
+
+## Border Usage Patterns
+
+**Guiding principle**: Borders define discrete content blocks; their absence signals unified composition.
+
+### Header Zone vs Content Blocks
+
+| Zone             | Has Borders | Rationale                                         |
+|------------------|-------------|---------------------------------------------------|
+| Header elements  | ❌          | Title, back button, categories form unified group |
+| Content blocks   | ✅          | Cards, tech badges, links need clear boundaries   |
+
+### Border Tokens
+
+| Token           | Usage                                           |
+|-----------------|------------------------------------------------ |
+| `border-border` | Default for content blocks (subtle)             |
+| `border-strong` | Window frames, elements needing more definition |
+
+### Hover States
+
+Content blocks with borders use `hover:border-secondary-high` for consistent feedback,
+leveraging the theme-aware opacity tokens defined in theme configurations.
 
 ---
 

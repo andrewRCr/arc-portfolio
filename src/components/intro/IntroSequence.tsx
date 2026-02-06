@@ -21,7 +21,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useIntroContext, type IntroPhase } from "@/contexts/IntroContext";
+import { useAnimationContext, useAnimationDispatch, markIntroSeen, type IntroPhase } from "@/contexts/AnimationContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useTypingAnimation } from "@/hooks/useTypingAnimation";
 import {
@@ -37,7 +37,7 @@ import {
   MORPH_EXIT_DELAY,
   POST_MORPH_PAUSE,
   SPINNER_INTERVAL_MS,
-} from "@/lib/intro-timing";
+} from "@/lib/animation-timing";
 import { CommandWindow } from "./CommandWindow";
 
 /**
@@ -79,8 +79,11 @@ const toMs = (seconds: number) => seconds * 1000;
 const delay = (seconds: number) => new Promise<void>((resolve) => setTimeout(resolve, toMs(seconds)));
 
 function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
-  const { state, shouldShow, reducedMotion, startAnimation, skipAnimation, completeAnimation, setIntroPhase } =
-    useIntroContext();
+  const { loadMode, intro, reducedMotion, isInitialized } = useAnimationContext();
+  const dispatch = useAnimationDispatch();
+
+  // Derive shouldShow: render overlay when in intro mode and not complete
+  const shouldShow = loadMode === "intro" && intro.phase !== "complete";
 
   // Track client-side mount to avoid SSR/hydration mismatch.
   // On server, hasSeenIntro() returns false (no document), so shouldShow would
@@ -116,18 +119,19 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   // Guard with !reducedMotion to avoid polluting state when animation is skipped
   useEffect(() => {
     if (!reducedMotion) {
-      setIntroPhase(phase);
+      dispatch({ type: "INTRO_SET_PHASE", phase });
     }
-  }, [phase, setIntroPhase, reducedMotion]);
+  }, [phase, dispatch, reducedMotion]);
 
   // Defense in depth: if reduced motion is on and animation somehow triggers,
   // immediately skip to complete state. This handles edge cases where state
   // becomes "pending" despite reducedMotion (e.g., if triggerReplay guard fails).
   useEffect(() => {
     if (reducedMotion && shouldShow) {
-      skipAnimation();
+      dispatch({ type: "INTRO_SKIP" });
+      markIntroSeen();
     }
-  }, [reducedMotion, shouldShow, skipAnimation]);
+  }, [reducedMotion, shouldShow, dispatch]);
 
   // Handle entrance animation completion - just set flag (synchronous)
   // The async sequence runs in a useEffect that properly cleans up on unmount
@@ -189,12 +193,13 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     };
   }, []);
 
-  // Start animation automatically on mount (if not already complete)
+  // Start animation automatically on mount (if not already started)
+  // Wait for initialization and check we're in intro mode at idle phase
   useEffect(() => {
-    if (mounted && state === "pending") {
-      startAnimation();
+    if (mounted && isInitialized && loadMode === "intro" && intro.phase === "idle") {
+      dispatch({ type: "INTRO_START" });
     }
-  }, [mounted, state, startAnimation]);
+  }, [mounted, isInitialized, loadMode, intro.phase, dispatch]);
 
   // Trigger morph after loading phase
   useEffect(() => {
@@ -242,7 +247,8 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
       await delay(EXPANDING_DURATION);
       if (cancelled) return;
       setPhase("complete");
-      completeAnimation();
+      dispatch({ type: "INTRO_COMPLETE" });
+      markIntroSeen();
     };
 
     runSequence();
@@ -250,13 +256,14 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     return () => {
       cancelled = true;
     };
-  }, [morphComplete, completeAnimation]);
+  }, [morphComplete, dispatch]);
 
   // Handle skip action
   const handleSkip = useCallback(() => {
-    skipAnimation();
+    dispatch({ type: "INTRO_SKIP" });
+    markIntroSeen();
     onSkip?.();
-  }, [skipAnimation, onSkip]);
+  }, [dispatch, onSkip]);
 
   // Set up keypress listener for skip
   useEffect(() => {
@@ -330,8 +337,18 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
  * IntroSequence wrapper that applies a key based on replayCount.
  * This forces a full remount when the animation is retriggered,
  * resetting all internal state.
+ *
+ * Also handles skip: when wasSkipped is true, we fully unmount IntroSequenceInner
+ * (not just return null inside it) so that its effects stop running and don't
+ * interfere with the skip transition.
  */
 export function IntroSequence(props: IntroSequenceProps) {
-  const { replayCount } = useIntroContext();
-  return <IntroSequenceInner key={replayCount} {...props} />;
+  const { intro } = useAnimationContext();
+
+  // Fully unmount when skipped - prevents inner effects from overwriting skip state
+  if (intro.wasSkipped) {
+    return null;
+  }
+
+  return <IntroSequenceInner key={intro.replayCount} {...props} />;
 }

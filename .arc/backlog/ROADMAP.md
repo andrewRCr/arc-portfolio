@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-26
+**Last Updated:** 2026-01-27
 
 ---
 
@@ -50,11 +50,12 @@ Transform placeholder styling into distinctive, polished design.
    - 1239 unit tests, 304 E2E tests
    - [Archive](../reference/archive/2026-q1/feature/05_twm-startup-animation/)
 
-8. **Visual Polish** ← Next
-   - Plan: `.arc/backlog/feature/plan-visual-polish.md`
+8. 🔄 **Visual Polish** ← Active
+   - Task list: `.arc/active/feature/tasks-visual-polish.md`
+   - Branch: `feature/visual-polish`
    - Rationale: Remaining animation/transition work after startup animation
-   - Scope: Page transitions, micro-interactions, loading states, project hero images,
-     terminal vs standard aesthetic standardization (exploratory)
+   - Scope: Page transitions, tab animations, micro-interactions, technical fixes,
+     project hero images, terminal vs standard aesthetic standardization (exploratory)
    - Dependencies: TWM Startup Animation
 
 ### Phase C: Launch

@@ -74,7 +74,11 @@ export function ModStatsBadge({ value, type, className, showRaw = false }: ModSt
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Badge variant="secondary" className={cn("gap-1.5", className)} aria-label={config.ariaLabel(value)}>
+        <Badge
+          variant="secondary"
+          className={cn("gap-1.5 border border-border bg-surface-muted text-foreground", className)}
+          aria-label={config.ariaLabel(value)}
+        >
           <Icon className="size-3" aria-hidden="true" />
           <span>{displayValue}</span>
         </Badge>
@@ -82,6 +86,23 @@ export function ModStatsBadge({ value, type, className, showRaw = false }: ModSt
       <TooltipContent>{config.tooltip}</TooltipContent>
     </Tooltip>
   );
+}
+
+/** Build formatted stat entries from optional stat values, deriving icons/labels from statConfig */
+function buildStatEntries(downloads?: number, uniqueDownloads?: number, endorsements?: number) {
+  const entries: Array<{ type: ModStatType; value: number }> = [];
+  if (endorsements !== undefined) entries.push({ type: "endorsements", value: endorsements });
+  if (uniqueDownloads !== undefined) entries.push({ type: "uniqueDownloads", value: uniqueDownloads });
+  if (downloads !== undefined) entries.push({ type: "downloads", value: downloads });
+
+  return entries.map(({ type, value }) => {
+    const config = statConfig[type];
+    return {
+      icon: config.icon,
+      value: formatStatNumber(value),
+      label: config.ariaLabel(value),
+    };
+  });
 }
 
 /**
@@ -96,32 +117,22 @@ interface ModStatsCompactProps {
 }
 
 function ModStatsCompact({ downloads, uniqueDownloads, endorsements, className }: ModStatsCompactProps) {
-  // Build array of stats to display, deriving from shared statConfig
-  const entries: Array<{ type: ModStatType; value: number }> = [];
-  if (endorsements !== undefined) entries.push({ type: "endorsements", value: endorsements });
-  if (uniqueDownloads !== undefined) entries.push({ type: "uniqueDownloads", value: uniqueDownloads });
-  if (downloads !== undefined) entries.push({ type: "downloads", value: downloads });
-
-  const stats = entries.map(({ type, value }) => {
-    const config = statConfig[type];
-    return {
-      icon: config.icon,
-      value: formatStatNumber(value),
-      label: config.ariaLabel(value),
-    };
-  });
+  const stats = buildStatEntries(downloads, uniqueDownloads, endorsements);
 
   if (stats.length === 0) return null;
 
   const ariaLabel = stats.map((s) => s.label).join(", ");
 
   return (
-    <Badge variant="secondary" className={cn("gap-1", className)} aria-label={ariaLabel}>
+    <Badge
+      variant="secondary"
+      className={cn("gap-2.5 border border-border bg-surface-muted text-foreground", className)}
+      aria-label={ariaLabel}
+    >
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         return (
           <span key={index} className="inline-flex items-center gap-1">
-            {index > 0 && <span className="text-muted-foreground">·</span>}
             <Icon className="size-3" aria-hidden="true" />
             <span>{stat.value}</span>
           </span>
@@ -181,5 +192,38 @@ export function ModStatsGroup({ downloads, uniqueDownloads, endorsements, classN
       {uniqueDownloads !== undefined && <ModStatsBadge type="uniqueDownloads" value={uniqueDownloads} />}
       {downloads !== undefined && <ModStatsBadge type="downloads" value={downloads} />}
     </div>
+  );
+}
+
+/**
+ * Inline stats display (no badge wrapper) - for embedding in other components
+ * Renders: [👍 212 · 👥 6K · ⬇️ 9K] as inline content
+ */
+interface ModStatsInlineProps {
+  downloads?: number;
+  uniqueDownloads?: number;
+  endorsements?: number;
+  className?: string;
+}
+
+export function ModStatsInline({ downloads, uniqueDownloads, endorsements, className }: ModStatsInlineProps) {
+  const stats = buildStatEntries(downloads, uniqueDownloads, endorsements);
+
+  if (stats.length === 0) return null;
+
+  const ariaLabel = stats.map((s) => s.label).join(", ");
+
+  return (
+    <span className={cn("inline-flex items-center gap-3 text-foreground", className)} aria-label={ariaLabel}>
+      {stats.map((stat, index) => {
+        const Icon = stat.icon;
+        return (
+          <span key={index} className="inline-flex items-center gap-1">
+            <Icon className="size-2.5" aria-hidden="true" />
+            <span className="text-xs">{stat.value}</span>
+          </span>
+        );
+      })}
+    </span>
   );
 }

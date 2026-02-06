@@ -1,3 +1,4 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
@@ -7,6 +8,9 @@ import { MobileNavigation } from "../MobileNavigation";
 import { NAV_ITEMS } from "@/config/site";
 
 vi.mock("next/navigation", () => createNavigationMock());
+vi.mock("@/contexts/AnimationContext", async () =>
+  (await import("@tests/mocks/animation-context")).createAnimationContextMock()
+);
 
 describe("MobileNavigation", () => {
   beforeEach(() => {

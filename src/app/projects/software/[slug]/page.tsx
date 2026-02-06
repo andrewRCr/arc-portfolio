@@ -3,6 +3,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader, type DetailHeaderStats } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
+import { PhotoCredits } from "@/components/projects/PhotoCredits";
 import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
@@ -83,8 +84,19 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
         backLabel={backDest.label}
         links={project.links}
         stats={stats}
+        metadata={{
+          teamRole: project.teamRole,
+          teamRoleCompact: project.teamRoleCompact,
+          developmentTime: project.developmentTime,
+          developmentTimeCompact: project.developmentTimeCompact,
+        }}
       />
-      <ProjectDetail project={project} />
+      <ProjectDetail
+        project={project}
+        footer={
+          project.photoCredits && project.photoCredits.length > 0 && <PhotoCredits credits={project.photoCredits} />
+        }
+      />
     </PageLayout>
   );
 }

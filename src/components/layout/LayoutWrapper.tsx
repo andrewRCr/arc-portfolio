@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Minimize2, Maximize2 } from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { MAIN_CONTENT_TWEEN, MAIN_CONTENT_DELAY, HIDE_DURATION } from "@/lib/intro-timing";
+import {
+  getWindowTransition,
+  HIDE_DURATION,
+  EXPANDING_DURATION,
+  LAYOUT_MODE_DURATION_DESKTOP,
+  LAYOUT_MODE_DURATION_MOBILE,
+} from "@/lib/animation-timing";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
-import { IntroProvider, useIntroContext } from "@/contexts/IntroContext";
+import { AnimationProvider, useAnimationContext, useAnimationDispatch } from "@/contexts/AnimationContext";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
@@ -28,15 +34,56 @@ export interface LayoutWrapperProps {
 }
 
 /**
- * Inner layout component that renders inside IntroProvider.
+ * Inner layout component that renders inside AnimationProvider.
  * Handles intro-aware animation of main content and footer.
  */
 function LayoutContent({ children }: LayoutWrapperProps) {
-  const { windowGap, windowContainerMaxWidth, topBarHeight } = DEFAULT_LAYOUT_TOKENS;
+  const { windowGap, windowContainerMaxWidth, topBarHeight, footerHeight } = DEFAULT_LAYOUT_TOKENS;
   const { layoutMode, setLayoutMode, isDrawerOpen } = useLayoutPreferences();
-  const { introPhase, isHiddenUntilMorph, shouldShow } = useIntroContext();
+  const { loadMode, animationMode, intro, visibility, reducedMotion, isInitialized } = useAnimationContext();
+  const dispatch = useAnimationDispatch();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
   const isMobile = useIsMobile();
+
+  // Derive values from AnimationContext
+  const introPhase = intro.phase;
+  // Use new visibility flag that accounts for initialization AND idle phase
+  const windowVisible = visibility.windowVisible;
+
+  // shouldShowIntro: true when intro overlay is visible (blocks interaction)
+  // When skipped, overlay is gone so interaction should be allowed
+  const shouldShowIntro = loadMode === "intro" && intro.phase !== "complete" && !intro.wasSkipped;
+
+  // Handle skip completion: when intro is skipped, IntroSequence unmounts but phase stays at "expanding".
+  // After expanding animations complete, dispatch INTRO_COMPLETE to finalize state.
+  useEffect(() => {
+    if (intro.wasSkipped && intro.phase === "expanding") {
+      const timer = setTimeout(() => {
+        dispatch({ type: "INTRO_COMPLETE" });
+      }, EXPANDING_DURATION * 1000); // Convert seconds to ms
+      return () => clearTimeout(timer);
+    }
+  }, [intro.wasSkipped, intro.phase, dispatch]);
+
+  // Reset layout mode to boxed when intro plays to ensure bars are visible for morph animation.
+  // Handles edge case: user in fullscreen mode, intro cookie expires, user revisits site.
+  // Without this, TopBar/FooterBar would be at height=0, breaking the morph animation.
+  // Note: Must check isInitialized to avoid race condition where loadMode defaults to "intro"
+  // before cookie check completes.
+  useEffect(() => {
+    if (
+      isInitialized &&
+      loadMode === "intro" &&
+      intro.phase !== "complete" &&
+      !intro.wasSkipped &&
+      layoutMode !== "boxed"
+    ) {
+      setLayoutMode("boxed");
+    }
+  }, [isInitialized, loadMode, intro.phase, intro.wasSkipped, layoutMode, setLayoutMode]);
+
+  // Timing logic centralized in animation-timing.ts (SRP compliance)
+  const windowTransition = getWindowTransition(animationMode, windowVisible);
 
   // Fullscreen mode: no bars, no gaps, content fills viewport
   const isFullscreen = layoutMode === "full";
@@ -55,12 +102,19 @@ function LayoutContent({ children }: LayoutWrapperProps) {
     setLayoutMode(isFullscreen ? "boxed" : "full");
   };
 
-  // Apply max-width only in "boxed" mode (wide and full modes have no max-width constraint)
-  const containerMaxWidth = layoutMode === "boxed" ? windowContainerMaxWidth : undefined;
+  // Apply max-width in "boxed" mode, use 100% for wide/full (enables CSS transition interpolation)
+  const containerMaxWidth = layoutMode === "boxed" ? windowContainerMaxWidth : "100%";
 
   // In fullscreen mode: no padding/gap; otherwise use standard windowGap
   const layoutPadding = isFullscreen ? 0 : windowGap;
   const layoutGap = isFullscreen ? 0 : windowGap;
+
+  // Fullscreen bar animation: synced with container transition, disabled for reduced motion
+  const fullscreenBarDuration = reducedMotion
+    ? 0
+    : isMobile
+      ? LAYOUT_MODE_DURATION_MOBILE
+      : LAYOUT_MODE_DURATION_DESKTOP;
 
   return (
     <>
@@ -69,34 +123,41 @@ function LayoutContent({ children }: LayoutWrapperProps) {
       {/* Clicking gap areas (outside windows) resets active state */}
       {/* inert: prevents keyboard/screen reader interaction while intro overlay is active */}
       <div
-        className="mx-auto h-dvh w-full flex flex-col"
-        style={{ padding: `${layoutPadding}px`, gap: `${layoutGap}px`, maxWidth: containerMaxWidth }}
+        className="mx-auto h-dvh w-full flex flex-col transition-[padding,gap,max-width] ease-in-out motion-reduce:transition-none"
+        style={{
+          padding: `${layoutPadding}px`,
+          gap: `${layoutGap}px`,
+          maxWidth: containerMaxWidth,
+          transitionDuration: reducedMotion
+            ? "0s"
+            : `${isMobile ? LAYOUT_MODE_DURATION_MOBILE : LAYOUT_MODE_DURATION_DESKTOP}s`,
+        }}
         onPointerDown={() => setActiveWindow(null)}
-        inert={shouldShow || undefined}
+        inert={shouldShowIntro || undefined}
       >
-        {/* Top bar - visually hidden in fullscreen mode (kept mounted so drawer can stay open) */}
-        <TopBar
-          isActive={effectiveActiveWindow === "top"}
-          onActivate={() => setActiveWindow("top")}
-          className={isFullscreen ? "hidden" : undefined}
-        />
+        {/* TopBar wrapper - animates height/opacity for fullscreen mode (isolated from intro animation) */}
+        <motion.div
+          animate={{
+            height: isFullscreen ? 0 : topBarHeight,
+            opacity: isFullscreen ? 0 : 1,
+          }}
+          transition={{ duration: fullscreenBarDuration, ease: "easeInOut" }}
+          style={{ overflow: "hidden", flexShrink: 0 }}
+        >
+          <TopBar isActive={effectiveActiveWindow === "top"} onActivate={() => setActiveWindow("top")} />
+        </motion.div>
 
         {/* Main content window - fills remaining space, content scrolls inside */}
-        {/* Animated entrance during intro expansion phase - scales up from center to fill space */}
-        {/* On hide (retrigger): quick fade out. On show: just scale (opacity stays at 1) */}
+        {/* Animated entrance: scales up from center. Timing varies by animationMode. */}
+        {/* Always use initial: {hidden} so animation works on all scenarios (intro, refresh, etc.) */}
         <motion.div
           className="flex-1 min-h-0 flex flex-col"
-          initial={false}
+          initial={{ opacity: 0, scale: 0 }}
           animate={{
-            opacity: isHiddenUntilMorph ? 0 : 1,
-            scale: isHiddenUntilMorph ? 0 : 1,
+            opacity: windowVisible ? 1 : 0,
+            scale: windowVisible ? 1 : 0,
           }}
-          transition={{
-            opacity: isHiddenUntilMorph ? { type: "tween", duration: HIDE_DURATION } : { duration: 0 }, // Instant on show - no opacity transition
-            scale: isHiddenUntilMorph
-              ? { type: "tween", duration: HIDE_DURATION }
-              : { ...MAIN_CONTENT_TWEEN, delay: MAIN_CONTENT_DELAY },
-          }}
+          transition={windowTransition}
           style={{ transformOrigin: "center" }}
         >
           <WindowContainer
@@ -109,29 +170,27 @@ function LayoutContent({ children }: LayoutWrapperProps) {
           </WindowContainer>
         </motion.div>
 
-        {/* Footer bar - visually hidden in fullscreen mode */}
+        {/* FooterBar wrapper - animates height/opacity for fullscreen mode (isolated from intro animation) */}
         {/* During morph: uses layoutId to morph from CommandWindow shadow element */}
-        {/* Pre-morph: render placeholder to hold space; actual element mounts on morph for layoutId to work */}
+        {/* Pre-morph (including idle): render placeholder to hold space; actual element mounts on morph for layoutId to work */}
         {/* On retrigger: quick fade out via exit animation (no reverse morph) */}
         <AnimatePresence mode="wait">
-          {isHiddenUntilMorph ? (
-            <motion.div
-              key="footer-placeholder"
-              style={{ height: DEFAULT_LAYOUT_TOKENS.footerHeight, flexShrink: 0 }}
-              aria-hidden="true"
-            />
+          {!windowVisible ? (
+            <motion.div key="footer-placeholder" style={{ height: footerHeight, flexShrink: 0 }} aria-hidden="true" />
           ) : (
             <motion.div
               key="footer-actual"
               layoutId={introPhase === "morphing" ? "footer-window" : undefined}
               layout={introPhase === "morphing"}
+              animate={{
+                height: isFullscreen ? 0 : footerHeight,
+                opacity: isFullscreen ? 0 : 1,
+              }}
+              transition={{ duration: fullscreenBarDuration, ease: "easeInOut" }}
               exit={{ opacity: 0, transition: { duration: HIDE_DURATION } }}
+              style={{ overflow: "hidden", flexShrink: 0 }}
             >
-              <FooterBar
-                isActive={effectiveActiveWindow === "footer"}
-                onActivate={() => setActiveWindow("footer")}
-                className={isFullscreen ? "hidden" : undefined}
-              />
+              <FooterBar isActive={effectiveActiveWindow === "footer"} onActivate={() => setActiveWindow("footer")} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -146,7 +205,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
           type="button"
           onClick={toggleLayoutMode}
           aria-label={isFullscreen ? "Exit fullscreen mode" : "Enter fullscreen mode"}
-          className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
+          className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-surface-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
           style={{ top: isFullscreen ? 16 : topBarHeight + windowGap + 16 }}
         >
           {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
@@ -185,7 +244,8 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const { wallpaperSrc, wallpaperSrcHiRes } = useWallpaperContext();
 
   return (
-    <IntroProvider>
+    // AnimationProvider: centralized animation state (single source of truth)
+    <AnimationProvider>
       {/* Signal for E2E tests to detect intro state */}
       <IntroStateSignal />
 
@@ -196,6 +256,6 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <LayoutGroup>
         <LayoutContent>{children}</LayoutContent>
       </LayoutGroup>
-    </IntroProvider>
+    </AnimationProvider>
   );
 }

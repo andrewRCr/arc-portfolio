@@ -4,6 +4,8 @@ import * as React from "react";
 import { LAYOUT_MODE_STORAGE_KEY } from "@/config/storage";
 import { LAYOUT_MODES, DEFAULT_LAYOUT_MODE, type LayoutMode } from "@/config/layout";
 import { setLayoutModePreference } from "@/app/actions/layout-preferences";
+import { LAYOUT_MODE_DURATION_DESKTOP, LAYOUT_MODE_DURATION_MOBILE } from "@/lib/animation-timing";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 
 // Re-export for consumers
 export type { LayoutMode } from "@/config/layout";
@@ -20,6 +22,8 @@ interface LayoutPreferencesContextValue {
   /** Whether the mobile theme control drawer is open (for coordinating UI elements) */
   isDrawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;
+  /** Whether layout mode is currently transitioning (for content crossfade coordination) */
+  isLayoutTransitioning: boolean;
 }
 
 const LayoutPreferencesContext = React.createContext<LayoutPreferencesContextValue | undefined>(undefined);
@@ -62,6 +66,13 @@ export function LayoutPreferencesContextProvider({
   // Drawer open state (ephemeral, for UI coordination)
   const [isDrawerOpen, setDrawerOpen] = React.useState(false);
 
+  // Layout transition state (for content crossfade during mode changes)
+  const [isLayoutTransitioning, setLayoutTransitioning] = React.useState(false);
+  const transitionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Phone detection for transition timing (phone uses boxed↔full, tablet/desktop uses boxed↔wide)
+  const isPhone = useIsPhone();
+
   // After hydration, sync with localStorage (may differ from cookie on first visit)
   React.useEffect(() => {
     const storedMode = getStoredLayoutMode();
@@ -77,13 +88,28 @@ export function LayoutPreferencesContextProvider({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Wrapped setter that updates localStorage immediately and syncs to cookie
-  const setLayoutMode = React.useCallback((mode: LayoutMode) => {
-    setLayoutModeInternal(mode);
-    // localStorage update (immediate) - no window check needed in client component
-    localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, mode);
-    // Cookie sync (async, fire-and-forget)
-    syncLayoutModeCookie(mode);
-  }, []);
+  const setLayoutMode = React.useCallback(
+    (mode: LayoutMode) => {
+      setLayoutModeInternal(mode);
+      // localStorage update (immediate) - no window check needed in client component
+      localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, mode);
+      // Cookie sync (async, fire-and-forget)
+      syncLayoutModeCookie(mode);
+
+      // Trigger transitioning state for content crossfade
+      // Clear any pending timeout (handles rapid toggles)
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+      setLayoutTransitioning(true);
+      const duration = isPhone ? LAYOUT_MODE_DURATION_MOBILE : LAYOUT_MODE_DURATION_DESKTOP;
+      transitionTimeoutRef.current = setTimeout(() => {
+        setLayoutTransitioning(false);
+        transitionTimeoutRef.current = null;
+      }, duration * 1000); // Convert seconds to ms
+    },
+    [isPhone]
+  );
 
   // Sync across tabs via storage event
   React.useEffect(() => {
@@ -98,8 +124,19 @@ export function LayoutPreferencesContextProvider({
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
+  // Cleanup transition timeout on unmount
+  React.useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <LayoutPreferencesContext.Provider value={{ layoutMode, setLayoutMode, isDrawerOpen, setDrawerOpen }}>
+    <LayoutPreferencesContext.Provider
+      value={{ layoutMode, setLayoutMode, isDrawerOpen, setDrawerOpen, isLayoutTransitioning }}
+    >
       {children}
     </LayoutPreferencesContext.Provider>
   );

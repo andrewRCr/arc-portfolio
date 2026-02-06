@@ -4,8 +4,8 @@
  * Shared helper functions for theme definitions.
  */
 
-import type { ThemeColors } from "./types";
-import { rgbToHex } from "@/lib/theme/utils";
+import type { ModeSurfaceConfig, ThemeColors } from "./types";
+import { alphaComposite, rgbToHex } from "@/lib/theme/utils";
 
 /**
  * Convert hex color to RGB space-separated string for Tailwind.
@@ -65,13 +65,15 @@ type SwatchTuple = readonly [string, string, string, string, string, string, str
  *
  * Strategy:
  * 1. Slots 0-3: Semantic tokens (muted, primary, accent, secondary)
+ *    - Slot 0 (muted) is darkened in light mode to match surface-muted appearance
  * 2. Slots 4-6: First 3 decorative accents that don't duplicate slots 0-3
  * 3. Slot 7: Foreground
  *
  * @param tokens - ThemeColors object (light or dark mode)
+ * @param surfaces - Optional surface config for applying light mode darkening
  * @returns 8-element tuple of hex colors for swatch display
  */
-export function deriveSwatchColors(tokens: ThemeColors): SwatchTuple {
+export function deriveSwatchColors(tokens: ThemeColors, surfaces?: ModeSurfaceConfig): SwatchTuple {
   const result: string[] = [];
   const usedColors = new Set<string>();
 
@@ -84,9 +86,28 @@ export function deriveSwatchColors(tokens: ThemeColors): SwatchTuple {
     return rgbToHex(value);
   };
 
+  // Helper to get hex with optional surface darkening applied
+  const getHexWithSurfaceDarkening = (key: keyof ThemeColors): string => {
+    const value = tokens[key];
+    if (value.includes("rgba") || value.includes("shadow")) {
+      throw new Error(`Invalid token for swatch: ${key} = ${value}`);
+    }
+
+    // Apply surface darkening if configured (light mode typically uses 20%)
+    if (surfaces?.surfaceDarken && surfaces.surfaceDarken > 0) {
+      const darkenRatio = surfaces.surfaceDarken / 100; // Convert percentage to 0-1
+      const darkened = alphaComposite(tokens.foreground, darkenRatio, value);
+      return rgbToHex(darkened);
+    }
+
+    return rgbToHex(value);
+  };
+
   // Slots 0-3: Semantic tokens (always included)
-  for (const key of SEMANTIC_SWATCH_TOKENS) {
-    const hex = getHex(key);
+  // Slot 0 (muted) gets surface darkening to match surface-muted appearance
+  for (let i = 0; i < SEMANTIC_SWATCH_TOKENS.length; i++) {
+    const key = SEMANTIC_SWATCH_TOKENS[i];
+    const hex = i === 0 ? getHexWithSurfaceDarkening(key) : getHex(key);
     result.push(hex);
     usedColors.add(hex);
   }

@@ -6,6 +6,9 @@ import { skills } from "@/data/skills";
 // Categories displayed in DetailCards (excludes Languages and Methodologies)
 const CARD_CATEGORIES = Object.keys(skills).filter((cat) => cat !== "Languages" && cat !== "Methodologies");
 
+// DetailCard renders headings in bracket format: [category name]
+const toHeadingFormat = (category: string) => `[${category.toLowerCase()}]`;
+
 // Derive skill samples from data for resilient tests
 const allSkills = Object.values(skills).flat();
 const sampleSkillsWithIcons = allSkills.filter((s) => s.iconSlug).slice(0, 4);
@@ -19,7 +22,7 @@ describe("SkillsSection", () => {
       // Languages should render but NOT in a DetailCard (no h2 heading for Languages)
       const headings = screen.getAllByRole("heading", { level: 2 });
       const headingTexts = headings.map((h) => h.textContent);
-      expect(headingTexts).not.toContain("Languages");
+      expect(headingTexts).not.toContain(toHeadingFormat("Languages"));
 
       // But Languages skills should still be present (as SVG icons via SkillLogoGrid)
       const languageSkills = skills.Languages;
@@ -38,14 +41,14 @@ describe("SkillsSection", () => {
 
       // Each card category should have an h2 heading (from DetailCard)
       CARD_CATEGORIES.forEach((category) => {
-        expect(screen.getByRole("heading", { name: category, level: 2 })).toBeInTheDocument();
+        expect(screen.getByRole("heading", { name: toHeadingFormat(category), level: 2 })).toBeInTheDocument();
       });
     });
 
     it("does not render Methodologies category", () => {
       render(<SkillsSection />);
 
-      expect(screen.queryByRole("heading", { name: "Methodologies" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("heading", { name: toHeadingFormat("Methodologies") })).not.toBeInTheDocument();
     });
 
     it("renders correct number of category cards", () => {
@@ -102,7 +105,7 @@ describe("SkillsSection", () => {
       const headings = screen.getAllByRole("heading", { level: 2 });
       const renderedCategories = headings.map((h) => h.textContent);
 
-      expect(renderedCategories).toEqual(CARD_CATEGORIES);
+      expect(renderedCategories).toEqual(CARD_CATEGORIES.map(toHeadingFormat));
     });
   });
 });

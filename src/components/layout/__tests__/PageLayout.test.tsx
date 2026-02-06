@@ -1,8 +1,14 @@
-import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { checkA11y } from "@tests/test-utils";
+import { render, screen, checkA11y } from "@tests/test-utils";
 import { PageLayout } from "../PageLayout";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+
+/**
+ * Tests for PageLayout component.
+ *
+ * Uses centralized test-utils which provides all required context providers
+ * (ThemeContext, WallpaperContext, LayoutPreferencesContext, AnimationContext).
+ */
 
 describe("PageLayout", () => {
   beforeEach(() => {

@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useLayoutEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ProjectTabs from "@/components/projects/ProjectTabs";
 import ProjectCard from "@/components/projects/ProjectCard";
 import SkillFilterControl from "@/components/projects/SkillFilterControl";
@@ -11,9 +12,36 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
+import { contact } from "@/data/contact";
+import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
+import { TextLink } from "@/components/ui/text-link";
 import { FEATURES } from "@/config/features";
 import { filterProjectsBySkills } from "@/lib/project-filters";
+import { TAB_CONTENT_DURATION, MATERIAL_EASE } from "@/lib/animation-timing";
 import { Project } from "@/types/project";
+import { useScrollViewport } from "@/components/layout/ScrollContext";
+
+/** Scrolls viewport to top when tab changes, synced with exit animation. Must be inside PageLayout. */
+function ScrollResetOnTabChange({ currentTab }: { currentTab: string }) {
+  const { viewport } = useScrollViewport();
+  const reducedMotion = useReducedMotion();
+  const prevTabRef = useRef(currentTab);
+
+  useLayoutEffect(() => {
+    if (prevTabRef.current !== currentTab && viewport) {
+      // Delay scroll until exit animation completes (opacity at 0)
+      const delayMs = reducedMotion ? 0 : TAB_CONTENT_DURATION * 1000;
+      const timer = setTimeout(() => {
+        viewport.scrollTop = 0;
+      }, delayMs);
+      prevTabRef.current = currentTab;
+      return () => clearTimeout(timer);
+    }
+    prevTabRef.current = currentTab;
+  }, [currentTab, viewport, reducedMotion]);
+
+  return null;
+}
 
 /** Reusable tab panel component for project grids */
 function TabPanel({
@@ -48,6 +76,17 @@ function TabPanel({
 function ProjectsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const shouldReduceMotion = useReducedMotion();
+
+  // Tab content animation config
+  const tabContentAnimation = shouldReduceMotion
+    ? {} // No animation with reduced motion
+    : {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+        transition: { duration: TAB_CONTENT_DURATION, ease: MATERIAL_EASE },
+      };
 
   // Parse skills query param (comma-separated)
   const skillsParam = searchParams.get("skills");
@@ -138,7 +177,7 @@ function ProjectsContent() {
               </div>
 
               {/* Bottom on phone (centered), right on tablet+: Filter Button */}
-              <div className="shrink-0 flex justify-center sm:justify-end">
+              <div className="shrink-0 flex justify-center sm:justify-end sm:mr-4">
                 <SkillFilterControl
                   allProjects={allProjectsAndMods}
                   selectedSkills={selectedSkills}
@@ -150,6 +189,9 @@ function ProjectsContent() {
         </PageHeader>
       }
     >
+      {/* Must be inside PageLayout to access ScrollContext */}
+      <ScrollResetOnTabChange currentTab={currentTab} />
+
       <div className="px-4">
         {/* ARIA Live Region for result count */}
         {isFiltered && (
@@ -174,22 +216,39 @@ function ProjectsContent() {
 
         {/* Tab-based Views (when not filtered) */}
         {!isFiltered && (
-          <>
+          <AnimatePresence mode="wait">
             {currentTab === "software" && (
-              <TabPanel
-                id="software"
-                projects={softwareProjects}
-                categoryType="software"
-                withTabAttributes={FEATURES.SHOW_PROJECT_TABS}
-              />
+              <motion.div key="software" data-tab-content {...tabContentAnimation}>
+                <TabPanel
+                  id="software"
+                  projects={softwareProjects}
+                  categoryType="software"
+                  withTabAttributes={FEATURES.SHOW_PROJECT_TABS}
+                />
+              </motion.div>
             )}
             {FEATURES.SHOW_PROJECT_TABS && currentTab === "games" && (
-              <TabPanel id="games" projects={gameProjects} categoryType="games" />
+              <motion.div key="games" data-tab-content {...tabContentAnimation}>
+                <TabPanel id="games" projects={gameProjects} categoryType="games" />
+              </motion.div>
             )}
             {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
-              <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
+              <motion.div key="mods" data-tab-content {...tabContentAnimation}>
+                <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
+                {/* Footer card linking to full NexusMods profile */}
+                <div className="mt-6 flex justify-center">
+                  <div className="rounded-lg border border-border bg-surface-background px-6 py-3 text-sm text-muted-foreground">
+                    <span className="sm:hidden">See more at </span>
+                    <span className="hidden sm:inline">See additional published mods at </span>
+                    <TextLink href={contact.socialLinks.find((l) => l.platform === "NexusMods")?.url ?? "#"}>
+                      <NexusModsIcon className="inline-block h-3.5 w-3.5 align-[-0.125rem]" />
+                      {" NexusMods"}
+                    </TextLink>
+                  </div>
+                </div>
+              </motion.div>
             )}
-          </>
+          </AnimatePresence>
         )}
       </div>
     </PageLayout>

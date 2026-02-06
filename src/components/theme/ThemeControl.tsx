@@ -99,10 +99,10 @@ export function ThemeControl() {
             ref={triggerRef}
             type="button"
             aria-label="Open theme settings"
-            className="group flex items-center gap-1 px-1.5 h-7 rounded-md border border-transparent hover:border-foreground/60 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all"
+            className="group flex items-center gap-1 px-1.5 h-7 rounded-md outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all will-change-transform"
           >
             {showSwatch ? (
-              <span className="animate-in fade-in duration-300">
+              <span className="animate-in fade-in duration-300 group-hover:opacity-70 transition-opacity">
                 <ThemeSwatch colors={swatchColors} size={16} />
               </span>
             ) : (
@@ -110,7 +110,7 @@ export function ThemeControl() {
             )}
             <ChevronDown
               data-testid="theme-control-chevron"
-              className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors"
+              className="w-3 h-3 text-muted-foreground group-hover:text-accent-mid transition-colors"
             />
           </button>
         </PopoverTrigger>
@@ -119,14 +119,14 @@ export function ThemeControl() {
           <div className="flex flex-col gap-3">
             {/* Theme Selector Section */}
             <div>
-              <h3 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Theme</h3>
+              <h3 className="text-xs font-terminal text-foreground mb-2 uppercase tracking-wide">Theme</h3>
               <ThemeSelector selectedTheme={activeTheme} onSelect={setActiveTheme} />
             </div>
 
             {/* Wallpaper Picker Section */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Wallpaper</h3>
+                <h3 className="text-xs font-terminal text-foreground uppercase tracking-wide">Wallpaper</h3>
                 <Switch
                   checked={isWallpaperEnabled}
                   onCheckedChange={setWallpaperEnabled}
@@ -151,16 +151,16 @@ export function ThemeControl() {
                   e.currentTarget.blur();
                 }}
                 aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-                className="min-w-[5.25rem] gap-2"
+                className="min-w-[5.25rem] gap-1.5 font-terminal text-xs"
               >
                 {theme === "dark" ? (
                   <>
-                    <Moon className="h-4 w-4" />
+                    <Moon className="h-3.5 w-3.5" />
                     <span>Dark</span>
                   </>
                 ) : (
                   <>
-                    <Sun className="h-4 w-4" />
+                    <Sun className="h-3.5 w-3.5" />
                     <span>Light</span>
                   </>
                 )}
@@ -175,16 +175,16 @@ export function ThemeControl() {
                 disabled={!isLayoutToggleEnabled}
                 aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "wide" ? "boxed" : "wide"} layout`}
                 title={!isLayoutToggleEnabled ? "Viewport too narrow for layout toggle" : undefined}
-                className="min-w-[5.25rem] gap-2"
+                className="min-w-[5.25rem] gap-1.5 font-terminal text-xs"
               >
                 {layoutMode === "wide" ? (
                   <>
-                    <Maximize2 className="h-4 w-4" />
+                    <Maximize2 className="h-3.5 w-3.5" />
                     <span>Wide</span>
                   </>
                 ) : (
                   <>
-                    <Square className="h-4 w-4" />
+                    <Square className="h-3.5 w-3.5" />
                     <span>Boxed</span>
                   </>
                 )}
@@ -198,9 +198,9 @@ export function ThemeControl() {
                 }}
                 aria-label="Reset all preferences to defaults"
                 disabled={!hasCustomPreferences}
-                className="gap-2"
+                className="gap-1.5 font-terminal text-xs"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-3.5 w-3.5" />
                 <span>Reset</span>
               </Button>
             </div>

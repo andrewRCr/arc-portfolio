@@ -18,8 +18,47 @@
  */
 
 import { rougeDark, rougeLight, rougeA11y } from "../palettes/rouge";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration - Rouge has muted accents, needs higher opacities
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.9, low: 0.8 },
+    secondary: { high: 0.8, mid: 0.4, low: 0.2 },
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 1,
+  },
+  dark: {
+    accent: { high: 1, mid: 0.8, low: 0.65 }, // low bumped from 0.4 for badge contrast
+    secondary: { high: 0.8, mid: 0.2, low: 0.1 },
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "accent-foreground" }, // low uses dark text for contrast
+    accentDecorativeOpacity: 1,
+  },
+};
+
+// Surface configuration - controls visual layering
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to secondary, accent-mid darkens in-family
+// Rouge: Rouge (red) primary → Blue secondary (warm→cool complement)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 20, // fallback
+    accentMidDarken: 20,
+    primaryHoverColor: "secondary",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "secondary-high",
+    // Rouge dark: Lightened foreground for better contrast on peach accent
+    accentMidHoverForeground: "foreground-lightened",
+  },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -51,8 +90,8 @@ const lightTokens: ThemeColors = {
   "muted-foreground": hexToRgb(rougeA11y.fgMutedDarkened10), // #5a6771
 
   // Default accent (peach - warm complement, heavily used)
-  // A11Y: peach darkened 5% for WCAG AA (4.29 → 4.69)
-  accent: hexToRgb(rougeA11y.peachDarkened5), // #926d3d
+  // A11Y: hand-adjusted for WCAG AA on light background (4.35 → 4.54:1)
+  accent: hexToRgb("#8F6A3C"), // darkened from #926d3d
   "accent-foreground": hexToRgb("#ffffff"),
 
   // Decorative accent variants
@@ -142,13 +181,18 @@ export const rougeTheme: Theme = {
   defaultWallpaper: "wolfgang-hasselmann-3",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
     default: "red", // Rouge is signature
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
+  hover,
 } as const;

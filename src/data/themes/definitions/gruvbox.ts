@@ -24,8 +24,45 @@
  */
 
 import { gruvboxPalette as p, gruvboxA11y } from "../palettes/gruvbox";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.9, low: 0.8 },
+    secondary: { high: 0.8, mid: 0.4, low: 0.2 },
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 1,
+  },
+  dark: {
+    accent: { high: 0.8, mid: 0.74, low: 0.2 }, // mid bumped for WCAG AA
+    secondary: { high: 0.8, mid: 0.2, low: 0.1 },
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "foreground" },
+    accentDecorativeOpacity: 1,
+  },
+};
+
+// Surface configuration - Gruvbox light keeps "normal" hierarchy (exception)
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "normal" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to secondary, accent-mid darkens in-family
+// Gruvbox: Green (lime) primary → Orange/Yellow secondary (cool→warm)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 20, // fallback
+    accentMidDarken: 20,
+    primaryHoverColor: "secondary",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "secondary-high",
+  },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -55,9 +92,10 @@ const lightTokens: ThemeColors = {
   "muted-foreground": hexToRgb(p.dark3), // #665c54
 
   // Default accent (official "aqua", visually mint green)
-  // A11Y: foreground changed from dark1 to dark0 for WCAG AA (4.65:1)
-  accent: hexToRgb(p.neutral_aqua), // #689d6a
-  "accent-foreground": hexToRgb(p.dark0), // #282828
+  // A11Y: darkened 12.5% for WCAG AA as text on light background (4.54:1)
+  accent: hexToRgb("#4E774F"), // darkened from #689d6a
+  // A11Y: white foreground for accent-as-background usage (menu focus, etc.)
+  "accent-foreground": hexToRgb("#FFFFFF"),
 
   // Decorative accent variants (all faded for light mode)
   // No -foreground pairs - decorative use only (borders, text color, indicators)
@@ -150,9 +188,10 @@ export const gruvboxTheme: Theme = {
   defaultWallpaper: "c-shi",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
@@ -161,4 +200,8 @@ export const gruvboxTheme: Theme = {
     default: "green",
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
+  hover,
 } as const;

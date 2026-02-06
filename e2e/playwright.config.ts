@@ -18,10 +18,12 @@ export default defineConfig({
   outputDir: "./test-results",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1, // Single retry locally for flaky network
-  // 4 workers locally for faster runs (timing issues were fixed with state signals)
-  // 1 in CI for consistency and resource constraints
-  workers: process.env.CI ? 1 : 4,
+  retries: process.env.CI ? 2 : 1,
+  // Worker count tuned for reliability over raw speed:
+  // - Local WSL2: 4 workers (reduced from 10 - was causing resource contention and ~20% Firefox flakiness)
+  // - CI Ubuntu: 2 workers (ubuntu-24.04 has 2 vCPU; single worker unnecessarily slow)
+  // Reference: Playwright docs recommend 0.5-2x CPU cores for optimal throughput
+  workers: process.env.CI ? 2 : 4,
   reporter: [["html", { outputFolder: "./playwright-report", open: "never" }], ["list"]],
 
   use: {

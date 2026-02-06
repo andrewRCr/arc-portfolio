@@ -19,7 +19,7 @@
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { WINDOW_SCALE_DURATION, CONTENT_FADE_DURATION, MORPH_SPRING } from "@/lib/intro-timing";
+import { WINDOW_SCALE_DURATION, CONTENT_FADE_DURATION, MORPH_SPRING } from "@/lib/animation-timing";
 import { WindowContainer } from "@/components/layout/WindowContainer";
 
 export interface CommandWindowProps {
@@ -114,12 +114,12 @@ export function CommandWindow({
             >
               {/* Branding - matches TopBar style */}
               <div className="flex items-center gap-3">
-                <span className="text-foreground font-mono font-bold">{SITE.handle}</span>
-                <span className="text-primary font-mono">&gt;</span>
+                <span className="text-foreground font-terminal font-bold">{SITE.handle}</span>
+                <span className="text-primary font-terminal">&gt;</span>
               </div>
 
               {/* Command area - typed text + cursor or loading indicator */}
-              <div className="flex items-center font-mono text-foreground">
+              <div className="flex items-center font-terminal text-foreground">
                 <span>
                   {typedText}
                   {!isTypingComplete && showCursor && <BlinkingCursor />}

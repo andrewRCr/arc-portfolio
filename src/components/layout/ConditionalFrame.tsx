@@ -4,9 +4,10 @@ import { usePathname } from "next/navigation";
 import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { FRAME_FADE_DELAY, BORDER_DRAW_DURATION, NAV_FADE_TRANSITION } from "@/lib/intro-timing";
-import { useIntroContext } from "@/contexts/IntroContext";
+import { getNavBorderTiming, getBorderDrawTiming, HIDE_TRANSITION } from "@/lib/animation-timing";
+import { useAnimationContext } from "@/contexts/AnimationContext";
 import { Navigation } from "./Navigation";
+import { PageTransition } from "./PageTransition";
 
 /**
  * ConditionalFrame Component
@@ -69,7 +70,15 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDevRoute = pathname?.startsWith("/dev");
   const { navGapDepth, windowBorderWidth, contentMaxWidth, tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
-  const { introPhase, isHiddenUntilExpand } = useIntroContext();
+  const { animationMode, intro, visibility } = useAnimationContext();
+
+  // Derive values from AnimationContext
+  const introPhase = intro.phase;
+  // Use new visibility flag that accounts for initialization
+  const contentVisible = visibility.contentVisible;
+
+  // Timing logic centralized in animation-timing.ts (SRP compliance)
+  const navBorderTransition = contentVisible ? getNavBorderTiming(animationMode) : HIDE_TRANSITION;
 
   // Refs for measuring container and SVG paths
   const containerRef = useRef<HTMLDivElement>(null);
@@ -116,7 +125,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
 
   // Trigger SVG based on current phase
   // - "entering": Reset for new intro cycle
-  // - "expanding": Trigger the border draw animation
+  // - "expanding": Trigger the border draw animation (for both normal intro and skip)
   // - other phases: maintain current state
   useEffect(() => {
     if (introPhase === "entering") {
@@ -131,8 +140,11 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
     // Once triggered, stays triggered until next intro cycle
   }, [introPhase]);
 
-  // Show SVG border once triggered
-  const showAnimatedBorder = svgTriggered;
+  // Show SVG border for intro and skip modes (not refresh/route)
+  const showAnimatedBorder = svgTriggered && (animationMode === "intro" || animationMode === "skip");
+
+  // Timing logic centralized in animation-timing.ts (SRP compliance)
+  const borderDrawTiming = getBorderDrawTiming(animationMode);
 
   // Measure actual path length after SVG paths render
   // useLayoutEffect runs synchronously after DOM mutations but before paint,
@@ -155,7 +167,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
           className="flex flex-col flex-1 min-h-0 mx-auto w-full"
           style={{ maxWidth: contentMaxWidth }}
         >
-          {children}
+          <PageTransition>{children}</PageTransition>
         </div>
       </div>
     );
@@ -213,7 +225,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
               initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
               animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
               transition={{
-                strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
+                strokeDashoffset: borderDrawTiming,
                 strokeDasharray: { duration: 0 }, // Instant update on resize
               }}
             />
@@ -228,7 +240,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
               initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
               animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
               transition={{
-                strokeDashoffset: { duration: BORDER_DRAW_DURATION, delay: FRAME_FADE_DELAY, ease: "easeInOut" },
+                strokeDashoffset: borderDrawTiming,
                 strokeDasharray: { duration: 0 }, // Instant update on resize
               }}
             />
@@ -246,9 +258,9 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
                 clipPath: borderClipPath,
               } as React.CSSProperties
             }
-            initial={false}
-            animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
-            transition={NAV_FADE_TRANSITION}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: contentVisible ? 1 : 0 }}
+            transition={navBorderTransition}
             aria-hidden="true"
           />
         )}
@@ -256,15 +268,18 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
         {/* Navigation positioned in the border gap - fades in during intro expansion */}
         <motion.div
           className="absolute left-1/2 -translate-x-1/2 -top-px -translate-y-1/2 px-6 z-10"
-          initial={false}
-          animate={{ opacity: isHiddenUntilExpand ? 0 : 1 }}
-          transition={NAV_FADE_TRANSITION}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: contentVisible ? 1 : 0 }}
+          transition={navBorderTransition}
         >
           <Navigation />
         </motion.div>
 
         {/* Content area - pages handle scroll via PageLayout */}
-        <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-0.5 md:pt-8 md:px-6">{children}</div>
+        {/* PageTransition provides opacity fade during route navigation */}
+        <div className="flex flex-col flex-1 min-h-0 pt-6 px-4 pb-0.5 md:pt-8 md:px-6">
+          <PageTransition>{children}</PageTransition>
+        </div>
       </div>
     </div>
   );

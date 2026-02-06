@@ -4,7 +4,11 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { themes } from "@/data/themes";
 import { useThemeContext } from "@/contexts/ThemeContext";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
+import { useAnimationContext } from "@/contexts/AnimationContext";
+import { useIsPhone } from "@/hooks/useMediaQuery";
 import { buildWallpaperGradient } from "@/lib/theme";
+import { LAYOUT_MODE_DURATION_DESKTOP } from "@/lib/animation-timing";
 
 /**
  * Props for the WallpaperBackground component.
@@ -109,6 +113,14 @@ function WallpaperImage({ src, srcSet }: { src: string; srcSet?: string }) {
  */
 export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgroundProps) {
   const { activeTheme } = useThemeContext();
+  const { layoutMode } = useLayoutPreferences();
+  const { reducedMotion } = useAnimationContext();
+  const isPhone = useIsPhone();
+
+  // Subtle scale effect on desktop: wide mode = zoomed in, boxed = normal
+  // Creates parallax-like depth as windows expand/contract over wallpaper
+  // Disabled under reduced motion preference
+  const isWideMode = !isPhone && !reducedMotion && layoutMode === "wide";
 
   // Track if wallpaper was enabled on initial mount (vs toggled on later)
   // This determines whether dark overlay should animate in or appear instantly
@@ -139,7 +151,16 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgr
   const srcSet = imageSrcHiRes ? `${imageSrc} 1920w, ${imageSrcHiRes} 2560w` : undefined;
 
   return (
-    <div className="fixed inset-0 z-[-1]" style={baseStyle} aria-hidden="true" data-testid="wallpaper-background">
+    <div
+      className="fixed inset-0 z-[-1] motion-reduce:transition-none"
+      style={{
+        ...baseStyle,
+        transform: isWideMode ? "scale(1.02)" : "scale(1)",
+        transition: reducedMotion ? "none" : `transform ${LAYOUT_MODE_DURATION_DESKTOP}s ease-in-out`,
+      }}
+      aria-hidden="true"
+      data-testid="wallpaper-background"
+    >
       {/* When toggling wallpaper on (wasn't enabled on mount), fade in dark overlay */}
       {!wasEnabledOnMount && (
         <AnimatePresence>

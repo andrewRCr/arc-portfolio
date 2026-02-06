@@ -4,9 +4,17 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Fonts */
+  /* Fonts - base families */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Fonts - semantic slots (3-slot typography system)
+     Title: Page titles, project names, section headers
+     Terminal: Navigation, tabs, badges, labels (system UI)
+     Body: Prose content, descriptions, paragraphs */
+  --font-title: var(--font-geist-mono);
+  --font-terminal: var(--font-geist-mono);
+  --font-body: var(--font-ibm-plex-sans);
 
   /* Base colors */
   --color-background: rgb(var(--background));
@@ -18,9 +26,40 @@
   --color-popover: rgb(var(--popover));
   --color-popover-foreground: rgb(var(--popover-foreground));
 
+  /* Surface tokens - mode-aware for layered surfaces
+     Use these instead of bg-card/80 or bg-background/80 for consistent hierarchy.
+     Supports both opacity and darkening adjustments via CSS variables.
+     Base variables (--surface-*-base) allow light mode to swap card/background
+     for proper hierarchy (headers lighter than bodies). */
+  --color-surface-card: color-mix(
+    in oklch,
+    rgb(var(--surface-card-base) / var(--surface-opacity)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
+  --color-surface-background: color-mix(
+    in oklch,
+    rgb(var(--surface-background-base) / var(--surface-opacity)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
+  --color-surface-muted: color-mix(
+    in oklch,
+    rgb(var(--muted) / var(--surface-opacity)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
+  --color-surface-popover: color-mix(
+    in oklch,
+    rgb(var(--popover)) calc(100% - var(--surface-darken)),
+    rgb(var(--foreground)) var(--surface-darken)
+  );
+
   /* Primary/Secondary/Muted */
   --color-primary: rgb(var(--primary));
   --color-primary-foreground: rgb(var(--primary-foreground));
+  /* Primary hover variant - computed per mode:
+     Dark mode: opacity-based (subtle, consistent with accent pattern)
+     Light mode: color-mix darkening (opacity goes wrong direction) */
+  --color-primary-hover: var(--primary-hover-value);
+  --color-primary-hover-foreground: rgb(var(--primary-hover-foreground-value));
   --color-secondary: rgb(var(--secondary));
   --color-secondary-foreground: rgb(var(--secondary-foreground));
   --color-muted: rgb(var(--muted));
@@ -29,6 +68,25 @@
   /* Accent colors */
   --color-accent: rgb(var(--accent));
   --color-accent-foreground: rgb(var(--accent-foreground));
+  /* Accent opacity variants - theme-aware (rouge/rose-pine/ayu use higher values) */
+  --color-accent-high: rgb(var(--accent) / var(--accent-high-opacity));
+  --color-accent-mid: rgb(var(--accent) / var(--accent-mid-opacity));
+  --color-accent-low: rgb(var(--accent) / var(--accent-low-opacity));
+  --color-accent-high-foreground: rgb(var(--accent-high-foreground));
+  --color-accent-mid-foreground: rgb(var(--accent-mid-foreground));
+  --color-accent-low-foreground: rgb(var(--accent-low-foreground));
+  /* Accent-mid hover variant - computed per mode:
+     Dark mode: opacity-based (accent-low equivalent, includes foreground swap)
+     Light mode: color-mix darkening (opacity goes wrong direction) */
+  --color-accent-mid-hover: var(--accent-mid-hover-value);
+  --color-accent-mid-hover-foreground: rgb(var(--accent-mid-hover-foreground-value));
+  /* Secondary opacity variants - theme-aware (ayu uses lower value) */
+  --color-secondary-high: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --color-secondary-mid: rgb(var(--secondary) / var(--secondary-mid-opacity));
+  --color-secondary-low: rgb(var(--secondary) / var(--secondary-low-opacity));
+  /* Semantic decorative accent - non-interactive visual interest (defaults to primary, themes can override) */
+  --color-accent-decorative: rgb(var(--accent-decorative) / var(--accent-decorative-opacity));
+  --color-accent-decorative-foreground: rgb(var(--accent-decorative-foreground));
   /* Decorative accents - no foreground pairs (decorative use only) */
   --color-accent-red: rgb(var(--accent-red));
   --color-accent-orange: rgb(var(--accent-orange));
@@ -78,6 +136,45 @@
 
 :root {
   --radius: 0.625rem;
+
+  /* Surface tokens - controls card/background appearance for layered surfaces
+     --surface-opacity: transparency (0-1), higher = more solid
+     --surface-darken: mix percentage with foreground (0%-20%), higher = darker/more grounded
+     --surface-*-base: which color token to use (light mode swaps these for hierarchy) */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Window tokens - controls window container background
+     --window-bg-opacity: background transparency (0-1), higher = more solid
+     --window-darken: mix percentage with foreground (0%-15%), higher = darker window bg */
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+
+  /* Accent opacity levels - defaults for most themes (rouge/rose-pine/ayu override) */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.6;
+  --accent-low-opacity: 0.2;
+  /* Accent variant foregrounds - defaults based on opacity (high needs contrast, mid/low use foreground) */
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--foreground);
+  --accent-low-foreground: var(--foreground);
+  /* Secondary opacity levels - defaults for most themes (ayu overrides high to 0.6) */
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  /* Hover configuration - computed values differ by mode:
+     Dark mode: opacity-based hover (consistent with accent-mid→low pattern)
+     Light mode: color-mix darkening (opacity gives wrong visual direction) */
+  --primary-hover-value: rgb(var(--primary) / 0.85);
+  --primary-hover-foreground-value: var(--primary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
+  /* Decorative accent - defaults to primary (themes can override for visual variety) */
+  --accent-decorative: var(--primary);
+  --accent-decorative-foreground: var(--primary-foreground);
+  --accent-decorative-opacity: 1;
 
   /* AUTO-GENERATED THEME DEFAULTS - DO NOT EDIT MANUALLY */
   /* Source: themes["remedy"].dark from src/data/themes */
@@ -190,6 +287,32 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.76;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
 }
 
 .remedy.light {
@@ -218,8 +341,8 @@
   --muted-foreground: 110 100 80;
 
   /* Accent colors */
-  --accent: 110 152 147;
-  --accent-foreground: 40 42 46;
+  --accent: 82 115 112;
+  --accent-foreground: 255 255 255;
 
   /* Decorative accents */
   --accent-red: 165 66 66;
@@ -242,6 +365,36 @@
   --shadow-sm: 0 1px 2px rgba(92, 77, 46, 0.08);
   --shadow-md: 0 2px 8px rgba(92, 77, 46, 0.12);
   --shadow-lg: 0 4px 16px rgba(92, 77, 46, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .rose-pine.dark {
@@ -294,6 +447,34 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.6;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--accent-foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+  --accent-decorative: var(--accent-purple);
+  --accent-decorative-foreground: var(--background);
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--accent-decorative, var(--primary)) / 0.8);
+  --primary-hover-foreground-value: var(--accent-decorative-foreground, var(--primary-foreground));
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--foreground);
 }
 
 .rose-pine.light {
@@ -346,6 +527,38 @@
   --shadow-sm: 0 1px 2px rgba(87, 82, 121, 0.08);
   --shadow-md: 0 2px 8px rgba(87, 82, 121, 0.12);
   --shadow-lg: 0 4px 16px rgba(87, 82, 121, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.85;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+  --accent-decorative: var(--accent-purple);
+  --accent-decorative-foreground: var(--background);
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--accent-decorative, var(--primary)));
+  --primary-hover-foreground-value: var(--accent-decorative-foreground, var(--primary-foreground));
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .gruvbox.dark {
@@ -398,6 +611,32 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.74;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
 }
 
 .gruvbox.light {
@@ -426,8 +665,8 @@
   --muted-foreground: 102 92 84;
 
   /* Accent colors */
-  --accent: 104 157 106;
-  --accent-foreground: 40 40 40;
+  --accent: 78 119 79;
+  --accent-foreground: 255 255 255;
 
   /* Decorative accents */
   --accent-red: 157 0 6;
@@ -450,6 +689,36 @@
   --shadow-sm: 0 1px 2px rgba(60, 56, 54, 0.08);
   --shadow-md: 0 2px 8px rgba(60, 56, 54, 0.12);
   --shadow-lg: 0 4px 16px rgba(60, 56, 54, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .ayu.dark {
@@ -502,6 +771,32 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.9;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.4;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.6;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.8;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: color-mix(in oklch, rgb(var(--foreground)) 90%, white 10%);
 }
 
 .ayu.light {
@@ -527,11 +822,11 @@
 
   /* Muted colors */
   --muted: 248 249 250;
-  --muted-foreground: 104 114 127;
+  --muted-foreground: 95 105 116;
 
   /* Accent colors */
-  --accent: 255 126 51;
-  --accent-foreground: 23 27 36;
+  --accent: 203 75 0;
+  --accent-foreground: 255 255 255;
 
   /* Decorative accents */
   --accent-red: 240 113 113;
@@ -554,6 +849,36 @@
   --shadow-sm: 0 1px 2px rgba(92, 97, 102, 0.08);
   --shadow-md: 0 2px 8px rgba(92, 97, 102, 0.12);
   --shadow-lg: 0 4px 16px rgba(92, 97, 102, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.85;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.6;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.8;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .rouge.dark {
@@ -606,6 +931,32 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.65;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--accent-foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: color-mix(in oklch, rgb(var(--foreground)) 90%, white 10%);
 }
 
 .rouge.light {
@@ -634,7 +985,7 @@
   --muted-foreground: 90 103 113;
 
   /* Accent colors */
-  --accent: 146 109 61;
+  --accent: 143 106 60;
   --accent-foreground: 255 255 255;
 
   /* Decorative accents */
@@ -658,6 +1009,36 @@
   --shadow-sm: 0 1px 2px rgba(45, 55, 72, 0.08);
   --shadow-md: 0 2px 8px rgba(45, 55, 72, 0.12);
   --shadow-lg: 0 4px 16px rgba(45, 55, 72, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 .mariana.dark {
@@ -710,6 +1091,32 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.94;
+  --accent-mid-opacity: 0.94;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.7;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
 }
 
 .mariana.light {
@@ -762,6 +1169,36 @@
   --shadow-sm: 0 1px 2px rgba(48, 56, 65, 0.08);
   --shadow-md: 0 2px 8px rgba(48, 56, 65, 0.12);
   --shadow-lg: 0 4px 16px rgba(48, 56, 65, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.95;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.7;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
 }
 
 /* END AUTO-GENERATED THEME VARIANTS */
@@ -775,19 +1212,34 @@
     @apply overflow-hidden;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
   }
 }
 
-/* TWM Window Container background opacity
-   Token value injected via --window-bg-opacity from WindowContainer component */
+/* TWM Window Container background
+   Token value injected via --window-bg-opacity from WindowContainer component.
+   --window-darken mixes foreground color for light mode hierarchy fix. */
 [data-window-container] {
-  background-color: rgb(var(--background) / var(--window-bg-opacity));
+  background-color: color-mix(
+    in oklch,
+    rgb(var(--background) / var(--window-bg-opacity)) calc(100% - var(--window-darken)),
+    rgb(var(--foreground)) var(--window-darken)
+  );
 }
 
 /* Environment Preview toggle for dev pages - when OFF, use full opacity */
 html[data-env-preview="false"] [data-window-container] {
   --window-bg-opacity: 1 !important;
+}
+
+/* Light mode surface visual definition - stronger borders and shadows
+   Excludes focused elements so focus ring shadows can take precedence */
+.light .bg-surface-card:not(:focus),
+.light .bg-surface-background:not(:focus),
+.light .bg-surface-muted:not(:focus),
+.light .bg-muted:not(:focus) {
+  border-color: rgb(var(--border-strong));
+  box-shadow: var(--shadow-md);
 }
 
 /* Scroll shadow affordance gradients
@@ -807,6 +1259,23 @@ html[data-env-preview="false"] [data-window-container] {
 
 .dark [data-scroll-shadow="bottom"] {
   background-image: radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+}
+
+/* Horizontal scroll shadows (left/right) */
+[data-scroll-shadow="left"] {
+  background-image: radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, 0.15) 0%, transparent 100%);
+}
+
+[data-scroll-shadow="right"] {
+  background-image: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.15) 0%, transparent 100%);
+}
+
+.dark [data-scroll-shadow="left"] {
+  background-image: radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+}
+
+.dark [data-scroll-shadow="right"] {
+  background-image: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
 }
 
 /* TWM Navigation gap - responsive via CSS, no JS needed (prevents hydration flash)
@@ -839,22 +1308,54 @@ html[data-env-preview="false"] [data-window-container] {
 /* ==========================================================================
    Light/Dark Mode Transitions
    Smooth color transitions when toggling between light and dark mode.
+   Scoped to [data-theme-transition] attribute - applied only during toggle.
+   This allows component-specific transitions (opacity, transform) to work
+   normally, while ensuring smooth color transitions during theme switch.
    ========================================================================== */
 
-*,
-*::before,
-*::after {
+html[data-theme-transition] *,
+html[data-theme-transition] *::before,
+html[data-theme-transition] *::after {
   transition-property: background-color, border-color, color !important;
   transition-duration: 300ms !important;
   transition-timing-function: ease-out !important;
 }
 
-/* Disable transitions on elements that shouldn't animate */
-[data-no-transition],
-[data-no-transition] *,
-.no-transition,
-.no-transition * {
-  transition: none !important;
+/* Respect reduced motion - instant theme change is acceptable and preferred */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-transition] *,
+  html[data-theme-transition] *::before,
+  html[data-theme-transition] *::after {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   Page Content Layout
+   Mobile-specific padding adjustments for content areas.
+   Baseline inline padding is 24px (from layout tokens); reduced on mobile.
+   ========================================================================== */
+
+/* Mobile baseline: reduce content top padding for all pages */
+@media (max-width: 639px) {
+  [data-page-content] {
+    padding-top: 12px !important;
+  }
+}
+
+/* Skills/About - mobile: slightly more padding than baseline */
+@media (max-width: 639px) {
+  [data-page="skills"] [data-page-content],
+  [data-page="about"] [data-page-content] {
+    padding-top: 16px !important;
+  }
+}
+
+/* Projects listing - mobile: further reduced (header provides sufficient spacing) */
+@media (max-width: 639px) {
+  [data-page="projects"] [data-page-content] {
+    padding-top: 8px !important;
+  }
 }
 
 /* ==========================================================================
@@ -900,21 +1401,19 @@ html[data-env-preview="false"] [data-window-container] {
   }
 }
 
-/* Projects listing - mobile: reduce content top padding (header provides sufficient spacing) */
-@media (max-width: 639px) {
-  [data-page="projects"] [data-page-content] {
-    padding-top: 8px !important;
-  }
-}
-
 /* Project detail - mobile: 165px = DetailHeaderCompact height (~140px) + visual offset */
+/* Position from left to push scrollbar 4px outside container (right: -4px doesn't work) */
 [data-page="project-detail"] .os-scrollbar-vertical {
-  padding-top: 165px;
+  padding-top: 210px;
+  right: auto;
+  left: calc(100% - 6px); /* 10px wide scrollbar, 4px outside = 100% - 6px */
 }
 /* Project detail - desktop: 396px = DetailHeader hero height (~360px) + visual offset */
 @media (min-width: 768px) {
   [data-page="project-detail"] .os-scrollbar-vertical {
     padding-top: 396px;
+    right: 0;
+    left: calc(100% - 6px); /* 10px wide scrollbar, 4px outside = 100% - 6px */
   }
 }
 
@@ -973,4 +1472,48 @@ html[data-env-preview="false"] [data-window-container] {
   .animate-blink {
     animation: none;
   }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+/* Hide scrollbar while maintaining scroll functionality */
+.scrollbar-none {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari, Opera */
+}
+
+/* ==========================================================================
+   Horizontal Scroll Fade Masks
+   Uses CSS mask-image to fade edges indicating scrollable content.
+   Controlled by data-scroll-fade attribute: none | left | right | both
+   Fade zone width (24px) must match scroll-padding-inline for proper snap alignment.
+   ========================================================================== */
+
+/* Scroll padding utility - offsets snap points to avoid landing under fade zones */
+.scroll-padding-inline {
+  scroll-padding-inline: 24px;
+}
+
+[data-scroll-fade="right"] {
+  -webkit-mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+  -moz-mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, black 0%, black calc(100% - 24px), transparent 100%);
+}
+
+[data-scroll-fade="left"] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black 100%);
+  -moz-mask-image: linear-gradient(to right, transparent 0%, black 24px, black 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 24px, black 100%);
+}
+
+[data-scroll-fade="both"] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+  -moz-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
 }

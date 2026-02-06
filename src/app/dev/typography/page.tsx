@@ -5,9 +5,11 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { FontComparisonSection } from "./FontComparisonSection";
 
 /** Jump links for in-page navigation */
 const JUMP_LINKS = [
+  { id: "font-comparison", label: "Font A/B" },
   { id: "headings", label: "Headings" },
   { id: "body-text", label: "Body" },
   { id: "font-sizes", label: "Sizes" },
@@ -38,6 +40,9 @@ export default function TypographyPage() {
   return (
     <PageLayout header={<DevPageHeader title="Typography" jumpLinks={JUMP_LINKS} showEnvPreview />}>
       <div className="space-y-8">
+        {/* Font Comparison - A/B testing for typography decisions */}
+        <FontComparisonSection />
+
         {/* Headings */}
         <Card id="headings">
           <CardHeader>

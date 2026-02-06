@@ -12,10 +12,9 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
-import { buildIconLinkItems } from "./utils/buildLinkItems";
-import { TouchTarget } from "@/components/ui/TouchTarget";
+import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import { ModStatsGroup } from "./ModStatsBadge";
-import type { DetailHeaderProps } from "./DetailHeader";
+import type { DetailHeaderProps } from "./detail-header.types";
 
 export function DetailHeaderDesktop({
   title,
@@ -25,14 +24,19 @@ export function DetailHeaderDesktop({
   backLabel,
   links,
   stats,
+  metadata,
 }: DetailHeaderProps) {
   const hasCategories = categories && categories.length > 0;
   const hasStats =
     stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const { opacity } = useHeaderCrossfade("out");
-  const iconLinks = buildIconLinkItems(links);
-  const hasLinks = iconLinks.length > 0;
-  const hasFooter = hasCategories || hasStats || hasLinks;
+  const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
+
+  // Build metadata string (default to "Solo project" when no team role specified)
+  const metadataParts = [metadata?.teamRole ?? "Solo project", metadata?.developmentTime].filter(Boolean);
+  const hasMetadata = metadataParts.length > 0;
+
+  const hasFooter = hasCategories || hasStats || hasLinks || hasMetadata;
 
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
@@ -58,33 +62,33 @@ export function DetailHeaderDesktop({
           <div className="absolute inset-0 bg-card" />
         )}
 
-        {/* Back button - top-left, icon only */}
-        <Link
-          href={backHref}
-          aria-label={`Back to ${backLabel}`}
-          className="absolute top-3 left-3 z-10 inline-flex items-center justify-center rounded-md bg-muted/90 p-2 text-foreground backdrop-blur-sm transition-colors hover:bg-muted"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-
-        {/* Title - bottom left */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-          <h1 className="font-mono text-3xl font-bold text-white drop-shadow-md">{title}</h1>
+        {/* Back button + Title - bottom left, connected blocks */}
+        <div className="absolute bottom-0 left-0 z-10 flex p-4">
+          <Link
+            href={backHref}
+            aria-label={`Back to ${backLabel}`}
+            className="inline-flex items-center justify-center bg-muted/80 px-3 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent-high hover:text-accent-high-foreground"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="inline-flex items-center bg-secondary-high px-3 font-title text-3xl font-bold text-secondary-foreground backdrop-blur-sm">
+            {title}
+          </h1>
         </div>
       </div>
 
-      {/* Footer: category badges (left) + icon links (right) */}
+      {/* Footer: category badges (left) + metadata + icon links (right) */}
       {/* Tighter padding for single row, more room when categories may wrap */}
       {hasFooter && (
-        <div className="flex items-center justify-between gap-4 px-4 py-3 bg-card/80 rounded-b-lg">
-          {/* Category badges + stats */}
-          {hasCategories || hasStats ? (
+        <div className="flex items-center justify-between gap-4 px-4 py-3 bg-surface-card rounded-b-lg">
+          {/* Category badges + stats + metadata (left side) */}
+          {hasCategories || hasStats || hasMetadata ? (
             <div data-testid="category-badges" className="flex flex-wrap items-center gap-2">
               {hasCategories &&
                 categories.map((category) => (
                   <span
                     key={category}
-                    className="min-h-6 rounded bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground"
+                    className="min-h-6 bg-accent-low px-2 py-0.5 font-terminal text-sm font-semibold text-accent-low-foreground"
                   >
                     {category}
                   </span>
@@ -96,55 +100,15 @@ export function DetailHeaderDesktop({
                   endorsements={stats.endorsements}
                 />
               )}
+              {/* Project metadata - subtle text after badges */}
+              {hasMetadata && <span className="ml-2 text-sm text-muted-foreground">{metadataParts.join(" · ")}</span>}
             </div>
           ) : (
-            <div /> // Spacer to push links right
+            <div /> // Spacer to push content right
           )}
 
-          {/* Icon links - ghost buttons, or outline button when single NexusMods link */}
-          {hasLinks && (
-            <div data-testid="header-links" className="flex items-center">
-              {iconLinks.map((link, index) => {
-                const Icon = link.icon;
-                const showAsButton = iconLinks.length === 1 && link.label === "NexusMods";
-
-                if (showAsButton) {
-                  // Custom styled link matching category badge sizing
-                  // leading-none eliminates line-height padding that causes icon/text misalignment
-                  // TouchTarget ensures 44px touch area for tablet accessibility
-                  return (
-                    <TouchTarget key={link.label} align="end">
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={link.ariaLabel}
-                        className="inline-flex min-h-6 items-center gap-1.5 rounded px-2 py-0.5 text-sm leading-none text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                      >
-                        {/* mt-px: optical alignment - SVG box model sits higher than text baseline */}
-                        <Icon size={16} className="shrink-0 mt-px" />
-                        <span>{link.label}</span>
-                      </a>
-                    </TouchTarget>
-                  );
-                }
-
-                return (
-                  <TouchTarget key={link.label} align={index === iconLinks.length - 1 ? "end" : "center"}>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.ariaLabel}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-                    >
-                      <Icon size={18} />
-                    </a>
-                  </TouchTarget>
-                );
-              })}
-            </div>
-          )}
+          {/* Icon links - right side, framed box layout */}
+          {hasLinks && <ExternalLinksToolbar links={links} variant="desktop" />}
         </div>
       )}
     </div>

@@ -1,20 +1,18 @@
-import { render } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { checkA11y } from "@tests/test-utils";
-import { ThemeContextProvider } from "@/contexts/ThemeContext";
+import { render, checkA11y } from "@tests/test-utils";
 import { WallpaperBackground } from "../WallpaperBackground";
 
 /**
- * Wrapper that provides required context for WallpaperBackground.
+ * Tests for WallpaperBackground component.
+ *
+ * Uses centralized test-utils which provides all required context providers
+ * (ThemeContext, WallpaperContext, LayoutPreferencesContext, AnimationContext).
  */
-function renderWithTheme(ui: React.ReactElement) {
-  return render(<ThemeContextProvider>{ui}</ThemeContextProvider>);
-}
 
 describe("WallpaperBackground", () => {
   describe("Gradient Fallback", () => {
     it("renders gradient background by default", () => {
-      const { container } = renderWithTheme(<WallpaperBackground />);
+      const { container } = render(<WallpaperBackground />);
 
       const wrapper = container.firstChild as HTMLElement;
       const style = wrapper.getAttribute("style") || "";
@@ -23,7 +21,7 @@ describe("WallpaperBackground", () => {
     });
 
     it("uses theme-aware gradient colors via CSS variables", () => {
-      const { container } = renderWithTheme(<WallpaperBackground />);
+      const { container } = render(<WallpaperBackground />);
 
       const wrapper = container.firstChild as HTMLElement;
       const style = wrapper.getAttribute("style") || "";
@@ -34,21 +32,21 @@ describe("WallpaperBackground", () => {
 
   describe("Positioning", () => {
     it("has fixed positioning", () => {
-      const { container } = renderWithTheme(<WallpaperBackground />);
+      const { container } = render(<WallpaperBackground />);
 
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toHaveClass("fixed");
     });
 
     it("covers full viewport", () => {
-      const { container } = renderWithTheme(<WallpaperBackground />);
+      const { container } = render(<WallpaperBackground />);
 
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toHaveClass("inset-0");
     });
 
     it("has z-index below content (negative or zero)", () => {
-      const { container } = renderWithTheme(<WallpaperBackground />);
+      const { container } = render(<WallpaperBackground />);
 
       const wrapper = container.firstChild as HTMLElement;
       // Should use a negative z-index class or z-0
@@ -58,14 +56,14 @@ describe("WallpaperBackground", () => {
 
   describe("Image Loading", () => {
     it("renders without image when src not provided", () => {
-      const { container } = renderWithTheme(<WallpaperBackground />);
+      const { container } = render(<WallpaperBackground />);
 
       const img = container.querySelector("img");
       expect(img).not.toBeInTheDocument();
     });
 
     it("renders image when src is provided", () => {
-      const { container } = renderWithTheme(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
+      const { container } = render(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
 
       const img = container.querySelector("img");
       expect(img).toBeInTheDocument();
@@ -74,7 +72,7 @@ describe("WallpaperBackground", () => {
     });
 
     it("image does not have lazy loading (uses priority)", () => {
-      const { container } = renderWithTheme(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
+      const { container } = render(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
 
       const img = container.querySelector("img");
       // Priority images should not have loading="lazy"
@@ -83,7 +81,7 @@ describe("WallpaperBackground", () => {
     });
 
     it("image has object-cover for full coverage", () => {
-      const { container } = renderWithTheme(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
+      const { container } = render(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
 
       const img = container.querySelector("img");
       // Next.js Image with fill uses object-cover class
@@ -93,7 +91,7 @@ describe("WallpaperBackground", () => {
 
   describe("Responsive Images", () => {
     it("renders img with srcset when imageSrcHiRes provided", () => {
-      const { container } = renderWithTheme(
+      const { container } = render(
         <WallpaperBackground imageSrc="/wallpaper/test.webp" imageSrcHiRes="/wallpaper/test-1440.webp" />
       );
 
@@ -102,14 +100,14 @@ describe("WallpaperBackground", () => {
     });
 
     it("renders img without srcset when only imageSrc provided", () => {
-      const { container } = renderWithTheme(<WallpaperBackground imageSrc="/wallpaper/test.webp" />);
+      const { container } = render(<WallpaperBackground imageSrc="/wallpaper/test.webp" />);
 
       const img = container.querySelector("img");
       expect(img).not.toHaveAttribute("srcset");
     });
 
     it("srcset contains correct width descriptors (1920w, 2560w)", () => {
-      const { container } = renderWithTheme(
+      const { container } = render(
         <WallpaperBackground imageSrc="/wallpaper/test.webp" imageSrcHiRes="/wallpaper/test-1440.webp" />
       );
 
@@ -120,7 +118,7 @@ describe("WallpaperBackground", () => {
     });
 
     it("sets sizes attribute for responsive selection", () => {
-      const { container } = renderWithTheme(
+      const { container } = render(
         <WallpaperBackground imageSrc="/wallpaper/test.webp" imageSrcHiRes="/wallpaper/test-1440.webp" />
       );
 
@@ -131,32 +129,24 @@ describe("WallpaperBackground", () => {
 
   describe("Accessibility", () => {
     it("has no accessibility violations (gradient only)", async () => {
-      const results = await checkA11y(
-        <ThemeContextProvider>
-          <WallpaperBackground />
-        </ThemeContextProvider>
-      );
+      const results = await checkA11y(<WallpaperBackground />);
       expect(results).toHaveNoViolations();
     });
 
     it("has no accessibility violations (with image)", async () => {
-      const results = await checkA11y(
-        <ThemeContextProvider>
-          <WallpaperBackground imageSrc="/images/wallpaper/test.webp" />
-        </ThemeContextProvider>
-      );
+      const results = await checkA11y(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
       expect(results).toHaveNoViolations();
     });
 
     it("image is decorative (empty alt)", () => {
-      const { container } = renderWithTheme(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
+      const { container } = render(<WallpaperBackground imageSrc="/images/wallpaper/test.webp" />);
 
       const img = container.querySelector("img");
       expect(img).toHaveAttribute("alt", "");
     });
 
     it("container has aria-hidden for screen readers", () => {
-      const { container } = renderWithTheme(<WallpaperBackground />);
+      const { container } = render(<WallpaperBackground />);
 
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toHaveAttribute("aria-hidden", "true");

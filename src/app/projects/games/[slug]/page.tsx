@@ -67,6 +67,12 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
         backHref={backDest.href}
         backLabel={backDest.label}
         links={project.links}
+        metadata={{
+          teamRole: project.teamRole,
+          teamRoleCompact: project.teamRoleCompact,
+          developmentTime: project.developmentTime,
+          developmentTimeCompact: project.developmentTimeCompact,
+        }}
       />
       <ProjectDetail project={project} />
     </PageLayout>

@@ -5,13 +5,12 @@
  * Requires 3-tab structure: Software, Games, Mods
  */
 
-import { render, screen, within } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
+import { describe, it, expect, beforeEach } from "vitest";
+import { render, screen, within } from "@tests/test-utils";
+import { mockNavigation } from "@tests/mocks/next-navigation";
 import ProjectsPage from "../page";
 
-// Apply shared navigation mock
-vi.mock("next/navigation", () => createNavigationMock());
+// next/navigation is mocked globally in setup.ts using the shared mockNavigation object
 
 describe("Projects Page - Games Tab", () => {
   beforeEach(() => {

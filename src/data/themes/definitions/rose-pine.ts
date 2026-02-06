@@ -20,8 +20,51 @@
  */
 
 import { rosePineMain, rosePineDawn, rosePineA11y } from "../palettes/rose-pine";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration - Rose Pine has muted accents, needs higher opacities
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.85, low: 0.75 },
+    secondary: { high: 0.8, mid: 0.4, low: 0.2 },
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 1,
+  },
+  dark: {
+    accent: { high: 1, mid: 0.8, low: 0.6 }, // low bumped from 0.4 for muted pink visibility
+    secondary: { high: 0.8, mid: 0.2, low: 0.1 },
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "accent-foreground" }, // low uses dark text
+    accentDecorativeOpacity: 1,
+  },
+  // Use iris (purple) for decorative accent instead of primary
+  accentDecorative: { token: "accent-purple", foreground: "background" },
+};
+
+// Surface configuration - controls visual layering
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to accent-decorative (iris/purple), accent-mid darkens in-family
+// Rose Pine: Secondary (foam/cyan) is too close to primary (pine/teal), so we use
+//            accent-decorative (iris/purple) for a distinct complementary shift
+// Primary: Pine (teal) → Iris (purple)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 40, // fallback
+    accentMidDarken: 40,
+    primaryHoverColor: "accent-decorative",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "accent-decorative-high",
+    // Rose Pine dark: Flip to light foreground for contrast on dimmed rose
+    accentMidHoverForeground: "foreground",
+  },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -151,13 +194,18 @@ export const rosePineTheme: Theme = {
   defaultWallpaper: "jr-korpa-2",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
     default: "red", // Rose Pine signature is rose/love (mauve-red)
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
+  hover,
 } as const;

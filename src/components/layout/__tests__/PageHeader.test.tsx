@@ -1,7 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { checkA11y } from "@tests/test-utils";
 import { PageHeader } from "../PageHeader";
+
+vi.mock("@/contexts/AnimationContext", async () =>
+  (await import("@tests/mocks/animation-context")).createAnimationContextMock()
+);
 
 describe("PageHeader", () => {
   describe("Title Rendering", () => {

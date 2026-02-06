@@ -66,8 +66,10 @@ jobs:
       - name: Lint markdown files
         run: npx markdownlint-cli2
 
-  e2e:
-    name: E2E Tests
+  # E2E smoke test for PRs - fast feedback with Chromium only
+  e2e-smoke:
+    name: E2E Smoke (PR)
+    if: github.event_name == 'pull_request'
     needs: quality-gates
     runs-on: ubuntu-24.04
     steps:
@@ -83,21 +85,60 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run E2E tests (smoke - PRs)
-        if: github.event_name == 'pull_request'
+      - name: Run E2E smoke tests
         run: npm run test:e2e -- --project="Desktop Chrome"
-
-      - name: Run E2E tests (full viewport suite - main)
-        if: github.ref == 'refs/heads/main'
-        run: npm run test:e2e -- --project="Desktop Chrome" --project="Mobile Chrome" --project="Tablet"
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-smoke
+          path: e2e/playwright-report/
+          retention-days: 7
+
+  # Full cross-browser E2E suite for main branch
+  # Runs Chromium, Firefox, and WebKit in parallel jobs
+  e2e-full:
+    name: E2E ${{ matrix.browser }}
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    needs: quality-gates
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false # Run all browsers even if one fails
+      matrix:
+        include:
+          - browser: chromium
+            projects: '--project="Desktop Chrome" --project="Mobile Chrome" --project="Tablet"'
+          - browser: firefox
+            projects: '--project="Firefox"'
+          - browser: webkit
+            projects: '--project="WebKit"'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright ${{ matrix.browser }}
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run E2E tests (${{ matrix.browser }})
+        run: npm run test:e2e -- ${{ matrix.projects }}
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.browser }}
           path: e2e/playwright-report/
           retention-days: 7

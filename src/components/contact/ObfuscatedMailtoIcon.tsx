@@ -36,7 +36,7 @@ export function ObfuscatedMailtoIcon({ encoded, size = 16, className = "" }: Obf
 
   // Base classes matching FooterBar social link styling
   const baseClasses =
-    "flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground transition-colors";
+    "flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-accent-mid transition-colors";
 
   // Server-side / decode failure: render span (no link)
   if (!email) {

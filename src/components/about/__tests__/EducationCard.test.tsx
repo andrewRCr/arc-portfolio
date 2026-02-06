@@ -35,30 +35,30 @@ describe("EducationCard", () => {
       expect(screen.getByText("Test University")).toBeInTheDocument();
     });
 
-    it("renders header with correct styling (bg-card/80)", () => {
+    it("renders header with correct styling (bg-surface-card)", () => {
       render(<EducationCard education={mockEducation} />);
 
       const header = screen.getByTestId("education-card-header");
       expect(header).toBeInTheDocument();
-      expect(header).toHaveClass("bg-card/80");
+      expect(header).toHaveClass("bg-surface-card");
     });
   });
 
   describe("Body rendering", () => {
-    it("renders major with monospace font", () => {
+    it("renders major with terminal font", () => {
       render(<EducationCard education={mockEducation} />);
 
       const major = screen.getByText("Computer Science");
       expect(major).toBeInTheDocument();
-      expect(major).toHaveClass("font-mono");
+      expect(major).toHaveClass("font-terminal");
     });
 
-    it("renders degree type with monospace font", () => {
+    it("renders degree type with terminal font", () => {
       render(<EducationCard education={mockEducation} />);
 
       const degree = screen.getByText("Bachelor of Science");
       expect(degree).toBeInTheDocument();
-      expect(degree).toHaveClass("font-mono");
+      expect(degree).toHaveClass("font-terminal");
     });
 
     it("renders full location on desktop", () => {
@@ -80,12 +80,12 @@ describe("EducationCard", () => {
       expect(screen.getByText("GPA: 3.8")).toBeInTheDocument();
     });
 
-    it("renders body with correct styling (bg-background/80)", () => {
+    it("renders body with correct styling (bg-surface-background)", () => {
       render(<EducationCard education={mockEducation} />);
 
       const body = screen.getByTestId("education-card-body");
       expect(body).toBeInTheDocument();
-      expect(body).toHaveClass("bg-background/80");
+      expect(body).toHaveClass("bg-surface-background");
     });
   });
 

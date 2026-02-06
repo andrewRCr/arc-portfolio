@@ -9,31 +9,24 @@ import { TopBar } from "../TopBar";
 vi.mock("next-themes", () => createNextThemesMock());
 
 // Mock LayoutPreferencesContext (required by ThemeControl)
-vi.mock("@/contexts/LayoutPreferencesContext", () => ({
-  useLayoutPreferences: () => ({
-    layoutMode: "boxed",
-    setLayoutMode: vi.fn(),
-    isDrawerOpen: false,
-    setDrawerOpen: vi.fn(),
-  }),
-}));
+vi.mock("@/contexts/LayoutPreferencesContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/LayoutPreferencesContext")>();
+  return {
+    ...actual,
+    useLayoutPreferences: () => ({
+      layoutMode: "boxed",
+      setLayoutMode: vi.fn(),
+      isDrawerOpen: false,
+      setDrawerOpen: vi.fn(),
+    }),
+  };
+});
 
-// Mock IntroContext (TopBar uses triggerReplay for branding click)
-vi.mock("@/contexts/IntroContext", () => ({
-  useIntroContext: () => ({
-    state: "complete",
-    shouldShow: false,
-    reducedMotion: false,
-    introPhase: "idle",
-    setIntroPhase: vi.fn(),
-    replayCount: 0,
-    startAnimation: vi.fn(),
-    skipAnimation: vi.fn(),
-    completeAnimation: vi.fn(),
-    triggerReplay: vi.fn(),
-  }),
-  IntroProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
+vi.mock("@/contexts/AnimationContext", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/contexts/AnimationContext")>();
+  const { createAnimationContextOverrides } = await import("@tests/mocks/animation-context");
+  return { ...actual, ...createAnimationContextOverrides() };
+});
 
 describe("TopBar", () => {
   describe("Branding", () => {

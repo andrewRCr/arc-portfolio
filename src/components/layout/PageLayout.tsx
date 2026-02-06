@@ -1,10 +1,20 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 import "overlayscrollbars/styles/overlayscrollbars.css";
+import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
+import {
+  PAGE_BODY_FADE_ANIMATION,
+  getBodyTiming,
+  HIDE_TRANSITION,
+  LAYOUT_CONTENT_FADE_DURATION,
+} from "@/lib/animation-timing";
 import { useScrollShadow } from "@/hooks/useScrollShadow";
+import { useIsPhone } from "@/hooks/useMediaQuery";
+import { useAnimationContext } from "@/contexts/AnimationContext";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { ScrollShadow } from "./ScrollShadow";
 import { ScrollProvider } from "./ScrollContext";
 import { BackToTopButton } from "@/components/ui/BackToTopButton";
@@ -42,6 +52,8 @@ export interface PageLayoutProps {
   pageId?: string;
   /** Header type for back-to-top button threshold (inferred from stickyHeader if not set) */
   headerType?: HeaderType;
+  /** Vertically center content in viewport (default: false) */
+  centerContent?: boolean;
 }
 
 export function PageLayout({
@@ -51,13 +63,30 @@ export function PageLayout({
   stickyHeader = false,
   pageId,
   headerType,
+  centerContent = false,
 }: PageLayoutProps) {
   // Infer header type from stickyHeader if not explicitly set
   const effectiveHeaderType = headerType ?? (stickyHeader ? "detail" : "page");
   const { contentMaxWidth, contentPaddingY, contentPaddingX } = DEFAULT_LAYOUT_TOKENS;
+  const { animationMode, visibility } = useAnimationContext();
+  const { isLayoutTransitioning } = useLayoutPreferences();
+  const isPhone = useIsPhone();
+
+  // Only fade content on phone during layout transitions (to hide reflow)
+  // Desktop transitions are smooth max-width changes that don't need crossfade
+  const shouldFadeContent = isPhone && isLayoutTransitioning;
+
+  // Use contentVisible - accounts for initialization AND intro phase
+  // contentVisible is false during intro until "expanding" phase, then true
+  const showContent = visibility.contentVisible;
+
+  // Timing logic centralized in animation-timing.ts (SRP compliance)
+  const bodyTransition = showContent ? getBodyTiming(animationMode) : HIDE_TRANSITION;
+
   const { ref: scrollShadowRef, showTopShadow, showBottomShadow } = useScrollShadow();
   const [element, setElement] = useState<HTMLElement | null>(null);
   const [viewport, setViewport] = useState<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Initialize OverlayScrollbars and connect its viewport to scroll shadow detection
   // useLayoutEffect ensures viewport is set before paint (avoids flash of missing scroll context)
@@ -108,8 +137,13 @@ export function PageLayout({
     <ScrollProvider viewport={viewport}>
       <div className="flex flex-col flex-1 min-h-0" {...(pageId && { "data-page": pageId })}>
         {/* Fixed header area - doesn't scroll, centered with max-width */}
+        {/* Animation handled by PageHeader component internally */}
+        {/* Crossfade wrapper hides content reflow during layout mode transitions */}
         {header && (
-          <div className="shrink-0">
+          <div
+            className={`shrink-0 transition-opacity ${shouldFadeContent ? "opacity-0" : ""}`}
+            style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
+          >
             <div className="mx-auto w-full" style={headerStyle}>
               {header}
             </div>
@@ -117,10 +151,34 @@ export function PageLayout({
         )}
 
         {/* Scrollable content area with scroll shadows */}
+        {/* Animated: fade based on loadMode */}
         <div className="relative flex-1 min-h-0">
           <main ref={setElement} className="h-full overflow-auto" data-overlayscrollbars-initialize>
-            <div className="mx-auto w-full min-h-full" data-page-content style={contentStyle}>
-              {children}
+            {/* Outer div: CSS transition for layout mode crossfade (hides content reflow) */}
+            {/* Inner motion.div: Framer Motion for intro/route animations */}
+            {/* Separated because FM inline styles override CSS classes */}
+            <div
+              className={`transition-opacity ${centerContent ? "h-full" : ""} ${shouldFadeContent ? "opacity-0" : ""}`}
+              style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
+            >
+              <motion.div
+                ref={contentRef}
+                className={`mx-auto w-full min-h-full ${centerContent ? "flex flex-col justify-center" : ""}`}
+                data-page-content
+                style={contentStyle}
+                initial={PAGE_BODY_FADE_ANIMATION.initial}
+                animate={showContent ? PAGE_BODY_FADE_ANIMATION.animate : PAGE_BODY_FADE_ANIMATION.initial}
+                transition={bodyTransition}
+                onAnimationComplete={() => {
+                  // E2E test hook: Signal animation completion for reliable test assertions
+                  // Safe: Only sets DOM attribute, no state changes, no logic impact
+                  if (showContent && contentRef.current) {
+                    contentRef.current.dataset.animationComplete = "true";
+                  }
+                }}
+              >
+                {children}
+              </motion.div>
             </div>
           </main>
           <ScrollShadow position="top" visible={showTopShadow} />

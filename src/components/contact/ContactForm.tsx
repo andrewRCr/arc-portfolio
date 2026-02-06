@@ -43,7 +43,7 @@ interface ContactFormProps {
 
 export function ContactForm({ variant = "standalone" }: ContactFormProps) {
   const isPhone = useIsPhone();
-  const inputBg = variant === "card" ? "bg-card/80" : "bg-transparent";
+  const inputBg = variant === "card" ? "bg-surface-card" : "bg-transparent";
   const [status, setStatus] = useState<FormStatus>("idle");
 
   // Note: Don't use useForm<ContactFormData> - explicit generic type breaks zod v4 compatibility
@@ -105,12 +105,12 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
 
   if (status === "success") {
     return (
-      <div className="rounded-lg border text-center border-border bg-card/80 p-6 space-y-4">
+      <div className="border text-center border-border bg-surface-card p-6 space-y-4">
         <p className="text-foreground">Thank you for your message! I&apos;ll get back to you soon.</p>
         <button
           type="button"
           onClick={handleSendAnother}
-          className="rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          className="bg-primary px-4 py-2 font-terminal font-medium uppercase text-primary-foreground transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground"
         >
           Send Another Message
         </button>
@@ -119,12 +119,12 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-2 sm:space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-3 sm:space-y-6">
       {/* Name and Email fields - side by side on md+ */}
-      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-6 md:grid-cols-2">
         {/* Name field */}
         <div className="space-y-2">
-          <label htmlFor="name" className="block font-mono text-sm font-medium text-foreground">
+          <label htmlFor="name" className="block font-terminal text-sm font-medium text-foreground">
             Name
           </label>
           <input
@@ -133,7 +133,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
             aria-required="true"
             aria-describedby={errors.name ? "name-error" : undefined}
             aria-invalid={errors.name ? "true" : "false"}
-            className={`w-full rounded-md border border-border ${inputBg} px-4 py-2 text-foreground placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary`}
+            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
             {...register("name")}
           />
           {errors.name && (
@@ -145,7 +145,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
 
         {/* Email field */}
         <div className="space-y-2">
-          <label htmlFor="email" className="block font-mono text-sm font-medium text-foreground">
+          <label htmlFor="email" className="block font-terminal text-sm font-medium text-foreground">
             Email
           </label>
           <input
@@ -154,7 +154,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
             aria-required="true"
             aria-describedby={errors.email ? "email-error" : undefined}
             aria-invalid={errors.email ? "true" : "false"}
-            className={`w-full rounded-md border border-border ${inputBg} px-4 py-2 text-foreground placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary`}
+            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
             {...register("email")}
           />
           {errors.email && (
@@ -167,17 +167,17 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
 
       {/* Message field */}
       <div className="space-y-2">
-        <label htmlFor="message" className="block font-mono text-sm font-medium text-foreground">
+        <label htmlFor="message" className="block font-terminal text-sm font-medium text-foreground">
           Message
         </label>
         <textarea
           id="message"
-          rows={isPhone ? 3 : 5}
+          rows={isPhone ? 3 : 6}
           maxLength={MESSAGE_MAX_LENGTH}
           aria-required="true"
           aria-describedby={errors.message ? "message-error message-count" : "message-count"}
           aria-invalid={errors.message ? "true" : "false"}
-          className={`w-full resize-none rounded-md border border-border ${inputBg} px-4 py-2 text-foreground placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary`}
+          className={`w-full resize-none border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
           {...register("message")}
         />
         <div className="flex justify-between text-sm">
@@ -190,7 +190,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
           )}
           <span
             id="message-count"
-            className={`font-mono ${messageLength > MESSAGE_MAX_LENGTH ? "text-destructive" : "text-muted-foreground"}`}
+            className={`font-terminal ${messageLength > MESSAGE_MAX_LENGTH ? "text-destructive" : "text-muted-foreground"}`}
           >
             {messageLength}/{MESSAGE_MAX_LENGTH}
           </span>
@@ -210,7 +210,7 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full bg-primary px-4 py-1.5 font-terminal font-medium uppercase text-primary-foreground transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground disabled:cursor-not-allowed disabled:opacity-50"
       >
         {status === "submitting" ? "Sending..." : "Send Message"}
       </button>

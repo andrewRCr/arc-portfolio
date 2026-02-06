@@ -3,7 +3,8 @@
 /**
  * DetailBannerMobile Component
  *
- * Mobile-only banner: hero image with category badges and icon links.
+ * Mobile-only banner: hero image with category badges, stats, and links.
+ *
  * Sits at top of scrollable content (not in header slot) while
  * DetailHeaderCompact serves as the sticky header.
  *
@@ -13,46 +14,60 @@
 
 import { DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { useIsPhone } from "@/hooks/useMediaQuery";
-import { buildIconLinkItems } from "./utils/buildLinkItems";
-import { TouchTarget } from "@/components/ui/TouchTarget";
-import { ModStatsGroup } from "./ModStatsBadge";
+import { ModStatsInline } from "./ModStatsBadge";
+import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import type { ProjectLinks } from "@/types/project";
-import type { DetailHeaderStats } from "./DetailHeader";
+import type { DetailHeaderStats, DetailHeaderMetadata } from "./detail-header.types";
 
 export interface DetailBannerMobileProps {
   /** Category badges displayed in footer */
   categories?: string[];
   /** Path to hero background image (falls back to bg-card if not provided) */
   heroImage?: string;
-  /** External project links (rendered as icons) */
+  /** External project links */
   links?: ProjectLinks;
   /** NexusMods stats (optional, for mods) */
   stats?: DetailHeaderStats;
+  /** Project metadata (team role, timeline) */
+  metadata?: DetailHeaderMetadata;
 }
 
-export function DetailBannerMobile({ categories, heroImage, links, stats }: DetailBannerMobileProps) {
+export function DetailBannerMobile({ categories, heroImage, links, stats, metadata }: DetailBannerMobileProps) {
   const isPhone = useIsPhone();
   const hasCategories = categories && categories.length > 0;
   const hasStats =
     stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
-  const iconLinks = buildIconLinkItems(links);
-  const hasLinks = iconLinks.length > 0;
-  const hasFooter = hasCategories || hasStats || hasLinks;
+  const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
-  // Extra padding on phone when content may wrap:
-  // - Multiple categories (software projects), or
-  // - Game title with stats (even short names like "Elden Ring" cause wrapping on phone)
-  const hasMultipleCategories = categories && categories.length > 1;
-  const mayWrap = hasMultipleCategories || (hasCategories && hasStats);
-  const needsExtraPadding = isPhone && mayWrap;
   // Smaller badges on phone for better visual hierarchy
   const badgeTextSize = isPhone ? "text-xs" : "text-sm";
 
+  // Format metadata for links toolbar label
+  // Uses compact versions for mobile, falls back to full versions
+  const formatMetadataLabel = (): string | undefined => {
+    if (!metadata) return undefined;
+    const teamRole = metadata.teamRoleCompact || metadata.teamRole || "Solo";
+    const devTime = metadata.developmentTimeCompact || metadata.developmentTime;
+    const parts = [teamRole, devTime].filter(Boolean);
+    return parts.length > 0 ? parts.join(" · ") : undefined;
+  };
+  const metadataLabel = formatMetadataLabel();
+
+  // Stats go in toolbar label for mods (they have stats but no metadata)
+  // Metadata goes in toolbar label for regular projects
+  const statsLabelContent = hasStats ? (
+    <ModStatsInline
+      downloads={stats.downloads}
+      uniqueDownloads={stats.uniqueDownloads}
+      endorsements={stats.endorsements}
+    />
+  ) : undefined;
+
   return (
     <div data-testid="hero-banner">
-      {/* Hero image */}
-      <div className={`relative overflow-hidden ${hasFooter ? "rounded-t-lg" : "rounded-lg"}`} style={aspectRatioStyle}>
+      {/* Hero image - standalone, fully rounded */}
+      <div className="relative overflow-hidden rounded-lg" style={aspectRatioStyle}>
         {heroImage ? (
           // eslint-disable-next-line @next/next/no-img-element -- Native img for background, not content
           <img
@@ -67,78 +82,34 @@ export function DetailBannerMobile({ categories, heroImage, links, stats }: Deta
         )}
       </div>
 
-      {/* Footer: category badges (left) + icon links (right) */}
-      {/* Extra vertical padding on phone when content wraps (long game title + stats, or multiple categories) */}
-      {hasFooter && (
-        <div
-          className={`flex items-center justify-between gap-4 px-4 bg-card/80 rounded-b-lg ${
-            needsExtraPadding ? "py-2" : "py-1"
-          }`}
-        >
-          {/* Category badges + stats */}
-          {hasCategories || hasStats ? (
-            <div data-testid="category-badges" className="flex flex-wrap items-center gap-2">
-              {hasCategories &&
-                categories.map((category) => (
-                  <span
-                    key={category}
-                    className={`rounded bg-accent px-2 py-0.5 ${badgeTextSize} font-semibold text-accent-foreground`}
-                  >
-                    {category}
-                  </span>
-                ))}
-              {hasStats && (
-                <ModStatsGroup
-                  downloads={stats.downloads}
-                  uniqueDownloads={stats.uniqueDownloads}
-                  endorsements={stats.endorsements}
-                />
-              )}
-            </div>
-          ) : (
-            <div /> // Spacer to push links right
-          )}
+      {/* Category badges row - below hero */}
+      {hasCategories && (
+        <div data-testid="category-badges" className="flex flex-wrap items-center gap-2 pt-2">
+          {categories.map((category) => (
+            <span
+              key={category}
+              className={`bg-accent-low px-2 py-0.5 font-terminal ${badgeTextSize} font-semibold text-accent-low-foreground`}
+            >
+              {category}
+            </span>
+          ))}
+        </div>
+      )}
 
-          {/* Icon links */}
-          {hasLinks && (
-            <div data-testid="header-links" className="flex items-center">
-              {iconLinks.map((link, index) => {
-                const Icon = link.icon;
-                const showAsOutline = iconLinks.length === 1 && link.label === "NexusMods";
-
-                if (showAsOutline) {
-                  // Single NexusMods link: outline button style
-                  return (
-                    <TouchTarget key={link.label} align="end">
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={link.ariaLabel}
-                        className="inline-flex items-center justify-center rounded-md border border-border p-2 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                      >
-                        <Icon size={18} />
-                      </a>
-                    </TouchTarget>
-                  );
-                }
-
-                return (
-                  <TouchTarget key={link.label} align={index === iconLinks.length - 1 ? "end" : "center"}>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.ariaLabel}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-                    >
-                      <Icon size={18} />
-                    </a>
-                  </TouchTarget>
-                );
-              })}
-            </div>
-          )}
+      {/* Links toolbar - matches compact header width (edge to edge) */}
+      {/* Label shows: stats (mods) OR metadata (regular projects) OR "Links" (default) */}
+      {/* Max 2 links on mobile - tertiary links (download) available via GitHub */}
+      {hasLinks && (
+        <div className="pt-2">
+          <ExternalLinksToolbar
+            links={links}
+            variant="touch"
+            fullWidth
+            label={metadataLabel}
+            labelContent={statsLabelContent}
+            maxLinks={2}
+            className="w-full"
+          />
         </div>
       )}
     </div>

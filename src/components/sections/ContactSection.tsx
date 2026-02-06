@@ -27,60 +27,32 @@ const iconMap: Partial<Record<SocialIcon, IconComponent>> = {
 // Pre-encode email since contact.email is static
 const encodedEmail = encodeEmail(contact.email);
 
-/** Full button style with icon + label (tablet+) */
-function FullContactLinks() {
-  return (
-    <div className="flex flex-wrap gap-3">
-      {/* Email - obfuscated mailto button */}
-      <ObfuscatedMailtoButton encoded={encodedEmail} />
-
-      {/* Social Links */}
-      {contact.socialLinks
-        .filter((social) => iconMap[social.icon])
-        .map((social) => {
-          const Icon = iconMap[social.icon]!;
-          return (
-            <a
-              key={social.platform}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg border border-accent px-4 py-3 text-accent transition-colors hover:bg-accent/10"
-            >
-              <Icon className="h-5 w-5" />
-              <span className="font-medium">{social.platform}</span>
-            </a>
-          );
-        })}
-    </div>
-  );
-}
-
-/** Compact icon-only style (phone) */
+/** Compact icon-only style (phone) - toolbar layout with internal dividers */
 function CompactContactLinks() {
+  const socialLinks = contact.socialLinks.filter((social) => iconMap[social.icon]);
+
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex border border-border">
       {/* Email - obfuscated mailto button, icon only */}
-      <ObfuscatedMailtoButton encoded={encodedEmail} iconOnly />
+      <ObfuscatedMailtoButton encoded={encodedEmail} iconOnly className="flex-1 border-r border-border" />
 
       {/* Social Links - icon only */}
-      {contact.socialLinks
-        .filter((social) => iconMap[social.icon])
-        .map((social) => {
-          const Icon = iconMap[social.icon]!;
-          return (
-            <a
-              key={social.platform}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.platform}
-              className="rounded-lg border border-accent p-3 text-accent transition-colors hover:bg-accent/10"
-            >
-              <Icon className="h-5 w-5" />
-            </a>
-          );
-        })}
+      {socialLinks.map((social, index) => {
+        const Icon = iconMap[social.icon]!;
+        const isLast = index === socialLinks.length - 1;
+        return (
+          <a
+            key={social.platform}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={social.platform}
+            className={`flex flex-1 items-center justify-center bg-accent-mid p-3 text-accent-mid-foreground transition-colors hover:bg-accent-mid-hover hover:text-accent-mid-hover-foreground ${!isLast ? "border-r border-border" : ""}`}
+          >
+            <Icon className="h-5 w-5" />
+          </a>
+        );
+      })}
     </div>
   );
 }
@@ -88,7 +60,7 @@ function CompactContactLinks() {
 /** Mobile layout - no card, just stacked with breathing room */
 function MobileContactSection() {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Compact icon links */}
       <CompactContactLinks />
       {/* Contact form */}
@@ -97,17 +69,52 @@ function MobileContactSection() {
   );
 }
 
-/** Desktop layout - card with social links header, form body */
+/** Full-width toolbar links with text labels (desktop/tablet) - similar to mobile but with labels */
+function ToolbarContactLinks() {
+  const socialLinks = contact.socialLinks.filter((social) => iconMap[social.icon]);
+
+  return (
+    <div className="flex border border-border-strong">
+      {/* Email - obfuscated mailto button */}
+      <ObfuscatedMailtoButton encoded={encodedEmail} className="flex-1 justify-center border-r border-border-strong" />
+
+      {/* Social Links */}
+      {socialLinks.map((social, index) => {
+        const Icon = iconMap[social.icon]!;
+        const isLast = index === socialLinks.length - 1;
+        return (
+          <a
+            key={social.platform}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex flex-1 items-center justify-center gap-1.5 bg-accent-mid px-3 py-2 font-terminal text-sm text-accent-mid-foreground transition-colors hover:bg-accent-mid-hover hover:text-accent-mid-hover-foreground ${!isLast ? "border-r border-border-strong" : ""}`}
+          >
+            <Icon className="h-4 w-4" />
+            <span className="font-medium">{social.platform}</span>
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Desktop layout - toolbar links above form card with gap */
 function DesktopContactSection() {
   return (
-    <div className="mx-auto max-w-xl overflow-hidden rounded-lg border border-border-strong">
-      {/* Header - social links */}
-      <div className="flex justify-center bg-card/80 px-4 py-4">
-        <FullContactLinks />
-      </div>
-      {/* Body - contact form */}
-      <div className="bg-background/80 px-6 py-6">
-        <ContactForm variant="card" />
+    <div className="mx-auto max-w-xl space-y-8 pt-6">
+      {/* Toolbar - social links as separate element */}
+      <ToolbarContactLinks />
+      {/* Form card with header and body sections */}
+      <div className="overflow-hidden rounded-lg border border-border">
+        {/* Header section */}
+        <div className="bg-surface-card px-6 py-3">
+          <p className="text-sm font-terminal text-muted-foreground">[COMPOSE MSG]</p>
+        </div>
+        {/* Body section - form */}
+        <div className="bg-surface-background px-6 pt-6 pb-6">
+          <ContactForm variant="card" />
+        </div>
       </div>
     </div>
   );

@@ -66,16 +66,12 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - no live demo yet
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
-      screenshots: [
-        { src: "/projects/cinexplorer/screenshot-1.jpg", alt: "CineXplorer movie discovery interface" },
-        { src: "/projects/cinexplorer/screenshot-2.jpg", alt: "Advanced filtering and search functionality" },
-        { src: "/projects/cinexplorer/screenshot-3.jpg", alt: "User watchlist and library management" },
-      ],
+      thumbnail: "/thumbnails/cinexplorer.webp?v=7",
+      hero: "/projects/cinexplorer/hero.webp",
+      screenshots: [], // In development - no screenshots yet
     },
-    teamSize: "Solo project",
-    role: "Full-Stack Developer",
-    developmentTime: "2024-2025",
+    photoCredits: ["Denise Jans", "Kumiko Shimizu", "Noom Peerapong", "Jeremy Yap", "Adrien Olichon"],
+    developmentTime: "2025-2026",
     highlights: [
       "Demonstrates modern full-stack development practices including type-safe API architecture, comprehensive testing strategies, and systematic code quality enforcement",
       "Showcases integration of bleeding-edge AI tooling (ARC Agentic Development Framework) with traditional software engineering discipline",
@@ -84,10 +80,11 @@ export const projects: Project[] = [
     ],
     order: 1,
     featured: true,
+    status: "in-development",
   },
 
   // ==========================================
-  // PROJECT 2: ARC Agentic Development Framework (New Project)
+  // PROJECT 2: ARC Agentic Development Framework
   // ==========================================
   {
     projectType: "software",
@@ -129,22 +126,12 @@ export const projects: Project[] = [
       liveDemo: undefined, // Not applicable - framework/documentation repo
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
-      screenshots: [
-        {
-          src: "/projects/arc-agentic-dev-framework/screenshot-1.jpg",
-          alt: "ARC Framework directory structure and documentation",
-        },
-        { src: "/projects/arc-agentic-dev-framework/screenshot-2.jpg", alt: "Template-first constitutional documents" },
-        {
-          src: "/projects/arc-agentic-dev-framework/screenshot-3.jpg",
-          alt: "Workflow documentation and process diagrams",
-        },
-      ],
+      thumbnail: "/thumbnails/arc-agentic-dev-framework.webp",
+      hero: "/projects/arc-agentic-dev-framework/hero.webp",
+      screenshots: [], // Documentation-only - no UI screenshots
     },
-    teamSize: "Solo project",
-    role: "Framework Author",
-    developmentTime: "2024-2025",
+    photoCredits: ["Alexey Ruban", "Mike Stoll", "Jason Leung"],
+    developmentTime: "2025-2026",
     architectureNotes: [
       "Documentation-only framework with no code dependencies - pure process and templates",
       "Deployable template system for project adoption via dedicated directory structure",
@@ -160,6 +147,7 @@ export const projects: Project[] = [
     ],
     order: 3,
     featured: true,
+    status: "in-development",
   },
 
   // ==========================================
@@ -214,16 +202,11 @@ export const projects: Project[] = [
       liveDemo: undefined, // In progress - will be deployed to andrewcreekmore.com
     },
     images: {
-      thumbnail: "", // Empty triggers placehold.co fallback - real image will be added later
-      screenshots: [
-        { src: "/projects/arc-portfolio/screenshot-1.jpg", alt: "arc-portfolio homepage with project showcase" },
-        { src: "/projects/arc-portfolio/screenshot-2.jpg", alt: "Type-safe content architecture and data structures" },
-        { src: "/projects/arc-portfolio/screenshot-3.jpg", alt: "Component composition and Shadcn/ui integration" },
-      ],
+      thumbnail: "/thumbnails/arc-portfolio.webp",
+      hero: "/projects/arc-portfolio/hero.webp",
+      screenshots: [], // Intentionally empty - self-referential project
     },
-    teamSize: "Solo project",
-    role: "Full-Stack Developer",
-    developmentTime: "2024-2025",
+    developmentTime: "2025-2026",
     architectureNotes: [
       "Next.js App Router with React Server Components for optimal performance",
       "Type-safe content management: TypeScript interfaces for all portfolio data",
@@ -287,7 +270,8 @@ export const projects: Project[] = [
       download: "https://github.com/andrewRCr/TaskFocus/releases", // Windows desktop app
     },
     images: {
-      thumbnail: "/thumbnails/taskfocus.webp",
+      thumbnail: "/thumbnails/taskfocus.webp?v=2",
+      hero: "/projects/taskfocus/hero.webp?v=2",
       screenshots: [
         { src: "/projects/taskfocus/screenshot-1.webp", alt: "TaskFocus Today view with prioritized tasks" },
         { src: "/projects/taskfocus/screenshot-2.webp", alt: "Task organization with Projects and Contexts" },
@@ -299,9 +283,8 @@ export const projects: Project[] = [
         { src: "/projects/taskfocus/screenshot-8.webp", alt: "TaskFocus feature screenshot 8" },
       ],
     },
-    teamSize: "Solo project",
-    role: "Full-Stack Developer",
-    developmentTime: "2024",
+    developmentTime: "2024 (v1), 2026 (v2)",
+    developmentTimeCompact: "2024 / 2026",
     architectureNotes: [
       ".NET 8 backend API with SQL Server and Entity Framework for data persistence",
       "Blazor Web Assembly for modern web interface with MudBlazor component library",
@@ -368,7 +351,8 @@ export const projects: Project[] = [
       },
     },
     images: {
-      thumbnail: "/thumbnails/petresort.webp",
+      thumbnail: "/thumbnails/petresort.webp?v=2",
+      hero: "/projects/petresort/hero.webp",
       screenshots: [
         { src: "/projects/petresort/screenshot-1.webp", alt: "PetResort dashboard with visit overview and metrics" },
         { src: "/projects/petresort/screenshot-2.webp", alt: "Guest and client management interfaces" },
@@ -380,8 +364,6 @@ export const projects: Project[] = [
         { src: "/projects/petresort/screenshot-8.webp", alt: "PetResort feature screenshot 8" },
       ],
     },
-    teamSize: "Solo project",
-    role: "Full-Stack Developer",
     developmentTime: "2023-2024",
     architectureNotes: [
       "Express.js backend API with MongoDB for data persistence",
@@ -408,6 +390,7 @@ export const projects: Project[] = [
     projectType: "software",
     title: "DOOM (2016) NewGame+ Customizer",
     compactTitle: "NewGame+ Customizer",
+    cardTitle: "DOOM NewGame+ Customizer",
     slug: "doom-newgame-plus-customizer",
     description:
       "Desktop application and mod generation tool for DOOM (2016) that translates player-defined gameplay preferences into custom .decl mod files. " +
@@ -418,7 +401,7 @@ export const projects: Project[] = [
       "Python desktop application generating custom DOOM (2016) mods from player-defined gameplay configurations.",
     category: ["Desktop App", "Modding Tool"],
     tags: ["Python", "Git", "Desktop Application", "Game Modding", "Data Modeling", "Tool Development"],
-    techStack: ["Python", "CustomTkinter", "Pillow (PIL)", "pygame"],
+    techStack: ["Python", "CustomTkinter", "Pillow (PIL)"],
     features: [
       "Data modeling: Python dataclasses representing game systems (inventory, weapons, equipment, upgrades)",
       "User-friendly GUI for configuring gameplay parameters without technical knowledge",
@@ -435,8 +418,8 @@ export const projects: Project[] = [
       // download: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer/releases",
     },
     images: {
-      thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp",
-      hero: "/projects/doom-newgame-plus-customizer/hero.webp",
+      thumbnail: "/thumbnails/doom-newgame-plus-customizer.webp?v=2",
+      hero: "/projects/doom-newgame-plus-customizer/hero.webp?v=2",
       screenshots: [
         {
           src: "/projects/doom-newgame-plus-customizer/screenshot-1.webp",
@@ -456,8 +439,6 @@ export const projects: Project[] = [
         },
       ],
     },
-    teamSize: "Solo project",
-    role: "Developer",
     developmentTime: "2023",
     architectureNotes: [
       "Python dataclasses for domain modeling: structured representation of DOOM's internal game systems",
@@ -514,36 +495,32 @@ export const projects: Project[] = [
     },
     images: {
       thumbnail: "/thumbnails/action-rpg-project.webp",
+      hero: "/projects/action-rpg-project/hero.webp",
       screenshots: [
         {
-          src: "/projects/action-rpg-project/screenshot-1.webp",
+          src: "/projects/action-rpg-project/screenshot-1.webp?v=2",
           alt: "Action RPG combat encounter with posture-break mechanics",
         },
         {
-          src: "/projects/action-rpg-project/screenshot-2.webp",
+          src: "/projects/action-rpg-project/screenshot-2.webp?v=2",
           alt: "Enemy AI variety: Ghouls, Skeletons, Archers, Rogues",
         },
         {
-          src: "/projects/action-rpg-project/screenshot-3.webp",
+          src: "/projects/action-rpg-project/screenshot-3.webp?v=2",
           alt: "Dungeon exploration and idol statue checkpoint",
         },
-        { src: "/projects/action-rpg-project/screenshot-4.webp", alt: "Boss battle with Large Skeletal Warrior" },
-        { src: "/projects/action-rpg-project/screenshot-5.webp", alt: "Action RPG gameplay screenshot 5" },
-        { src: "/projects/action-rpg-project/screenshot-6.webp", alt: "Action RPG gameplay screenshot 6" },
-        { src: "/projects/action-rpg-project/screenshot-7.webp", alt: "Action RPG gameplay screenshot 7" },
-        { src: "/projects/action-rpg-project/screenshot-8.webp", alt: "Action RPG gameplay screenshot 8" },
-        { src: "/projects/action-rpg-project/screenshot-9.webp", alt: "Action RPG gameplay screenshot 9" },
-        { src: "/projects/action-rpg-project/screenshot-10.webp", alt: "Action RPG gameplay screenshot 10" },
-        { src: "/projects/action-rpg-project/screenshot-11.webp", alt: "Action RPG gameplay screenshot 11" },
-        { src: "/projects/action-rpg-project/screenshot-12.webp", alt: "Action RPG gameplay screenshot 12" },
-        { src: "/projects/action-rpg-project/screenshot-13.webp", alt: "Action RPG gameplay screenshot 13" },
-        { src: "/projects/action-rpg-project/screenshot-14.webp", alt: "Action RPG gameplay screenshot 14" },
-        { src: "/projects/action-rpg-project/screenshot-15.webp", alt: "Action RPG gameplay screenshot 15" },
-        { src: "/projects/action-rpg-project/screenshot-16.webp", alt: "Action RPG gameplay screenshot 16" },
+        { src: "/projects/action-rpg-project/screenshot-4.webp?v=2", alt: "Boss battle with Large Skeletal Warrior" },
+        { src: "/projects/action-rpg-project/screenshot-5.webp?v=2", alt: "Action RPG gameplay screenshot 5" },
+        { src: "/projects/action-rpg-project/screenshot-6.webp?v=2", alt: "Action RPG gameplay screenshot 6" },
+        { src: "/projects/action-rpg-project/screenshot-7.webp?v=2", alt: "Action RPG gameplay screenshot 7" },
+        { src: "/projects/action-rpg-project/screenshot-8.webp?v=2", alt: "Action RPG gameplay screenshot 8" },
+        { src: "/projects/action-rpg-project/screenshot-9.webp?v=2", alt: "Action RPG gameplay screenshot 9" },
+        { src: "/projects/action-rpg-project/screenshot-10.webp?v=2", alt: "Action RPG gameplay screenshot 10" },
+        { src: "/projects/action-rpg-project/screenshot-11.webp?v=2", alt: "Action RPG gameplay screenshot 11" },
+        { src: "/projects/action-rpg-project/screenshot-12.webp?v=2", alt: "Action RPG gameplay screenshot 12" },
+        { src: "/projects/action-rpg-project/screenshot-13.webp?v=2", alt: "Action RPG gameplay screenshot 13" },
       ],
     },
-    teamSize: "Solo project",
-    role: "Game Developer",
     developmentTime: "2023",
     architectureNotes: [
       "Unreal Engine 4 with C++ core systems and Blueprint for rapid iteration",
@@ -601,43 +578,60 @@ export const projects: Project[] = [
     },
     images: {
       thumbnail: "/thumbnails/survival-horror-project.webp",
+      hero: "/projects/survival-horror-project/hero.webp",
       screenshots: [
         {
-          src: "/projects/survival-horror-project/screenshot-1.webp",
+          src: "/projects/survival-horror-project/screenshot-1.webp?v=2",
           alt: "Survival Horror mansion exploration and puzzle-solving",
         },
-        { src: "/projects/survival-horror-project/screenshot-2.webp", alt: "Third-person combat with zombie enemies" },
         {
-          src: "/projects/survival-horror-project/screenshot-3.webp",
+          src: "/projects/survival-horror-project/screenshot-2.webp?v=2",
+          alt: "Third-person combat with zombie enemies",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-3.webp?v=2",
           alt: "Multi-floor map system and inventory management",
         },
         {
-          src: "/projects/survival-horror-project/screenshot-4.webp",
+          src: "/projects/survival-horror-project/screenshot-4.webp?v=2",
           alt: "Environmental puzzle mechanics and key item retrieval",
         },
-        { src: "/projects/survival-horror-project/screenshot-5.webp", alt: "Survival Horror gameplay screenshot 5" },
-        { src: "/projects/survival-horror-project/screenshot-6.webp", alt: "Survival Horror gameplay screenshot 6" },
-        { src: "/projects/survival-horror-project/screenshot-7.webp", alt: "Survival Horror gameplay screenshot 7" },
-        { src: "/projects/survival-horror-project/screenshot-8.webp", alt: "Survival Horror gameplay screenshot 8" },
-        { src: "/projects/survival-horror-project/screenshot-9.webp", alt: "Survival Horror gameplay screenshot 9" },
-        { src: "/projects/survival-horror-project/screenshot-10.webp", alt: "Survival Horror gameplay screenshot 10" },
-        { src: "/projects/survival-horror-project/screenshot-11.webp", alt: "Survival Horror gameplay screenshot 11" },
-        { src: "/projects/survival-horror-project/screenshot-12.webp", alt: "Survival Horror gameplay screenshot 12" },
-        { src: "/projects/survival-horror-project/screenshot-13.webp", alt: "Survival Horror gameplay screenshot 13" },
-        { src: "/projects/survival-horror-project/screenshot-14.webp", alt: "Survival Horror gameplay screenshot 14" },
-        { src: "/projects/survival-horror-project/screenshot-15.webp", alt: "Survival Horror gameplay screenshot 15" },
-        { src: "/projects/survival-horror-project/screenshot-16.webp", alt: "Survival Horror gameplay screenshot 16" },
-        { src: "/projects/survival-horror-project/screenshot-17.webp", alt: "Survival Horror gameplay screenshot 17" },
-        { src: "/projects/survival-horror-project/screenshot-18.webp", alt: "Survival Horror gameplay screenshot 18" },
-        { src: "/projects/survival-horror-project/screenshot-19.webp", alt: "Survival Horror gameplay screenshot 19" },
-        { src: "/projects/survival-horror-project/screenshot-20.webp", alt: "Survival Horror gameplay screenshot 20" },
-        { src: "/projects/survival-horror-project/screenshot-21.webp", alt: "Survival Horror gameplay screenshot 21" },
-        { src: "/projects/survival-horror-project/screenshot-22.webp", alt: "Survival Horror gameplay screenshot 22" },
+        {
+          src: "/projects/survival-horror-project/screenshot-5.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 5",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-6.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 6",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-7.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 7",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-8.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 8",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-9.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 9",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-10.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 10",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-11.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 11",
+        },
+        {
+          src: "/projects/survival-horror-project/screenshot-12.webp?v=2",
+          alt: "Survival Horror gameplay screenshot 12",
+        },
       ],
     },
-    teamSize: "3-person team",
-    role: "Project Lead / Game Developer",
-    developmentTime: "8 weeks (2024)",
+    teamRole: "Project Lead",
+    developmentTime: "2022",
     architectureNotes: [
       "Unreal Engine 5 with C++ core systems and Blueprint for rapid iteration",
       "Animation state machines for complex character locomotion and combat transitions",
@@ -665,25 +659,26 @@ export const projects: Project[] = [
     title: "Pong Clone",
     slug: "pong-clone",
     description:
-      "Classic Pong game implementation written in C++ from scratch without using a game engine. Features single-player mode with AI opponent " +
-      "and local multiplayer for two human players. Demonstrates fundamental game programming concepts including game loop architecture, " +
-      "collision detection, input handling, basic AI logic, and audio integration with spatialized sound effects. Includes complete menu system " +
-      "with main menu and pause functionality, round/score tracking, and keyboard controls (WASD or arrow keys). Built using libsndfile and OpenAL " +
-      "for audio, showcasing low-level game development without engine abstractions.",
+      "Classic Pong implementation in raw C++ with a fully hand-rolled software renderer—no game engine, no graphics API (OpenGL/DirectX), " +
+      "just direct pixel manipulation via Win32 GDI. Features single-player mode with basic AI opponent and local two-player multiplayer. " +
+      "Demonstrates foundational game programming: custom game loop with delta timing, AABB collision detection, entity architecture, " +
+      "state machine for menus/gameplay, and 3D positional audio via OpenAL. The renderer draws everything—including bitmap text—directly " +
+      "to a memory buffer, blitted to screen each frame.",
     shortDescription:
-      "Classic Pong game in C++ without a game engine, featuring AI opponent, local multiplayer, and spatialized audio.",
+      "Pong in raw C++ with software rendering—no engine, no graphics API. Hand-rolled game loop, collision detection, state machines, and 3D positional audio.",
     category: ["Game"],
-    tags: ["C++", "Game Development", "Audio Programming", "Game AI", "No Engine"],
-    techStack: ["C++", "libsndfile", "OpenAL (openal-soft)"],
+    tags: ["C++", "Game Development", "Audio Programming", "Software Rendering", "No Engine"],
+    techStack: ["C++", "Win32", "libsndfile", "OpenAL (openal-soft)"],
     features: [
+      "Pure software rendering: direct pixel buffer writes, no OpenGL/DirectX/Vulkan",
       "Single-player mode with basic AI opponent",
       "Local multiplayer mode for two human players",
-      "Spatialized gameplay sound effects using OpenAL",
-      "Pause/resume functionality with in-game menu",
-      "Main menu and system menu navigation",
-      "Round and score tracking system",
-      "Keyboard input handling (WASD or arrow keys)",
-      "Built from scratch without game engine dependencies",
+      "3D positional audio using OpenAL for spatialized sound effects",
+      "Custom bitmap text rendering (no font libraries)",
+      "Delta-timed game loop with pause/resume functionality",
+      "AABB collision detection with paddle-spin response",
+      "Complete menu system (main menu, pause menu)",
+      "Round and score tracking with configurable win conditions",
     ],
     links: {
       github: "https://github.com/andrewRCr/PongClone",
@@ -692,28 +687,27 @@ export const projects: Project[] = [
     },
     images: {
       thumbnail: "/thumbnails/pong-clone.webp",
+      hero: "/projects/pong-clone/hero.webp?v=3",
       screenshots: [
-        { src: "/projects/pong-clone/screenshot-1.webp", alt: "Pong Clone gameplay with single-player AI opponent" },
-        { src: "/projects/pong-clone/screenshot-2.webp", alt: "Main menu and game interface" },
+        { src: "/projects/pong-clone/screenshot-1.webp?v=3", alt: "Main menu and game options" },
+        { src: "/projects/pong-clone/screenshot-2.webp?v=5", alt: "Single-player gameplay against AI" },
+        { src: "/projects/pong-clone/screenshot-3.webp?v=2", alt: "In-game pause menu" },
       ],
     },
-    teamSize: "Solo project",
-    role: "Developer",
     developmentTime: "2023",
     architectureNotes: [
-      "Custom game loop implementation without engine framework",
-      "Collision detection system for paddle and ball physics",
-      "Basic AI logic for single-player opponent behavior",
-      "Audio system using libsndfile for loading and OpenAL for spatialized playback",
-      "Input handling system mapping keyboard events to paddle control",
-      "State management for menu navigation and gameplay transitions",
-      "Score and round tracking with game state persistence during pause",
+      "Win32 platform layer: window creation, input handling, frame timing",
+      "Software rasterizer: VirtualAlloc framebuffer, GDI StretchDIBits for display",
+      "Entity system with base class and Ball/Paddle specializations",
+      "State machine managing menu navigation and gameplay transitions",
+      "Audio subsystem wrapping OpenAL: SoundDevice, SoundLibrary, SoundPlayer",
+      "Clean separation: Framework (renderer, audio), Entities, Platforms",
     ],
     highlights: [
-      "Demonstrates fundamental game programming from first principles without engine abstractions",
-      "Showcases low-level C++ development: memory management, game loop architecture, collision detection",
-      "Implements audio programming with spatial sound using OpenAL",
-      "Features complete game experience: menus, multiple modes, AI opponent, sound effects",
+      "Pure software rendering without any graphics API—direct pixel manipulation via Win32 GDI",
+      "Handmade-style architecture: custom game loop, collision detection, entity system built from scratch",
+      "3D positional audio integration using OpenAL for spatialized gameplay sound effects",
+      "Clean layered codebase separating platform concerns from game logic",
     ],
     order: 9,
     featured: false,

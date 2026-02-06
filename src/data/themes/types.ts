@@ -201,6 +201,12 @@ export interface Theme {
   readonly accentVariants?: AccentMetadata;
   /** Custom gradient stops for wallpaper fallback (optional, defaults to accent→background→secondary) */
   readonly gradientStops?: readonly GradientStop[];
+  /** Opacity and foreground configuration for accent/secondary variants (optional) */
+  readonly opacities?: ThemeOpacities;
+  /** Surface and window configuration for visual layering (optional) */
+  readonly surfaces?: ThemeSurfaces;
+  /** Hover darkening configuration for interactive elements (optional) */
+  readonly hover?: ThemeHoverConfig;
 }
 
 /**
@@ -208,3 +214,248 @@ export interface Theme {
  * All registered themes available for selection.
  */
 export type ThemeRegistry = Readonly<Record<string, Theme>>;
+
+// =============================================================================
+// OPACITY & FOREGROUND CONFIGURATION
+// =============================================================================
+
+/**
+ * Foreground token reference for opacity variants.
+ * Maps to CSS variable names: var(--foreground), var(--background), var(--accent-foreground)
+ */
+export type ForegroundToken = "foreground" | "background" | "accent-foreground";
+
+/**
+ * Opacity levels for a token variant (high/mid/low).
+ * Values should be 0-1 representing CSS opacity.
+ */
+export interface OpacityLevels {
+  readonly high: number;
+  readonly mid: number;
+  readonly low: number;
+}
+
+/**
+ * Foreground token mapping for accent opacity variants.
+ * Determines which foreground color to use for text on accent-high/mid/low backgrounds.
+ *
+ * Light mode typically uses "background" (light text on darker accent backgrounds).
+ * Dark mode varies: "accent-foreground" for high, "foreground" for mid/low.
+ */
+export interface AccentForegroundMapping {
+  readonly high: ForegroundToken;
+  readonly mid: ForegroundToken;
+  readonly low: ForegroundToken;
+}
+
+/**
+ * Mode-specific opacity and foreground configuration.
+ * Captures all opacity-related CSS variables for a single mode (light or dark).
+ */
+export interface ModeOpacityConfig {
+  /** Accent opacity levels (--accent-high/mid/low-opacity) */
+  readonly accent: OpacityLevels;
+
+  /** Secondary opacity levels (--secondary-high/mid/low-opacity) */
+  readonly secondary: OpacityLevels;
+
+  /** Foreground tokens for accent variants (--accent-high/mid/low-foreground) */
+  readonly accentForeground: AccentForegroundMapping;
+
+  /** Accent decorative opacity (--accent-decorative-opacity) */
+  readonly accentDecorativeOpacity: number;
+}
+
+/**
+ * Decorative accent configuration (mode-independent).
+ * Controls which color token to use for decorative accents and its foreground.
+ *
+ * Defaults: accentDecorativeToken = "primary", accentDecorativeForeground = "primary-foreground"
+ */
+export interface AccentDecorativeConfig {
+  /** Color token for decorative accent (e.g., "primary", "accent-purple") */
+  readonly token?: keyof ThemeColors;
+
+  /** Foreground token for text on decorative accent backgrounds */
+  readonly foreground?: ForegroundToken | "primary-foreground";
+}
+
+/**
+ * Complete theme opacity configuration.
+ *
+ * Centralizes all opacity-related CSS variable values. Enables:
+ * 1. Single source of truth for opacity values
+ * 2. Type-safe configuration
+ * 3. Automatic CSS generation
+ * 4. Direct import in contrast tests
+ *
+ * @example
+ * ```typescript
+ * const remedyOpacities: ThemeOpacities = {
+ *   light: {
+ *     accent: { high: 1, mid: 0.9, low: 0.8 },
+ *     secondary: { high: 0.8, mid: 0.4, low: 0.2 },
+ *     accentForeground: { high: "background", mid: "background", low: "background" },
+ *     accentDecorativeOpacity: 0.9,
+ *   },
+ *   dark: {
+ *     accent: { high: 0.8, mid: 0.76, low: 0.2 },
+ *     secondary: { high: 0.8, mid: 0.2, low: 0.1 },
+ *     accentForeground: { high: "accent-foreground", mid: "foreground", low: "foreground" },
+ *     accentDecorativeOpacity: 0.9,
+ *   },
+ * };
+ * ```
+ */
+export interface ThemeOpacities {
+  /** Light mode opacity configuration */
+  readonly light: ModeOpacityConfig;
+
+  /** Dark mode opacity configuration */
+  readonly dark: ModeOpacityConfig;
+
+  /** Decorative accent overrides (optional, defaults to primary) */
+  readonly accentDecorative?: AccentDecorativeConfig;
+}
+
+// =============================================================================
+// SURFACE & WINDOW CONFIGURATION
+// =============================================================================
+
+/**
+ * Surface hierarchy determines which color token is used for card vs background surfaces.
+ *
+ * - "normal": card surfaces use --card, background surfaces use --background
+ * - "swapped": card surfaces use --background, background surfaces use --card
+ *
+ * Light mode typically uses "swapped" to achieve correct visual hierarchy
+ * (headers lighter than bodies). Exception: Gruvbox light already has correct
+ * hierarchy in its palette, so uses "normal".
+ */
+export type SurfaceHierarchy = "normal" | "swapped";
+
+/**
+ * Mode-specific surface and window configuration.
+ * Controls transparency, darkening, and surface hierarchy for a single mode.
+ *
+ * These values map to CSS variables:
+ * - --surface-opacity, --surface-darken
+ * - --window-bg-opacity, --window-darken
+ * - --surface-card-base, --surface-background-base (via hierarchy)
+ */
+export interface ModeSurfaceConfig {
+  /** Surface transparency (0-1). Higher = more solid. Default: 0.8 dark, 0.7 light */
+  readonly surfaceOpacity: number;
+
+  /** Surface darkening via foreground mix (0-100%). Higher = darker. Default: 0% dark, 20% light */
+  readonly surfaceDarken: number;
+
+  /** Window container background opacity (0-1). Default: 0.8 dark, 0.7 light */
+  readonly windowOpacity: number;
+
+  /** Window container darkening via foreground mix (0-100%). Default: 0% dark, 10% light */
+  readonly windowDarken: number;
+
+  /** Surface hierarchy for card/background token assignment. Default: "normal" dark, "swapped" light */
+  readonly surfaceHierarchy: SurfaceHierarchy;
+}
+
+/**
+ * Complete theme surface configuration for both modes.
+ *
+ * Controls the visual layering system: how surfaces (cards, backgrounds) and
+ * windows (containers) appear in terms of transparency, darkening, and hierarchy.
+ *
+ * Most themes use identical surface settings within each mode. The primary
+ * exception is Gruvbox light, which uses "normal" hierarchy instead of "swapped".
+ */
+export interface ThemeSurfaces {
+  /** Light mode surface configuration */
+  readonly light: ModeSurfaceConfig;
+
+  /** Dark mode surface configuration */
+  readonly dark: ModeSurfaceConfig;
+}
+
+// =============================================================================
+// HOVER CONFIGURATION
+// =============================================================================
+
+/**
+ * Hover color swap options.
+ * - "secondary": Use secondary color at full opacity
+ * - "secondary-high": Use secondary color at secondary-high-opacity (0.8)
+ * - "accent-decorative": Use accent-decorative token at full opacity
+ * - "accent-decorative-high": Use accent-decorative token at 0.8 opacity
+ */
+export type HoverColorSwap = "secondary" | "secondary-high" | "accent-decorative" | "accent-decorative-high";
+
+/**
+ * Mode-specific hover configuration.
+ * Controls how interactive elements change on hover.
+ *
+ * Two approaches available:
+ * 1. **Color swap** (recommended): Hover swaps to secondary color
+ *    - More intentional, consistent across themes
+ *    - Set `primaryHoverColor` and/or `accentMidHoverColor`
+ *
+ * 2. **Darkening** (fallback): Hover darkens the original color
+ *    - Dark mode: opacity-based (85% for primary, accent-low for accent-mid)
+ *    - Light mode: color-mix with foreground at specified percentage
+ *    - Used when hoverColor properties are not set
+ *
+ * Foreground overrides allow per-theme customization for contrast needs.
+ */
+export interface ModeHoverConfig {
+  /** Percentage to darken primary color on hover (0-100). Used when primaryHoverColor not set. */
+  readonly primaryDarken: number;
+
+  /** Percentage to darken accent-mid color on hover (0-100). Used when accentMidHoverColor not set. */
+  readonly accentMidDarken: number;
+
+  /**
+   * Swap primary to secondary on hover instead of darkening.
+   * - "secondary": Use secondary at full opacity
+   * - "secondary-high": Use secondary at secondary-high-opacity (toned down)
+   */
+  readonly primaryHoverColor?: HoverColorSwap;
+
+  /**
+   * Swap accent-mid to secondary on hover instead of darkening.
+   * - "secondary": Use secondary at full opacity
+   * - "secondary-high": Use secondary at secondary-high-opacity (toned down)
+   */
+  readonly accentMidHoverColor?: HoverColorSwap;
+
+  /**
+   * Override foreground for primary hover. If not specified:
+   * - With hoverColor: uses secondary-foreground
+   * - Without hoverColor: uses primary-foreground (no change)
+   */
+  readonly primaryHoverForeground?: ForegroundToken | "primary-foreground" | "secondary-foreground";
+
+  /**
+   * Override foreground for accent-mid hover. If not specified:
+   * - With hoverColor: uses secondary-foreground
+   * - Without hoverColor (dark): uses accent-low-foreground
+   * - Without hoverColor (light): uses accent-mid-foreground
+   *
+   * Special values:
+   * - "foreground-lightened": foreground mixed with 10% white (for dark mode contrast boost)
+   */
+  readonly accentMidHoverForeground?: ForegroundToken | "secondary-foreground" | "foreground-lightened";
+}
+
+/**
+ * Complete theme hover configuration for both modes.
+ *
+ * Enables per-theme, per-mode control over hover darkening percentages.
+ * Most themes use identical values; some may need adjustment for contrast.
+ */
+export interface ThemeHoverConfig {
+  /** Light mode hover configuration */
+  readonly light: ModeHoverConfig;
+
+  /** Dark mode hover configuration */
+  readonly dark: ModeHoverConfig;
+}

@@ -1,3 +1,4 @@
+import React from "react";
 import { screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, checkA11y, axe } from "@tests/test-utils";
@@ -6,6 +7,9 @@ import { ConditionalFrame } from "../ConditionalFrame";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 
 vi.mock("next/navigation", () => createNavigationMock());
+vi.mock("@/contexts/AnimationContext", async () =>
+  (await import("@tests/mocks/animation-context")).createAnimationContextMock()
+);
 
 describe("ConditionalFrame", () => {
   beforeEach(() => {

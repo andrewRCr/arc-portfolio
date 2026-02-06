@@ -28,11 +28,13 @@ contemporary web development practices.
 
 **Currently Active:**
 
-- None - selecting next priority
+- Visual Polish (feature) - Page transitions, micro-interactions, technical fixes, hero images
+    - Task list: `.arc/active/feature/tasks-visual-polish.md`
+    - Branch: `feature/visual-polish`
 
 **Next Priority:**
 
-- Visual Polish (feature) - Page transitions, micro-interactions, loading states, hero images
+- Feature Flag System (Phase C) - Unified infrastructure for dev-only content, incomplete projects
 
 ---
 
@@ -45,7 +47,7 @@ contemporary web development practices.
 - ✅ Content Polish P1 - Project showcase, DetailHeader, image gallery, 3-tab Projects, NexusMods API
 - ✅ Content Polish P2 - SkillLogoGrid, skill filtering, Contact form, About polish
 - ✅ TWM Startup Animation - Terminal boot sequence on first home visit
-- **Visual Polish** (next) - Page transitions, micro-interactions, loading states, hero images
+- 🔄 **Visual Polish** (active) - Page transitions, micro-interactions, technical fixes, hero images
 
 ### Phase C: Launch
 

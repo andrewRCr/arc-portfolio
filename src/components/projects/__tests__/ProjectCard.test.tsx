@@ -62,13 +62,14 @@ describe("ProjectCard - Behavior Tests", () => {
   describe("Category Badges", () => {
     it("renders all category badges for project with multiple categories", () => {
       render(<ProjectCard project={mockProject} />);
-      expect(screen.getByText("Web App")).toBeInTheDocument();
-      expect(screen.getByText("Desktop App")).toBeInTheDocument();
+      // Categories render in bracket format: [category]
+      expect(screen.getByText("[web app]")).toBeInTheDocument();
+      expect(screen.getByText("[desktop app]")).toBeInTheDocument();
     });
 
     it("renders single category badge for project with one category", () => {
       render(<ProjectCard project={mockProjectSingleCategory} />);
-      expect(screen.getByText("Game")).toBeInTheDocument();
+      expect(screen.getByText("[game]")).toBeInTheDocument();
     });
 
     it("renders category badges before tech stack tags", () => {
@@ -76,54 +77,25 @@ describe("ProjectCard - Behavior Tests", () => {
       const categoryBadges = container.querySelectorAll('[data-testid="category-badge"]');
 
       expect(categoryBadges).toHaveLength(2);
-      expect(categoryBadges[0]).toHaveTextContent("Web App");
-      expect(categoryBadges[1]).toHaveTextContent("Desktop App");
+      expect(categoryBadges[0]).toHaveTextContent("[web app]");
+      expect(categoryBadges[1]).toHaveTextContent("[desktop app]");
     });
 
     it("displays category badges prominently (distinct styling)", () => {
       render(<ProjectCard project={mockProject} />);
-      const categoryBadge = screen.getByText("Web App").closest("[data-testid]");
+      const categoryBadge = screen.getByText("[web app]").closest("[data-testid]");
       expect(categoryBadge).toHaveAttribute("data-testid", expect.stringContaining("category"));
     });
   });
 
   describe("Tech Stack Tags", () => {
-    it("renders tech stack tags", () => {
+    it("renders all tech stack tags via TechStackScroller", () => {
       render(<ProjectCard project={mockProject} />);
-      // Check for at least first few tech tags (may be limited by design)
-      expect(screen.getByText("React")).toBeInTheDocument();
-      expect(screen.getByText("TypeScript")).toBeInTheDocument();
-    });
-
-    it("limits number of displayed tech tags to 3", () => {
-      render(<ProjectCard project={mockProject} />);
-      // Should show React, TypeScript, Node.js (first 3)
+      // TechStackScroller shows all items (scrollable on overflow)
       expect(screen.getByText("React")).toBeInTheDocument();
       expect(screen.getByText("TypeScript")).toBeInTheDocument();
       expect(screen.getByText("Node.js")).toBeInTheDocument();
-      // Should not show PostgreSQL (4th item)
-      expect(screen.queryByText("PostgreSQL")).not.toBeInTheDocument();
-    });
-
-    it("shows indicator when there are more tech tags than displayed", () => {
-      render(<ProjectCard project={mockProject} />);
-      // Should show "+1" or similar indicator (4 total - 3 shown = 1 more)
-      expect(screen.getByText("+1")).toBeInTheDocument();
-    });
-
-    it("displays tech tags with correct content", () => {
-      const { container } = render(<ProjectCard project={mockProject} />);
-      const techBadges = container.querySelectorAll('[data-testid="tech-badge"]');
-      const overflowBadge = container.querySelector('[data-testid="tech-overflow-badge"]');
-
-      // First 3 tech stack items
-      expect(techBadges).toHaveLength(3);
-      expect(techBadges[0]).toHaveTextContent("React");
-      expect(techBadges[1]).toHaveTextContent("TypeScript");
-      expect(techBadges[2]).toHaveTextContent("Node.js");
-
-      // Overflow indicator separate
-      expect(overflowBadge).toHaveTextContent("+1");
+      expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
     });
   });
 

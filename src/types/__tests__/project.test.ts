@@ -99,7 +99,7 @@ describe("Project Interface", () => {
     };
 
     expect(minimalProject).toBeDefined();
-    expect(minimalProject.teamSize).toBeUndefined();
+    expect(minimalProject.teamRole).toBeUndefined();
   });
 
   it("should have valid demo credentials when present", () => {

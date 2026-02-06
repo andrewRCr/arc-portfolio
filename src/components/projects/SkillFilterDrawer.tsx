@@ -124,7 +124,7 @@ export default function SkillFilterDrawer({ allProjects, selectedSkills, onSkill
           Filter{selectedSkills.length > 0 && ` (${selectedSkills.length})`}
         </Button>
       }
-      title="Filter Skills"
+      title="Filter"
       aria-describedby={undefined}
       fillHeight
     >
@@ -158,7 +158,7 @@ export default function SkillFilterDrawer({ allProjects, selectedSkills, onSkill
                     >
                       <div
                         aria-hidden="true"
-                        className={`flex size-5 shrink-0 items-center justify-center rounded-sm border-2 ${
+                        className={`flex size-5 shrink-0 items-center justify-center border-2 ${
                           isSelected
                             ? "border-secondary bg-secondary text-secondary-foreground"
                             : "border-border-strong"

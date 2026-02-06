@@ -156,6 +156,8 @@ export const ayuA11y = {
   errorDarkened15: "#c44444",
   /** FgMuted darkened 20% for bgSecondary contrast (3.15 → 4.63) */
   fgMutedDarkened20: "#68727f",
+  /** FgMuted darkened 25% for card surface contrast (4.32 → ~4.6) */
+  fgMutedDarkened25: "#5f6974",
 
   // Dark mode fixes
   /** FgMuted lightened 20% for panelBg contrast (3.14 → 4.51) */

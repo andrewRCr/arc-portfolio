@@ -7,10 +7,12 @@
  * Uses query parameters (?tab=software, ?tab=games, or ?tab=mods) for shareable/linkable state.
  *
  * Implements WAI-ARIA Tabs pattern with arrow key navigation.
+ * Features animated tab indicator that slides between tabs using CSS transitions.
  */
 
-import { useRef } from "react";
+import { useRef, useLayoutEffect, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useReducedMotion } from "framer-motion";
 
 type TabValue = "software" | "games" | "mods";
 
@@ -26,9 +28,11 @@ export default function ProjectTabs() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const shouldReduceMotion = useReducedMotion();
 
-  // Refs for focus management
+  // Refs for focus management and indicator positioning
   const tabRefs = useRef<Map<TabValue, HTMLButtonElement | null>>(new Map());
+  const indicatorRef = useRef<HTMLDivElement | null>(null);
 
   // Get current tab from query param, default to 'software'
   const currentTab = searchParams.get("tab") as TabValue | null;
@@ -36,9 +40,33 @@ export default function ProjectTabs() {
   // Validate and normalize tab value - only accept valid tab values
   const activeTab: TabValue = TABS.includes(currentTab as TabValue) ? (currentTab as TabValue) : "software";
 
+  // Update indicator position directly via ref (bypasses React state)
+  // Uses offsetLeft/offsetWidth instead of getBoundingClientRect - works during Suspense hydration
+  const updateIndicator = useCallback(() => {
+    const activeButton = tabRefs.current.get(activeTab);
+    const indicator = indicatorRef.current;
+    if (!activeButton || !indicator) return;
+
+    // offsetWidth works during hydration when getBoundingClientRect returns 0
+    const width = activeButton.offsetWidth;
+    const left = activeButton.offsetLeft;
+
+    if (width > 0) {
+      indicator.style.left = `${left}px`;
+      indicator.style.width = `${width}px`;
+    }
+  }, [activeTab]);
+
+  // Update on mount, when active tab changes, and on resize
+  useLayoutEffect(() => {
+    updateIndicator();
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [updateIndicator]);
+
   const handleTabChange = (tab: TabValue) => {
-    // Update URL with query parameter
-    router.push(`${pathname}?tab=${tab}`);
+    // Update URL with query parameter (scroll: false - we handle scroll manually)
+    router.push(`${pathname}?tab=${tab}`, { scroll: false });
   };
 
   const handleKeyDown = (tab: TabValue, event: React.KeyboardEvent) => {
@@ -87,7 +115,7 @@ export default function ProjectTabs() {
       <div
         role="tablist"
         aria-label="Project categories"
-        className="inline-flex min-h-11 items-end gap-2 border-b border-border/50 sm:flex"
+        className="relative inline-flex min-h-11 items-end gap-2 sm:flex sm:w-full after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-border/50 after:via-border/50 after:via-95% after:to-transparent"
       >
         {TABS.map((tab) => (
           <button
@@ -102,13 +130,24 @@ export default function ProjectTabs() {
             tabIndex={activeTab === tab ? 0 : -1}
             onClick={() => handleTabChange(tab)}
             onKeyDown={(e) => handleKeyDown(tab, e)}
-            className={`min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-mono text-sm font-semibold transition-colors ${
-              activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"
+            className={`relative min-h-11 lg:min-h-0 px-3 pb-2 pt-3 font-terminal text-sm font-semibold transition-colors ${
+              activeTab === tab ? "text-accent dark:text-accent-high" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {TAB_LABELS[tab]}
           </button>
         ))}
+        {/* Tab indicator - CSS transition for smooth sliding */}
+        <div
+          ref={indicatorRef}
+          data-tab-indicator
+          className="pointer-events-none absolute bottom-0 z-10 h-0.5 bg-accent-high"
+          style={{
+            transition: shouldReduceMotion
+              ? "none"
+              : "left 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
+        />
       </div>
     </div>
   );

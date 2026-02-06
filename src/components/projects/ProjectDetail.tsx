@@ -13,6 +13,7 @@ import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
 import { TextLink } from "@/components/ui/text-link";
+import { TechStackScroller } from "@/components/ui/TechStackScroller";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 
 interface ProjectDetailProps {
@@ -100,33 +101,11 @@ function ContentList({ items }: { items: ContentItem[] }) {
   );
 }
 
-/** Renders a label: value metadata row */
-function MetadataRow({ label, value }: { label: string; value?: string }) {
-  if (!value) return null;
-  return (
-    <div>
-      <span className="font-semibold text-foreground">{label}: </span>
-      <span className="text-muted-foreground">{value}</span>
-    </div>
-  );
-}
-
 export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   const isPhone = useIsPhone();
-  // Smaller tech stack badges on phone for visual hierarchy
-  const techBadgeTextSize = isPhone ? "text-xs" : "text-sm";
-
-  // Build metadata rows from available fields
-  const metadataFields = [
-    { label: "Team", value: project.teamSize },
-    { label: "Role", value: project.role },
-    { label: "Timeline", value: project.developmentTime },
-  ];
-  const hasMetadata = metadataFields.some((field) => field.value);
 
   // Section labels with customization support
   const labels = {
-    features: project.sectionLabels?.features ?? "Key Features",
     highlights: project.sectionLabels?.highlights ?? "Highlights",
     architectureNotes: project.sectionLabels?.architectureNotes ?? "Architecture",
   };
@@ -134,22 +113,17 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
   // Split description into paragraphs
   const descriptionParagraphs = project.description.split("\n\n").filter((p) => p.trim());
 
+  // Mobile: no container padding (tech stack aligns with header elements)
+  // Desktop: px-2 for visual breathing room from edges
+  const containerPadding = isPhone ? "" : "px-2";
+
   return (
-    <div className="px-2 mt-3 mb-1 relative">
-      {/* Tech Stack - tight to header */}
-      <div className="flex flex-wrap gap-2">
-        {project.techStack.map((tech) => (
-          <span
-            key={tech}
-            className={`rounded border border-border bg-muted px-3 py-1 ${techBadgeTextSize} text-foreground`}
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
+    <div className={`mt-2 mb-1 relative ${containerPadding}`}>
+      {/* Tech Stack - aligns with header elements (no extra padding) */}
+      <TechStackScroller techStack={project.techStack} size={isPhone ? "sm" : "md"} />
 
       {/* Description - supports multiple paragraphs and markdown formatting */}
-      <div className="mt-6 space-y-4">
+      <div className="mt-4 space-y-4">
         {descriptionParagraphs.map((paragraph, index) => (
           <p key={index} className="text-base sm:text-lg text-foreground">
             <InlineMarkdown>{paragraph}</InlineMarkdown>
@@ -157,39 +131,23 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
         ))}
       </div>
 
-      {/* Screenshots Gallery - tighter spacing from description */}
+      {/* Screenshots Gallery */}
       {project.images.screenshots.length > 0 && (
-        <div className="mt-6">
+        <div className="mt-4 sm:mt-6">
           <ImageGallery images={project.images.screenshots} />
         </div>
       )}
 
-      {/* Features */}
-      <DetailCard title={labels.features} className="mt-8">
-        <ContentList items={project.features} />
-      </DetailCard>
-
-      {/* Optional Metadata */}
-      {hasMetadata && (
-        <DetailCard title="Project Details" className="mt-8">
-          <div className="grid gap-2 text-sm">
-            {metadataFields.map((field) => (
-              <MetadataRow key={field.label} label={field.label} value={field.value} />
-            ))}
-          </div>
-        </DetailCard>
-      )}
-
-      {/* Highlights */}
+      {/* Highlights - primary content section (merged from features + highlights) */}
       {project.highlights && project.highlights.length > 0 && (
-        <DetailCard title={labels.highlights} className="mt-8">
+        <DetailCard title={labels.highlights} className="mt-6 sm:mt-8">
           <ContentList items={project.highlights} />
         </DetailCard>
       )}
 
-      {/* Architecture Notes */}
+      {/* Architecture Notes - optional technical deep-dive */}
       {project.architectureNotes && project.architectureNotes.length > 0 && (
-        <DetailCard title={labels.architectureNotes} className="mt-8">
+        <DetailCard title={labels.architectureNotes} className="mt-6 sm:mt-8">
           <ContentList items={project.architectureNotes} />
         </DetailCard>
       )}

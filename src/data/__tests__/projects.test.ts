@@ -127,13 +127,9 @@ describe("Projects Data Validation", () => {
 
     it("should have valid optional fields when present", () => {
       projects.forEach((project) => {
-        if (project.teamSize) {
-          expect(typeof project.teamSize).toBe("string");
-          expect(project.teamSize.length).toBeGreaterThan(0);
-        }
-        if (project.role) {
-          expect(typeof project.role).toBe("string");
-          expect(project.role.length).toBeGreaterThan(0);
+        if (project.teamRole) {
+          expect(typeof project.teamRole).toBe("string");
+          expect(project.teamRole.length).toBeGreaterThan(0);
         }
         if (project.highlights) {
           expect(Array.isArray(project.highlights)).toBe(true);

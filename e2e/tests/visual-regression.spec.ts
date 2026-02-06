@@ -27,11 +27,11 @@ import { E2E_DETERMINISTIC_KEY } from "@/lib/featured-projects";
  * - Waits for theme CSS variables to be applied
  * - Waits for page load (including images/stylesheets)
  * - Hides Next.js dev tools overlay (causes flaky screenshots)
- * - Small buffer for CSS animations/transitions to complete
+ * - Small buffer for final rendering to settle
  *
- * Note: Uses 'load' state instead of 'networkidle' for CI reliability.
- * 'networkidle' is flaky in CI environments where background network
- * activity (analytics, prefetching, lazy loading) may never fully settle.
+ * Relies on reduced motion emulation (set in beforeEach) to suppress
+ * Framer Motion and CSS animations. Without reduced motion, the page has
+ * animations extending to ~1.1s+ that cause "unstable screenshot" failures.
  */
 async function waitForVisualStability(page: Page): Promise<void> {
   // Wait for theme CSS variables to be applied
@@ -59,17 +59,28 @@ async function waitForVisualStability(page: Page): Promise<void> {
     `,
   });
 
-  // Small buffer for CSS animations/transitions to complete
-  // This is a pragmatic fallback - most animations complete within 300ms
-  await page.waitForTimeout(300);
+  // Buffer for React render cycle (AnimationContext initializes via useEffect,
+  // causing hidden→visible transition) + image decode + final paint.
+  // CI runners need more time than local dev for rendering to settle.
+  await page.waitForTimeout(1500);
 }
 
-// Skip visual regression tests on non-Desktop Chrome projects
-test.beforeEach(async ({}, testInfo) => {
+// Skip visual regression tests on non-Desktop Chrome projects.
+// Force reduced motion so Framer Motion + CSS animations complete instantly,
+// preventing "unstable screenshot" failures from in-flight animations.
+test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.project.name !== "Desktop Chrome") {
     test.skip();
   }
+  await page.emulateMedia({ reducedMotion: "reduce" });
 });
+
+/** Shared screenshot options for consistent tuning across all baselines */
+const SCREENSHOT_OPTIONS = {
+  fullPage: true,
+  maxDiffPixelRatio: 0.02,
+  timeout: 15000,
+} as const;
 
 const THEMES = ["remedy", "rose-pine", "gruvbox"] as const;
 const MODES = ["light", "dark"] as const;
@@ -114,10 +125,7 @@ test.describe("Visual Regression Baselines", () => {
           await waitForVisualStability(page);
 
           // Take full-page screenshot
-          await expect(page).toHaveScreenshot(`${testName}.png`, {
-            fullPage: true,
-            maxDiffPixelRatio: 0.02,
-          });
+          await expect(page).toHaveScreenshot(`${testName}.png`, SCREENSHOT_OPTIONS);
         });
       }
     }
@@ -155,45 +163,30 @@ test.describe("Page-Specific Baselines", () => {
   test("home-page", async ({ page }) => {
     await page.goto("/");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-home.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-    });
+    await expect(page).toHaveScreenshot("page-home.png", SCREENSHOT_OPTIONS);
   });
 
   test("projects-page", async ({ page }) => {
     await page.goto("/projects");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-projects.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-    });
+    await expect(page).toHaveScreenshot("page-projects.png", SCREENSHOT_OPTIONS);
   });
 
   test("skills-page", async ({ page }) => {
     await page.goto("/skills");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-skills.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-    });
+    await expect(page).toHaveScreenshot("page-skills.png", SCREENSHOT_OPTIONS);
   });
 
   test("about-page", async ({ page }) => {
     await page.goto("/about");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-about.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-    });
+    await expect(page).toHaveScreenshot("page-about.png", SCREENSHOT_OPTIONS);
   });
 
   test("contact-page", async ({ page }) => {
     await page.goto("/contact");
     await waitForVisualStability(page);
-    await expect(page).toHaveScreenshot("page-contact.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.02,
-    });
+    await expect(page).toHaveScreenshot("page-contact.png", SCREENSHOT_OPTIONS);
   });
 });

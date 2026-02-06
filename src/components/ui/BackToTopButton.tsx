@@ -32,7 +32,7 @@ export function BackToTopButton({ headerType = "page" }: BackToTopButtonProps) {
         opacity,
         pointerEvents: isVisible ? "auto" : "none",
       }}
-      className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 min-h-10 min-w-10 sm:min-h-11 sm:min-w-11 flex items-center justify-center rounded-full bg-muted/80 backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none transition-colors hover:bg-popover/80 focus-visible:ring-2 focus-visible:ring-ring"
+      className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-50 min-h-10 min-w-10 sm:min-h-11 sm:min-w-11 flex items-center justify-center rounded-full bg-surface-muted/80 backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none transition-colors hover:bg-popover/80 focus-visible:ring-2 focus-visible:ring-ring"
     >
       <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5" />
     </button>

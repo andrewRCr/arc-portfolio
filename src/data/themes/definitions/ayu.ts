@@ -16,8 +16,47 @@
  */
 
 import { ayuMirage, ayuLight, ayuA11y } from "../palettes/ayu";
-import type { Theme, ThemeColors } from "../types";
+import type { Theme, ThemeColors, ThemeOpacities, ThemeSurfaces, ThemeHoverConfig } from "../types";
 import { hexToRgb, deriveSwatchColors } from "../utils";
+
+// Opacity configuration - Ayu has muted accents, needs adjusted opacities
+const opacities: ThemeOpacities = {
+  light: {
+    accent: { high: 1, mid: 0.85, low: 0.75 },
+    secondary: { high: 0.6, mid: 0.4, low: 0.2 }, // secondary-high toned down
+    accentForeground: { high: "background", mid: "background", low: "background" },
+    accentDecorativeOpacity: 0.8,
+  },
+  dark: {
+    accent: { high: 0.9, mid: 0.8, low: 0.4 }, // accent-high toned down
+    secondary: { high: 0.6, mid: 0.2, low: 0.1 }, // secondary-high toned down
+    accentForeground: { high: "accent-foreground", mid: "accent-foreground", low: "foreground" },
+    accentDecorativeOpacity: 0.8,
+  },
+};
+
+// Surface configuration - controls visual layering
+const surfaces: ThemeSurfaces = {
+  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
+  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+};
+
+// Hover configuration - primary swaps to secondary, accent-mid darkens in-family
+// Ayu: Yellow/Gold primary → Cyan secondary (warm→cool complement)
+const hover: ThemeHoverConfig = {
+  light: {
+    primaryDarken: 20, // fallback
+    accentMidDarken: 20,
+    primaryHoverColor: "secondary",
+  },
+  dark: {
+    primaryDarken: 10, // fallback
+    accentMidDarken: 10, // fallback (uses accent-low-opacity)
+    primaryHoverColor: "secondary-high",
+    // Ayu dark: Lightened foreground for better contrast on muted accent
+    accentMidHoverForeground: "foreground-lightened",
+  },
+};
 
 // Define tokens as standalone objects to enable swatch derivation
 const lightTokens: ThemeColors = {
@@ -46,14 +85,15 @@ const lightTokens: ThemeColors = {
   "secondary-foreground": hexToRgb(ayuMirage.bgDark), // #171B24
 
   // Muted colors
-  // A11Y: fgMuted darkened 20% for WCAG AA (3.15 → 4.63)
+  // A11Y: fgMuted darkened 25% for WCAG AA on card surface (4.32 → ~4.6)
   muted: hexToRgb(ayuLight.bgSecondary), // #F8F9FA
-  "muted-foreground": hexToRgb(ayuA11y.fgMutedDarkened20), // #68727f
+  "muted-foreground": hexToRgb(ayuA11y.fgMutedDarkened25), // #5f6974
 
   // Default accent (orange - warm highlight, occasional decorative use)
-  // A11Y: using bgDark as foreground for WCAG AA on bright orange (6.80:1)
-  accent: hexToRgb(ayuLight.keyword), // #FF7E33
-  "accent-foreground": hexToRgb(ayuMirage.bgDark), // #171B24
+  // A11Y: darkened 20.1% for WCAG AA as text on light background (4.50:1)
+  accent: hexToRgb("#CB4B00"), // darkened from #FF7E33
+  // A11Y: white foreground for accent-as-background usage (menu focus, etc.)
+  "accent-foreground": hexToRgb("#FFFFFF"),
 
   // Decorative accent variants
   "accent-red": hexToRgb(ayuLight.markup), // #F07171
@@ -144,13 +184,18 @@ export const ayuTheme: Theme = {
   defaultWallpaper: "liana-s",
 
   // Swatch colors derived from tokens - guarantees accuracy, prevents drift
+  // Light mode passes surfaces config to apply surface-muted darkening to slot 0
   swatchColors: {
-    light: deriveSwatchColors(lightTokens),
-    dark: deriveSwatchColors(darkTokens),
+    light: deriveSwatchColors(lightTokens, surfaces.light),
+    dark: deriveSwatchColors(darkTokens, surfaces.dark),
   },
 
   accentVariants: {
     default: "orange", // Yellow/orange family is signature
     available: ["red", "orange", "green", "blue", "purple"],
   },
+
+  opacities,
+  surfaces,
+  hover,
 } as const;

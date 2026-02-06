@@ -80,7 +80,7 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
                     rel="noopener noreferrer"
                     aria-label={link.platform}
                     title={link.platform}
-                    className="flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-accent-mid transition-colors"
                   >
                     <Icon size={16} aria-hidden="true" />
                   </a>
@@ -92,7 +92,7 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
         {/* Right side: Dev links (dev-only) + Attribution */}
         <div className="flex items-center gap-3">
           {isDev && (
-            <nav aria-label="Developer tools" className="hidden md:flex items-center gap-2 font-mono text-xs">
+            <nav aria-label="Developer tools" className="hidden md:flex items-center gap-2 font-terminal text-xs">
               <span className="text-muted-foreground">dev:</span>
               <Link href="/dev/theme-debug" className="text-accent hover:text-accent/80 transition-colors">
                 [theme]
@@ -110,7 +110,7 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
           )}
 
           {/* Attribution */}
-          <span className="text-muted-foreground font-mono text-xs">{"</portfolio>"}</span>
+          <span className="text-muted-foreground font-terminal text-xs">{"</portfolio>"}</span>
         </div>
       </footer>
     </WindowContainer>

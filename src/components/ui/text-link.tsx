@@ -1,8 +1,8 @@
 /**
  * TextLink Component
  *
- * Inline text link with subtle underline styling. Underline is muted by default
- * and strengthens on hover for reduced visual noise in link-heavy content.
+ * Inline text link with accent color styling. Uses full accent in light mode,
+ * toned-down accent-high in dark mode. Underline appears on hover and keyboard focus.
  */
 
 import { AnchorHTMLAttributes } from "react";
@@ -21,7 +21,7 @@ export function TextLink({ href, external = true, className, children, ...props 
   return (
     <a
       href={href}
-      className={cn("text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent", className)}
+      className={cn("text-accent dark:text-accent-high hover:underline focus-visible:underline", className)}
       {...props}
       {...externalProps}
     >
