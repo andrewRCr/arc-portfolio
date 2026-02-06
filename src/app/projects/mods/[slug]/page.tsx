@@ -24,7 +24,7 @@ interface ModPageProps {
 
 export async function generateStaticParams() {
   // Don't generate static pages when project tabs are disabled
-  if (!FEATURES.SHOW_PROJECT_TABS) {
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
     return [];
   }
   return mods.map((mod) => ({
@@ -34,7 +34,7 @@ export async function generateStaticParams() {
 
 export default async function ModProjectPage({ params, searchParams }: ModPageProps) {
   // Feature flag guard - enforces same access control as UI tab visibility
-  if (!FEATURES.SHOW_PROJECT_TABS) {
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
     notFound();
   }
 

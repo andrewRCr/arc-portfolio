@@ -82,22 +82,51 @@ dual-domain configuration.
     - [x] **1.2.c Run quality gates (type-check, lint, related tests)**
         - Type-check, lint, 27 tests pass (4 badge + 23 DetailHeader)
 
-- [ ] **1.3 Clean up feature flag system for future extensibility**
+- [x] **1.3 Reframe and harden feature flag for non-software project visibility**
 
-    **Goal:** Ensure the pattern for adding a new hidden feature in the future is
-    trivial — add flag, use in guard, done.
+    **Goal:** Reframe `SHOW_PROJECT_TABS` as `SHOW_ALL_PROJECT_TYPES` — a clean
+    switch between full portfolio (software + games + mods with tabs) and
+    software-only mode. Close existing gaps so the flag-off state is coherent:
+    filter UI stays available but scoped to software, all non-software routes
+    return 404, no data leaks through direct URLs.
 
-    - [ ] **1.3.a Review and update `src/config/features.ts`**
-        - Update JSDoc to document the pattern for adding new flags
-        - Add a brief comment block explaining: define flag → import in route/component
-          → conditionally render
-        - Consider whether an `isFeatureEnabled()` helper adds value over direct
-          property access (lean toward YAGNI — direct access is already simple)
+    - [x] **1.3.a Rename flag + update JSDoc in `features.ts`**
+        - Renamed `SHOW_PROJECT_TABS` → `SHOW_ALL_PROJECT_TYPES` in `features.ts`
+        - Updated JSDoc to describe semantic (controls non-software project
+          visibility across tabs, routes, and filter data)
+        - Added pattern comment block (define flag → import → guard)
+        - Updated all existing import sites (`projects/page.tsx`,
+          `mods/[slug]/page.tsx`); games route has no import yet (added in 1.3.c)
 
-    - [ ] **1.3.b Verify `SHOW_PROJECT_TABS` usage is clean**
-        - Confirm flag usage in `projects/page.tsx` and `projects/mods/[slug]/page.tsx`
-          follows the documented pattern
-        - No changes expected — just verification
+    - [x] **1.3.b Decouple filter UI from tabs + gate data source by flag**
+        - Extracted filter UI (SkillFilterControl, FilterIndicator) from the
+          flag-gated block — filter button always visible, filter indicator
+          shows when filtering regardless of flag
+        - Renamed `allProjectsAndMods` → `filterableProjects`, gated by flag:
+          all types when true, software-only when false
+        - Tabs (`ProjectTabs`, `Crossfade`) remain gated by flag
+        - `hideDivider` stays tied to flag (tabs replace divider; filter button
+          alone doesn't); `withTabAttributes` unchanged (already correct)
+
+    - [x] **1.3.c Add flag guard to `games/[slug]/page.tsx`**
+        - Added `FEATURES` import and `notFound()` route guard (matches mods pattern)
+        - Added `generateStaticParams` guard (returns `[]` when flag off)
+
+    - [x] **1.3.d Verify flag-off coherence**
+        - Set flag to `false`, verified:
+            - Projects page: 200 (loads correctly)
+            - Software detail route: 200 (`/projects/software/cinexplorer`)
+            - Games detail route: 404 (`/projects/games/action-rpg-project`)
+            - Mods detail route: 404 (`/projects/mods/lies-of-p-hardcore-mode`)
+            - Type-check and full build pass with flag off
+        - Restored flag to `true`, all routes return 200
+
+    - [x] **1.3.e Run quality gates (type-check, lint, related tests)**
+        - Type-check: pass
+        - Lint: pass (all files)
+        - Format: pass
+        - Unit tests: 1384/1384 pass (81 test files)
+        - Build: pass (verified with flag both on and off)
 
 - [ ] **1.4 Extract surface-tuning sandbox to `/dev/surface`**
 

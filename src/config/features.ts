@@ -1,14 +1,20 @@
 /**
  * Feature flags for toggling functionality.
  *
- * These flags allow non-destructive enabling/disabling of features
- * without removing code. Useful for A/B testing or deferring features.
+ * Pattern for adding a new flag:
+ * 1. Define the flag here with a descriptive name and JSDoc
+ * 2. Import `FEATURES` in the consuming route/component
+ * 3. Use `FEATURES.YOUR_FLAG` to conditionally render UI or guard routes
  */
 export const FEATURES = {
   /**
-   * Show the project category tabs (Software, Games, Mods) on the /projects page.
-   * When false, only software projects are displayed (no tab UI).
-   * Tab routes and data remain intact for future re-enablement.
+   * Controls visibility of non-software projects (games, mods) across the site.
+   *
+   * When `true`: full portfolio with category tabs, all project routes, and
+   * cross-type skill filtering.
+   *
+   * When `false`: software-only mode — tabs hidden, filter scoped to software
+   * projects, game/mod detail routes return 404.
    */
-  SHOW_PROJECT_TABS: true,
+  SHOW_ALL_PROJECT_TYPES: true,
 } as const;

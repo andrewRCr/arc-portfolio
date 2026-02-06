@@ -5,6 +5,7 @@ import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
+import { FEATURES } from "@/config/features";
 import { getHeroImage } from "@/lib/project-utils";
 
 interface GamePageProps {
@@ -21,12 +22,19 @@ interface GamePageProps {
 const gameProjects = projects.filter((p) => p.projectType === "game");
 
 export async function generateStaticParams() {
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
+    return [];
+  }
   return gameProjects.map((project) => ({
     slug: project.slug,
   }));
 }
 
 export default async function GameProjectPage({ params, searchParams }: GamePageProps) {
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
+    notFound();
+  }
+
   const { slug } = await params;
   const { tab, from } = await searchParams;
 
