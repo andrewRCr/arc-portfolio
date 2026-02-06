@@ -74,11 +74,7 @@ export function ModStatsBadge({ value, type, className, showRaw = false }: ModSt
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Badge
-          variant="secondary"
-          className={cn("gap-1.5 border border-border bg-surface-muted text-foreground", className)}
-          aria-label={config.ariaLabel(value)}
-        >
+        <Badge variant="secondary" className={cn("gap-1.5", className)} aria-label={config.ariaLabel(value)}>
           <Icon className="size-3" aria-hidden="true" />
           <span>{displayValue}</span>
         </Badge>
@@ -124,11 +120,7 @@ function ModStatsCompact({ downloads, uniqueDownloads, endorsements, className }
   const ariaLabel = stats.map((s) => s.label).join(", ");
 
   return (
-    <Badge
-      variant="secondary"
-      className={cn("gap-2.5 border border-border bg-surface-muted text-foreground", className)}
-      aria-label={ariaLabel}
-    >
+    <Badge variant="secondary" className={cn("gap-2.5", className)} aria-label={ariaLabel}>
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         return (
