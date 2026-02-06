@@ -13,6 +13,7 @@
  * @see DetailHeaderDesktop - Desktop overlay layout with crossfade
  */
 
+import { Suspense } from "react";
 import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 import { DetailBannerMobile } from "./DetailBannerMobile";
 import { DetailHeaderDesktop } from "./DetailHeaderDesktop";
@@ -23,18 +24,20 @@ export type { DetailHeaderStats, DetailHeaderProps } from "./detail-header.types
 
 export function DetailHeader(props: DetailHeaderProps) {
   return (
-    <ResponsiveSwitch
-      mobile={
-        <DetailBannerMobile
-          categories={props.categories}
-          heroImage={props.heroImage}
-          links={props.links}
-          stats={props.stats}
-          metadata={props.metadata}
-          status={props.status}
-        />
-      }
-      desktop={<DetailHeaderDesktop {...props} />}
-    />
+    <Suspense>
+      <ResponsiveSwitch
+        mobile={
+          <DetailBannerMobile
+            categories={props.categories}
+            heroImage={props.heroImage}
+            links={props.links}
+            stats={props.stats}
+            metadata={props.metadata}
+            status={props.status}
+          />
+        }
+        desktop={<DetailHeaderDesktop {...props} />}
+      />
+    </Suspense>
   );
 }

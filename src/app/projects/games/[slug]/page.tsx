@@ -3,7 +3,6 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
-import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
 import { FEATURES } from "@/config/features";
 import { getHeroImage } from "@/lib/project-utils";
@@ -11,10 +10,6 @@ import { getHeroImage } from "@/lib/project-utils";
 interface GamePageProps {
   params: Promise<{
     slug: string;
-  }>;
-  searchParams: Promise<{
-    tab?: string;
-    from?: string;
   }>;
 }
 
@@ -30,13 +25,12 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function GameProjectPage({ params, searchParams }: GamePageProps) {
+export default async function GameProjectPage({ params }: GamePageProps) {
   if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
     notFound();
   }
 
   const { slug } = await params;
-  const { tab, from } = await searchParams;
 
   // Only find in game projects
   const project = gameProjects.find((p) => p.slug === slug);
@@ -44,13 +38,6 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
   if (!project) {
     notFound();
   }
-
-  // Preserve tab state from query param, default to 'games' for game pages
-  const validTabs = ["software", "games", "mods"] as const;
-  const currentTab = validTabs.includes(tab as (typeof validTabs)[number])
-    ? (tab as (typeof validTabs)[number])
-    : "games";
-  const backDest = getBackDestination(from, currentTab);
 
   const heroImage = getHeroImage(project.images);
 
@@ -62,8 +49,7 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
         <DetailHeaderCompact
           title={project.title}
           compactTitle={project.compactTitle}
-          backHref={backDest.href}
-          backLabel={backDest.label}
+          defaultTab="games"
           links={project.links}
         />
       }
@@ -73,8 +59,7 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
         status={project.status}
         categories={project.category}
         heroImage={heroImage}
-        backHref={backDest.href}
-        backLabel={backDest.label}
+        defaultTab="games"
         links={project.links}
         metadata={{
           teamRole: project.teamRole,

@@ -4,7 +4,6 @@ import { DetailHeader } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { DetailCard } from "@/components/projects/DetailCard";
-import { getBackDestination } from "@/components/projects/utils";
 import { TextLink } from "@/components/common/TextLink";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
@@ -15,10 +14,6 @@ import { getHeroImage } from "@/lib/project-utils";
 interface ModPageProps {
   params: Promise<{
     slug: string;
-  }>;
-  searchParams: Promise<{
-    tab?: string;
-    from?: string;
   }>;
 }
 
@@ -32,27 +27,19 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ModProjectPage({ params, searchParams }: ModPageProps) {
+export default async function ModProjectPage({ params }: ModPageProps) {
   // Feature flag guard - enforces same access control as UI tab visibility
   if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
     notFound();
   }
 
   const { slug } = await params;
-  const { tab, from } = await searchParams;
 
   const mod = mods.find((m) => m.slug === slug);
 
   if (!mod) {
     notFound();
   }
-
-  // Preserve tab state from query param, default to 'mods' for mod pages
-  const validTabs = ["software", "games", "mods"] as const;
-  const currentTab = validTabs.includes(tab as (typeof validTabs)[number])
-    ? (tab as (typeof validTabs)[number])
-    : "mods";
-  const backDest = getBackDestination(from, currentTab);
 
   const heroImage = getHeroImage(mod.images);
 
@@ -75,23 +62,14 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
     <PageLayout
       stickyHeader
       pageId="project-detail"
-      header={
-        <DetailHeaderCompact
-          title={fullTitle}
-          compactTitle={mod.title}
-          backHref={backDest.href}
-          backLabel={backDest.label}
-          links={mod.links}
-        />
-      }
+      header={<DetailHeaderCompact title={fullTitle} compactTitle={mod.title} defaultTab="mods" links={mod.links} />}
     >
       <DetailHeader
         title={mod.title}
         status={mod.status}
         categories={mod.game ? [mod.game] : mod.category}
         heroImage={heroImage}
-        backHref={backDest.href}
-        backLabel={backDest.label}
+        defaultTab="mods"
         links={mod.links}
         stats={stats}
       />

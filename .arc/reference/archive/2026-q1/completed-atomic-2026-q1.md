@@ -4,6 +4,25 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Fix SSG/dynamic conflict in project detail routes**
+    - **Outcome:** Games/mods detail routes returned 500 in production — `searchParams` (dynamic
+      server API) conflicted with `generateStaticParams` (SSG) in Next.js 16. Created
+      `useBackDestination` client-side hook to read `tab`/`from` search params, removing all
+      `searchParams` access from server page components. Pages now pass `defaultTab` prop instead
+      of pre-computed `backHref`/`backLabel`. Wrapped `ResponsiveSwitch` in `<Suspense>` in both
+      `DetailHeader` and `DetailHeaderCompact` to prevent SSG de-optimization.
+    - **Files:** Created `src/hooks/useBackDestination.ts`, `src/hooks/__tests__/useBackDestination.test.ts`.
+      Modified `detail-header.types.ts`, `DetailHeader.tsx`, `DetailHeaderDesktop.tsx`,
+      `DetailHeaderCompact.tsx`, `software/[slug]/page.tsx`, `games/[slug]/page.tsx`,
+      `mods/[slug]/page.tsx`, `DetailHeader.test.tsx`, `DetailHeaderCompact.test.tsx`
+    - **Verification:** All three detail routes return 200 in production (was 500 for games/mods).
+      1390 unit tests pass (+6 new hook tests).
+    - **Note:** Build output shows all routes as `ƒ (Dynamic)` — this is expected Next.js 16
+      Turbopack behavior. `generateStaticParams` runs at build time but output goes to in-memory
+      Full Route Cache, not disk. Vercel deployment handles edge caching transparently.
+
+    - **Branch:** `feature/launch-preparation`
+
 - [x] **Smooth light/dark mode transition**
     - **Outcome:** Implemented smooth CSS transitions for light/dark mode toggle. Initially tried View
       Transitions API but encountered compositing issues with semi-transparent window containers and

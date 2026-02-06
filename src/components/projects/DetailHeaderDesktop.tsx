@@ -12,6 +12,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
+import { useBackDestination } from "@/hooks/useBackDestination";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import { InDevelopmentBadge } from "./InDevelopmentBadge";
 import { ModStatsGroup } from "./ModStatsBadge";
@@ -22,12 +23,16 @@ export function DetailHeaderDesktop({
   status,
   categories,
   heroImage,
-  backHref,
-  backLabel,
+  backHref: backHrefProp,
+  backLabel: backLabelProp,
+  defaultTab,
   links,
   stats,
   metadata,
 }: DetailHeaderProps) {
+  const dest = useBackDestination(defaultTab ?? "software");
+  const backHref = backHrefProp ?? dest.href;
+  const backLabel = backLabelProp ?? dest.label;
   const isInDevelopment = status === "in-development";
   const hasCategories = categories && categories.length > 0;
   const hasStats =

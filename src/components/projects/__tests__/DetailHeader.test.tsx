@@ -10,9 +10,12 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
 import { checkA11y } from "@tests/test-utils";
 import { DetailHeader } from "../DetailHeader";
+
+vi.mock("next/navigation", () => createNavigationMock());
 
 const defaultProps = {
   title: "Test Project",
@@ -21,6 +24,10 @@ const defaultProps = {
 };
 
 describe("DetailHeader - Behavior Tests", () => {
+  beforeEach(() => {
+    mockNavigation.reset();
+  });
+
   describe("Title Rendering", () => {
     it("renders title as heading element", () => {
       render(<DetailHeader {...defaultProps} />);

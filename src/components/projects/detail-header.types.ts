@@ -37,10 +37,12 @@ export interface DetailHeaderProps {
   categories?: string[];
   /** Path to hero background image (falls back to bg-card if not provided) */
   heroImage?: string;
-  /** Back button destination URL */
-  backHref: string;
-  /** Back button label text (e.g., "Projects", "Home") */
-  backLabel: string;
+  /** Back button destination URL (resolved by useBackDestination if omitted) */
+  backHref?: string;
+  /** Back button label text (resolved by useBackDestination if omitted) */
+  backLabel?: string;
+  /** Default tab for back navigation — used by useBackDestination hook */
+  defaultTab?: "software" | "games" | "mods";
   /** External project links (GitHub, demo, etc.) */
   links?: ProjectLinks;
   /** NexusMods stats (optional, for mods) */

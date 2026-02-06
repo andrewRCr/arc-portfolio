@@ -4,7 +4,6 @@ import { DetailHeader, type DetailHeaderStats } from "@/components/projects/Deta
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { PhotoCredits } from "@/components/projects/PhotoCredits";
-import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
 import { isModStatsError } from "@/lib/nexusmods-types";
@@ -13,10 +12,6 @@ import { getHeroImage } from "@/lib/project-utils";
 interface ProjectPageProps {
   params: Promise<{
     slug: string;
-  }>;
-  searchParams: Promise<{
-    tab?: string;
-    from?: string;
   }>;
 }
 
@@ -29,9 +24,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function SoftwareProjectPage({ params, searchParams }: ProjectPageProps) {
+export default async function SoftwareProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const { tab, from } = await searchParams;
 
   // Only find in software (non-game) projects
   const project = softwareProjects.find((p) => p.slug === slug);
@@ -39,13 +33,6 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
   if (!project) {
     notFound();
   }
-
-  // Preserve tab state from query param, default to 'software'
-  const validTabs = ["software", "games", "mods"] as const;
-  const currentTab = validTabs.includes(tab as (typeof validTabs)[number])
-    ? (tab as (typeof validTabs)[number])
-    : "software";
-  const backDest = getBackDestination(from, currentTab);
 
   const heroImage = getHeroImage(project.images);
 
@@ -70,8 +57,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
         <DetailHeaderCompact
           title={project.title}
           compactTitle={project.compactTitle}
-          backHref={backDest.href}
-          backLabel={backDest.label}
+          defaultTab="software"
           links={project.links}
         />
       }
@@ -81,8 +67,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
         status={project.status}
         categories={project.category}
         heroImage={heroImage}
-        backHref={backDest.href}
-        backLabel={backDest.label}
+        defaultTab="software"
         links={project.links}
         stats={stats}
         metadata={{
