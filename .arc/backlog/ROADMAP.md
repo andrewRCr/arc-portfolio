@@ -3,7 +3,7 @@
 **Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
 Subject to change as we learn.
 
-**Last Updated:** 2026-01-27
+**Last Updated:** 2026-02-06
 
 ---
 
@@ -22,7 +22,7 @@ Establish content baseline and design system infrastructure before visual design
    - 3 theme families (Gruvbox, Rose Pine, Remedy) with WCAG AA compliance
    - [Archive](../.arc/reference/archive/2025-q4/technical/04_design-system-foundation/)
 
-### Phase B: Visual Design System (Current)
+### Phase B: Visual Design System ✅
 
 Transform placeholder styling into distinctive, polished design.
 
@@ -50,13 +50,10 @@ Transform placeholder styling into distinctive, polished design.
    - 1239 unit tests, 304 E2E tests
    - [Archive](../reference/archive/2026-q1/feature/05_twm-startup-animation/)
 
-8. 🔄 **Visual Polish** ← Active
-   - Task list: `.arc/active/feature/tasks-visual-polish.md`
-   - Branch: `feature/visual-polish`
-   - Rationale: Remaining animation/transition work after startup animation
-   - Scope: Page transitions, tab animations, micro-interactions, technical fixes,
-     project hero images, terminal vs standard aesthetic standardization (exploratory)
-   - Dependencies: TWM Startup Animation
+8. ✅ **Visual Polish** (2026-02-05)
+   - Page transitions, tab animations, micro-interactions, theme consolidation, AnimationContext
+   - 1366 unit tests, 341 E2E tests
+   - [Archive](../reference/archive/2026-q1/feature/06_visual-polish/)
 
 ### Phase C: Launch
 

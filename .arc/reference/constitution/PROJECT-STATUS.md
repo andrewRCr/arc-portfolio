@@ -19,18 +19,15 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ TWM Startup Animation (feature) - 2026-01-26
-    - Terminal boot sequence with CommandWindow → TopBar morph
-    - Cookie-based animation state, skip on click/keypress, reduced-motion support
-    - SVG stroke-dasharray frame border animation
-    - 1239 unit tests, 304 E2E tests
-    - [Archive](../archive/2026-q1/feature/05_twm-startup-animation/)
+- ✅ Visual Polish (feature) - 2026-02-05
+    - Page transitions, tab animations, hover micro-interactions, project status system
+    - 3-slot typography, theme consolidation, AnimationContext, hover color architecture
+    - 1366 unit tests, 341 E2E tests
+    - [Archive](../archive/2026-q1/feature/06_visual-polish/)
 
 **Currently Active:**
 
-- Visual Polish (feature) - Page transitions, micro-interactions, technical fixes, hero images
-    - Task list: `.arc/active/feature/tasks-visual-polish.md`
-    - Branch: `feature/visual-polish`
+- (none)
 
 **Next Priority:**
 
@@ -40,14 +37,14 @@ contemporary web development practices.
 
 ## Roadmap
 
-### Phase B: Visual Design System (Current)
+### Phase B: Visual Design System ✅
 
 - ✅ TWM Layout System - Three-window layout, wallpaper system, responsive adaptation
 - ✅ Theme & Wallpaper Control System - Unified controls, cookie-first SSR, 6 themes, 36 wallpapers
 - ✅ Content Polish P1 - Project showcase, DetailHeader, image gallery, 3-tab Projects, NexusMods API
 - ✅ Content Polish P2 - SkillLogoGrid, skill filtering, Contact form, About polish
 - ✅ TWM Startup Animation - Terminal boot sequence on first home visit
-- 🔄 **Visual Polish** (active) - Page transitions, micro-interactions, technical fixes, hero images
+- ✅ **Visual Polish** (2026-02-05) - Page transitions, tab animations, micro-interactions, theme consolidation
 
 ### Phase C: Launch
 
@@ -155,6 +152,18 @@ contemporary web development practices.
 - **TopBar replay**: Hover hint reveals "click to replay", click clears cookie and replays
 - **Test stability**: HydrationSignal/IntroStateSignal components for deterministic E2E testing
 - **Test coverage**: 1239 unit tests, 304 E2E tests
+
+### ✅ Visual Polish
+
+- **Page transitions**: Entry-only fade with header/body choreography (slide + blur + delayed body fade)
+- **Tab animations**: Indicator slide between tabs with content crossfade
+- **Micro-interactions**: Project card hover, nav link hover, layout mode transitions, scroll-to-top
+- **Project status system**: In-development visual treatment (grayscale + badge) for cards and featured section
+- **3-slot typography**: `font-title`, `font-terminal`, `font-body` with semantic CSS variables
+- **Theme consolidation**: Opacity/surface config centralized in theme definitions, surface-aware contrast testing
+- **AnimationContext**: Centralized animation state machine (intro/refresh/route modes)
+- **Hover color architecture**: Primary-to-secondary color shift tuned per-theme for contrast compliance
+- **Test coverage**: 1366 unit tests, 341 E2E tests
 
 ---
 
