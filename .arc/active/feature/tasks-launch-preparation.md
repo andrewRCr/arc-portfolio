@@ -50,36 +50,37 @@ dual-domain configuration.
 
 ### **Phase 1:** Infrastructure & Dev Tooling
 
-- [ ] **1.1 Gate dev pages from production**
+- [x] **1.1 Gate dev pages from production**
 
     **Goal:** Prevent `/dev/*` routes from being accessible in production builds.
 
-    - [ ] **1.1.a Create `src/app/dev/layout.tsx` with `NODE_ENV` guard**
-        - Check `process.env.NODE_ENV === "production"` → call `notFound()`
-        - Wrap children in fragment (layout only gates access, no extra markup)
-        - Follows existing pattern in `src/app/api/dev/wallpapers/route.ts`
+    - [x] **1.1.a Create `src/app/dev/layout.tsx` with `NODE_ENV` guard**
+        - Created layout with `notFound()` call when `NODE_ENV === "production"`
+        - Wraps children in fragment (no extra markup)
 
-    - [ ] **1.1.b Verify dev pages still accessible in development**
-        - Navigate to `/dev/sandbox`, `/dev/theme-debug`, `/dev/typography`,
-          `/dev/wallpaper-test` — all should render normally
+    - [x] **1.1.b Verify dev pages still accessible in development**
+        - All four dev pages return HTTP 200: `/dev/sandbox`, `/dev/theme-debug`,
+          `/dev/typography`, `/dev/wallpaper-test`
 
-- [ ] **1.2 Add in-development badge to project detail pages**
+- [x] **1.2 Add in-development badge to project detail pages**
 
-    **Goal:** Match the existing badge treatment on `ProjectCard` and `FeaturedSection`
-    for consistency when viewing in-development project details.
+    **Goal:** Consistent in-development badge across all project views.
 
-    - [ ] **1.2.a Write test for in-development badge on `DetailHeader`**
-        - Test: Badge renders when project `status === "in-development"`
-        - Test: Badge does not render when project `status === "released"` or undefined
-        - Expect tests to FAIL initially
+    - [x] **1.2.a Write test for in-development badge on `DetailHeader`**
+        - 3 tests added: renders when `status === "in-development"`, hidden when
+          `status === "released"`, hidden when undefined
 
-    - [ ] **1.2.b Implement badge in `DetailHeader` component**
-        - Add conditional badge element matching `ProjectCard` pattern
-        - Position contextually within the header layout (near title area)
-        - Use `data-testid="in-development-badge"` for consistency
-        - Tests should now PASS
+    - [x] **1.2.b Extract shared `InDevelopmentBadge` component + implement in `DetailHeader`**
+        - Created `src/components/projects/InDevelopmentBadge.tsx` with `compact` prop
+          (default: "In Development" full-size; compact: "In Dev" smaller)
+        - Added `status` to `DetailHeaderProps`, threaded through Desktop + Mobile
+        - Badge overlaid on hero image (bottom-right), matching `ProjectCard` pattern
+        - Refactored `ProjectCard` and `FeaturedSection` to use shared component
+        - All 3 detail pages (`software`, `games`, `mods`) pass `status` prop
+        - 4 unit tests for badge component, 3 new tests for DetailHeader integration
 
-    - [ ] **1.2.c Run quality gates (type-check, lint, related tests)**
+    - [x] **1.2.c Run quality gates (type-check, lint, related tests)**
+        - Type-check, lint, 27 tests pass (4 badge + 23 DetailHeader)
 
 - [ ] **1.3 Clean up feature flag system for future extensibility**
 
