@@ -1,10 +1,10 @@
 # Task List: Launch Preparation
 
-**PRD:** `.arc/backlog/feature/prd-launch-preparation.md`
+**PRD:** `.arc/active/feature/prd-launch-preparation.md`
 **Created:** 2026-02-06
 **Branch:** `feature/launch-preparation`
 **Base Branch:** `main`
-**Status:** Pending
+**Status:** In Progress
 
 ## Overview
 

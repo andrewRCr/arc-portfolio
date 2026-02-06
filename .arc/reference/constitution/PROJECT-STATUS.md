@@ -27,11 +27,13 @@ contemporary web development practices.
 
 **Currently Active:**
 
-- (none)
+- Launch Preparation (feature) - Dev infrastructure, content polish, SEO, deployment
+    - Task list: `.arc/active/feature/tasks-launch-preparation.md`
+    - Branch: `feature/launch-preparation`
 
 **Next Priority:**
 
-- Feature Flag System (Phase C) - Unified infrastructure for dev-only content, incomplete projects
+- (deployment completes v1.0)
 
 ---
 

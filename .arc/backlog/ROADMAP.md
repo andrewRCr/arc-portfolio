@@ -59,9 +59,9 @@ Transform placeholder styling into distinctive, polished design.
 
 Production readiness and deployment.
 
-9. **Launch Preparation** ← Next
-   - Consolidates originally planned items 9-11 (Feature Flags, SEO, Deployment)
-   - PRD: `.arc/backlog/feature/prd-launch-preparation.md`
+9. 🔄 **Launch Preparation** ← Active
+   - Task list: `.arc/active/feature/tasks-launch-preparation.md`
+   - Branch: `feature/launch-preparation`
    - Scope: Dev infrastructure, content copy pass, custom error pages, SEO & metadata,
      Vercel deployment with multi-domain (`andrewcreekmore.dev` primary)
 
