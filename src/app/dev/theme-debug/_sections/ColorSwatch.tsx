@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
  */
 export function ColorSwatch({ label, className }: { label: string; className?: string }) {
   return (
-    <div className={cn("flex h-24 items-center justify-center rounded-lg", className)}>
-      <span className="font-medium">{label}</span>
+    <div className={cn("flex h-16 items-center justify-center rounded-lg", className)}>
+      <span className="font-body font-medium">{label}</span>
     </div>
   );
 }

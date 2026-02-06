@@ -23,11 +23,11 @@ export function CSSVariablesSection({ variables, open, onOpenChange }: CSSVariab
         <CardHeader className="pb-0">
           <CollapsibleTrigger asChild>
             <Button variant="ghost" className="w-full justify-between p-0 hover:bg-transparent">
-              <CardTitle className="text-2xl">CSS Variables</CardTitle>
+              <CardTitle className="font-title text-2xl">CSS Variables</CardTitle>
               <ChevronDown className={`h-5 w-5 transition-transform ${open ? "rotate-180" : ""}`} />
             </Button>
           </CollapsibleTrigger>
-          <p className="text-sm text-muted-foreground">Actual values from DOM (computed styles)</p>
+          <p className="font-body text-sm text-muted-foreground">Actual values from DOM (computed styles)</p>
         </CardHeader>
         <CollapsibleContent>
           <CardContent>

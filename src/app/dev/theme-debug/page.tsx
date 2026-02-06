@@ -9,6 +9,9 @@ import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import {
   CSSVariablesSection,
   ColorPaletteSection,
+  SurfaceTokensSection,
+  OpacityVariantsSection,
+  ShadowElevationSection,
   ButtonsSection,
   FormControlsSection,
   FeedbackSection,
@@ -19,8 +22,14 @@ import {
 
 /** CSS color variables to display in debug view */
 const COLOR_VARS = [
+  // Base
   "--background",
   "--foreground",
+  "--card",
+  "--card-foreground",
+  "--popover",
+  "--popover-foreground",
+  // Semantic
   "--primary",
   "--primary-foreground",
   "--secondary",
@@ -29,25 +38,46 @@ const COLOR_VARS = [
   "--muted-foreground",
   "--accent",
   "--accent-foreground",
+  "--destructive",
+  "--destructive-foreground",
+  // Decorative accents
   "--accent-red",
   "--accent-orange",
   "--accent-green",
   "--accent-blue",
   "--accent-purple",
-  "--destructive",
-  "--destructive-foreground",
+  // UI elements
   "--border",
+  "--border-strong",
   "--input",
   "--ring",
-  "--card",
-  "--card-foreground",
-  "--popover",
-  "--popover-foreground",
+  // Opacity config
+  "--accent-high-opacity",
+  "--accent-mid-opacity",
+  "--accent-low-opacity",
+  "--secondary-high-opacity",
+  "--secondary-mid-opacity",
+  "--secondary-low-opacity",
+  // Surface config
+  "--surface-opacity",
+  "--surface-darken",
+  "--surface-card-base",
+  "--surface-background-base",
+  "--surface-border-color",
+  "--surface-shadow",
+  // Hover config
+  "--primary-hover-value",
+  "--primary-hover-foreground-value",
+  "--accent-mid-hover-value",
+  "--accent-mid-hover-foreground-value",
 ] as const;
 
 /** Jump links for in-page navigation */
 const JUMP_LINKS = [
   { id: "color-palette", label: "Colors" },
+  { id: "surface-tokens", label: "Surfaces" },
+  { id: "opacity-variants", label: "Opacity" },
+  { id: "shadow-elevation", label: "Shadows" },
   { id: "css-variables", label: "Variables" },
   { id: "buttons", label: "Buttons" },
   { id: "form-controls", label: "Forms" },
@@ -62,6 +92,7 @@ const JUMP_LINKS = [
  *
  * Development-only page for visual testing of the theme system.
  * Consolidates CSS variable inspection, color swatches, and component demos.
+ * Sections are ordered: tokens first, then component patterns.
  *
  * Route: /dev/theme-debug (only accessible in development - enforced by dev layout)
  */
@@ -100,8 +131,14 @@ export default function ThemeDebugPage() {
   return (
     <PageLayout header={<DevPageHeader title="Theme Debug" jumpLinks={JUMP_LINKS} showEnvPreview />}>
       <div className="space-y-8">
+        {/* Token Sections */}
         <ColorPaletteSection />
+        <SurfaceTokensSection />
+        <OpacityVariantsSection />
+        <ShadowElevationSection />
         <CSSVariablesSection variables={variables} open={cssOpen} onOpenChange={setCssOpen} />
+
+        {/* Component Pattern Sections */}
         <ButtonsSection />
         <FormControlsSection />
         <FeedbackSection />

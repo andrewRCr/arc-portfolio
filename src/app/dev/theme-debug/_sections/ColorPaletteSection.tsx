@@ -13,26 +13,27 @@ export function ColorPaletteSection() {
   return (
     <Card id="color-palette">
       <CardHeader>
-        <CardTitle className="text-2xl">Color Palette</CardTitle>
+        <CardTitle className="font-title text-2xl">Color Palette</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Base Colors */}
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-muted-foreground">Base Colors</h3>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Base Colors</h3>
+          <div className="flex flex-wrap justify-center gap-4 md:[&>*]:w-[calc(50%-0.5rem)] lg:[&>*]:w-[calc(33.333%-0.667rem)]">
             <ColorSwatch label="Background" className="bg-background text-foreground" />
             <ColorSwatch label="Foreground" className="bg-foreground text-background" />
             <ColorSwatch label="Card" className="bg-card text-card-foreground" />
             <ColorSwatch label="Popover" className="bg-popover text-popover-foreground" />
             <ColorSwatch label="Border" className="border-4 border-border bg-background" />
+            <ColorSwatch label="Border Strong" className="border-4 border-border-strong bg-background" />
             <ColorSwatch label="Input" className="border-4 border-input bg-background" />
           </div>
         </div>
 
         {/* Semantic Colors */}
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-muted-foreground">Semantic Colors</h3>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Semantic Colors</h3>
+          <div className="flex flex-wrap justify-center gap-4 md:[&>*]:w-[calc(50%-0.5rem)] lg:[&>*]:w-[calc(33.333%-0.667rem)]">
             <ColorSwatch label="Primary" className="bg-primary text-primary-foreground" />
             <ColorSwatch label="Secondary" className="bg-secondary text-secondary-foreground" />
             <ColorSwatch label="Muted" className="bg-muted text-muted-foreground" />
@@ -44,11 +45,11 @@ export function ColorPaletteSection() {
 
         {/* Decorative Accent Colors */}
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-muted-foreground">Decorative Accents</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Decorative Accents</h3>
+          <p className="font-body text-sm text-muted-foreground">
             For borders, text color, indicators - not for backgrounds with text
           </p>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-wrap justify-center gap-4 md:[&>*]:w-[calc(50%-0.5rem)] lg:[&>*]:w-[calc(33.333%-0.667rem)]">
             <ColorSwatch label="accent-red" className="border-4 border-accent-red bg-background text-accent-red" />
             <ColorSwatch
               label="accent-orange"

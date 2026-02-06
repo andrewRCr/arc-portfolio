@@ -51,9 +51,9 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      // Find the scrollable container (PageLayout's overflow-auto div)
-      // It's the closest scrollable ancestor of the target element
-      const scrollContainer = element.closest(".overflow-auto");
+      // Find the OverlayScrollbars viewport (the actual scrollable element)
+      // PageLayout uses OverlayScrollbars which takes over scrolling from the host <main>
+      const scrollContainer = element.closest("[data-overlayscrollbars-viewport]");
       if (scrollContainer) {
         // Scroll within the container, not the window
         const containerRect = scrollContainer.getBoundingClientRect();
@@ -68,7 +68,7 @@ export function DevPageHeader({ title, jumpLinks, showEnvPreview = false }: DevP
     <div data-dev-header>
       {/* Top row: Title and optional controls */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-xl font-bold">{title}</h1>
+        <h1 className="text-xl font-title font-bold">{title}</h1>
 
         {/* Environment Preview toggle (only for pages that need it) */}
         {mounted && showEnvPreview && (

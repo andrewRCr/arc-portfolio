@@ -27,13 +27,13 @@ export function OverlaysSection() {
   return (
     <Card id="overlays">
       <CardHeader>
-        <CardTitle className="text-2xl">Overlays</CardTitle>
+        <CardTitle className="font-title text-2xl">Overlays</CardTitle>
       </CardHeader>
       <CardContent>
         <CardContentInset className="space-y-6">
           {/* Tooltips */}
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-muted-foreground">Tooltips</h3>
+            <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Tooltips</h3>
             <TooltipProvider>
               <div className="flex flex-wrap gap-4">
                 <Tooltip>
@@ -58,7 +58,7 @@ export function OverlaysSection() {
 
           {/* Popovers */}
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-muted-foreground">Popovers</h3>
+            <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Popovers</h3>
             <div className="flex flex-wrap gap-4">
               <Popover>
                 <PopoverTrigger asChild>
@@ -78,7 +78,7 @@ export function OverlaysSection() {
 
           {/* Dialogs */}
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-muted-foreground">Dialogs</h3>
+            <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Dialogs</h3>
             <div className="flex flex-wrap gap-4">
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
