@@ -87,6 +87,7 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
     >
       <DetailHeader
         title={mod.title}
+        status={mod.status}
         categories={mod.game ? [mod.game] : mod.category}
         heroImage={heroImage}
         backHref={backDest.href}

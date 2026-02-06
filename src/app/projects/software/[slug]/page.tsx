@@ -78,6 +78,7 @@ export default async function SoftwareProjectPage({ params, searchParams }: Proj
     >
       <DetailHeader
         title={project.title}
+        status={project.status}
         categories={project.category}
         heroImage={heroImage}
         backHref={backDest.href}

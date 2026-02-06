@@ -31,6 +31,8 @@ export interface DetailHeaderMetadata {
 export interface DetailHeaderProps {
   /** Project title displayed as h1 */
   title: string;
+  /** Project development status — shows badge when "in-development" */
+  status?: "released" | "in-development";
   /** Category badges displayed below title */
   categories?: string[];
   /** Path to hero background image (falls back to bg-card if not provided) */

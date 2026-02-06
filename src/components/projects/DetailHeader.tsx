@@ -31,6 +31,7 @@ export function DetailHeader(props: DetailHeaderProps) {
           links={props.links}
           stats={props.stats}
           metadata={props.metadata}
+          status={props.status}
         />
       }
       desktop={<DetailHeaderDesktop {...props} />}

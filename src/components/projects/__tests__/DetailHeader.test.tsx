@@ -194,6 +194,27 @@ describe("DetailHeader - Behavior Tests", () => {
     });
   });
 
+  describe("In-Development Badge", () => {
+    it("renders badge when status is in-development", () => {
+      render(<DetailHeader {...defaultProps} status="in-development" />);
+
+      const badges = screen.getAllByTestId("in-development-badge");
+      expect(badges.length).toBeGreaterThan(0);
+    });
+
+    it("does not render badge when status is released", () => {
+      render(<DetailHeader {...defaultProps} status="released" />);
+
+      expect(screen.queryByTestId("in-development-badge")).not.toBeInTheDocument();
+    });
+
+    it("does not render badge when status is undefined", () => {
+      render(<DetailHeader {...defaultProps} />);
+
+      expect(screen.queryByTestId("in-development-badge")).not.toBeInTheDocument();
+    });
+  });
+
   describe("Accessibility", () => {
     it("has no accessibility violations with all props", async () => {
       const results = await checkA11y(

@@ -13,11 +13,13 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
+import { InDevelopmentBadge } from "./InDevelopmentBadge";
 import { ModStatsGroup } from "./ModStatsBadge";
 import type { DetailHeaderProps } from "./detail-header.types";
 
 export function DetailHeaderDesktop({
   title,
+  status,
   categories,
   heroImage,
   backHref,
@@ -26,6 +28,7 @@ export function DetailHeaderDesktop({
   stats,
   metadata,
 }: DetailHeaderProps) {
+  const isInDevelopment = status === "in-development";
   const hasCategories = categories && categories.length > 0;
   const hasStats =
     stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
@@ -61,6 +64,9 @@ export function DetailHeaderDesktop({
         ) : (
           <div className="absolute inset-0 bg-card" />
         )}
+
+        {/* In Development Badge - overlaid bottom right */}
+        {isInDevelopment && <InDevelopmentBadge className="absolute bottom-4 right-4 z-10" />}
 
         {/* Back button + Title - bottom left, connected blocks */}
         <div className="absolute bottom-0 left-0 z-10 flex p-4">

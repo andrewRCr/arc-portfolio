@@ -8,6 +8,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Project } from "@/types/project";
+import { InDevelopmentBadge } from "@/components/projects/InDevelopmentBadge";
 import { TechStackScroller } from "@/components/ui/TechStackScroller";
 
 interface ProjectCardProps {
@@ -42,15 +43,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
             Project Image
           </div>
         )}
-        {/* In Development Badge */}
-        {isInDevelopment && (
-          <span
-            data-testid="in-development-badge"
-            className="absolute bottom-2 right-2 border border-border bg-background/90 px-2 py-1 font-terminal text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-          >
-            In Development
-          </span>
-        )}
+        {isInDevelopment && <InDevelopmentBadge className="absolute bottom-2 right-2" />}
       </div>
 
       {/* Content - flex-1 fills remaining height */}

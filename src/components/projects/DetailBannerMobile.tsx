@@ -17,6 +17,7 @@ import { useIsPhone } from "@/hooks/useMediaQuery";
 import { ModStatsInline } from "./ModStatsBadge";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import type { ProjectLinks } from "@/types/project";
+import { InDevelopmentBadge } from "./InDevelopmentBadge";
 import type { DetailHeaderStats, DetailHeaderMetadata } from "./detail-header.types";
 
 export interface DetailBannerMobileProps {
@@ -30,10 +31,13 @@ export interface DetailBannerMobileProps {
   stats?: DetailHeaderStats;
   /** Project metadata (team role, timeline) */
   metadata?: DetailHeaderMetadata;
+  /** Project development status — shows badge when "in-development" */
+  status?: "released" | "in-development";
 }
 
-export function DetailBannerMobile({ categories, heroImage, links, stats, metadata }: DetailBannerMobileProps) {
+export function DetailBannerMobile({ categories, heroImage, links, stats, metadata, status }: DetailBannerMobileProps) {
   const isPhone = useIsPhone();
+  const isInDevelopment = status === "in-development";
   const hasCategories = categories && categories.length > 0;
   const hasStats =
     stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
@@ -80,6 +84,8 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
         ) : (
           <div className="absolute inset-0 bg-card" />
         )}
+        {/* In Development Badge - overlaid bottom right */}
+        {isInDevelopment && <InDevelopmentBadge compact className="absolute bottom-2 right-2" />}
       </div>
 
       {/* Category badges row - below hero */}
