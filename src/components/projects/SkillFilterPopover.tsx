@@ -113,7 +113,7 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
   };
 
   return (
-    <Popover open={open} onOpenChange={handleOpenChange} modal={true}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button ref={triggerRef} variant="ghost" size="sm" aria-haspopup="dialog">
           <FilterIcon className="size-4" />
