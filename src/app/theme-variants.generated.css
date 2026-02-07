@@ -1,0 +1,1452 @@
+/* AUTO-GENERATED — DO NOT EDIT MANUALLY
+ * Source: scripts/generate-css-defaults.ts
+ * 6 themes × 2 modes = 12 class variants
+ *
+ * Each variant sets inner CSS variables (--background, --foreground, etc.)
+ * plus resolved --color-* values for Safari transition interpolation.
+ * See the @theme block in globals.css for why both layers exist.
+ */
+
+.remedy.dark {
+  /* Base colors */
+  --background: 53 43 42;
+  --foreground: 245 216 153;
+
+  /* Card colors */
+  --card: 61 50 49;
+  --card-foreground: 245 216 153;
+
+  /* Popover colors */
+  --popover: 61 50 49;
+  --popover-foreground: 245 216 153;
+
+  /* Primary colors */
+  --primary: 236 112 84;
+  --primary-foreground: 53 43 42;
+
+  /* Secondary colors */
+  --secondary: 240 198 116;
+  --secondary-foreground: 53 43 42;
+
+  /* Muted colors */
+  --muted: 61 50 49;
+  --muted-foreground: 171 155 124;
+
+  /* Accent colors */
+  --accent: 138 190 183;
+  --accent-foreground: 53 43 42;
+
+  /* Decorative accents */
+  --accent-red: 204 102 102;
+  --accent-orange: 235 104 75;
+  --accent-green: 181 189 104;
+  --accent-blue: 129 162 190;
+  --accent-purple: 178 148 187;
+
+  /* Destructive colors */
+  --destructive: 212 125 125;
+  --destructive-foreground: 53 43 42;
+
+  /* UI elements */
+  --border: 74 63 61;
+  --border-strong: 110 93 90;
+  --input: 61 50 49;
+  --ring: 235 104 75;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.76;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(53 43 42);
+  --color-foreground: rgb(245 216 153);
+  --color-card: rgb(61 50 49);
+  --color-card-foreground: rgb(245 216 153);
+  --color-popover: rgb(61 50 49);
+  --color-popover-foreground: rgb(245 216 153);
+  --color-primary: rgb(236 112 84);
+  --color-primary-foreground: rgb(53 43 42);
+  --color-secondary: rgb(240 198 116);
+  --color-secondary-foreground: rgb(53 43 42);
+  --color-muted: rgb(61 50 49);
+  --color-muted-foreground: rgb(171 155 124);
+  --color-accent: rgb(138 190 183);
+  --color-accent-foreground: rgb(53 43 42);
+  --color-accent-red: rgb(204 102 102);
+  --color-accent-orange: rgb(235 104 75);
+  --color-accent-green: rgb(181 189 104);
+  --color-accent-blue: rgb(129 162 190);
+  --color-accent-purple: rgb(178 148 187);
+  --color-destructive: rgb(212 125 125);
+  --color-destructive-foreground: rgb(53 43 42);
+  --color-border: rgb(74 63 61);
+  --color-border-strong: rgb(110 93 90);
+  --color-input: rgb(61 50 49);
+  --color-ring: rgb(235 104 75);
+  --color-accent-high: rgb(138 190 183 / 0.8);
+  --color-accent-mid: rgb(138 190 183 / 0.76);
+  --color-accent-low: rgb(138 190 183 / 0.2);
+  --color-secondary-high: rgb(240 198 116 / 0.8);
+  --color-secondary-mid: rgb(240 198 116 / 0.2);
+  --color-secondary-low: rgb(240 198 116 / 0.1);
+  --color-accent-decorative: rgb(236 112 84 / 0.9);
+  --color-accent-high-foreground: rgb(53 43 42);
+  --color-accent-mid-foreground: rgb(53 43 42);
+  --color-accent-low-foreground: rgb(245 216 153);
+  --color-accent-decorative-foreground: rgb(53 43 42);
+}
+
+.remedy.light {
+  /* Base colors */
+  --background: 252 238 209;
+  --foreground: 92 77 46;
+
+  /* Card colors */
+  --card: 247 232 200;
+  --card-foreground: 92 77 46;
+
+  /* Popover colors */
+  --popover: 247 232 200;
+  --popover-foreground: 92 77 46;
+
+  /* Primary colors */
+  --primary: 235 104 75;
+  --primary-foreground: 40 42 46;
+
+  /* Secondary colors */
+  --secondary: 222 147 95;
+  --secondary-foreground: 40 42 46;
+
+  /* Muted colors */
+  --muted: 247 232 200;
+  --muted-foreground: 110 100 80;
+
+  /* Accent colors */
+  --accent: 82 115 112;
+  --accent-foreground: 255 255 255;
+
+  /* Decorative accents */
+  --accent-red: 165 66 66;
+  --accent-orange: 235 104 75;
+  --accent-green: 140 148 64;
+  --accent-blue: 95 129 157;
+  --accent-purple: 133 103 143;
+
+  /* Destructive colors */
+  --destructive: 165 66 66;
+  --destructive-foreground: 252 238 209;
+
+  /* UI elements */
+  --border: 229 217 188;
+  --border-strong: 201 190 170;
+  --input: 247 232 200;
+  --ring: 235 104 75;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(92, 77, 46, 0.08);
+  --shadow-md: 0 2px 8px rgba(92, 77, 46, 0.12);
+  --shadow-lg: 0 4px 16px rgba(92, 77, 46, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(252 238 209);
+  --color-foreground: rgb(92 77 46);
+  --color-card: rgb(247 232 200);
+  --color-card-foreground: rgb(92 77 46);
+  --color-popover: rgb(247 232 200);
+  --color-popover-foreground: rgb(92 77 46);
+  --color-primary: rgb(235 104 75);
+  --color-primary-foreground: rgb(40 42 46);
+  --color-secondary: rgb(222 147 95);
+  --color-secondary-foreground: rgb(40 42 46);
+  --color-muted: rgb(247 232 200);
+  --color-muted-foreground: rgb(110 100 80);
+  --color-accent: rgb(82 115 112);
+  --color-accent-foreground: rgb(255 255 255);
+  --color-accent-red: rgb(165 66 66);
+  --color-accent-orange: rgb(235 104 75);
+  --color-accent-green: rgb(140 148 64);
+  --color-accent-blue: rgb(95 129 157);
+  --color-accent-purple: rgb(133 103 143);
+  --color-destructive: rgb(165 66 66);
+  --color-destructive-foreground: rgb(252 238 209);
+  --color-border: rgb(229 217 188);
+  --color-border-strong: rgb(201 190 170);
+  --color-input: rgb(247 232 200);
+  --color-ring: rgb(235 104 75);
+  --color-accent-high: rgb(82 115 112 / 1);
+  --color-accent-mid: rgb(82 115 112 / 0.9);
+  --color-accent-low: rgb(82 115 112 / 0.8);
+  --color-secondary-high: rgb(222 147 95 / 0.8);
+  --color-secondary-mid: rgb(222 147 95 / 0.4);
+  --color-secondary-low: rgb(222 147 95 / 0.2);
+  --color-accent-decorative: rgb(235 104 75 / 0.9);
+  --color-accent-high-foreground: rgb(252 238 209);
+  --color-accent-mid-foreground: rgb(252 238 209);
+  --color-accent-low-foreground: rgb(252 238 209);
+  --color-accent-decorative-foreground: rgb(40 42 46);
+}
+
+.rose-pine.dark {
+  /* Base colors */
+  --background: 25 23 36;
+  --foreground: 224 222 244;
+
+  /* Card colors */
+  --card: 31 29 46;
+  --card-foreground: 224 222 244;
+
+  /* Popover colors */
+  --popover: 38 35 58;
+  --popover-foreground: 224 222 244;
+
+  /* Primary colors */
+  --primary: 80 137 160;
+  --primary-foreground: 25 23 36;
+
+  /* Secondary colors */
+  --secondary: 156 207 216;
+  --secondary-foreground: 25 23 36;
+
+  /* Muted colors */
+  --muted: 64 61 82;
+  --muted-foreground: 172 169 191;
+
+  /* Accent colors */
+  --accent: 235 188 186;
+  --accent-foreground: 25 23 36;
+
+  /* Decorative accents */
+  --accent-red: 235 111 146;
+  --accent-orange: 246 193 119;
+  --accent-green: 156 207 216;
+  --accent-blue: 49 116 143;
+  --accent-purple: 196 167 231;
+
+  /* Destructive colors */
+  --destructive: 235 111 146;
+  --destructive-foreground: 25 23 36;
+
+  /* UI elements */
+  --border: 64 61 82;
+  --border-strong: 82 79 103;
+  --input: 31 29 46;
+  --ring: 49 116 143;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.6;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--accent-foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+  --accent-decorative: var(--accent-purple);
+  --accent-decorative-foreground: var(--background);
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--accent-decorative, var(--primary)) / 0.8);
+  --primary-hover-foreground-value: var(--accent-decorative-foreground, var(--primary-foreground));
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(25 23 36);
+  --color-foreground: rgb(224 222 244);
+  --color-card: rgb(31 29 46);
+  --color-card-foreground: rgb(224 222 244);
+  --color-popover: rgb(38 35 58);
+  --color-popover-foreground: rgb(224 222 244);
+  --color-primary: rgb(80 137 160);
+  --color-primary-foreground: rgb(25 23 36);
+  --color-secondary: rgb(156 207 216);
+  --color-secondary-foreground: rgb(25 23 36);
+  --color-muted: rgb(64 61 82);
+  --color-muted-foreground: rgb(172 169 191);
+  --color-accent: rgb(235 188 186);
+  --color-accent-foreground: rgb(25 23 36);
+  --color-accent-red: rgb(235 111 146);
+  --color-accent-orange: rgb(246 193 119);
+  --color-accent-green: rgb(156 207 216);
+  --color-accent-blue: rgb(49 116 143);
+  --color-accent-purple: rgb(196 167 231);
+  --color-destructive: rgb(235 111 146);
+  --color-destructive-foreground: rgb(25 23 36);
+  --color-border: rgb(64 61 82);
+  --color-border-strong: rgb(82 79 103);
+  --color-input: rgb(31 29 46);
+  --color-ring: rgb(49 116 143);
+  --color-accent-high: rgb(235 188 186 / 1);
+  --color-accent-mid: rgb(235 188 186 / 0.8);
+  --color-accent-low: rgb(235 188 186 / 0.6);
+  --color-secondary-high: rgb(156 207 216 / 0.8);
+  --color-secondary-mid: rgb(156 207 216 / 0.2);
+  --color-secondary-low: rgb(156 207 216 / 0.1);
+  --color-accent-decorative: rgb(196 167 231 / 1);
+  --color-accent-high-foreground: rgb(25 23 36);
+  --color-accent-mid-foreground: rgb(25 23 36);
+  --color-accent-low-foreground: rgb(25 23 36);
+  --color-accent-decorative-foreground: rgb(25 23 36);
+}
+
+.rose-pine.light {
+  /* Base colors */
+  --background: 250 244 237;
+  --foreground: 87 82 121;
+
+  /* Card colors */
+  --card: 242 233 225;
+  --card-foreground: 87 82 121;
+
+  /* Popover colors */
+  --popover: 242 233 225;
+  --popover-foreground: 87 82 121;
+
+  /* Primary colors */
+  --primary: 40 105 131;
+  --primary-foreground: 250 244 237;
+
+  /* Secondary colors */
+  --secondary: 69 118 127;
+  --secondary-foreground: 250 244 237;
+
+  /* Muted colors */
+  --muted: 223 218 217;
+  --muted-foreground: 85 82 103;
+
+  /* Accent colors */
+  --accent: 151 91 88;
+  --accent-foreground: 250 244 237;
+
+  /* Decorative accents */
+  --accent-red: 180 99 122;
+  --accent-orange: 234 157 52;
+  --accent-green: 86 148 159;
+  --accent-blue: 40 105 131;
+  --accent-purple: 144 122 169;
+
+  /* Destructive colors */
+  --destructive: 162 89 110;
+  --destructive-foreground: 250 244 237;
+
+  /* UI elements */
+  --border: 223 218 217;
+  --border-strong: 206 202 205;
+  --input: 255 250 243;
+  --ring: 40 105 131;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(87, 82, 121, 0.08);
+  --shadow-md: 0 2px 8px rgba(87, 82, 121, 0.12);
+  --shadow-lg: 0 4px 16px rgba(87, 82, 121, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.85;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+  --accent-decorative: var(--accent-purple);
+  --accent-decorative-foreground: var(--background);
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--accent-decorative, var(--primary)));
+  --primary-hover-foreground-value: var(--accent-decorative-foreground, var(--primary-foreground));
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(250 244 237);
+  --color-foreground: rgb(87 82 121);
+  --color-card: rgb(242 233 225);
+  --color-card-foreground: rgb(87 82 121);
+  --color-popover: rgb(242 233 225);
+  --color-popover-foreground: rgb(87 82 121);
+  --color-primary: rgb(40 105 131);
+  --color-primary-foreground: rgb(250 244 237);
+  --color-secondary: rgb(69 118 127);
+  --color-secondary-foreground: rgb(250 244 237);
+  --color-muted: rgb(223 218 217);
+  --color-muted-foreground: rgb(85 82 103);
+  --color-accent: rgb(151 91 88);
+  --color-accent-foreground: rgb(250 244 237);
+  --color-accent-red: rgb(180 99 122);
+  --color-accent-orange: rgb(234 157 52);
+  --color-accent-green: rgb(86 148 159);
+  --color-accent-blue: rgb(40 105 131);
+  --color-accent-purple: rgb(144 122 169);
+  --color-destructive: rgb(162 89 110);
+  --color-destructive-foreground: rgb(250 244 237);
+  --color-border: rgb(223 218 217);
+  --color-border-strong: rgb(206 202 205);
+  --color-input: rgb(255 250 243);
+  --color-ring: rgb(40 105 131);
+  --color-accent-high: rgb(151 91 88 / 1);
+  --color-accent-mid: rgb(151 91 88 / 0.85);
+  --color-accent-low: rgb(151 91 88 / 0.75);
+  --color-secondary-high: rgb(69 118 127 / 0.8);
+  --color-secondary-mid: rgb(69 118 127 / 0.4);
+  --color-secondary-low: rgb(69 118 127 / 0.2);
+  --color-accent-decorative: rgb(144 122 169 / 1);
+  --color-accent-high-foreground: rgb(250 244 237);
+  --color-accent-mid-foreground: rgb(250 244 237);
+  --color-accent-low-foreground: rgb(250 244 237);
+  --color-accent-decorative-foreground: rgb(250 244 237);
+}
+
+.gruvbox.dark {
+  /* Base colors */
+  --background: 40 40 40;
+  --foreground: 235 219 178;
+
+  /* Card colors */
+  --card: 50 48 47;
+  --card-foreground: 235 219 178;
+
+  /* Popover colors */
+  --popover: 50 48 47;
+  --popover-foreground: 235 219 178;
+
+  /* Primary colors */
+  --primary: 184 187 38;
+  --primary-foreground: 40 40 40;
+
+  /* Secondary colors */
+  --secondary: 215 153 33;
+  --secondary-foreground: 40 40 40;
+
+  /* Muted colors */
+  --muted: 60 56 54;
+  --muted-foreground: 189 174 147;
+
+  /* Accent colors */
+  --accent: 142 192 124;
+  --accent-foreground: 40 40 40;
+
+  /* Decorative accents */
+  --accent-red: 251 73 52;
+  --accent-orange: 254 128 25;
+  --accent-green: 184 187 38;
+  --accent-blue: 131 165 152;
+  --accent-purple: 211 134 155;
+
+  /* Destructive colors */
+  --destructive: 251 73 52;
+  --destructive-foreground: 29 32 33;
+
+  /* UI elements */
+  --border: 80 73 69;
+  --border-strong: 102 92 84;
+  --input: 80 73 69;
+  --ring: 184 187 38;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.8;
+  --accent-mid-opacity: 0.74;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(40 40 40);
+  --color-foreground: rgb(235 219 178);
+  --color-card: rgb(50 48 47);
+  --color-card-foreground: rgb(235 219 178);
+  --color-popover: rgb(50 48 47);
+  --color-popover-foreground: rgb(235 219 178);
+  --color-primary: rgb(184 187 38);
+  --color-primary-foreground: rgb(40 40 40);
+  --color-secondary: rgb(215 153 33);
+  --color-secondary-foreground: rgb(40 40 40);
+  --color-muted: rgb(60 56 54);
+  --color-muted-foreground: rgb(189 174 147);
+  --color-accent: rgb(142 192 124);
+  --color-accent-foreground: rgb(40 40 40);
+  --color-accent-red: rgb(251 73 52);
+  --color-accent-orange: rgb(254 128 25);
+  --color-accent-green: rgb(184 187 38);
+  --color-accent-blue: rgb(131 165 152);
+  --color-accent-purple: rgb(211 134 155);
+  --color-destructive: rgb(251 73 52);
+  --color-destructive-foreground: rgb(29 32 33);
+  --color-border: rgb(80 73 69);
+  --color-border-strong: rgb(102 92 84);
+  --color-input: rgb(80 73 69);
+  --color-ring: rgb(184 187 38);
+  --color-accent-high: rgb(142 192 124 / 0.8);
+  --color-accent-mid: rgb(142 192 124 / 0.74);
+  --color-accent-low: rgb(142 192 124 / 0.2);
+  --color-secondary-high: rgb(215 153 33 / 0.8);
+  --color-secondary-mid: rgb(215 153 33 / 0.2);
+  --color-secondary-low: rgb(215 153 33 / 0.1);
+  --color-accent-decorative: rgb(184 187 38 / 1);
+  --color-accent-high-foreground: rgb(40 40 40);
+  --color-accent-mid-foreground: rgb(40 40 40);
+  --color-accent-low-foreground: rgb(235 219 178);
+  --color-accent-decorative-foreground: rgb(40 40 40);
+}
+
+.gruvbox.light {
+  /* Base colors */
+  --background: 251 241 199;
+  --foreground: 60 56 54;
+
+  /* Card colors */
+  --card: 249 245 215;
+  --card-foreground: 60 56 54;
+
+  /* Popover colors */
+  --popover: 249 245 215;
+  --popover-foreground: 60 56 54;
+
+  /* Primary colors */
+  --primary: 115 110 13;
+  --primary-foreground: 251 241 199;
+
+  /* Secondary colors */
+  --secondary: 175 58 3;
+  --secondary-foreground: 251 241 199;
+
+  /* Muted colors */
+  --muted: 235 219 178;
+  --muted-foreground: 102 92 84;
+
+  /* Accent colors */
+  --accent: 78 119 79;
+  --accent-foreground: 255 255 255;
+
+  /* Decorative accents */
+  --accent-red: 157 0 6;
+  --accent-orange: 175 58 3;
+  --accent-green: 121 116 14;
+  --accent-blue: 7 102 120;
+  --accent-purple: 143 63 113;
+
+  /* Destructive colors */
+  --destructive: 157 0 6;
+  --destructive-foreground: 251 241 199;
+
+  /* UI elements */
+  --border: 213 196 161;
+  --border-strong: 189 174 147;
+  --input: 213 196 161;
+  --ring: 121 116 14;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(60, 56, 54, 0.08);
+  --shadow-md: 0 2px 8px rgba(60, 56, 54, 0.12);
+  --shadow-lg: 0 4px 16px rgba(60, 56, 54, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(251 241 199);
+  --color-foreground: rgb(60 56 54);
+  --color-card: rgb(249 245 215);
+  --color-card-foreground: rgb(60 56 54);
+  --color-popover: rgb(249 245 215);
+  --color-popover-foreground: rgb(60 56 54);
+  --color-primary: rgb(115 110 13);
+  --color-primary-foreground: rgb(251 241 199);
+  --color-secondary: rgb(175 58 3);
+  --color-secondary-foreground: rgb(251 241 199);
+  --color-muted: rgb(235 219 178);
+  --color-muted-foreground: rgb(102 92 84);
+  --color-accent: rgb(78 119 79);
+  --color-accent-foreground: rgb(255 255 255);
+  --color-accent-red: rgb(157 0 6);
+  --color-accent-orange: rgb(175 58 3);
+  --color-accent-green: rgb(121 116 14);
+  --color-accent-blue: rgb(7 102 120);
+  --color-accent-purple: rgb(143 63 113);
+  --color-destructive: rgb(157 0 6);
+  --color-destructive-foreground: rgb(251 241 199);
+  --color-border: rgb(213 196 161);
+  --color-border-strong: rgb(189 174 147);
+  --color-input: rgb(213 196 161);
+  --color-ring: rgb(121 116 14);
+  --color-accent-high: rgb(78 119 79 / 1);
+  --color-accent-mid: rgb(78 119 79 / 0.9);
+  --color-accent-low: rgb(78 119 79 / 0.8);
+  --color-secondary-high: rgb(175 58 3 / 0.8);
+  --color-secondary-mid: rgb(175 58 3 / 0.4);
+  --color-secondary-low: rgb(175 58 3 / 0.2);
+  --color-accent-decorative: rgb(115 110 13 / 1);
+  --color-accent-high-foreground: rgb(251 241 199);
+  --color-accent-mid-foreground: rgb(251 241 199);
+  --color-accent-low-foreground: rgb(251 241 199);
+  --color-accent-decorative-foreground: rgb(251 241 199);
+}
+
+.ayu.dark {
+  /* Base colors */
+  --background: 31 36 48;
+  --foreground: 204 202 194;
+
+  /* Card colors */
+  --card: 40 46 59;
+  --card-foreground: 204 202 194;
+
+  /* Popover colors */
+  --popover: 40 46 59;
+  --popover-foreground: 204 202 194;
+
+  /* Primary colors */
+  --primary: 255 204 102;
+  --primary-foreground: 23 27 36;
+
+  /* Secondary colors */
+  --secondary: 82 175 198;
+  --secondary-foreground: 23 27 36;
+
+  /* Muted colors */
+  --muted: 40 46 59;
+  --muted-foreground: 141 149 163;
+
+  /* Accent colors */
+  --accent: 255 173 102;
+  --accent-foreground: 23 27 36;
+
+  /* Decorative accents */
+  --accent-red: 242 135 121;
+  --accent-orange: 255 173 102;
+  --accent-green: 213 255 128;
+  --accent-blue: 115 208 255;
+  --accent-purple: 223 191 255;
+
+  /* Destructive colors */
+  --destructive: 255 102 102;
+  --destructive-foreground: 23 27 36;
+
+  /* UI elements */
+  --border: 69 75 92;
+  --border-strong: 85 91 108;
+  --input: 40 46 59;
+  --ring: 255 204 102;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.9;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.4;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.6;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.8;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: color-mix(in oklch, rgb(var(--foreground)) 90%, white 10%);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(31 36 48);
+  --color-foreground: rgb(204 202 194);
+  --color-card: rgb(40 46 59);
+  --color-card-foreground: rgb(204 202 194);
+  --color-popover: rgb(40 46 59);
+  --color-popover-foreground: rgb(204 202 194);
+  --color-primary: rgb(255 204 102);
+  --color-primary-foreground: rgb(23 27 36);
+  --color-secondary: rgb(82 175 198);
+  --color-secondary-foreground: rgb(23 27 36);
+  --color-muted: rgb(40 46 59);
+  --color-muted-foreground: rgb(141 149 163);
+  --color-accent: rgb(255 173 102);
+  --color-accent-foreground: rgb(23 27 36);
+  --color-accent-red: rgb(242 135 121);
+  --color-accent-orange: rgb(255 173 102);
+  --color-accent-green: rgb(213 255 128);
+  --color-accent-blue: rgb(115 208 255);
+  --color-accent-purple: rgb(223 191 255);
+  --color-destructive: rgb(255 102 102);
+  --color-destructive-foreground: rgb(23 27 36);
+  --color-border: rgb(69 75 92);
+  --color-border-strong: rgb(85 91 108);
+  --color-input: rgb(40 46 59);
+  --color-ring: rgb(255 204 102);
+  --color-accent-high: rgb(255 173 102 / 0.9);
+  --color-accent-mid: rgb(255 173 102 / 0.8);
+  --color-accent-low: rgb(255 173 102 / 0.4);
+  --color-secondary-high: rgb(82 175 198 / 0.6);
+  --color-secondary-mid: rgb(82 175 198 / 0.2);
+  --color-secondary-low: rgb(82 175 198 / 0.1);
+  --color-accent-decorative: rgb(255 204 102 / 0.8);
+  --color-accent-high-foreground: rgb(23 27 36);
+  --color-accent-mid-foreground: rgb(23 27 36);
+  --color-accent-low-foreground: rgb(204 202 194);
+  --color-accent-decorative-foreground: rgb(23 27 36);
+}
+
+.ayu.light {
+  /* Base colors */
+  --background: 252 252 252;
+  --foreground: 92 97 102;
+
+  /* Card colors */
+  --card: 240 241 242;
+  --card-foreground: 92 97 102;
+
+  /* Popover colors */
+  --popover: 240 241 242;
+  --popover-foreground: 92 97 102;
+
+  /* Primary colors */
+  --primary: 242 151 24;
+  --primary-foreground: 23 27 36;
+
+  /* Secondary colors */
+  --secondary: 85 180 212;
+  --secondary-foreground: 23 27 36;
+
+  /* Muted colors */
+  --muted: 248 249 250;
+  --muted-foreground: 95 105 116;
+
+  /* Accent colors */
+  --accent: 203 75 0;
+  --accent-foreground: 255 255 255;
+
+  /* Decorative accents */
+  --accent-red: 240 113 113;
+  --accent-orange: 255 126 51;
+  --accent-green: 134 179 0;
+  --accent-blue: 57 158 230;
+  --accent-purple: 163 122 204;
+
+  /* Destructive colors */
+  --destructive: 196 68 68;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 224 224 224;
+  --border-strong: 208 208 208;
+  --input: 248 249 250;
+  --ring: 242 151 24;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(92, 97, 102, 0.08);
+  --shadow-md: 0 2px 8px rgba(92, 97, 102, 0.12);
+  --shadow-lg: 0 4px 16px rgba(92, 97, 102, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.85;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.6;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.8;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(252 252 252);
+  --color-foreground: rgb(92 97 102);
+  --color-card: rgb(240 241 242);
+  --color-card-foreground: rgb(92 97 102);
+  --color-popover: rgb(240 241 242);
+  --color-popover-foreground: rgb(92 97 102);
+  --color-primary: rgb(242 151 24);
+  --color-primary-foreground: rgb(23 27 36);
+  --color-secondary: rgb(85 180 212);
+  --color-secondary-foreground: rgb(23 27 36);
+  --color-muted: rgb(248 249 250);
+  --color-muted-foreground: rgb(95 105 116);
+  --color-accent: rgb(203 75 0);
+  --color-accent-foreground: rgb(255 255 255);
+  --color-accent-red: rgb(240 113 113);
+  --color-accent-orange: rgb(255 126 51);
+  --color-accent-green: rgb(134 179 0);
+  --color-accent-blue: rgb(57 158 230);
+  --color-accent-purple: rgb(163 122 204);
+  --color-destructive: rgb(196 68 68);
+  --color-destructive-foreground: rgb(255 255 255);
+  --color-border: rgb(224 224 224);
+  --color-border-strong: rgb(208 208 208);
+  --color-input: rgb(248 249 250);
+  --color-ring: rgb(242 151 24);
+  --color-accent-high: rgb(203 75 0 / 1);
+  --color-accent-mid: rgb(203 75 0 / 0.85);
+  --color-accent-low: rgb(203 75 0 / 0.75);
+  --color-secondary-high: rgb(85 180 212 / 0.6);
+  --color-secondary-mid: rgb(85 180 212 / 0.4);
+  --color-secondary-low: rgb(85 180 212 / 0.2);
+  --color-accent-decorative: rgb(242 151 24 / 0.8);
+  --color-accent-high-foreground: rgb(252 252 252);
+  --color-accent-mid-foreground: rgb(252 252 252);
+  --color-accent-low-foreground: rgb(252 252 252);
+  --color-accent-decorative-foreground: rgb(23 27 36);
+}
+
+.rouge.dark {
+  /* Base colors */
+  --background: 23 32 48;
+  --foreground: 187 187 187;
+
+  /* Card colors */
+  --card: 30 42 61;
+  --card-foreground: 187 187 187;
+
+  /* Popover colors */
+  --popover: 41 58 87;
+  --popover-foreground: 187 187 187;
+
+  /* Primary colors */
+  --primary: 198 121 126;
+  --primary-foreground: 23 32 48;
+
+  /* Secondary colors */
+  --secondary: 126 178 201;
+  --secondary-foreground: 23 32 48;
+
+  /* Muted colors */
+  --muted: 30 42 61;
+  --muted-foreground: 167 172 185;
+
+  /* Accent colors */
+  --accent: 234 190 154;
+  --accent-foreground: 23 32 48;
+
+  /* Decorative accents */
+  --accent-red: 198 121 126;
+  --accent-orange: 234 190 154;
+  --accent-green: 163 176 154;
+  --accent-blue: 126 178 201;
+  --accent-purple: 177 139 177;
+
+  /* Destructive colors */
+  --destructive: 184 77 85;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 74 85 104;
+  --border-strong: 117 128 149;
+  --input: 30 42 61;
+  --ring: 198 121 126;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.65;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--accent-foreground);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: color-mix(in oklch, rgb(var(--foreground)) 90%, white 10%);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(23 32 48);
+  --color-foreground: rgb(187 187 187);
+  --color-card: rgb(30 42 61);
+  --color-card-foreground: rgb(187 187 187);
+  --color-popover: rgb(41 58 87);
+  --color-popover-foreground: rgb(187 187 187);
+  --color-primary: rgb(198 121 126);
+  --color-primary-foreground: rgb(23 32 48);
+  --color-secondary: rgb(126 178 201);
+  --color-secondary-foreground: rgb(23 32 48);
+  --color-muted: rgb(30 42 61);
+  --color-muted-foreground: rgb(167 172 185);
+  --color-accent: rgb(234 190 154);
+  --color-accent-foreground: rgb(23 32 48);
+  --color-accent-red: rgb(198 121 126);
+  --color-accent-orange: rgb(234 190 154);
+  --color-accent-green: rgb(163 176 154);
+  --color-accent-blue: rgb(126 178 201);
+  --color-accent-purple: rgb(177 139 177);
+  --color-destructive: rgb(184 77 85);
+  --color-destructive-foreground: rgb(255 255 255);
+  --color-border: rgb(74 85 104);
+  --color-border-strong: rgb(117 128 149);
+  --color-input: rgb(30 42 61);
+  --color-ring: rgb(198 121 126);
+  --color-accent-high: rgb(234 190 154 / 1);
+  --color-accent-mid: rgb(234 190 154 / 0.8);
+  --color-accent-low: rgb(234 190 154 / 0.65);
+  --color-secondary-high: rgb(126 178 201 / 0.8);
+  --color-secondary-mid: rgb(126 178 201 / 0.2);
+  --color-secondary-low: rgb(126 178 201 / 0.1);
+  --color-accent-decorative: rgb(198 121 126 / 1);
+  --color-accent-high-foreground: rgb(23 32 48);
+  --color-accent-mid-foreground: rgb(23 32 48);
+  --color-accent-low-foreground: rgb(23 32 48);
+  --color-accent-decorative-foreground: rgb(23 32 48);
+}
+
+.rouge.light {
+  /* Base colors */
+  --background: 248 246 244;
+  --foreground: 45 55 72;
+
+  /* Card colors */
+  --card: 238 236 233;
+  --card-foreground: 45 55 72;
+
+  /* Popover colors */
+  --popover: 238 236 233;
+  --popover-foreground: 45 55 72;
+
+  /* Primary colors */
+  --primary: 156 74 80;
+  --primary-foreground: 255 255 255;
+
+  /* Secondary colors */
+  --secondary: 74 122 143;
+  --secondary-foreground: 255 255 255;
+
+  /* Muted colors */
+  --muted: 232 228 224;
+  --muted-foreground: 90 103 113;
+
+  /* Accent colors */
+  --accent: 143 106 60;
+  --accent-foreground: 255 255 255;
+
+  /* Decorative accents */
+  --accent-red: 156 74 80;
+  --accent-orange: 154 115 64;
+  --accent-green: 74 103 65;
+  --accent-blue: 74 122 143;
+  --accent-purple: 124 90 124;
+
+  /* Destructive colors */
+  --destructive: 163 61 68;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 209 213 219;
+  --border-strong: 156 163 175;
+  --input: 255 255 255;
+  --ring: 156 74 80;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(45, 55, 72, 0.08);
+  --shadow-md: 0 2px 8px rgba(45, 55, 72, 0.12);
+  --shadow-lg: 0 4px 16px rgba(45, 55, 72, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 1;
+  --accent-mid-opacity: 0.9;
+  --accent-low-opacity: 0.8;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.8;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 1;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 80%,
+    rgb(var(--foreground)) 20%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(248 246 244);
+  --color-foreground: rgb(45 55 72);
+  --color-card: rgb(238 236 233);
+  --color-card-foreground: rgb(45 55 72);
+  --color-popover: rgb(238 236 233);
+  --color-popover-foreground: rgb(45 55 72);
+  --color-primary: rgb(156 74 80);
+  --color-primary-foreground: rgb(255 255 255);
+  --color-secondary: rgb(74 122 143);
+  --color-secondary-foreground: rgb(255 255 255);
+  --color-muted: rgb(232 228 224);
+  --color-muted-foreground: rgb(90 103 113);
+  --color-accent: rgb(143 106 60);
+  --color-accent-foreground: rgb(255 255 255);
+  --color-accent-red: rgb(156 74 80);
+  --color-accent-orange: rgb(154 115 64);
+  --color-accent-green: rgb(74 103 65);
+  --color-accent-blue: rgb(74 122 143);
+  --color-accent-purple: rgb(124 90 124);
+  --color-destructive: rgb(163 61 68);
+  --color-destructive-foreground: rgb(255 255 255);
+  --color-border: rgb(209 213 219);
+  --color-border-strong: rgb(156 163 175);
+  --color-input: rgb(255 255 255);
+  --color-ring: rgb(156 74 80);
+  --color-accent-high: rgb(143 106 60 / 1);
+  --color-accent-mid: rgb(143 106 60 / 0.9);
+  --color-accent-low: rgb(143 106 60 / 0.8);
+  --color-secondary-high: rgb(74 122 143 / 0.8);
+  --color-secondary-mid: rgb(74 122 143 / 0.4);
+  --color-secondary-low: rgb(74 122 143 / 0.2);
+  --color-accent-decorative: rgb(156 74 80 / 1);
+  --color-accent-high-foreground: rgb(248 246 244);
+  --color-accent-mid-foreground: rgb(248 246 244);
+  --color-accent-low-foreground: rgb(248 246 244);
+  --color-accent-decorative-foreground: rgb(255 255 255);
+}
+
+.mariana.dark {
+  /* Base colors */
+  --background: 48 56 65;
+  --foreground: 216 222 233;
+
+  /* Card colors */
+  --card: 52 61 70;
+  --card-foreground: 216 222 233;
+
+  /* Popover colors */
+  --popover: 62 72 82;
+  --popover-foreground: 216 222 233;
+
+  /* Primary colors */
+  --primary: 92 153 214;
+  --primary-foreground: 30 37 44;
+
+  /* Secondary colors */
+  --secondary: 249 174 88;
+  --secondary-foreground: 30 37 44;
+
+  /* Muted colors */
+  --muted: 52 61 70;
+  --muted-foreground: 165 173 182;
+
+  /* Accent colors */
+  --accent: 95 180 180;
+  --accent-foreground: 30 37 44;
+
+  /* Decorative accents */
+  --accent-red: 236 95 102;
+  --accent-orange: 249 123 88;
+  --accent-green: 153 199 148;
+  --accent-blue: 92 153 214;
+  --accent-purple: 198 149 198;
+
+  /* Destructive colors */
+  --destructive: 236 95 102;
+  --destructive-foreground: 30 37 44;
+
+  /* UI elements */
+  --border: 75 85 97;
+  --border-strong: 90 101 114;
+  --input: 52 61 70;
+  --ring: 92 153 214;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.94;
+  --accent-mid-opacity: 0.94;
+  --accent-low-opacity: 0.2;
+  --accent-high-foreground: var(--accent-foreground);
+  --accent-mid-foreground: var(--accent-foreground);
+  --accent-low-foreground: var(--foreground);
+  --secondary-high-opacity: 0.7;
+  --secondary-mid-opacity: 0.2;
+  --secondary-low-opacity: 0.1;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.8;
+  --surface-darken: 0%;
+  --window-bg-opacity: 0.8;
+  --window-darken: 0%;
+  --surface-card-base: var(--card);
+  --surface-background-base: var(--background);
+  --surface-border-color: rgb(var(--border));
+  --surface-shadow: none;
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary) / var(--secondary-high-opacity));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: rgb(var(--accent) / var(--accent-low-opacity));
+  --accent-mid-hover-foreground-value: var(--accent-low-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(48 56 65);
+  --color-foreground: rgb(216 222 233);
+  --color-card: rgb(52 61 70);
+  --color-card-foreground: rgb(216 222 233);
+  --color-popover: rgb(62 72 82);
+  --color-popover-foreground: rgb(216 222 233);
+  --color-primary: rgb(92 153 214);
+  --color-primary-foreground: rgb(30 37 44);
+  --color-secondary: rgb(249 174 88);
+  --color-secondary-foreground: rgb(30 37 44);
+  --color-muted: rgb(52 61 70);
+  --color-muted-foreground: rgb(165 173 182);
+  --color-accent: rgb(95 180 180);
+  --color-accent-foreground: rgb(30 37 44);
+  --color-accent-red: rgb(236 95 102);
+  --color-accent-orange: rgb(249 123 88);
+  --color-accent-green: rgb(153 199 148);
+  --color-accent-blue: rgb(92 153 214);
+  --color-accent-purple: rgb(198 149 198);
+  --color-destructive: rgb(236 95 102);
+  --color-destructive-foreground: rgb(30 37 44);
+  --color-border: rgb(75 85 97);
+  --color-border-strong: rgb(90 101 114);
+  --color-input: rgb(52 61 70);
+  --color-ring: rgb(92 153 214);
+  --color-accent-high: rgb(95 180 180 / 0.94);
+  --color-accent-mid: rgb(95 180 180 / 0.94);
+  --color-accent-low: rgb(95 180 180 / 0.2);
+  --color-secondary-high: rgb(249 174 88 / 0.7);
+  --color-secondary-mid: rgb(249 174 88 / 0.2);
+  --color-secondary-low: rgb(249 174 88 / 0.1);
+  --color-accent-decorative: rgb(92 153 214 / 0.9);
+  --color-accent-high-foreground: rgb(30 37 44);
+  --color-accent-mid-foreground: rgb(30 37 44);
+  --color-accent-low-foreground: rgb(216 222 233);
+  --color-accent-decorative-foreground: rgb(30 37 44);
+}
+
+.mariana.light {
+  /* Base colors */
+  --background: 247 249 251;
+  --foreground: 48 56 65;
+
+  /* Card colors */
+  --card: 238 241 245;
+  --card-foreground: 48 56 65;
+
+  /* Popover colors */
+  --popover: 238 241 245;
+  --popover-foreground: 48 56 65;
+
+  /* Primary colors */
+  --primary: 46 107 165;
+  --primary-foreground: 255 255 255;
+
+  /* Secondary colors */
+  --secondary: 138 92 33;
+  --secondary-foreground: 255 255 255;
+
+  /* Muted colors */
+  --muted: 238 241 245;
+  --muted-foreground: 90 101 117;
+
+  /* Accent colors */
+  --accent: 42 115 115;
+  --accent-foreground: 255 255 255;
+
+  /* Decorative accents */
+  --accent-red: 201 64 72;
+  --accent-orange: 196 96 46;
+  --accent-green: 90 154 90;
+  --accent-blue: 58 127 194;
+  --accent-purple: 154 90 154;
+
+  /* Destructive colors */
+  --destructive: 201 64 72;
+  --destructive-foreground: 255 255 255;
+
+  /* UI elements */
+  --border: 220 225 232;
+  --border-strong: 197 205 214;
+  --input: 255 255 255;
+  --ring: 58 127 194;
+
+  /* Shadow tokens */
+  --shadow-sm: 0 1px 2px rgba(48, 56, 65, 0.08);
+  --shadow-md: 0 2px 8px rgba(48, 56, 65, 0.12);
+  --shadow-lg: 0 4px 16px rgba(48, 56, 65, 0.16);
+
+  /* Opacity configuration */
+  --accent-high-opacity: 0.95;
+  --accent-mid-opacity: 0.8;
+  --accent-low-opacity: 0.75;
+  --accent-high-foreground: var(--background);
+  --accent-mid-foreground: var(--background);
+  --accent-low-foreground: var(--background);
+  --secondary-high-opacity: 0.7;
+  --secondary-mid-opacity: 0.4;
+  --secondary-low-opacity: 0.2;
+  --accent-decorative-opacity: 0.9;
+
+  /* Surface configuration */
+  --surface-opacity: 0.7;
+  --surface-darken: 20%;
+  --window-bg-opacity: 0.7;
+  --window-darken: 10%;
+  --surface-card-base: var(--background);
+  --surface-background-base: var(--card);
+  --surface-border-color: rgb(var(--border-strong));
+  --surface-shadow: var(--shadow-md);
+
+  /* Hover configuration */
+  --primary-hover-value: rgb(var(--secondary));
+  --primary-hover-foreground-value: var(--secondary-foreground);
+  --accent-mid-hover-value: color-mix(
+    in oklch,
+    rgb(var(--accent) / var(--accent-mid-opacity)) 60%,
+    rgb(var(--foreground)) 40%
+  );
+  --accent-mid-hover-foreground-value: var(--accent-mid-foreground);
+
+  /* Resolved color values for Safari transition interpolation */
+  --color-background: rgb(247 249 251);
+  --color-foreground: rgb(48 56 65);
+  --color-card: rgb(238 241 245);
+  --color-card-foreground: rgb(48 56 65);
+  --color-popover: rgb(238 241 245);
+  --color-popover-foreground: rgb(48 56 65);
+  --color-primary: rgb(46 107 165);
+  --color-primary-foreground: rgb(255 255 255);
+  --color-secondary: rgb(138 92 33);
+  --color-secondary-foreground: rgb(255 255 255);
+  --color-muted: rgb(238 241 245);
+  --color-muted-foreground: rgb(90 101 117);
+  --color-accent: rgb(42 115 115);
+  --color-accent-foreground: rgb(255 255 255);
+  --color-accent-red: rgb(201 64 72);
+  --color-accent-orange: rgb(196 96 46);
+  --color-accent-green: rgb(90 154 90);
+  --color-accent-blue: rgb(58 127 194);
+  --color-accent-purple: rgb(154 90 154);
+  --color-destructive: rgb(201 64 72);
+  --color-destructive-foreground: rgb(255 255 255);
+  --color-border: rgb(220 225 232);
+  --color-border-strong: rgb(197 205 214);
+  --color-input: rgb(255 255 255);
+  --color-ring: rgb(58 127 194);
+  --color-accent-high: rgb(42 115 115 / 0.95);
+  --color-accent-mid: rgb(42 115 115 / 0.8);
+  --color-accent-low: rgb(42 115 115 / 0.75);
+  --color-secondary-high: rgb(138 92 33 / 0.7);
+  --color-secondary-mid: rgb(138 92 33 / 0.4);
+  --color-secondary-low: rgb(138 92 33 / 0.2);
+  --color-accent-decorative: rgb(46 107 165 / 0.9);
+  --color-accent-high-foreground: rgb(247 249 251);
+  --color-accent-mid-foreground: rgb(247 249 251);
+  --color-accent-low-foreground: rgb(247 249 251);
+  --color-accent-decorative-foreground: rgb(255 255 255);
+}

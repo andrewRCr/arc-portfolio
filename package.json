@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:with-logs": "concurrently -n \"Next.js,LogServer\" -c \"cyan,green\" \"npm run dev\" \"npm run log-server\"",
     "log-server": "node scripts/log-server.mjs",
-    "generate:css-defaults": "npx tsx scripts/generate-css-defaults.ts && npx prettier --write src/app/globals.css",
+    "generate:css-defaults": "npx tsx scripts/generate-css-defaults.ts && npx prettier --write src/app/globals.css src/app/theme-variants.generated.css",
     "generate:thumbnails": "npx tsx scripts/generate-wallpaper-thumbnails.ts",
     "prebuild": "npm run generate:css-defaults",
     "build": "next build",

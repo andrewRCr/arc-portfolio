@@ -27,14 +27,11 @@ import type {
 import { DEFAULT_LAYOUT_TOKENS } from "../src/lib/theme/tokens/layout";
 
 const GLOBALS_CSS_PATH = path.join(__dirname, "../src/app/globals.css");
+const VARIANTS_CSS_PATH = path.join(__dirname, "../src/app/theme-variants.generated.css");
 
 // Markers for :root defaults (inside :root block)
 const START_MARKER = "/* AUTO-GENERATED THEME DEFAULTS - DO NOT EDIT MANUALLY */";
 const END_MARKER = "/* END AUTO-GENERATED THEME DEFAULTS */";
-
-// Markers for theme class variants (after :root block)
-const VARIANTS_START_MARKER = "/* AUTO-GENERATED THEME VARIANTS - DO NOT EDIT MANUALLY */";
-const VARIANTS_END_MARKER = "/* END AUTO-GENERATED THEME VARIANTS */";
 
 /**
  * Layout tokens that should be exposed as CSS variables.
@@ -303,6 +300,128 @@ function generateHoverCssVariables(hover: ThemeHoverConfig, mode: "light" | "dar
 }
 
 /**
+ * Default opacity values matching the CSS @theme block fallbacks.
+ * Used when a theme doesn't provide an opacities config.
+ */
+const DEFAULT_ACCENT_OPACITIES = { high: 0.8, mid: 0.5, low: 0.2 };
+const DEFAULT_SECONDARY_OPACITIES = { high: 0.8, mid: 0.4, low: 0.2 };
+const DEFAULT_ACCENT_DECORATIVE_OPACITY = 0.9;
+
+/**
+ * Tokens that get a direct `rgb(R G B)` wrap — no opacity.
+ * These map 1:1 from ThemeColors keys to --color-* CSS custom properties.
+ */
+const DIRECT_RGB_TOKENS: (keyof ThemeColors)[] = [
+  "background",
+  "foreground",
+  "card",
+  "card-foreground",
+  "popover",
+  "popover-foreground",
+  "primary",
+  "primary-foreground",
+  "secondary",
+  "secondary-foreground",
+  "muted",
+  "muted-foreground",
+  "accent",
+  "accent-foreground",
+  "accent-red",
+  "accent-orange",
+  "accent-green",
+  "accent-blue",
+  "accent-purple",
+  "destructive",
+  "destructive-foreground",
+  "border",
+  "border-strong",
+  "input",
+  "ring",
+];
+
+/**
+ * Resolve a ForegroundToken to an RGB string from the theme's colors.
+ * Maps token names to their ThemeColors values.
+ */
+function resolveForegroundToken(token: ForegroundToken | "primary-foreground", colors: ThemeColors): string {
+  switch (token) {
+    case "foreground":
+      return colors.foreground;
+    case "background":
+      return colors.background;
+    case "accent-foreground":
+      return colors["accent-foreground"];
+    case "primary-foreground":
+      return colors["primary-foreground"];
+  }
+}
+
+/**
+ * Generate resolved --color-* CSS variable declarations with direct RGB values.
+ *
+ * Safari cannot interpolate registered custom properties whose values change
+ * via inner var() dependencies. By emitting resolved values (e.g.,
+ * `--color-foreground: rgb(245 216 153)` instead of `rgb(var(--foreground))`),
+ * Safari sees direct color-to-color changes on registered properties and can
+ * smoothly interpolate during theme transitions.
+ *
+ * @param colors - Theme color values for this mode
+ * @param opacities - Theme opacity configuration (optional)
+ * @param mode - "light" or "dark"
+ * @param indent - Indentation string
+ */
+function generateResolvedColorVariables(
+  colors: ThemeColors,
+  opacities: ThemeOpacities | undefined,
+  mode: "light" | "dark",
+  indent: string
+): string {
+  const lines: string[] = [];
+  lines.push(`${indent}/* Resolved color values for Safari transition interpolation */`);
+
+  // === Direct RGB tokens (25 tokens) ===
+  for (const token of DIRECT_RGB_TOKENS) {
+    lines.push(`${indent}--color-${token}: rgb(${colors[token]});`);
+  }
+
+  // === Opacity variant tokens (7 tokens) ===
+  const modeConfig = opacities?.[mode];
+  const accentOp = modeConfig?.accent ?? DEFAULT_ACCENT_OPACITIES;
+  const secondaryOp = modeConfig?.secondary ?? DEFAULT_SECONDARY_OPACITIES;
+  const accentDecorativeOp = modeConfig?.accentDecorativeOpacity ?? DEFAULT_ACCENT_DECORATIVE_OPACITY;
+
+  lines.push(`${indent}--color-accent-high: rgb(${colors.accent} / ${accentOp.high});`);
+  lines.push(`${indent}--color-accent-mid: rgb(${colors.accent} / ${accentOp.mid});`);
+  lines.push(`${indent}--color-accent-low: rgb(${colors.accent} / ${accentOp.low});`);
+  lines.push(`${indent}--color-secondary-high: rgb(${colors.secondary} / ${secondaryOp.high});`);
+  lines.push(`${indent}--color-secondary-mid: rgb(${colors.secondary} / ${secondaryOp.mid});`);
+  lines.push(`${indent}--color-secondary-low: rgb(${colors.secondary} / ${secondaryOp.low});`);
+
+  // Accent decorative: resolve base color token
+  const decorativeBaseToken = opacities?.accentDecorative?.token;
+  const decorativeBase = decorativeBaseToken ? colors[decorativeBaseToken] : colors.primary;
+  lines.push(`${indent}--color-accent-decorative: rgb(${decorativeBase} / ${accentDecorativeOp});`);
+
+  // === Foreground resolution tokens (4 tokens) ===
+  const fgMapping = modeConfig?.accentForeground;
+  const highFg = fgMapping?.high ?? "accent-foreground";
+  const midFg = fgMapping?.mid ?? "foreground";
+  const lowFg = fgMapping?.low ?? "foreground";
+
+  lines.push(`${indent}--color-accent-high-foreground: rgb(${resolveForegroundToken(highFg, colors)});`);
+  lines.push(`${indent}--color-accent-mid-foreground: rgb(${resolveForegroundToken(midFg, colors)});`);
+  lines.push(`${indent}--color-accent-low-foreground: rgb(${resolveForegroundToken(lowFg, colors)});`);
+
+  // Accent decorative foreground: resolve token
+  const decorativeFgToken = opacities?.accentDecorative?.foreground ?? "primary-foreground";
+  lines.push(
+    `${indent}--color-accent-decorative-foreground: rgb(${resolveForegroundToken(decorativeFgToken, colors)});`
+  );
+
+  return lines.join("\n");
+}
+
+/**
  * Generate all theme class variants.
  * Creates .{themeName}.dark and .{themeName}.light for each theme.
  * Includes color tokens, opacity configuration, and surface configuration.
@@ -330,6 +449,9 @@ function generateThemeVariants(): string {
       darkBlock += `\n\n${generateHoverCssVariables(theme.hover, "dark", "  ")}`;
     }
 
+    // Add resolved --color-* values for Safari transition interpolation
+    darkBlock += `\n\n${generateResolvedColorVariables(theme.dark, theme.opacities, "dark", "  ")}`;
+
     darkBlock += "\n}";
     blocks.push(darkBlock);
 
@@ -351,6 +473,9 @@ function generateThemeVariants(): string {
     if (theme.hover) {
       lightBlock += `\n\n${generateHoverCssVariables(theme.hover, "light", "  ")}`;
     }
+
+    // Add resolved --color-* values for Safari transition interpolation
+    lightBlock += `\n\n${generateResolvedColorVariables(theme.light, theme.opacities, "light", "  ")}`;
 
     lightBlock += "\n}";
     blocks.push(lightBlock);
@@ -404,42 +529,28 @@ ${layoutCssVariables}
     process.exit(1);
   }
 
-  // === Update theme variants ===
-  const hasVariantMarkers = css.includes(VARIANTS_START_MARKER) && css.includes(VARIANTS_END_MARKER);
+  // Write updated globals.css (:root defaults only)
+  fs.writeFileSync(GLOBALS_CSS_PATH, css, "utf-8");
+
+  // === Write theme variants to separate file ===
   const themeCount = Object.keys(themes).length;
-  const variantBlock = `${VARIANTS_START_MARKER}
-/* Generated: ${themeCount} themes × 2 modes = ${themeCount * 2} class variants */
+  const variantFile = `/* AUTO-GENERATED — DO NOT EDIT MANUALLY
+ * Source: scripts/generate-css-defaults.ts
+ * ${themeCount} themes × 2 modes = ${themeCount * 2} class variants
+ *
+ * Each variant sets inner CSS variables (--background, --foreground, etc.)
+ * plus resolved --color-* values for Safari transition interpolation.
+ * See the @theme block in globals.css for why both layers exist.
+ */
 
 ${themeVariants}
+`;
 
-${VARIANTS_END_MARKER}`;
+  fs.writeFileSync(VARIANTS_CSS_PATH, variantFile, "utf-8");
 
-  if (hasVariantMarkers) {
-    // Replace existing variants section
-    const startIndex = css.indexOf(VARIANTS_START_MARKER);
-    const endIndex = css.indexOf(VARIANTS_END_MARKER) + VARIANTS_END_MARKER.length;
-
-    const before = css.slice(0, startIndex);
-    const after = css.slice(endIndex);
-
-    css = before + variantBlock + after;
-  } else {
-    // Insert variants section after :root block (before @layer base)
-    const layerBaseIndex = css.indexOf("@layer base");
-    if (layerBaseIndex !== -1) {
-      const before = css.slice(0, layerBaseIndex);
-      const after = css.slice(layerBaseIndex);
-      css = before + variantBlock + "\n\n" + after;
-    } else {
-      // Fallback: append to end
-      css = css + "\n\n" + variantBlock;
-    }
-  }
-
-  // Write updated file
-  fs.writeFileSync(GLOBALS_CSS_PATH, css, "utf-8");
   console.log(`Updated ${GLOBALS_CSS_PATH}:`);
   console.log(`  - :root defaults from "${defaultPalette}" palette (dark mode)`);
+  console.log(`Updated ${VARIANTS_CSS_PATH}:`);
   console.log(`  - ${themeCount * 2} theme class variants (${themeCount} themes × 2 modes)`);
 }
 
