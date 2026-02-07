@@ -127,6 +127,16 @@
   --color-chart-4: rgb(var(--chart-4));
   --color-chart-5: rgb(var(--chart-5));
 
+  /* Fluid typography — headings scale down on narrower viewports
+     Max values match Tailwind v4 defaults (desktop design stays unchanged).
+     Min values reduce proportionally for viewports below ~1920px.
+     Body text (text-xs through text-base) remains static. */
+  --text-lg: clamp(1rem, 0.94rem + 0.16vw, 1.125rem);
+  --text-xl: clamp(1.125rem, 1.06rem + 0.16vw, 1.25rem);
+  --text-2xl: clamp(1.3125rem, 1.22rem + 0.23vw, 1.5rem);
+  --text-3xl: clamp(1.625rem, 1.5rem + 0.31vw, 1.875rem);
+  --text-4xl: clamp(2rem, 1.875rem + 0.31vw, 2.25rem);
+
   /* Border radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
