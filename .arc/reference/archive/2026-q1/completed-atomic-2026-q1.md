@@ -4,6 +4,28 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Fix Safari theme transition color snapping**
+    - **Outcome:** Safari snapped text `color` during light/dark theme transitions because it
+      cannot interpolate `CSS.registerProperty()`-registered `<color>` properties whose values
+      change via `var()` indirection chains (`rgb(var(--foreground))`). Fixed by emitting resolved
+      `--color-*` values (direct RGB) in theme variant classes and transitioning those custom
+      properties on `<html>` itself. Required splitting the child wildcard transition rule:
+      `background-color` and `border-color` remain on children (browsers don't recalculate
+      non-inherited properties frame-by-frame from transitioning ancestor custom properties),
+      while text `color` is omitted from children (Safari double-transitions it, causing snapping)
+      and handled via `--color-foreground` interpolation on `<html>`.
+    - **Files:** `scripts/generate-css-defaults.ts` (added `generateResolvedColorVariables()`),
+      `src/app/globals.css` (split transition rules, `@import` for generated variants),
+      `src/app/theme-variants.generated.css` (new — extracted theme variant classes with resolved
+      color values), `src/lib/theme/register-color-properties.ts` (new — registers `--color-*`
+      as `<color>` via `CSS.registerProperty()`), `src/components/layout/ThemeProvider.tsx`
+      (added `ThemeColorRegistration` component), `package.json` (updated generate script)
+    - **Verification:** Smooth transitions confirmed in Safari (via cloudflare tunnel and macOS hardware) and
+      Firefox (main development desktop, Windows/WSL). Background regression caught and fixed during commit
+      preparation — initial implementation omitted `background-color`/`border-color` from child rule.
+
+    - **Branch:** `feature/launch-preparation`
+
 - [x] **Fix SSG/dynamic conflict in project detail routes**
     - **Outcome:** Games/mods detail routes returned 500 in production — `searchParams` (dynamic
       server API) conflicted with `generateStaticParams` (SSG) in Next.js 16. Created
