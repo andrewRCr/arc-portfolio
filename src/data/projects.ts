@@ -16,13 +16,15 @@ export const projects: Project[] = [
     title: "CineXplorer",
     slug: "cinexplorer",
     description:
-      "A comprehensive movie discovery application showcasing production-ready full-stack development with systematic AI-assisted workflows. " +
-      "Built with Django REST Framework/Django Ninja backend and React TypeScript frontend, featuring JWT authentication with OAuth (Google/GitHub), " +
-      "TMDB API integration, and a sophisticated type-safe architecture using Pydantic schemas and auto-generated TypeScript types. " +
-      "Development integrates the ARC Agentic Development Framework for structured AI-assisted feature planning and implementation.",
+      "A movie discovery platform built on Django Ninja and React TypeScript, integrating with the TMDB API for browsing, filtering, " +
+      "and managing personal watchlists. The core engineering challenge is data quality: TMDB's catalog contains millions of entries with " +
+      "inconsistent metadata, mislabeled content, and unreliable ratings. A multi-stage backend pipeline filters and validates API responses " +
+      "before they reach the frontend. The backend follows a layered service architecture with dependency injection and repository patterns, " +
+      "running in Docker with reverse proxy and Redis caching. Type safety spans the full stack, from API boundaries to auto-generated " +
+      "frontend types.",
     shortDescription:
-      "Full-stack movie discovery platform with personalized recommendations, watchlists, and OAuth authentication. " +
-      "Demonstrates modern type-safe architecture with Django Ninja + React TypeScript.",
+      "Movie discovery platform demonstrating end-to-end type safety, a layered service architecture with dependency injection, " +
+      "production-grade containerized infrastructure, and custom validation and enrichment pipelines over external API integration.",
     category: ["Web App"],
     tags: [
       "React",
@@ -54,12 +56,12 @@ export const projects: Project[] = [
     ],
     techStack: ["TypeScript", "React", "Django", "Django Ninja", "PostgreSQL", "Docker", "Chakra UI"],
     features: [
-      "Type-safe API layer with Pydantic schemas and auto-generated TypeScript types",
-      "JWT authentication with OAuth 2.0 social login (Google, GitHub via django-allauth)",
-      "Advanced movie filtering system with hybrid API/client-side logic",
-      "Comprehensive quality gates: 89 backend + 321 frontend tests, zero-tolerance type checking",
-      "Development workflow powered by ARC Framework for systematic AI-assisted feature planning",
-      "Production-ready infrastructure: Docker containerization, Redis caching, Caddy reverse proxy, CI/CD pipeline",
+      { text: "*Users discover movies via robust category and filtering options, manage personal watchlists, build shareable curated collections, log watches with ratings and reviews to a personal timeline, and receive personalized recommendations.*", paragraph: true },
+      "Type safety from API to frontend: Pydantic, Pyright strict mode, and auto-generated TypeScript",
+      "Dual-pattern authentication: JWT for email/password, OAuth 2.0 for social login (Google, GitHub)",
+      "Multi-stage data quality pipeline with hybrid API and client-side filtering",
+      "Five-container Docker architecture with Caddy reverse proxy, Redis caching, and CI/CD pipeline",
+      "Developed with the ARC Framework for structured, AI-assisted development workflows",
     ],
     links: {
       github: "https://github.com/andrewRCr/CineXplorer",
@@ -72,11 +74,18 @@ export const projects: Project[] = [
     },
     photoCredits: ["Denise Jans", "Kumiko Shimizu", "Noom Peerapong", "Jeremy Yap", "Adrien Olichon"],
     developmentTime: "2025-2026",
-    highlights: [
-      "Demonstrates modern full-stack development practices including type-safe API architecture, comprehensive testing strategies, and systematic code quality enforcement",
-      "Showcases integration of bleeding-edge AI tooling (ARC Agentic Development Framework) with traditional software engineering discipline",
-      "Implements production-grade patterns: atomic commits, thorough documentation, zero-tolerance quality gates, and structured feature development workflows",
-      "Exemplifies architectural evolution and technical decision-making through DRF-to-Django Ninja migration with complete type safety",
+    details: [
+      { text: "**Data Quality**", heading: true },
+      "Pipeline filters at five stages: language-script mismatch detection, blacklisting of mislabeled content, completeness validation for required metadata, release date verification, and tiered vote-count thresholds calibrated by sort context for rating reliability",
+      "Buffer system pre-fetches up to 5 additional TMDB pages when filtering reduces results below target page size, with Redis-backed session deduplication preventing repeated entries across paginated requests",
+      { text: "**Type Safety**", heading: true },
+      "Custom .pyi stubs for django-allauth, ninja-jwt, and django-environ — libraries without official typing — enabling Pyright strict mode with a zero-Any policy enforced via Ruff ANN401",
+      "DRF-to-Django Ninja migration replaced serializers with Pydantic schemas, unlocking auto-generated TypeScript types and 100% accurate type inference across 23 API endpoints",
+      { text: "**Service Architecture**", heading: true },
+      "Constructor-based dependency injection across 7 services with repository pattern and factory functions, enabling isolated unit testing without mock patching",
+      "Service composition: MovieEnrichmentService bulk-enriches movie lists with user data in a single query, avoiding N+1 through repository abstraction",
+      { text: "**Theme System**", heading: true },
+      "Unified semantic token system spanning elevation, interaction states, and component patterns — runtime theme switching across four design systems (GitHub Primer, IBM Carbon, GitLab Pajamas, Material Design 3) at ~19ms per switch",
     ],
     order: 1,
     featured: true,
@@ -132,14 +141,12 @@ export const projects: Project[] = [
     },
     photoCredits: ["Alexey Ruban", "Mike Stoll", "Jason Leung"],
     developmentTime: "2025-2026",
-    architectureNotes: [
+    details: [
       "Documentation-only framework with no code dependencies - pure process and templates",
       "Deployable template system for project adoption via dedicated directory structure",
       "Self-hosting methodology: framework developed using its own development workspace",
       "Template-first documents eliminate token replacement complexity with copy-ready guidance",
       "Built on Apache 2.0 foundation (ai-dev-tasks) with significant original enhancements",
-    ],
-    highlights: [
       "Demonstrates systematic approach to AI-augmented development with emphasis on human direction and code quality over automation",
       "Showcases ability to extract, codify, and systematize development patterns from real-world production experience",
       "Exemplifies recursive improvement philosophy: framework developed using its own methodology (self-hosting)",
@@ -207,15 +214,13 @@ export const projects: Project[] = [
       screenshots: [], // Intentionally empty - self-referential project
     },
     developmentTime: "2025-2026",
-    architectureNotes: [
+    details: [
       "Next.js App Router with React Server Components for optimal performance",
       "Type-safe content management: TypeScript interfaces for all portfolio data",
       "Component architecture: Shadcn/ui copy-paste approach for full customization control",
       "Static Site Generation (SSG) for instant page loads with global CDN delivery",
       "Turbopack for fast development builds and hot module replacement",
       "Zero-tolerance quality enforcement: TypeScript strict mode, ESLint, Prettier, markdown linting",
-    ],
-    highlights: [
       "Accessibility-first engineering: automated WCAG testing, screen reader announcements, keyboard navigation throughout",
       "Production-grade SSR optimization: Server Actions sync preferences to cookies, eliminating layout shifts on page load",
       "Comprehensive test coverage: 900+ tests including accessibility validation, contrast checking, and data integrity",
@@ -285,15 +290,13 @@ export const projects: Project[] = [
     },
     developmentTime: "2024 (v1), 2026 (v2)",
     developmentTimeCompact: "2024 / 2026",
-    architectureNotes: [
+    details: [
       ".NET 8 backend API with SQL Server and Entity Framework for data persistence",
       "Blazor Web Assembly for modern web interface with MudBlazor component library",
       "WPF desktop application using MVVM pattern with Caliburn Micro",
       "JWT-based authentication with Identity for secure user management",
       "Bi-directional sync architecture for seamless cross-platform task management",
       "Azure DevOps CI/CD pipeline for continuous integration and deployment",
-    ],
-    highlights: [
       "Demonstrates full-stack .NET ecosystem proficiency across multiple frameworks (Blazor WASM, WPF)",
       "Implements complex data synchronization patterns for seamless cross-platform experience",
       "Showcases MVVM architectural pattern and modern C# development practices",
@@ -365,15 +368,13 @@ export const projects: Project[] = [
       ],
     },
     developmentTime: "2023-2024",
-    architectureNotes: [
+    details: [
       "Express.js backend API with MongoDB for data persistence",
       "EJS templating engine for server-side rendering",
       "TypeScript throughout for type safety and maintainability",
       "Bootstrap framework for responsive UI design",
       "Session-based authentication with secure password handling",
       "Role-based authorization with granular permission system",
-    ],
-    highlights: [
       "Complete business application demo: role-based access control, user management, operational dashboards with live demo available",
       "Full-stack TypeScript: type safety from Express routes through MongoDB models to EJS templates",
       "Production security practices: session auth, bcrypt hashing, input validation, HTML sanitization, secure image uploads",
@@ -440,7 +441,7 @@ export const projects: Project[] = [
       ],
     },
     developmentTime: "2023",
-    architectureNotes: [
+    details: [
       "Python dataclasses for domain modeling: structured representation of DOOM's internal game systems",
       "CustomTkinter GUI framework with modern styling and CTkToolTip for enhanced user experience",
       "Separation of concerns: UI layer, validation logic, file generation, installation automation",
@@ -448,8 +449,6 @@ export const projects: Project[] = [
       "Pillow (PIL) for image handling and pygame for audio feedback in the interface",
       "Windows executable distribution via Python compilation for end-user accessibility",
       "Integration layer with DOOMModLoader for seamless mod installation",
-    ],
-    highlights: [
       "Demonstrates software engineering principles in game modding context: data modeling, validation, code generation, automated workflows",
       "Showcases Python dataclasses for complex domain modeling and structured data representation",
       "Bridges technical and non-technical users: abstracts game engine internals behind intuitive GUI",
@@ -522,15 +521,13 @@ export const projects: Project[] = [
       ],
     },
     developmentTime: "2023",
-    architectureNotes: [
+    details: [
       "Unreal Engine 4 with C++ core systems and Blueprint for rapid iteration",
       "Modular equipment architecture for flexible stat and loadout systems",
       "AI behavior trees and state machines for diverse enemy patterns",
       "Animation state machines for fluid combat transitions",
       "Posture/poise mechanic implementation for risk-reward gameplay balance",
       "Checkpoint system architecture with persistent state and enemy respawning",
-    ],
-    highlights: [
       "Demonstrates game systems engineering: combat architecture, enemy AI design, equipment modularity, progression loops",
       "Showcases Unreal Engine 4 proficiency with C++ programming for core gameplay systems",
       "Implements sophisticated combat mechanics inspired by Souls-like design philosophy",
@@ -632,7 +629,7 @@ export const projects: Project[] = [
     },
     teamRole: "Project Lead",
     developmentTime: "2022",
-    architectureNotes: [
+    details: [
       "Unreal Engine 5 with C++ core systems and Blueprint for rapid iteration",
       "Animation state machines for complex character locomotion and combat transitions",
       "Physical animation systems: hit reactions, locational damage masking, ragdoll physics",
@@ -640,8 +637,6 @@ export const projects: Project[] = [
       "Progression-based map system revealing new areas as puzzles are solved",
       "Interaction framework supporting diverse puzzle mechanics and inventory integration",
       "Cinematic sequencer integration for narrative moments and level transitions",
-    ],
-    highlights: [
       "Demonstrates comprehensive game development leadership: framework design, system architecture, team coordination, and delivery within 8-week timeline",
       "Showcases Unreal Engine 5 proficiency across multiple domains: animation, AI, physics, cinematics, and gameplay programming",
       "Capstone achievement for Computer Science degree - integrates academic knowledge with practical game development",
@@ -695,15 +690,13 @@ export const projects: Project[] = [
       ],
     },
     developmentTime: "2023",
-    architectureNotes: [
+    details: [
       "Win32 platform layer: window creation, input handling, frame timing",
       "Software rasterizer: VirtualAlloc framebuffer, GDI StretchDIBits for display",
       "Entity system with base class and Ball/Paddle specializations",
       "State machine managing menu navigation and gameplay transitions",
       "Audio subsystem wrapping OpenAL: SoundDevice, SoundLibrary, SoundPlayer",
       "Clean separation: Framework (renderer, audio), Entities, Platforms",
-    ],
-    highlights: [
       "Pure software rendering without any graphics API—direct pixel manipulation via Win32 GDI",
       "Handmade-style architecture: custom game loop, collision detection, entity system built from scratch",
       "3D positional audio integration using OpenAL for spatialized gameplay sound effects",

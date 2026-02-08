@@ -33,13 +33,17 @@ export interface Screenshot {
 }
 
 /**
- * Content item for features, highlights, and other list sections.
- * Can be a simple string (rendered as bullet) or an object with paragraph flag.
+ * Content item for features, details, and other list sections.
+ * Can be a simple string (rendered as bullet) or an object with display control.
  * Supports markdown formatting (bold, italic, links, inline code).
+ *
+ * - string: rendered as a bullet item
+ * - paragraph: rendered as a paragraph (intro blurbs, explanatory text)
+ * - heading: rendered as a category header that groups following bullets beneath it
  */
 export type ContentItem =
   | string // Simple bullet item
-  | { text: string; paragraph?: boolean }; // Explicit paragraph control
+  | { text: string; paragraph?: boolean; heading?: boolean }; // Display control
 
 /**
  * Image references for a project
@@ -95,14 +99,12 @@ export interface Project {
   developmentTimeCompact?: string; // Shorter form for mobile (e.g., "2024 / 2026")
 
   // Optional detailed content (supports markdown and mixed bullet/paragraph items)
-  architectureNotes?: ContentItem[]; // Technical architecture details and design decisions
-  highlights?: ContentItem[]; // Key achievements, metrics, or notable aspects
+  details?: ContentItem[]; // Implementation details, technical deep-dive, or other extended content
 
   // Section label customization (for mods and other non-standard projects)
   sectionLabels?: {
     features?: string; // Override "Key Features" (e.g., "Default Modifiers")
-    highlights?: string; // Override "Highlights" (e.g., "Legion Arms")
-    architectureNotes?: string; // Override "Architecture" (e.g., "Additional Notes")
+    details?: string; // Override "Implementation Details" (e.g., "Versions & Compatibility")
   };
 
   // Display properties

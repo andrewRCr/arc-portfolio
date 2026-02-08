@@ -42,8 +42,7 @@ const mockProject: Project = {
   },
   order: 1,
   featured: true,
-  highlights: ["Achievement 1", "Achievement 2"],
-  architectureNotes: ["Architecture note 1", "Architecture note 2"],
+  details: ["Detail item 1", "Detail item 2"],
 };
 
 describe("ProjectDetail - Behavior Tests", () => {
@@ -62,8 +61,12 @@ describe("ProjectDetail - Behavior Tests", () => {
       expect(screen.getByText("Docker")).toBeInTheDocument();
     });
 
-    // Note: "features" field is no longer rendered separately - content merged into highlights
-    // Highlights rendering is tested in "Optional Metadata" describe block
+    it("renders all feature items", () => {
+      render(<ProjectDetail project={mockProject} />);
+      expect(screen.getByText(/Feature 1: User authentication/i)).toBeInTheDocument();
+      expect(screen.getByText(/Feature 2: Real-time updates/i)).toBeInTheDocument();
+      expect(screen.getByText(/Feature 3: API integration/i)).toBeInTheDocument();
+    });
   });
 
   describe("Screenshots Gallery", () => {
@@ -88,24 +91,17 @@ describe("ProjectDetail - Behavior Tests", () => {
     // Note: team size and other metadata are now rendered in DetailHeader (links toolbar label on mobile)
     // Those tests belong in DetailHeader.test.tsx, not here.
 
-    it("renders highlights when provided", () => {
+    it("renders details when provided", () => {
       render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText(/Achievement 1/i)).toBeInTheDocument();
-      expect(screen.getByText(/Achievement 2/i)).toBeInTheDocument();
-    });
-
-    it("renders architecture notes when provided", () => {
-      render(<ProjectDetail project={mockProject} />);
-      expect(screen.getByText(/Architecture note 1/i)).toBeInTheDocument();
-      expect(screen.getByText(/Architecture note 2/i)).toBeInTheDocument();
+      expect(screen.getByText(/Detail item 1/i)).toBeInTheDocument();
+      expect(screen.getByText(/Detail item 2/i)).toBeInTheDocument();
     });
 
     it("does not render optional sections when not provided", () => {
       const minimalProject: Project = {
         ...mockProject,
         teamRole: undefined,
-        highlights: undefined,
-        architectureNotes: undefined,
+        details: undefined,
       };
       render(<ProjectDetail project={minimalProject} />);
       // Component should still render without errors
@@ -117,10 +113,9 @@ describe("ProjectDetail - Behavior Tests", () => {
     it("has semantic headings for content sections", () => {
       render(<ProjectDetail project={mockProject} />);
       // Note: Tech Stack has no heading - badges are self-explanatory
-      // Note: Features merged into Highlights, Project Details section removed
       // Headings render in bracket format: [section]
-      expect(screen.getByRole("heading", { name: "[highlights]" })).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: "[architecture]" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "[key features]" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "[implementation details]" })).toBeInTheDocument();
     });
 
     // Note: External link accessibility tests moved to DetailHeader.test.tsx

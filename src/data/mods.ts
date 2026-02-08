@@ -33,7 +33,7 @@ export const mods: Project[] = [
       "Fable gain rate (from attacking) for all weapons **reduced** by 30% (with an option for 50%)",
       "All weight tiers **increased** by one (1) level (Light: 0.3 → 0.15, Normal: 0.6 → 0.3, and so on)",
     ],
-    highlights: [
+    details: [
       "Left Arm of Steel: unchanged",
       "Fulminis, Pandemonium, Deus Ex Machina, Falcon Eyes: **+25%**",
       "Puppet String, Flamberge, Icarus: **+40%**",
@@ -45,7 +45,7 @@ export const mods: Project[] = [
     ],
     sectionLabels: {
       features: "Default Modifiers",
-      highlights: "Legion Arms",
+      details: "Legion Arms",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/liesofp/mods/304",
@@ -82,7 +82,7 @@ export const mods: Project[] = [
         paragraph: true,
       },
     ],
-    highlights: [
+    details: [
       {
         text: "The following mods offer compatibility patches for Improved Movement EX:",
         paragraph: true,
@@ -93,16 +93,14 @@ export const mods: Project[] = [
       "[Blaze with Tifa's Colors and Sounds](https://www.nexusmods.com/streetsofrage4/mods/184) by [fuzzyetdeadly](https://github.com/fuzzyetdeadly)",
       "[SoR 4 Young Axel](https://www.nexusmods.com/streetsofrage4/mods/87) by [djdndiWLr](https://next.nexusmods.com/profile/djdndiWLr) (use [patch](https://www.nexusmods.com/streetsofrage4/mods/202) by [FallenR](https://next.nexusmods.com/profile/FallenR))",
       "[SoR 4 Estel Color Grading](https://www.nexusmods.com/streetsofrage4/mods/88) by [djdndiWLr](https://next.nexusmods.com/profile/djdndiWLr) (use [patch](https://www.nexusmods.com/streetsofrage4/mods/202) by [FallenR](https://next.nexusmods.com/profile/FallenR))",
-    ],
-    architectureNotes: [
+      { text: "**Acknowledgements:**", heading: true },
       "[Rounak](https://www.fiverr.com/rounakdraws) (Axel / Blaze) and [Sandwitch](https://www.fiverr.com/sandwwitch) (Estel) for the new running sprites",
       "[fuzzyetdeadly](https://github.com/fuzzyetdeadly) and the SoulFire team for [Pandora's Box](https://www.nexusmods.com/streetsofrage4/mods/174)",
       "[jlcebrian](https://github.com/jlcebrian), [xinyingho](https://github.com/xinyingho), and [AyanamiRei0](https://github.com/AyanamiRei1) for [SOR4 Explorer](https://gamebanana.com/tools/7297)",
     ],
     sectionLabels: {
       features: "Mod Options",
-      highlights: "Community Compatibility Patches",
-      architectureNotes: "Acknowledgements",
+      details: "Community Compatibility Patches",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/streetsofrage4/mods/178",
@@ -173,14 +171,14 @@ export const mods: Project[] = [
       "Extended version available with 7 parry frames for all weapon classes including greatshields",
       "[The Convergence](https://www.nexusmods.com/eldenring/mods/3419) compatibility version available",
     ],
-    highlights: [
+    details: [
       "**6 frames**: Small shields, straight swords, curved swords, katanas, thrusting swords, light greatswords, daggers, axes, flails, hammers, and more",
       "**5 frames**: Thrusting shields, spears, twinblades, halberds, reapers, great spears",
       "**4 frames**: Standard shields, greatswords, curved greatswords, great katanas, colossal weapons",
     ],
     sectionLabels: {
       features: "Key Features",
-      highlights: "Parry Frame Data",
+      details: "Parry Frame Data",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/eldenring/mods/5128",
@@ -216,13 +214,12 @@ export const mods: Project[] = [
       "Spread patterns, precision, and reticle bloom refined where needed",
       "Covers 25+ weapons across 8 categories: knives, handguns, shotguns, SMGs, rifles, magnums, special, and Separate Ways exclusives",
     ],
-    highlights: [
+    details: [
       "**Lite version**: Buff-only adjustments (no nerfs)",
       "**Overhaul support**: Also available as a dedicated, custom-built add-on for [Berserker](https://www.nexusmods.com/residentevil42023/mods/2346), [Valkyrie](https://www.nexusmods.com/residentevil42023/mods/2564), and [Befalling of Night](https://www.nexusmods.com/residentevil42023/mods/2385)",
       "**DLC support**: Separate Ways included; Mercenaries via optional add-on",
       "Multiple optional add-ons for granular control (Riot Gun nerf restoration, vanilla CQBR fire rate, etc.) + additional features",
-    ],
-    architectureNotes: [
+      { text: "**Acknowledgements:**", heading: true },
       "[elsuperaguas](https://next.nexusmods.com/profile/elsuperaguas) for the toggle-able Blacktail laser weapon model (included with permission)",
       "[bloocobalt](https://next.nexusmods.com/profile/bloocobalt) for the Riot Gun weapon model magazine tube extension (included with permission)",
       "[Rabbit-TooneedIM](https://www.nexusmods.com/residentevil42023/users/66480841) for [Berserker](https://www.nexusmods.com/residentevil42023/mods/2346) + [Valkyrie](https://www.nexusmods.com/residentevil42023/mods/2564) (IWB add-ons built with permission)",
@@ -233,8 +230,7 @@ export const mods: Project[] = [
     ],
     sectionLabels: {
       features: "Adjustment Philosophy",
-      highlights: "Versions & Compatibility",
-      architectureNotes: "Acknowledgements",
+      details: "Versions & Compatibility",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/residentevil42023/mods/3016",
