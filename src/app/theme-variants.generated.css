@@ -1217,7 +1217,7 @@
   --foreground: 216 222 233;
 
   /* Card colors */
-  --card: 52 61 70;
+  --card: 57 67 76;
   --card-foreground: 216 222 233;
 
   /* Popover colors */
@@ -1293,7 +1293,7 @@
   /* Resolved color values for Safari transition interpolation */
   --color-background: rgb(48 56 65);
   --color-foreground: rgb(216 222 233);
-  --color-card: rgb(52 61 70);
+  --color-card: rgb(57 67 76);
   --color-card-foreground: rgb(216 222 233);
   --color-popover: rgb(62 72 82);
   --color-popover-foreground: rgb(216 222 233);

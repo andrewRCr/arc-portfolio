@@ -138,7 +138,9 @@ const darkTokens: ThemeColors = {
   foreground: hexToRgb(marianaDark.fg), // #d8dee9
 
   // Card colors
-  card: hexToRgb(marianaDark.bgElevated), // #343d46
+  // Dark mode adjustment: bgElevated (#343d46) only 2% L above bg — invisible
+  // at 80% surface opacity. Midpoint of bgElevated/bgHighlight for subtle separation.
+  card: hexToRgb("#39434C"), // hsl(210, 15%, 26%) — between bgElevated (24%) and bgHighlight (28%)
   "card-foreground": hexToRgb(marianaDark.fg),
 
   // Popover colors
