@@ -300,58 +300,110 @@ dual-domain configuration.
 
 ### **Phase 2:** Content & Copy
 
-- [ ] **2.1 Review and polish project descriptions**
+- [ ] **2.1 Holistic content pass — per project**
 
-    **Goal:** Ensure `shortDescription` fields are concise, compelling, and consistent
-    in tone — these will feed directly into meta descriptions and OG tags.
+    **Goal:** Collaborative, per-project content review covering all text fields.
+    Work through each project one at a time, addressing shortDescription, long
+    description, highlights, and features together before moving to the next.
 
-    - [ ] **2.1.a Audit all `shortDescription` fields in `projects.ts` and `mods.ts`**
-        - Review each for: conciseness, compelling language, consistent tone
-        - Check for typos, awkward phrasing, or overly technical language
-        - Flag any that need rewriting
+    **Content field roles (progressive depth — each adds information, not restates):**
 
-    - [ ] **2.1.b Rewrite flagged descriptions**
-        - Target: clear, professional, showcases the project's value
-        - Keep under ~160 characters where possible (meta description length)
+    - **shortDescription** (~250 char max): The hook. "What is this, why should
+      I care?" No tech stack (visible on cards), no table stakes. Feeds meta
+      descriptions and OG tags.
+    - **description** (long, ~3-5 sentences): Narrative / executive summary.
+      Story and central challenge at summary level. Names technologies but
+      defers specifics to features. Avoids "how" detail — that's for details.
+    - **features** ("Key Features"): Concrete technical "what" — capabilities
+      and engineering choices. ~5 items of comparable length. Preceded by a
+      short italic blurb grounding the product's user-facing purpose (what
+      users actually do with the app). Uses `paragraph: true` for blurb,
+      regular strings for bullets.
+    - **details** ("Implementation Details"): Deep dive "how/why" — mechanisms,
+      tradeoffs, specific numbers. Grouped by bold `heading: true` category
+      headers with bullets underneath. Only use categories when project has
+      enough depth to warrant grouping; simpler projects can use flat bullets.
 
-    - [ ] **2.1.c User review of final descriptions**
+    **Progressive depth principle:** If the same topic appears in multiple
+    sections, each mention must be at a different depth. Example (type safety):
+    description says "type safety spans the full stack", features says "Pydantic,
+    Pyright strict mode, auto-generated TypeScript", details explains the stubs,
+    zero-Any policy, and migration that made it possible.
 
-- [ ] **2.2 Merge features into highlights**
+    **Length guidance:**
 
-    **Goal:** Curate the best points from each project's `features` array into
-    `highlights`, then remove the unused `features` field.
+    - shortDescription: ~250 char max (visual tested)
+    - description: ~3-5 sentences, trimmed of "how" detail
+    - features blurb: 1 sentence, italic, product-facing
+    - features bullets: ~5 items, keep individual items concise
+    - details: grouped by category when warranted, ~2 items per category
 
-    - [ ] **2.2.a Draft highlights for all projects**
-        - Target ~4-6 highlights per project focusing on impressive/notable aspects
-        - **Priority:** `re8-aim-dependent-crosshair` and `sh2r-never-holster-weapons`
-          have features but no highlights — their detail pages currently show no
-          content sections
-        - Review existing highlights and merge best `features` entries
-        - Consider if any items belong in `architectureNotes` instead
+    **Approach per project:**
 
-    - [ ] **2.2.b User review of curated highlights**
+    1. Read the project's actual repo/docs for accurate technical specifics
+    2. Draft description first (narrative summary)
+    3. Draft features blurb (what users do) + technical bullets
+    4. Draft details with category grouping (deep dive mechanisms)
+    5. Review all three together for overlap — each section should earn its space
 
-    - [ ] **2.2.c Finalize highlights in data files**
-        - Apply approved changes to `src/data/projects.ts` and `src/data/mods.ts`
+    **Project-type considerations:**
 
-- [ ] **2.3 Remove `features` field from project types**
+    - Software/games: use all sections with progressive depth model
+    - Mods: may only need details (evaluate per project); features blurb
+      likely unnecessary for mods
 
-    **Goal:** Clean up the type system now that highlights is the single content field.
+    **Tone principles:**
 
-    - [ ] **2.3.a Remove `features` from `Project` type in `src/types/project.ts`**
-        - Remove `features` field from interface
-        - Remove `features` from `sectionLabels` type
-        - Update JSDoc/docstring in `ProjectDetail.tsx` if it references features
+    - No boasting or "selling" (no "bleeding-edge," no "demonstrates discipline")
+    - Process/discipline is communicated by the technical content itself
+    - Prefer concrete specifics over abstract claims
+    - Avoid leading every bullet with portfolio-value verbs (showcases/demonstrates)
 
-    - [ ] **2.3.b Remove `features` data from all project entries**
-        - Remove `features` arrays from `src/data/projects.ts`
-        - Remove `features` arrays from `src/data/mods.ts`
-        - Remove `sectionLabels.features` overrides from any entries that have them
+    - [x] **2.1.a CineXplorer — shortDescription**
+        - Reworked from feature-listing approach to portfolio-value hook
+        - Final: "Movie discovery platform demonstrating end-to-end type safety,
+          a layered service architecture with dependency injection, production-grade
+          containerized infrastructure, and custom validation and enrichment
+          pipelines over external API integration."
+        - ~247 chars; established ~250 char max from visual testing
+    - [x] **2.1.b CineXplorer — features, details, long description**
+        - Established progressive depth model across all three sections
+        - Description: trimmed ~2 lines, moved "how" detail (buffer system,
+          DRF migration) to details, simplified type safety to scope statement
+        - Features: added italic product blurb (user-facing context), shortened
+          type safety bullet, kept ~5 technical items
+        - Details: full rewrite with 4 category headings (Data Quality, Type
+          Safety, Service Architecture, Theme System) + 7 deep-dive items
+          sourced from CineXplorer repo strategy docs
+        - ContentList visual redesign: accent-colored ▸ triangle markers for
+          standalone lists, category headers with indented sub-items + accent
+          left border for grouped lists
+        - Refactored ContentItem type: added `heading` flag replacing
+          convention-based bold detection for category headers
+        - Updated task list content guidelines with progressive depth model,
+          length guidance, and approach for remaining projects
+    - [ ] **2.1.c ARC Agentic Toolkit**
+    - [ ] **2.1.d andrewRCr Portfolio (this site)**
+    - [ ] **2.1.e TaskFocus**
+    - [ ] **2.1.f PetResort**
+    - [ ] **2.1.g DOOM (2016) NewGame+ Customizer**
+    - [ ] **2.1.h Action RPG Project**
+    - [ ] **2.1.i Survival Horror Project**
+    - [ ] **2.1.j Pong Clone** (previously polished — review only)
+    - [ ] **2.1.k Mods (all)**
+        - **Priority:** `re8-aim-dependent-crosshair` and
+          `sh2r-never-holster-weapons` have features but no highlights — their
+          detail pages currently show no content sections
 
-    - [ ] **2.3.c Verify no broken references**
-        - Search codebase for remaining references to `features` on project types
-        - Run type-check to catch any compile errors
-        - Run unit tests to verify data validation still passes
+- [ ] **2.2 Verify features/highlights field usage**
+
+    **Goal:** Ensure both fields render correctly on detail pages for all project
+    types. Remove features only from projects where it adds no value (likely mods).
+
+    - [ ] **2.2.a Audit which projects have features, highlights, or both**
+    - [ ] **2.2.b Remove features from projects where redundant (mods TBD)**
+    - [ ] **2.2.c Verify detail page rendering for all projects**
+    - [ ] **2.2.d Run type-check and unit tests**
 
 - [ ] **2.4 Phase 2 quality gates**
     - [ ] 2.4.a Type-check (`npm run type-check`)
@@ -520,101 +572,152 @@ dual-domain configuration.
     - [ ] 3.9.f Unit tests (`npm test`)
     - [ ] 3.9.g E2E tests (`npm run test:e2e`)
 
-### **Phase 4:** Deployment & Validation
+### **Phase 4:** Pre-Launch Polish
 
-- [ ] **4.1 Connect repository to Vercel**
+*Catch-all phase for visual fixes, responsive issues, and other polish items
+discovered before deployment. Tasks added as they surface.*
 
-    - [ ] **4.1.a Link GitHub repo to Vercel project**
+- [ ] **4.1 Fix icon button jitter during theme transitions (Safari)**
+
+    **Goal:** Eliminate visible icon jitter during light/dark transitions on Safari.
+
+    - [ ] **4.1.a Investigate git history for removed stabilization property**
+        - A `will-change` or Framer Motion layout prop was previously on ThemeToggle
+          but removed during code review — find and evaluate restoring it
+    - [ ] **4.1.b Audit all icon buttons for jitter**
+        - ThemeToggle (TopBar), filter button (/projects), any others
+    - [ ] **4.1.c Apply fix and verify across browsers**
+        - Fix must not regress Firefox/Chrome behavior
+        - Verify via Cloudflare tunnel on real Safari
+
+- [ ] **4.2 Investigate and fix slow image loading**
+
+    **Goal:** Improve loading performance for wallpaper thumbnails and profile photo
+    on lower-bandwidth connections.
+
+    - [ ] **4.2.a Diagnose wallpaper thumbnail loading in ThemeControl**
+        - Check image sizes, responsive `sizes`/`srcSet`, placeholder strategy
+    - [ ] **4.2.b Diagnose profile photo loading on About page**
+        - Image appeared broken for 20+ seconds on WiFi before loading
+    - [ ] **4.2.c Implement fixes**
+        - Options: resize assets, add blur placeholders, tune Next.js Image props
+
+- [ ] **4.3 Laptop viewport responsive design pass**
+
+    **Goal:** Audit and fix layout issues at laptop-class viewports (~1280–1440px
+    width, limited height).
+
+    - [ ] **4.3.a Audit all pages at laptop viewport**
+        - Key issues identified: Home skill logos not visible without scrolling,
+          Contact needs padding adjustment
+        - Full audit of all pages at ~1440×900
+    - [ ] **4.3.b Implement responsive fixes**
+        - Home: consider reducing featured projects, repositioning skill logos
+        - Contact: reduce top padding at this viewport size
+        - Other pages: fix any issues found in audit
+
+- [ ] **4.4 Phase 4 quality gates**
+    - [ ] 4.4.a Type-check (`npm run type-check`)
+    - [ ] 4.4.b Lint (`npm run lint`)
+    - [ ] 4.4.c Format check (`npm run format:check`)
+    - [ ] 4.4.d Unit tests (`npm test`)
+    - [ ] 4.4.e E2E tests — targeted for layout/responsive changes
+
+### **Phase 5:** Deployment & Validation
+
+- [ ] **5.1 Connect repository to Vercel**
+
+    - [ ] **5.1.a Link GitHub repo to Vercel project**
         - Import repo in Vercel dashboard
         - Configure framework preset (Next.js auto-detected)
         - Verify preview deployment succeeds on current `main`
 
-    - [ ] **4.1.b Configure environment variables**
+    - [ ] **5.1.b Configure environment variables**
         - Add Zeptomail API credentials (`ZEPTOMAIL_API_KEY`, etc.)
         - Verify variables match what `src/app/api/contact/route.ts` expects
 
-- [ ] **4.2 Set up Vercel KV for rate limiting**
+- [ ] **5.2 Set up Vercel KV for rate limiting**
 
-    - [ ] **4.2.a Create KV database in Vercel dashboard**
+    - [ ] **5.2.a Create KV database in Vercel dashboard**
         - Project Settings → Storage → Create Database → KV
         - Link to project (auto-adds `KV_REST_API_URL` and `KV_REST_API_TOKEN`)
         - Free tier: 30K requests/month (sufficient for portfolio traffic)
 
-    - [ ] **4.2.b Verify rate limiting works in deployment**
+    - [ ] **5.2.b Verify rate limiting works in deployment**
         - Submit 6+ rapid contact form requests
         - Expect 429 response on 6th request
 
-- [ ] **4.3 Configure domains**
+- [ ] **5.3 Configure domains**
 
     **Note:** Domain registration and DNS transfer are manual tasks. This covers
     Vercel-side configuration.
 
-    - [ ] **4.3.a Register new domains**
+    - [ ] **5.3.a Register new domains**
         - `andrewcreekmore.dev` (primary)
         - `andrewrcr.dev` and `andrewrcr.com` (handle-based, easier verbal)
         - Register at chosen registrar (Cloudflare, Namecheap, etc. — TBD)
         - Configure DNS for all three to point to Vercel
 
-    - [ ] **4.3.b Transfer `andrewcreekmore.com` from Squarespace**
+    - [ ] **5.3.b Transfer `andrewcreekmore.com` from Squarespace**
         - Initiate transfer to same registrar as `.dev`
         - Configure DNS to point to Vercel
 
-    - [ ] **4.3.c Add all domains to Vercel project**
+    - [ ] **5.3.c Add all domains to Vercel project**
         - Set `andrewcreekmore.dev` as primary domain
         - Add `andrewcreekmore.com`, `andrewrcr.dev`, `andrewrcr.com` as redirects
           (Vercel auto-308s to primary)
         - Verify SSL certificates provisioned for all domains
 
-    - [ ] **4.3.d Update `SITE.url` and `metadataBase` if domain changed**
+    - [ ] **5.3.d Update `SITE.url` and `metadataBase` if domain changed**
         - Verify canonical URLs, sitemap, and OG tags use final production domain
 
-- [ ] **4.4 Lighthouse baseline audit**
+- [ ] **5.4 Lighthouse baseline audit**
 
     **Goal:** Verify META-PRD target of 90+ across all four Lighthouse categories.
 
-    - [ ] **4.4.a Run Lighthouse against production deployment**
+    - [ ] **5.4.a Run Lighthouse against production deployment**
         - Test key pages: Home, Projects, a project detail, Skills, About, Contact
         - Record scores: Performance, Accessibility, Best Practices, SEO
         - Document baseline in completion doc
 
-    - [ ] **4.4.b Address any scores below 90**
+    - [ ] **5.4.b Address any scores below 90**
         - Investigate and fix issues if any category falls below target
         - Re-run until all four categories meet 90+ threshold
 
-- [ ] **4.5 Production smoke test**
+- [ ] **5.5 Production smoke test**
 
-    - [ ] **4.5.a Verify all public pages load**
+    - [ ] **5.5.a Verify all public pages load**
         - Home, Projects, Skills, About, Contact, project detail pages
         - Test on desktop and mobile viewports
 
-    - [ ] **4.5.b Verify functionality**
+    - [ ] **5.5.b Verify functionality**
         - Contact form submits successfully (email received)
         - Rate limiting works (429 on excessive requests)
         - Theme toggle persists across sessions
         - Wallpaper selection persists
         - Navigation and page transitions work smoothly
 
-    - [ ] **4.5.c Verify SEO implementation**
+    - [ ] **5.5.c Verify SEO implementation**
         - View page source — meta tags, OG tags, canonical URLs present
         - Test social preview with LinkedIn/Twitter sharing debugger tools
         - Verify sitemap accessible at `/sitemap.xml`
         - Verify robots.txt accessible at `/robots.txt`
 
-    - [ ] **4.5.d Verify production gating**
+    - [ ] **5.5.d Verify production gating**
         - Navigate to `/dev/sandbox`, `/dev/typography`, etc. — all return 404
         - Verify custom 404 page displays (not Vercel default)
 
-    - [ ] **4.5.e Verify error handling**
+    - [ ] **5.5.e Verify error handling**
         - Custom 404 page displays for non-existent routes
         - Error boundary renders for runtime errors (if testable)
 
-- [ ] **4.6 NexusMods API app registration**
+- [ ] **5.6 NexusMods API app registration**
 
     **Note:** Compliance task, not code. Requires public GitHub repo and live site.
 
-    - [ ] **4.6.a Make GitHub repository public**
+    - [ ] **5.6.a Make GitHub repository public**
 
-    - [ ] **4.6.b Submit NexusMods app registration**
+    - [ ] **5.6.b Submit NexusMods app registration**
         - Application name
         - Short description
         - Logo (suitable for dark backgrounds)
@@ -630,13 +733,16 @@ dual-domain configuration.
 - [ ] Feature flag system documented and extensible for future flags
 - [ ] Surface tuner stable at `/dev/surface` with no CSS variable leaks
 - [ ] All project descriptions polished and highlights populated
-- [ ] `features` field removed from project types (highlights is sole content field)
+- [ ] Features and highlights have distinct roles; features removed only where redundant
 - [ ] Custom 404 and error pages display with TWM theme
 - [ ] Every public page has unique metadata (title, description, OG tags)
 - [ ] Project detail pages have dynamic metadata with hero images
 - [ ] Sitemap and robots.txt serve correct content
 - [ ] Favicon displays in browser tabs
 - [ ] JSON-LD structured data present (Person, BreadcrumbList)
+- [ ] Icon button jitter eliminated in Safari theme transitions
+- [ ] Images load promptly on lower-bandwidth connections
+- [ ] All pages render well at laptop viewports (~1280–1440px)
 - [ ] Site deployed at `andrewcreekmore.dev`
 - [ ] All secondary domains redirect to `.dev` (`.com`, `andrewrcr.dev`, `andrewrcr.com`)
 - [ ] Lighthouse 90+ across Performance, Accessibility, Best Practices, SEO
