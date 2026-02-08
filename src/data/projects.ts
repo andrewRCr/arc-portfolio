@@ -7,6 +7,10 @@
 
 import { Project } from "@/types/project";
 
+/** Shared feature bullet for projects developed with the ARC Framework. */
+export const ARC_FRAMEWORK_FEATURE =
+  "Developed with the ARC Framework for structured, AI-assisted development workflows";
+
 export const projects: Project[] = [
   // ==========================================
   // PROJECT 1: CineXplorer (New Project)
@@ -61,7 +65,7 @@ export const projects: Project[] = [
       "Dual-pattern authentication: JWT for email/password, OAuth 2.0 for social login (Google, GitHub)",
       "Multi-stage data quality pipeline with hybrid API and client-side filtering",
       "Five-container Docker architecture with Caddy reverse proxy, Redis caching, and CI/CD pipeline",
-      "Developed with the ARC Framework for structured, AI-assisted development workflows",
+      ARC_FRAMEWORK_FEATURE,
     ],
     links: {
       github: "https://github.com/andrewRCr/CineXplorer",
