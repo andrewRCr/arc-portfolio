@@ -382,7 +382,20 @@ dual-domain configuration.
           convention-based bold detection for category headers
         - Updated task list content guidelines with progressive depth model,
           length guidance, and approach for remaining projects
-    - [ ] **2.1.c ARC Agentic Toolkit**
+    - [x] **2.1.c ARC Framework**
+        - Full content pass applying progressive depth model:
+          shortDescription, description, features (blurb + 6 bullets),
+          details (4 category headings + 10 items)
+        - Renamed: title "ARC Agentic Toolkit" → "ARC Framework",
+          category "Dev Framework" → "Dev Methodology",
+          slug "arc-agentic-dev-framework" → "arc-framework"
+        - Updated FeaturedSection type "framework" → "methodology"
+          to avoid badge/title repetition
+        - Renamed image files and updated all references across
+          source, tests, and documentation
+        - Philosophy-focused copy emphasizing tight human-agent
+          coupling, complementary strengths, co-development over
+          raw throughput, and honest scope (single-dev origin)
     - [ ] **2.1.d andrewRCr Portfolio (this site)**
     - [ ] **2.1.e TaskFocus**
     - [ ] **2.1.f PetResort**
