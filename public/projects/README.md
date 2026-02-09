@@ -71,7 +71,7 @@ Screenshot counts per project:
 | survival-horror-project      | 22 screenshots   | public/projects/survival-horror-project/           |
 | pong-clone                   | 2 screenshots    | public/projects/pong-clone/                        |
 | cinexplorer                  | 0 screenshots    | public/projects/cinexplorer/ (empty)               |
-| arc-agentic-dev-framework    | 0 screenshots    | public/projects/arc-agentic-dev-framework/ (empty) |
+| arc-framework                | 0 screenshots    | public/projects/arc-framework/ (empty)             |
 | arc-portfolio                | 0 screenshots    | public/projects/arc-portfolio/ (empty)             |
 
 **Total screenshot size**: ~5.9 MB
@@ -161,7 +161,7 @@ The following projects need thumbnails and screenshots added:
    - Thumbnail: TBD
    - Screenshots: TBD (recommend 4-8 screenshots)
 
-2. **ARC Agentic Dev Framework** (arc-agentic-dev-framework)
+2. **ARC Framework** (arc-framework)
    - Thumbnail: TBD
    - Screenshots: TBD (recommend 4-6 screenshots)
 

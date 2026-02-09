@@ -60,7 +60,10 @@ export const projects: Project[] = [
     ],
     techStack: ["TypeScript", "React", "Django", "Django Ninja", "PostgreSQL", "Docker", "Chakra UI"],
     features: [
-      { text: "*Users discover movies via robust category and filtering options, manage personal watchlists, build shareable curated collections, log watches with ratings and reviews to a personal timeline, and receive personalized recommendations.*", paragraph: true },
+      {
+        text: "*Users discover movies via robust category and filtering options, manage personal watchlists, build shareable curated collections, log watches with ratings and reviews to a personal timeline, and receive personalized recommendations.*",
+        paragraph: true,
+      },
       "Type safety from API to frontend: Pydantic, Pyright strict mode, and auto-generated TypeScript",
       "Dual-pattern authentication: JWT for email/password, OAuth 2.0 for social login (Google, GitHub)",
       "Multi-stage data quality pipeline with hybrid API and client-side filtering",
@@ -97,21 +100,23 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 2: ARC Agentic Development Framework
+  // PROJECT 2: ARC Framework
   // ==========================================
   {
     projectType: "software",
-    title: "ARC Agentic Toolkit",
-    slug: "arc-agentic-dev-framework",
+    title: "ARC Framework",
+    slug: "arc-framework",
     description:
       "A structured methodology for spec-driven development with AI agents, emphasizing disciplined collaboration over automation. " +
-      "Developed through real-world application on complex features with systematic knowledge preservation and recursive feedback loops. " +
-      "Features constitutional documents (META-PRD, DEVELOPMENT-RULES), comprehensive workflows (PRD generation, task processing, session handoffs), " +
-      "and zero-tolerance quality gates for maintaining code quality while leveraging AI acceleration.",
+      "Implemented as portable markdown documents and built on the premise that better outcomes come from deliberately coupling human " +
+      "judgment with agent capability, not separating them through delegation. Task execution is intentionally single-threaded — work scoped into discrete " +
+      "actions that are small enough to review meaningfully, with active, hands-on developer involvement creating a tight feedback loop " +
+      "that leverages complementary strengths, favoring iterative refinement and co-development over raw throughput. The framework unifies project organization, context, and execution " +
+      "in a single, stack-agnostic system.",
     shortDescription:
-      "Documentation-only framework for AI-augmented development with structured workflows and battle-tested processes. " +
-      "Emphasizes directed collaboration over autonomous automation.",
-    category: ["Dev Framework"],
+      "Structured documentation framework emphasizing focused human-agent coupling over autonomous delegation. " +
+      "Defines workflows for project management, shared context, and intentionally single-threaded, collaborative task execution.",
+    category: ["Dev Methodology"],
     tags: [
       "Documentation",
       "Process Framework",
@@ -127,34 +132,42 @@ export const projects: Project[] = [
     ],
     techStack: ["Markdown"],
     features: [
-      "Template-first constitutional documents with battle-tested defaults from production usage",
-      "4-step core workflow: constitution → PRD generation → task processing → guided execution",
-      "Supplemental workflows: atomic commits, session handoffs, incidental work management, PR reviews",
-      "Zero-tolerance quality gates with comprehensive markdown linting and commit protocols",
-      "Directed AI collaboration framework limiting autonomy to individual sub-tasks with human oversight",
-      "Recursive feedback loops for continuous system refinement and knowledge preservation",
+      {
+        text: "*Developers adopt a preset directory of templates into their project, customize foundational documents for their stack and goals, then utilize structured, customizable workflows from requirements through task execution — with session protocols maintaining continuity across context boundaries.*",
+        paragraph: true,
+      },
+      "Constitutional documents anchoring project vision, architecture, and development standards",
+      "Core workflow: PRD generation → task breakdown → single-threaded execution, review, and refinement",
+      "Session initialization and handoff protocols for agent orientation and context preservation",
+      "Tiered quality gate scaffolding scoped from per-subtask checks to full-suite validation",
+      "Structured work organization: feature, technical, and incidental tracks with lifecycle management",
+      "Archival protocols preserving completed work as searchable, structured project history",
     ],
     links: {
-      github: "https://github.com/andrewRCr/arc-agentic-dev-framework",
+      github: "https://github.com/andrewRCr/arc-framework",
       liveDemo: undefined, // Not applicable - framework/documentation repo
     },
     images: {
-      thumbnail: "/thumbnails/arc-agentic-dev-framework.webp",
-      hero: "/projects/arc-agentic-dev-framework/hero.webp",
+      thumbnail: "/thumbnails/arc-framework.webp",
+      hero: "/projects/arc-framework/hero.webp",
       screenshots: [], // Documentation-only - no UI screenshots
     },
     photoCredits: ["Alexey Ruban", "Mike Stoll", "Jason Leung"],
     developmentTime: "2025-2026",
     details: [
-      "Documentation-only framework with no code dependencies - pure process and templates",
-      "Deployable template system for project adoption via dedicated directory structure",
-      "Self-hosting methodology: framework developed using its own development workspace",
-      "Template-first documents eliminate token replacement complexity with copy-ready guidance",
-      "Built on Apache 2.0 foundation (ai-dev-tasks) with significant original enhancements",
-      "Demonstrates systematic approach to AI-augmented development with emphasis on human direction and code quality over automation",
-      "Showcases ability to extract, codify, and systematize development patterns from real-world production experience",
-      "Exemplifies recursive improvement philosophy: framework developed using its own methodology (self-hosting)",
-      "Represents original contribution to AI-human collaboration patterns with practical, battle-tested workflows",
+      { text: "**Document Architecture**", heading: true },
+      "Three-tier knowledge system: constitutional documents (stable foundation), ADRs and strategy guides (patterns evolved from real use), and active work tracking (tasks, session context, notes)",
+      "Layered agent configuration: central reference card extended by agent-specific files, with multi-agent slash commands and skills for low-friction workflow invocation",
+      { text: "**Workflow & Execution**", heading: true },
+      "Single-subtask protocol with explicit completion criteria and approval gates between each action",
+      "Supplemental workflows covering session initialization and handoff, atomic commits, incidental work and branch management, documentation maintenance and archival, and tiered pre-merge code review",
+      { text: "**Work Management**", heading: true },
+      "GTD-inspired capture and processing: low-friction task inbox for idea capture, atomic tasks for discrete work items, and weekly review cycles for ongoing work units (sets of interdependent tasks)",
+      "Progressive planning pipeline: capture → evolving planning notes → structured PRD → scoped tasks with explicit success criteria",
+      "Quarterly archival system organizing completed work by type as searchable project history",
+      { text: "**Portability**", heading: true },
+      "No code dependencies — markdown documents in a preset active/backlog/reference directory structure",
+      "Self-hosting: the framework's own development follows its methodology, using an internal ARC workspace",
     ],
     order: 3,
     featured: true,
@@ -480,7 +493,7 @@ export const projects: Project[] = [
       "Third-person action RPG in Unreal Engine 4 with Souls-like combat, 6 enemy AI types, and posture-break mechanics.",
     category: ["Game"],
     tags: ["Unreal Engine 4", "C++", "Game Development", "Combat Systems", "Enemy AI", "Action RPG"],
-    techStack: ["C++", "Unreal Engine 4", "Blueprint", "AI Behavior Trees", "Animation State Machines"],
+    techStack: ["C++", "Unreal Engine 4", "Perforce", "AI Behavior Trees", "Animation State Machines"],
     features: [
       "Souls-like combat design emphasizing aggressive play through posture mechanics",
       "6 distinct enemy AI types with unique behaviors and combat patterns",
@@ -560,7 +573,7 @@ export const projects: Project[] = [
       "Capstone survival horror game in Unreal Engine 5 with puzzle-solving, inventory management, and zombie combat. Team project lead role.",
     category: ["Game"],
     tags: ["Unreal Engine 5", "C++", "Blueprint", "Game Development", "Team Leadership", "Capstone Project"],
-    techStack: ["C++", "Unreal Engine 5", "Blueprint", "AI Behavior Trees", "Animation State Machines"],
+    techStack: ["C++", "Unreal Engine 5", "Perforce", "AI Behavior Trees", "Animation State Machines"],
     features: [
       "9 environmental puzzles with varying complexity levels",
       "Progression-updated multi-floor map system for navigation",

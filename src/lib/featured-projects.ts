@@ -6,7 +6,7 @@
  *
  * Slot configuration:
  * - Slot 1: Software (random from featured software, excluding framework)
- * - Slot 2: Framework (ARC Framework - always)
+ * - Slot 2: Methodology (ARC Framework - always)
  * - Slot 3: Game (random from featured games)
  * - Slot 4: Mod (random from featured mods)
  */
@@ -15,7 +15,7 @@ import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 
 /** Project type for featured cards */
-export type FeaturedProjectType = "software" | "framework" | "game" | "mod";
+export type FeaturedProjectType = "software" | "methodology" | "game" | "mod";
 
 /** Minimal project reference returned by selection */
 export interface FeaturedProject {
@@ -23,8 +23,8 @@ export interface FeaturedProject {
   type: FeaturedProjectType;
 }
 
-/** Framework project slug (always shown, has dedicated slot despite being projectType: "software") */
-export const FRAMEWORK_SLUG = "arc-agentic-dev-framework";
+/** Methodology project slug (ARC Framework — always shown, has dedicated slot despite being projectType: "software") */
+export const FRAMEWORK_SLUG = "arc-framework";
 
 /** Derive software pool: featured software projects excluding the framework */
 export const SOFTWARE_POOL: string[] = projects
@@ -74,7 +74,7 @@ function selectFromPool<T>(pool: T[]): T {
  *
  * Returns one project per category type:
  * - Random software project
- * - ARC Framework (always)
+ * - ARC Framework (always, methodology slot)
  * - Random game project
  * - Random mod project
  *
@@ -93,7 +93,7 @@ export function selectFeaturedProjects(): FeaturedProject[] {
 
   return [
     { slug: selectFromPool(SOFTWARE_POOL), type: "software" },
-    { slug: FRAMEWORK_SLUG, type: "framework" },
+    { slug: FRAMEWORK_SLUG, type: "methodology" },
     { slug: selectFromPool(GAME_POOL), type: "game" },
     { slug: selectFromPool(MOD_POOL), type: "mod" },
   ];

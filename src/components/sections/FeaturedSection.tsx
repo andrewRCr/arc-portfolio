@@ -3,7 +3,7 @@
 /**
  * FeaturedSection - Home page featured projects grid
  *
- * Displays 4 project cards with type labels (software, framework, game, mod).
+ * Displays 4 project cards with type labels (software, methodology, game, mod).
  * Projects are randomized on each page load, one from each category.
  *
  * Note: Section heading ("Featured Projects") is rendered in Hero component
@@ -23,7 +23,7 @@ type ResolvedProject = { project: Project; type: FeaturedProject["type"] };
 function getProjectPath(type: FeaturedProject["type"]): string {
   switch (type) {
     case "software":
-    case "framework":
+    case "methodology":
       return "/projects/software";
     case "game":
       return "/projects/games";
