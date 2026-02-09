@@ -396,7 +396,23 @@ dual-domain configuration.
         - Philosophy-focused copy emphasizing tight human-agent
           coupling, complementary strengths, co-development over
           raw throughput, and honest scope (single-dev origin)
-    - [ ] **2.1.d andrewRCr Portfolio (this site)**
+    - [x] **2.1.d andrewRCr Portfolio (this site)**
+        - Full content pass applying progressive depth model:
+          shortDescription (production app thesis + type safety, design
+          system, a11y), description (4 sentences: thesis, typed data
+          models, theme/SSR persistence, accessibility validation),
+          features (blurb + 6 bullets: type-safe content, semantic
+          tokens, a11y auditing, responsive, animation orchestration,
+          ARC constant), details (3 headings: Design System, Server
+          Rendering, Quality Engineering — 7 items total)
+        - Leaned into self-referential nature (visitor can verify claims)
+          while avoiding attitude claims ("first-class concern", etc.)
+        - Promoted type-safe content architecture as lead differentiator
+        - Added animation orchestration coverage (reducer-based,
+          phase-driven, centralized timing, reduced-motion support)
+        - Revised ARC_FRAMEWORK_FEATURE constant: added markdown link
+          to framework project page, refined copy to capture philosophy
+        - Added Framer Motion to techStack
     - [ ] **2.1.e TaskFocus**
     - [ ] **2.1.f PetResort**
     - [ ] **2.1.g DOOM (2016) NewGame+ Customizer**

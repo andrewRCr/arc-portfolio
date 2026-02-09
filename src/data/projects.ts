@@ -9,7 +9,7 @@ import { Project } from "@/types/project";
 
 /** Shared feature bullet for projects developed with the ARC Framework. */
 export const ARC_FRAMEWORK_FEATURE =
-  "Developed with the ARC Framework for structured, AI-assisted development workflows";
+  "Built with [ARC Framework](/projects/software/arc-framework) — a spec-driven development methodology emphasizing focused human-agent collaboration";
 
 export const projects: Project[] = [
   // ==========================================
@@ -182,13 +182,13 @@ export const projects: Project[] = [
     title: "andrewRCr Portfolio",
     slug: "arc-portfolio",
     description:
-      "This portfolio site, built with Next.js 15 App Router, React 19, TypeScript, and Tailwind CSS v4, featuring " +
-      "Server Actions for SSR-optimized preference persistence, automated accessibility testing, and WCAG AA contrast " +
-      "validation across all theme combinations. Demonstrates pragmatic TDD with 900+ tests and zero-tolerance quality " +
-      "gates enforced through CI/CD pipeline.",
+      "A developer portfolio engineered as a production application. All content — project data, theme definitions, and " +
+      "site configuration — flows through typed, validated data models. The multi-theme design system persists user " +
+      "preferences to cookies via Server Actions, preventing flash of unstyled content on page load. Accessibility is " +
+      "validated by automated testing across the component library and every theme combination.",
     shortDescription:
-      "Modern portfolio website built with Next.js 15, showcasing type-safe architecture and systematic development practices. " +
-      "The site you're currently viewing.",
+      "Developer portfolio with type-safe content architecture, a multi-theme design system, and automated accessibility " +
+      "validation across every theme combination. The site you're currently viewing.",
     category: ["Web App"],
     tags: [
       "TypeScript",
@@ -212,14 +212,18 @@ export const projects: Project[] = [
       "CodeRabbit",
       "Portfolio",
     ],
-    techStack: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Shadcn/ui"],
+    techStack: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Shadcn/ui", "Framer Motion"],
     features: [
-      "Server Actions for cookie-based preference persistence, preventing flash of unstyled content on SSR",
-      "Automated accessibility testing with vitest-axe across 60+ component test suites",
-      "WCAG AA contrast validation: automated testing of all theme color combinations in light/dark modes",
-      "Hydration-safe responsive design using CSS media queries instead of client-side detection",
-      "Type-safe content architecture with TypeScript interfaces and 300+ lines of data validation tests",
-      "CI/CD pipeline with GitHub Actions, comprehensive quality gates, and Vercel automatic deployments",
+      {
+        text: "*Visitors explore project exhibits with category filtering, customize their experience through switchable themes and wallpapers, and navigate responsive layouts that adapt across devices — with preferences persisting seamlessly between sessions.*",
+        paragraph: true,
+      },
+      "Type-safe content architecture with validated data models for project data, theme definitions, and site configuration",
+      "Theme system built on semantic design tokens for color and layout, with WCAG AA contrast validation across all combinations",
+      "Automated accessibility auditing with vitest-axe integrated across component test suites",
+      "Responsive layouts with distinct compositions across viewports — CSS-only breakpoints for hydration safety",
+      "Orchestrated animation system with centralized timing driving intro sequences, page transitions, and shared element morphing",
+      ARC_FRAMEWORK_FEATURE,
     ],
     links: {
       github: "https://github.com/andrewRCr/arc-portfolio",
@@ -232,16 +236,16 @@ export const projects: Project[] = [
     },
     developmentTime: "2025-2026",
     details: [
-      "Next.js App Router with React Server Components for optimal performance",
-      "Type-safe content management: TypeScript interfaces for all portfolio data",
-      "Component architecture: Shadcn/ui copy-paste approach for full customization control",
-      "Static Site Generation (SSG) for instant page loads with global CDN delivery",
-      "Turbopack for fast development builds and hot module replacement",
-      "Zero-tolerance quality enforcement: TypeScript strict mode, ESLint, Prettier, markdown linting",
-      "Accessibility-first engineering: automated WCAG testing, screen reader announcements, keyboard navigation throughout",
-      "Production-grade SSR optimization: Server Actions sync preferences to cookies, eliminating layout shifts on page load",
-      "Comprehensive test coverage: 900+ tests including accessibility validation, contrast checking, and data integrity",
-      "Systematic development methodology: quality gates, pragmatic TDD, atomic commits, and ARC Framework integration",
+      { text: "**Design System**", heading: true },
+      "Semantic tokens implemented as CSS custom properties — themes swap value definitions at runtime without triggering component re-renders, covering color, layout, and typographic scales across all theme variants",
+      "Reducer-based animation state with phase-driven intro orchestration and mode-based timing lookups from a centralized single source of truth, with full reduced-motion support bypassing all animation at the dispatch level",
+      "Per-theme wallpaper system with user preference persistence, integrated into the Server Actions cookie synchronization layer",
+      { text: "**Server Rendering**", heading: true },
+      "Server Actions resolve user preferences from cookies during the server render pass and inject them into the initial HTML response, establishing theme and layout state before the browser paints — zero layout shift on initial load",
+      "Hydration-safe responsive rendering through CSS-only breakpoints — server and client produce identical initial markup regardless of viewport, avoiding the layout flash common with client-side detection approaches",
+      { text: "**Quality Engineering**", heading: true },
+      "Pragmatic test-first development for component behavior and data validation, test-after for presentational layout",
+      "Accessibility auditing integrated at the component level within test suites, catching regressions alongside functional tests",
     ],
     order: 4,
     featured: false,
