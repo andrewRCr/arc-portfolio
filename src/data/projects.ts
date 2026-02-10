@@ -252,19 +252,22 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 4: TaskFocus (Squarespace Migration)
+  // PROJECT 4: TaskFocus
   // ==========================================
   {
     projectType: "software",
     title: "TaskFocus",
     slug: "taskfocus",
     description:
-      "Cross-platform personal task management application with native desktop (WPF) and web interfaces (Blazor WASM), " +
-      "designed around the Getting Things Done (GTD) productivity methodology. Features bi-directional data synchronization " +
-      "between platforms, comprehensive task organization with projects and contexts, and a modern .NET 8 backend with SQL Server. " +
-      "Demonstrates full-stack .NET proficiency with multiple frontend frameworks and real-time data synchronization patterns.",
+      "A cross-platform task management application built on the Getting Things Done productivity methodology, with both a web " +
+      "interface and a native Windows desktop client powered by a shared .NET 8 backend. The GTD domain model organizes tasks along " +
+      "two independent axes — projects group related work, contexts group tasks by the conditions needed to complete them — with each " +
+      "view maintaining its own drag-and-drop sort order. Both clients stay synchronized through bi-directional background polling and " +
+      "manual sync triggers, reconciling task state across platforms. Released as a production application with a live web deployment " +
+      "and downloadable desktop installer.",
     shortDescription:
-      "GTD-based task manager with native desktop and web interfaces, featuring bi-directional sync and comprehensive task organization.",
+      "Cross-platform .NET task manager with Blazor web and WPF desktop clients sharing a common backend API, " +
+      "bi-directional data synchronization, and GTD-based task organization with configurable lifecycle management.",
     category: ["Desktop App", "Web App"],
     tags: [
       ".NET",
@@ -281,14 +284,17 @@ export const projects: Project[] = [
       "Postman",
       "Productivity",
     ],
-    techStack: [".NET 8", "C#", "SQL Server", "Blazor Web Assembly", "MudBlazor", "WPF", "Caliburn Micro"],
+    techStack: ["C#", ".NET 8", "SQL Server", "Blazor Web Assembly", "MudBlazor", "WPF", "Caliburn Micro"],
     features: [
-      "Bi-directional data synchronization between web and desktop platforms",
-      "GTD-inspired task organization: Inbox, Today, Projects, Contexts, Completed views",
-      "Task prioritization with starring, due dates, and drag-and-drop ordering",
-      "User authentication with JWT and email confirmation",
-      "Automated task clean-up and archiving lifecycle management",
-      "Cross-platform deployment: web app and native Windows desktop application",
+      {
+        text: "*Users organize tasks following GTD methodology across web and desktop interfaces, with task assignments, ordering, and completions syncing automatically between platforms.*",
+        paragraph: true,
+      },
+      "GTD-inspired views — Inbox, Today, Projects, Contexts, and Completed — with per-view drag-and-drop ordering",
+      "Bi-directional data synchronization between web and desktop clients via background polling and manual trigger",
+      "Task lifecycle management with user-configurable intervals for automatic clean-up and eventual deletion",
+      "JWT authentication with transactional email for address confirmation, password reset, and account management",
+      "Cross-platform deployment: live Blazor web app and downloadable native Windows desktop client",
     ],
     links: {
       github: "https://github.com/andrewRCr/TaskFocus",
@@ -309,27 +315,26 @@ export const projects: Project[] = [
         { src: "/projects/taskfocus/screenshot-8.webp", alt: "TaskFocus feature screenshot 8" },
       ],
     },
-    developmentTime: "2024 (v1), 2026 (v2)",
-    developmentTimeCompact: "2024 / 2026",
+    // developmentTime visual tuning: "2024 (v1), 2026 (v2)" / "2024 / 2026" confirmed at all breakpoints
+    developmentTime: "2024",
     details: [
-      ".NET 8 backend API with SQL Server and Entity Framework for data persistence",
-      "Blazor Web Assembly for modern web interface with MudBlazor component library",
-      "WPF desktop application using MVVM pattern with Caliburn Micro",
-      "JWT-based authentication with Identity for secure user management",
-      "Bi-directional sync architecture for seamless cross-platform task management",
-      "Azure DevOps CI/CD pipeline for continuous integration and deployment",
-      "Demonstrates full-stack .NET ecosystem proficiency across multiple frameworks (Blazor WASM, WPF)",
-      "Implements complex data synchronization patterns for seamless cross-platform experience",
-      "Showcases MVVM architectural pattern and modern C# development practices",
-      "Released production application (v1.0.0) with live deployment and downloadable desktop client",
+      { text: "**Cross-Platform Architecture**", heading: true },
+      "Blazor Web Assembly frontend with MudBlazor component library for a responsive Material Design interface",
+      "WPF desktop client following MVVM with Caliburn Micro for convention-based view binding and screen lifecycle management",
+      ".NET 8 backend API with SQL Server and Entity Framework, serving both clients through a shared REST surface",
+      { text: "**Synchronization**", heading: true },
+      "Background periodic sync with manual trigger option, reconciling task state across web and desktop clients",
+      "View-relative ordering: every view maintains its own independent sort indices, synced alongside but separately from task data",
+      { text: "**Identity & Lifecycle**", heading: true },
+      "ASP.NET Identity integration with JWT tokens, transactional email for address confirmation, and self-service account management (username, email, and password changes)",
+      "Configurable task lifecycle: completed tasks remain visible in their source view for a user-defined interval before automatic cleanup to Completed, with a separate deletion interval — both exposed as user settings",
     ],
     order: 2,
     featured: true,
   },
 
   // ==========================================
-  // PROJECT 5: PetResort (Squarespace Migration)
-  // ==========================================
+  // PROJECT 5: PetResort  // ==========================================
   {
     projectType: "software",
     title: "PetResort",
@@ -406,8 +411,7 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 6: DOOM NewGame+ Customizer (Squarespace Migration)
-  // ==========================================
+  // PROJECT 6: DOOM NewGame+ Customizer  // ==========================================
   {
     projectType: "software",
     title: "DOOM (2016) NewGame+ Customizer",
@@ -480,8 +484,7 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 7: Action RPG Project (Squarespace Migration)
-  // ==========================================
+  // PROJECT 7: Action RPG Project  // ==========================================
   {
     projectType: "game",
     title: "Action RPG Project",
@@ -559,8 +562,7 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 8: Survival Horror Project (Squarespace Migration)
-  // ==========================================
+  // PROJECT 8: Survival Horror Project  // ==========================================
   {
     projectType: "game",
     title: "Survival Horror Project",
@@ -668,8 +670,7 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 9: Pong Clone (Squarespace Migration)
-  // ==========================================
+  // PROJECT 9: Pong Clone  // ==========================================
   {
     projectType: "game",
     title: "Pong Clone",

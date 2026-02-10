@@ -413,7 +413,22 @@ dual-domain configuration.
         - Revised ARC_FRAMEWORK_FEATURE constant: added markdown link
           to framework project page, refined copy to capture philosophy
         - Added Framer Motion to techStack
-    - [ ] **2.1.e TaskFocus**
+    - [x] **2.1.e TaskFocus**
+        - Full content pass applying progressive depth model:
+          shortDescription (cross-platform thesis, shared backend,
+          bi-directional sync, GTD lifecycle), description (4 sentences:
+          thesis, dual-axis GTD domain model, sync architecture, production
+          status), features (blurb + 5 bullets: GTD views with per-view
+          ordering, bi-directional sync, lifecycle management, JWT/email
+          auth, cross-platform deployment), details (3 headings:
+          Cross-Platform Architecture, Synchronization, Identity &
+          Lifecycle — 7 items)
+        - Reordered techStack: C# first (language-first convention)
+        - Simplified developmentTime to "2024" (v1-only content);
+          preserved "2024 (v1), 2026 (v2)" / "2024 / 2026" in comment
+          as confirmed-good breakpoint strings for future v2 restoration
+        - Removed "(Squarespace Migration)" from all project comment
+          headers across the file (6 occurrences)
     - [ ] **2.1.f PetResort**
     - [ ] **2.1.g DOOM (2016) NewGame+ Customizer**
     - [ ] **2.1.h Action RPG Project**
