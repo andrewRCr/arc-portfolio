@@ -58,7 +58,7 @@ export const projects: Project[] = [
       "Warp",
       "CodeRabbit",
     ],
-    techStack: ["TypeScript", "React", "Django", "Django Ninja", "PostgreSQL", "Docker", "Chakra UI"],
+    techStack: ["TypeScript", "Python", "React", "Django", "PostgreSQL", "Docker", "Chakra UI"],
     features: [
       {
         text: "*Users discover movies via robust category and filtering options, manage personal watchlists, build shareable curated collections, log watches with ratings and reviews to a personal timeline, and receive personalized recommendations.*",
@@ -340,12 +340,14 @@ export const projects: Project[] = [
     title: "PetResort",
     slug: "petresort",
     description:
-      "Full-stack employee web portal demonstrating a pet boarding and grooming business management system. " +
-      "Built with TypeScript, Express, Node.js, and MongoDB, featuring session-based authentication with password reset, " +
-      "role-based access control with granular permissions, and comprehensive CRUD operations for pets, clients, and visits. " +
-      "Includes polished UX patterns: pagination, fuzzy search, input masking, and toast notifications.",
+      "An employee web portal for managing pet boarding and grooming operations, built with TypeScript across the full Express " +
+      "and MongoDB stack. Six domain models — Guests, Clients, Visits, Employees, Kennels, and Services — form an interconnected " +
+      "data layer where visits cross-reference assigned kennels, scheduled services, and check-in state. The visit workflow covers " +
+      "the full operational cycle: scheduling with kennel assignment, check-in and check-out with occupancy tracking, per-service " +
+      "completion logging, and computed billing.",
     shortDescription:
-      "Employee web portal for pet care business operations with role-based access control and comprehensive management features.",
+      "Full-stack employee portal for pet boarding operations with six interconnected domain models, " +
+      "visit lifecycle management from scheduling through billing, and two-tier role-based access control.",
     category: ["Web App"],
     tags: [
       "TypeScript",
@@ -363,12 +365,15 @@ export const projects: Project[] = [
     ],
     techStack: ["TypeScript", "Node.js", "Express", "MongoDB", "EJS", "Bootstrap"],
     features: [
-      "Dashboard with current/upcoming visits and operational metrics",
-      "Comprehensive CRUD operations for guests (pets), clients, and visits",
-      "Role-based access control with admin section and granular permissions",
-      "Robust authentication system with password reset functionality",
-      "Advanced UI/UX: pagination, breadcrumb navigation, fuzzy search, input masking",
-      "Security features: HTML sanitization, client and server-side validation, secure image uploads",
+      {
+        text: "*Employees manage daily boarding operations — scheduling visits, assigning kennels, tracking service completion, and processing billing — with role-based views separating standard workflows from administrative functions.*",
+        paragraph: true,
+      },
+      "Six domain models with cross-referenced relationships — Visits track Guests, Kennels, and Services; Guests reference their owner Client",
+      "Visit lifecycle from scheduling through kennel assignment, check-in, per-service completion tracking, check-out, and billing",
+      "Two-tier access control: all employees see operational views, admin-flagged users manage employees, kennels, and services",
+      "Defense-in-depth validation: Joi schemas with custom HTML sanitization extension, Mongoose validation, express-mongo-sanitize, and Helmet CSP",
+      "Password reset via time-limited crypto tokens with transactional email confirmation",
     ],
     links: {
       github: "https://github.com/andrewRCr/PetResort",
@@ -393,19 +398,18 @@ export const projects: Project[] = [
         { src: "/projects/petresort/screenshot-8.webp", alt: "PetResort feature screenshot 8" },
       ],
     },
-    developmentTime: "2023-2024",
     details: [
-      "Express.js backend API with MongoDB for data persistence",
-      "EJS templating engine for server-side rendering",
-      "TypeScript throughout for type safety and maintainability",
-      "Bootstrap framework for responsive UI design",
-      "Session-based authentication with secure password handling",
-      "Role-based authorization with granular permission system",
-      "Complete business application demo: role-based access control, user management, operational dashboards with live demo available",
-      "Full-stack TypeScript: type safety from Express routes through MongoDB models to EJS templates",
-      "Production security practices: session auth, bcrypt hashing, input validation, HTML sanitization, secure image uploads",
-      "Polished UX details: fuzzy search, pagination, toast notifications, breadcrumb navigation, input masking",
+      { text: "**Domain Architecture**", heading: true },
+      "Six Mongoose models with cross-referenced relationships: Visits reference Guests, Kennels, and Services; Guests reference their owner Client and visit history; Kennels track current occupancy",
+      "Visit model virtuals deriving duration, billing cost, current/upcoming status, and service completion state",
+      { text: "**Access & Security**", heading: true },
+      "Passport.js session authentication with two-tier middleware: `isLoggedIn` gates all employee routes, `isAdmin` restricts management of Employees, Kennels, and Services",
+      "Layered input defense: Joi validates structure with a custom extension that strips HTML via sanitize-html, followed by Mongoose schema validation, plus express-mongo-sanitize and Helmet CSP at the request level",
+      { text: "**Operations & UX**", heading: true },
+      "Kennel occupancy management: assignments track through visit check-in and check-out, with filtered views showing occupied vs. available kennels",
+      "Cloudinary image uploads for guest profiles, fuzzy search across records, paginated views, dynamic breadcrumb navigation, and input masking for formatted data entry",
     ],
+    developmentTime: "2023-2024",
     order: 5,
     featured: false,
   },

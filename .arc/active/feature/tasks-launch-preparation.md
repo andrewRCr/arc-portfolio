@@ -429,7 +429,21 @@ dual-domain configuration.
           as confirmed-good breakpoint strings for future v2 restoration
         - Removed "(Squarespace Migration)" from all project comment
           headers across the file (6 occurrences)
-    - [ ] **2.1.f PetResort**
+    - [x] **2.1.f PetResort**
+        - Full content pass applying progressive depth model:
+          shortDescription (full-stack portal, 6 domain models, visit
+          lifecycle, two-tier access), description (4 sentences: thesis,
+          interconnected data layer, visit workflow, live demo),
+          features (blurb + 5 bullets: domain models, visit lifecycle,
+          access control, defense-in-depth validation, password reset),
+          details (3 headings: Domain Architecture, Access & Security,
+          Operations & UX — 6 items). Description trimmed to 3 sentences
+          (dropped "deployed as live demo" — table stakes)
+        - Content proportional to project scope (non-featured, 3/6 vs
+          CineXplorer's 4/8) — emphasizes domain complexity and
+          completeness over implementation technique
+        - Also: added Python to CineXplorer techStack (was missing),
+          dropped Django Ninja (redundant with Django, stays in tags)
     - [ ] **2.1.g DOOM (2016) NewGame+ Customizer**
     - [ ] **2.1.h Action RPG Project**
     - [ ] **2.1.i Survival Horror Project**
