@@ -464,39 +464,27 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
 
 ### **Phase 3:** Error Pages & SEO
 
-- [ ] **3.1 Create custom error pages**
+- [x] **3.1 Create custom error pages**
 
     **Goal:** Replace generic Next.js/Vercel error pages with TWM-themed alternatives that maintain the site's
     visual identity.
 
-    - [ ] **3.1.a Create `src/app/not-found.tsx` (custom 404)**
-        - Renders inside root layout — TWM frame, theme, wallpaper all inherited
-        - Terminal-style messaging to match TWM aesthetic (e.g., `> 404: page not found`, suggested navigation
-          links)
-        - Include link back to home and possibly to projects
-        - Keep it simple and on-brand
-
-    - [ ] **3.1.b Create `src/app/error.tsx` (error boundary)**
-        - Must be `"use client"` component
-        - Renders inside root layout (theme/frame available)
-        - Show user-friendly error message with terminal styling
-        - Include reset button (`error.reset()`) and link to home
-        - Log error details to console for debugging
-
-    - [ ] **3.1.c Create `src/app/global-error.tsx` (root layout error fallback)**
-        - Catches errors in root layout itself
-        - Renders *outside* layout — must include own `<html>` and `<body>` tags
-        - Minimal styling (theme system not available)
-        - Basic error message + reset button + link to home
-
-    - [ ] **3.1.d Write tests for error pages**
-        - Test: 404 page renders expected content
-        - Test: Error boundary renders error message and reset button
-        - Test: Error boundary calls `reset()` on button click
-
-    - [ ] **3.1.e Verify error pages manually**
-        - Navigate to non-existent route → custom 404 displays
-        - Verify 404 respects current theme and layout
+    - [x] **3.1.a Create `src/app/not-found.tsx` (custom 404)**
+        - Horizontal layout: large responsive 404 left, message + nav links right (vertically centered)
+        - Uses `PageLayout` with `centerContent`, shifted above center with `pb-[15vh]`
+        - `font-terminal` for TWM aesthetic, theme tokens for all colors
+        - Divider between message and links, bullet separator between Home / Projects links
+    - [x] **3.1.b Create `src/app/error.tsx` (error boundary)**
+        - Same visual pattern as 404 with "Try again" reset button and Home link
+        - Logs error to console via `useEffect`, displays error digest when present
+    - [x] **3.1.c Create `src/app/global-error.tsx` (root layout error fallback)**
+        - Renders outside layout with own `<html>`/`<body>`, inline dark fallback styles
+        - Minimal: error message + reset button + home link
+    - [x] **3.1.d Write tests for error pages**
+        - 11 tests: 404 (heading, message, Home link, Projects link), error boundary (heading, message,
+          reset button, reset click, Home link, digest display, console.error logging)
+    - [x] **3.1.e Verify error pages manually**
+        - 404 verified at nonexistent route — renders within TWM frame with theme colors
 
 - [ ] **3.2 Expand site configuration for SEO**
 
