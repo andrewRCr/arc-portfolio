@@ -495,26 +495,29 @@ export const projects: Project[] = [
     title: "Action RPG Project",
     slug: "action-rpg-project",
     description:
-      "Demo-length third-person action RPG developed in Unreal Engine 4 with Souls-like combat mechanics and dungeon exploration. " +
-      "Players awaken in dungeon depths and fight to the surface, battling 6 distinct enemy AI types including zombie-like Ghouls, " +
-      "Skeletal Swordsmen, Archers, fast-moving Rogues, a heavy Wendigo mini-boss, and a Large Skeletal Warrior boss. Features sophisticated " +
-      "combat systems with targeting (soft-lock and hard lock-on), defensive options (blocking, side-stepping, rolling), and a posture-break " +
-      "mechanic allowing instant-kill finishing moves. Demonstrates game systems engineering: modular equipment architecture, " +
-      "stat-based progression, idol statue checkpoints with enemy respawning, and enemy AI behavioral patterns.",
+      "Demo-length third-person action RPG built in Unreal Engine 4 with C++, centered on Souls-like combat and dungeon " +
+      "exploration. A centralized AI combat director coordinates six enemy types — each with distinct behaviors, models, " +
+      "and animations — pacing their engagements with the player. Character systems span a modular equipment architecture " +
+      "across 15 slots, an inventory managing both slot capacity and carry weight, with a stamina economy gating every " +
+      "combat action. Players start unarmed in dungeon depths and fight upward, collecting gear, unlocking " +
+      "checkpoints, and building toward a boss encounter.",
     shortDescription:
-      "Third-person action RPG in Unreal Engine 4 with Souls-like combat, 6 enemy AI types, and posture-break mechanics.",
+      "Third-person action RPG in Unreal Engine 4 with Souls-like combat, a combat director coordinating six AI enemy types, " +
+      "and modular equipment and inventory systems.",
     category: ["Game"],
-    tags: ["Unreal Engine 4", "C++", "Game Development", "Combat Systems", "Enemy AI", "Action RPG"],
-    techStack: ["C++", "Unreal Engine 4", "Perforce", "AI Behavior Trees", "Animation State Machines"],
+    tags: ["Unreal Engine 4", "C++", "Game Development", "Combat Systems", "Enemy AI", "Action RPG", "AI Behavior Trees", "Animation State Machines"],
+    techStack: ["C++", "Unreal Engine 4", "Blueprint", "Perforce"],
     features: [
-      "Souls-like combat design emphasizing aggressive play through posture mechanics",
-      "6 distinct enemy AI types with unique behaviors and combat patterns",
-      "Targeting systems: automatic soft-lock and manual hard lock-on for precision combat",
-      "Defensive mechanics: blocking, side-stepping, rolling for tactical engagement",
-      "Posture-break system enabling instant-kill finishing moves on weakened enemies",
-      "Modular equipment system with stat-improving weapons and armor collection",
-      "Idol statue checkpoints for healing, saving progress, and enemy respawning",
-      "Progression-based gameplay loop starting with no equipment in dungeon depths",
+      {
+        text: "*Players fight through dungeon floors of increasingly dangerous enemies, equipping collected weapons and armor, managing stamina for every combat action, and breaking enemy posture to land finishing moves.*",
+        paragraph: true,
+      },
+      "Six enemy AI types with distinct behaviors, coordinated by a centralized director that grades positioning and paces engagements",
+      "Poise and stagger system tracking cumulative hit impact — enemies stagger when poise breaks, opening a finishing-move window",
+      "Dual targeting pairing a custom soft-lock for automatic tracking with hard lock-on, plus priority logic governing mode selection",
+      "Stamina economy gating attacks, dodges, blocks, and sprints, with action-specific costs and recovery delays",
+      "Modular equipment architecture across 15 character slots with data-driven stat effects and real-time mesh swapping",
+      "Reusable inventory component tracking slot capacity and carry weight, shared across player and lootable containers",
     ],
     links: {
       github: "https://github.com/andrewRCr/ActionRPGProject",
@@ -551,16 +554,18 @@ export const projects: Project[] = [
     },
     developmentTime: "2023",
     details: [
-      "Unreal Engine 4 with C++ core systems and Blueprint for rapid iteration",
-      "Modular equipment architecture for flexible stat and loadout systems",
-      "AI behavior trees and state machines for diverse enemy patterns",
-      "Animation state machines for fluid combat transitions",
-      "Posture/poise mechanic implementation for risk-reward gameplay balance",
-      "Checkpoint system architecture with persistent state and enemy respawning",
-      "Demonstrates game systems engineering: combat architecture, enemy AI design, equipment modularity, progression loops",
-      "Showcases Unreal Engine 4 proficiency with C++ programming for core gameplay systems",
-      "Implements sophisticated combat mechanics inspired by Souls-like design philosophy",
-      "Features 6 distinct enemy AI types demonstrating behavioral variety and state-based logic",
+      { text: "**Combat & AI**", heading: true },
+      "Combat director scores each enemy by camera-relative positioning and time since last attack, issuing attack commands on a tunable delay to create paced, deliberate Souls-like encounters rather than simultaneous rushes",
+      "Multi-stage perception pipeline: broad-radius detection, line-of-sight validation, facing-orientation checks, and range-based awareness escalation from passive through suspicious to hostile",
+      "Three AI behavioral archetypes — Engager, Defender, Ambusher — mapped across enemy types, each influencing aggression timing and positioning tendencies to create tactically varied encounters",
+      { text: "**Character Systems**", heading: true },
+      "Item type hierarchy from abstract base through EquippableItem into five concrete types — gear, weapons, shields, accessories, consumables — each mapped to character slots with synchronized mesh rendering",
+      "Inventory operations return structured result types — none, some, or all items added — with quantities and error context, supporting partial-stack resolution when weight or capacity constraints apply",
+      "Bonfire-style checkpoint system that respawns enemies in the currently loaded zone, refills healing resources, and persists player state — with zone-aware world streaming and save-on-quit preserving world position",
+      { text: "**Architecture**", heading: true },
+      "State machines governing movement modes, stamina phases, weapon status, and enemy awareness, each with defined transitions and timer-managed cooldowns",
+      "Event-driven UI updates via multicast delegates decoupling presentation from gameplay state, with data-table-driven enemy configuration enabling designer-facing balance tuning",
+      "C++ core systems with Blueprint scripting for rapid iteration — combat tuning, visual effects, and animation events defined as overridable extension points, enabling design changes without recompilation",
     ],
     order: 7,
     featured: true,

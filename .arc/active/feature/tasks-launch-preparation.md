@@ -460,7 +460,27 @@ dual-domain configuration.
           game rules)
         - Eliminated all "Demonstrates/Showcases/Bridges" padding
           (11 flat bullets → 2 headings / 4 items)
-    - [ ] **2.1.h Action RPG Project**
+    - [x] **2.1.h Action RPG Project**
+        - Full content pass applying progressive depth model:
+          shortDescription (combat director, six AI types, modular systems),
+          description (4 sentences: thesis, combat director coordination,
+          character systems — equipment/inventory/stamina, player loop),
+          features (blurb + 6 bullets: AI director, poise/stagger, dual
+          targeting, stamina economy, equipment across 15 slots, reusable
+          inventory component), details (3 headings: Combat & AI, Character
+          Systems, Architecture — 9 items)
+        - Surfaced non-obvious systems from source code exploration:
+          combat director scoring, multi-stage perception pipeline, AI
+          behavioral archetypes, item type hierarchy (abstract base →
+          five concrete types), structured inventory result types,
+          bonfire-style checkpoint with zone-aware streaming, C++/Blueprint
+          boundary as overridable extension points
+        - Targeting: honest attribution — custom soft-lock, plugin-based
+          hard lock-on (no code contributions), custom priority logic
+        - Moved AI Behavior Trees and Animation State Machines from
+          techStack to tags; added Blueprint to techStack
+        - Eliminated all "Demonstrates/Showcases/Implements" padding
+          (10 flat detail bullets → 3 headings / 9 items)
     - [ ] **2.1.i Survival Horror Project**
     - [ ] **2.1.j Pong Clone** (previously polished — review only)
     - [ ] **2.1.k Mods (all)**
