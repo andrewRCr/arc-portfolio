@@ -272,7 +272,7 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
 
 ### **Phase 2:** Content & Copy
 
-- [ ] **2.1 Holistic content pass — per project**
+- [x] **2.1 Holistic content pass — per project**
 
     **Goal:** Collaborative, per-project content review covering all text fields. Work through each project one at
     a time, addressing shortDescription, long description, highlights, and features together before moving to the
@@ -441,24 +441,26 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
         - Details: 10 flat bullets with heavy feature overlap → 2 headings / 5 items (Rendering & Platform, Game
           Architecture) with AI anti-stalemate detail sourced from code exploration
         - shortDescription: em dash spacing consistency only
-    - [ ] **2.1.k Mods (all)**
-        - **Priority:** `re8-aim-dependent-crosshair` and `sh2r-never-holster-weapons` have features but no
-          highlights — their detail pages currently show no content sections
+    - [x] **2.1.k Mods (all)**
+        - Evaluated all 6 mods against progressive depth model with mod-specific variation (custom sectionLabels,
+          no blurbs, proportional depth)
+        - **Guard Parry**: shortDescription rewritten (removed DLC filler, added variable frames + recovery frames
+          as differentiators), fixed Deflecting Hardtear from "+1-2 frames" to "+1 frame, optional", expanded
+          Parry Frame Data details with missing weapon classes from NexusMods source
+        - **Lies of P Hardcore Mode**: minor formatting — bolded "unchanged" in Legion Arms to match other entries
+        - **Improved Weapon Balance**: no changes needed — structure already fit progressive depth model
+        - **Improved Movement**: no changes needed — evaluated and confirmed structure is sound
+        - **Aim-Dependent Crosshair**: description rewritten to add series precedent context (RE7 + remakes had
+          this behavior), community problem framing, and technical approach (reverse-engineering GUI draw calls)
+        - **Never Holster Weapons**: shortDescription rewritten (was implementation-focused, now leads with what
+          it does), description refined (ludonarrative dissonance phrasing, paragraph structure), features
+          restructured from dense paragraphs to heading/bullet pattern for Approach Comparison
 
-- [ ] **2.2 Verify features/highlights field usage**
-
-    **Goal:** Ensure both fields render correctly on detail pages for all project types. Remove features only from
-    projects where it adds no value (likely mods).
-
-    - [ ] **2.2.a Audit which projects have features, highlights, or both**
-    - [ ] **2.2.b Remove features from projects where redundant (mods TBD)**
-    - [ ] **2.2.c Verify detail page rendering for all projects**
-    - [ ] **2.2.d Run type-check and unit tests**
-
-- [ ] **2.4 Phase 2 quality gates**
-    - [ ] 2.4.a Type-check (`npm run type-check`)
-    - [ ] 2.4.b Lint (`npm run lint`)
-    - [ ] 2.4.c Run unit tests (`npm test`)
+- [x] **2.2 Phase 2 quality gates**
+    - [x] 2.2.a Type-check (`npm run type-check`) — zero errors
+    - [x] 2.2.b Lint (`npm run lint`) — zero violations
+    - [x] 2.2.c Run unit tests (`npm test`) — 1390/1390 pass
+    - Also: format:check pass (fixed pre-existing formatting issue in `projects.ts`)
 
 ### **Phase 3:** Error Pages & SEO
 

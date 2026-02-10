@@ -34,7 +34,7 @@ export const mods: Project[] = [
       "All weight tiers **increased** by one (1) level (Light: 0.3 → 0.15, Normal: 0.6 → 0.3, and so on)",
     ],
     details: [
-      "Left Arm of Steel: unchanged",
+      "Left Arm of Steel: **unchanged**",
       "Fulminis, Pandemonium, Deus Ex Machina, Falcon Eyes: **+25%**",
       "Puppet String, Flamberge, Icarus: **+40%**",
       "Aegis, Cataclysm: **+65%**",
@@ -122,7 +122,8 @@ export const mods: Project[] = [
     title: "Aim-Dependent Crosshair",
     slug: "re8-aim-dependent-crosshair",
     description:
-      "REFramework script that hides the crosshair reticle based on configurable conditions—useful for a cleaner, more immersive visual experience. Supports both first and third-person perspectives, as well as the main campaign and Shadows of Rose DLC.",
+      "Previous entries in the series—RE7 (also first-person) and the recent third-person remakes—hide the crosshair when not aiming by default. Village shipped without this, and the persistent on-screen reticle was a common complaint. This REFramework Lua script addresses the omission by reverse-engineering how GUI elements are drawn and intercepting reticle rendering based on configurable game-state conditions.\n\n" +
+      "Supports both first and third-person perspectives, as well as the Shadows of Rose DLC.",
     shortDescription:
       "Prevents the crosshair reticle from being drawn unless configurable conditions (aiming, in combat, not sprinting) are met.",
     game: "Resident Evil Village",
@@ -159,7 +160,7 @@ export const mods: Project[] = [
     description:
       "Adds timed-block parries to small/standard shields and most weapons capable of guarding—activating instantly, with **variable** active frames per weapon class. For balance, guarding now has new **recovery frames** as well. Updated with full support for Shadow of the Erdtree, including Deflecting Hardtear integration.",
     shortDescription:
-      "Enables timed-block parries on small/standard shields and most weapons capable of guarding. Updated for Shadow of the Erdtree.",
+      "Timed-block parries added to small/standard shields and most guarding weapons, with variable active frames per weapon class and new guard recovery frames for balance.",
     game: "Elden Ring",
     category: ["Gameplay"],
     tags: ["Game Modding", "Animation Editing"],
@@ -167,14 +168,14 @@ export const mods: Project[] = [
     features: [
       "Parry frames added to the start of guard animations (4-6 frames depending on weapon class)",
       "Recovery frames (9-12) added to guard raising as light spam protection",
-      "Deflecting Hardtear extends parry window (+1-2 frames) for the duration",
+      "Deflecting Hardtear extends parry window (+1 frame, optional) for the duration",
       "Extended version available with 7 parry frames for all weapon classes including greatshields",
       "[The Convergence](https://www.nexusmods.com/eldenring/mods/3419) compatibility version available",
     ],
     details: [
-      "**6 frames**: Small shields, straight swords, curved swords, katanas, thrusting swords, light greatswords, daggers, axes, flails, hammers, and more",
+      "**6 frames**: Small shields, straight swords, curved swords, katanas, thrusting swords, light greatswords, reverse-hand swords, daggers, whips, axes, flails, hammers, throwing blades, hand-to-hand arts, beast claws",
       "**5 frames**: Thrusting shields, spears, twinblades, halberds, reapers, great spears",
-      "**4 frames**: Standard shields, greatswords, curved greatswords, great katanas, colossal weapons",
+      "**4 frames**: Standard shields, greatswords, curved greatswords, great katanas, great axes, great hammers, colossal weapons",
     ],
     sectionLabels: {
       features: "Key Features",
@@ -252,23 +253,22 @@ export const mods: Project[] = [
     title: "Never Holster Weapons",
     slug: "sh2r-never-holster-weapons",
     description:
-      "Prevents the automatic weapon holstering triggered by the game's internal 'safety' detection—an immersion-breaking behavior where James somehow knows no enemies are nearby. Since the holster delay parameter wasn't directly exposed, two workaround approaches are provided: one manipulates the danger-state threshold (seamless but affects companion AI locomotion), the other blocks the holster animation directly (no side effects but less automatic). Players choose based on their tolerance for trade-offs.\n\n" +
-      "Routine gameplay actions (opening the map, unlocking doors, cutscene transitions) still require temporary holstering. The difference lies in what happens afterward.",
+      "Prevents the automatic weapon holstering triggered by the game's internal 'player safety' state detection—holstering based on enemy proximity the **character** has no way of knowing, which some players find immersion breaking.\n\n" +
+      "Since the holster delay parameter wasn't directly exposed, two workaround approaches are provided: one manipulates the danger-state threshold (seamless but affects companion AI locomotion), the other blocks the holster animation directly (no side effects but less automatic). Players choose based on their tolerance for trade-offs.\n\n" +
+      "Routine gameplay actions (opening the map, unlocking doors, cutscene transitions, etc) which **bypass** the holstering animation still result in your weapon being put away temporarily; the difference lies in what happens afterward.",
     shortDescription:
-      "Two workarounds for an unexposed parameter—each preventing auto-holster with different trade-offs.",
+      "Prevents automatic weapon holstering when no enemies are detected. Two versions available, each working around the unexposed holster delay parameter differently.",
     game: "Silent Hill 2 (2024)",
     category: ["Gameplay"],
     tags: ["Game Modding", "UE5 Modding"],
     techStack: ["UAssetGUI", "Retoc", "ZenTools", "IoStorePackagev2"],
     features: [
-      {
-        text: "**Automatic version**: Manipulates the danger-state threshold so James never considers himself 'safe.' Weapon unholsters immediately after routine actions. Trade-off: Maria plays distressed locomotion/dialogue out of context; James never fully relaxes in idle animations.",
-        paragraph: true,
-      },
-      {
-        text: "**Manual version**: Blocks the holster animation directly. No side effects on companion AI or player animations. Trade-off: After routine actions, you must manually re-equip via weapon select key.",
-        paragraph: true,
-      },
+      { text: "**Automatic Version**", heading: true },
+      "Manipulates the danger-state threshold so James never considers himself 'safe'; weapon unholsters immediately after routine actions, without requiring player input",
+      "Trade-off: Maria plays distressed locomotion/dialogue out of context; James never fully relaxes in idle animations",
+      { text: "**Manual Version**", heading: true },
+      "Blocks the holster animation directly with no side effects on companion AI or player animations",
+      "Trade-off: after routine actions, you must manually re-equip via weapon select key (or aiming, for firearms)",
     ],
     sectionLabels: {
       features: "Approach Comparison",
