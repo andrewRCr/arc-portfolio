@@ -8,9 +8,8 @@
 
 ## Overview
 
-**Purpose:** Consolidate all remaining pre-deployment work into a single work unit — dev
-infrastructure, content polish, SEO, custom error pages, and deployment to Vercel with
-dual-domain configuration.
+**Purpose:** Consolidate all remaining pre-deployment work into a single work unit — dev infrastructure, content
+polish, SEO, custom error pages, and deployment to Vercel with dual-domain configuration.
 
 ## Scope
 
@@ -59,20 +58,20 @@ dual-domain configuration.
         - Wraps children in fragment (no extra markup)
 
     - [x] **1.1.b Verify dev pages still accessible in development**
-        - All four dev pages return HTTP 200: `/dev/sandbox`, `/dev/theme-debug`,
-          `/dev/typography`, `/dev/wallpaper-test`
+        - All four dev pages return HTTP 200: `/dev/sandbox`, `/dev/theme-debug`, `/dev/typography`,
+          `/dev/wallpaper-test`
 
 - [x] **1.2 Add in-development badge to project detail pages**
 
     **Goal:** Consistent in-development badge across all project views.
 
     - [x] **1.2.a Write test for in-development badge on `DetailHeader`**
-        - 3 tests added: renders when `status === "in-development"`, hidden when
-          `status === "released"`, hidden when undefined
+        - 3 tests added: renders when `status === "in-development"`, hidden when `status === "released"`, hidden
+          when undefined
 
     - [x] **1.2.b Extract shared `InDevelopmentBadge` component + implement in `DetailHeader`**
-        - Created `src/components/projects/InDevelopmentBadge.tsx` with `compact` prop
-          (default: "In Development" full-size; compact: "In Dev" smaller)
+        - Created `src/components/projects/InDevelopmentBadge.tsx` with `compact` prop (default: "In Development"
+          full-size; compact: "In Dev" smaller)
         - Added `status` to `DetailHeaderProps`, threaded through Desktop + Mobile
         - Badge overlaid on hero image (bottom-right), matching `ProjectCard` pattern
         - Refactored `ProjectCard` and `FeaturedSection` to use shared component
@@ -84,29 +83,27 @@ dual-domain configuration.
 
 - [x] **1.3 Reframe and harden feature flag for non-software project visibility**
 
-    **Goal:** Reframe `SHOW_PROJECT_TABS` as `SHOW_ALL_PROJECT_TYPES` — a clean
-    switch between full portfolio (software + games + mods with tabs) and
-    software-only mode. Close existing gaps so the flag-off state is coherent:
-    filter UI stays available but scoped to software, all non-software routes
-    return 404, no data leaks through direct URLs.
+    **Goal:** Reframe `SHOW_PROJECT_TABS` as `SHOW_ALL_PROJECT_TYPES` — a clean switch between full portfolio
+    (software + games + mods with tabs) and software-only mode. Close existing gaps so the flag-off state is
+    coherent: filter UI stays available but scoped to software, all non-software routes return 404, no data leaks
+    through direct URLs.
 
     - [x] **1.3.a Rename flag + update JSDoc in `features.ts`**
         - Renamed `SHOW_PROJECT_TABS` → `SHOW_ALL_PROJECT_TYPES` in `features.ts`
-        - Updated JSDoc to describe semantic (controls non-software project
-          visibility across tabs, routes, and filter data)
+        - Updated JSDoc to describe semantic (controls non-software project visibility across tabs, routes, and
+          filter data)
         - Added pattern comment block (define flag → import → guard)
-        - Updated all existing import sites (`projects/page.tsx`,
-          `mods/[slug]/page.tsx`); games route has no import yet (added in 1.3.c)
+        - Updated all existing import sites (`projects/page.tsx`, `mods/[slug]/page.tsx`); games route has no
+          import yet (added in 1.3.c)
 
     - [x] **1.3.b Decouple filter UI from tabs + gate data source by flag**
-        - Extracted filter UI (SkillFilterControl, FilterIndicator) from the
-          flag-gated block — filter button always visible, filter indicator
-          shows when filtering regardless of flag
-        - Renamed `allProjectsAndMods` → `filterableProjects`, gated by flag:
-          all types when true, software-only when false
+        - Extracted filter UI (SkillFilterControl, FilterIndicator) from the flag-gated block — filter button
+          always visible, filter indicator shows when filtering regardless of flag
+        - Renamed `allProjectsAndMods` → `filterableProjects`, gated by flag: all types when true, software-only
+          when false
         - Tabs (`ProjectTabs`, `Crossfade`) remain gated by flag
-        - `hideDivider` stays tied to flag (tabs replace divider; filter button
-          alone doesn't); `withTabAttributes` unchanged (already correct)
+        - `hideDivider` stays tied to flag (tabs replace divider; filter button alone doesn't);
+          `withTabAttributes` unchanged (already correct)
 
     - [x] **1.3.c Add flag guard to `games/[slug]/page.tsx`**
         - Added `FEATURES` import and `notFound()` route guard (matches mods pattern)
@@ -130,24 +127,23 @@ dual-domain configuration.
 
 - [x] **1.4 Build surface-tuning dev tool at `/dev/surface`**
 
-    **Goal:** Robust, isolated dev tool for comparing current production surface values
-    with experimental ones, previewing changes live, and exporting new values as
-    TypeScript for easy theme definition updates.
+    **Goal:** Robust, isolated dev tool for comparing current production surface values with experimental ones,
+    previewing changes live, and exporting new values as TypeScript for easy theme definition updates.
 
     - [x] **1.4.a Promote light-mode border/shadow to surface tokens**
-        - Added `SurfaceShadow` type and `surfaceBorderStrong`/`surfaceShadow` fields
-          to `ModeSurfaceConfig` in `types.ts`
+        - Added `SurfaceShadow` type and `surfaceBorderStrong`/`surfaceShadow` fields to `ModeSurfaceConfig` in
+          `types.ts`
         - Updated all 6 theme definitions (light: `true`/`"md"`, dark: `false`/`"none"`)
-        - Updated `generate-css-defaults.ts` to emit `--surface-border-color` and
-          `--surface-shadow` per mode; added `:root` fallback defaults
-        - Replaced hardcoded `.light .bg-surface-card` CSS rule with universal
-          variable-driven rule referencing new tokens
+        - Updated `generate-css-defaults.ts` to emit `--surface-border-color` and `--surface-shadow` per mode;
+          added `:root` fallback defaults
+        - Replaced hardcoded `.light .bg-surface-card` CSS rule with universal variable-driven rule referencing
+          new tokens
         - Fixed `InDevelopmentBadge` — removed `dark:bg-background/80` override
         - Type-check and lint pass
 
     - [x] **1.4.b Create `/dev/surface` page scaffold**
-        - Created `src/app/dev/surface/page.tsx` with `useHasMounted`, `PageLayout`,
-          `DevPageHeader` (with `showEnvPreview`)
+        - Created `src/app/dev/surface/page.tsx` with `useHasMounted`, `PageLayout`, `DevPageHeader` (with
+          `showEnvPreview`)
         - Reads active theme's `surfaces` config via `useThemeContext` + `themes` registry
         - CSS variable overrides applied on mount, removed on unmount via `removeCssOverrides()`
         - Re-syncs experimental values when theme palette changes
@@ -158,132 +154,108 @@ dual-domain configuration.
         - Dark/light mode switcher via `useThemeTransition`
         - "Reset to production" button (disabled when values match)
         - Side-by-side production vs experimental `ValueDisplay` panels
-        - Changes always apply live to all page surfaces (no separate toggle needed —
-          production values are visible in the comparison panel)
+        - Changes always apply live to all page surfaces (no separate toggle needed — production values are
+          visible in the comparison panel)
 
     - [x] **1.4.d Add TypeScript export**
-        - `formatExport()` produces complete `ThemeSurfaces` object with `surfaceHierarchy`
-          from production, ready to paste into a theme definition
+        - `formatExport()` produces complete `ThemeSurfaces` object with `surfaceHierarchy` from production,
+          ready to paste into a theme definition
         - Copy-to-clipboard with confirmation feedback
         - Shows "(has changes)" / "(no changes)" status
 
     - [x] **1.4.e Remove `SurfaceOpacityComparison` from sandbox**
-        - Removed entire `SurfaceOpacityComparison` component and all related code
-          (ValueSet type, defaults, helpers) from `sandbox/page.tsx`
+        - Removed entire `SurfaceOpacityComparison` component and all related code (ValueSet type, defaults,
+          helpers) from `sandbox/page.tsx`
         - Sandbox page now renders as empty scratch space
         - Added `[surface]` link to `FooterBar.tsx` dev nav alongside existing dev page links
         - Both routes return 200, type-check and lint pass
 
     - [x] **1.4.f Manual verification**
-        - Verified tool loads with production values, sliders apply live,
-          border/shadow visible on preview cards and control panel
-        - Full quality gates pass: type-check, lint, format, lint:md, build,
-          1390/1390 tests
+        - Verified tool loads with production values, sliders apply live, border/shadow visible on preview cards
+          and control panel
+        - Full quality gates pass: type-check, lint, format, lint:md, build, 1390/1390 tests
 
 - [x] **1.5 Theme system alignment & debug page overhaul**
 
-    **Goal:** Align UI primitives, theme-debug page, and style guide with actual
-    production patterns. The theme-debug page predates surface tokens, opacity
-    variants, hover tokens, and the typography slot system — it demos generic
-    shadcn patterns rather than the app's real usage. Primitives (Input, Textarea,
-    Badge) have stale defaults that production code overrides or bypasses entirely.
+    **Goal:** Align UI primitives, theme-debug page, and style guide with actual production patterns. The
+    theme-debug page predates surface tokens, opacity variants, hover tokens, and the typography slot system — it
+    demos generic shadcn patterns rather than the app's real usage. Primitives (Input, Textarea, Badge) have stale
+    defaults that production code overrides or bypasses entirely.
 
-    **Scope:** Primitive alignment (Input/Textarea focus, Badge secondary), ContactForm
-    migration to primitives, theme-debug page overhaul (new sections + fix misaligned
-    sections), style guide alignment, typography dev page verification.
+    **Scope:** Primitive alignment (Input/Textarea focus, Badge secondary), ContactForm migration to primitives,
+    theme-debug page overhaul (new sections + fix misaligned sections), style guide alignment, typography dev page
+    verification.
 
     - [x] **1.5.a Align Input/Textarea focus to production pattern**
-        - Updated Input and Textarea primitives: replaced
-          `focus-visible:border-ring` (and ring-ring/50 on Input) with
-          `focus:border-secondary focus:ring-2 focus:ring-secondary-mid`
-        - Other components (Button, Badge, Checkbox, Switch) correctly retain
-          `focus-visible:` for keyboard-only focus per style guide
+        - Updated Input and Textarea primitives: replaced `focus-visible:border-ring` (and ring-ring/50 on Input)
+          with `focus:border-secondary focus:ring-2 focus:ring-secondary-mid`
+        - Other components (Button, Badge, Checkbox, Switch) correctly retain `focus-visible:` for keyboard-only
+          focus per style guide
         - No existing tests assert on focus class names; lint passes
 
     - [x] **1.5.b Align Badge secondary variant to production pattern**
-        - Updated secondary: `border-transparent bg-secondary
-          text-secondary-foreground` → `border border-border bg-surface-muted
-          text-foreground`
-        - Removed redundant overrides from ModStatsBadge (2 sites) and
-          ModStatsCompact — classes now come from variant default
+        - Updated secondary: `border-transparent bg-secondary text-secondary-foreground` → `border border-border
+          bg-surface-muted text-foreground`
+        - Removed redundant overrides from ModStatsBadge (2 sites) and ModStatsCompact — classes now come from
+          variant default
         - FilterIndicator inherits new defaults without changes
         - 35 tests pass (22 ModStatsBadge + 13 FilterIndicator), lint clean
 
     - [x] **1.5.c Migrate ContactForm to use Input/Textarea primitives**
-        - Updated Input/Textarea primitives comprehensively to match TWM
-          aesthetic: removed rounded-md, shadow-xs, h-9/min-h-16,
-          border-input, dark:bg-input/30; added font-body, text-foreground,
+        - Updated Input/Textarea primitives comprehensively to match TWM aesthetic: removed rounded-md, shadow-xs,
+          h-9/min-h-16, border-input, dark:bg-input/30; added font-body, text-foreground,
           placeholder:font-terminal, px-4 py-2; Textarea gets resize-none
-        - Replaced 2 raw `<input>` and 1 raw `<textarea>` in ContactForm
-          with `<Input>` and `<Textarea>` — only override is conditional
-          `inputBg` class
+        - Replaced 2 raw `<input>` and 1 raw `<textarea>` in ContactForm with `<Input>` and `<Textarea>` — only
+          override is conditional `inputBg` class
         - Honeypot field left as raw `<input>` (hidden, no styling needed)
         - 25 tests pass (16 ContactForm + 9 ContactSection), lint clean
 
     - [x] **1.5.d Add missing token sections to theme-debug**
-        - New SurfaceTokensSection: production hierarchy demo (EducationCard
-          pattern) + individual surface swatches (card, background, muted,
-          popover)
-        - New OpacityVariantsSection: accent-high/mid/low and
-          secondary-high/mid/low swatches with foreground pairs + production
-          usage reference
-        - New ShadowElevationSection: shadow-sm/md/lg side-by-side + border
-          vs border-strong comparison
+        - New SurfaceTokensSection: production hierarchy demo (EducationCard pattern) + individual surface swatches
+          (card, background, muted, popover)
+        - New OpacityVariantsSection: accent-high/mid/low and secondary-high/mid/low swatches with foreground
+          pairs + production usage reference
+        - New ShadowElevationSection: shadow-sm/md/lg side-by-side + border vs border-strong comparison
         - Added border-strong swatch to ColorPaletteSection
-        - Expanded COLOR_VARS from 24 to 44 entries (opacity, surface, hover
-          config); reordered JUMP_LINKS with tokens-first layout
+        - Expanded COLOR_VARS from 24 to 44 entries (opacity, surface, hover config); reordered JUMP_LINKS with
+          tokens-first layout
         - Type-check and lint pass on all new/modified files
 
     - [x] **1.5.e Fix misaligned theme-debug sections**
-        - FormControlsSection: rewrote to use Input/Textarea primitives
-          (secondary focus now built-in), added error states (aria-invalid +
-          destructive ring/border), added card variant demo (bg-surface-card)
-        - InteractiveStatesSection: reorganized around 4 interaction emphasis
-          tiers (Ambient, Focal, Primary CTA, Area hover) + subtle emphasis
-          (accent-low) + nav link states (default→hover→active→pending) +
-          production TextLink pattern. All demos use semantic tokens.
-        - CardsLayoutSection: replaced generic card fills with production
-          surface hierarchy (EducationCard pattern + ProjectCard pattern with
-          group hover), badges shown in card context using aligned secondary
-          variant
-        - All hardcoded `hover:border-secondary/60` replaced with
-          `hover:border-secondary-high`
-        - Verification polish: fixed jump links (DevPageHeader targeted
-          `.overflow-auto` but OverlayScrollbars takes over host; now
-          targets `[data-overlayscrollbars-viewport]`), switched
-          ColorPaletteSection grids to flex for lone-item centering,
-          reduced ColorSwatch height h-24→h-16, applied typography slots
-          to all 11 section files (`font-title` on CardTitle, `font-
-          terminal` on h3 subheaders, `font-body` on chrome descriptions)
+        - FormControlsSection: rewrote to use Input/Textarea primitives (secondary focus now built-in), added
+          error states (aria-invalid + destructive ring/border), added card variant demo (bg-surface-card)
+        - InteractiveStatesSection: reorganized around 4 interaction emphasis tiers (Ambient, Focal, Primary CTA,
+          Area hover) + subtle emphasis (accent-low) + nav link states (default→hover→active→pending) + production
+          TextLink pattern. All demos use semantic tokens.
+        - CardsLayoutSection: replaced generic card fills with production surface hierarchy (EducationCard pattern +
+          ProjectCard pattern with group hover), badges shown in card context using aligned secondary variant
+        - All hardcoded `hover:border-secondary/60` replaced with `hover:border-secondary-high`
+        - Verification polish: fixed jump links (DevPageHeader targeted `.overflow-auto` but OverlayScrollbars
+          takes over host; now targets `[data-overlayscrollbars-viewport]`), switched ColorPaletteSection grids to
+          flex for lone-item centering, reduced ColorSwatch height h-24→h-16, applied typography slots to all 11
+          section files (`font-title` on CardTitle, `font-terminal` on h3 subheaders, `font-body` on chrome
+          descriptions)
 
     - [x] **1.5.f Align style guide with production patterns**
-        - **v1.8** (initial pass): Fixed Button/Focus tables, expanded Token
-          Categories (10 rows), added Emphasis Tiers section (4 tiers +
-          subtle emphasis)
-        - **v2.0** (full overhaul): Restructured 16 scattered sections → 6
-          organized sections (Philosophy, Token System, TWM Layout, Component
-          Patterns, Extending, References). 858 → 397 lines (54% reduction).
-          Fixed accuracy: topBarHeight/footerHeight 42/36→48/48, corrected
-          CSS variable name `--window-bg-opacity`, split Tier 1 into text
-          (accent-mid hover) vs action button (accent-high hover) sub-patterns,
-          renamed "Ambient"→"Understated" to avoid muted-token confusion.
-          Cut: rationale paragraphs, generic Tailwind examples, unused variant
-          docs (destructive buttons, sizing table), shadcn/ui usage section.
-          Kept: all token definitions, emphasis tiers with accurate component
-          assignments, extending pipeline with code snippets
+        - **v1.8** (initial pass): Fixed Button/Focus tables, expanded Token Categories (10 rows), added Emphasis
+          Tiers section (4 tiers + subtle emphasis)
+        - **v2.0** (full overhaul): Restructured 16 scattered sections → 6 organized sections (Philosophy, Token
+          System, TWM Layout, Component Patterns, Extending, References). 858 → 397 lines (54% reduction). Fixed
+          accuracy: topBarHeight/footerHeight 42/36→48/48, corrected CSS variable name `--window-bg-opacity`,
+          split Tier 1 into text (accent-mid hover) vs action button (accent-high hover) sub-patterns, renamed
+          "Ambient"→"Understated" to avoid muted-token confusion. Cut: rationale paragraphs, generic Tailwind
+          examples, unused variant docs (destructive buttons, sizing table), shadcn/ui usage section. Kept: all
+          token definitions, emphasis tiers with accurate component assignments, extending pipeline with code
+          snippets
 
     - [x] **1.5.g Align typography dev page + upgrade FontComparisonSection**
-        - Applied font slots to typography page chrome: `font-title` on
-          CardTitle headers, `font-terminal` on line-height labels and
-          accent spans, `font-body` on heading/body/size/weight/color demos
-        - Upgraded FontComparisonSection to production-aware experimentation
-          tool (follows `/dev/surface` pattern): live CSS variable
-          manipulation (entire page updates), correct production preset
-          (Geist Mono + IBM Plex Sans, was stale "Geist all"), reset-to-
-          production with dirty tracking + "Modified" badge, collapsible
-          CSS export with copy-to-clipboard and unloaded font warnings,
-          unmount cleanup. Replaced inline `style={{fontFamily}}` with
-          `font-title`/`font-terminal`/`font-body` CSS classes on previews
+        - Applied font slots to typography page chrome: `font-title` on CardTitle headers, `font-terminal` on
+          line-height labels and accent spans, `font-body` on heading/body/size/weight/color demos
+        - Upgraded FontComparisonSection to production-aware experimentation tool (follows `/dev/surface` pattern):
+          live CSS variable manipulation (entire page updates), correct production preset (Geist Mono + IBM Plex
+          Sans, was stale "Geist all"), reset-to-production with dirty tracking + "Modified" badge, collapsible
+          CSS export with copy-to-clipboard and unloaded font warnings, unmount cleanup. Replaced inline
+          `style={{fontFamily}}` with `font-title`/`font-terminal`/`font-body` CSS classes on previews
 
     - [x] **1.5.h Run incremental quality gates on all modified files**
         - Type-check: zero errors
@@ -302,33 +274,28 @@ dual-domain configuration.
 
 - [ ] **2.1 Holistic content pass — per project**
 
-    **Goal:** Collaborative, per-project content review covering all text fields.
-    Work through each project one at a time, addressing shortDescription, long
-    description, highlights, and features together before moving to the next.
+    **Goal:** Collaborative, per-project content review covering all text fields. Work through each project one at
+    a time, addressing shortDescription, long description, highlights, and features together before moving to the
+    next.
 
     **Content field roles (progressive depth — each adds information, not restates):**
 
-    - **shortDescription** (~250 char max): The hook. "What is this, why should
-      I care?" No tech stack (visible on cards), no table stakes. Feeds meta
-      descriptions and OG tags.
-    - **description** (long, ~3-5 sentences): Narrative / executive summary.
-      Story and central challenge at summary level. Names technologies but
-      defers specifics to features. Avoids "how" detail — that's for details.
-    - **features** ("Key Features"): Concrete technical "what" — capabilities
-      and engineering choices. ~5 items of comparable length. Preceded by a
-      short italic blurb grounding the product's user-facing purpose (what
-      users actually do with the app). Uses `paragraph: true` for blurb,
-      regular strings for bullets.
-    - **details** ("Implementation Details"): Deep dive "how/why" — mechanisms,
-      tradeoffs, specific numbers. Grouped by bold `heading: true` category
-      headers with bullets underneath. Only use categories when project has
-      enough depth to warrant grouping; simpler projects can use flat bullets.
+    - **shortDescription** (~250 char max): The hook. "What is this, why should I care?" No tech stack (visible
+      on cards), no table stakes. Feeds meta descriptions and OG tags.
+    - **description** (long, ~3-5 sentences): Narrative / executive summary. Story and central challenge at
+      summary level. Names technologies but defers specifics to features. Avoids "how" detail — that's for
+      details.
+    - **features** ("Key Features"): Concrete technical "what" — capabilities and engineering choices. ~5 items
+      of comparable length. Preceded by a short italic blurb grounding the product's user-facing purpose (what
+      users actually do with the app). Uses `paragraph: true` for blurb, regular strings for bullets.
+    - **details** ("Implementation Details"): Deep dive "how/why" — mechanisms, tradeoffs, specific numbers.
+      Grouped by bold `heading: true` category headers with bullets underneath. Only use categories when project
+      has enough depth to warrant grouping; simpler projects can use flat bullets.
 
-    **Progressive depth principle:** If the same topic appears in multiple
-    sections, each mention must be at a different depth. Example (type safety):
-    description says "type safety spans the full stack", features says "Pydantic,
-    Pyright strict mode, auto-generated TypeScript", details explains the stubs,
-    zero-Any policy, and migration that made it possible.
+    **Progressive depth principle:** If the same topic appears in multiple sections, each mention must be at a
+    different depth. Example (type safety): description says "type safety spans the full stack", features says
+    "Pydantic, Pyright strict mode, auto-generated TypeScript", details explains the stubs, zero-Any policy, and
+    migration that made it possible.
 
     **Length guidance:**
 
@@ -349,8 +316,7 @@ dual-domain configuration.
     **Project-type considerations:**
 
     - Software/games: use all sections with progressive depth model
-    - Mods: may only need details (evaluate per project); features blurb
-      likely unnecessary for mods
+    - Mods: may only need details (evaluate per project); features blurb likely unnecessary for mods
 
     **Tone principles:**
 
@@ -361,157 +327,128 @@ dual-domain configuration.
 
     - [x] **2.1.a CineXplorer — shortDescription**
         - Reworked from feature-listing approach to portfolio-value hook
-        - Final: "Movie discovery platform demonstrating end-to-end type safety,
-          a layered service architecture with dependency injection, production-grade
-          containerized infrastructure, and custom validation and enrichment
-          pipelines over external API integration."
+        - Final: "Movie discovery platform demonstrating end-to-end type safety, a layered service architecture
+          with dependency injection, production-grade containerized infrastructure, and custom validation and
+          enrichment pipelines over external API integration."
         - ~247 chars; established ~250 char max from visual testing
     - [x] **2.1.b CineXplorer — features, details, long description**
         - Established progressive depth model across all three sections
-        - Description: trimmed ~2 lines, moved "how" detail (buffer system,
-          DRF migration) to details, simplified type safety to scope statement
-        - Features: added italic product blurb (user-facing context), shortened
-          type safety bullet, kept ~5 technical items
-        - Details: full rewrite with 4 category headings (Data Quality, Type
-          Safety, Service Architecture, Theme System) + 7 deep-dive items
-          sourced from CineXplorer repo strategy docs
-        - ContentList visual redesign: accent-colored ▸ triangle markers for
-          standalone lists, category headers with indented sub-items + accent
-          left border for grouped lists
-        - Refactored ContentItem type: added `heading` flag replacing
-          convention-based bold detection for category headers
-        - Updated task list content guidelines with progressive depth model,
-          length guidance, and approach for remaining projects
+        - Description: trimmed ~2 lines, moved "how" detail (buffer system, DRF migration) to details, simplified
+          type safety to scope statement
+        - Features: added italic product blurb (user-facing context), shortened type safety bullet, kept ~5
+          technical items
+        - Details: full rewrite with 4 category headings (Data Quality, Type Safety, Service Architecture, Theme
+          System) + 7 deep-dive items sourced from CineXplorer repo strategy docs
+        - ContentList visual redesign: accent-colored ▸ triangle markers for standalone lists, category headers
+          with indented sub-items + accent left border for grouped lists
+        - Refactored ContentItem type: added `heading` flag replacing convention-based bold detection for category
+          headers
+        - Updated task list content guidelines with progressive depth model, length guidance, and approach for
+          remaining projects
     - [x] **2.1.c ARC Framework**
-        - Full content pass applying progressive depth model:
-          shortDescription, description, features (blurb + 6 bullets),
-          details (4 category headings + 10 items)
-        - Renamed: title "ARC Agentic Toolkit" → "ARC Framework",
-          category "Dev Framework" → "Dev Methodology",
+        - Full content pass applying progressive depth model: shortDescription, description, features (blurb + 6
+          bullets), details (4 category headings + 10 items)
+        - Renamed: title "ARC Agentic Toolkit" → "ARC Framework", category "Dev Framework" → "Dev Methodology",
           slug "arc-agentic-dev-framework" → "arc-framework"
-        - Updated FeaturedSection type "framework" → "methodology"
-          to avoid badge/title repetition
-        - Renamed image files and updated all references across
-          source, tests, and documentation
-        - Philosophy-focused copy emphasizing tight human-agent
-          coupling, complementary strengths, co-development over
-          raw throughput, and honest scope (single-dev origin)
+        - Updated FeaturedSection type "framework" → "methodology" to avoid badge/title repetition
+        - Renamed image files and updated all references across source, tests, and documentation
+        - Philosophy-focused copy emphasizing tight human-agent coupling, complementary strengths, co-development
+          over raw throughput, and honest scope (single-dev origin)
     - [x] **2.1.d andrewRCr Portfolio (this site)**
-        - Full content pass applying progressive depth model:
-          shortDescription (production app thesis + type safety, design
-          system, a11y), description (4 sentences: thesis, typed data
-          models, theme/SSR persistence, accessibility validation),
-          features (blurb + 6 bullets: type-safe content, semantic
-          tokens, a11y auditing, responsive, animation orchestration,
-          ARC constant), details (3 headings: Design System, Server
-          Rendering, Quality Engineering — 7 items total)
-        - Leaned into self-referential nature (visitor can verify claims)
-          while avoiding attitude claims ("first-class concern", etc.)
+        - Full content pass applying progressive depth model: shortDescription (production app thesis + type
+          safety, design system, a11y), description (4 sentences: thesis, typed data models, theme/SSR
+          persistence, accessibility validation), features (blurb + 6 bullets: type-safe content, semantic tokens,
+          a11y auditing, responsive, animation orchestration, ARC constant), details (3 headings: Design System,
+          Server Rendering, Quality Engineering — 7 items total)
+        - Leaned into self-referential nature (visitor can verify claims) while avoiding attitude claims
+          ("first-class concern", etc.)
         - Promoted type-safe content architecture as lead differentiator
-        - Added animation orchestration coverage (reducer-based,
-          phase-driven, centralized timing, reduced-motion support)
-        - Revised ARC_FRAMEWORK_FEATURE constant: added markdown link
-          to framework project page, refined copy to capture philosophy
+        - Added animation orchestration coverage (reducer-based, phase-driven, centralized timing, reduced-motion
+          support)
+        - Revised ARC_FRAMEWORK_FEATURE constant: added markdown link to framework project page, refined copy to
+          capture philosophy
         - Added Framer Motion to techStack
     - [x] **2.1.e TaskFocus**
-        - Full content pass applying progressive depth model:
-          shortDescription (cross-platform thesis, shared backend,
-          bi-directional sync, GTD lifecycle), description (4 sentences:
-          thesis, dual-axis GTD domain model, sync architecture, production
-          status), features (blurb + 5 bullets: GTD views with per-view
-          ordering, bi-directional sync, lifecycle management, JWT/email
-          auth, cross-platform deployment), details (3 headings:
-          Cross-Platform Architecture, Synchronization, Identity &
-          Lifecycle — 7 items)
+        - Full content pass applying progressive depth model: shortDescription (cross-platform thesis, shared
+          backend, bi-directional sync, GTD lifecycle), description (4 sentences: thesis, dual-axis GTD domain
+          model, sync architecture, production status), features (blurb + 5 bullets: GTD views with per-view
+          ordering, bi-directional sync, lifecycle management, JWT/email auth, cross-platform deployment), details
+          (3 headings: Cross-Platform Architecture, Synchronization, Identity & Lifecycle — 7 items)
         - Reordered techStack: C# first (language-first convention)
-        - Simplified developmentTime to "2024" (v1-only content);
-          preserved "2024 (v1), 2026 (v2)" / "2024 / 2026" in comment
-          as confirmed-good breakpoint strings for future v2 restoration
-        - Removed "(Squarespace Migration)" from all project comment
-          headers across the file (6 occurrences)
+        - Simplified developmentTime to "2024" (v1-only content); preserved "2024 (v1), 2026 (v2)" / "2024 /
+          2026" in comment as confirmed-good breakpoint strings for future v2 restoration
+        - Removed "(Squarespace Migration)" from all project comment headers across the file (6 occurrences)
     - [x] **2.1.f PetResort**
-        - Full content pass applying progressive depth model:
-          shortDescription (full-stack portal, 6 domain models, visit
-          lifecycle, two-tier access), description (4 sentences: thesis,
-          interconnected data layer, visit workflow, live demo),
-          features (blurb + 5 bullets: domain models, visit lifecycle,
-          access control, defense-in-depth validation, password reset),
-          details (3 headings: Domain Architecture, Access & Security,
-          Operations & UX — 6 items). Description trimmed to 3 sentences
-          (dropped "deployed as live demo" — table stakes)
-        - Content proportional to project scope (non-featured, 3/6 vs
-          CineXplorer's 4/8) — emphasizes domain complexity and
-          completeness over implementation technique
-        - Also: added Python to CineXplorer techStack (was missing),
-          dropped Django Ninja (redundant with Django, stays in tags)
+        - Full content pass applying progressive depth model: shortDescription (full-stack portal, 6 domain
+          models, visit lifecycle, two-tier access), description (4 sentences: thesis, interconnected data layer,
+          visit workflow, live demo), features (blurb + 5 bullets: domain models, visit lifecycle, access control,
+          defense-in-depth validation, password reset), details (3 headings: Domain Architecture, Access &
+          Security, Operations & UX — 6 items). Description trimmed to 3 sentences (dropped "deployed as live
+          demo" — table stakes)
+        - Content proportional to project scope (non-featured, 3/6 vs CineXplorer's 4/8) — emphasizes domain
+          complexity and completeness over implementation technique
+        - Also: added Python to CineXplorer techStack (was missing), dropped Django Ninja (redundant with Django,
+          stays in tags)
     - [x] **2.1.g DOOM (2016) NewGame+ Customizer**
-        - Full content pass applying progressive depth model:
-          shortDescription (Python tool, dataclass hierarchy, validation),
-          description (4 sentences: thesis, hierarchy, validation,
-          NexusMods + auto-deploy), features (blurb + 5 concise bullets:
-          hierarchy, code gen, validation, level inheritance, GUI),
-          details (2 headings: Domain Modeling, Generation & Deployment
-          — 4 items)
-        - Restructured for genuine progressive depth: features name
-          concepts briefly, details expand with implementation mechanics
-          — no pair repeats the same information
-        - Simplified game-specific constraint examples for non-gamer
-          accessibility (validation described by outcome, not opaque
-          game rules)
-        - Eliminated all "Demonstrates/Showcases/Bridges" padding
-          (11 flat bullets → 2 headings / 4 items)
+        - Full content pass applying progressive depth model: shortDescription (Python tool, dataclass hierarchy,
+          validation), description (4 sentences: thesis, hierarchy, validation, NexusMods + auto-deploy), features
+          (blurb + 5 concise bullets: hierarchy, code gen, validation, level inheritance, GUI), details (2
+          headings: Domain Modeling, Generation & Deployment — 4 items)
+        - Restructured for genuine progressive depth: features name concepts briefly, details expand with
+          implementation mechanics — no pair repeats the same information
+        - Simplified game-specific constraint examples for non-gamer accessibility (validation described by
+          outcome, not opaque game rules)
+        - Eliminated all "Demonstrates/Showcases/Bridges" padding (11 flat bullets → 2 headings / 4 items)
     - [x] **2.1.h Action RPG Project**
-        - Full content pass applying progressive depth model:
-          shortDescription (combat director, six AI types, modular systems),
-          description (4 sentences: thesis, combat director coordination,
-          character systems — equipment/inventory/stamina, player loop),
-          features (blurb + 6 bullets: AI director, poise/stagger, dual
-          targeting, stamina economy, equipment across 15 slots, reusable
-          inventory component), details (3 headings: Combat & AI, Character
-          Systems, Architecture — 9 items)
-        - Surfaced non-obvious systems from source code exploration:
-          combat director scoring, multi-stage perception pipeline, AI
-          behavioral archetypes, item type hierarchy (abstract base →
-          five concrete types), structured inventory result types,
-          bonfire-style checkpoint with zone-aware streaming, C++/Blueprint
-          boundary as overridable extension points
-        - Targeting: honest attribution — custom soft-lock, plugin-based
-          hard lock-on (no code contributions), custom priority logic
-        - Moved AI Behavior Trees and Animation State Machines from
-          techStack to tags; added Blueprint to techStack
-        - Eliminated all "Demonstrates/Showcases/Implements" padding
-          (10 flat detail bullets → 3 headings / 9 items)
+        - Full content pass applying progressive depth model: shortDescription (combat director, six AI types,
+          modular systems), description (4 sentences: thesis, combat director coordination, character systems —
+          equipment/inventory/stamina, player loop), features (blurb + 6 bullets: AI director, poise/stagger,
+          dual targeting, stamina economy, equipment across 15 slots, reusable inventory component), details (3
+          headings: Combat & AI, Character Systems, Architecture — 9 items)
+        - Surfaced non-obvious systems from source code exploration: combat director scoring, multi-stage
+          perception pipeline, AI behavioral archetypes, item type hierarchy (abstract base → five concrete
+          types), structured inventory result types, bonfire-style checkpoint with zone-aware streaming,
+          C++/Blueprint boundary as overridable extension points
+        - Targeting: honest attribution — custom soft-lock, plugin-based hard lock-on (no code contributions),
+          custom priority logic
+        - Moved AI Behavior Trees and Animation State Machines from techStack to tags; added Blueprint to techStack
+        - Eliminated all "Demonstrates/Showcases/Implements" padding (10 flat detail bullets → 3 headings / 9
+          items)
     - [x] **2.1.i Survival Horror Project**
-        - Full content pass applying progressive depth model:
-          shortDescription (CS capstone, puzzles, hit reactions, zombie AI,
-          team/timeline), description (4 sentences: capstone context + UE5
-          + 8-week delivery, player experience, physical animation as
-          post-delivery polish, leadership scope + task delegation),
-          features (blurb + 5 bullets: puzzles with container validation,
-          hit reactions + blood masking + ragdoll, zombie variants, hitscan
-          weapon system, progression map), details (3 headings: Physical
-          Animation, Combat & AI, Architecture — 9 items)
-        - Physical Animation heading showcases the strongest system:
-          directional hit via dot/cross product, per-limb counters with
-          threshold stagger + localized physics, incapacitation (crawling)
-        - Architecture: C++/Blueprint boundary, component-based interaction,
-          item hierarchy separating data from world actors with save
-          persistence (VCR manual saves tracking item + corpse positions)
-        - Added Jira to techStack; moved AI Behavior Trees and Animation
-          State Machines from techStack to tags; added Blueprint
-        - Reduced em dash density (6 → 2), added cinematic sequences to
-          description, morph-target mouth animation to audio detail
+        - Full content pass applying progressive depth model: shortDescription (CS capstone, puzzles, hit
+          reactions, zombie AI, team/timeline), description (4 sentences: capstone context + UE5 — 8-week
+          delivery, player experience, physical animation as post-delivery polish, leadership scope + task
+          delegation), features (blurb + 5 bullets: puzzles with container validation, hit reactions + blood
+          masking + ragdoll, zombie variants, hitscan weapon system, progression map), details (3 headings:
+          Physical Animation, Combat & AI, Architecture — 9 items)
+        - Physical Animation heading showcases the strongest system: directional hit via dot/cross product,
+          per-limb counters with threshold stagger + localized physics, incapacitation (crawling)
+        - Architecture: C++/Blueprint boundary, component-based interaction, item hierarchy separating data from
+          world actors with save persistence (VCR manual saves tracking item + corpse positions)
+        - Added Jira to techStack; moved AI Behavior Trees and Animation State Machines from techStack to tags;
+          added Blueprint
+        - Reduced em dash density (6 → 2), added cinematic sequences to description, morph-target mouth animation
+          to audio detail
         - Eliminated all padding (11 flat bullets → 3 headings / 9 items)
-    - [ ] **2.1.j Pong Clone** (previously polished — review only)
+    - [x] **2.1.j Pong Clone** (structural alignment + source verification)
+        - Verified claims against actual source code (copied to WSL at `~/dev/Pong`): removed fabricated
+          "configurable win conditions" (game has no win state — infinite arcade play), upgraded AI description
+          from "basic" to adaptive (speed modulation + anti-stalemate pattern-breaking confirmed in source)
+        - Description: 5 sentences → 3, removed "Demonstrates" padding, replaced redundant "without middleware"
+          with layered architecture point (platform, framework, game logic layers)
+        - Features: no blurb (Pong is self-evident — blurb just previewed bullets), 9 flat bullets → 5 focused
+          items including paddle-velocity transfer, state-driven pause, and adaptive AI
+        - Details: 10 flat bullets with heavy feature overlap → 2 headings / 5 items (Rendering & Platform, Game
+          Architecture) with AI anti-stalemate detail sourced from code exploration
+        - shortDescription: em dash spacing consistency only
     - [ ] **2.1.k Mods (all)**
-        - **Priority:** `re8-aim-dependent-crosshair` and
-          `sh2r-never-holster-weapons` have features but no highlights — their
-          detail pages currently show no content sections
+        - **Priority:** `re8-aim-dependent-crosshair` and `sh2r-never-holster-weapons` have features but no
+          highlights — their detail pages currently show no content sections
 
 - [ ] **2.2 Verify features/highlights field usage**
 
-    **Goal:** Ensure both fields render correctly on detail pages for all project
-    types. Remove features only from projects where it adds no value (likely mods).
+    **Goal:** Ensure both fields render correctly on detail pages for all project types. Remove features only from
+    projects where it adds no value (likely mods).
 
     - [ ] **2.2.a Audit which projects have features, highlights, or both**
     - [ ] **2.2.b Remove features from projects where redundant (mods TBD)**
@@ -527,13 +464,13 @@ dual-domain configuration.
 
 - [ ] **3.1 Create custom error pages**
 
-    **Goal:** Replace generic Next.js/Vercel error pages with TWM-themed alternatives
-    that maintain the site's visual identity.
+    **Goal:** Replace generic Next.js/Vercel error pages with TWM-themed alternatives that maintain the site's
+    visual identity.
 
     - [ ] **3.1.a Create `src/app/not-found.tsx` (custom 404)**
         - Renders inside root layout — TWM frame, theme, wallpaper all inherited
-        - Terminal-style messaging to match TWM aesthetic
-          (e.g., `> 404: page not found`, suggested navigation links)
+        - Terminal-style messaging to match TWM aesthetic (e.g., `> 404: page not found`, suggested navigation
+          links)
         - Include link back to home and possibly to projects
         - Keep it simple and on-brand
 
@@ -561,8 +498,7 @@ dual-domain configuration.
 
 - [ ] **3.2 Expand site configuration for SEO**
 
-    **Goal:** Centralize site identity data needed by metadata, OG tags, and
-    structured data.
+    **Goal:** Centralize site identity data needed by metadata, OG tags, and structured data.
 
     - [ ] **3.2.a Extend `src/config/site.ts` with SEO fields**
         - Add `url` (production URL: `https://andrewcreekmore.dev`)
@@ -573,8 +509,8 @@ dual-domain configuration.
 
     - [ ] **3.2.b Add OG default image to `public/`**
         - Use `profile-photo.webp` as default OG image
-        - Ensure dimensions are appropriate (may need a cropped/resized version
-          at 1200×630 for optimal social previews — TBD by user)
+        - Ensure dimensions are appropriate (may need a cropped/resized version at 1200×630 for optimal social
+          previews — TBD by user)
 
 - [ ] **3.3 Add per-page static metadata**
 
@@ -599,8 +535,7 @@ dual-domain configuration.
 
 - [ ] **3.4 Add dynamic metadata for project detail routes**
 
-    **Goal:** Each project page gets unique SEO with project-specific title,
-    description, and hero image.
+    **Goal:** Each project page gets unique SEO with project-specific title, description, and hero image.
 
     - [ ] **3.4.a Implement `generateMetadata()` in `src/app/projects/software/[slug]/page.tsx`**
         - Pull project data by slug
@@ -622,8 +557,7 @@ dual-domain configuration.
 - [ ] **3.5 Create sitemap and robots.txt**
 
     - [ ] **3.5.a Create `src/app/sitemap.ts` route handler**
-        - Enumerate all static routes (`/`, `/projects`, `/skills`, `/about`,
-          `/contact`)
+        - Enumerate all static routes (`/`, `/projects`, `/skills`, `/about`, `/contact`)
         - Enumerate all dynamic project routes from data files
         - Set appropriate `changeFrequency` and `priority` values
         - Use `MetadataRoute.Sitemap` return type
@@ -640,8 +574,8 @@ dual-domain configuration.
 
 - [ ] **3.6 Configure favicon**
 
-    **Note:** Favicon design is a manual task (user will create the asset). This task
-    covers integration once the asset exists.
+    **Note:** Favicon design is a manual task (user will create the asset). This task covers integration once the
+    asset exists.
 
     - [ ] **3.6.a Create favicon assets**
         - Design TBD (options: ARC initials, terminal prompt motif, other)
@@ -649,8 +583,8 @@ dual-domain configuration.
         - Nice to have: `icon.svg` for modern browsers, `manifest.webmanifest`
 
     - [ ] **3.6.b Configure favicon in Next.js**
-        - Place files in `src/app/` (Next.js auto-detects `icon.ico`,
-          `apple-icon.png` in app directory) or `public/`
+        - Place files in `src/app/` (Next.js auto-detects `icon.ico`, `apple-icon.png` in app directory) or
+          `public/`
         - Verify favicon appears in browser tabs across browsers
 
 - [ ] **3.7 Add JSON-LD structured data**
@@ -687,16 +621,16 @@ dual-domain configuration.
 
 ### **Phase 4:** Pre-Launch Polish
 
-*Catch-all phase for visual fixes, responsive issues, and other polish items
-discovered before deployment. Tasks added as they surface.*
+*Catch-all phase for visual fixes, responsive issues, and other polish items discovered before deployment. Tasks
+added as they surface.*
 
 - [ ] **4.1 Fix icon button jitter during theme transitions (Safari)**
 
     **Goal:** Eliminate visible icon jitter during light/dark transitions on Safari.
 
     - [ ] **4.1.a Investigate git history for removed stabilization property**
-        - A `will-change` or Framer Motion layout prop was previously on ThemeToggle
-          but removed during code review — find and evaluate restoring it
+        - A `will-change` or Framer Motion layout prop was previously on ThemeToggle but removed during code
+          review — find and evaluate restoring it
     - [ ] **4.1.b Audit all icon buttons for jitter**
         - ThemeToggle (TopBar), filter button (/projects), any others
     - [ ] **4.1.c Apply fix and verify across browsers**
@@ -705,8 +639,7 @@ discovered before deployment. Tasks added as they surface.*
 
 - [ ] **4.2 Investigate and fix slow image loading**
 
-    **Goal:** Improve loading performance for wallpaper thumbnails and profile photo
-    on lower-bandwidth connections.
+    **Goal:** Improve loading performance for wallpaper thumbnails and profile photo on lower-bandwidth connections.
 
     - [ ] **4.2.a Diagnose wallpaper thumbnail loading in ThemeControl**
         - Check image sizes, responsive `sizes`/`srcSet`, placeholder strategy
@@ -717,12 +650,10 @@ discovered before deployment. Tasks added as they surface.*
 
 - [ ] **4.3 Laptop viewport responsive design pass**
 
-    **Goal:** Audit and fix layout issues at laptop-class viewports (~1280–1440px
-    width, limited height).
+    **Goal:** Audit and fix layout issues at laptop-class viewports (~1280–1440px width, limited height).
 
     - [ ] **4.3.a Audit all pages at laptop viewport**
-        - Key issues identified: Home skill logos not visible without scrolling,
-          Contact needs padding adjustment
+        - Key issues identified: Home skill logos not visible without scrolling, Contact needs padding adjustment
         - Full audit of all pages at ~1440×900
     - [ ] **4.3.b Implement responsive fixes**
         - Home: consider reducing featured projects, repositioning skill logos
@@ -762,8 +693,7 @@ discovered before deployment. Tasks added as they surface.*
 
 - [ ] **5.3 Configure domains**
 
-    **Note:** Domain registration and DNS transfer are manual tasks. This covers
-    Vercel-side configuration.
+    **Note:** Domain registration and DNS transfer are manual tasks. This covers Vercel-side configuration.
 
     - [ ] **5.3.a Register new domains**
         - `andrewcreekmore.dev` (primary)
@@ -777,8 +707,7 @@ discovered before deployment. Tasks added as they surface.*
 
     - [ ] **5.3.c Add all domains to Vercel project**
         - Set `andrewcreekmore.dev` as primary domain
-        - Add `andrewcreekmore.com`, `andrewrcr.dev`, `andrewrcr.com` as redirects
-          (Vercel auto-308s to primary)
+        - Add `andrewcreekmore.com`, `andrewrcr.dev`, `andrewrcr.com` as redirects (Vercel auto-308s to primary)
         - Verify SSL certificates provisioned for all domains
 
     - [ ] **5.3.d Update `SITE.url` and `metadataBase` if domain changed**

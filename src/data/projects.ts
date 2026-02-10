@@ -688,26 +688,23 @@ export const projects: Project[] = [
     title: "Pong Clone",
     slug: "pong-clone",
     description:
-      "Classic Pong implementation in raw C++ with a fully hand-rolled software renderer—no game engine, no graphics API (OpenGL/DirectX), " +
-      "just direct pixel manipulation via Win32 GDI. Features single-player mode with basic AI opponent and local two-player multiplayer. " +
-      "Demonstrates foundational game programming: custom game loop with delta timing, AABB collision detection, entity architecture, " +
-      "state machine for menus/gameplay, and 3D positional audio via OpenAL. The renderer draws everything—including bitmap text—directly " +
-      "to a memory buffer, blitted to screen each frame.",
+      "Classic Pong built entirely from scratch in raw C++ — no game engine, no graphics API, just direct pixel " +
+      "manipulation via Win32 GDI. Supports single-player against an AI opponent and local two-player multiplayer, " +
+      "with 3D positional audio for spatialized sound effects. Every system (renderer, game loop, collision " +
+      "detection, entity architecture, menu state machine) is hand-rolled, organized into distinct platform, " +
+      "framework, and game logic layers.",
     shortDescription:
-      "Pong in raw C++ with software rendering—no engine, no graphics API. Hand-rolled game loop, collision detection, state machines, and 3D positional audio.",
+      "Pong in raw C++ with software rendering — no engine, no graphics API. Hand-rolled game loop, collision " +
+      "detection, state machines, and 3D positional audio.",
     category: ["Game"],
     tags: ["C++", "Game Development", "Audio Programming", "Software Rendering", "No Engine"],
     techStack: ["C++", "Win32", "libsndfile", "OpenAL (openal-soft)"],
     features: [
       "Pure software rendering: direct pixel buffer writes, no OpenGL/DirectX/Vulkan",
-      "Single-player mode with basic AI opponent",
-      "Local multiplayer mode for two human players",
-      "3D positional audio using OpenAL for spatialized sound effects",
-      "Custom bitmap text rendering (no font libraries)",
-      "Delta-timed game loop with pause/resume functionality",
-      "AABB collision detection with paddle-spin response",
-      "Complete menu system (main menu, pause menu)",
-      "Round and score tracking with configurable win conditions",
+      "3D positional audio via OpenAL for spatialized gameplay sound effects",
+      "Custom bitmap text rendering without font libraries",
+      "Delta-timed game loop with AABB collision, paddle-velocity transfer, and state-driven pause",
+      "Adaptive AI opponent with anti-stalemate logic and local two-player multiplayer",
     ],
     links: {
       github: "https://github.com/andrewRCr/PongClone",
@@ -725,16 +722,13 @@ export const projects: Project[] = [
     },
     developmentTime: "2023",
     details: [
-      "Win32 platform layer: window creation, input handling, frame timing",
-      "Software rasterizer: VirtualAlloc framebuffer, GDI StretchDIBits for display",
-      "Entity system with base class and Ball/Paddle specializations",
-      "State machine managing menu navigation and gameplay transitions",
-      "Audio subsystem wrapping OpenAL: SoundDevice, SoundLibrary, SoundPlayer",
-      "Clean separation: Framework (renderer, audio), Entities, Platforms",
-      "Pure software rendering without any graphics API—direct pixel manipulation via Win32 GDI",
-      "Handmade-style architecture: custom game loop, collision detection, entity system built from scratch",
-      "3D positional audio integration using OpenAL for spatialized gameplay sound effects",
-      "Clean layered codebase separating platform concerns from game logic",
+      { text: "**Rendering & Platform**", heading: true },
+      "Win32 platform layer handling window creation, input, and frame timing with delta-time accumulation",
+      "Software rasterizer: VirtualAlloc framebuffer blitted to screen via GDI StretchDIBits each frame",
+      { text: "**Game Architecture**", heading: true },
+      "Entity system with base class and Ball/Paddle specializations; state machine managing menu and gameplay transitions",
+      "Audio subsystem wrapping OpenAL with layered abstractions (device, library, player) for source positioning",
+      "Adaptive AI with speed modulation based on ball direction and deliberate pattern-breaking to prevent stalemates",
     ],
     order: 9,
     featured: false,
