@@ -481,7 +481,27 @@ dual-domain configuration.
           techStack to tags; added Blueprint to techStack
         - Eliminated all "Demonstrates/Showcases/Implements" padding
           (10 flat detail bullets → 3 headings / 9 items)
-    - [ ] **2.1.i Survival Horror Project**
+    - [x] **2.1.i Survival Horror Project**
+        - Full content pass applying progressive depth model:
+          shortDescription (CS capstone, puzzles, hit reactions, zombie AI,
+          team/timeline), description (4 sentences: capstone context + UE5
+          + 8-week delivery, player experience, physical animation as
+          post-delivery polish, leadership scope + task delegation),
+          features (blurb + 5 bullets: puzzles with container validation,
+          hit reactions + blood masking + ragdoll, zombie variants, hitscan
+          weapon system, progression map), details (3 headings: Physical
+          Animation, Combat & AI, Architecture — 9 items)
+        - Physical Animation heading showcases the strongest system:
+          directional hit via dot/cross product, per-limb counters with
+          threshold stagger + localized physics, incapacitation (crawling)
+        - Architecture: C++/Blueprint boundary, component-based interaction,
+          item hierarchy separating data from world actors with save
+          persistence (VCR manual saves tracking item + corpse positions)
+        - Added Jira to techStack; moved AI Behavior Trees and Animation
+          State Machines from techStack to tags; added Blueprint
+        - Reduced em dash density (6 → 2), added cinematic sequences to
+          description, morph-target mouth animation to audio detail
+        - Eliminated all padding (11 flat bullets → 3 headings / 9 items)
     - [ ] **2.1.j Pong Clone** (previously polished — review only)
     - [ ] **2.1.k Mods (all)**
         - **Priority:** `re8-aim-dependent-crosshair` and

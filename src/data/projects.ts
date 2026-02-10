@@ -578,28 +578,29 @@ export const projects: Project[] = [
     title: "Survival Horror Project",
     slug: "survival-horror-project",
     description:
-      "Capstone project for Bachelor's in Computer Science from Oregon State University - a comprehensive survival horror game " +
-      "developed in Unreal Engine 5 over eight weeks. Classic 90s-inspired survival horror with escape room elements: players navigate " +
-      "a zombie-infested mansion during a thunderstorm, solving 9 environmental puzzles to retrieve key items and escape. " +
-      "As project lead in a 3-person team, implemented core game framework, player locomotion and animation systems, interaction and inventory " +
-      "mechanics, combat systems with physical hit reactions and locational blood masking, enemy AI with randomized zombie variants, " +
-      "progression-based multi-floor map system, and cinematic sequences. Demonstrates comprehensive game development pipeline from framework " +
-      "design through polished gameplay mechanics.",
+      "Computer Science degree capstone project: a demo-length survival horror game built in Unreal Engine 5 and " +
+      "delivered in eight weeks by a three-person team. Players navigate a zombie-infested mansion during a thunderstorm, solving " +
+      "nine environmental puzzles to collect key items and escape. Combat features directional hit reactions with per-limb damage " +
+      "tracking, locational blood masking, and ragdoll physics — post-delivery polish replacing static death animations with " +
+      "physically reactive feedback. As project lead, scoped and implemented the core game framework, all combat and AI " +
+      "systems, cinematic sequences for narrative transitions, and the reusable interaction and inventory components, " +
+      "while coordinating task delegation across the team.",
     shortDescription:
-      "Capstone survival horror game in Unreal Engine 5 with puzzle-solving, inventory management, and zombie combat. Team project lead role.",
+      "CS capstone survival horror game in Unreal Engine 5 with nine environmental puzzles, per-limb hit reactions, " +
+      "and zombie AI. Project lead, three-person team, eight-week delivery.",
     category: ["Game"],
-    tags: ["Unreal Engine 5", "C++", "Blueprint", "Game Development", "Team Leadership", "Capstone Project"],
-    techStack: ["C++", "Unreal Engine 5", "Perforce", "AI Behavior Trees", "Animation State Machines"],
+    tags: ["Unreal Engine 5", "C++", "Blueprint", "Game Development", "Team Leadership", "Capstone Project", "AI Behavior Trees", "Animation State Machines"],
+    techStack: ["C++", "Unreal Engine 5", "Blueprint", "Perforce", "Jira"],
     features: [
-      "9 environmental puzzles with varying complexity levels",
-      "Progression-updated multi-floor map system for navigation",
-      "Inventory management with item collection and usage mechanics",
-      "Third-person combat system with zombie enemies",
-      "4 distinct zombie models with randomized appearance variations (hair, clothing, skin)",
-      "Physical animation systems: hit reactions, locational blood masking, ragdoll physics",
-      "Enemy AI with behavioral variety and spawning systems",
-      "Menu systems and cinematic level sequences",
-      "Classic 90s survival horror atmosphere with escape room gameplay",
+      {
+        text: "*Players explore a storm-battered mansion, solving environmental puzzles across multiple floors, managing limited ammunition and healing items, and fighting through zombies to collect key items and escape.*",
+        paragraph: true,
+      },
+      "Nine environmental puzzles with container-based item validation gating progression through the mansion",
+      "Directional hit reactions with per-limb damage tracking, locational blood masking on enemy models, and ragdoll death physics",
+      "Four zombie base types with randomized clothing and hair meshes generating visual variety across encounters",
+      "Hitscan weapon system with bone-specific damage modifiers, crosshair spread affected by movement, and curve-driven recoil",
+      "Progression-updated map system revealing newly explored areas and floors as puzzles are solved",
     ],
     links: {
       github: "https://github.com/andrewRCr/SurvivalHorrorProject",
@@ -663,17 +664,18 @@ export const projects: Project[] = [
     teamRole: "Project Lead",
     developmentTime: "2022",
     details: [
-      "Unreal Engine 5 with C++ core systems and Blueprint for rapid iteration",
-      "Animation state machines for complex character locomotion and combat transitions",
-      "Physical animation systems: hit reactions, locational damage masking, ragdoll physics",
-      "Enemy AI with behavior trees and randomized appearance generation",
-      "Progression-based map system revealing new areas as puzzles are solved",
-      "Interaction framework supporting diverse puzzle mechanics and inventory integration",
-      "Cinematic sequencer integration for narrative moments and level transitions",
-      "Demonstrates comprehensive game development leadership: framework design, system architecture, team coordination, and delivery within 8-week timeline",
-      "Showcases Unreal Engine 5 proficiency across multiple domains: animation, AI, physics, cinematics, and gameplay programming",
-      "Capstone achievement for Computer Science degree - integrates academic knowledge with practical game development",
-      "Implements production-level systems: complex animation state machines, dynamic enemy spawning, environmental puzzle mechanics, and polished player interactions",
+      { text: "**Physical Animation**", heading: true },
+      "Hit direction calculated from dot and cross products against the enemy's forward vector, selecting response animations for front, back, left, or right impact",
+      "Per-limb hit counters with threshold-based reactions — repeated strikes to the same body region trigger stagger animations and enable localized physics simulation on the affected limb",
+      "Incapacitation system: sufficient leg damage transitions enemies from standing to crawling with modified movement speed, attack patterns, and ground-level mesh alignment",
+      { text: "**Combat & AI**", heading: true },
+      "Hitscan traces with bone-specific damage multipliers, dynamic crosshair spread factoring velocity, aim state, and focused-aim duration, and curve-driven camera recoil",
+      "Zombie perception with configurable vision cones, hearing ranges, and line-of-sight checks driving state transitions between assigned patrol circuits and hostile pursuit",
+      "Context-aware enemy audio on interval timers (idle groans, chase vocalizations, damage reactions) with morph-target mouth animation and speech interruption on hit",
+      { text: "**Architecture**", heading: true },
+      "C++ core systems with Blueprint scripting for rapid team iteration: combat tuning, VFX, and puzzle progression exposed as overridable extension points",
+      "Component-based interaction with raycast detection, timed hold-to-interact, and delegate-driven events reused across doors, containers, pickups, and puzzle elements",
+      "Item hierarchy separating data (UObject instances) from world representation (pickup actors), with world-state persistence tracking item and enemy corpse positions across manual saves at in-game VCR stations",
     ],
     order: 8,
     featured: true,
