@@ -423,22 +423,28 @@ export const projects: Project[] = [
     cardTitle: "DOOM NewGame+ Customizer",
     slug: "doom-newgame-plus-customizer",
     description:
-      "Desktop application and mod generation tool for DOOM (2016) that translates player-defined gameplay preferences into custom .decl mod files. " +
-      "Built with Python using dataclasses to model complex game systems (inventory, equipment, weapons, upgrades, runes), the application features " +
-      "a GUI for non-technical users to configure starting parameters beyond standard game restrictions. Demonstrates software architecture principles " +
-      "applied to game modding: data modeling, validation logic, file generation, and automated installation workflows. Published on NexusMods for community distribution.",
+      "A desktop modding tool for DOOM (2016) that lets players define custom starting inventories — equipment, weapons, weapon mods, " +
+      "suit upgrades, and runes — and generates the `.decl` mod files the game engine reads. Python dataclasses model the game's internal " +
+      "systems as a three-level inheritance hierarchy: abstract base elements specialize into perks and items, which further specialize into " +
+      "eight concrete types matching DOOM's inventory categories. A validation layer enforces the game's own balance constraints, " +
+      "preventing configurations that would break progression. Published on NexusMods with a GUI built for non-technical " +
+      "players, auto-detecting the local game installation and deploying generated mods directly.",
     shortDescription:
-      "Python desktop application generating custom DOOM (2016) mods from player-defined gameplay configurations.",
+      "Python desktop application generating custom DOOM (2016) starting-loadout mods, with a dataclass hierarchy " +
+      "modeling the game's inventory systems and validation enforcing balance constraints.",
     category: ["Desktop App", "Modding Tool"],
     tags: ["Python", "Git", "Desktop Application", "Game Modding", "Data Modeling", "Tool Development"],
     techStack: ["Python", "CustomTkinter", "Pillow (PIL)"],
     features: [
-      "Data modeling: Python dataclasses representing game systems (inventory, weapons, equipment, upgrades)",
-      "User-friendly GUI for configuring gameplay parameters without technical knowledge",
-      "Validation engine enforcing game balance rules and compatibility constraints",
-      "Automated .decl file generation from user configurations",
-      "Installation workflow: automatic mod deployment to game directory via DOOMModLoader",
-      "Bypass standard restrictions: multi-rune equipping, custom starting loadouts",
+      {
+        text: "*Players configure a custom starting loadout — selecting equipment, weapons, weapon mods, suit upgrades, and runes with optional permanent equipping — and generate a ready-to-load mod with one click.*",
+        paragraph: true,
+      },
+      "Three-level dataclass hierarchy with eight concrete types modeling DOOM's full range of inventory categories",
+      "Code generation producing valid `.decl` mod files from user-configured loadout selections",
+      "Validation preventing loadout configurations that would block campaign progression",
+      "Level inheritance chain ensuring generated mods propagate correctly through all campaign levels",
+      "GUI with tabbed category navigation, in-game descriptions as tooltips, and auto-detected Steam installation paths",
     ],
     links: {
       github: "https://github.com/andrewRCr/DOOM-NewGamePlusCustomizer",
@@ -471,17 +477,12 @@ export const projects: Project[] = [
     },
     developmentTime: "2023",
     details: [
-      "Python dataclasses for domain modeling: structured representation of DOOM's internal game systems",
-      "CustomTkinter GUI framework with modern styling and CTkToolTip for enhanced user experience",
-      "Separation of concerns: UI layer, validation logic, file generation, installation automation",
-      "Configuration-to-code pipeline: translates user selections into valid .decl syntax",
-      "Pillow (PIL) for image handling and pygame for audio feedback in the interface",
-      "Windows executable distribution via Python compilation for end-user accessibility",
-      "Integration layer with DOOMModLoader for seamless mod installation",
-      "Demonstrates software engineering principles in game modding context: data modeling, validation, code generation, automated workflows",
-      "Showcases Python dataclasses for complex domain modeling and structured data representation",
-      "Bridges technical and non-technical users: abstracts game engine internals behind intuitive GUI",
-      "Published community tool on NexusMods platform with ongoing distribution and user adoption",
+      { text: "**Domain Modeling**", heading: true },
+      "Each inventory type implements its own serialization method, translating domain fields — upgrade levels, equipment flags, rune slot overrides — into the game engine's key-value format",
+      "Level inheritance map reproducing DOOM's loadout propagation chain — each level inherits its starting inventory from the previous, so a single generated base definition propagates correctly through the full campaign",
+      { text: "**Generation & Deployment**", heading: true },
+      "Configuration-to-file pipeline: user selections build an Inventory of module entries, serialized into indexed `.decl` items matching the engine's `devInvLoadout` format",
+      "Automated mod deployment: Steam installation path detection with common-path scanning, mod directory creation, and automatic replacement of previously generated versions",
     ],
     order: 6,
     featured: false,

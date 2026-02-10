@@ -444,7 +444,22 @@ dual-domain configuration.
           completeness over implementation technique
         - Also: added Python to CineXplorer techStack (was missing),
           dropped Django Ninja (redundant with Django, stays in tags)
-    - [ ] **2.1.g DOOM (2016) NewGame+ Customizer**
+    - [x] **2.1.g DOOM (2016) NewGame+ Customizer**
+        - Full content pass applying progressive depth model:
+          shortDescription (Python tool, dataclass hierarchy, validation),
+          description (4 sentences: thesis, hierarchy, validation,
+          NexusMods + auto-deploy), features (blurb + 5 concise bullets:
+          hierarchy, code gen, validation, level inheritance, GUI),
+          details (2 headings: Domain Modeling, Generation & Deployment
+          — 4 items)
+        - Restructured for genuine progressive depth: features name
+          concepts briefly, details expand with implementation mechanics
+          — no pair repeats the same information
+        - Simplified game-specific constraint examples for non-gamer
+          accessibility (validation described by outcome, not opaque
+          game rules)
+        - Eliminated all "Demonstrates/Showcases/Bridges" padding
+          (11 flat bullets → 2 headings / 4 items)
     - [ ] **2.1.h Action RPG Project**
     - [ ] **2.1.i Survival Horror Project**
     - [ ] **2.1.j Pong Clone** (previously polished — review only)
