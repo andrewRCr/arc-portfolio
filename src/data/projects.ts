@@ -682,11 +682,11 @@ export const projects: Project[] = [
   },
 
   // ==========================================
-  // PROJECT 9: Pong Clone  // ==========================================
+  // PROJECT 9: C++ Pong  // ==========================================
   {
     projectType: "game",
-    title: "Pong Clone",
-    slug: "pong-clone",
+    title: "C++ Pong",
+    slug: "cpp-pong",
     description:
       "Classic Pong built entirely from scratch in raw C++ — no game engine, no graphics API, just direct pixel " +
       "manipulation via Win32 GDI. Supports single-player against an AI opponent and local two-player multiplayer, " +
@@ -712,12 +712,12 @@ export const projects: Project[] = [
       download: "https://github.com/andrewRCr/PongClone/releases", // Windows executable
     },
     images: {
-      thumbnail: "/thumbnails/pong-clone.webp",
-      hero: "/projects/pong-clone/hero.webp",
+      thumbnail: "/thumbnails/cpp-pong.webp",
+      hero: "/projects/cpp-pong/hero.webp",
       screenshots: [
-        { src: "/projects/pong-clone/screenshot-1.webp", alt: "Main menu and game options" },
-        { src: "/projects/pong-clone/screenshot-2.webp", alt: "Single-player gameplay against AI" },
-        { src: "/projects/pong-clone/screenshot-3.webp", alt: "In-game pause menu" },
+        { src: "/projects/cpp-pong/screenshot-1.webp", alt: "Main menu and game options" },
+        { src: "/projects/cpp-pong/screenshot-2.webp", alt: "Single-player gameplay against AI" },
+        { src: "/projects/cpp-pong/screenshot-3.webp", alt: "In-game pause menu" },
       ],
     },
     developmentTime: "2023",

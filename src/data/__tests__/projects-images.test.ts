@@ -263,7 +263,7 @@ describe("Projects Image Data Validation", () => {
       "doom-newgame-plus-customizer",
       "action-rpg-project",
       "survival-horror-project",
-      "pong-clone",
+      "cpp-pong",
     ];
 
     it("should have WebP images for all Squarespace migrated projects", () => {
