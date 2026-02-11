@@ -9,6 +9,7 @@ import { projects } from "@/data/projects";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
 import { isModStatsError } from "@/lib/nexusmods-types";
 import { getHeroImage } from "@/lib/project-utils";
+import { breadcrumbJsonLd } from "@/lib/json-ld";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -66,39 +67,45 @@ export default async function SoftwareProjectPage({ params }: ProjectPageProps) 
   }
 
   return (
-    <PageLayout
-      stickyHeader
-      pageId="project-detail"
-      header={
-        <DetailHeaderCompact
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd("Software", project.title)) }}
+      />
+      <PageLayout
+        stickyHeader
+        pageId="project-detail"
+        header={
+          <DetailHeaderCompact
+            title={project.title}
+            compactTitle={project.compactTitle}
+            defaultTab="software"
+            links={project.links}
+          />
+        }
+      >
+        <DetailHeader
           title={project.title}
-          compactTitle={project.compactTitle}
+          status={project.status}
+          categories={project.category}
+          heroImage={heroImage}
           defaultTab="software"
           links={project.links}
+          stats={stats}
+          metadata={{
+            teamRole: project.teamRole,
+            teamRoleCompact: project.teamRoleCompact,
+            developmentTime: project.developmentTime,
+            developmentTimeCompact: project.developmentTimeCompact,
+          }}
         />
-      }
-    >
-      <DetailHeader
-        title={project.title}
-        status={project.status}
-        categories={project.category}
-        heroImage={heroImage}
-        defaultTab="software"
-        links={project.links}
-        stats={stats}
-        metadata={{
-          teamRole: project.teamRole,
-          teamRoleCompact: project.teamRoleCompact,
-          developmentTime: project.developmentTime,
-          developmentTimeCompact: project.developmentTimeCompact,
-        }}
-      />
-      <ProjectDetail
-        project={project}
-        footer={
-          project.photoCredits && project.photoCredits.length > 0 && <PhotoCredits credits={project.photoCredits} />
-        }
-      />
-    </PageLayout>
+        <ProjectDetail
+          project={project}
+          footer={
+            project.photoCredits && project.photoCredits.length > 0 && <PhotoCredits credits={project.photoCredits} />
+          }
+        />
+      </PageLayout>
+    </>
   );
 }

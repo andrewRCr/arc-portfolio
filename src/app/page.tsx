@@ -21,6 +21,7 @@ import {
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { useLayoutPreferences, type LayoutMode } from "@/contexts/LayoutPreferencesContext";
 import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
+import { personJsonLd } from "@/lib/json-ld";
 
 // Extract featured skills from all categories
 const allFeaturedSkills = Object.values(skills)
@@ -122,20 +123,23 @@ export default function Home() {
   );
 
   return (
-    <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
-      <motion.div
-        className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: contentVisible ? 1 : 0 }}
-        transition={bodyTransition}
-      >
-        <FeaturedSection />
-        {!skillsInHero && (
-          <div className="mt-6 md:mt-16 flex justify-center">
-            <SkillLogoGrid skills={featuredSkills} layout="row" size="responsive" linkToProjects={true} />
-          </div>
-        )}
-      </motion.div>
-    </PageLayout>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }} />
+      <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
+        <motion.div
+          className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: contentVisible ? 1 : 0 }}
+          transition={bodyTransition}
+        >
+          <FeaturedSection />
+          {!skillsInHero && (
+            <div className="mt-6 md:mt-16 flex justify-center">
+              <SkillLogoGrid skills={featuredSkills} layout="row" size="responsive" linkToProjects={true} />
+            </div>
+          )}
+        </motion.div>
+      </PageLayout>
+    </>
   );
 }

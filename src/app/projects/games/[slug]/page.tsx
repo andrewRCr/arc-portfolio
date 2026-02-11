@@ -7,6 +7,7 @@ import ProjectDetail from "@/components/projects/ProjectDetail";
 import { projects } from "@/data/projects";
 import { FEATURES } from "@/config/features";
 import { getHeroImage } from "@/lib/project-utils";
+import { breadcrumbJsonLd } from "@/lib/json-ld";
 
 interface GamePageProps {
   params: Promise<{
@@ -58,33 +59,39 @@ export default async function GameProjectPage({ params }: GamePageProps) {
   const heroImage = getHeroImage(project.images);
 
   return (
-    <PageLayout
-      stickyHeader
-      pageId="project-detail"
-      header={
-        <DetailHeaderCompact
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd("Games", project.title)) }}
+      />
+      <PageLayout
+        stickyHeader
+        pageId="project-detail"
+        header={
+          <DetailHeaderCompact
+            title={project.title}
+            compactTitle={project.compactTitle}
+            defaultTab="games"
+            links={project.links}
+          />
+        }
+      >
+        <DetailHeader
           title={project.title}
-          compactTitle={project.compactTitle}
+          status={project.status}
+          categories={project.category}
+          heroImage={heroImage}
           defaultTab="games"
           links={project.links}
+          metadata={{
+            teamRole: project.teamRole,
+            teamRoleCompact: project.teamRoleCompact,
+            developmentTime: project.developmentTime,
+            developmentTimeCompact: project.developmentTimeCompact,
+          }}
         />
-      }
-    >
-      <DetailHeader
-        title={project.title}
-        status={project.status}
-        categories={project.category}
-        heroImage={heroImage}
-        defaultTab="games"
-        links={project.links}
-        metadata={{
-          teamRole: project.teamRole,
-          teamRoleCompact: project.teamRoleCompact,
-          developmentTime: project.developmentTime,
-          developmentTimeCompact: project.developmentTimeCompact,
-        }}
-      />
-      <ProjectDetail project={project} />
-    </PageLayout>
+        <ProjectDetail project={project} />
+      </PageLayout>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import { EducationSection } from "@/components/sections/EducationSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { getAggregateStats } from "@/app/actions/nexusmods";
 import { isModStatsError } from "@/lib/nexusmods-types";
+import { personJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
   title: "About",
@@ -18,11 +19,14 @@ export default async function AboutPage() {
   const uniqueDownloads = isModStatsError(aggregateStats) ? undefined : aggregateStats.totalUniqueDownloads;
 
   return (
-    <PageLayout pageId="about" header={<PageHeader title="About" subtitle="Background and qualifications." />}>
-      <div className="space-y-8">
-        <AboutSection uniqueDownloads={uniqueDownloads} />
-        <EducationSection />
-      </div>
-    </PageLayout>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }} />
+      <PageLayout pageId="about" header={<PageHeader title="About" subtitle="Background and qualifications." />}>
+        <div className="space-y-8">
+          <AboutSection uniqueDownloads={uniqueDownloads} />
+          <EducationSection />
+        </div>
+      </PageLayout>
+    </>
   );
 }

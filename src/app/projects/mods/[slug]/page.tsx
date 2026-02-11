@@ -11,6 +11,7 @@ import { FEATURES } from "@/config/features";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
 import { isModStatsError } from "@/lib/nexusmods-types";
 import { getHeroImage } from "@/lib/project-utils";
+import { breadcrumbJsonLd } from "@/lib/json-ld";
 
 interface ModPageProps {
   params: Promise<{
@@ -75,33 +76,39 @@ export default async function ModProjectPage({ params }: ModPageProps) {
       : undefined;
 
   return (
-    <PageLayout
-      stickyHeader
-      pageId="project-detail"
-      header={<DetailHeaderCompact title={fullTitle} compactTitle={mod.title} defaultTab="mods" links={mod.links} />}
-    >
-      <DetailHeader
-        title={mod.title}
-        status={mod.status}
-        categories={mod.game ? [mod.game] : mod.category}
-        heroImage={heroImage}
-        defaultTab="mods"
-        links={mod.links}
-        stats={stats}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd("Mods", mod.title)) }}
       />
-      <ProjectDetail
-        project={mod}
-        footer={
-          mod.links?.nexusmods && (
-            <DetailCard title="More Information" className="mt-8">
-              <p className="text-muted-foreground">
-                For compatibility details, installation instructions, and additional information, visit the{" "}
-                <TextLink href={mod.links.nexusmods}>NexusMods page</TextLink>.
-              </p>
-            </DetailCard>
-          )
-        }
-      />
-    </PageLayout>
+      <PageLayout
+        stickyHeader
+        pageId="project-detail"
+        header={<DetailHeaderCompact title={fullTitle} compactTitle={mod.title} defaultTab="mods" links={mod.links} />}
+      >
+        <DetailHeader
+          title={mod.title}
+          status={mod.status}
+          categories={mod.game ? [mod.game] : mod.category}
+          heroImage={heroImage}
+          defaultTab="mods"
+          links={mod.links}
+          stats={stats}
+        />
+        <ProjectDetail
+          project={mod}
+          footer={
+            mod.links?.nexusmods && (
+              <DetailCard title="More Information" className="mt-8">
+                <p className="text-muted-foreground">
+                  For compatibility details, installation instructions, and additional information, visit the{" "}
+                  <TextLink href={mod.links.nexusmods}>NexusMods page</TextLink>.
+                </p>
+              </DetailCard>
+            )
+          }
+        />
+      </PageLayout>
+    </>
   );
 }
