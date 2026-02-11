@@ -283,7 +283,7 @@ final state, not initial intent. This is a natural forcing function for accuracy
 
 ```bash
 # Merge PR through GitHub interface or CLI
-gh pr merge {pr-number} --squash  # or --merge, per project conventions
+gh pr merge {pr-number} --merge  # preserve commit history (no squash)
 
 # Or if merging locally:
 git checkout parent-branch
