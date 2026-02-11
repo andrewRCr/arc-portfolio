@@ -565,20 +565,23 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
         - Covers: all static routes, all dynamic routes per project type,
           no dev/API route leakage, homepage priority, changeFrequency presence
 
-- [ ] **3.6 Configure favicon**
+- [x] **3.6 Configure favicon**
 
-    **Note:** Favicon design is a manual task (user will create the asset). This task covers integration once the
-    asset exists.
+    Used the ARC Framework arch symbol — distinctive, scales well, encodes initials.
 
-    - [ ] **3.6.a Create favicon assets**
-        - Design TBD (options: ARC initials, terminal prompt motif, other)
-        - Minimum required: `favicon.ico`, `apple-touch-icon.png` (180×180)
-        - Nice to have: `icon.svg` for modern browsers, `manifest.webmanifest`
+    - [x] **3.6.a Create favicon assets**
+        - SVG arch shape with smooth elliptical arcs, derived from logo polygon trace
+        - `icon.svg` — CSS `prefers-color-scheme` media query (light mode: white bg / navy arch;
+          dark mode: navy bg / white arch)
+        - `favicon.ico` — 16×16, 32×32, 48×48 (navy bg, white arch, rounded corners)
+        - `apple-icon.png` — 180×180 (navy bg, white arch, no corners — iOS clips automatically)
+        - Generation script: `scripts/generate-favicons.mjs` (sharp + ImageMagick)
+        - Removed Vercel default `favicon.ico`
 
-    - [ ] **3.6.b Configure favicon in Next.js**
-        - Place files in `src/app/` (Next.js auto-detects `icon.ico`, `apple-icon.png` in app directory) or
-          `public/`
-        - Verify favicon appears in browser tabs across browsers
+    - [x] **3.6.b Configure favicon in Next.js**
+        - All files in `src/app/` (Next.js file-based metadata auto-detection)
+        - `icon.svg` for modern browsers, `favicon.ico` for legacy, `apple-icon.png` for Apple devices
+        - Verified in browser tabs (dark/light mode switching works in SVG)
 
 - [ ] **3.7 Add JSON-LD structured data**
 
