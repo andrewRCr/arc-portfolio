@@ -631,18 +631,34 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
 *Catch-all phase for visual fixes, responsive issues, and other polish items discovered before deployment. Tasks
 added as they surface.*
 
-- [ ] **4.1 Fix icon button jitter during theme transitions (Safari)**
+- [x] **4.1 Fix icon button jitter during theme transitions (Safari)**
 
-    **Goal:** Eliminate visible icon jitter during light/dark transitions on Safari.
+    **Goal:** Eliminate visible position-shift jitter during light/dark transitions on Safari.
 
-    - [ ] **4.1.a Investigate git history for removed stabilization property**
-        - A `will-change` or Framer Motion layout prop was previously on ThemeToggle but removed during code
-          review — find and evaluate restoring it
-    - [ ] **4.1.b Audit all icon buttons for jitter**
-        - ThemeToggle (TopBar), filter button (/projects), any others
-    - [ ] **4.1.c Apply fix and verify across browsers**
-        - Fix must not regress Firefox/Chrome behavior
-        - Verify via Cloudflare tunnel on real Safari
+    - [x] **4.1.a Investigate git history for removed stabilization property**
+        - Archived visual-polish Task 4.3.e confirms `will-change-transform` was added to Hero bar,
+          ThemeControl, and ThemeToggle — ThemeToggle's was removed within same squash PR (#8)
+        - Root cause was NOT the missing `will-change-transform` — it was Shadcn Button's
+          `transition-all` base class interacting with the `!important` theme transition override
+
+    - [x] **4.1.b Audit all icon buttons for jitter**
+        - Tested via Cloudflare tunnel on macOS Safari: ThemeToggle, filter button, filter badges,
+          "Clear all" button all exhibited right/down position shift during theme toggle
+        - ThemeControl trigger (raw `<button>`) did not jitter — Shadcn `<Button>` component was key
+        - Diagnostic confirmed jitter persists even with instant swap (no CSS transitions) —
+          Safari repaint issue, not CSS transition issue
+
+    - [x] **4.1.c Apply fix and verify across browsers**
+        - **Primary fix**: Button base `transition-all` → `transition-colors` (`button.tsx`) —
+          eliminated position-shift jitter caused by `transition-all` resuming after `!important`
+          override removal, potentially animating layout properties
+        - **Supporting**: Removed `fill, stroke` from theme transition CSS rule — reduces SVG
+          re-rasterization in Safari; icons transition via inherited `currentColor` instead
+        - **Supporting**: Added `will-change-transform` to ThemeToggle, SkillFilterPopover trigger,
+          FilterIndicator badges/button for GPU layer promotion during Safari repaint
+        - Verified: Firefox/Chrome smooth, Safari jitter-free on all previously affected elements
+        - **Known remaining**: Safari border-color transitions snap instead of smoothly transitioning
+          (CSS custom property interpolation limitation) — tracked separately for investigation
 
 - [ ] **4.2 Investigate and fix slow image loading**
 
