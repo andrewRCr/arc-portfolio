@@ -635,3 +635,19 @@ html[data-theme-transition] *::after {
   -moz-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
 }
+
+/* Dual-use token overrides during theme transitions (Safari).
+   Tokens in the <html> transition list for text-color usage cause
+   double-transition (WebKit bug #46041) when children also transition
+   background-color. Two strategies depending on token type:
+   1. Override bg to use unregistered base vars (value changes instantly,
+      child background-color transition drives animation alone)
+   2. Suppress child transition entirely (registered property transition
+      on <html> drives animation alone)
+   See: strategy-safari-transition-accommodations.md */
+html[data-theme-transition] .bg-secondary-high {
+  background-color: rgb(var(--secondary) / var(--secondary-high-opacity)) !important;
+}
+html[data-theme-transition] .bg-muted\/80 {
+  transition-property: none !important;
+}

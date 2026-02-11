@@ -14,6 +14,7 @@ work in these domains.
 **Style & Design:**
 
 - `project/style/strategy-style-guide.md` - Design philosophy, token system, TWM layout, component patterns
+- `project/strategy-safari-transition-accommodations.md` - Safari theme transition fixes, double-transition patterns
 
 ## ARC Framework Strategies
 

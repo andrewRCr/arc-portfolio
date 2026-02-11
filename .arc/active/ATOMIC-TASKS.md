@@ -30,14 +30,6 @@
 
 ## Active
 
-- [ ] Investigate Safari border-color snap during theme transitions
-    - Borders snap instead of transitioning smoothly on Safari (Chrome/Firefox smooth)
-    - Likely CSS custom property interpolation limitation — `border-color: var(--color-border)`
-      doesn't re-resolve frame-by-frame in Safari despite `@property` registration on `<html>`
-    - Explore: removing `border-color` from `*` rule (let inheritance handle it), or alternative
-      approaches. Research started in this session — resume from external-research-analyst findings
-    - Ref: Task 4.1 - `tasks-launch-preparation.md` (discovered during Safari jitter investigation)
-
 - [ ] Restore hover effects on FilterIndicator badges (`/projects` page)
     - Badge `secondary` variant has no hover styles for non-anchor usage (`<span>` with `onClick`)
     - May have been lost during Shadcn/ui update or was never added for the non-anchor case

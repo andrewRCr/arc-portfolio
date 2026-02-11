@@ -657,41 +657,81 @@ added as they surface.*
         - **Supporting**: Added `will-change-transform` to ThemeToggle, SkillFilterPopover trigger,
           FilterIndicator badges/button for GPU layer promotion during Safari repaint
         - Verified: Firefox/Chrome smooth, Safari jitter-free on all previously affected elements
-        - **Known remaining**: Safari border-color transitions snap instead of smoothly transitioning
-          (CSS custom property interpolation limitation) — tracked separately for investigation
 
-- [ ] **4.2 Investigate and fix slow image loading**
+- [x] **4.2 Resolve Safari theme transition snap on borders and backgrounds**
+
+    **Goal:** Eliminate visible snap (instead of smooth transition) on `border-color` and
+    `background-color` during light/dark theme transitions in Safari. Root cause: WebKit bug #46041 —
+    double-transition conflict when a registered inherited `<color>` custom property transitions on
+    `<html>` AND children have an explicit transition on the corresponding concrete CSS property.
+
+    See `strategy-safari-transition-accommodations.md` for full architectural rationale.
+
+    - [x] **4.2.a Fix border-color snap**
+        - Removed `border-color` from child transition rule — Safari 16.4+ recalculates it
+          frame-by-frame from the inherited registered custom property on `<html>`
+        - Chained `--surface-border-color` through registered `--color-border` / `--color-border-strong`
+          instead of unregistered `rgb(var(--border))` (generator + regenerated variant CSS)
+        - Firefox and Chrome unaffected (both handle this correctly)
+
+    - [x] **4.2.b Fix background-color snap on background-only tokens**
+        - Removed `--color-accent-low`, `--color-secondary-mid`, `--color-secondary-low` from the
+          `<html>` transition-property list — these tokens are only used as `background-color`,
+          never as `color` (text), so the `<html>` transition is unnecessary
+        - Child `background-color` transition now drives animation alone (no double-transition)
+        - Updated CSS comments documenting rationale and excluded tokens
+
+    - [x] **4.2.c Fix background-color snap on dual-use tokens**
+        - `--color-secondary-high` must stay in `<html>` transition list (used for text-color
+          elsewhere). Added targeted CSS override during theme transitions: `bg-secondary-high`
+          elements get `background-color: rgb(var(--secondary) / var(--secondary-high-opacity))`
+          using unregistered base vars — value changes instantly, child transition drives animation
+        - `bg-muted/80` (DetailHeader back button): suppressed child transition during theme
+          changes (`transition-property: none`). The registered `--color-muted` property transition
+          on `<html>` drives the animation alone — no double-transition conflict
+
+    - [x] **4.2.d Update DetailHeader compact mobile back button**
+        - Changed `bg-muted` → `bg-surface-muted` for visual consistency with surface token system
+
+    - [x] **4.2.e Investigation notes and caching discovery**
+        - Extensive investigation documented in `temp-safari-bg-transition-investigation.md`
+        - Key discovery: Cloudflare quick tunnel caches CSS aggressively — multiple test iterations
+          were invalid until cache-busting version badges were added. New tunnel URL required per test.
+        - Multiple hypotheses tested and eliminated (alpha interpolation, formula vs resolved values,
+          `color-mix()` reformulation) before identifying the double-transition as the universal cause
+
+- [ ] **4.3 Investigate and fix slow image loading**
 
     **Goal:** Improve loading performance for wallpaper thumbnails and profile photo on lower-bandwidth connections.
 
-    - [ ] **4.2.a Diagnose wallpaper thumbnail loading in ThemeControl**
+    - [ ] **4.3.a Diagnose wallpaper thumbnail loading in ThemeControl**
         - Check image sizes, responsive `sizes`/`srcSet`, placeholder strategy
-    - [ ] **4.2.b Diagnose profile photo loading on About page**
+    - [ ] **4.3.b Diagnose profile photo loading on About page**
         - Image appeared broken for 20+ seconds on WiFi before loading
-    - [ ] **4.2.c Implement fixes**
+    - [ ] **4.3.c Implement fixes**
         - Options: resize assets, add blur placeholders, tune Next.js Image props
 
-- [ ] **4.3 Laptop viewport responsive design pass**
+- [ ] **4.4 Laptop viewport responsive design pass**
 
     **Goal:** Audit and fix layout issues at laptop-class viewports (~1280–1440px width, limited height).
 
-    - [ ] **4.3.a Audit all pages at laptop viewport**
+    - [ ] **4.4.a Audit all pages at laptop viewport**
         - Key issues identified: Home skill logos not visible without scrolling, Contact needs padding adjustment
         - Full audit of all pages at ~1440×900
-    - [ ] **4.3.b Implement responsive fixes**
+    - [ ] **4.4.b Implement responsive fixes**
         - Home: consider reducing featured projects, repositioning skill logos
         - Contact: reduce top padding at this viewport size
         - Other pages: fix any issues found in audit
 
-- [ ] **4.4 Consider stabilizing skills logo on Home page**
+- [ ] **4.5 Consider stabilizing skills logo on Home page**
     - No need for it to scroll in circumstances where it's below FeaturedSection, and FeaturedSection does - should be stable
 
-- [ ] **4.5 Phase 4 quality gates**
-    - [ ] 4.5.a Type-check (`npm run type-check`)
-    - [ ] 4.5.b Lint (`npm run lint`)
-    - [ ] 4.5.c Format check (`npm run format:check`)
-    - [ ] 4.5.d Unit tests (`npm test`)
-    - [ ] 4.5.e E2E tests — targeted for layout/responsive changes
+- [ ] **4.6 Phase 4 quality gates**
+    - [ ] 4.6.a Type-check (`npm run type-check`)
+    - [ ] 4.6.b Lint (`npm run lint`)
+    - [ ] 4.6.c Format check (`npm run format:check`)
+    - [ ] 4.6.d Unit tests (`npm test`)
+    - [ ] 4.6.e E2E tests — targeted for layout/responsive changes
 
 ### **Phase 5:** Deployment & Validation
 
