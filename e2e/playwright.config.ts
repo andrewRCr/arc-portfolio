@@ -102,5 +102,14 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
+    // Fail fast if dev server can't start (lock file, port conflict, crash).
+    // Without `wait`, Playwright polls the URL for the full 120s timeout even
+    // when the command exits immediately. The `wait` pattern watches stdout for
+    // Next.js "Ready in" — if the process dies before matching, failure is near
+    // instant instead of a 2-minute hang. Only activates when Playwright starts
+    // the server itself (CI, or local when dev server isn't running).
+    stdout: "pipe",
+    stderr: "pipe",
+    wait: { stdout: /Ready in/ },
   },
 });
