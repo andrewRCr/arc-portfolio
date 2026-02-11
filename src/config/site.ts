@@ -23,12 +23,13 @@ export const SITE = {
   author: name,
   /** Username/handle for branding (TopBar, social links) */
   handle: "andrewRCr",
-  /** Browser tab title */
-  title: "Andrew Creekmore - Portfolio",
+  /** Browser tab title (used as metadata title.default in root layout) */
+  title: "Andrew Creekmore - Full-Stack Developer",
   /** Tagline for Hero section */
   tagline: "Full-stack developer | code & creativity",
-  /** Meta description for SEO */
-  metaDescription: "Portfolio showcasing full-stack development projects and technical expertise",
+  /** Meta description for SEO (homepage) */
+  metaDescription:
+    "Full-stack developer portfolio featuring web and desktop projects built with TypeScript, C#, and Python.",
   /** Production URL for metadataBase, OG tags, sitemap, and canonical URLs */
   url: "https://andrewcreekmore.dev",
   /** Locale for OG tags and structured data */

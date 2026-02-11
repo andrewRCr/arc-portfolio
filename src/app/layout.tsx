@@ -40,8 +40,21 @@ const ibmPlexSans = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: SITE.title,
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: SITE.title,
+    template: `%s - ${SITE.name}`,
+  },
   description: SITE.metaDescription,
+  openGraph: {
+    siteName: SITE.name,
+    locale: SITE.locale,
+    type: "website",
+    images: [{ url: "/og-default.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 /**
