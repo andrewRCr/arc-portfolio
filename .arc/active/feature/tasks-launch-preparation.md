@@ -501,65 +501,69 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
         - Added `og-default.png` (1200×630) — homepage screenshot with hero + TWM layout and active
           border state. PNG chosen over WebP for universal OG crawler compatibility (industry standard).
 
-- [ ] **3.3 Add per-page static metadata**
+- [x] **3.3 Add per-page static metadata**
 
     **Goal:** Every public page gets a unique title and description for search results.
 
-    - [ ] **3.3.a Add `metadata` export to `src/app/page.tsx` (Home)**
-        - Title, description, OG tags with default image
+    - [x] **3.3.a Home metadata (via root layout defaults)**
+        - Home is `"use client"` — can't export `metadata` directly. Root layout's `title.default`
+          and `description` serve as Home metadata, so no page-level export needed.
 
-    - [ ] **3.3.b Add `metadata` export to `src/app/projects/page.tsx` (Projects)**
-        - Title, description, OG tags
+    - [x] **3.3.b Add `metadata` via `src/app/projects/layout.tsx` (Projects)**
+        - Projects page is `"use client"` — added passthrough `layout.tsx` with metadata export
+          (title: "Projects", unique description)
 
-    - [ ] **3.3.c Add `metadata` exports to remaining pages**
-        - `src/app/skills/page.tsx`
-        - `src/app/about/page.tsx`
-        - `src/app/contact/page.tsx`
-        - Each with unique title and description
+    - [x] **3.3.c Add `metadata` exports to remaining pages**
+        - `src/app/skills/page.tsx` — title: "Skills", unique description
+        - `src/app/about/page.tsx` — title: "About", unique description
+        - `src/app/contact/page.tsx` — title: "Contact", unique description
 
-    - [ ] **3.3.d Update root `layout.tsx` metadata with OG defaults**
-        - Add `openGraph` object with site name, locale, type, default image
-        - Add `twitter` card configuration (`summary_large_image`)
-        - Add `metadataBase` with production URL (enables relative OG image paths)
+    - [x] **3.3.d Update root `layout.tsx` metadata with OG defaults**
+        - Updated `SITE.title` to "Andrew Creekmore - Full-Stack Developer" and
+          `SITE.metaDescription` to agreed-upon Home description in `site.ts`
+        - Added `title.template` (`%s - Andrew Creekmore`) for automatic subpage branding
+        - Added `metadataBase` with production URL (enables relative OG image paths)
+        - Added `openGraph` object with site name, locale, type, default image
+        - Added `twitter` card configuration (`summary_large_image`)
+        - All subpages inherit OG defaults and twitter card from root layout
 
-- [ ] **3.4 Add dynamic metadata for project detail routes**
+- [x] **3.4 Add dynamic metadata for project detail routes**
 
     **Goal:** Each project page gets unique SEO with project-specific title, description, and hero image.
 
-    - [ ] **3.4.a Implement `generateMetadata()` in `src/app/projects/software/[slug]/page.tsx`**
-        - Pull project data by slug
-        - Set title: `"{project.name} - Andrew Creekmore Portfolio"`
-        - Set description from `shortDescription`
-        - Set OG image from hero image (fall back to thumbnail, then default)
-        - Handle not-found case (return empty metadata)
+    - [x] **3.4.a Implement `generateMetadata()` in `src/app/projects/software/[slug]/page.tsx`**
+        - Title from `project.title` (template appends " - Andrew Creekmore")
+        - Description from `shortDescription`
+        - OG image from `getHeroImage()` (hero → thumbnail → screenshot fallback)
+        - Unknown slug returns empty metadata (page itself handles `notFound()`)
 
-    - [ ] **3.4.b Implement `generateMetadata()` in remaining project routes**
-        - `src/app/projects/games/[slug]/page.tsx`
-        - `src/app/projects/mods/[slug]/page.tsx`
-        - Same pattern as software route
+    - [x] **3.4.b Implement `generateMetadata()` in remaining project routes**
+        - Same pattern in `games/[slug]/page.tsx` and `mods/[slug]/page.tsx`
+        - Added `title.template` to `projects/layout.tsx` to propagate branding
+          to nested detail pages (plain `title` string in intermediate layout
+          blocks root template cascade in Next.js)
 
-    - [ ] **3.4.c Write test for `generateMetadata` output**
-        - Test: Returns expected title and description for known project
-        - Test: Returns empty/default metadata for unknown slug
-        - Test: OG image set from project hero image
+    - [x] **3.4.c Write test for `generateMetadata` output**
+        - 9 tests in `src/app/projects/__tests__/metadata.test.ts`
+        - Covers all three routes (software, games, mods): title, description,
+          OG image for known slugs; empty metadata for unknown slugs
 
-- [ ] **3.5 Create sitemap and robots.txt**
+- [x] **3.5 Create sitemap and robots.txt**
 
-    - [ ] **3.5.a Create `src/app/sitemap.ts` route handler**
-        - Enumerate all static routes (`/`, `/projects`, `/skills`, `/about`, `/contact`)
-        - Enumerate all dynamic project routes from data files
-        - Set appropriate `changeFrequency` and `priority` values
-        - Use `MetadataRoute.Sitemap` return type
+    - [x] **3.5.a Create `src/app/sitemap.ts` route handler**
+        - 5 static routes + all software/game/mod project routes from data
+        - Game and mod routes gated by `FEATURES.SHOW_ALL_PROJECT_TYPES`
+        - Priority: homepage 1.0, projects 0.9, software/games 0.8, other pages 0.7, mods 0.6, contact 0.5
+        - 20 total URLs generated (5 static + 6 software + 3 games + 6 mods)
 
-    - [ ] **3.5.b Create `src/app/robots.ts` route handler**
-        - Allow crawling of all public routes
-        - Disallow `/dev/*` and `/api/*`
-        - Reference sitemap URL
+    - [x] **3.5.b Create `src/app/robots.ts` route handler**
+        - Allow all public routes, disallow `/dev/` and `/api/`
+        - References `sitemap.xml` URL
 
-    - [ ] **3.5.c Write test for sitemap generation**
-        - Test: All expected routes present
-        - Test: No dev or API routes included
-        - Test: Dynamic project routes generated from data
+    - [x] **3.5.c Write test for sitemap generation**
+        - 12 tests in `src/app/__tests__/sitemap.test.ts`
+        - Covers: all static routes, all dynamic routes per project type,
+          no dev/API route leakage, homepage priority, changeFrequency presence
 
 - [ ] **3.6 Configure favicon**
 
