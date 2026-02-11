@@ -186,5 +186,3 @@ If Safari resolves the double-transition conflict:
 - `src/app/theme-variants.generated.css` — Generated resolved color values per theme/mode
 - `scripts/generate-css-defaults.ts` — Generates theme variant CSS
 - `src/lib/theme/register-color-properties.ts` — `CSS.registerProperty()` registration
-- `.arc/active/feature/temp-safari-bg-transition-investigation.md` — Detailed investigation notes
-  (hypotheses tested and eliminated, caching discovery, session-by-session findings)
