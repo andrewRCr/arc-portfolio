@@ -54,7 +54,7 @@ All Squarespace projects have thumbnails (new projects will add thumbnails later
 | doom-newgame-plus-customizer | doom-newgame-plus-customizer.webp | 34.9 KB |
 | action-rpg-project           | action-rpg-project.webp           | 135 KB  |
 | survival-horror-project      | survival-horror-project.webp      | 23.2 KB |
-| cpp-pong                   | cpp-pong.webp                   | 3.8 KB  |
+| cpp-pong                     | cpp-pong.webp                     | 3.8 KB  |
 
 **Total thumbnail size**: ~256 KB
 
@@ -69,7 +69,7 @@ Screenshot counts per project:
 | doom-newgame-plus-customizer | 4 screenshots    | public/projects/doom-newgame-plus-customizer/      |
 | action-rpg-project           | 16 screenshots   | public/projects/action-rpg-project/                |
 | survival-horror-project      | 22 screenshots   | public/projects/survival-horror-project/           |
-| cpp-pong                   | 2 screenshots    | public/projects/cpp-pong/                        |
+| cpp-pong                     | 2 screenshots    | public/projects/cpp-pong/                          |
 | cinexplorer                  | 0 screenshots    | public/projects/cinexplorer/ (empty)               |
 | arc-framework                | 0 screenshots    | public/projects/arc-framework/ (empty)             |
 | arc-portfolio                | 0 screenshots    | public/projects/arc-portfolio/ (empty)             |

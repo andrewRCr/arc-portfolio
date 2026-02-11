@@ -486,21 +486,20 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
     - [x] **3.1.e Verify error pages manually**
         - 404 verified at nonexistent route — renders within TWM frame with theme colors
 
-- [ ] **3.2 Expand site configuration for SEO**
+- [x] **3.2 Expand site configuration for SEO**
 
     **Goal:** Centralize site identity data needed by metadata, OG tags, and structured data.
 
-    - [ ] **3.2.a Extend `src/config/site.ts` with SEO fields**
-        - Add `url` (production URL: `https://andrewcreekmore.dev`)
-        - Add `author` (full name)
-        - Add `locale` (`en_US`)
-        - Add social links object (`github`, `linkedin`)
-        - Add `jobTitle` or similar for structured data
+    - [x] **3.2.a Extend `src/config/site.ts` with SEO fields**
+        - Added `url` (`https://andrewcreekmore.dev`), `author` (aliased from `name`), `locale` (`en_US`),
+          `jobTitle` (`"Software Engineer"`)
+        - Moved `SOCIAL_LINKS` array (GitHub, LinkedIn, NexusMods) from `contact.ts` to `site.ts` as
+          single source of truth; `contact.ts` now imports from site config
+        - All 53 contact/social-link tests pass unchanged
 
-    - [ ] **3.2.b Add OG default image to `public/`**
-        - Use `profile-photo.webp` as default OG image
-        - Ensure dimensions are appropriate (may need a cropped/resized version at 1200×630 for optimal social
-          previews — TBD by user)
+    - [x] **3.2.b Add OG default image to `public/`**
+        - Added `og-default.png` (1200×630) — homepage screenshot with hero + TWM layout and active
+          border state. PNG chosen over WebP for universal OG crawler compatibility (industry standard).
 
 - [ ] **3.3 Add per-page static metadata**
 
@@ -650,12 +649,15 @@ added as they surface.*
         - Contact: reduce top padding at this viewport size
         - Other pages: fix any issues found in audit
 
-- [ ] **4.4 Phase 4 quality gates**
-    - [ ] 4.4.a Type-check (`npm run type-check`)
-    - [ ] 4.4.b Lint (`npm run lint`)
-    - [ ] 4.4.c Format check (`npm run format:check`)
-    - [ ] 4.4.d Unit tests (`npm test`)
-    - [ ] 4.4.e E2E tests — targeted for layout/responsive changes
+- [ ] **4.4 Consider stabilizing skills logo on Home page**
+    - No need for it to scroll in circumstances where it's below FeaturedSection, and FeaturedSection does - should be stable
+
+- [ ] **4.5 Phase 4 quality gates**
+    - [ ] 4.5.a Type-check (`npm run type-check`)
+    - [ ] 4.5.b Lint (`npm run lint`)
+    - [ ] 4.5.c Format check (`npm run format:check`)
+    - [ ] 4.5.d Unit tests (`npm test`)
+    - [ ] 4.5.e E2E tests — targeted for layout/responsive changes
 
 ### **Phase 5:** Deployment & Validation
 
