@@ -77,7 +77,7 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
-  --surface-border-color: rgb(var(--border));
+  --surface-border-color: var(--color-border);
   --surface-shadow: none;
 
   /* Hover configuration */
@@ -195,7 +195,7 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
-  --surface-border-color: rgb(var(--border-strong));
+  --surface-border-color: var(--color-border-strong);
   --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
@@ -319,7 +319,7 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
-  --surface-border-color: rgb(var(--border));
+  --surface-border-color: var(--color-border);
   --surface-shadow: none;
 
   /* Hover configuration */
@@ -439,7 +439,7 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
-  --surface-border-color: rgb(var(--border-strong));
+  --surface-border-color: var(--color-border-strong);
   --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
@@ -561,7 +561,7 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
-  --surface-border-color: rgb(var(--border));
+  --surface-border-color: var(--color-border);
   --surface-shadow: none;
 
   /* Hover configuration */
@@ -679,7 +679,7 @@
   --window-darken: 10%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
-  --surface-border-color: rgb(var(--border-strong));
+  --surface-border-color: var(--color-border-strong);
   --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
@@ -801,7 +801,7 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
-  --surface-border-color: rgb(var(--border));
+  --surface-border-color: var(--color-border);
   --surface-shadow: none;
 
   /* Hover configuration */
@@ -919,7 +919,7 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
-  --surface-border-color: rgb(var(--border-strong));
+  --surface-border-color: var(--color-border-strong);
   --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
@@ -1041,7 +1041,7 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
-  --surface-border-color: rgb(var(--border));
+  --surface-border-color: var(--color-border);
   --surface-shadow: none;
 
   /* Hover configuration */
@@ -1159,7 +1159,7 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
-  --surface-border-color: rgb(var(--border-strong));
+  --surface-border-color: var(--color-border-strong);
   --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */
@@ -1281,7 +1281,7 @@
   --window-darken: 0%;
   --surface-card-base: var(--card);
   --surface-background-base: var(--background);
-  --surface-border-color: rgb(var(--border));
+  --surface-border-color: var(--color-border);
   --surface-shadow: none;
 
   /* Hover configuration */
@@ -1399,7 +1399,7 @@
   --window-darken: 10%;
   --surface-card-base: var(--background);
   --surface-background-base: var(--card);
-  --surface-border-color: rgb(var(--border-strong));
+  --surface-border-color: var(--color-border-strong);
   --surface-shadow: var(--shadow-md);
 
   /* Hover configuration */

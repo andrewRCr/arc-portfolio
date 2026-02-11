@@ -188,7 +188,7 @@ function generateSurfaceCssVariables(surfaces: ThemeSurfaces, mode: "light" | "d
 
   // Surface border and shadow treatment
   lines.push(
-    `${indent}--surface-border-color: ${config.surfaceBorderStrong ? "rgb(var(--border-strong))" : "rgb(var(--border))"};`
+    `${indent}--surface-border-color: ${config.surfaceBorderStrong ? "var(--color-border-strong)" : "var(--color-border)"};`
   );
   lines.push(
     `${indent}--surface-shadow: ${config.surfaceShadow === "none" ? "none" : `var(--shadow-${config.surfaceShadow})`};`

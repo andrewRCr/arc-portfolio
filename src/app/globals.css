@@ -183,7 +183,7 @@
   /* Surface border/shadow tokens - controls visual weight of surface elements
      --surface-border-color: border color (border-strong for light, border for dark)
      --surface-shadow: shadow level (shadow-md for light, none for dark) */
-  --surface-border-color: rgb(var(--border));
+  --surface-border-color: var(--color-border);
   --surface-shadow: none;
 
   /* Accent opacity levels - defaults for most themes (rouge/rose-pine/ayu override) */
@@ -386,35 +386,54 @@ html[data-env-preview="false"] [data-window-container] {
    Combined with CSS.registerProperty() registration (syntax: '<color>'),
    Safari can interpolate these as real colors during theme transitions.
    Handles text color (inherited CSS property) — children inherit the
-   smoothly interpolated value without needing their own transition. */
+   smoothly interpolated value without needing their own transition.
+
+   Tokens used primarily as background-color are EXCLUDED from this list
+   to avoid Safari's double-transition conflict (WebKit bug #46041):
+   when a registered inherited custom property transitions here AND
+   children have transition-property: background-color, Safari restarts
+   the child transition each frame, causing a snap. Excluded tokens
+   transition via the child background-color rule instead (same pattern
+   as --color-surface-* tokens, which work smoothly).
+   Excluded: --color-accent-low, --color-secondary-mid,
+   --color-secondary-low (background-only, no text-color usage). */
 html[data-theme-transition] {
   transition-property:
     --color-background, --color-foreground, --color-card, --color-card-foreground, --color-popover,
     --color-popover-foreground, --color-primary, --color-primary-foreground, --color-secondary,
     --color-secondary-foreground, --color-muted, --color-muted-foreground, --color-accent, --color-accent-foreground,
-    --color-accent-high, --color-accent-mid, --color-accent-low, --color-accent-high-foreground,
-    --color-accent-mid-foreground, --color-accent-low-foreground, --color-secondary-high, --color-secondary-mid,
-    --color-secondary-low, --color-accent-decorative, --color-accent-decorative-foreground, --color-accent-red,
-    --color-accent-orange, --color-accent-green, --color-accent-blue, --color-accent-purple, --color-destructive,
-    --color-destructive-foreground, --color-border, --color-border-strong, --color-input, --color-ring !important;
+    --color-accent-high, --color-accent-mid, --color-accent-high-foreground, --color-accent-mid-foreground,
+    --color-accent-low-foreground, --color-secondary-high, --color-accent-decorative,
+    --color-accent-decorative-foreground, --color-accent-red, --color-accent-orange, --color-accent-green,
+    --color-accent-blue, --color-accent-purple, --color-destructive, --color-destructive-foreground, --color-border,
+    --color-border-strong, --color-input, --color-ring !important;
   transition-duration: 300ms !important;
   transition-timing-function: ease-out !important;
 }
 
 /* Transition concrete color properties on child elements.
-   color (text) is omitted — Safari double-transitions it when both the
-   custom property on <html> and the concrete property on children transition.
-   Text color is handled via --color-foreground interpolation on <html> above.
-   fill/stroke omitted — SVG re-rasterization per frame amplifies Safari's
-   repaint jitter. Icons inherit color via currentColor which transitions
-   through the custom property interpolation on <html>.
-   background-color and border-color must remain here: browsers don't
-   recalculate non-inherited properties frame-by-frame from transitioning
-   ancestor custom properties. */
+   This rule also serves as an !important scope-limiter: elements with
+   their own transition-colors (nav links, buttons) would otherwise
+   transition color, fill, stroke during theme changes, causing jitter.
+   The !important override restricts which properties animate.
+
+   color (text) omitted — Safari double-transitions it when both the
+   custom property on <html> and the concrete property on children
+   transition (WebKit bug #46041). Text color is handled via
+   --color-foreground interpolation on <html> above.
+   fill/stroke omitted — SVG re-rasterization per frame amplifies
+   Safari's repaint jitter. Icons inherit color via currentColor which
+   transitions through the custom property interpolation on <html>.
+   border-color omitted — same double-transition conflict as color.
+   Safari 16.4+ recalculates border-color frame-by-frame when its value
+   references an inherited registered custom property transitioning on
+   an ancestor. background-color must remain: Firefox does not
+   recalculate it from inherited custom properties without an explicit
+   transition. */
 html[data-theme-transition] *,
 html[data-theme-transition] *::before,
 html[data-theme-transition] *::after {
-  transition-property: background-color, border-color, outline-color, text-decoration-color !important;
+  transition-property: background-color, outline-color, text-decoration-color !important;
   transition-duration: 300ms !important;
   transition-timing-function: ease-out !important;
 }
