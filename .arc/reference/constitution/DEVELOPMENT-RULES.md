@@ -32,13 +32,17 @@ by all contributors, including AI assistants.
 determines that it must *pass*. See [Quality Gates Strategy](../strategies/arc/strategy-quality-gates.md)
 for complete guidance.
 
-| Tier   | When                                      | What to Run                                                   |
-|--------|-------------------------------------------|---------------------------------------------------------------|
-| Tier 1 | Per-subtask, checkpoint commits           | Type-check, lint, format, related unit tests (modified files) |
-| Tier 2 | Per-phase (when touching E2E-tested code) | Tier 1 + targeted E2E tests                                   |
-| Tier 3 | Parent task completion, pre-PR            | Full suite (everything below)                                 |
+| Tier   | When                                    | What to Run                                                   |
+|--------|-----------------------------------------|---------------------------------------------------------------|
+| Tier 1 | Per-subtask                             | Type-check, lint, format, related unit tests (modified files) |
+| Tier 2 | Parent task completion                  | Tier 1 (full project) + targeted E2E tests + build            |
+| Tier 3 | Per-phase, pre-PR                       | Full suite (everything below)                                 |
 
-**Full Suite (Tier 3)** - Required for parent task completion and pre-PR commits:
+**Commits and quality gates:** Tiers are milestone-driven, not commit-driven. Work committed through
+the task loop inherits the gates already run at each milestone. For work outside the task loop
+(incidental fixes, atomic tasks), run at least Tier 1 before committing.
+
+**Full Suite (Tier 3)** - Required for phase completion and pre-PR:
 
 1. **Type Checking**: `npm run type-check` - Zero errors
 2. **Code Linting**: `npm run lint` - Zero violations

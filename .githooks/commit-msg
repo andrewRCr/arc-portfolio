@@ -30,10 +30,10 @@ echo -e "${GREEN}🔍 Validating commit message...${NC}"
 # ============================================================================
 # RULE 1: Conventional Commit Format
 # ============================================================================
-if ! echo "$subject" | grep -qE '^(feat|fix|docs|style|refactor|content|test|chore|perf|build|ci|revert)\([a-z][a-z0-9-]*\): .+'; then
+if ! echo "$subject" | grep -qE '^(feat|fix|docs|style|refactor|content|test|chore|perf|build|ci|config|revert)\([a-z][a-z0-9-]*\): .+'; then
     echo -e "${RED}❌ Error: Subject must follow Conventional Commits format${NC}"
     echo "   Expected: <type>(scope): description"
-    echo "   Types: feat, fix, docs, style, refactor, content, test, chore, perf, build, ci, revert"
+    echo "   Types: feat, fix, docs, style, refactor, content, test, chore, perf, build, ci, config, revert"
     echo "   Example: feat(auth): add JWT token refresh endpoint"
     echo ""
     echo "   Your subject: $subject"

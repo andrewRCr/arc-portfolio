@@ -55,7 +55,8 @@ It ensures consistent execution, quality control, and documentation of work.
 
     - **First**: Mark the **parent task** as `[x]` in the task list file (ensures docs reflect completion)
     - **Second**: Ensure new code has appropriate test coverage (models, APIs, complex logic)
-    - **Third**: Run the full quality gates - **Tier 3** (all tests including E2E, linting, type checks, build)
+    - **Third**: Run quality gates - **Tier 2** (full-project type-check, lint, format, unit tests, targeted E2E if
+      applicable, build)
     - **Fourth**: Check if [PROJECT-STATUS](.arc/reference/constitution/PROJECT-STATUS.md) needs updates
       (feature progress, completed functionality, updated priorities)
     - **Fifth**: Verify completion before reporting (use pre-report checklist below)
@@ -68,8 +69,8 @@ It ensures consistent execution, quality control, and documentation of work.
      - [ ] All subtasks under parent task marked [x] in task list
      - [ ] Parent task marked [x] in task list
      - [ ] Task list file edited and saved
-     - [ ] Full test suite passed (all applicable domains)
-     - [ ] All linting checks passed (code + markdown as applicable)
+     - [ ] Tier 2 quality gates passed (full-project lint/type-check/format, unit tests, targeted E2E if applicable, build)
+
      - [ ] PROJECT-STATUS checked and updated if needed
      - [ ] Ready to report completion to user
      ```
