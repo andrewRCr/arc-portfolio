@@ -29,7 +29,7 @@ export function ThemeToggle() {
         size="icon-xs"
         disabled
         aria-label="Toggle color mode"
-        className="border-transparent text-muted-foreground"
+        className="border-transparent text-muted-foreground will-change-transform"
       >
         {/* Show Moon in dark mode, Sun in light mode - CSS controlled */}
         <Moon className="hidden dark:block h-3.5 w-3.5" />
@@ -44,7 +44,7 @@ export function ThemeToggle() {
       size="icon-xs"
       onClick={toggleTheme}
       aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="border-transparent hover:border-transparent hover:bg-transparent text-muted-foreground hover:text-accent-mid"
+      className="border-transparent hover:border-transparent hover:bg-transparent text-muted-foreground hover:text-accent-mid will-change-transform"
     >
       {theme === "dark" ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5" />}
     </Button>

@@ -405,13 +405,16 @@ html[data-theme-transition] {
    color (text) is omitted — Safari double-transitions it when both the
    custom property on <html> and the concrete property on children transition.
    Text color is handled via --color-foreground interpolation on <html> above.
+   fill/stroke omitted — SVG re-rasterization per frame amplifies Safari's
+   repaint jitter. Icons inherit color via currentColor which transitions
+   through the custom property interpolation on <html>.
    background-color and border-color must remain here: browsers don't
    recalculate non-inherited properties frame-by-frame from transitioning
    ancestor custom properties. */
 html[data-theme-transition] *,
 html[data-theme-transition] *::before,
 html[data-theme-transition] *::after {
-  transition-property: background-color, border-color, fill, stroke, outline-color, text-decoration-color !important;
+  transition-property: background-color, border-color, outline-color, text-decoration-color !important;
   transition-duration: 300ms !important;
   transition-timing-function: ease-out !important;
 }

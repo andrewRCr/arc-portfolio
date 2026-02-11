@@ -30,7 +30,7 @@ export default function FilterIndicator({ skills, onRemoveSkill, onClearAll }: F
           <Badge
             key={skill}
             variant="secondary"
-            className="gap-1 pr-1 cursor-pointer sm:cursor-default [-webkit-tap-highlight-color:transparent]"
+            className="gap-1 pr-1 cursor-pointer sm:cursor-default [-webkit-tap-highlight-color:transparent] will-change-transform"
             onClick={() => onRemoveSkill(skill)}
             role="button"
             tabIndex={0}
@@ -50,7 +50,7 @@ export default function FilterIndicator({ skills, onRemoveSkill, onClearAll }: F
           variant="ghost"
           size="sm"
           onClick={onClearAll}
-          className="min-h-11 sm:min-h-0 sm:h-auto px-2 py-1 text-xs text-muted-foreground hover:text-accent-foreground"
+          className="min-h-11 sm:min-h-0 sm:h-auto px-2 py-1 text-xs text-muted-foreground hover:text-accent-foreground will-change-transform"
           aria-label="Clear all filters"
         >
           Clear all
