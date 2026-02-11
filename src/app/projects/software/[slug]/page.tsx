@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader, type DetailHeaderStats } from "@/components/projects/DetailHeader";
@@ -22,6 +23,21 @@ export async function generateStaticParams() {
   return softwareProjects.map((project) => ({
     slug: project.slug,
   }));
+}
+
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = softwareProjects.find((p) => p.slug === slug);
+
+  if (!project) return {};
+
+  const ogImage = getHeroImage(project.images);
+
+  return {
+    title: project.title,
+    description: project.shortDescription,
+    openGraph: ogImage ? { images: [{ url: ogImage }] } : undefined,
+  };
 }
 
 export default async function SoftwareProjectPage({ params }: ProjectPageProps) {

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
@@ -25,6 +26,21 @@ export async function generateStaticParams() {
   return mods.map((mod) => ({
     slug: mod.slug,
   }));
+}
+
+export async function generateMetadata({ params }: ModPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const mod = mods.find((m) => m.slug === slug);
+
+  if (!mod) return {};
+
+  const ogImage = getHeroImage(mod.images);
+
+  return {
+    title: mod.title,
+    description: mod.shortDescription,
+    openGraph: ogImage ? { images: [{ url: ogImage }] } : undefined,
+  };
 }
 
 export default async function ModProjectPage({ params }: ModPageProps) {
