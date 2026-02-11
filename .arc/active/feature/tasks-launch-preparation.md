@@ -622,8 +622,9 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
     - [x] 3.9.d Markdown lint — zero errors (82 files)
     - [x] 3.9.e Build — success (34 static pages)
     - [x] 3.9.f Unit tests — 1429/1429 pass (86 test files)
-    - [x] 3.9.g E2E tests — Desktop Chrome + Mobile Chrome 100% pass; Tablet/Firefox
-          timed out due to WSL2 resource exhaustion (infrastructure, not code)
+    - [x] 3.9.g E2E tests — 341 passed / 0 failed across all 4 browser projects
+          (initial run had Tablet/Firefox timeouts from stale zombie processes;
+          clean re-run passed fully)
 
 ### **Phase 4:** Pre-Launch Polish
 
