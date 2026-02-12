@@ -44,6 +44,8 @@ export interface PageLayoutProps {
   header?: React.ReactNode;
   /** Scrollable page content */
   children: React.ReactNode;
+  /** Optional fixed footer content below the scroll area (always visible, never scrolls) */
+  footer?: React.ReactNode;
   /** Disable content width constraint (default: false) */
   fullWidth?: boolean;
   /** Remove top padding when content includes a sticky header (default: false) */
@@ -59,6 +61,7 @@ export interface PageLayoutProps {
 export function PageLayout({
   header,
   children,
+  footer,
   fullWidth = false,
   stickyHeader = false,
   pageId,
@@ -116,8 +119,8 @@ export function PageLayout({
     };
   }, [element, scrollShadowRef]);
 
-  // Header only needs horizontal padding and max-width (no vertical padding)
-  const headerStyle = {
+  // Header and footer only need horizontal padding and max-width (no vertical padding)
+  const horizontalStyle = {
     ...(fullWidth ? {} : { maxWidth: contentMaxWidth }),
     paddingLeft: contentPaddingX,
     paddingRight: contentPaddingX,
@@ -144,7 +147,7 @@ export function PageLayout({
             className={`shrink-0 transition-opacity ${shouldFadeContent ? "opacity-0" : ""}`}
             style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
           >
-            <div className="mx-auto w-full" style={headerStyle}>
+            <div className="mx-auto w-full" style={horizontalStyle}>
               {header}
             </div>
           </div>
@@ -184,6 +187,25 @@ export function PageLayout({
           <ScrollShadow position="top" visible={showTopShadow} />
           <ScrollShadow position="bottom" visible={showBottomShadow} />
         </div>
+
+        {/* Fixed footer area - doesn't scroll, centered with max-width */}
+        {/* Animated in sync with body content; crossfade during layout transitions */}
+        {footer && (
+          <div
+            className={`shrink-0 transition-opacity ${shouldFadeContent ? "opacity-0" : ""}`}
+            style={{ transitionDuration: `${LAYOUT_CONTENT_FADE_DURATION}s` }}
+          >
+            <motion.div
+              className="mx-auto w-full"
+              style={horizontalStyle}
+              initial={PAGE_BODY_FADE_ANIMATION.initial}
+              animate={showContent ? PAGE_BODY_FADE_ANIMATION.animate : PAGE_BODY_FADE_ANIMATION.initial}
+              transition={bodyTransition}
+            >
+              {footer}
+            </motion.div>
+          </div>
+        )}
 
         {/* Back to top button - appears when scrolled down */}
         <BackToTopButton headerType={effectiveHeaderType} />

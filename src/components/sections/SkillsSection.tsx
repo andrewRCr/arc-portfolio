@@ -14,7 +14,7 @@ import { skills } from "@/data/skills";
 import { DetailCard } from "@/components/projects/DetailCard";
 import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
 import { TouchTarget } from "@/components/common/TouchTarget";
-import { useIsPhone } from "@/hooks/useMediaQuery";
+import { useIsPhone, useIsShortViewport } from "@/hooks/useMediaQuery";
 import { useDelayedShow } from "@/hooks/useDelayedShow";
 
 // Categories to exclude from card grid (special treatment or removed)
@@ -25,6 +25,8 @@ const mobileLanguageOrder = ["TypeScript", "JavaScript", "Python", "C#", "C++"];
 
 export function SkillsSection() {
   const isPhone = useIsPhone();
+  const isShortViewport = useIsShortViewport();
+  const compact = !isPhone && isShortViewport;
   const allLanguages = skills.Languages ?? [];
 
   // Delay showing languages row to avoid hydration flash (mobile vs desktop curation)
@@ -44,14 +46,20 @@ export function SkillsSection() {
       {/* Languages: foundational skills, centered hero-style */}
       {languages.length > 0 && (
         <div
-          className={`flex justify-center mb-6 transition-opacity duration-300 ${showLanguages ? "opacity-100" : "opacity-0"}`}
+          className={`flex justify-center ${compact ? "mb-5" : "mb-8"} transition-opacity duration-300 ${showLanguages ? "opacity-100" : "opacity-0"}`}
         >
-          <SkillLogoGrid skills={languages} layout="row" size="responsiveLg" gap="relaxed" linkToProjects={true} />
+          <SkillLogoGrid
+            skills={languages}
+            layout="row"
+            size={compact ? "responsiveMd" : "responsiveLg"}
+            gap="relaxed"
+            linkToProjects={true}
+          />
         </div>
       )}
 
       {/* Other categories in DetailCards */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className={`grid md:grid-cols-2 ${compact ? "gap-3.5" : "gap-5"}`}>
         {cardCategories.map(([category, skillList]) => {
           const primarySkills = skillList.filter((s) => s.iconSlug);
           const secondarySkills = skillList.filter((s) => !s.iconSlug);
@@ -62,7 +70,7 @@ export function SkillsSection() {
           }
 
           return (
-            <DetailCard key={category} title={category}>
+            <DetailCard key={category} title={category} compact={compact || isPhone}>
               {/* Primary skills with logos */}
               {primarySkills.length > 0 && (
                 <div className="flex justify-center">
@@ -73,7 +81,7 @@ export function SkillsSection() {
               {/* Secondary skills as text list */}
               {secondarySkills.length > 0 && (
                 <ul
-                  className={`flex flex-wrap justify-center gap-x-4 gap-y-0 ${primarySkills.length > 0 ? "mt-4 pt-4 border-t border-border" : ""}`}
+                  className={`flex flex-wrap justify-center gap-x-4 gap-y-0 ${primarySkills.length > 0 ? `${compact ? "mt-2 pt-2" : "mt-4 pt-4"} border-t border-border` : ""}`}
                 >
                   {secondarySkills.map((skill) => (
                     <li key={skill.name}>

@@ -14,7 +14,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { Skill } from "@/types/skills";
 
 type LayoutType = "row" | "grid";
-type SizeType = "sm" | "md" | "lg" | "responsive" | "responsiveLg";
+type SizeType = "sm" | "md" | "lg" | "responsive" | "responsiveMd" | "responsiveLg";
 type GapType = "tight" | "relaxed";
 
 interface SkillLogoGridProps {
@@ -37,6 +37,7 @@ const sizeClasses: Record<SizeType, string> = {
   md: "w-8 h-8",
   lg: "w-12 h-12",
   responsive: "w-7 h-7 sm:w-12 sm:h-12",
+  responsiveMd: "w-7 h-7 sm:w-10 sm:h-10",
   responsiveLg: "w-11 h-11 sm:w-12 sm:h-12",
 };
 

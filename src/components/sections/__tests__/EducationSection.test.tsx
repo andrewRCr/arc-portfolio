@@ -7,6 +7,7 @@ import { education } from "@/data/education";
 // (EducationCard abbreviates location and institution on phone)
 vi.mock("@/hooks/useMediaQuery", () => ({
   useIsPhone: vi.fn(() => false),
+  useIsShortViewport: vi.fn(() => false),
 }));
 
 describe("EducationSection", () => {

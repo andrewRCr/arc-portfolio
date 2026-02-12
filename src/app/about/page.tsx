@@ -22,7 +22,7 @@ export default async function AboutPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }} />
       <PageLayout pageId="about" header={<PageHeader title="About" subtitle="Background and qualifications." />}>
-        <div className="space-y-8">
+        <div className="space-y-6">
           <AboutSection uniqueDownloads={uniqueDownloads} />
           <EducationSection />
         </div>

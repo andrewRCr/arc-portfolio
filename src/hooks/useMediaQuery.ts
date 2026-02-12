@@ -86,3 +86,12 @@ export function useIsMobile(): boolean {
 export function useIsPhone(): boolean {
   return useMediaQuery(VIEWPORT_QUERIES.phone);
 }
+
+/**
+ * Hook for detecting short viewport (limited vertical space).
+ * Triggers on laptop-class viewports where body content can't fit
+ * all elements without scrolling (e.g., Home page skills row).
+ */
+export function useIsShortViewport(): boolean {
+  return useMediaQuery(VIEWPORT_QUERIES.shortViewport);
+}
