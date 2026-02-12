@@ -807,74 +807,36 @@ auto-generates a preview when the PR is opened). Post-merge work (domain configu
 Lighthouse audit, production smoke testing, NexusMods registration) is tracked in a separate
 follow-up task list: `tasks-post-launch-validation.md`.
 
-- [ ] **5.1 Migrate rate limiting from `@vercel/kv` to `@upstash/redis`**
+- [x] **5.1 Migrate rate limiting from `@vercel/kv` to `@upstash/redis`**
 
-    **Goal:** Replace deprecated Vercel KV dependency with current Upstash Redis client.
-    Vercel KV was sunset in December 2024; `@vercel/kv` is a deprecated wrapper around
-    Upstash. The API is nearly identical since Vercel KV was always Upstash under the hood.
+    Replaced deprecated `@vercel/kv` with `@upstash/redis`. Updated contact API route
+    to create `Redis` client from env vars, swapped env var names to
+    `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`. In-memory fallback preserved.
 
-    - [ ] **5.1.a Swap dependencies**
-        - `npm uninstall @vercel/kv`
-        - `npm install @upstash/redis`
+    - [x] **5.1.a Swap dependencies** — removed `@vercel/kv`, installed `@upstash/redis`
+    - [x] **5.1.b Update contact API route** — new import, explicit client construction,
+        updated env var names and log messages
+    - [x] **5.1.c Update `.env.example`** — added Upstash Redis vars with usage note
+    - [x] **5.1.d Quality gates** — type-check pass, lint pass, 14/14 contact tests pass
 
-    - [ ] **5.1.b Update contact API route (`src/app/api/contact/route.ts`)**
-        - Replace `import { kv } from "@vercel/kv"` with `import { Redis } from "@upstash/redis"`
-        - Create Redis client conditionally (only when env vars present)
-        - Update env var check from `KV_REST_API_URL` / `KV_REST_API_TOKEN` to
-          `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`
-        - `checkRateLimit()` uses same operations (`incr`, `expire`) — API compatible
-        - Preserve in-memory fallback for local development (no changes needed)
+- [x] **5.2 Connect repository to Vercel**
 
-    - [ ] **5.1.c Update `.env.example`**
-        - Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` with note that
-          these are auto-injected by the Vercel Marketplace Upstash integration
+    GitHub repo imported, Next.js preset auto-detected, initial `main` build succeeded.
 
-    - [ ] **5.1.d Run quality gates (type-check, lint, related tests)**
-        - Existing contact route tests exercise the in-memory fallback path (no Redis env
-          vars in test env), so they pass without changes
-        - Verify no type errors from the import swap
+    - [x] **5.2.a Import repo in Vercel dashboard** — required granting Vercel GitHub
+        integration access to the repo; build succeeded with Next.js preset
+    - [x] **5.2.b Generated URL:** `https://arc-portfolio-opal.vercel.app/`
 
-- [ ] **5.2 Connect repository to Vercel**
+- [x] **5.3 Configure Vercel environment**
 
-    **Goal:** Establish GitHub–Vercel integration for automatic deployments. The initial
-    deployment from `main` is a placeholder (Phase 1–4 work merges later via PR).
+    Env vars added for Preview + Production. Upstash Redis installed from Marketplace;
+    integration auto-injects `KV_REST_API_*` env vars (not `UPSTASH_REDIS_REST_*`).
+    Updated contact route and `.env.example` to use the auto-injected names.
 
-    - [ ] **5.2.a Import repo in Vercel dashboard**
-        - Create Vercel account if needed; import GitHub repo
-        - Framework preset: Next.js (auto-detected)
-        - Verify initial `main` deployment builds successfully
-        - Watch for: `prebuild` script runs `generate:css-defaults` and
-          `generate:blur-placeholders` using `tsx` and `sharp` from devDependencies —
-          Vercel installs devDependencies by default, but confirm on first build
-
-    - [ ] **5.2.b Note the generated `.vercel.app` URL**
-        - This URL serves the current `main` deployment
-        - The preview deployment URL (for the feature branch) generates when the PR is
-          opened later
-
-- [ ] **5.3 Configure Vercel environment**
-
-    **Goal:** Set up environment variables and Upstash Redis so the contact form and rate
-    limiting work in deployed environments.
-
-    - [ ] **5.3.a Add environment variables in Vercel dashboard**
-        - Assign each variable to **both Preview and Production** environments
-        - `ZEPTOMAIL_API_KEY` — paste raw value, no surrounding quotes (dashboard handles
-          encoding)
-        - `CONTACT_EMAIL_TO` — destination email address
-        - `CONTACT_EMAIL_FROM` — must be a verified sender in Zeptomail
-        - `CONTACT_EMAIL_FROM_NAME` — optional (defaults to "Portfolio Contact Form")
-        - `NEXUSMODS_API_KEY` — from NexusMods account settings
-        - **Gotcha:** Env vars only take effect on deployments created *after* the variable
-          is added
-
-    - [ ] **5.3.b Install Upstash Redis from Vercel Marketplace**
-        - Vercel Marketplace → "Upstash for Vercel" → Install → Create Redis database →
-          Link to project
-        - Verify auto-injected env vars appear in project settings:
-          `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
-        - Free tier: 10K commands/day, 256 MB storage (sufficient for portfolio contact
-          form rate limiting)
+    - [x] **5.3.a Add environment variables** — Zeptomail, contact email, NexusMods key
+        added in Vercel dashboard for both Preview and Production
+    - [x] **5.3.b Install Upstash Redis from Vercel Marketplace** — linked to project;
+        auto-injected env vars use `KV_REST_API_URL` / `KV_REST_API_TOKEN` naming
 
 - [ ] **5.4 Prepare repository for public visibility**
 
@@ -967,4 +929,3 @@ review, validate the Vercel preview deployment:
 - [ ] Vercel connected with environment variables and Upstash Redis configured
 - [ ] All quality gates pass
 - [ ] Ready for archival
-

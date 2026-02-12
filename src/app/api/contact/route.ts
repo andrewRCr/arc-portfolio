@@ -7,7 +7,7 @@
 
 import { NextResponse } from "next/server";
 import { z, ZodError } from "zod";
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 
 // Validation schema (matches client-side)
 const MESSAGE_MAX_LENGTH = 2500;
@@ -27,7 +27,7 @@ const contactSchema = z.object({
 const RATE_LIMIT_WINDOW_SECONDS = 60; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 5; // 5 requests per minute
 
-// In-memory fallback for local development (when Vercel KV is not configured)
+// In-memory fallback for local development (when Upstash Redis is not configured)
 const localRateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
 // Export for testing - allows resetting rate limiter between tests
@@ -36,25 +36,29 @@ export function _resetRateLimiter() {
 }
 
 /**
- * Check rate limit using Vercel KV (production) or in-memory fallback (local dev)
+ * Check rate limit using Upstash Redis (production) or in-memory fallback (local dev)
  * Returns true if request is allowed, false if rate limited
  */
 async function checkRateLimit(ip: string): Promise<boolean> {
   const key = `rate_limit:contact:${ip}`;
 
-  // Try Vercel KV first (production)
+  // Try Upstash Redis first (production — env vars auto-injected by Vercel Marketplace integration)
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
     try {
-      const count = await kv.incr(key);
+      const redis = new Redis({
+        url: process.env.KV_REST_API_URL,
+        token: process.env.KV_REST_API_TOKEN,
+      });
+      const count = await redis.incr(key);
 
       // Set expiry on first request in window
       if (count === 1) {
-        await kv.expire(key, RATE_LIMIT_WINDOW_SECONDS);
+        await redis.expire(key, RATE_LIMIT_WINDOW_SECONDS);
       }
 
       return count <= RATE_LIMIT_MAX_REQUESTS;
     } catch (error) {
-      console.error("[contact] Vercel KV error, falling back to in-memory:", error);
+      console.error("[contact] Upstash Redis error, falling back to in-memory:", error);
       // Fall through to in-memory fallback
     }
   }
