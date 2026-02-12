@@ -75,7 +75,7 @@ export function FeaturedSection() {
           >
             <div className="p-4 pb-2 bg-surface-card">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-terminal text-foreground">[{type}]</span>
+                <span className="text-xs font-terminal text-foreground">[{type === "methodology" ? "dev methodology" : type}]</span>
                 {isInDevelopment && <InDevelopmentBadge compact />}
               </div>
               <h4 className="font-semibold font-title">
