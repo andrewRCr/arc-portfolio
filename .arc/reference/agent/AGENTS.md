@@ -15,7 +15,7 @@ contemporary web development practices, type safety, testing, and professional d
 
 **Technology Stack:**
 
-- **Frontend**: Next.js (App Router) + React + TypeScript (strict mode)
+- **Frontend**: Next.js 16 (App Router) + React + TypeScript (strict mode)
 - **Styling**: Tailwind CSS + Shadcn/ui components
 - **Testing**: Vitest + React Testing Library
 - **Quality Tools**: ESLint + Prettier + markdownlint-cli2
