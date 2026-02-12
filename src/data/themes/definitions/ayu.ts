@@ -101,9 +101,9 @@ const lightTokens: ThemeColors = {
   "secondary-foreground": hexToRgb(ayuMirage.bgDark), // #171B24
 
   // Muted colors
-  // A11Y: fgMuted darkened 25% for WCAG AA on card surface (4.32 → ~4.6)
+  // A11Y: fgMuted darkened 14% — 3.14+ on composited surfaces, 1.44:1 visible gap from foreground
   muted: hexToRgb(ayuLight.bgSecondary), // #F8F9FA
-  "muted-foreground": hexToRgb(ayuA11y.fgMutedDarkened25), // #5f6974
+  "muted-foreground": hexToRgb(ayuA11y.fgMutedDarkened14), // #707A89
 
   // Default accent (orange - warm highlight, occasional decorative use)
   // A11Y: darkened 20.1% for WCAG AA as text on light background (4.50:1)

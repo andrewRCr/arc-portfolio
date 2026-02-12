@@ -4,6 +4,19 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Fix Ayu light muted-foreground indistinguishable from foreground**
+    - **Outcome:** Ayu light's `muted-foreground` was only 1.12:1 from `foreground` (invisible
+      difference) because contrast tests checked against raw tokens, not composited surfaces.
+      Replaced 3 raw-token `muted-foreground` tests (bg, muted, card at 4.5:1) with Suite 6:
+      composited surface tests (`surface-card`, `surface-background`, `surface-muted` at 3:1)
+      reflecting actual TWM layout conditions. Lightened Ayu light `muted-foreground` from
+      25%dk (`#5f6974`) to 14%dk (`#707A89`) — now 1.44:1 visible gap from foreground while
+      maintaining 3.14+ contrast on all composited surfaces.
+    - **Files:** `contrast.test.ts`, `ayu.ts` (palette + definition),
+      `theme-variants.generated.css`
+
+    - **Branch:** `feature/launch-preparation`
+
 - [x] **Restore hover effects on FilterIndicator badges**
     - **Outcome:** Added hover affordances to filter badges on `/projects` page. X dismiss icon
       uses `text-destructive` with opacity crossfade (0.4 → 1.0) to avoid SVG subpixel

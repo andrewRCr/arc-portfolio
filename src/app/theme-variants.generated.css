@@ -404,7 +404,7 @@
   --accent-purple: 144 122 169;
 
   /* Destructive colors */
-  --destructive: 162 89 110;
+  --destructive: 157 86 106;
   --destructive-foreground: 250 244 237;
 
   /* UI elements */
@@ -472,7 +472,7 @@
   --color-accent-green: rgb(86 148 159);
   --color-accent-blue: rgb(40 105 131);
   --color-accent-purple: rgb(144 122 169);
-  --color-destructive: rgb(162 89 110);
+  --color-destructive: rgb(157 86 106);
   --color-destructive-foreground: rgb(250 244 237);
   --color-border: rgb(223 218 217);
   --color-border-strong: rgb(206 202 205);
@@ -872,7 +872,7 @@
 
   /* Muted colors */
   --muted: 248 249 250;
-  --muted-foreground: 95 105 116;
+  --muted-foreground: 112 122 137;
 
   /* Accent colors */
   --accent: 203 75 0;
@@ -944,7 +944,7 @@
   --color-secondary: rgb(85 180 212);
   --color-secondary-foreground: rgb(23 27 36);
   --color-muted: rgb(248 249 250);
-  --color-muted-foreground: rgb(95 105 116);
+  --color-muted-foreground: rgb(112 122 137);
   --color-accent: rgb(203 75 0);
   --color-accent-foreground: rgb(255 255 255);
   --color-accent-red: rgb(240 113 113);
@@ -1008,7 +1008,7 @@
   --accent-purple: 177 139 177;
 
   /* Destructive colors */
-  --destructive: 184 77 85;
+  --destructive: 190 80 88;
   --destructive-foreground: 255 255 255;
 
   /* UI elements */
@@ -1070,7 +1070,7 @@
   --color-accent-green: rgb(163 176 154);
   --color-accent-blue: rgb(126 178 201);
   --color-accent-purple: rgb(177 139 177);
-  --color-destructive: rgb(184 77 85);
+  --color-destructive: rgb(190 80 88);
   --color-destructive-foreground: rgb(255 255 255);
   --color-border: rgb(74 85 104);
   --color-border-strong: rgb(117 128 149);

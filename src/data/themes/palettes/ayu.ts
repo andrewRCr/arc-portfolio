@@ -154,10 +154,8 @@ export const ayuA11y = {
   // Light mode fixes
   /** Error darkened 15% for white text contrast (3.73 → 4.93) */
   errorDarkened15: "#c44444",
-  /** FgMuted darkened 20% for bgSecondary contrast (3.15 → 4.63) */
-  fgMutedDarkened20: "#68727f",
-  /** FgMuted darkened 25% for card surface contrast (4.32 → ~4.6) */
-  fgMutedDarkened25: "#5f6974",
+  /** FgMuted darkened 14% — balances composited surface contrast (3.14+) + visible gap from foreground (1.44:1) */
+  fgMutedDarkened14: "#707A89",
 
   // Dark mode fixes
   /** FgMuted lightened 20% for panelBg contrast (3.14 → 4.51) */
