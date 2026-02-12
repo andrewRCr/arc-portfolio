@@ -736,27 +736,68 @@ added as they surface.*
           provides good loading UX)
         - Gradient overlay (desktop) unaffected — sibling div, same z-ordering
 
-- [ ] **4.4 Laptop viewport responsive design pass**
+- [x] **4.4 Laptop viewport responsive design pass** (merged with 4.5)
 
-    **Goal:** Audit and fix layout issues at laptop-class viewports (~1280–1440px width, limited height).
+    **Goal:** Audit and fix layout issues at laptop-class viewports (~1280–1440px, limited height
+    ~740–780px after browser chrome). Core problem: at these heights, FeaturedSection barely fits
+    in the scrollable area and SkillLogoGrid is completely hidden without scrolling.
 
-    - [ ] **4.4.a Audit all pages at laptop viewport**
-        - Key issues identified: Home skill logos not visible without scrolling, Contact needs padding adjustment
-        - Full audit of all pages at ~1440×900
-    - [ ] **4.4.b Implement responsive fixes**
-        - Home: consider reducing featured projects, repositioning skill logos
-        - Contact: reduce top padding at this viewport size
-        - Other pages: fix any issues found in audit
+    - [x] **4.4.a Height-based viewport detection system**
+        - Added `shortViewport: "(max-height: 875px)"` to `VIEWPORT_QUERIES` in `breakpoints.ts`
+        - Added `useIsShortViewport()` hook in `useMediaQuery.ts`
+        - Threshold 875px captures laptop screens (900px minus browser chrome) without
+          triggering on full desktop (1080p+)
 
-- [ ] **4.5 Consider stabilizing skills logo on Home page**
-    - No need for it to scroll in circumstances where it's below FeaturedSection, and FeaturedSection does - should be stable
+    - [x] **4.4.b Home page — skills in Hero on short viewports**
+        - `skillsInHero = isPhone || isShortViewport` — moves skills into Hero when viewport
+          can't fit them in the scrollable body (full 10-skill desktop set, not mobile 6)
+        - Added `responsiveMd` size to SkillLogoGrid: 28px phone → 40px tablet+ (middle ground
+          between `responsive` 48px and phone 28px)
+        - Hero compact spacing: `pt-4 px-6`, `mb-4`, `mt-2` on heading — proportional
+          reduction between phone and desktop values
+        - Initially tried a fixed footer approach (PageLayout `footer` prop keeping skills below
+          scroll area) — felt visually wrong with content cut off above a fixed element. Reverted
+          to header approach. PageLayout `footer` prop retained as unused but clean infrastructure.
 
-- [ ] **4.6 Phase 4 quality gates**
-    - [ ] 4.6.a Type-check (`npm run type-check`)
-    - [ ] 4.6.b Lint (`npm run lint`)
-    - [ ] 4.6.c Format check (`npm run format:check`)
-    - [ ] 4.6.d Unit tests (`npm test`)
-    - [ ] 4.6.e E2E tests — targeted for layout/responsive changes
+    - [x] **4.4.c Skills page — compact sizing and spacing on short viewports**
+        - Languages hero row: `responsiveMd` (40px) instead of `responsiveLg` (48px) on short
+          viewports; `mb-5` compact / `mb-8` desktop (was uniform `mb-6`)
+        - DetailCard: `compact` prop reduces header `py-3`→`py-2`, body `py-4`→`py-3`;
+          title `text-sm` universally (was `text-md` on desktop)
+        - Card grid: `gap-3.5` compact / `gap-5` desktop (was uniform `gap-4`)
+        - Secondary skill text separator: `mt-2 pt-2` compact / `mt-4 pt-4` desktop
+
+    - [x] **4.4.d About page — compact photo and hidden Education heading**
+        - ProfilePhoto: CSS-based sizing via `w-[160px]` (compact) vs `w-[200px]` (default),
+          maintaining aspect ratio with `w-full h-auto` on Image
+        - Compact applied on both phone and short viewport; full size on tall desktop only
+        - `AboutSection` converted to client component for `useIsShortViewport()` access
+        - Education section: hides `SectionHeader` on short viewports (self-evident from card
+          content); divider also removed (parent `space-y-6` gap sufficient)
+        - Section gap reduced `space-y-8` → `space-y-6` (all viewports)
+
+    - [x] **4.4.e Contact page — reduced top padding on short viewports**
+        - `pt-6` → `pt-1` on short viewports (PageLayout's 24px content padding sufficient)
+        - `space-y-8` → `space-y-6` between social links and form card (all viewports)
+        - `[COMPOSE MSG]` header: `text-xs` / `py-2` on compact (was `text-sm` / `py-3`)
+        - `ContactSection` converted to client component for viewport detection
+
+    - [x] **4.4.f Verified all pages at laptop viewport (Cloudflare tunnel + actual device)**
+        - Projects page: no changes needed
+        - All other pages confirmed balanced at ~1440×850 viewport
+        - Tunnel verification caught refinements: Contact scroll overflow, About divider
+          clutter, Skills card cutoff — all resolved in 4.4.c/d/e updates above
+
+- [x] **4.5 Stabilize skills logo visibility on Home page** (merged into 4.4.b)
+    - Resolved by moving skills into Hero on short viewports — always visible in fixed header
+      area, never dependent on scrolling
+
+- [x] **4.6 Phase 4 quality gates**
+    - [x] 4.6.a Type-check — pass
+    - [x] 4.6.b Lint — pass
+    - [x] 4.6.c Format check — pass (auto-fixed DetailCard)
+    - [x] 4.6.d Unit tests — 1441 passed (fixed EducationSection mock missing `useIsShortViewport`)
+    - [x] 4.6.e E2E tests — 341 passed, 79 skipped (visual regression snapshots regenerated)
 
 ### **Phase 5:** Deployment & Validation
 
