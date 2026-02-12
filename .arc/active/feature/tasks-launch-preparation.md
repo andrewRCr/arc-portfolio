@@ -799,110 +799,155 @@ added as they surface.*
     - [x] 4.6.d Unit tests — 1441 passed (fixed EducationSection mock missing `useIsShortViewport`)
     - [x] 4.6.e E2E tests — 341 passed, 79 skipped (visual regression snapshots regenerated)
 
-### **Phase 5:** Deployment & Validation
+### **Phase 5:** Deployment Preparation
 
-- [ ] **5.1 Connect repository to Vercel**
+**Note:** This phase covers code changes and Vercel infrastructure setup needed before the
+archive/PR workflow. Preview deployment validation occurs naturally during PR review (Vercel
+auto-generates a preview when the PR is opened). Post-merge work (domain configuration,
+Lighthouse audit, production smoke testing, NexusMods registration) is tracked in a separate
+follow-up task list: `tasks-post-launch-validation.md`.
 
-    - [ ] **5.1.a Link GitHub repo to Vercel project**
-        - Import repo in Vercel dashboard
-        - Configure framework preset (Next.js auto-detected)
-        - Verify preview deployment succeeds on current `main`
+- [ ] **5.1 Migrate rate limiting from `@vercel/kv` to `@upstash/redis`**
 
-    - [ ] **5.1.b Configure environment variables**
-        - Add Zeptomail API credentials (`ZEPTOMAIL_API_KEY`, etc.)
-        - Verify variables match what `src/app/api/contact/route.ts` expects
+    **Goal:** Replace deprecated Vercel KV dependency with current Upstash Redis client.
+    Vercel KV was sunset in December 2024; `@vercel/kv` is a deprecated wrapper around
+    Upstash. The API is nearly identical since Vercel KV was always Upstash under the hood.
 
-- [ ] **5.2 Set up Vercel KV for rate limiting**
+    - [ ] **5.1.a Swap dependencies**
+        - `npm uninstall @vercel/kv`
+        - `npm install @upstash/redis`
 
-    - [ ] **5.2.a Create KV database in Vercel dashboard**
-        - Project Settings → Storage → Create Database → KV
-        - Link to project (auto-adds `KV_REST_API_URL` and `KV_REST_API_TOKEN`)
-        - Free tier: 30K requests/month (sufficient for portfolio traffic)
+    - [ ] **5.1.b Update contact API route (`src/app/api/contact/route.ts`)**
+        - Replace `import { kv } from "@vercel/kv"` with `import { Redis } from "@upstash/redis"`
+        - Create Redis client conditionally (only when env vars present)
+        - Update env var check from `KV_REST_API_URL` / `KV_REST_API_TOKEN` to
+          `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`
+        - `checkRateLimit()` uses same operations (`incr`, `expire`) — API compatible
+        - Preserve in-memory fallback for local development (no changes needed)
 
-    - [ ] **5.2.b Verify rate limiting works in deployment**
-        - Submit 6+ rapid contact form requests
-        - Expect 429 response on 6th request
+    - [ ] **5.1.c Update `.env.example`**
+        - Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` with note that
+          these are auto-injected by the Vercel Marketplace Upstash integration
 
-- [ ] **5.3 Configure domains**
+    - [ ] **5.1.d Run quality gates (type-check, lint, related tests)**
+        - Existing contact route tests exercise the in-memory fallback path (no Redis env
+          vars in test env), so they pass without changes
+        - Verify no type errors from the import swap
 
-    **Note:** Domain registration and DNS transfer are manual tasks. This covers Vercel-side configuration.
+- [ ] **5.2 Connect repository to Vercel**
 
-    - [ ] **5.3.a Register new domains**
-        - `andrewcreekmore.dev` (primary)
-        - `andrewrcr.dev` and `andrewrcr.com` (handle-based, easier verbal)
-        - Register at chosen registrar (Cloudflare, Namecheap, etc. — TBD)
-        - Configure DNS for all three to point to Vercel
+    **Goal:** Establish GitHub–Vercel integration for automatic deployments. The initial
+    deployment from `main` is a placeholder (Phase 1–4 work merges later via PR).
 
-    - [ ] **5.3.b Transfer `andrewcreekmore.com` from Squarespace**
-        - Initiate transfer to same registrar as `.dev`
-        - Configure DNS to point to Vercel
+    - [ ] **5.2.a Import repo in Vercel dashboard**
+        - Create Vercel account if needed; import GitHub repo
+        - Framework preset: Next.js (auto-detected)
+        - Verify initial `main` deployment builds successfully
+        - Watch for: `prebuild` script runs `generate:css-defaults` and
+          `generate:blur-placeholders` using `tsx` and `sharp` from devDependencies —
+          Vercel installs devDependencies by default, but confirm on first build
 
-    - [ ] **5.3.c Add all domains to Vercel project**
-        - Set `andrewcreekmore.dev` as primary domain
-        - Add `andrewcreekmore.com`, `andrewrcr.dev`, `andrewrcr.com` as redirects (Vercel auto-308s to primary)
-        - Verify SSL certificates provisioned for all domains
+    - [ ] **5.2.b Note the generated `.vercel.app` URL**
+        - This URL serves the current `main` deployment
+        - The preview deployment URL (for the feature branch) generates when the PR is
+          opened later
 
-    - [ ] **5.3.d Update `SITE.url` and `metadataBase` if domain changed**
-        - Verify canonical URLs, sitemap, and OG tags use final production domain
+- [ ] **5.3 Configure Vercel environment**
 
-- [ ] **5.4 Lighthouse baseline audit**
+    **Goal:** Set up environment variables and Upstash Redis so the contact form and rate
+    limiting work in deployed environments.
 
-    **Goal:** Verify META-PRD target of 90+ across all four Lighthouse categories.
+    - [ ] **5.3.a Add environment variables in Vercel dashboard**
+        - Assign each variable to **both Preview and Production** environments
+        - `ZEPTOMAIL_API_KEY` — paste raw value, no surrounding quotes (dashboard handles
+          encoding)
+        - `CONTACT_EMAIL_TO` — destination email address
+        - `CONTACT_EMAIL_FROM` — must be a verified sender in Zeptomail
+        - `CONTACT_EMAIL_FROM_NAME` — optional (defaults to "Portfolio Contact Form")
+        - `NEXUSMODS_API_KEY` — from NexusMods account settings
+        - **Gotcha:** Env vars only take effect on deployments created *after* the variable
+          is added
 
-    - [ ] **5.4.a Run Lighthouse against production deployment**
-        - Test key pages: Home, Projects, a project detail, Skills, About, Contact
-        - Record scores: Performance, Accessibility, Best Practices, SEO
-        - Document baseline in completion doc
+    - [ ] **5.3.b Install Upstash Redis from Vercel Marketplace**
+        - Vercel Marketplace → "Upstash for Vercel" → Install → Create Redis database →
+          Link to project
+        - Verify auto-injected env vars appear in project settings:
+          `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
+        - Free tier: 10K commands/day, 256 MB storage (sufficient for portfolio contact
+          form rate limiting)
 
-    - [ ] **5.4.b Address any scores below 90**
-        - Investigate and fix issues if any category falls below target
-        - Re-run until all four categories meet 90+ threshold
+- [ ] **5.4 Prepare repository for public visibility**
 
-- [ ] **5.5 Production smoke test**
+    **Goal:** The repo will be made public for NexusMods compliance and professional
+    visibility. The README needs to represent the project well as the public-facing entry
+    point, and the repo must be audited for sensitive data.
 
-    - [ ] **5.5.a Verify all public pages load**
-        - Home, Projects, Skills, About, Contact, project detail pages
-        - Test on desktop and mobile viewports
+    - [ ] **5.4.a Rewrite README.md**
+        - Current README is a minimal scaffold; rewrite as a polished public-facing document
+        - Draw from the portfolio's own project detail page data (`src/data/projects.ts`,
+          slug `arc-portfolio`) — the description, features, and details sections have been
+          heavily iterated and are the best available copy
+        - **README-specific considerations beyond the project data:**
+            - Repository orientation (what someone finds if they clone it, project structure)
+            - How to run locally (dev server, environment setup, `.env.example` reference)
+            - Quality tooling and testing overview (what the CI pipeline covers)
+            - Brief ARC framework mention with link to the framework repo
+            - License section (dual license already documented)
+            - Live site link (placeholder until deployed — update post-launch)
+        - **Tone:** Match the project data's factual, non-boastful style — describe what the
+          system does, not how impressive it is
+        - Consult `strategy-style-guide.md` for any relevant visual/branding guidance
 
-    - [ ] **5.5.b Verify functionality**
-        - Contact form submits successfully (email received)
-        - Rate limiting works (429 on excessive requests)
-        - Theme toggle persists across sessions
-        - Wallpaper selection persists
-        - Navigation and page transitions work smoothly
+    - [ ] **5.4.b Audit repository for sensitive data**
+        - Verify `.env.local` is in `.gitignore` and not in git history
+        - Search git history for API keys, credentials, or secrets
+        - Review `.arc/` documentation for any sensitive information
 
-    - [ ] **5.5.c Verify SEO implementation**
-        - View page source — meta tags, OG tags, canonical URLs present
-        - Test social preview with LinkedIn/Twitter sharing debugger tools
-        - Verify sitemap accessible at `/sitemap.xml`
-        - Verify robots.txt accessible at `/robots.txt`
+    - [ ] **5.4.c Change repository visibility to public**
 
-    - [ ] **5.5.d Verify production gating**
-        - Navigate to `/dev/sandbox`, `/dev/typography`, etc. — all return 404
-        - Verify custom 404 page displays (not Vercel default)
+    - [ ] **5.4.d Run quality gates (lint:md on README, format:check)**
 
-    - [ ] **5.5.e Verify error handling**
-        - Custom 404 page displays for non-existent routes
-        - Error boundary renders for runtime errors (if testable)
+- [ ] **5.5 Confirm production URL in source**
 
-- [ ] **5.6 NexusMods API app registration**
+    **Goal:** Ensure all SEO artifacts use the correct domain before merge.
 
-    **Note:** Compliance task, not code. Requires public GitHub repo and live site.
+    - [ ] **5.5.a Verify `SITE.url` in `src/config/site.ts`**
+        - Currently set to `https://andrewcreekmore.dev` — confirm this is the intended
+          primary domain
+        - All consumers (sitemap, robots.txt, OG tags, JSON-LD, `metadataBase` in
+          `layout.tsx`) derive from this constant — no scattered hardcoding to check
 
-    - [ ] **5.6.a Make GitHub repository public**
+- [ ] **5.6 Run Tier 3 quality gates**
 
-    - [ ] **5.6.b Submit NexusMods app registration**
-        - Application name
-        - Short description
-        - Logo (suitable for dark backgrounds)
-        - GitHub repository URL
-        - Live site URL
+    **Goal:** Full-project quality validation before entering the archive/PR workflow.
+
+    - [ ] **5.6.a Full quality suite**
+        - `npm run type-check` — zero errors
+        - `npm run lint` — zero violations
+        - `npm run format:check` — must pass
+        - `npm run lint:md` — zero violations
+        - `npm run build` — must complete
+        - `npm test` — 100% pass rate
+        - `npm run test:e2e` — 100% pass rate
 
 ---
 
-## Success Criteria
+**Phase 5 complete.** Proceed to archive workflow per `archive-completed.md`. During PR
+review, validate the Vercel preview deployment:
 
-- [ ] Dev pages (`/dev/*`) return 404 in production
+- Contact form submits successfully (email received)
+- Rate limiting returns 429 on 6th rapid request
+- Dev pages (`/dev/*`) return 404 (production gating via `NODE_ENV`)
+- Custom 404 and error pages render (not Vercel/Next.js defaults)
+- All public pages load; theme and wallpaper toggles persist
+- View page source: meta tags, OG tags, canonical URLs present
+- Sitemap at `/sitemap.xml`, robots.txt at `/robots.txt`
+
+---
+
+## Success Criteria (Pre-Merge)
+
+- [ ] Dev pages (`/dev/*`) return 404 in production builds
 - [ ] In-development badge displays on project detail pages where applicable
 - [ ] Feature flag system documented and extensible for future flags
 - [ ] Surface tuner stable at `/dev/surface` with no CSS variable leaks
@@ -917,10 +962,9 @@ added as they surface.*
 - [ ] Icon button jitter eliminated in Safari theme transitions
 - [ ] Blur placeholders provide polished loading UX; hero images served responsively
 - [ ] All pages render well at laptop viewports (~1280–1440px)
-- [ ] Site deployed at `andrewcreekmore.dev`
-- [ ] All secondary domains redirect to `.dev` (`.com`, `andrewrcr.dev`, `andrewrcr.com`)
-- [ ] Lighthouse 90+ across Performance, Accessibility, Best Practices, SEO
-- [ ] Contact form rate limiting functional in production
-- [ ] NexusMods API registration submitted
+- [ ] Rate limiting uses current Upstash Redis (not deprecated `@vercel/kv`)
+- [ ] README polished and repo made public
+- [ ] Vercel connected with environment variables and Upstash Redis configured
 - [ ] All quality gates pass
 - [ ] Ready for archival
+
