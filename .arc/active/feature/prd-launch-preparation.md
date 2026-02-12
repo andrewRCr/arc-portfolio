@@ -1,7 +1,7 @@
 # PRD: Launch Preparation
 
 **Type:** Feature
-**Status:** In Progress
+**Status:** Complete
 **Created:** 2026-02-06
 
 ---
@@ -170,11 +170,11 @@ consolidated unit reflecting the reduced and clarified scope.
 - All project detail pages show in-development badge where applicable
 - NexusMods API registration submitted
 
-## Open Questions
+## Open Questions (Resolved)
 
-1. **Favicon design**: Terminal prompt motif (`>_`) vs initials (`ARC`) vs something else? This is a
-   manual design task — can configure it once the asset exists
-2. **Domain registrar**: Where to register `.dev` and transfer `.com` to? Cloudflare Registrar
-   (at-cost pricing, good DNS) and Namecheap are common choices
-3. **OG image dimensions**: Standard is 1200x630. Should we create a branded OG image for the
-   home page specifically, or is the profile photo sufficient everywhere?
+1. **Favicon design**: Used ARC Framework arch symbol — distinctive, scales well, encodes initials.
+   SVG with `prefers-color-scheme`, ICO for legacy, Apple icon for iOS. (Task 3.6)
+2. **Domain registrar**: Deferred to `tasks-post-launch-validation.md` (post-merge work).
+   `SITE.url` configured as `https://andrewcreekmore.dev` in code.
+3. **OG image dimensions**: Project detail pages use hero images via `getHeroImage()` fallback chain
+   (hero → thumbnail → screenshot). Default OG image set in root layout metadata. (Task 3.3/3.4)

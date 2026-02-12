@@ -2,9 +2,10 @@
 
 **PRD:** `.arc/active/feature/prd-launch-preparation.md`
 **Created:** 2026-02-06
+**Completed:** 2026-02-12
 **Branch:** `feature/launch-preparation`
 **Base Branch:** `main`
-**Status:** In Progress
+**Status:** Complete
 
 ## Overview
 
@@ -700,7 +701,7 @@ added as they surface.*
         - Multiple hypotheses tested and eliminated (alpha interpolation, formula vs resolved values,
           `color-mix()` reformulation) before identifying the double-transition as the universal cause
 
-- [ ] **4.3 Image loading investigation & improvements**
+- [x] **4.3 Image loading investigation & improvements**
 
     **Goal:** Investigate slow image loading observed during development, improve perceived loading UX.
 
@@ -875,23 +876,23 @@ follow-up task list: `tasks-post-launch-validation.md`.
 
 ## Success Criteria (Pre-Merge)
 
-- [ ] Dev pages (`/dev/*`) return 404 in production builds
-- [ ] In-development badge displays on project detail pages where applicable
-- [ ] Feature flag system documented and extensible for future flags
-- [ ] Surface tuner stable at `/dev/surface` with no CSS variable leaks
-- [ ] All project descriptions polished and highlights populated
-- [ ] Features and highlights have distinct roles; features removed only where redundant
-- [ ] Custom 404 and error pages display with TWM theme
-- [ ] Every public page has unique metadata (title, description, OG tags)
-- [ ] Project detail pages have dynamic metadata with hero images
-- [ ] Sitemap and robots.txt serve correct content
-- [ ] Favicon displays in browser tabs
-- [ ] JSON-LD structured data present (Person, BreadcrumbList)
-- [ ] Icon button jitter eliminated in Safari theme transitions
-- [ ] Blur placeholders provide polished loading UX; hero images served responsively
-- [ ] All pages render well at laptop viewports (~1280–1440px)
-- [ ] Rate limiting uses current Upstash Redis (not deprecated `@vercel/kv`)
-- [ ] README polished and repo made public
-- [ ] Vercel connected with environment variables and Upstash Redis configured
+- [x] Dev pages (`/dev/*`) return 404 in production builds
+- [x] In-development badge displays on project detail pages where applicable
+- [x] Feature flag system documented and extensible for future flags
+- [x] Surface tuner stable at `/dev/surface` with no CSS variable leaks
+- [x] All project descriptions polished and highlights populated
+- [x] Features and highlights have distinct roles; features removed only where redundant
+- [x] Custom 404 and error pages display with TWM theme
+- [x] Every public page has unique metadata (title, description, OG tags)
+- [x] Project detail pages have dynamic metadata with hero images
+- [x] Sitemap and robots.txt serve correct content
+- [x] Favicon displays in browser tabs
+- [x] JSON-LD structured data present (Person, BreadcrumbList)
+- [x] Icon button jitter eliminated in Safari theme transitions
+- [x] Blur placeholders provide polished loading UX; hero images served responsively
+- [x] All pages render well at laptop viewports (~1280–1440px)
+- [x] Rate limiting uses current Upstash Redis (not deprecated `@vercel/kv`)
+- [x] README polished and repo made public
+- [x] Vercel connected with environment variables and Upstash Redis configured
 
 ---
