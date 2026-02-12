@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 interface InDevelopmentBadgeProps {
   /** Use shorter "In Dev" label with smaller text */
   compact?: boolean;
@@ -11,7 +13,7 @@ export function InDevelopmentBadge({ compact = false, className = "" }: InDevelo
   const sizeClasses = compact ? "px-1.5 py-0.5 text-[10px]" : "px-2 py-1 text-xs";
 
   return (
-    <span data-testid="in-development-badge" className={`${baseClasses} ${sizeClasses} ${className}`.trim()}>
+    <span data-testid="in-development-badge" className={cn(baseClasses, sizeClasses, className)}>
       {compact ? "In Dev" : "In Development"}
     </span>
   );

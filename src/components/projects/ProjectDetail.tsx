@@ -9,6 +9,7 @@
  */
 
 import ReactMarkdown from "react-markdown";
+import { cn } from "@/lib/utils";
 import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
@@ -98,7 +99,13 @@ function ContentList({ items }: { items: ContentItem[] }) {
         return (
           <ul
             key={`group-${groupIndex}`}
-            className={`${isFirst ? "" : isNested ? "mt-1.5" : "mt-2"} space-y-1.5 text-muted-foreground ${isNested ? "ml-4 list-['▸_'] list-inside border-l-2 border-accent-low pl-3" : "list-['▸_'] list-inside marker:text-accent-low"}`}
+            className={cn(
+              "space-y-1.5 text-muted-foreground list-['▸_'] list-inside",
+              !isFirst && (isNested ? "mt-1.5" : "mt-2"),
+              isNested
+                ? "ml-4 border-l-2 border-accent-low pl-3"
+                : "marker:text-accent-low"
+            )}
           >
             {group.items.map(({ text, key }) => (
               <li key={key}>

@@ -186,3 +186,7 @@ If Safari resolves the double-transition conflict:
 - `src/app/theme-variants.generated.css` — Generated resolved color values per theme/mode
 - `scripts/generate-css-defaults.ts` — Generates theme variant CSS
 - `src/lib/theme/register-color-properties.ts` — `CSS.registerProperty()` registration
+
+---
+
+**Version:** 2026-02-12

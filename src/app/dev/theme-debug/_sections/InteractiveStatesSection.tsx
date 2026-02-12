@@ -114,7 +114,7 @@ export function InteractiveStatesSection() {
               project cards, ProjectCard.
             </p>
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="cursor-pointer overflow-hidden border border-border transition-[border-color,box-shadow] duration-300 hover:border-secondary-high hover:shadow-md">
+              <div className="group cursor-pointer overflow-hidden border border-border transition-[border-color,box-shadow] duration-300 hover:border-secondary-high hover:shadow-md">
                 <div className="aspect-video bg-surface-card" />
                 <div className="bg-surface-background p-4">
                   <h4 className="mb-1 font-title text-lg font-semibold">

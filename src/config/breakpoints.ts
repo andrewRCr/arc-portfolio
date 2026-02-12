@@ -49,7 +49,7 @@ export const VIEWPORT_QUERIES = {
   phone: MEDIA_QUERIES.belowSm,
   /**
    * Short viewport - not enough vertical space for full body content.
-   * Triggers at <=850px viewport height (laptop screens ~900px minus browser chrome).
+   * Triggers at <=875px viewport height (laptop screens ~900px minus browser chrome).
    * Used to move key elements (e.g., skills logos) into fixed header areas.
    */
   shortViewport: "(max-height: 875px)",

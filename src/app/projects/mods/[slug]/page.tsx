@@ -20,7 +20,7 @@ interface ModPageProps {
 }
 
 export async function generateStaticParams() {
-  // Don't generate static pages when project tabs are disabled
+  // Don't generate static pages when non-software project types are hidden
   if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
     return [];
   }

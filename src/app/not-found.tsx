@@ -10,7 +10,7 @@ export default function NotFound() {
           <div className="space-y-2">
             <p className="text-base font-terminal text-muted-foreground">Page not found.</p>
             <div className="border-t border-border" />
-            <nav className="flex justify-center items-center gap-3">
+            <nav aria-label="Not found navigation" className="flex justify-center items-center gap-3">
               <Link
                 href="/"
                 className="text-sm font-terminal text-accent dark:text-accent-high hover:underline focus-visible:underline"

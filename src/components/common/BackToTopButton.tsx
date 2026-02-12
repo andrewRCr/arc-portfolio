@@ -26,6 +26,7 @@ export function BackToTopButton({ headerType = "page" }: BackToTopButtonProps) {
 
   return (
     <button
+      type="button"
       onClick={scrollToTop}
       aria-label="Back to top"
       style={{

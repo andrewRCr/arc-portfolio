@@ -84,7 +84,6 @@ export default defineConfig({
       retries: 1, // Single retry for flaky network issues
     },
     // WebKit only in CI - WSL2 lacks required system libraries locally
-    // WebKit only in CI - WSL2 lacks required system libraries locally
     // Extended timeout matches Firefox accommodation for CI slowness
     ...(process.env.CI
       ? [

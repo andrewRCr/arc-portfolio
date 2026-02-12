@@ -1,6 +1,6 @@
 # arc-portfolio - AI Agent Reference Card
 
-**Version:** 2025-12-26 | **Maintained by:** Andrew Creekmore | **Source of truth:** `.arc/reference/`
+**Version:** 1.1 | **Updated:** 2026-02-12
 
 ## Project Overview
 
@@ -58,6 +58,3 @@ contemporary web development practices, type safety, testing, and professional d
 - **Be clear and targeted** - Provide enough detail to be useful, not so much it's overwhelming
 
 ---
-
-_This reference card is part of the ARC development framework.
-It provides quick orientation for AI assistants working on this project._

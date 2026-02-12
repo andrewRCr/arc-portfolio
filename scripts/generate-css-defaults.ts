@@ -353,6 +353,10 @@ function resolveForegroundToken(token: ForegroundToken | "primary-foreground", c
       return colors["accent-foreground"];
     case "primary-foreground":
       return colors["primary-foreground"];
+    default: {
+      const _exhaustive: never = token;
+      throw new Error(`Unknown foreground token: ${_exhaustive}`);
+    }
   }
 }
 
