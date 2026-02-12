@@ -12,6 +12,7 @@
  * animations in the header slot during momentum scrolling.
  */
 
+import Image from "next/image";
 import { DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { getBlurDataURL } from "@/lib/blur-placeholders";
@@ -72,21 +73,18 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
   return (
     <div data-testid="hero-banner">
       {/* Hero image - standalone, fully rounded */}
-      <div
-        className="relative overflow-hidden rounded-lg"
-        style={{
-          ...aspectRatioStyle,
-          ...(heroImage ? { backgroundImage: `url(${getBlurDataURL(heroImage) ?? ""})`, backgroundSize: "cover" } : {}),
-        }}
-      >
+      <div className="relative overflow-hidden rounded-lg" style={aspectRatioStyle}>
         {heroImage ? (
-          // eslint-disable-next-line @next/next/no-img-element -- Native img for background, not content
-          <img
+          <Image
             data-testid="hero-image"
             src={heroImage}
             alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover"
+            aria-hidden
+            fill
+            sizes="(min-width: 1200px) 1136px, calc(100vw - 16px)"
+            className="object-cover"
+            placeholder={getBlurDataURL(heroImage) ? "blur" : undefined}
+            blurDataURL={getBlurDataURL(heroImage)}
           />
         ) : (
           <div className="absolute inset-0 bg-card" />

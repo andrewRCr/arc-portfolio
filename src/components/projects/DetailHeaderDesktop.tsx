@@ -10,6 +10,7 @@
  */
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { useBackDestination } from "@/hooks/useBackDestination";
@@ -52,23 +53,20 @@ export function DetailHeaderDesktop({
   return (
     <div data-testid="detail-header" style={{ opacity }}>
       {/* Hero image with overlaid back button and title */}
-      <div
-        className={`relative overflow-hidden ${hasFooter ? "rounded-t-lg" : "rounded-lg"}`}
-        style={{
-          ...aspectRatioStyle,
-          ...(heroImage ? { backgroundImage: `url(${getBlurDataURL(heroImage) ?? ""})`, backgroundSize: "cover" } : {}),
-        }}
-      >
+      <div className={`relative overflow-hidden ${hasFooter ? "rounded-t-lg" : "rounded-lg"}`} style={aspectRatioStyle}>
         {/* Hero image or fallback background */}
         {heroImage ? (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element -- Native img for background, not content */}
-            <img
+            <Image
               data-testid="hero-image"
               src={heroImage}
               alt=""
-              aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-cover"
+              aria-hidden
+              fill
+              sizes="(min-width: 1200px) 1136px, calc(100vw - 16px)"
+              className="object-cover"
+              placeholder={getBlurDataURL(heroImage) ? "blur" : undefined}
+              blurDataURL={getBlurDataURL(heroImage)}
             />
             {/* Bottom gradient overlay for title readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />

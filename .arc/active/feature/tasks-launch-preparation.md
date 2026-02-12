@@ -725,13 +725,16 @@ added as they surface.*
         - Applied blur as inline CSS `background-image` on container div — `<img>` covers it on load
         - Wired into both DetailHeaderDesktop and DetailBannerMobile
 
-    - [ ] **4.3.d Serve responsive hero images**
-        - Heroes are 2800×800 (9 images) or 1488×424 (6 images), served at full resolution to all
-          viewports via raw `<img>` — phones get 2800px-wide images unnecessarily
-        - Files are already light (7–190KB WebP) so impact is moderate, not urgent
-        - Options: switch to Next.js `<Image>` (handles `srcset` automatically), or add manual
-          `srcset` to raw `<img>` — both require consideration of gradient overlays and
-          decorative/background treatment
+    - [x] **4.3.d Serve responsive hero images**
+        - Switched DetailHeaderDesktop and DetailBannerMobile from raw `<img>` to Next.js
+          `<Image fill>` with `sizes="(min-width: 1200px) 1136px, calc(100vw - 16px)"`
+        - Next.js automatically generates `srcset` with multiple widths — phones no longer
+          download 2800px-wide images
+        - Replaced CSS `background-image` blur hack with standard `placeholder="blur"` +
+          `blurDataURL` pattern (consistent with all other Image components)
+        - Kept `alt=""` and `aria-hidden` (decorative backgrounds); no `priority` (blur
+          provides good loading UX)
+        - Gradient overlay (desktop) unaffected — sibling div, same z-ordering
 
 - [ ] **4.4 Laptop viewport responsive design pass**
 
