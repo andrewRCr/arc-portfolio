@@ -30,9 +30,6 @@
 
 ## Active
 
-- [ ] Restore hover effects on FilterIndicator badges (`/projects` page)
-    - Badge `secondary` variant has no hover styles for non-anchor usage (`<span>` with `onClick`)
-    - May have been lost during Shadcn/ui update or was never added for the non-anchor case
-    - File: `src/components/projects/FilterIndicator.tsx`, `src/components/ui/badge.tsx`
+[none]
 
 ---

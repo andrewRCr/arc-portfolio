@@ -170,8 +170,8 @@ const darkTokens: ThemeColors = {
   "accent-purple": hexToRgb(rougeDark.purple), // #b18bb1
 
   // Destructive colors
-  // A11Y: rougeError darkened 10% for WCAG AA with white (2.16 → 4.96)
-  destructive: hexToRgb(rougeA11y.rougeErrorDarkened10), // #b84d55
+  // A11Y: rougeError darkened 7% — balances white text (4.69) + surface-muted contrast
+  destructive: hexToRgb(rougeA11y.rougeErrorDarkened7), // #BE5058
   "destructive-foreground": hexToRgb("#ffffff"),
 
   // UI element colors

@@ -18,7 +18,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { themes, getAccentOpacities, getEffectiveWindowBackground, getAccentOnSurface } from "../index";
+import { themes, getAccentOpacities, getEffectiveWindowBackground, getAccentOnSurface, getEffectiveSurface } from "../index";
 import type { ThemeName } from "../index";
 import type { ThemeColors } from "../types";
 import { rgbToHex, getContrastRatio, meetsAANormalText, meetsAALargeText, alphaComposite } from "@/lib/theme/utils";
@@ -282,6 +282,27 @@ describe("Badges and Indicators", () => {
             const accentFg = colors["accent-foreground"] as string;
             const ratio = getContrastRatio(accentBg, accentFg);
             expect(meetsAANormalText(accentBg, accentFg), `ratio ${ratio.toFixed(2)}:1 should be ≥ 4.5:1`).toBe(true);
+          });
+
+          // Destructive text on surface-muted: filter badge dismiss icon + "Clear all" hover
+          // Uses 3:1 threshold (WCAG 2.1 SC 1.4.11 Non-text Contrast) because:
+          // - XIcon is a 12px UI component/graphical object
+          // - "Clear all" is a ghost button (UI component) with supplementary affordances
+          it("destructive on surface-muted (filter badge dismiss) [3:1]", () => {
+            const surfaceMutedBg = getEffectiveSurface("muted", themeName as ThemeName, mode);
+            const destructiveFg = colors.destructive as string;
+            const ratio = getContrastRatio(surfaceMutedBg, destructiveFg);
+            const passes = meetsAALargeText(surfaceMutedBg, destructiveFg);
+
+            if (!passes) {
+              console.log(
+                `  FAIL: ${themeName}/${mode} destructive on surface-muted - ratio: ${ratio.toFixed(2)}:1 (need 3:1)`
+              );
+              console.log(`    surface-muted bg: ${surfaceMutedBg} (${rgbToHex(surfaceMutedBg)})`);
+              console.log(`    destructive: ${destructiveFg} (${rgbToHex(destructiveFg)})`);
+            }
+
+            expect(passes, `ratio ${ratio.toFixed(2)}:1 should be ≥ 3:1`).toBe(true);
           });
         });
       });

@@ -127,8 +127,8 @@ const lightTokens: ThemeColors = {
   "accent-purple": hexToRgb(rosePineDawn.iris), // #907aa9
 
   // Destructive colors
-  // A11Y: love darkened 10% for WCAG AA (4.59:1)
-  destructive: hexToRgb(rosePineA11y.love_dark), // #A2596E (original: #b4637a)
+  // A11Y: love darkened 13% for WCAG AA + surface-muted contrast
+  destructive: hexToRgb(rosePineA11y.love_dark), // #9D566A (original: #b4637a)
   "destructive-foreground": hexToRgb(rosePineDawn.base),
 
   // UI element colors

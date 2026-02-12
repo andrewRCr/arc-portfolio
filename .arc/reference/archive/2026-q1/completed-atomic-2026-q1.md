@@ -4,6 +4,19 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Restore hover effects on FilterIndicator badges**
+    - **Outcome:** Added hover affordances to filter badges on `/projects` page. X dismiss icon
+      uses `text-destructive` with opacity crossfade (0.4 → 1.0) to avoid SVG subpixel
+      antialiasing shift during color transitions. Skill name text dims to `muted-foreground`
+      on hover. "Clear all" button gets `bg-destructive` on hover. Added WCAG contrast test
+      for `destructive` on `surface-muted` (3:1 SC 1.4.11) — tuned Rosé Pine light (love
+      darkened 10% → 13%) and Rouge dark (rougeError darkened 10% → 7%) to pass threshold
+      while maintaining existing `destructive-foreground` contrast.
+    - **Files:** `FilterIndicator.tsx`, `contrast.test.ts`, `rose-pine.ts` (palette + definition),
+      `rouge.ts` (palette + definition), `ATOMIC-TASKS.md`
+
+    - **Branch:** `feature/launch-preparation`
+
 - [x] **Fix Safari theme transition color snapping**
     - **Outcome:** Safari snapped text `color` during light/dark theme transitions because it
       cannot interpolate `CSS.registerProperty()`-registered `<color>` properties whose values
