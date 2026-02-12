@@ -26,6 +26,21 @@ manual/dashboard work with no code changes.
 
 ## Tasks
 
+### **Phase 0:** PR Preview Validation
+
+**When:** During PR review, before merging `feature/launch-preparation` to `main`.
+Vercel auto-generates a preview deployment when the PR is opened.
+
+- [ ] **0.1 Validate preview deployment**
+
+    - [ ] Contact form submits successfully (email received)
+    - [ ] Rate limiting returns 429 on 6th rapid request
+    - [ ] Dev pages (`/dev/*`) return 404 (production gating via `NODE_ENV`)
+    - [ ] Custom 404 and error pages render (not Vercel/Next.js defaults)
+    - [ ] All public pages load; theme and wallpaper toggles persist
+    - [ ] View page source: meta tags, OG tags, canonical URLs present
+    - [ ] Sitemap at `/sitemap.xml`, robots.txt at `/robots.txt`
+
 ### **Phase 1:** Domain Configuration
 
 - [ ] **1.1 Register and configure domains**

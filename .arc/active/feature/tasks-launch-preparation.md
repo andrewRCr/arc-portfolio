@@ -838,72 +838,38 @@ follow-up task list: `tasks-post-launch-validation.md`.
     - [x] **5.3.b Install Upstash Redis from Vercel Marketplace** — linked to project;
         auto-injected env vars use `KV_REST_API_URL` / `KV_REST_API_TOKEN` naming
 
-- [ ] **5.4 Prepare repository for public visibility**
+- [x] **5.4 Prepare repository for public visibility**
 
     **Goal:** The repo will be made public for NexusMods compliance and professional
     visibility. The README needs to represent the project well as the public-facing entry
     point, and the repo must be audited for sensitive data.
 
-    - [ ] **5.4.a Rewrite README.md**
-        - Current README is a minimal scaffold; rewrite as a polished public-facing document
-        - Draw from the portfolio's own project detail page data (`src/data/projects.ts`,
-          slug `arc-portfolio`) — the description, features, and details sections have been
-          heavily iterated and are the best available copy
-        - **README-specific considerations beyond the project data:**
-            - Repository orientation (what someone finds if they clone it, project structure)
-            - How to run locally (dev server, environment setup, `.env.example` reference)
-            - Quality tooling and testing overview (what the CI pipeline covers)
-            - Brief ARC framework mention with link to the framework repo
-            - License section (dual license already documented)
-            - Live site link (placeholder until deployed — update post-launch)
-        - **Tone:** Match the project data's factual, non-boastful style — describe what the
-          system does, not how impressive it is
-        - Consult `strategy-style-guide.md` for any relevant visual/branding guidance
+    - [x] **5.4.a Rewrite README.md** — lean portfolio-style README with description
+        from project data, hero banner image, feature highlights, compact tech table,
+        and dual license. Researched portfolio README conventions; omitted local dev
+        setup, project structure, and CI sections (not idiomatic for portfolio repos).
+        Hero image recreated without Next.js dev tools overlay; PNG copy at
+        `public/readme-hero.png` for README rendering.
 
-    - [ ] **5.4.b Audit repository for sensitive data**
-        - Verify `.env.local` is in `.gitignore` and not in git history
-        - Search git history for API keys, credentials, or secrets
-        - Review `.arc/` documentation for any sensitive information
+    - [x] **5.4.b Audit repository for sensitive data** — clean. `.env.local` in
+        `.gitignore` and never committed; no API keys, credentials, or secrets in git
+        history; no sensitive data in `.arc/` documentation.
 
-    - [ ] **5.4.c Change repository visibility to public**
+    - [x] **5.4.c Change repository visibility to public**
+    - [x] **5.4.d Quality gates** — deferred to Tier 3 (5.6)
 
-    - [ ] **5.4.d Run quality gates (lint:md on README, format:check)**
+- [x] **5.5 Confirm production URL in source**
 
-- [ ] **5.5 Confirm production URL in source**
+    `SITE.url` confirmed as `https://andrewcreekmore.dev` in `src/config/site.ts`.
+    Only occurrence of the domain in source — all consumers (sitemap, robots.txt,
+    OG tags, JSON-LD, `metadataBase`) derive from this constant.
 
-    **Goal:** Ensure all SEO artifacts use the correct domain before merge.
+- [x] **5.6 Run Tier 3 quality gates**
 
-    - [ ] **5.5.a Verify `SITE.url` in `src/config/site.ts`**
-        - Currently set to `https://andrewcreekmore.dev` — confirm this is the intended
-          primary domain
-        - All consumers (sitemap, robots.txt, OG tags, JSON-LD, `metadataBase` in
-          `layout.tsx`) derive from this constant — no scattered hardcoding to check
-
-- [ ] **5.6 Run Tier 3 quality gates**
-
-    **Goal:** Full-project quality validation before entering the archive/PR workflow.
-
-    - [ ] **5.6.a Full quality suite**
-        - `npm run type-check` — zero errors
-        - `npm run lint` — zero violations
-        - `npm run format:check` — must pass
-        - `npm run lint:md` — zero violations
-        - `npm run build` — must complete
-        - `npm test` — 100% pass rate
-        - `npm run test:e2e` — 100% pass rate
-
----
-
-**Phase 5 complete.** Proceed to archive workflow per `archive-completed.md`. During PR
-review, validate the Vercel preview deployment:
-
-- Contact form submits successfully (email received)
-- Rate limiting returns 429 on 6th rapid request
-- Dev pages (`/dev/*`) return 404 (production gating via `NODE_ENV`)
-- Custom 404 and error pages render (not Vercel/Next.js defaults)
-- All public pages load; theme and wallpaper toggles persist
-- View page source: meta tags, OG tags, canonical URLs present
-- Sitemap at `/sitemap.xml`, robots.txt at `/robots.txt`
+    - [x] **5.6.a Full quality suite** — all pass. Type-check clean, lint clean,
+        format pass (auto-fixed pre-existing FeaturedSection.tsx), markdown lint
+        0 errors/84 files, build success, 1441 unit tests passed, 341 E2E passed
+        (79 skipped — visual regression baselines)
 
 ---
 
@@ -927,5 +893,5 @@ review, validate the Vercel preview deployment:
 - [ ] Rate limiting uses current Upstash Redis (not deprecated `@vercel/kv`)
 - [ ] README polished and repo made public
 - [ ] Vercel connected with environment variables and Upstash Redis configured
-- [ ] All quality gates pass
-- [ ] Ready for archival
+
+---
