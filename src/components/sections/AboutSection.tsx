@@ -11,6 +11,7 @@ import Image from "next/image";
 import { about } from "@/data/about";
 import { TextLink } from "@/components/common/TextLink";
 import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 
 interface AboutSectionProps {
   /** Dynamic unique download count from NexusMods API (optional) */
@@ -76,11 +77,21 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
   return parts;
 }
 
+const PROFILE_PHOTO_SRC = "/profile-photo.webp";
+const profileBlur = getBlurDataURL(PROFILE_PHOTO_SRC);
+
 /** Photo card with caption footer - shared between layouts */
 function PhotoCard() {
   return (
     <div className="overflow-hidden border-2 border-secondary-high">
-      <Image src="/profile-photo.webp" alt="Andrew Creekmore, full-stack developer" width={200} height={267} priority />
+      <Image
+        src={PROFILE_PHOTO_SRC}
+        alt="Andrew Creekmore, full-stack developer"
+        width={200}
+        height={267}
+        placeholder={profileBlur ? "blur" : undefined}
+        blurDataURL={profileBlur}
+      />
       <div className="flex items-center justify-center bg-accent-decorative px-2 py-1">
         <span className="py-1 font-terminal text-xs text-accent-decorative-foreground">{"// andrew.jpg"}</span>
       </div>

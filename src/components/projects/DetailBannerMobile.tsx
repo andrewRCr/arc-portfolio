@@ -14,6 +14,7 @@
 
 import { DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { useIsPhone } from "@/hooks/useMediaQuery";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 import { ModStatsInline } from "./ModStatsBadge";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import type { ProjectLinks } from "@/types/project";
@@ -71,7 +72,13 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
   return (
     <div data-testid="hero-banner">
       {/* Hero image - standalone, fully rounded */}
-      <div className="relative overflow-hidden rounded-lg" style={aspectRatioStyle}>
+      <div
+        className="relative overflow-hidden rounded-lg"
+        style={{
+          ...aspectRatioStyle,
+          ...(heroImage ? { backgroundImage: `url(${getBlurDataURL(heroImage) ?? ""})`, backgroundSize: "cover" } : {}),
+        }}
+      >
         {heroImage ? (
           // eslint-disable-next-line @next/next/no-img-element -- Native img for background, not content
           <img

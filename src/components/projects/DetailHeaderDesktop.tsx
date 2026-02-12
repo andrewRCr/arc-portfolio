@@ -13,6 +13,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade, DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { useBackDestination } from "@/hooks/useBackDestination";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import { InDevelopmentBadge } from "./InDevelopmentBadge";
 import { ModStatsGroup } from "./ModStatsBadge";
@@ -51,7 +52,13 @@ export function DetailHeaderDesktop({
   return (
     <div data-testid="detail-header" style={{ opacity }}>
       {/* Hero image with overlaid back button and title */}
-      <div className={`relative overflow-hidden ${hasFooter ? "rounded-t-lg" : "rounded-lg"}`} style={aspectRatioStyle}>
+      <div
+        className={`relative overflow-hidden ${hasFooter ? "rounded-t-lg" : "rounded-lg"}`}
+        style={{
+          ...aspectRatioStyle,
+          ...(heroImage ? { backgroundImage: `url(${getBlurDataURL(heroImage) ?? ""})`, backgroundSize: "cover" } : {}),
+        }}
+      >
         {/* Hero image or fallback background */}
         {heroImage ? (
           <>

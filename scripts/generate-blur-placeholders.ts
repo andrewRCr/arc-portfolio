@@ -1,0 +1,193 @@
+#!/usr/bin/env npx tsx
+/**
+ * Generate Blur Placeholders
+ *
+ * Creates tiny base64-encoded WebP blur data URLs for all public images.
+ * Used by Next.js Image component's `placeholder="blur"` + `blurDataURL` props
+ * to show a blurred preview while the full image loads.
+ *
+ * Output: src/data/generated/blur-placeholders.ts
+ * Target: ~200-400 bytes per entry (20px wide, quality 20)
+ *
+ * Usage: npx tsx scripts/generate-blur-placeholders.ts
+ *        npm run generate:blur-placeholders
+ */
+
+import * as fs from "fs";
+import * as path from "path";
+import sharp from "sharp";
+
+const PROJECT_ROOT = path.join(__dirname, "..");
+const PUBLIC_DIR = path.join(PROJECT_ROOT, "public");
+const OUTPUT_FILE = path.join(PROJECT_ROOT, "src/data/generated/blur-placeholders.ts");
+
+/** Glob patterns (relative to public/) for images to process */
+const IMAGE_GLOBS = [
+  "thumbnails/*.webp",
+  "projects/*/hero.webp",
+  "projects/*/*.webp",
+  "wallpaper/thumbnails/*.webp",
+  "profile-photo.webp",
+];
+
+/**
+ * Resolve glob patterns to file paths relative to public/.
+ * Uses simple fs-based matching (no glob library needed for these patterns).
+ */
+function resolveGlobs(): string[] {
+  const paths = new Set<string>();
+
+  for (const pattern of IMAGE_GLOBS) {
+    const parts = pattern.split("/");
+
+    if (parts.length === 1) {
+      // Simple file: "profile-photo.webp"
+      const filePath = path.join(PUBLIC_DIR, parts[0]);
+      if (fs.existsSync(filePath)) {
+        paths.add(parts[0]);
+      }
+    } else if (parts.length === 2 && parts[0] !== "*") {
+      // dir/*.webp
+      const dir = path.join(PUBLIC_DIR, parts[0]);
+      if (fs.existsSync(dir)) {
+        for (const file of fs.readdirSync(dir)) {
+          if (file.endsWith(".webp")) {
+            paths.add(`${parts[0]}/${file}`);
+          }
+        }
+      }
+    } else if (parts.length === 3 && parts[1] === "*") {
+      // dir/*/file.webp or dir/*/*.webp
+      const parentDir = path.join(PUBLIC_DIR, parts[0]);
+      if (fs.existsSync(parentDir)) {
+        for (const subdir of fs.readdirSync(parentDir)) {
+          const subdirPath = path.join(parentDir, subdir);
+          if (!fs.statSync(subdirPath).isDirectory()) continue;
+
+          if (parts[2].includes("*")) {
+            // dir/*/*.webp — all webp files in subdirs
+            for (const file of fs.readdirSync(subdirPath)) {
+              if (file.endsWith(".webp")) {
+                paths.add(`${parts[0]}/${subdir}/${file}`);
+              }
+            }
+          } else {
+            // dir/*/hero.webp — specific file in subdirs
+            const filePath = path.join(subdirPath, parts[2]);
+            if (fs.existsSync(filePath)) {
+              paths.add(`${parts[0]}/${subdir}/${parts[2]}`);
+            }
+          }
+        }
+      }
+    } else if (parts.length === 3 && parts[1] !== "*" && parts[2].includes("*")) {
+      // dir/subdir/*.webp — literal subdirectory with wildcard filename
+      const dir = path.join(PUBLIC_DIR, parts[0], parts[1]);
+      if (fs.existsSync(dir)) {
+        for (const file of fs.readdirSync(dir)) {
+          if (file.endsWith(".webp")) {
+            paths.add(`${parts[0]}/${parts[1]}/${file}`);
+          }
+        }
+      }
+    }
+  }
+
+  return [...paths].sort();
+}
+
+/**
+ * Generate a blur data URL for a single image.
+ * Resizes to 20px wide (maintaining aspect ratio), encodes as low-quality WebP.
+ */
+async function generateBlurDataURL(relativePath: string): Promise<{ dataURL: string; bytes: number }> {
+  const absolutePath = path.join(PUBLIC_DIR, relativePath);
+  const buffer = await sharp(absolutePath).resize(20).webp({ quality: 20 }).toBuffer();
+
+  return {
+    dataURL: `data:image/webp;base64,${buffer.toString("base64")}`,
+    bytes: buffer.length,
+  };
+}
+
+async function main(): Promise<void> {
+  console.log("Generating blur placeholders...\n");
+
+  const imagePaths = resolveGlobs();
+
+  if (imagePaths.length === 0) {
+    console.error("Error: No WebP images found in public/");
+    process.exit(1);
+  }
+
+  console.log(`Found ${imagePaths.length} images to process\n`);
+
+  let successCount = 0;
+  let failCount = 0;
+  let totalBytes = 0;
+  const entries: Record<string, string> = {};
+
+  for (const relativePath of imagePaths) {
+    const publicPath = `/${relativePath}`;
+    try {
+      const { dataURL, bytes } = await generateBlurDataURL(relativePath);
+      entries[publicPath] = dataURL;
+      totalBytes += bytes;
+      successCount++;
+      console.log(`  ✓ ${publicPath} (${bytes}B)`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.log(`  ✗ ${publicPath} → FAILED: ${message}`);
+      failCount++;
+    }
+  }
+
+  // Write output file
+  const sortedKeys = Object.keys(entries).sort();
+  const lines = sortedKeys.map((key) => `  "${key}": "${entries[key]}",`);
+
+  const output = `/**
+ * Auto-generated blur placeholders — DO NOT EDIT MANUALLY
+ *
+ * Generated by: scripts/generate-blur-placeholders.ts
+ * Images: ${successCount} entries from public/
+ *
+ * Each value is a tiny base64-encoded WebP data URL (20px wide, quality 20)
+ * used by Next.js Image component's placeholder="blur" prop.
+ */
+
+// prettier-ignore
+export const BLUR_PLACEHOLDERS: Record<string, string> = {
+${lines.join("\n")}
+};
+`;
+
+  // Ensure output directory exists
+  const outputDir = path.dirname(OUTPUT_FILE);
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  fs.writeFileSync(OUTPUT_FILE, output, "utf-8");
+
+  // Summary
+  console.log("\n" + "=".repeat(50));
+  console.log(`Generated: ${successCount}/${imagePaths.length} blur placeholders`);
+
+  if (successCount > 0) {
+    const avgBytes = Math.round(totalBytes / successCount);
+    const totalKB = Math.round(totalBytes / 1024);
+    console.log(`Total blur data: ${totalKB}KB (avg: ${avgBytes}B per entry)`);
+  }
+
+  console.log(`Output: ${OUTPUT_FILE}`);
+
+  if (failCount > 0) {
+    console.log(`\nWarning: ${failCount} image(s) failed to process`);
+    process.exit(1);
+  }
+
+  console.log("\nDone!");
+}
+
+main();

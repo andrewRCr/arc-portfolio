@@ -29,6 +29,7 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/counter.css";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { Screenshot } from "@/types/project";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 
 export interface ImageGalleryProps {
   /** Array of screenshots to display */
@@ -82,6 +83,8 @@ export function ImageGallery({ images }: ImageGalleryProps) {
           const isLastVisible = index === maxVisible - 1;
           const showOverlay = isLastVisible && hasMore;
 
+          const blurDataURL = getBlurDataURL(image.src);
+
           return (
             <button
               key={image.src}
@@ -95,6 +98,8 @@ export function ImageGallery({ images }: ImageGalleryProps) {
                 alt={image.alt}
                 fill
                 sizes="(min-width: 640px) 33vw, 50vw"
+                placeholder={blurDataURL ? "blur" : undefined}
+                blurDataURL={blurDataURL}
                 className="object-cover transition-transform group-hover:scale-105"
               />
               {/* "+X more" overlay on last thumbnail */}

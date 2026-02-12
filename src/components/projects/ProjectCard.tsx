@@ -10,6 +10,7 @@ import Image from "next/image";
 import type { Project } from "@/types/project";
 import { InDevelopmentBadge } from "@/components/projects/InDevelopmentBadge";
 import { TechStackScroller } from "@/components/projects/TechStackScroller";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 
 interface ProjectCardProps {
   project: Project;
@@ -20,6 +21,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
   const detailUrl = `/projects/${categoryType}/${project.slug}`;
 
   const hasValidThumbnail = Boolean(project.images.thumbnail);
+  const blurDataURL = getBlurDataURL(project.images.thumbnail);
   const isInDevelopment = project.status === "in-development";
 
   return (
@@ -36,6 +38,8 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
             alt={`${project.title} thumbnail`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            placeholder={blurDataURL ? "blur" : undefined}
+            blurDataURL={blurDataURL}
             className="object-cover transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100"
           />
         ) : (

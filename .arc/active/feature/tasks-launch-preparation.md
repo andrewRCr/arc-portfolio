@@ -700,16 +700,38 @@ added as they surface.*
         - Multiple hypotheses tested and eliminated (alpha interpolation, formula vs resolved values,
           `color-mix()` reformulation) before identifying the double-transition as the universal cause
 
-- [ ] **4.3 Investigate and fix slow image loading**
+- [ ] **4.3 Image loading investigation & improvements**
 
-    **Goal:** Improve loading performance for wallpaper thumbnails and profile photo on lower-bandwidth connections.
+    **Goal:** Investigate slow image loading observed during development, improve perceived loading UX.
 
-    - [ ] **4.3.a Diagnose wallpaper thumbnail loading in ThemeControl**
-        - Check image sizes, responsive `sizes`/`srcSet`, placeholder strategy
-    - [ ] **4.3.b Diagnose profile photo loading on About page**
-        - Image appeared broken for 20+ seconds on WiFi before loading
-    - [ ] **4.3.c Implement fixes**
-        - Options: resize assets, add blur placeholders, tune Next.js Image props
+    - [x] **4.3.a Diagnose slow image loading**
+        - Wallpaper thumbnails and profile photo appeared slow/broken during development
+        - Root cause: Next.js dev-mode on-the-fly image optimization + Cloudflare tunnel overhead
+        - Production builds serve pre-optimized images with no delay — not a real performance issue
+        - No `sizes`/`srcSet` changes needed for `<Image>` components (already correct)
+
+    - [x] **4.3.b Add blur placeholders to all `<Image>` components**
+        - Created `scripts/generate-blur-placeholders.ts` — scans 5 glob patterns across `public/`,
+          generates 20px-wide WebP blur data URLs via Sharp (119 entries, 11KB total, avg 96B each)
+        - Output: `src/data/generated/blur-placeholders.ts` (committed, regenerated at prebuild)
+        - Helper: `src/lib/blur-placeholders.ts` — `getBlurDataURL(path) => string | undefined`
+        - Wired into 4 `<Image>` components: ProjectCard, ImageGallery, WallpaperPicker, AboutSection
+        - Removed `priority` from profile photo (so blur displays; 43KB image doesn't need it)
+        - Conditional pattern `placeholder={blurDataURL ? "blur" : undefined}` for graceful degradation
+        - Added `sharp` as explicit devDependency; chained `generate:blur-placeholders` into `prebuild`
+
+    - [x] **4.3.c Add blur placeholders to hero images (DetailHeader)**
+        - Heroes use raw `<img>` (decorative backgrounds, `aria-hidden`), not Next.js `<Image>`
+        - Applied blur as inline CSS `background-image` on container div — `<img>` covers it on load
+        - Wired into both DetailHeaderDesktop and DetailBannerMobile
+
+    - [ ] **4.3.d Serve responsive hero images**
+        - Heroes are 2800×800 (9 images) or 1488×424 (6 images), served at full resolution to all
+          viewports via raw `<img>` — phones get 2800px-wide images unnecessarily
+        - Files are already light (7–190KB WebP) so impact is moderate, not urgent
+        - Options: switch to Next.js `<Image>` (handles `srcset` automatically), or add manual
+          `srcset` to raw `<img>` — both require consideration of gradient overlays and
+          decorative/background treatment
 
 - [ ] **4.4 Laptop viewport responsive design pass**
 
@@ -849,7 +871,7 @@ added as they surface.*
 - [ ] Favicon displays in browser tabs
 - [ ] JSON-LD structured data present (Person, BreadcrumbList)
 - [ ] Icon button jitter eliminated in Safari theme transitions
-- [ ] Images load promptly on lower-bandwidth connections
+- [ ] Blur placeholders provide polished loading UX; hero images served responsively
 - [ ] All pages render well at laptop viewports (~1280–1440px)
 - [ ] Site deployed at `andrewcreekmore.dev`
 - [ ] All secondary domains redirect to `.dev` (`.com`, `andrewrcr.dev`, `andrewrcr.com`)
