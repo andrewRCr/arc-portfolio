@@ -227,7 +227,7 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/andrewRCr/arc-portfolio",
-      liveDemo: undefined, // In progress - will be deployed to andrewcreekmore.com
+      liveDemo: "https://andrewcreekmore.dev",
     },
     images: {
       thumbnail: "/thumbnails/arc-portfolio.webp",
