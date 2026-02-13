@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 // Validation schema
 const MESSAGE_MAX_LENGTH = 2500;
@@ -127,13 +129,13 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
           <label htmlFor="name" className="block font-terminal text-sm font-medium text-foreground">
             Name
           </label>
-          <input
+          <Input
             id="name"
             type="text"
             aria-required="true"
             aria-describedby={errors.name ? "name-error" : undefined}
             aria-invalid={errors.name ? "true" : "false"}
-            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
+            className={inputBg}
             {...register("name")}
           />
           {errors.name && (
@@ -148,13 +150,13 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
           <label htmlFor="email" className="block font-terminal text-sm font-medium text-foreground">
             Email
           </label>
-          <input
+          <Input
             id="email"
             type="email"
             aria-required="true"
             aria-describedby={errors.email ? "email-error" : undefined}
             aria-invalid={errors.email ? "true" : "false"}
-            className={`w-full border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
+            className={inputBg}
             {...register("email")}
           />
           {errors.email && (
@@ -170,14 +172,14 @@ export function ContactForm({ variant = "standalone" }: ContactFormProps) {
         <label htmlFor="message" className="block font-terminal text-sm font-medium text-foreground">
           Message
         </label>
-        <textarea
+        <Textarea
           id="message"
           rows={isPhone ? 3 : 6}
           maxLength={MESSAGE_MAX_LENGTH}
           aria-required="true"
           aria-describedby={errors.message ? "message-error message-count" : "message-count"}
           aria-invalid={errors.message ? "true" : "false"}
-          className={`w-full resize-none border border-border ${inputBg} px-4 py-2 font-body text-foreground placeholder:font-terminal placeholder:text-muted-foreground outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-mid`}
+          className={inputBg}
           {...register("message")}
         />
         <div className="flex justify-between text-sm">

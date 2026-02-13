@@ -12,7 +12,7 @@ import { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 import { FilterIcon, CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MobileDrawer } from "@/components/ui/MobileDrawer";
+import { MobileDrawer } from "@/components/common/MobileDrawer";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ScrollShadow } from "@/components/layout/ScrollShadow";
 import { useScrollShadow } from "@/hooks/useScrollShadow";

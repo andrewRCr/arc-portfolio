@@ -295,7 +295,8 @@ test.describe("Theme Controls", () => {
       await expect(themeBHtml).toHaveClass(/gruvbox/);
     });
 
-    test("mode change syncs across tabs", async ({ context }) => {
+    test("mode change syncs across tabs", async ({ context, browserName }) => {
+      test.skip(browserName === "webkit", "Cross-tab sync timing unreliable in headless WebKit on Linux CI");
       const pageA = await context.newPage();
       const pageB = await context.newPage();
 

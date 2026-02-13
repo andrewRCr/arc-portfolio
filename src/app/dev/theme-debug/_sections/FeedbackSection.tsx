@@ -13,13 +13,13 @@ export function FeedbackSection() {
   return (
     <Card id="feedback">
       <CardHeader>
-        <CardTitle className="text-2xl">Feedback</CardTitle>
+        <CardTitle className="font-title text-2xl">Feedback</CardTitle>
       </CardHeader>
       <CardContent>
         <CardContentInset className="space-y-6">
           {/* Alerts */}
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-muted-foreground">Alerts</h3>
+            <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Alerts</h3>
             <div className="space-y-4">
               <Alert>
                 <Info className="h-4 w-4" />
@@ -47,7 +47,7 @@ export function FeedbackSection() {
 
           {/* Badges */}
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-muted-foreground">Badges</h3>
+            <h3 className="font-terminal text-lg font-semibold text-muted-foreground">Badges</h3>
             <div className="flex flex-wrap gap-3">
               <Badge>Default</Badge>
               <Badge variant="secondary">Secondary</Badge>
@@ -72,7 +72,7 @@ export function FeedbackSection() {
           </div>
 
           {/* Disclaimer */}
-          <p className="text-xs text-muted-foreground">
+          <p className="font-body text-xs text-muted-foreground">
             Accent-colored components are decorative only. Use semantic tokens (destructive) for status meaning.
           </p>
         </CardContentInset>

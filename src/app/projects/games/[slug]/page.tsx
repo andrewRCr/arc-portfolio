@@ -1,19 +1,17 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
-import { getBackDestination } from "@/components/projects/utils";
 import { projects } from "@/data/projects";
+import { FEATURES } from "@/config/features";
 import { getHeroImage } from "@/lib/project-utils";
+import { breadcrumbJsonLd } from "@/lib/json-ld";
 
 interface GamePageProps {
   params: Promise<{
     slug: string;
-  }>;
-  searchParams: Promise<{
-    tab?: string;
-    from?: string;
   }>;
 }
 
@@ -21,14 +19,35 @@ interface GamePageProps {
 const gameProjects = projects.filter((p) => p.projectType === "game");
 
 export async function generateStaticParams() {
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
+    return [];
+  }
   return gameProjects.map((project) => ({
     slug: project.slug,
   }));
 }
 
-export default async function GameProjectPage({ params, searchParams }: GamePageProps) {
+export async function generateMetadata({ params }: GamePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { tab, from } = await searchParams;
+  const project = gameProjects.find((p) => p.slug === slug);
+
+  if (!project) return {};
+
+  const ogImage = getHeroImage(project.images);
+
+  return {
+    title: project.title,
+    description: project.shortDescription,
+    openGraph: ogImage ? { images: [{ url: ogImage }] } : undefined,
+  };
+}
+
+export default async function GameProjectPage({ params }: GamePageProps) {
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
+    notFound();
+  }
+
+  const { slug } = await params;
 
   // Only find in game projects
   const project = gameProjects.find((p) => p.slug === slug);
@@ -37,44 +56,42 @@ export default async function GameProjectPage({ params, searchParams }: GamePage
     notFound();
   }
 
-  // Preserve tab state from query param, default to 'games' for game pages
-  const validTabs = ["software", "games", "mods"] as const;
-  const currentTab = validTabs.includes(tab as (typeof validTabs)[number])
-    ? (tab as (typeof validTabs)[number])
-    : "games";
-  const backDest = getBackDestination(from, currentTab);
-
   const heroImage = getHeroImage(project.images);
 
   return (
-    <PageLayout
-      stickyHeader
-      pageId="project-detail"
-      header={
-        <DetailHeaderCompact
-          title={project.title}
-          compactTitle={project.compactTitle}
-          backHref={backDest.href}
-          backLabel={backDest.label}
-          links={project.links}
-        />
-      }
-    >
-      <DetailHeader
-        title={project.title}
-        categories={project.category}
-        heroImage={heroImage}
-        backHref={backDest.href}
-        backLabel={backDest.label}
-        links={project.links}
-        metadata={{
-          teamRole: project.teamRole,
-          teamRoleCompact: project.teamRoleCompact,
-          developmentTime: project.developmentTime,
-          developmentTimeCompact: project.developmentTimeCompact,
-        }}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd("Games", project.title)) }}
       />
-      <ProjectDetail project={project} />
-    </PageLayout>
+      <PageLayout
+        stickyHeader
+        pageId="project-detail"
+        header={
+          <DetailHeaderCompact
+            title={project.title}
+            compactTitle={project.compactTitle}
+            defaultTab="games"
+            links={project.links}
+          />
+        }
+      >
+        <DetailHeader
+          title={project.title}
+          status={project.status}
+          categories={project.category}
+          heroImage={heroImage}
+          defaultTab="games"
+          links={project.links}
+          metadata={{
+            teamRole: project.teamRole,
+            teamRoleCompact: project.teamRoleCompact,
+            developmentTime: project.developmentTime,
+            developmentTimeCompact: project.developmentTimeCompact,
+          }}
+        />
+        <ProjectDetail project={project} />
+      </PageLayout>
+    </>
   );
 }

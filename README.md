@@ -1,55 +1,47 @@
 # andrewRCr Portfolio
 
-A modern developer portfolio website built with Next.js 15, showcasing professional projects, technical skills, and
-software engineering capabilities. This portfolio demonstrates a blend of traditional computer science fundamentals
-and contemporary AI-assisted development practices.
+A developer portfolio engineered as a production application. All content — project data, theme
+definitions, and site configuration — flows through typed, validated data models. The multi-theme
+design system persists user preferences to cookies via Server Actions, preventing flash of unstyled
+content on page load. Accessibility is validated by automated testing across the component library
+and every theme combination.
 
-## Technology Stack
+**Live:** [andrewcreekmore.dev](https://andrewcreekmore.dev)
 
-### Core Framework
+<div align="center">
+  <img alt="Portfolio preview across multiple pages and themes"
+    src="public/readme-hero.png" width="95%"/>
+</div>
 
-- **[Next.js 16](https://nextjs.org/)** - Full-stack React framework with App Router and Server Components
-- **[React 19](https://react.dev/)** - UI library with latest features
-- **[TypeScript 5.x](https://www.typescriptlang.org/)** - Type safety and enhanced developer experience
+## Highlights
 
-### Styling & UI
+- Type-safe content architecture with validated data models for project data, theme definitions,
+  and site configuration
+- Theme system built on semantic design tokens for color and layout, with WCAG AA contrast
+  validation across all combinations
+- Automated accessibility auditing with vitest-axe integrated across component test suites
+- Responsive layouts with distinct compositions across viewports — CSS-only breakpoints for
+  hydration safety
+- Orchestrated animation system with centralized timing driving intro sequences, page transitions,
+  and shared element morphing
+- Built with [ARC Framework](https://andrewcreekmore.dev/projects/software/arc-framework) — a
+  spec-driven development methodology emphasizing focused human-agent collaboration
 
-- **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first CSS framework with CSS variables for theming
-- **[Shadcn/ui](https://ui.shadcn.com/)** - Accessible component primitives built on Radix UI
-- **[Lucide React](https://lucide.dev/)** - Icon library for consistent iconography
-- **[Framer Motion](https://www.framer.com/motion/)** - Animation library for smooth transitions and
-  micro-interactions
+## Technology
 
-### Form Handling & Validation
-
-- **[React Hook Form](https://react-hook-form.com/)** - Performant form state management with minimal re-renders
-- **[Zod](https://zod.dev/)** - TypeScript-first schema validation for forms and data
-
-### External Services
-
-- **[Zeptomail](https://www.zoho.com/zeptomail/)** - Transactional email service for contact form submissions
-- **[Vercel](https://vercel.com/)** - Zero-configuration deployment with global CDN
-- **[GitHub Actions](https://github.com/features/actions)** - Continuous integration and quality gates
-
-## Development Framework
-
-This project uses the **ARC (Agentic Recursive Coordination)** development framework for systematic documentation
-and workflow management in AI-assisted development. ARC provides constitutional documents (META-PRD,
-TECHNICAL-ARCHITECTURE, DEVELOPMENT-RULES, PROJECT-STATUS) and structured workflows for feature planning and
-implementation.
-
-Learn more about the ARC framework: [arc-agentic-dev-framework](https://github.com/andrewRCr/arc-agentic-dev-framework)
+| | |
+| --- | --- |
+| Framework | Next.js 16, React 19, TypeScript 5 (strict mode) |
+| Styling | Tailwind CSS v4, Shadcn/ui, Framer Motion |
+| Testing | Vitest, React Testing Library, Playwright |
+| Infrastructure | Vercel, GitHub Actions CI, Upstash Redis |
 
 ## License
 
 **Dual License:**
 
-- **Code**: MIT License - Source code is open source and free to use
-- **Content**: CC BY-NC 4.0 - Portfolio content (text, images, assets) requires attribution and is for
-  non-commercial use
+- **Code:** MIT License — source code is open source and free to use
+- **Content:** CC BY-NC 4.0 — portfolio content (text, images, assets) requires attribution
+  and is for non-commercial use
 
 See [LICENSE](LICENSE) for full details.
-
----
-
-_Built with React 19, Next.js 16, TypeScript, Tailwind CSS v4, and deployed on Vercel._

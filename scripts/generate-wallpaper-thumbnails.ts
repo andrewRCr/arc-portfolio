@@ -1,4 +1,3 @@
-#!/usr/bin/env npx tsx
 /**
  * Generate Wallpaper Thumbnails
  *

@@ -5,6 +5,8 @@
  * Uses ResponsiveSwitch for icon-only links on phone, full buttons on tablet+.
  */
 
+"use client";
+
 import { contact } from "@/data/contact";
 import { SocialIcon } from "@/types/contact";
 import { Github, Linkedin, LucideIcon } from "lucide-react";
@@ -12,7 +14,8 @@ import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ObfuscatedMailtoButton } from "@/components/contact/ObfuscatedMailtoButton";
 import { encodeEmail } from "@/lib/email-utils";
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
+import { useIsShortViewport } from "@/hooks/useMediaQuery";
 
 /** Icon component type that accepts className prop */
 type IconComponent = LucideIcon | typeof NexusModsIcon;
@@ -100,16 +103,16 @@ function ToolbarContactLinks() {
 }
 
 /** Desktop layout - toolbar links above form card with gap */
-function DesktopContactSection() {
+function DesktopContactSection({ compact }: { compact?: boolean }) {
   return (
-    <div className="mx-auto max-w-xl space-y-8 pt-6">
+    <div className={`mx-auto max-w-xl space-y-6 ${compact ? "pt-1" : "pt-6"}`}>
       {/* Toolbar - social links as separate element */}
       <ToolbarContactLinks />
       {/* Form card with header and body sections */}
       <div className="overflow-hidden rounded-lg border border-border">
         {/* Header section */}
-        <div className="bg-surface-card px-6 py-3">
-          <p className="text-sm font-terminal text-muted-foreground">[COMPOSE MSG]</p>
+        <div className={`bg-surface-card px-6 ${compact ? "py-2" : "py-3"}`}>
+          <p className={`font-terminal text-muted-foreground ${compact ? "text-xs" : "text-sm"}`}>[COMPOSE MSG]</p>
         </div>
         {/* Body section - form */}
         <div className="bg-surface-background px-6 pt-6 pb-6">
@@ -121,9 +124,15 @@ function DesktopContactSection() {
 }
 
 export function ContactSection() {
+  const compact = useIsShortViewport();
+
   return (
     <section className="px-0 md:px-4">
-      <ResponsiveSwitch breakpoint="sm" mobile={<MobileContactSection />} desktop={<DesktopContactSection />} />
+      <ResponsiveSwitch
+        breakpoint="sm"
+        mobile={<MobileContactSection />}
+        desktop={<DesktopContactSection compact={compact} />}
+      />
     </section>
   );
 }

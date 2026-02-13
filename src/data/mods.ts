@@ -33,8 +33,8 @@ export const mods: Project[] = [
       "Fable gain rate (from attacking) for all weapons **reduced** by 30% (with an option for 50%)",
       "All weight tiers **increased** by one (1) level (Light: 0.3 → 0.15, Normal: 0.6 → 0.3, and so on)",
     ],
-    highlights: [
-      "Left Arm of Steel: unchanged",
+    details: [
+      "Left Arm of Steel: **unchanged**",
       "Fulminis, Pandemonium, Deus Ex Machina, Falcon Eyes: **+25%**",
       "Puppet String, Flamberge, Icarus: **+40%**",
       "Aegis, Cataclysm: **+65%**",
@@ -45,14 +45,14 @@ export const mods: Project[] = [
     ],
     sectionLabels: {
       features: "Default Modifiers",
-      highlights: "Legion Arms",
+      details: "Legion Arms",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/liesofp/mods/304",
     },
     images: {
-      thumbnail: "/thumbnails/lies-of-p-hardcore-mode.webp?v=2",
-      hero: "/projects/lies-of-p-hardcore-mode/hero.webp?v=2",
+      thumbnail: "/thumbnails/lies-of-p-hardcore-mode.webp",
+      hero: "/projects/lies-of-p-hardcore-mode/hero.webp",
       screenshots: [],
     },
     order: 3,
@@ -82,7 +82,7 @@ export const mods: Project[] = [
         paragraph: true,
       },
     ],
-    highlights: [
+    details: [
       {
         text: "The following mods offer compatibility patches for Improved Movement EX:",
         paragraph: true,
@@ -93,23 +93,21 @@ export const mods: Project[] = [
       "[Blaze with Tifa's Colors and Sounds](https://www.nexusmods.com/streetsofrage4/mods/184) by [fuzzyetdeadly](https://github.com/fuzzyetdeadly)",
       "[SoR 4 Young Axel](https://www.nexusmods.com/streetsofrage4/mods/87) by [djdndiWLr](https://next.nexusmods.com/profile/djdndiWLr) (use [patch](https://www.nexusmods.com/streetsofrage4/mods/202) by [FallenR](https://next.nexusmods.com/profile/FallenR))",
       "[SoR 4 Estel Color Grading](https://www.nexusmods.com/streetsofrage4/mods/88) by [djdndiWLr](https://next.nexusmods.com/profile/djdndiWLr) (use [patch](https://www.nexusmods.com/streetsofrage4/mods/202) by [FallenR](https://next.nexusmods.com/profile/FallenR))",
-    ],
-    architectureNotes: [
+      { text: "**Acknowledgements:**", heading: true },
       "[Rounak](https://www.fiverr.com/rounakdraws) (Axel / Blaze) and [Sandwitch](https://www.fiverr.com/sandwwitch) (Estel) for the new running sprites",
       "[fuzzyetdeadly](https://github.com/fuzzyetdeadly) and the SoulFire team for [Pandora's Box](https://www.nexusmods.com/streetsofrage4/mods/174)",
       "[jlcebrian](https://github.com/jlcebrian), [xinyingho](https://github.com/xinyingho), and [AyanamiRei0](https://github.com/AyanamiRei1) for [SOR4 Explorer](https://gamebanana.com/tools/7297)",
     ],
     sectionLabels: {
       features: "Mod Options",
-      highlights: "Community Compatibility Patches",
-      architectureNotes: "Acknowledgements",
+      details: "Community Compatibility Patches",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/streetsofrage4/mods/178",
     },
     images: {
-      thumbnail: "/thumbnails/sor4-improved-movement.webp?v=2",
-      hero: "/projects/sor4-improved-movement/hero.webp?v=2",
+      thumbnail: "/thumbnails/sor4-improved-movement.webp",
+      hero: "/projects/sor4-improved-movement/hero.webp",
       screenshots: [],
     },
     order: 4,
@@ -124,7 +122,8 @@ export const mods: Project[] = [
     title: "Aim-Dependent Crosshair",
     slug: "re8-aim-dependent-crosshair",
     description:
-      "REFramework script that hides the crosshair reticle based on configurable conditions—useful for a cleaner, more immersive visual experience. Supports both first and third-person perspectives, as well as the main campaign and Shadows of Rose DLC.",
+      "Previous entries in the series—RE7 (also first-person) and the recent third-person remakes—hide the crosshair when not aiming by default. Village shipped without this, and the persistent on-screen reticle was a common complaint. This REFramework Lua script addresses the omission by reverse-engineering how GUI elements are drawn and intercepting reticle rendering based on configurable game-state conditions.\n\n" +
+      "Supports both first and third-person perspectives, as well as the Shadows of Rose DLC.",
     shortDescription:
       "Prevents the crosshair reticle from being drawn unless configurable conditions (aiming, in combat, not sprinting) are met.",
     game: "Resident Evil Village",
@@ -143,8 +142,8 @@ export const mods: Project[] = [
       nexusmods: "https://www.nexusmods.com/residentevilvillage/mods/403",
     },
     images: {
-      thumbnail: "/thumbnails/re8-aim-dependent-crosshair.webp?v=2",
-      hero: "/projects/re8-aim-dependent-crosshair/hero.webp?v=2",
+      thumbnail: "/thumbnails/re8-aim-dependent-crosshair.webp",
+      hero: "/projects/re8-aim-dependent-crosshair/hero.webp",
       screenshots: [],
     },
     order: 5,
@@ -161,7 +160,7 @@ export const mods: Project[] = [
     description:
       "Adds timed-block parries to small/standard shields and most weapons capable of guarding—activating instantly, with **variable** active frames per weapon class. For balance, guarding now has new **recovery frames** as well. Updated with full support for Shadow of the Erdtree, including Deflecting Hardtear integration.",
     shortDescription:
-      "Enables timed-block parries on small/standard shields and most weapons capable of guarding. Updated for Shadow of the Erdtree.",
+      "Timed-block parries added to small/standard shields and most guarding weapons, with variable active frames per weapon class and new guard recovery frames for balance.",
     game: "Elden Ring",
     category: ["Gameplay"],
     tags: ["Game Modding", "Animation Editing"],
@@ -169,25 +168,25 @@ export const mods: Project[] = [
     features: [
       "Parry frames added to the start of guard animations (4-6 frames depending on weapon class)",
       "Recovery frames (9-12) added to guard raising as light spam protection",
-      "Deflecting Hardtear extends parry window (+1-2 frames) for the duration",
+      "Deflecting Hardtear extends parry window (+1 frame, optional) for the duration",
       "Extended version available with 7 parry frames for all weapon classes including greatshields",
       "[The Convergence](https://www.nexusmods.com/eldenring/mods/3419) compatibility version available",
     ],
-    highlights: [
-      "**6 frames**: Small shields, straight swords, curved swords, katanas, thrusting swords, light greatswords, daggers, axes, flails, hammers, and more",
+    details: [
+      "**6 frames**: Small shields, straight swords, curved swords, katanas, thrusting swords, light greatswords, reverse-hand swords, daggers, whips, axes, flails, hammers, throwing blades, hand-to-hand arts, beast claws",
       "**5 frames**: Thrusting shields, spears, twinblades, halberds, reapers, great spears",
-      "**4 frames**: Standard shields, greatswords, curved greatswords, great katanas, colossal weapons",
+      "**4 frames**: Standard shields, greatswords, curved greatswords, great katanas, great axes, great hammers, colossal weapons",
     ],
     sectionLabels: {
       features: "Key Features",
-      highlights: "Parry Frame Data",
+      details: "Parry Frame Data",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/eldenring/mods/5128",
     },
     images: {
-      thumbnail: "/thumbnails/elden-ring-guard-parry.webp?v=2",
-      hero: "/projects/elden-ring-guard-parry/hero.webp?v=2",
+      thumbnail: "/thumbnails/elden-ring-guard-parry.webp",
+      hero: "/projects/elden-ring-guard-parry/hero.webp",
       screenshots: [],
     },
     order: 2,
@@ -216,13 +215,12 @@ export const mods: Project[] = [
       "Spread patterns, precision, and reticle bloom refined where needed",
       "Covers 25+ weapons across 8 categories: knives, handguns, shotguns, SMGs, rifles, magnums, special, and Separate Ways exclusives",
     ],
-    highlights: [
+    details: [
       "**Lite version**: Buff-only adjustments (no nerfs)",
       "**Overhaul support**: Also available as a dedicated, custom-built add-on for [Berserker](https://www.nexusmods.com/residentevil42023/mods/2346), [Valkyrie](https://www.nexusmods.com/residentevil42023/mods/2564), and [Befalling of Night](https://www.nexusmods.com/residentevil42023/mods/2385)",
       "**DLC support**: Separate Ways included; Mercenaries via optional add-on",
       "Multiple optional add-ons for granular control (Riot Gun nerf restoration, vanilla CQBR fire rate, etc.) + additional features",
-    ],
-    architectureNotes: [
+      { text: "**Acknowledgements:**", heading: true },
       "[elsuperaguas](https://next.nexusmods.com/profile/elsuperaguas) for the toggle-able Blacktail laser weapon model (included with permission)",
       "[bloocobalt](https://next.nexusmods.com/profile/bloocobalt) for the Riot Gun weapon model magazine tube extension (included with permission)",
       "[Rabbit-TooneedIM](https://www.nexusmods.com/residentevil42023/users/66480841) for [Berserker](https://www.nexusmods.com/residentevil42023/mods/2346) + [Valkyrie](https://www.nexusmods.com/residentevil42023/mods/2564) (IWB add-ons built with permission)",
@@ -233,15 +231,14 @@ export const mods: Project[] = [
     ],
     sectionLabels: {
       features: "Adjustment Philosophy",
-      highlights: "Versions & Compatibility",
-      architectureNotes: "Acknowledgements",
+      details: "Versions & Compatibility",
     },
     links: {
       nexusmods: "https://www.nexusmods.com/residentevil42023/mods/3016",
     },
     images: {
-      thumbnail: "/thumbnails/re4r-improved-weapon-balance.webp?v=2",
-      hero: "/projects/re4r-improved-weapon-balance/hero.webp?v=2",
+      thumbnail: "/thumbnails/re4r-improved-weapon-balance.webp",
+      hero: "/projects/re4r-improved-weapon-balance/hero.webp",
       screenshots: [],
     },
     order: 1,
@@ -256,23 +253,22 @@ export const mods: Project[] = [
     title: "Never Holster Weapons",
     slug: "sh2r-never-holster-weapons",
     description:
-      "Prevents the automatic weapon holstering triggered by the game's internal 'safety' detection—an immersion-breaking behavior where James somehow knows no enemies are nearby. Since the holster delay parameter wasn't directly exposed, two workaround approaches are provided: one manipulates the danger-state threshold (seamless but affects companion AI locomotion), the other blocks the holster animation directly (no side effects but less automatic). Players choose based on their tolerance for trade-offs.\n\n" +
-      "Routine gameplay actions (opening the map, unlocking doors, cutscene transitions) still require temporary holstering. The difference lies in what happens afterward.",
+      "Prevents the automatic weapon holstering triggered by the game's internal 'player safety' state detection—holstering based on enemy proximity the **character** has no way of knowing, which some players find immersion breaking.\n\n" +
+      "Since the holster delay parameter wasn't directly exposed, two workaround approaches are provided: one manipulates the danger-state threshold (seamless but affects companion AI locomotion), the other blocks the holster animation directly (no side effects but less automatic). Players choose based on their tolerance for trade-offs.\n\n" +
+      "Routine gameplay actions (opening the map, unlocking doors, cutscene transitions, etc) which **bypass** the holstering animation still result in your weapon being put away temporarily; the difference lies in what happens afterward.",
     shortDescription:
-      "Two workarounds for an unexposed parameter—each preventing auto-holster with different trade-offs.",
+      "Prevents automatic weapon holstering when no enemies are detected. Two versions available, each working around the unexposed holster delay parameter differently.",
     game: "Silent Hill 2 (2024)",
     category: ["Gameplay"],
     tags: ["Game Modding", "UE5 Modding"],
     techStack: ["UAssetGUI", "Retoc", "ZenTools", "IoStorePackagev2"],
     features: [
-      {
-        text: "**Automatic version**: Manipulates the danger-state threshold so James never considers himself 'safe.' Weapon unholsters immediately after routine actions. Trade-off: Maria plays distressed locomotion/dialogue out of context; James never fully relaxes in idle animations.",
-        paragraph: true,
-      },
-      {
-        text: "**Manual version**: Blocks the holster animation directly. No side effects on companion AI or player animations. Trade-off: After routine actions, you must manually re-equip via weapon select key.",
-        paragraph: true,
-      },
+      { text: "**Automatic Version**", heading: true },
+      "Manipulates the danger-state threshold so James never considers himself 'safe'; weapon unholsters immediately after routine actions, without requiring player input",
+      "Trade-off: Maria plays distressed locomotion/dialogue out of context; James never fully relaxes in idle animations",
+      { text: "**Manual Version**", heading: true },
+      "Blocks the holster animation directly with no side effects on companion AI or player animations",
+      "Trade-off: after routine actions, you must manually re-equip via weapon select key (or aiming, for firearms)",
     ],
     sectionLabels: {
       features: "Approach Comparison",
@@ -281,8 +277,8 @@ export const mods: Project[] = [
       nexusmods: "https://www.nexusmods.com/silenthill2/mods/199",
     },
     images: {
-      thumbnail: "/thumbnails/sh2r-never-holster-weapons.webp?v=2",
-      hero: "/projects/sh2r-never-holster-weapons/hero.webp?v=2",
+      thumbnail: "/thumbnails/sh2r-never-holster-weapons.webp",
+      hero: "/projects/sh2r-never-holster-weapons/hero.webp",
       screenshots: [],
     },
     order: 6,

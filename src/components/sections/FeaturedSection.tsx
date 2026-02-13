@@ -3,7 +3,7 @@
 /**
  * FeaturedSection - Home page featured projects grid
  *
- * Displays 4 project cards with type labels (software, framework, game, mod).
+ * Displays 4 project cards with type labels (software, methodology, game, mod).
  * Projects are randomized on each page load, one from each category.
  *
  * Note: Section heading ("Featured Projects") is rendered in Hero component
@@ -15,6 +15,7 @@ import Link from "next/link";
 import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 import type { Project } from "@/types/project";
+import { InDevelopmentBadge } from "@/components/projects/InDevelopmentBadge";
 import { selectFeaturedProjects, type FeaturedProject } from "@/lib/featured-projects";
 
 type ResolvedProject = { project: Project; type: FeaturedProject["type"] };
@@ -22,7 +23,7 @@ type ResolvedProject = { project: Project; type: FeaturedProject["type"] };
 function getProjectPath(type: FeaturedProject["type"]): string {
   switch (type) {
     case "software":
-    case "framework":
+    case "methodology":
       return "/projects/software";
     case "game":
       return "/projects/games";
@@ -74,15 +75,10 @@ export function FeaturedSection() {
           >
             <div className="p-4 pb-2 bg-surface-card">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-terminal text-foreground">[{type}]</span>
-                {isInDevelopment && (
-                  <span
-                    data-testid="in-development-badge"
-                    className="border border-border bg-surface-muted/80 px-1.5 py-0.5 font-terminal text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
-                  >
-                    In Dev
-                  </span>
-                )}
+                <span className="text-xs font-terminal text-foreground">
+                  [{type === "methodology" ? "dev methodology" : type}]
+                </span>
+                {isInDevelopment && <InDevelopmentBadge compact />}
               </div>
               <h4 className="font-semibold font-title">
                 <span className="bg-accent-low px-1.5 py-0.5 text-accent-low-foreground transition-colors duration-300 box-decoration-clone group-hover:bg-secondary-high group-hover:text-secondary-foreground">

@@ -71,7 +71,7 @@ export function ThemeSelector({ selectedTheme, onSelect, className }: ThemeSelec
       aria-label="Select theme"
       tabIndex={0}
       onKeyDown={handleListboxKeyDown}
-      className={cn("flex flex-col gap-1", className)}
+      className={cn("flex flex-col gap-1 outline-none", className)}
     >
       {themeEntries.map(([themeName, theme], index) => {
         const isSelected = themeName === selectedTheme;

@@ -15,3 +15,6 @@ export { FeedbackSection } from "./FeedbackSection";
 export { OverlaysSection } from "./OverlaysSection";
 export { CardsLayoutSection } from "./CardsLayoutSection";
 export { InteractiveStatesSection } from "./InteractiveStatesSection";
+export { SurfaceTokensSection } from "./SurfaceTokensSection";
+export { OpacityVariantsSection } from "./OpacityVariantsSection";
+export { ShadowElevationSection } from "./ShadowElevationSection";

@@ -131,8 +131,8 @@ export const rougeA11y = {
   fgMutedDarkened10: "#5a6771",
 
   // Dark mode fixes
-  /** RougeError darkened 10% for white text contrast (4.15 → 4.96) */
-  rougeErrorDarkened10: "#b84d55",
+  /** RougeError darkened 7% — balances white text contrast (4.69) + surface-muted contrast */
+  rougeErrorDarkened7: "#BE5058",
 } as const;
 
 /**

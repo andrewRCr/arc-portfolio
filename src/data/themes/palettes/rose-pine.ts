@@ -169,8 +169,8 @@ export const rosePineA11y = {
   // Dawn (light mode) adjustments
   /** Foam darkened 20% for base contrast (3.14 → 4.63) */
   foam_dark: "#45767F", // Original: #56949f
-  /** Love darkened 10% for base contrast (3.84 → 4.59) */
-  love_dark: "#A2596E", // Original: #b4637a
+  /** Love darkened 13% for base + surface-muted contrast (3.84 → 4.82) */
+  love_dark: "#9D566A", // Original: #b4637a
   /** Rose darkened 30% for base contrast (2.60 → 4.86) */
   rose_dark: "#975B58", // Original: #d7827e
   /** Subtle darkened 30% for highlight_med contrast (→ 5.44) */

@@ -12,10 +12,12 @@
  * @see ResponsiveSwitch - CSS-based viewport switching to avoid hydration flash
  */
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useHeaderCrossfade } from "@/hooks/useHeaderCrossfade";
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { useBackDestination } from "@/hooks/useBackDestination";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import type { ProjectLinks } from "@/types/project";
 
@@ -24,21 +26,27 @@ export interface DetailHeaderCompactProps {
   title: string;
   /** Shorter title for mobile (falls back to title) */
   compactTitle?: string;
-  /** Back button destination URL */
-  backHref: string;
-  /** Back button label text */
-  backLabel: string;
+  /** Back button destination URL (resolved by useBackDestination if omitted) */
+  backHref?: string;
+  /** Back button label text (resolved by useBackDestination if omitted) */
+  backLabel?: string;
+  /** Default tab for back navigation — used by useBackDestination hook */
+  defaultTab?: "software" | "games" | "mods";
   /** External project links */
   links?: ProjectLinks;
 }
 
+/** Internal props with resolved (required) back navigation values */
+interface ResolvedCompactProps {
+  title: string;
+  compactTitle?: string;
+  backHref: string;
+  backLabel: string;
+  links?: ProjectLinks;
+}
+
 /** Mobile variant: always visible, single row, no links */
-function DetailHeaderCompactMobile({
-  title,
-  compactTitle,
-  backHref,
-  backLabel,
-}: Omit<DetailHeaderCompactProps, "links">) {
+function DetailHeaderCompactMobile({ title, compactTitle, backHref, backLabel }: Omit<ResolvedCompactProps, "links">) {
   const { opacity: scrollOpacity } = useHeaderCrossfade("in");
 
   return (
@@ -47,7 +55,7 @@ function DetailHeaderCompactMobile({
         <Link
           href={backHref}
           aria-label={`Back to ${backLabel}`}
-          className="relative inline-flex h-8 shrink-0 items-center justify-center bg-muted px-2 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground after:absolute after:inset-x-0 after:-top-1.5 after:-bottom-1.5 after:content-['']"
+          className="relative inline-flex h-8 shrink-0 items-center justify-center bg-surface-muted px-2 text-muted-foreground transition-colors hover:bg-accent-high hover:text-accent-high-foreground after:absolute after:inset-x-0 after:-top-1.5 after:-bottom-1.5 after:content-['']"
         >
           <ArrowLeft className="h-4 w-4" />
         </Link>
@@ -63,7 +71,7 @@ function DetailHeaderCompactMobile({
 }
 
 /** Desktop variant: crossfade animation, shows icon links */
-function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: DetailHeaderCompactProps) {
+function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: ResolvedCompactProps) {
   const { opacity, isExpanded } = useHeaderCrossfade("in");
 
   return (
@@ -100,11 +108,31 @@ function DetailHeaderCompactDesktop({ title, backHref, backLabel, links }: Detai
   );
 }
 
-export function DetailHeaderCompact(props: DetailHeaderCompactProps) {
+function DetailHeaderCompactInner({
+  backHref: backHrefProp,
+  backLabel: backLabelProp,
+  defaultTab,
+  ...rest
+}: DetailHeaderCompactProps) {
+  const dest = useBackDestination(defaultTab ?? "software");
+  const resolved: ResolvedCompactProps = {
+    ...rest,
+    backHref: backHrefProp ?? dest.href,
+    backLabel: backLabelProp ?? dest.label,
+  };
+
   return (
     <ResponsiveSwitch
-      mobile={<DetailHeaderCompactMobile {...props} />}
-      desktop={<DetailHeaderCompactDesktop {...props} />}
+      mobile={<DetailHeaderCompactMobile {...resolved} />}
+      desktop={<DetailHeaderCompactDesktop {...resolved} />}
     />
+  );
+}
+
+export function DetailHeaderCompact(props: DetailHeaderCompactProps) {
+  return (
+    <Suspense>
+      <DetailHeaderCompactInner {...props} />
+    </Suspense>
   );
 }

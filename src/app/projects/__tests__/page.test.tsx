@@ -26,7 +26,7 @@ describe("Projects Page - Games Tab", () => {
       // Games tab should show game projects
       expect(screen.getByText("Action RPG Project")).toBeInTheDocument();
       expect(screen.getByText("Survival Horror Project")).toBeInTheDocument();
-      expect(screen.getByText("Pong Clone")).toBeInTheDocument();
+      expect(screen.getByText("C++ Pong")).toBeInTheDocument();
     });
 
     it("does not show software projects in Games tab", () => {
@@ -77,12 +77,12 @@ describe("Projects Page - Games Tab", () => {
       expect(link).toHaveAttribute("href", "/projects/games/survival-horror-project");
     });
 
-    it("links Pong Clone to correct detail page", () => {
+    it("links C++ Pong to correct detail page", () => {
       mockNavigation.setSearchParams({ tab: "games" });
       render(<ProjectsPage />);
 
-      const link = screen.getByRole("link", { name: /pong clone/i });
-      expect(link).toHaveAttribute("href", "/projects/games/pong-clone");
+      const link = screen.getByRole("link", { name: /c\+\+ pong/i });
+      expect(link).toHaveAttribute("href", "/projects/games/cpp-pong");
     });
   });
 
@@ -94,7 +94,7 @@ describe("Projects Page - Games Tab", () => {
       // Game projects should not appear in Software tab
       expect(screen.queryByText("Action RPG Project")).not.toBeInTheDocument();
       expect(screen.queryByText("Survival Horror Project")).not.toBeInTheDocument();
-      expect(screen.queryByText("Pong Clone")).not.toBeInTheDocument();
+      expect(screen.queryByText("C++ Pong")).not.toBeInTheDocument();
     });
 
     it("shows only non-game software projects", () => {

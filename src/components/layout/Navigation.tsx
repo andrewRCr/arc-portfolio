@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/config/site";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 import { MobileNavigation } from "./MobileNavigation";
 
 /**

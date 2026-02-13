@@ -4,6 +4,73 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Fix Ayu light muted-foreground indistinguishable from foreground**
+    - **Outcome:** Ayu light's `muted-foreground` was only 1.12:1 from `foreground` (invisible
+      difference) because contrast tests checked against raw tokens, not composited surfaces.
+      Replaced 3 raw-token `muted-foreground` tests (bg, muted, card at 4.5:1) with Suite 6:
+      composited surface tests (`surface-card`, `surface-background`, `surface-muted` at 3:1)
+      reflecting actual TWM layout conditions. Lightened Ayu light `muted-foreground` from
+      25%dk (`#5f6974`) to 14%dk (`#707A89`) — now 1.44:1 visible gap from foreground while
+      maintaining 3.14+ contrast on all composited surfaces.
+    - **Files:** `contrast.test.ts`, `ayu.ts` (palette + definition),
+      `theme-variants.generated.css`
+
+    - **Branch:** `feature/launch-preparation`
+
+- [x] **Restore hover effects on FilterIndicator badges**
+    - **Outcome:** Added hover affordances to filter badges on `/projects` page. X dismiss icon
+      uses `text-destructive` with opacity crossfade (0.4 → 1.0) to avoid SVG subpixel
+      antialiasing shift during color transitions. Skill name text dims to `muted-foreground`
+      on hover. "Clear all" button gets `bg-destructive` on hover. Added WCAG contrast test
+      for `destructive` on `surface-muted` (3:1 SC 1.4.11) — tuned Rosé Pine light (love
+      darkened 10% → 13%) and Rouge dark (rougeError darkened 10% → 7%) to pass threshold
+      while maintaining existing `destructive-foreground` contrast.
+    - **Files:** `FilterIndicator.tsx`, `contrast.test.ts`, `rose-pine.ts` (palette + definition),
+      `rouge.ts` (palette + definition), `ATOMIC-TASKS.md`
+
+    - **Branch:** `feature/launch-preparation`
+
+- [x] **Fix Safari theme transition color snapping**
+    - **Outcome:** Safari snapped text `color` during light/dark theme transitions because it
+      cannot interpolate `CSS.registerProperty()`-registered `<color>` properties whose values
+      change via `var()` indirection chains (`rgb(var(--foreground))`). Fixed by emitting resolved
+      `--color-*` values (direct RGB) in theme variant classes and transitioning those custom
+      properties on `<html>` itself. Required splitting the child wildcard transition rule:
+      `background-color` and `border-color` remain on children (browsers don't recalculate
+      non-inherited properties frame-by-frame from transitioning ancestor custom properties),
+      while text `color` is omitted from children (Safari double-transitions it, causing snapping)
+      and handled via `--color-foreground` interpolation on `<html>`.
+    - **Files:** `scripts/generate-css-defaults.ts` (added `generateResolvedColorVariables()`),
+      `src/app/globals.css` (split transition rules, `@import` for generated variants),
+      `src/app/theme-variants.generated.css` (new — extracted theme variant classes with resolved
+      color values), `src/lib/theme/register-color-properties.ts` (new — registers `--color-*`
+      as `<color>` via `CSS.registerProperty()`), `src/components/layout/ThemeProvider.tsx`
+      (added `ThemeColorRegistration` component), `package.json` (updated generate script)
+    - **Verification:** Smooth transitions confirmed in Safari (via cloudflare tunnel and macOS hardware) and
+      Firefox (main development desktop, Windows/WSL). Background regression caught and fixed during commit
+      preparation — initial implementation omitted `background-color`/`border-color` from child rule.
+
+    - **Branch:** `feature/launch-preparation`
+
+- [x] **Fix SSG/dynamic conflict in project detail routes**
+    - **Outcome:** Games/mods detail routes returned 500 in production — `searchParams` (dynamic
+      server API) conflicted with `generateStaticParams` (SSG) in Next.js 16. Created
+      `useBackDestination` client-side hook to read `tab`/`from` search params, removing all
+      `searchParams` access from server page components. Pages now pass `defaultTab` prop instead
+      of pre-computed `backHref`/`backLabel`. Wrapped `ResponsiveSwitch` in `<Suspense>` in both
+      `DetailHeader` and `DetailHeaderCompact` to prevent SSG de-optimization.
+    - **Files:** Created `src/hooks/useBackDestination.ts`, `src/hooks/__tests__/useBackDestination.test.ts`.
+      Modified `detail-header.types.ts`, `DetailHeader.tsx`, `DetailHeaderDesktop.tsx`,
+      `DetailHeaderCompact.tsx`, `software/[slug]/page.tsx`, `games/[slug]/page.tsx`,
+      `mods/[slug]/page.tsx`, `DetailHeader.test.tsx`, `DetailHeaderCompact.test.tsx`
+    - **Verification:** All three detail routes return 200 in production (was 500 for games/mods).
+      1390 unit tests pass (+6 new hook tests).
+    - **Note:** Build output shows all routes as `ƒ (Dynamic)` — this is expected Next.js 16
+      Turbopack behavior. `generateStaticParams` runs at build time but output goes to in-memory
+      Full Route Cache, not disk. Vercel deployment handles edge caching transparently.
+
+    - **Branch:** `feature/launch-preparation`
+
 - [x] **Smooth light/dark mode transition**
     - **Outcome:** Implemented smooth CSS transitions for light/dark mode toggle. Initially tried View
       Transitions API but encountered compositing issues with semi-transparent window containers and

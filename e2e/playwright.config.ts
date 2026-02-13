@@ -84,11 +84,13 @@ export default defineConfig({
       retries: 1, // Single retry for flaky network issues
     },
     // WebKit only in CI - WSL2 lacks required system libraries locally
+    // Extended timeout matches Firefox accommodation for CI slowness
     ...(process.env.CI
       ? [
           {
             name: "WebKit",
             use: { ...devices["Desktop Safari"] },
+            timeout: 60_000,
           },
         ]
       : []),
@@ -99,5 +101,14 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
+    // Fail fast if dev server can't start (lock file, port conflict, crash).
+    // Without `wait`, Playwright polls the URL for the full 120s timeout even
+    // when the command exits immediately. The `wait` pattern watches stdout for
+    // Next.js "Ready in" — if the process dies before matching, failure is near
+    // instant instead of a 2-minute hang. Only activates when Playwright starts
+    // the server itself (CI, or local when dev server isn't running).
+    stdout: "pipe",
+    stderr: "pipe",
+    wait: { stdout: /Ready in/ },
   },
 });

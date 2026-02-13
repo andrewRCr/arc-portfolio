@@ -30,10 +30,10 @@ echo -e "${GREEN}🔍 Validating commit message...${NC}"
 # ============================================================================
 # RULE 1: Conventional Commit Format
 # ============================================================================
-if ! echo "$subject" | grep -qE '^(feat|fix|docs|style|refactor|test|chore|perf|build|ci|revert)\([a-z][a-z0-9-]*\): .+'; then
+if ! echo "$subject" | grep -qE '^(feat|fix|docs|style|refactor|content|test|chore|perf|build|ci|config|revert)\([a-z][a-z0-9-]*\): .+'; then
     echo -e "${RED}❌ Error: Subject must follow Conventional Commits format${NC}"
     echo "   Expected: <type>(scope): description"
-    echo "   Types: feat, fix, docs, style, refactor, test, chore, perf, build, ci, revert"
+    echo "   Types: feat, fix, docs, style, refactor, content, test, chore, perf, build, ci, config, revert"
     echo "   Example: feat(auth): add JWT token refresh endpoint"
     echo ""
     echo "   Your subject: $subject"
@@ -149,7 +149,7 @@ else
         fi
 
     # Matches: Context: planning (no associated task list), Context: maintenance (atomic / no associated task list)
-    elif echo "$context_line" | grep -qE '^Context: (planning|documentation|maintenance|refactor) \((atomic / )?no associated task list\)$'; then
+    elif echo "$context_line" | grep -qE '^Context: (planning|documentation|maintenance|refactor|content) \((atomic / )?no associated task list\)$'; then
         :
     else
         echo -e "${RED}❌ Error: Invalid Context: format${NC}"
@@ -159,8 +159,8 @@ else
         echo "   - Context: tasks-[name].md (incidental - discovered during Task X.Y)"
         echo "   - Context: tasks-[name].md (incidental - discovered during code review)"
         echo "   - Context: tasks-[name].md (planning) or (maintenance)"
-        echo "   - Context: [planning|documentation|maintenance|refactor] (no associated task list)"
-        echo "   - Context: [planning|documentation|maintenance|refactor] (atomic / no associated task list)"
+        echo "   - Context: [planning|documentation|maintenance|refactor|content] (no associated task list)"
+        echo "   - Context: [planning|documentation|maintenance|refactor|content] (atomic / no associated task list)"
         echo ""
         echo "   Note: Parenthetical is REQUIRED for all commits"
         echo "   Note: Use 'atomic / no associated task list' for work from ATOMIC-TASKS.md or emergent atomic work"

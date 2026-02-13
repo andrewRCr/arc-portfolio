@@ -18,9 +18,10 @@ import {
   MATERIAL_EASE,
   LAYOUT_CONTENT_FADE_DURATION,
 } from "@/lib/animation-timing";
-import { useIsPhone } from "@/hooks/useMediaQuery";
+import { useIsPhone, useIsShortViewport } from "@/hooks/useMediaQuery";
 import { useLayoutPreferences, type LayoutMode } from "@/contexts/LayoutPreferencesContext";
 import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
+import { personJsonLd } from "@/lib/json-ld";
 
 // Extract featured skills from all categories
 const allFeaturedSkills = Object.values(skills)
@@ -55,6 +56,7 @@ const CONTENT_FADE_OUT_MS = LAYOUT_CONTENT_FADE_DURATION * 1000;
 
 export default function Home() {
   const isPhone = useIsPhone();
+  const isShortViewport = useIsShortViewport();
   const { layoutMode, isLayoutTransitioning } = useLayoutPreferences();
   const { animationMode, visibility } = useAnimationContext();
 
@@ -106,36 +108,44 @@ export default function Home() {
 
   const bodyTransition = contentVisible ? getBodyContentTiming(animationMode) : { duration: HIDE_DURATION };
 
-  // Responsive positioning: hero on phone (visible immediately), below featured on tablet/desktop
+  // Responsive positioning: skills in hero when viewport can't fit them in the body
+  // Phone: always in hero (compact set). Short viewport (laptop): in hero (full set).
+  // Tall desktop: below FeaturedSection in scrollable body.
   // Mobile boxed: curated 6 skills (single row). Mobile fullscreen: full 10 (5/5 split)
   // Uses delayedLayoutMode to wait for content fade-out before changing skills list
-  const skillsInHero = isPhone;
+  const skillsInHero = isPhone || isShortViewport;
   const useFullSkillSet = !isPhone || delayedLayoutMode === "full";
   const featuredSkills = getFeaturedSkills(useFullSkillSet ? featuredOrderDesktop : featuredOrderMobile);
 
+  // Icon size: phone (28px), laptop/compact (40px), full desktop (48px)
+  const skillSize = isShortViewport && !isPhone ? "responsiveMd" : "responsive";
+
   const heroContent = skillsInHero ? (
     <Hero>
-      <SkillLogoGrid skills={featuredSkills} layout="row" size="responsive" linkToProjects={true} />
+      <SkillLogoGrid skills={featuredSkills} layout="row" size={skillSize} linkToProjects={true} />
     </Hero>
   ) : (
     <Hero />
   );
 
   return (
-    <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
-      <motion.div
-        className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: contentVisible ? 1 : 0 }}
-        transition={bodyTransition}
-      >
-        <FeaturedSection />
-        {!skillsInHero && (
-          <div className="mt-6 md:mt-16 flex justify-center">
-            <SkillLogoGrid skills={featuredSkills} layout="row" size="responsive" linkToProjects={true} />
-          </div>
-        )}
-      </motion.div>
-    </PageLayout>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }} />
+      <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
+        <motion.div
+          className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: contentVisible ? 1 : 0 }}
+          transition={bodyTransition}
+        >
+          <FeaturedSection />
+          {!skillsInHero && (
+            <div className="mt-6 md:mt-10 lg:mt-16 flex justify-center">
+              <SkillLogoGrid skills={featuredSkills} layout="row" size="responsive" linkToProjects={true} />
+            </div>
+          )}
+        </motion.div>
+      </PageLayout>
+    </>
   );
 }

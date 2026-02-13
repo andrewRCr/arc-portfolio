@@ -1,30 +1,13 @@
 /**
- * Contact information migrated from Squarespace
+ * Contact information.
  *
- * Includes email and 3 social/professional links.
- * Icon identifiers will be used with lucide-react or similar icon library.
+ * Email defined here; social links imported from site config (single source of truth).
  */
 
 import { Contact } from "@/types/contact";
+import { SOCIAL_LINKS } from "@/config/site";
 
 export const contact: Contact = {
   email: "andrew.creekmore@me.com",
-
-  socialLinks: [
-    {
-      platform: "GitHub",
-      url: "https://github.com/andrewRCr",
-      icon: "github",
-    },
-    {
-      platform: "LinkedIn",
-      url: "https://www.linkedin.com/in/andrewRCr",
-      icon: "linkedin",
-    },
-    {
-      platform: "NexusMods",
-      url: "https://next.nexusmods.com/profile/andrewRCr/mods",
-      icon: "nexusmods",
-    },
-  ],
+  socialLinks: SOCIAL_LINKS,
 };

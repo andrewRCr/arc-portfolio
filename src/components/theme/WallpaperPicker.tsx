@@ -11,6 +11,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCompatibleWallpapers } from "@/hooks/useCompatibleWallpapers";
 import { cn } from "@/lib/utils";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 
 export interface WallpaperPickerProps {
   /** Currently selected wallpaper ID */
@@ -95,6 +96,9 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, isEnabled = true,
     [goToPrev, goToNext]
   );
 
+  const wallpaperSrc = currentWallpaper?.thumbnailSrc ?? currentWallpaper?.src;
+  const wallpaperBlur = wallpaperSrc ? getBlurDataURL(wallpaperSrc) : undefined;
+
   // Guard against empty wallpaper list (shouldn't happen with valid theme data)
   if (wallpapers.length === 0) {
     return (
@@ -126,11 +130,13 @@ export function WallpaperPicker({ selectedWallpaper, onSelect, isEnabled = true,
           />
         ) : (
           <Image
-            src={currentWallpaper.thumbnailSrc ?? currentWallpaper.src}
+            src={wallpaperSrc!}
             alt={`Wallpaper: ${currentWallpaper.id}`}
             fill
             className="object-cover"
             sizes="200px"
+            placeholder={wallpaperBlur ? "blur" : undefined}
+            blurDataURL={wallpaperBlur}
           />
         )}
       </div>

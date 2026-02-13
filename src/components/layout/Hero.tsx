@@ -14,7 +14,7 @@ import {
   ENTRANCE_BLUR,
   BLUR_NONE,
 } from "@/lib/animation-timing";
-import { useIsPhone } from "@/hooks/useMediaQuery";
+import { useIsPhone, useIsShortViewport } from "@/hooks/useMediaQuery";
 import { useAnimationContext } from "@/contexts/AnimationContext";
 
 interface HeroProps {
@@ -39,7 +39,11 @@ interface HeroProps {
  */
 export function Hero({ children }: HeroProps) {
   const isPhone = useIsPhone();
+  const isShortViewport = useIsShortViewport();
   const { animationMode, visibility } = useAnimationContext();
+
+  // Compact mode: short viewport (laptop) with skills in hero — tighten spacing
+  const compact = !isPhone && isShortViewport;
 
   // Use new visibility flag that accounts for initialization
   const contentVisible = visibility.contentVisible;
@@ -130,19 +134,25 @@ export function Hero({ children }: HeroProps) {
     transition: contentVisible ? getHeroSecondaryTiming(animationMode) : HIDE_TRANSITION,
   };
 
+  // Spacing classes: phone → compact (laptop) → desktop
+  // Compact overrides md: breakpoints since laptop width >= md but needs tighter vertical spacing
+  const outerPadding = compact ? "pt-4 px-6" : "pt-4 px-2 md:pt-8 md:px-8";
+  const contentMarginBottom = compact ? "mb-4" : "md:mb-8";
+  const childrenMarginTop = compact ? "mt-0" : "mt-2 md:mt-0";
+  const headingMarginTop = children ? (compact ? "mt-2" : "mt-4 md:mt-8") : "mt-4 md:mt-2";
+
   return (
-    <div className="pt-4 px-2 md:pt-8 md:px-8">
+    <div className={outerPadding}>
       <div className="pl-0 md:pl-2 pb-2">
         {/* Container with relative positioning for absolute bar */}
         <div className="relative pl-6">
           {/* Animated left bar - separate element for scaleY animation */}
-          {/* will-change-transform stabilizes sub-pixel rendering during layout transitions */}
           <motion.div
             className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary origin-center will-change-transform"
             {...barProps}
           />
 
-          <div className="space-y-4 md:mb-8">
+          <div className={`space-y-4 ${contentMarginBottom}`}>
             <div className="space-y-2">
               <motion.p className="text-xs font-terminal text-muted-foreground" {...textProps(0)}>
                 &gt; portfolio.init()
@@ -159,13 +169,13 @@ export function Hero({ children }: HeroProps) {
       </div>
 
       {children && (
-        <motion.div className="mt-2 md:mt-0 flex justify-center" {...secondaryProps}>
+        <motion.div className={`${childrenMarginTop} flex justify-center`} {...secondaryProps}>
           {children}
         </motion.div>
       )}
 
       <motion.h2
-        className={`mb-1 md:mx-4 text-sm font-terminal text-muted-foreground ${children ? "mt-4 md:mt-8" : "mt-4 md:mt-2"}`}
+        className={`mb-1 md:mx-4 text-sm font-terminal text-muted-foreground ${headingMarginTop}`}
         {...secondaryProps}
       >
         Featured Projects

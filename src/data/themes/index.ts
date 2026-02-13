@@ -65,6 +65,7 @@ export type {
   ThemeSurfaces,
   ModeSurfaceConfig,
   SurfaceHierarchy,
+  SurfaceShadow,
 } from "./types";
 
 // Re-export test utilities for contrast tests

@@ -11,10 +11,10 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, Sun, Moon, RotateCcw, Maximize2, Square } from "lucide-react";
 import { useThemeTransition } from "@/hooks/useThemeTransition";
-import { MobileDrawer } from "@/components/ui/MobileDrawer";
+import { MobileDrawer } from "@/components/common/MobileDrawer";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ScreenReaderAnnounce } from "@/components/ui/screen-reader-announce";
+import { ScreenReaderAnnounce } from "@/components/common/ScreenReaderAnnounce";
 import { useDelayedShow } from "@/hooks/useDelayedShow";
 import { useResetPreferences } from "@/hooks/useResetPreferences";
 import { usePreferenceAnnouncements } from "@/hooks/usePreferenceAnnouncements";

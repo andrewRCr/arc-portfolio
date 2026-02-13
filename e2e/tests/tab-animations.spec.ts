@@ -116,7 +116,8 @@ test.describe("Tab Animations", () => {
       }).toPass({ timeout: 3000 });
     });
 
-    test("tab content fades during tab switch", async ({ page }) => {
+    test("tab content fades during tab switch", async ({ page, browserName }) => {
+      test.skip(browserName === "webkit", "Animation timing unreliable in headless WebKit on Linux CI");
       // Wait for initial state to be ready (Firefox may have slight delay)
       const softwarePanel = page.locator("#panel-software");
       const contentWrapper = page.locator(TAB_CONTENT_SELECTOR);

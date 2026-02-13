@@ -10,9 +10,12 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
 import { checkA11y } from "@tests/test-utils";
 import { DetailHeader } from "../DetailHeader";
+
+vi.mock("next/navigation", () => createNavigationMock());
 
 const defaultProps = {
   title: "Test Project",
@@ -21,6 +24,10 @@ const defaultProps = {
 };
 
 describe("DetailHeader - Behavior Tests", () => {
+  beforeEach(() => {
+    mockNavigation.reset();
+  });
+
   describe("Title Rendering", () => {
     it("renders title as heading element", () => {
       render(<DetailHeader {...defaultProps} />);
@@ -191,6 +198,27 @@ describe("DetailHeader - Behavior Tests", () => {
       render(<DetailHeader {...defaultProps} />);
 
       expect(screen.queryAllByTestId("header-links")).toHaveLength(0);
+    });
+  });
+
+  describe("In-Development Badge", () => {
+    it("renders badge when status is in-development", () => {
+      render(<DetailHeader {...defaultProps} status="in-development" />);
+
+      const badges = screen.getAllByTestId("in-development-badge");
+      expect(badges.length).toBeGreaterThan(0);
+    });
+
+    it("does not render badge when status is released", () => {
+      render(<DetailHeader {...defaultProps} status="released" />);
+
+      expect(screen.queryByTestId("in-development-badge")).not.toBeInTheDocument();
+    });
+
+    it("does not render badge when status is undefined", () => {
+      render(<DetailHeader {...defaultProps} />);
+
+      expect(screen.queryByTestId("in-development-badge")).not.toBeInTheDocument();
     });
   });
 

@@ -11,8 +11,11 @@
 
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { createNavigationMock, mockNavigation } from "@tests/mocks/next-navigation";
 import { checkA11y } from "@tests/test-utils";
 import { DetailHeaderCompact } from "../DetailHeaderCompact";
+
+vi.mock("next/navigation", () => createNavigationMock());
 
 // Mock useHeaderCrossfade hook
 vi.mock("@/hooks/useHeaderCrossfade", () => ({
@@ -28,6 +31,7 @@ const defaultProps = {
 describe("DetailHeaderCompact - Behavior Tests", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockNavigation.reset();
   });
 
   describe("Title Rendering", () => {

@@ -6,6 +6,7 @@ import { type ThemeName } from "@/data/themes";
 import { ThemeContextProvider, useThemeContext } from "@/contexts/ThemeContext";
 import { WallpaperContextProvider } from "@/contexts/WallpaperContext";
 import { LayoutPreferencesContextProvider } from "@/contexts/LayoutPreferencesContext";
+import { registerThemeColorProperties } from "@/lib/theme/register-color-properties";
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider> & {
   /** Server-rendered palette from cookie (prevents FOUC) */
@@ -48,6 +49,20 @@ function ThemePaletteSync() {
   return null;
 }
 
+/**
+ * ThemeColorRegistration
+ *
+ * Registers --color-* custom properties with `syntax: '<color>'` so
+ * browsers (notably Safari) can interpolate them during theme transitions.
+ */
+function ThemeColorRegistration() {
+  React.useEffect(() => {
+    registerThemeColorProperties();
+  }, []);
+
+  return null;
+}
+
 export function ThemeProvider({
   children,
   serverPalette,
@@ -61,6 +76,7 @@ export function ThemeProvider({
         <LayoutPreferencesContextProvider serverLayoutMode={serverLayoutMode}>
           <NextThemesProvider {...props}>
             <ThemePaletteSync />
+            <ThemeColorRegistration />
             {children}
           </NextThemesProvider>
         </LayoutPreferencesContextProvider>

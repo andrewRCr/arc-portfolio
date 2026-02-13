@@ -51,8 +51,8 @@ describe("Projects Image Data Validation", () => {
           // Should start with /thumbnails/
           expect(project.images.thumbnail).toMatch(/^\/thumbnails\//);
 
-          // Should end with .webp or .jpg (with optional cache-busting query string)
-          expect(project.images.thumbnail).toMatch(/\.(webp|jpg)(\?v=\d+)?$/);
+          // Should end with .webp or .jpg
+          expect(project.images.thumbnail).toMatch(/\.(webp|jpg)$/);
         }
       });
     });
@@ -88,8 +88,8 @@ describe("Projects Image Data Validation", () => {
           // Should start with /projects/{slug}/
           expect(screenshot.src).toMatch(/^\/projects\/[^/]+\//);
 
-          // Should be screenshot-N.webp or screenshot-N.jpg (with optional cache-busting)
-          expect(screenshot.src).toMatch(/screenshot-\d+\.(webp|jpg)(\?v=\d+)?$/);
+          // Should be screenshot-N.webp or screenshot-N.jpg
+          expect(screenshot.src).toMatch(/screenshot-\d+\.(webp|jpg)$/);
         });
       });
     });
@@ -160,10 +160,8 @@ describe("Projects Image Data Validation", () => {
   });
 
   describe("Image Migration Status", () => {
-    // Helper to get file extension, ignoring query strings
     const getExtension = (path: string) => {
-      const withoutQuery = path.split("?")[0];
-      return withoutQuery.endsWith(".webp") ? "webp" : "jpg";
+      return path.endsWith(".webp") ? "webp" : "jpg";
     };
 
     it("should identify projects with WebP images (migrated)", () => {
@@ -250,8 +248,8 @@ describe("Projects Image Data Validation", () => {
       projects.forEach((project) => {
         // Empty thumbnails are allowed (trigger placehold.co fallback)
         if (project.images.thumbnail) {
-          // Slug should be lowercase with hyphens, no underscores or spaces (with optional cache-busting)
-          const slugPattern = /^\/thumbnails\/[a-z0-9]+(-[a-z0-9]+)*\.(webp|jpg)(\?v=\d+)?$/;
+          // Slug should be lowercase with hyphens, no underscores or spaces
+          const slugPattern = /^\/thumbnails\/[a-z0-9]+(-[a-z0-9]+)*\.(webp|jpg)$/;
           expect(project.images.thumbnail).toMatch(slugPattern);
         }
       });
@@ -265,14 +263,14 @@ describe("Projects Image Data Validation", () => {
       "doom-newgame-plus-customizer",
       "action-rpg-project",
       "survival-horror-project",
-      "pong-clone",
+      "cpp-pong",
     ];
 
     it("should have WebP images for all Squarespace migrated projects", () => {
       squarespaceSlugs.forEach((slug) => {
         const project = projects.find((p) => p.slug === slug);
         expect(project).toBeDefined();
-        expect(project?.images.thumbnail).toMatch(/\.webp(\?v=\d+)?$/);
+        expect(project?.images.thumbnail).toMatch(/\.webp$/);
       });
     });
 

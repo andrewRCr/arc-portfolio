@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * AboutSection - Modular component for displaying biographical content
  *
@@ -7,10 +9,14 @@
  * - Profile photo with responsive layout
  * - ResponsiveSwitch for card/no-card layouts (phone vs tablet+)
  */
+
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { about } from "@/data/about";
-import { TextLink } from "@/components/ui/text-link";
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { TextLink } from "@/components/common/TextLink";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
+import { useIsShortViewport } from "@/hooks/useMediaQuery";
 
 interface AboutSectionProps {
   /** Dynamic unique download count from NexusMods API (optional) */
@@ -76,11 +82,22 @@ function renderParagraphWithPlaceholders(paragraph: string, uniqueDownloads?: nu
   return parts;
 }
 
+const PROFILE_PHOTO_SRC = "/profile-photo.webp";
+const profileBlur = getBlurDataURL(PROFILE_PHOTO_SRC);
+
 /** Photo card with caption footer - shared between layouts */
-function PhotoCard() {
+function PhotoCard({ compact = false }: { compact?: boolean }) {
   return (
-    <div className="overflow-hidden border-2 border-secondary-high">
-      <Image src="/profile-photo.webp" alt="Andrew Creekmore, full-stack developer" width={200} height={267} priority />
+    <div className={cn("overflow-hidden border-2 border-secondary-high", compact ? "w-[160px]" : "w-[200px]")}>
+      <Image
+        src={PROFILE_PHOTO_SRC}
+        alt="Andrew Creekmore, full-stack developer"
+        width={200}
+        height={267}
+        className="w-full h-auto"
+        placeholder={profileBlur ? "blur" : undefined}
+        blurDataURL={profileBlur}
+      />
       <div className="flex items-center justify-center bg-accent-decorative px-2 py-1">
         <span className="py-1 font-terminal text-xs text-accent-decorative-foreground">{"// andrew.jpg"}</span>
       </div>
@@ -108,7 +125,7 @@ function BioContent({ uniqueDownloads }: { uniqueDownloads?: number }) {
 function MobileAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) {
   return (
     <div className="flex flex-col items-center space-y-6">
-      <PhotoCard />
+      <PhotoCard compact />
       <div className="flex flex-col">
         <BioContent uniqueDownloads={uniqueDownloads} />
       </div>
@@ -117,13 +134,13 @@ function MobileAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) {
 }
 
 /** Desktop layout - two-pane card with different backgrounds */
-function DesktopAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) {
+function DesktopAboutSection({ uniqueDownloads, compact }: { uniqueDownloads?: number; compact?: boolean }) {
   return (
     <div className="overflow-hidden rounded-lg border border-border">
       <div className="flex flex-col md:flex-row">
         {/* Photo pane - right side on desktop */}
         <div className="order-last flex flex-shrink-0 items-center justify-center bg-surface-card p-6">
-          <PhotoCard />
+          <PhotoCard compact={compact} />
         </div>
         {/* Bio pane - main content area */}
         <div className="flex flex-1 flex-col bg-surface-background p-6">
@@ -135,12 +152,14 @@ function DesktopAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) 
 }
 
 export function AboutSection({ uniqueDownloads }: AboutSectionProps) {
+  const isShortViewport = useIsShortViewport();
+
   return (
     <section className="px-0 md:px-4">
       <ResponsiveSwitch
         breakpoint="sm"
         mobile={<MobileAboutSection uniqueDownloads={uniqueDownloads} />}
-        desktop={<DesktopAboutSection uniqueDownloads={uniqueDownloads} />}
+        desktop={<DesktopAboutSection uniqueDownloads={uniqueDownloads} compact={isShortViewport} />}
       />
     </section>
   );

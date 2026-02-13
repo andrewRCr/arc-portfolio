@@ -38,8 +38,24 @@ const opacities: ThemeOpacities = {
 
 // Surface configuration - controls visual layering
 const surfaces: ThemeSurfaces = {
-  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
-  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+  light: {
+    surfaceOpacity: 0.7,
+    surfaceDarken: 20,
+    windowOpacity: 0.7,
+    windowDarken: 10,
+    surfaceHierarchy: "swapped",
+    surfaceBorderStrong: true,
+    surfaceShadow: "md",
+  },
+  dark: {
+    surfaceOpacity: 0.8,
+    surfaceDarken: 0,
+    windowOpacity: 0.8,
+    windowDarken: 0,
+    surfaceHierarchy: "normal",
+    surfaceBorderStrong: false,
+    surfaceShadow: "none",
+  },
 };
 
 // Hover configuration - primary swaps to secondary, accent-mid darkens in-family
@@ -122,7 +138,9 @@ const darkTokens: ThemeColors = {
   foreground: hexToRgb(marianaDark.fg), // #d8dee9
 
   // Card colors
-  card: hexToRgb(marianaDark.bgElevated), // #343d46
+  // Dark mode adjustment: bgElevated (#343d46) only 2% L above bg — invisible
+  // at 80% surface opacity. Midpoint of bgElevated/bgHighlight for subtle separation.
+  card: hexToRgb("#39434C"), // hsl(210, 15%, 26%) — between bgElevated (24%) and bgHighlight (28%)
   "card-foreground": hexToRgb(marianaDark.fg),
 
   // Popover colors

@@ -8,7 +8,7 @@
  * prevent hydration flash.
  */
 
-import { ResponsiveSwitch } from "@/components/ui/ResponsiveSwitch";
+import { ResponsiveSwitch } from "@/components/common/ResponsiveSwitch";
 import SkillFilterPopover from "./SkillFilterPopover";
 import SkillFilterDrawer from "./SkillFilterDrawer";
 import { Project } from "@/types/project";

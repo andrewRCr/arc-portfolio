@@ -19,7 +19,7 @@ import { useThemeTransition } from "@/hooks/useThemeTransition";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ScreenReaderAnnounce } from "@/components/ui/screen-reader-announce";
+import { ScreenReaderAnnounce } from "@/components/common/ScreenReaderAnnounce";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useWallpaperContext } from "@/contexts/WallpaperContext";
 import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";

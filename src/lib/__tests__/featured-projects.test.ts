@@ -2,8 +2,8 @@
  * Tests for featured projects selection utility
  *
  * Slot configuration:
- * - Slot 1: Software (random from featured software, excluding framework)
- * - Slot 2: Framework (ARC Framework - always)
+ * - Slot 1: Software (random from featured software, excluding methodology)
+ * - Slot 2: Methodology (ARC Framework - always)
  * - Slot 3: Game (random from featured games)
  * - Slot 4: Mod (random from featured mods)
  */
@@ -46,7 +46,7 @@ describe("selectFeaturedProjects", () => {
     });
 
     it("returns projects with valid type labels", () => {
-      const validTypes = ["software", "framework", "game", "mod"];
+      const validTypes = ["software", "methodology", "game", "mod"];
       const result = selectFeaturedProjects();
       result.forEach((project) => {
         expect(validTypes).toContain(project.type);
@@ -60,9 +60,9 @@ describe("selectFeaturedProjects", () => {
       expect(result[0].type).toBe("software");
     });
 
-    it("slot 2 is framework type", () => {
+    it("slot 2 is methodology type", () => {
       const result = selectFeaturedProjects();
-      expect(result[1].type).toBe("framework");
+      expect(result[1].type).toBe("methodology");
     });
 
     it("slot 3 is game type", () => {
@@ -95,7 +95,7 @@ describe("selectFeaturedProjects", () => {
     });
   });
 
-  describe("framework slot (slot 2)", () => {
+  describe("methodology slot (slot 2)", () => {
     it("always returns ARC Framework", () => {
       // Run multiple times to verify consistency
       for (let i = 0; i < 10; i++) {
@@ -192,7 +192,7 @@ describe("selectFeaturedProjects", () => {
   });
 
   describe("pool definitions (structural invariants)", () => {
-    it("software pool contains only featured software projects, excludes framework", () => {
+    it("software pool contains only featured software projects, excludes methodology", () => {
       expect(SOFTWARE_POOL.length).toBeGreaterThan(0);
 
       SOFTWARE_POOL.forEach((slug) => {
@@ -204,11 +204,11 @@ describe("selectFeaturedProjects", () => {
       });
     });
 
-    it("framework slug references a valid featured software project", () => {
-      const framework = projects.find((p) => p.slug === FRAMEWORK_SLUG);
-      expect(framework).toBeDefined();
-      expect(framework?.featured).toBe(true);
-      expect(framework?.projectType).toBe("software");
+    it("methodology slug references a valid featured software project", () => {
+      const methodology = projects.find((p) => p.slug === FRAMEWORK_SLUG);
+      expect(methodology).toBeDefined();
+      expect(methodology?.featured).toBe(true);
+      expect(methodology?.projectType).toBe("software");
     });
 
     it("game pool contains only featured game projects", () => {

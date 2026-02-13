@@ -12,11 +12,14 @@
  * animations in the header slot during momentum scrolling.
  */
 
+import Image from "next/image";
 import { DETAIL_HEADER_ASPECT_RATIO } from "@/hooks/useHeaderCrossfade";
 import { useIsPhone } from "@/hooks/useMediaQuery";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 import { ModStatsInline } from "./ModStatsBadge";
 import { ExternalLinksToolbar } from "./ExternalLinksToolbar";
 import type { ProjectLinks } from "@/types/project";
+import { InDevelopmentBadge } from "./InDevelopmentBadge";
 import type { DetailHeaderStats, DetailHeaderMetadata } from "./detail-header.types";
 
 export interface DetailBannerMobileProps {
@@ -30,14 +33,18 @@ export interface DetailBannerMobileProps {
   stats?: DetailHeaderStats;
   /** Project metadata (team role, timeline) */
   metadata?: DetailHeaderMetadata;
+  /** Project development status — shows badge when "in-development" */
+  status?: "released" | "in-development";
 }
 
-export function DetailBannerMobile({ categories, heroImage, links, stats, metadata }: DetailBannerMobileProps) {
+export function DetailBannerMobile({ categories, heroImage, links, stats, metadata, status }: DetailBannerMobileProps) {
   const isPhone = useIsPhone();
+  const isInDevelopment = status === "in-development";
   const hasCategories = categories && categories.length > 0;
   const hasStats =
     stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
+  const blurDataURL = heroImage ? getBlurDataURL(heroImage) : undefined;
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
   // Smaller badges on phone for better visual hierarchy
@@ -69,17 +76,22 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
       {/* Hero image - standalone, fully rounded */}
       <div className="relative overflow-hidden rounded-lg" style={aspectRatioStyle}>
         {heroImage ? (
-          // eslint-disable-next-line @next/next/no-img-element -- Native img for background, not content
-          <img
+          <Image
             data-testid="hero-image"
             src={heroImage}
             alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover"
+            aria-hidden
+            fill
+            sizes="(min-width: 1200px) 1136px, calc(100vw - 16px)"
+            className="object-cover"
+            placeholder={blurDataURL ? "blur" : undefined}
+            blurDataURL={blurDataURL}
           />
         ) : (
           <div className="absolute inset-0 bg-card" />
         )}
+        {/* In Development Badge - overlaid bottom right */}
+        {isInDevelopment && <InDevelopmentBadge compact className="absolute bottom-2 right-2" />}
       </div>
 
       {/* Category badges row - below hero */}

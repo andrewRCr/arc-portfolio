@@ -3,17 +3,18 @@
 /**
  * ProjectDetail component
  *
- * Displays scrollable project content: tech stack, description, screenshots, features,
- * metadata, and optional sections. Header (title, back button, badges, links) is handled
- * by DetailHeader in the page's PageLayout header slot.
+ * Displays scrollable project content: tech stack, description, screenshots, key features,
+ * implementation details, and optional footer. Header (title, back button, badges, links)
+ * is handled by DetailHeader in the page's PageLayout header slot.
  */
 
 import ReactMarkdown from "react-markdown";
+import { cn } from "@/lib/utils";
 import type { Project, ContentItem } from "@/types/project";
 import { ImageGallery } from "./ImageGallery";
 import { DetailCard } from "./DetailCard";
-import { TextLink } from "@/components/ui/text-link";
-import { TechStackScroller } from "@/components/ui/TechStackScroller";
+import { TextLink } from "@/components/common/TextLink";
+import { TechStackScroller } from "@/components/projects/TechStackScroller";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 
 interface ProjectDetailProps {
@@ -47,13 +48,14 @@ function InlineMarkdown({ children, className }: { children: string; className?:
 
 /**
  * Normalizes content items to a consistent format.
- * Handles both string items and typed { text, paragraph } objects.
+ * Handles string items, paragraphs, and category headings.
  */
-function normalizeContentItem(item: ContentItem): { text: string; isParagraph: boolean } {
+function normalizeContentItem(item: ContentItem): { text: string; type: "bullet" | "paragraph" | "heading" } {
   if (typeof item === "string") {
-    return { text: item, isParagraph: false };
+    return { text: item, type: "bullet" };
   }
-  return { text: item.text, isParagraph: item.paragraph ?? false };
+  const type = item.heading ? "heading" : item.paragraph ? "paragraph" : "bullet";
+  return { text: item.text, type };
 }
 
 /**
@@ -62,11 +64,11 @@ function normalizeContentItem(item: ContentItem): { text: string; isParagraph: b
  */
 function ContentList({ items }: { items: ContentItem[] }) {
   // Group consecutive items by type for semantic rendering
-  const groups: Array<{ type: "bullets" | "paragraph"; items: Array<{ text: string; key: number }> }> = [];
+  type GroupType = "bullet" | "paragraph" | "heading";
+  const groups: Array<{ type: GroupType; items: Array<{ text: string; key: number }> }> = [];
 
   items.forEach((item, index) => {
-    const { text, isParagraph } = normalizeContentItem(item);
-    const type = isParagraph ? "paragraph" : "bullets";
+    const { text, type } = normalizeContentItem(item);
 
     const lastGroup = groups[groups.length - 1];
     if (lastGroup && lastGroup.type === type) {
@@ -77,18 +79,32 @@ function ContentList({ items }: { items: ContentItem[] }) {
   });
 
   return (
-    <div className="space-y-2">
+    <div>
       {groups.map((group, groupIndex) => {
-        if (group.type === "paragraph") {
+        const isFirst = groupIndex === 0;
+        const prevGroup = groups[groupIndex - 1];
+
+        // Headings and paragraphs both render as <p> tags
+        if (group.type === "heading" || group.type === "paragraph") {
           return group.items.map(({ text, key }) => (
-            <p key={key} className="text-muted-foreground">
+            <p key={key} className={`text-muted-foreground ${isFirst ? "" : "mt-4"}`}>
               <InlineMarkdown>{text}</InlineMarkdown>
             </p>
           ));
         }
 
+        // Indent bullets that follow a category heading
+        const isNested = prevGroup?.type === "heading";
+
         return (
-          <ul key={`group-${groupIndex}`} className="space-y-1 list-disc list-inside text-muted-foreground">
+          <ul
+            key={`group-${groupIndex}`}
+            className={cn(
+              "space-y-1.5 text-muted-foreground list-['▸_'] list-inside",
+              !isFirst && (isNested ? "mt-1.5" : "mt-2"),
+              isNested ? "ml-4 border-l-2 border-accent-low pl-3" : "marker:text-accent-low"
+            )}
+          >
             {group.items.map(({ text, key }) => (
               <li key={key}>
                 <InlineMarkdown>{text}</InlineMarkdown>
@@ -106,8 +122,8 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
 
   // Section labels with customization support
   const labels = {
-    highlights: project.sectionLabels?.highlights ?? "Highlights",
-    architectureNotes: project.sectionLabels?.architectureNotes ?? "Architecture",
+    features: project.sectionLabels?.features ?? "Key Features",
+    details: project.sectionLabels?.details ?? "Implementation Details",
   };
 
   // Split description into paragraphs
@@ -138,17 +154,17 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
         </div>
       )}
 
-      {/* Highlights - primary content section (merged from features + highlights) */}
-      {project.highlights && project.highlights.length > 0 && (
-        <DetailCard title={labels.highlights} className="mt-6 sm:mt-8">
-          <ContentList items={project.highlights} />
+      {/* Key Features - technical capabilities inventory */}
+      {project.features && project.features.length > 0 && (
+        <DetailCard title={labels.features} className="mt-6 sm:mt-8">
+          <ContentList items={project.features} />
         </DetailCard>
       )}
 
-      {/* Architecture Notes - optional technical deep-dive */}
-      {project.architectureNotes && project.architectureNotes.length > 0 && (
-        <DetailCard title={labels.architectureNotes} className="mt-6 sm:mt-8">
-          <ContentList items={project.architectureNotes} />
+      {/* Implementation Details - extended technical deep-dive */}
+      {project.details && project.details.length > 0 && (
+        <DetailCard title={labels.details} className="mt-6 sm:mt-8">
+          <ContentList items={project.details} />
         </DetailCard>
       )}
 

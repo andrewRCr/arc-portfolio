@@ -1,30 +1,27 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DetailHeader } from "@/components/projects/DetailHeader";
 import { DetailHeaderCompact } from "@/components/projects/DetailHeaderCompact";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import { DetailCard } from "@/components/projects/DetailCard";
-import { getBackDestination } from "@/components/projects/utils";
-import { TextLink } from "@/components/ui/text-link";
+import { TextLink } from "@/components/common/TextLink";
 import { mods } from "@/data/mods";
 import { FEATURES } from "@/config/features";
 import { getModStatsBySlug } from "@/app/actions/nexusmods";
 import { isModStatsError } from "@/lib/nexusmods-types";
 import { getHeroImage } from "@/lib/project-utils";
+import { breadcrumbJsonLd } from "@/lib/json-ld";
 
 interface ModPageProps {
   params: Promise<{
     slug: string;
   }>;
-  searchParams: Promise<{
-    tab?: string;
-    from?: string;
-  }>;
 }
 
 export async function generateStaticParams() {
-  // Don't generate static pages when project tabs are disabled
-  if (!FEATURES.SHOW_PROJECT_TABS) {
+  // Don't generate static pages when non-software project types are hidden
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
     return [];
   }
   return mods.map((mod) => ({
@@ -32,27 +29,34 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ModProjectPage({ params, searchParams }: ModPageProps) {
+export async function generateMetadata({ params }: ModPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const mod = mods.find((m) => m.slug === slug);
+
+  if (!mod) return {};
+
+  const ogImage = getHeroImage(mod.images);
+
+  return {
+    title: mod.title,
+    description: mod.shortDescription,
+    openGraph: ogImage ? { images: [{ url: ogImage }] } : undefined,
+  };
+}
+
+export default async function ModProjectPage({ params }: ModPageProps) {
   // Feature flag guard - enforces same access control as UI tab visibility
-  if (!FEATURES.SHOW_PROJECT_TABS) {
+  if (!FEATURES.SHOW_ALL_PROJECT_TYPES) {
     notFound();
   }
 
   const { slug } = await params;
-  const { tab, from } = await searchParams;
 
   const mod = mods.find((m) => m.slug === slug);
 
   if (!mod) {
     notFound();
   }
-
-  // Preserve tab state from query param, default to 'mods' for mod pages
-  const validTabs = ["software", "games", "mods"] as const;
-  const currentTab = validTabs.includes(tab as (typeof validTabs)[number])
-    ? (tab as (typeof validTabs)[number])
-    : "mods";
-  const backDest = getBackDestination(from, currentTab);
 
   const heroImage = getHeroImage(mod.images);
 
@@ -72,41 +76,39 @@ export default async function ModProjectPage({ params, searchParams }: ModPagePr
       : undefined;
 
   return (
-    <PageLayout
-      stickyHeader
-      pageId="project-detail"
-      header={
-        <DetailHeaderCompact
-          title={fullTitle}
-          compactTitle={mod.title}
-          backHref={backDest.href}
-          backLabel={backDest.label}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd("Mods", mod.title)) }}
+      />
+      <PageLayout
+        stickyHeader
+        pageId="project-detail"
+        header={<DetailHeaderCompact title={fullTitle} compactTitle={mod.title} defaultTab="mods" links={mod.links} />}
+      >
+        <DetailHeader
+          title={mod.title}
+          status={mod.status}
+          categories={mod.game ? [mod.game] : mod.category}
+          heroImage={heroImage}
+          defaultTab="mods"
           links={mod.links}
+          stats={stats}
         />
-      }
-    >
-      <DetailHeader
-        title={mod.title}
-        categories={mod.game ? [mod.game] : mod.category}
-        heroImage={heroImage}
-        backHref={backDest.href}
-        backLabel={backDest.label}
-        links={mod.links}
-        stats={stats}
-      />
-      <ProjectDetail
-        project={mod}
-        footer={
-          mod.links?.nexusmods && (
-            <DetailCard title="More Information" className="mt-8">
-              <p className="text-muted-foreground">
-                For compatibility details, installation instructions, and additional information, visit the{" "}
-                <TextLink href={mod.links.nexusmods}>NexusMods page</TextLink>.
-              </p>
-            </DetailCard>
-          )
-        }
-      />
-    </PageLayout>
+        <ProjectDetail
+          project={mod}
+          footer={
+            mod.links?.nexusmods && (
+              <DetailCard title="More Information" className="mt-8">
+                <p className="text-muted-foreground">
+                  For compatibility details, installation instructions, and additional information, visit the{" "}
+                  <TextLink href={mod.links.nexusmods}>NexusMods page</TextLink>.
+                </p>
+              </DetailCard>
+            )
+          }
+        />
+      </PageLayout>
+    </>
   );
 }

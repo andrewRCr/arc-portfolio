@@ -15,17 +15,19 @@ interface DetailCardProps {
   children: React.ReactNode;
   /** Optional className for spacing/layout (e.g., "mt-8") */
   className?: string;
+  /** Reduce title size for constrained viewports (default: false) */
+  compact?: boolean;
 }
 
-export function DetailCard({ title, children, className }: DetailCardProps) {
+export function DetailCard({ title, children, className, compact = false }: DetailCardProps) {
   return (
     <div className={cn("overflow-hidden rounded-lg border border-border", className)}>
       {/* Header */}
-      <div className="px-4 py-3 bg-accent-low">
-        <h2 className="font-terminal text-md font-bold text-accent-low-foreground">[{title.toLowerCase()}]</h2>
+      <div className={cn("px-4 bg-accent-low", compact ? "py-2" : "py-3")}>
+        <h2 className="font-terminal text-sm font-bold text-accent-low-foreground">[{title.toLowerCase()}]</h2>
       </div>
       {/* Body - higher contrast background for body text readability */}
-      <div className="bg-surface-background px-4 py-4">{children}</div>
+      <div className={cn("bg-surface-background px-4", compact ? "py-3" : "py-4")}>{children}</div>
     </div>
   );
 }

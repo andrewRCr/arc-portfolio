@@ -113,9 +113,9 @@ export default function SkillFilterPopover({ allProjects, selectedSkills, onSkil
   };
 
   return (
-    <Popover open={open} onOpenChange={handleOpenChange} modal={true}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button ref={triggerRef} variant="ghost" size="sm" aria-haspopup="dialog">
+        <Button ref={triggerRef} variant="ghost" size="sm" aria-haspopup="dialog" className="will-change-transform">
           <FilterIcon className="size-4" />
           Filter{selectedSkills.length > 0 && ` (${selectedSkills.length})`}
         </Button>

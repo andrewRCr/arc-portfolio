@@ -7,14 +7,14 @@ import ProjectTabs from "@/components/projects/ProjectTabs";
 import ProjectCard from "@/components/projects/ProjectCard";
 import SkillFilterControl from "@/components/projects/SkillFilterControl";
 import FilterIndicator from "@/components/projects/FilterIndicator";
-import Crossfade from "@/components/ui/Crossfade";
+import Crossfade from "@/components/common/Crossfade";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 import { contact } from "@/data/contact";
 import { NexusModsIcon } from "@/components/icons/NexusModsIcon";
-import { TextLink } from "@/components/ui/text-link";
+import { TextLink } from "@/components/common/TextLink";
 import { FEATURES } from "@/config/features";
 import { filterProjectsBySkills } from "@/lib/project-filters";
 import { TAB_CONTENT_DURATION, MATERIAL_EASE } from "@/lib/animation-timing";
@@ -104,26 +104,29 @@ function ProjectsContent() {
   const validTabs = ["software", "games", "mods"] as const;
   const tabParam = searchParams.get("tab");
   const currentTab =
-    FEATURES.SHOW_PROJECT_TABS && tabParam && validTabs.includes(tabParam as (typeof validTabs)[number])
+    FEATURES.SHOW_ALL_PROJECT_TYPES && tabParam && validTabs.includes(tabParam as (typeof validTabs)[number])
       ? (tabParam as (typeof validTabs)[number])
       : "software";
 
-  // All projects and mods combined for filtering
-  const allProjectsAndMods: Project[] = useMemo(() => {
-    return [...projects, ...mods].sort((a, b) => a.order - b.order);
+  // Projects available for skill filtering (scoped by feature flag)
+  const filterableProjects: Project[] = useMemo(() => {
+    if (FEATURES.SHOW_ALL_PROJECT_TYPES) {
+      return [...projects, ...mods].sort((a, b) => a.order - b.order);
+    }
+    return [...projects].filter((p) => p.projectType === "software").sort((a, b) => a.order - b.order);
   }, []);
 
   // Filtered results (when skills are selected)
   const filteredProjects = useMemo(() => {
     if (!isFiltered) return [];
-    return filterProjectsBySkills(allProjectsAndMods, selectedSkills);
-  }, [allProjectsAndMods, selectedSkills, isFiltered]);
+    return filterProjectsBySkills(filterableProjects, selectedSkills);
+  }, [filterableProjects, selectedSkills, isFiltered]);
 
   // Non-filtered project lists (for tab view)
   const allProjects = useMemo(() => [...projects].sort((a, b) => a.order - b.order), []);
   const softwareProjects = allProjects.filter((p) => p.projectType === "software");
   const gameProjects = allProjects.filter((p) => p.projectType === "game");
-  const sortedMods = FEATURES.SHOW_PROJECT_TABS ? [...mods].sort((a, b) => a.order - b.order) : [];
+  const sortedMods = FEATURES.SHOW_ALL_PROJECT_TYPES ? [...mods].sort((a, b) => a.order - b.order) : [];
 
   // Handle skill filter changes - update URL
   const handleSkillsChange = (skills: string[]) => {
@@ -158,34 +161,42 @@ function ProjectsContent() {
     <PageLayout
       pageId="projects"
       header={
-        <PageHeader title="Projects" hideDivider={FEATURES.SHOW_PROJECT_TABS}>
-          {FEATURES.SHOW_PROJECT_TABS && (
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-              {/* Top on phone, left on tablet+: Tabs or Filter Indicator (with Crossfade) */}
+        <PageHeader title="Projects" hideDivider={FEATURES.SHOW_ALL_PROJECT_TYPES}>
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            {/* Left: Tabs (when all types shown) or Filter Indicator (when filtering) */}
+            {(FEATURES.SHOW_ALL_PROJECT_TYPES || isFiltered) && (
               <div className="min-w-0 sm:flex-1 min-h-11">
-                <Crossfade
-                  active={isFiltered}
-                  activeContent={
-                    <FilterIndicator
-                      skills={selectedSkills}
-                      onRemoveSkill={handleRemoveSkill}
-                      onClearAll={handleClearAll}
-                    />
-                  }
-                  inactiveContent={<ProjectTabs />}
-                />
+                {FEATURES.SHOW_ALL_PROJECT_TYPES ? (
+                  <Crossfade
+                    active={isFiltered}
+                    activeContent={
+                      <FilterIndicator
+                        skills={selectedSkills}
+                        onRemoveSkill={handleRemoveSkill}
+                        onClearAll={handleClearAll}
+                      />
+                    }
+                    inactiveContent={<ProjectTabs />}
+                  />
+                ) : (
+                  <FilterIndicator
+                    skills={selectedSkills}
+                    onRemoveSkill={handleRemoveSkill}
+                    onClearAll={handleClearAll}
+                  />
+                )}
               </div>
+            )}
 
-              {/* Bottom on phone (centered), right on tablet+: Filter Button */}
-              <div className="shrink-0 flex justify-center sm:justify-end sm:mr-4">
-                <SkillFilterControl
-                  allProjects={allProjectsAndMods}
-                  selectedSkills={selectedSkills}
-                  onSkillsChange={handleSkillsChange}
-                />
-              </div>
+            {/* Filter Button (always visible) */}
+            <div className="shrink-0 flex justify-center sm:justify-end sm:mr-4">
+              <SkillFilterControl
+                allProjects={filterableProjects}
+                selectedSkills={selectedSkills}
+                onSkillsChange={handleSkillsChange}
+              />
             </div>
-          )}
+          </div>
         </PageHeader>
       }
     >
@@ -223,16 +234,16 @@ function ProjectsContent() {
                   id="software"
                   projects={softwareProjects}
                   categoryType="software"
-                  withTabAttributes={FEATURES.SHOW_PROJECT_TABS}
+                  withTabAttributes={FEATURES.SHOW_ALL_PROJECT_TYPES}
                 />
               </motion.div>
             )}
-            {FEATURES.SHOW_PROJECT_TABS && currentTab === "games" && (
+            {FEATURES.SHOW_ALL_PROJECT_TYPES && currentTab === "games" && (
               <motion.div key="games" data-tab-content {...tabContentAnimation}>
                 <TabPanel id="games" projects={gameProjects} categoryType="games" />
               </motion.div>
             )}
-            {FEATURES.SHOW_PROJECT_TABS && currentTab === "mods" && (
+            {FEATURES.SHOW_ALL_PROJECT_TYPES && currentTab === "mods" && (
               <motion.div key="mods" data-tab-content {...tabContentAnimation}>
                 <TabPanel id="mods" projects={sortedMods} categoryType="mods" />
                 {/* Footer card linking to full NexusMods profile */}

@@ -8,7 +8,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Project } from "@/types/project";
-import { TechStackScroller } from "@/components/ui/TechStackScroller";
+import { InDevelopmentBadge } from "@/components/projects/InDevelopmentBadge";
+import { TechStackScroller } from "@/components/projects/TechStackScroller";
+import { getBlurDataURL } from "@/lib/blur-placeholders";
 
 interface ProjectCardProps {
   project: Project;
@@ -19,6 +21,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
   const detailUrl = `/projects/${categoryType}/${project.slug}`;
 
   const hasValidThumbnail = Boolean(project.images.thumbnail);
+  const blurDataURL = getBlurDataURL(project.images.thumbnail);
   const isInDevelopment = project.status === "in-development";
 
   return (
@@ -35,6 +38,8 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
             alt={`${project.title} thumbnail`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            placeholder={blurDataURL ? "blur" : undefined}
+            blurDataURL={blurDataURL}
             className="object-cover transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100"
           />
         ) : (
@@ -42,15 +47,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
             Project Image
           </div>
         )}
-        {/* In Development Badge */}
-        {isInDevelopment && (
-          <span
-            data-testid="in-development-badge"
-            className="absolute bottom-2 right-2 border border-border bg-background/90 px-2 py-1 font-terminal text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-          >
-            In Development
-          </span>
-        )}
+        {isInDevelopment && <InDevelopmentBadge className="absolute bottom-2 right-2" />}
       </div>
 
       {/* Content - flex-1 fills remaining height */}
@@ -60,7 +57,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
           {categoryType === "mods" && project.game ? (
             <span
               data-testid="category-badge"
-              className="bg-surface-card px-2 py-0.5 font-terminal text-xs font-semibold text-surface-card-foreground"
+              className="border border-border bg-surface-card px-2 py-0.5 font-terminal text-xs font-semibold text-surface-card-foreground"
             >
               {project.game}
             </span>
@@ -69,7 +66,7 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
               <span
                 key={cat}
                 data-testid="category-badge"
-                className="font-terminal text-xs font-semibold text-foreground"
+                className="bg-surface-card px-2 py-0.5 font-terminal text-xs font-semibold text-foreground"
               >
                 [{cat.toLowerCase()}]
               </span>

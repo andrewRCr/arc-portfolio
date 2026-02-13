@@ -335,6 +335,13 @@ export interface ThemeOpacities {
 export type SurfaceHierarchy = "normal" | "swapped";
 
 /**
+ * Shadow level for surface elements.
+ * Maps to CSS shadow tokens: --shadow-sm, --shadow-md, --shadow-lg.
+ * "none" disables shadow entirely.
+ */
+export type SurfaceShadow = "none" | "sm" | "md" | "lg";
+
+/**
  * Mode-specific surface and window configuration.
  * Controls transparency, darkening, and surface hierarchy for a single mode.
  *
@@ -342,6 +349,7 @@ export type SurfaceHierarchy = "normal" | "swapped";
  * - --surface-opacity, --surface-darken
  * - --window-bg-opacity, --window-darken
  * - --surface-card-base, --surface-background-base (via hierarchy)
+ * - --surface-border-color, --surface-shadow (border/shadow treatment)
  */
 export interface ModeSurfaceConfig {
   /** Surface transparency (0-1). Higher = more solid. Default: 0.8 dark, 0.7 light */
@@ -358,6 +366,12 @@ export interface ModeSurfaceConfig {
 
   /** Surface hierarchy for card/background token assignment. Default: "normal" dark, "swapped" light */
   readonly surfaceHierarchy: SurfaceHierarchy;
+
+  /** Whether surface elements use border-strong instead of default border. Default: true light, false dark */
+  readonly surfaceBorderStrong: boolean;
+
+  /** Shadow level applied to surface elements. Default: "md" light, "none" dark */
+  readonly surfaceShadow: SurfaceShadow;
 }
 
 /**

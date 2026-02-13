@@ -45,39 +45,38 @@ loop keeps you in flow.
 
 ---
 
-### Tier 2: Integration Checkpoint (Per-Phase or Integration Point)
+### Tier 2: Integration Checkpoint (Parent Task Completion)
 
 **When:**
 
-- After completing a phase that modifies integration-tested code
+- After completing all subtasks of a parent task
 - When you've touched components that existing E2E/integration tests exercise
 - Before moving from one major area of the codebase to another
 
 **What:**
 
 - Everything in Tier 1 (full project scope)
-- Targeted E2E/integration tests for affected areas
-- Build verification (if applicable)
+- Targeted E2E/integration tests for affected areas (when parent task touched E2E-tested code)
+- Build verification
 
 **Time budget:** 1-5 minutes
 
-**Purpose:** Catch integration breakage while context is still fresh. The key insight: if you modify code
-that E2E tests cover, those tests can break. Discovering this at the end of a multi-phase task list means
-reconstructing context for each failure. Discovering it per-phase means fixing with full context.
+**Purpose:** Catch integration breakage at parent task boundaries while context is still fresh. Parent tasks
+represent a coherent unit of work — validating at this level catches cross-subtask issues without the overhead
+of full suite runs.
 
 **Guidance for identifying E2E checkpoints:**
 
-1. **Component scope:** Did you modify components that handle layout, navigation, routing, forms, or
-   user interactions? These are typically E2E-tested.
+1. **Component scope:** Did the parent task modify components that handle layout, navigation, routing, forms,
+   or user interactions? These are typically E2E-tested.
 
-2. **Behavior changes:** Did you change how something works (not just how it looks)? Behavioral changes
+2. **Behavior changes:** Did it change how something works (not just how it looks)? Behavioral changes
    are more likely to break E2E assertions.
 
-3. **Cross-cutting changes:** Did you modify shared infrastructure (context providers, hooks used by
+3. **Cross-cutting changes:** Did it modify shared infrastructure (context providers, hooks used by
    multiple components, global state)? These have wider blast radius.
 
-4. **Phase boundaries:** Completing a phase is a natural checkpoint. If the phase touched E2E-relevant
-   code, run targeted E2E tests before starting the next phase.
+4. **If no E2E relevance:** Skip targeted E2E but still run full-project Tier 1 checks + build.
 
 **Running targeted E2E tests:**
 
@@ -102,12 +101,11 @@ npm run test:e2e -- --project="Desktop Chrome" e2e/tests/layout.spec.ts
 
 ---
 
-### Tier 3: Full Suite (Pre-Commit / Pre-PR)
+### Tier 3: Full Suite (Per-Phase / Pre-PR)
 
 **When:**
 
-- Before considering any commit
-- After completing all subtasks of a parent task
+- After completing a phase (all parent tasks in the phase done)
 - Before creating a pull request
 - Final quality gate before merge
 
@@ -123,14 +121,19 @@ npm run test:e2e -- --project="Desktop Chrome" e2e/tests/layout.spec.ts
 
 **Time budget:** 5-15+ minutes (acceptable because it's infrequent)
 
-**Purpose:** Comprehensive validation before code leaves your machine. This is the "zero tolerance" gate -
-everything must pass with no exceptions.
+**Purpose:** Comprehensive validation at major milestones. Phases represent significant bodies of work where
+cross-cutting issues are most likely to surface. This is the "zero tolerance" gate — everything must pass
+with no exceptions.
 
 **Guidance:**
 
 - Never skip or partially run Tier 3
 - If Tier 3 fails, fix before proceeding (see Quality Gate Failure Protocol in DEVELOPMENT-RULES)
 - Tier 3 failures after proper Tier 1/2 execution should be rare
+
+**Commits and quality gates:** Tiers are milestone-driven, not commit-driven. Work committed through the
+task loop inherits the gates already run at each milestone. For work outside the task loop (incidental
+fixes, atomic tasks), run at least Tier 1 before committing.
 
 ---
 
@@ -142,8 +145,12 @@ When generating task lists, include appropriate quality gate checkpoints:
 Every subtask implicitly includes Tier 1 checks before completion. No need to list explicitly unless
 emphasizing a specific check.
 
+**Parent task completion (implicit):**
+Tier 2 checks are always required when all subtasks of a parent task are complete. If the parent task
+touched E2E-tested code, include targeted E2E tests. This is documented in 3_process-task-loop.md.
+
 **Phase level (explicit when relevant):**
-Include explicit E2E checkpoint tasks when a phase modifies E2E-tested code:
+Include explicit E2E/integration checkpoint tasks when a phase modifies E2E-tested code:
 
 ```markdown
 ### **Phase 3:** Layout Modifications
@@ -159,10 +166,6 @@ Include explicit E2E checkpoint tasks when a phase modifies E2E-tested code:
     - Run on single browser for speed
     - Fix any failures before proceeding to Phase 4
 ```
-
-**Parent task completion (implicit):**
-Full quality gates (Tier 3) are always required when all subtasks of a parent task are complete.
-This is documented in 3_process-task-loop.md.
 
 **Final phase (explicit):**
 Task lists typically include a final "Testing & Quality" phase for Tier 3:
@@ -188,9 +191,9 @@ Task lists typically include a final "Testing & Quality" phase for Tier 3:
 
 **Escalate from Tier 2 to Tier 3 when:**
 
-- You've completed significant work and want confidence before continuing
+- You've completed a significant body of work spanning multiple parent tasks
 - You're about to take a break or end a session
-- You want to create a checkpoint commit
+- You want high confidence before a major context switch
 
 **The cost of under-testing:** Discovering breakage later, with stale context, requiring time to reconstruct
 what you changed and why.
@@ -224,7 +227,7 @@ tests miss. It's mandatory, not optional.
 
 ## Relationship to Other Documentation
 
-- **DEVELOPMENT-RULES:** Defines the "zero tolerance" policy and lists required quality gates (Tier 3).
+- **DEVELOPMENT-RULES:** Defines the "zero tolerance" policy and lists required quality gates.
   References this strategy for tier guidance.
 
 - **3_process-task-loop:** Defines when quality gates run in the task execution workflow. References
@@ -241,4 +244,4 @@ tests miss. It's mandatory, not optional.
 
 ---
 
-**Version:** 2026-01-26
+**Version:** 2026-02-12

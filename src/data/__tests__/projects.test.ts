@@ -131,13 +131,9 @@ describe("Projects Data Validation", () => {
           expect(typeof project.teamRole).toBe("string");
           expect(project.teamRole.length).toBeGreaterThan(0);
         }
-        if (project.highlights) {
-          expect(Array.isArray(project.highlights)).toBe(true);
-          expect(project.highlights.length).toBeGreaterThan(0);
-        }
-        if (project.architectureNotes) {
-          expect(Array.isArray(project.architectureNotes)).toBe(true);
-          expect(project.architectureNotes.length).toBeGreaterThan(0);
+        if (project.details) {
+          expect(Array.isArray(project.details)).toBe(true);
+          expect(project.details.length).toBeGreaterThan(0);
         }
         if (project.compactTitle) {
           expect(typeof project.compactTitle).toBe("string");

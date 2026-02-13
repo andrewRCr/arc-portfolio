@@ -1,11 +1,11 @@
 # arc-portfolio - AI Agent Reference Card
 
-**Version:** 2025-12-26 | **Maintained by:** Andrew Creekmore | **Source of truth:** `.arc/reference/`
+**Version:** 1.1 | **Updated:** 2026-02-12
 
 ## Project Overview
 
 arc-portfolio is a modern developer portfolio website showcasing full-stack development skills through project exhibits,
-technical expertise, and professional background. Built with Next.js 15 and TypeScript, it demonstrates proficiency in
+technical expertise, and professional background. Built with Next.js 16 and TypeScript, it demonstrates proficiency in
 contemporary web development practices, type safety, testing, and professional documentation.
 
 **Project Type**: Solo showcase portfolio
@@ -15,7 +15,7 @@ contemporary web development practices, type safety, testing, and professional d
 
 **Technology Stack:**
 
-- **Frontend**: Next.js (App Router) + React + TypeScript (strict mode)
+- **Frontend**: Next.js 16 (App Router) + React + TypeScript (strict mode)
 - **Styling**: Tailwind CSS + Shadcn/ui components
 - **Testing**: Vitest + React Testing Library
 - **Quality Tools**: ESLint + Prettier + markdownlint-cli2
@@ -58,6 +58,3 @@ contemporary web development practices, type safety, testing, and professional d
 - **Be clear and targeted** - Provide enough detail to be useful, not so much it's overwhelming
 
 ---
-
-_This reference card is part of the ARC development framework.
-It provides quick orientation for AI assistants working on this project._

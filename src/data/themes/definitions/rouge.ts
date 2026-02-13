@@ -39,8 +39,24 @@ const opacities: ThemeOpacities = {
 
 // Surface configuration - controls visual layering
 const surfaces: ThemeSurfaces = {
-  light: { surfaceOpacity: 0.7, surfaceDarken: 20, windowOpacity: 0.7, windowDarken: 10, surfaceHierarchy: "swapped" },
-  dark: { surfaceOpacity: 0.8, surfaceDarken: 0, windowOpacity: 0.8, windowDarken: 0, surfaceHierarchy: "normal" },
+  light: {
+    surfaceOpacity: 0.7,
+    surfaceDarken: 20,
+    windowOpacity: 0.7,
+    windowDarken: 10,
+    surfaceHierarchy: "swapped",
+    surfaceBorderStrong: true,
+    surfaceShadow: "md",
+  },
+  dark: {
+    surfaceOpacity: 0.8,
+    surfaceDarken: 0,
+    windowOpacity: 0.8,
+    windowDarken: 0,
+    surfaceHierarchy: "normal",
+    surfaceBorderStrong: false,
+    surfaceShadow: "none",
+  },
 };
 
 // Hover configuration - primary swaps to secondary, accent-mid darkens in-family
@@ -154,8 +170,8 @@ const darkTokens: ThemeColors = {
   "accent-purple": hexToRgb(rougeDark.purple), // #b18bb1
 
   // Destructive colors
-  // A11Y: rougeError darkened 10% for WCAG AA with white (2.16 → 4.96)
-  destructive: hexToRgb(rougeA11y.rougeErrorDarkened10), // #b84d55
+  // A11Y: rougeError darkened 7% — balances white text (4.69) + surface-muted contrast
+  destructive: hexToRgb(rougeA11y.rougeErrorDarkened7), // #BE5058
   "destructive-foreground": hexToRgb("#ffffff"),
 
   // UI element colors

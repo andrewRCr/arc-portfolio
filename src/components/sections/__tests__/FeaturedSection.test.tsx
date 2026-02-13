@@ -5,7 +5,7 @@
  * - 4 featured cards render
  * - Each card has required elements (type label, title, description)
  * - Cards link to correct route patterns
- * - Framework card is always present
+ * - Methodology card (ARC Framework) is always present
  *
  * Note: Section heading ("Featured Projects") is rendered in Hero component,
  * not FeaturedSection, for scroll shadow alignment.
@@ -29,7 +29,7 @@ import { selectFeaturedProjects } from "@/lib/featured-projects";
 describe("FeaturedSection", () => {
   const mockFeaturedProjects = [
     { slug: "cinexplorer", type: "software" as const },
-    { slug: "arc-agentic-dev-framework", type: "framework" as const },
+    { slug: "arc-framework", type: "methodology" as const },
     { slug: "action-rpg-project", type: "game" as const },
     { slug: "elden-ring-guard-parry", type: "mod" as const },
   ];
@@ -67,12 +67,12 @@ describe("FeaturedSection", () => {
       expect(softwareLink).toBeInTheDocument();
     });
 
-    it("framework projects link to /projects/software/", () => {
+    it("methodology projects link to /projects/software/", () => {
       render(<FeaturedSection />);
 
       const links = screen.getAllByRole("link");
       const frameworkLink = links.find((link) =>
-        link.getAttribute("href")?.includes("/projects/software/arc-agentic-dev-framework")
+        link.getAttribute("href")?.includes("/projects/software/arc-framework")
       );
       expect(frameworkLink).toBeInTheDocument();
     });
@@ -105,12 +105,12 @@ describe("FeaturedSection", () => {
     });
   });
 
-  describe("framework slot", () => {
-    it("always includes framework project", () => {
+  describe("methodology slot", () => {
+    it("always includes ARC Framework project", () => {
       render(<FeaturedSection />);
 
-      // ARC Agentic Toolkit title should be present
-      expect(screen.getByText("ARC Agentic Toolkit")).toBeInTheDocument();
+      // ARC Framework title should be present
+      expect(screen.getByText("ARC Framework")).toBeInTheDocument();
     });
   });
 
