@@ -3,7 +3,7 @@
  *
  * Slot configuration:
  * - Slot 1: Software (random from featured software, excluding methodology)
- * - Slot 2: Framework (ARC Framework - always)
+ * - Slot 2: Methodology (ARC Framework - always)
  * - Slot 3: Game (random from featured games)
  * - Slot 4: Mod (random from featured mods)
  */

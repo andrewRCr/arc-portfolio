@@ -1,4 +1,3 @@
-#!/usr/bin/env npx tsx
 /**
  * Generate CSS Theme Definitions
  *

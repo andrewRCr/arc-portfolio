@@ -24,7 +24,7 @@ and every theme combination.
   hydration safety
 - Orchestrated animation system with centralized timing driving intro sequences, page transitions,
   and shared element morphing
-- Built with [ARC Framework](https://github.com/andrewRCr/arc-agentic-dev-framework) — a
+- Built with [ARC Framework](https://andrewcreekmore.dev/projects/software/arc-framework) — a
   spec-driven development methodology emphasizing focused human-agent collaboration
 
 ## Technology

@@ -11,12 +11,13 @@ import { cn } from "@/lib/utils";
 interface TextLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /** Link destination */
   href: string;
-  /** Open in new tab (default: true for external links) */
+  /** Open in new tab. Defaults to auto-detect: internal paths (starting with /) open same-tab, others open new-tab. */
   external?: boolean;
 }
 
-export function TextLink({ href, external = true, className, children, ...props }: TextLinkProps) {
-  const externalProps = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
+export function TextLink({ href, external, className, children, ...props }: TextLinkProps) {
+  const isExternal = external ?? !href.startsWith("/");
+  const externalProps = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
     <a

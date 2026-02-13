@@ -8,6 +8,7 @@
 import { describe, it, expect } from "vitest";
 import sitemap from "../sitemap";
 import { SITE } from "@/config/site";
+import { FEATURES } from "@/config/features";
 import { projects } from "@/data/projects";
 import { mods } from "@/data/mods";
 
@@ -34,17 +35,27 @@ describe("Sitemap", () => {
       }
     });
 
-    it("includes all game projects", () => {
+    it(`${FEATURES.SHOW_ALL_PROJECT_TYPES ? "includes" : "excludes"} all game projects`, () => {
       const gameProjects = projects.filter((p) => p.projectType === "game");
 
       for (const project of gameProjects) {
-        expect(urls).toContain(`${SITE.url}/projects/games/${project.slug}`);
+        const url = `${SITE.url}/projects/games/${project.slug}`;
+        if (FEATURES.SHOW_ALL_PROJECT_TYPES) {
+          expect(urls).toContain(url);
+        } else {
+          expect(urls).not.toContain(url);
+        }
       }
     });
 
-    it("includes all mod projects", () => {
+    it(`${FEATURES.SHOW_ALL_PROJECT_TYPES ? "includes" : "excludes"} all mod projects`, () => {
       for (const mod of mods) {
-        expect(urls).toContain(`${SITE.url}/projects/mods/${mod.slug}`);
+        const url = `${SITE.url}/projects/mods/${mod.slug}`;
+        if (FEATURES.SHOW_ALL_PROJECT_TYPES) {
+          expect(urls).toContain(url);
+        } else {
+          expect(urls).not.toContain(url);
+        }
       }
     });
   });

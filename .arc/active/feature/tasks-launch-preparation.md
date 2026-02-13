@@ -30,7 +30,7 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
 - JSON-LD structured data (Person, BreadcrumbList)
 - Canonical URLs
 - Vercel deployment with GitHub integration
-- Vercel KV database for contact form rate limiting
+- Upstash Redis for contact form rate limiting (Vercel Marketplace integration)
 - Dual-domain setup (`andrewcreekmore.dev` primary, `.com` redirect)
 - Lighthouse baseline validation (90+ all categories)
 - NexusMods API app registration
@@ -366,7 +366,7 @@ polish, SEO, custom error pages, and deployment to Vercel with dual-domain confi
         - Promoted type-safe content architecture as lead differentiator
         - Added animation orchestration coverage (reducer-based, phase-driven, centralized timing, reduced-motion
           support)
-        - Revised ARC_FRAMEWORK_FEATURE constant: added markdown link to framework project page, refined copy to
+        - Revised ARC_FRAMEWORK_FEATURE constant: added Markdown link to framework project page, refined copy to
           capture philosophy
         - Added Framer Motion to techStack
     - [x] **2.1.e TaskFocus**
@@ -891,7 +891,7 @@ follow-up task list: `tasks-post-launch-validation.md`.
 - [x] Icon button jitter eliminated in Safari theme transitions
 - [x] Blur placeholders provide polished loading UX; hero images served responsively
 - [x] All pages render well at laptop viewports (~1280–1440px)
-- [x] Rate limiting uses current Upstash Redis (not deprecated `@vercel/kv`)
+- [x] Rate limiting uses Upstash Redis (not deprecated `@vercel/kv`)
 - [x] README polished and repo made public
 - [x] Vercel connected with environment variables and Upstash Redis configured
 

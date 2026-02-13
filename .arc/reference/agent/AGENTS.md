@@ -5,7 +5,7 @@
 ## Project Overview
 
 arc-portfolio is a modern developer portfolio website showcasing full-stack development skills through project exhibits,
-technical expertise, and professional background. Built with Next.js 15 and TypeScript, it demonstrates proficiency in
+technical expertise, and professional background. Built with Next.js 16 and TypeScript, it demonstrates proficiency in
 contemporary web development practices, type safety, testing, and professional documentation.
 
 **Project Type**: Solo showcase portfolio

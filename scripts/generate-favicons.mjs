@@ -53,9 +53,7 @@ async function main() {
 
   // Clean up temp files
   rmSync(TMP_DIR, { recursive: true });
-  console.log(
-    "\nDone! Generated:\n  src/app/favicon.ico\n  src/app/apple-icon.png\n  src/app/icon.svg (already exists, unchanged)"
-  );
+  console.log("\nDone! Generated:\n  src/app/favicon.ico\n  src/app/apple-icon.png");
 }
 
 main().catch((err) => {
