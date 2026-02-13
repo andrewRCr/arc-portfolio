@@ -102,9 +102,7 @@ function ContentList({ items }: { items: ContentItem[] }) {
             className={cn(
               "space-y-1.5 text-muted-foreground list-['▸_'] list-inside",
               !isFirst && (isNested ? "mt-1.5" : "mt-2"),
-              isNested
-                ? "ml-4 border-l-2 border-accent-low pl-3"
-                : "marker:text-accent-low"
+              isNested ? "ml-4 border-l-2 border-accent-low pl-3" : "marker:text-accent-low"
             )}
           >
             {group.items.map(({ text, key }) => (

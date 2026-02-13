@@ -47,6 +47,7 @@ export function DetailHeaderDesktop({
   const hasMetadata = metadataParts.length > 0;
 
   const hasFooter = hasCategories || hasStats || hasLinks || hasMetadata;
+  const blurDataURL = heroImage ? getBlurDataURL(heroImage) : undefined;
 
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
@@ -65,8 +66,8 @@ export function DetailHeaderDesktop({
               fill
               sizes="(min-width: 1200px) 1136px, calc(100vw - 16px)"
               className="object-cover"
-              placeholder={getBlurDataURL(heroImage) ? "blur" : undefined}
-              blurDataURL={getBlurDataURL(heroImage)}
+              placeholder={blurDataURL ? "blur" : undefined}
+              blurDataURL={blurDataURL}
             />
             {/* Bottom gradient overlay for title readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />

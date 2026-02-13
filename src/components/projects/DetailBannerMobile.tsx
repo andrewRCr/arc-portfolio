@@ -44,6 +44,7 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
   const hasStats =
     stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
   const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
+  const blurDataURL = heroImage ? getBlurDataURL(heroImage) : undefined;
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
 
   // Smaller badges on phone for better visual hierarchy
@@ -83,8 +84,8 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
             fill
             sizes="(min-width: 1200px) 1136px, calc(100vw - 16px)"
             className="object-cover"
-            placeholder={getBlurDataURL(heroImage) ? "blur" : undefined}
-            blurDataURL={getBlurDataURL(heroImage)}
+            placeholder={blurDataURL ? "blur" : undefined}
+            blurDataURL={blurDataURL}
           />
         ) : (
           <div className="absolute inset-0 bg-card" />

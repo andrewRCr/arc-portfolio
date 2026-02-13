@@ -30,6 +30,20 @@ const RATE_LIMIT_MAX_REQUESTS = 5; // 5 requests per minute
 // In-memory fallback for local development (when Upstash Redis is not configured)
 const localRateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
+// Lazy-initialized Upstash Redis client (module-scoped singleton)
+let redisClient: Redis | null = null;
+
+function getRedisClient(): Redis | null {
+  if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) return null;
+  if (!redisClient) {
+    redisClient = new Redis({
+      url: process.env.KV_REST_API_URL,
+      token: process.env.KV_REST_API_TOKEN,
+    });
+  }
+  return redisClient;
+}
+
 // Export for testing - allows resetting rate limiter between tests
 export function _resetRateLimiter() {
   localRateLimitMap.clear();
@@ -43,12 +57,9 @@ async function checkRateLimit(ip: string): Promise<boolean> {
   const key = `rate_limit:contact:${ip}`;
 
   // Try Upstash Redis first (production — env vars auto-injected by Vercel Marketplace integration)
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+  const redis = getRedisClient();
+  if (redis) {
     try {
-      const redis = new Redis({
-        url: process.env.KV_REST_API_URL,
-        token: process.env.KV_REST_API_TOKEN,
-      });
       const count = await redis.incr(key);
 
       // Set expiry on first request in window
