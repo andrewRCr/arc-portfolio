@@ -3,7 +3,7 @@
 **Parent:** Follows `tasks-launch-preparation.md` (Phase 5 → archive → PR → merge)
 **Created:** 2026-02-12
 **Branch:** `main` (no feature branch — operational follow-up after launch preparation merge)
-**Status:** Not Started
+**Status:** In Progress
 
 ## Overview
 
@@ -31,15 +31,20 @@ manual/dashboard work with no code changes.
 **When:** During PR review, before merging `feature/launch-preparation` to `main`.
 Vercel auto-generates a preview deployment when the PR is opened.
 
-- [ ] **0.1 Validate preview deployment**
+- [x] **0.1 Validate preview deployment**
+
+    Validated on Vercel PR preview during `feature/launch-preparation` PR #9 review.
 
     - [ ] Contact form submits successfully (email received)
+        - **Blocked:** Zeptomail returns TM_4001 "Access Denied" — `andrewcreekmore.dev`
+          not yet registered/verified as sender domain. Deferred to Phase 1.
     - [ ] Rate limiting returns 429 on 6th rapid request
-    - [ ] Dev pages (`/dev/*`) return 404 (production gating via `NODE_ENV`)
-    - [ ] Custom 404 and error pages render (not Vercel/Next.js defaults)
-    - [ ] All public pages load; theme and wallpaper toggles persist
-    - [ ] View page source: meta tags, OG tags, canonical URLs present
-    - [ ] Sitemap at `/sitemap.xml`, robots.txt at `/robots.txt`
+        - **Blocked:** Cannot test until contact form sends successfully. Deferred to Phase 1.
+    - [x] Dev pages (`/dev/*`) return 404 (production gating via `NODE_ENV`)
+    - [x] Custom 404 and error pages render (not Vercel/Next.js defaults)
+    - [x] All public pages load; theme and wallpaper toggles persist
+    - [x] View page source: meta tags, OG tags, canonical URLs present
+    - [x] Sitemap at `/sitemap.xml`, robots.txt at `/robots.txt`
 
 ### **Phase 1:** Domain Configuration
 
@@ -77,17 +82,33 @@ Vercel auto-generates a preview deployment when the PR is opened.
         - `https://andrewrcr.dev` and `https://andrewrcr.com` redirect (308) to `.dev`
         - SSL certificates valid for all domains (no browser warnings)
 
-- [ ] **1.2 Update live site references**
+- [ ] **1.2 Configure Zeptomail sender domain and verify contact form**
 
-    - [ ] **1.2.a Update `liveDemo` link in project data**
+    **Blocked until:** `andrewcreekmore.dev` registered (Task 1.1.a)
+
+    - [ ] **1.2.a Add `andrewcreekmore.dev` as verified sender domain in Zeptomail**
+        - Add domain in Zeptomail dashboard
+        - Configure required DNS records (SPF, DKIM, DMARC) at registrar
+        - Wait for Zeptomail domain verification to complete
+    - [ ] **1.2.b Update `CONTACT_EMAIL_FROM` env var in Vercel if needed**
+        - Verify `noreply@andrewcreekmore.dev` (or chosen address) matches Zeptomail config
+    - [ ] **1.2.c Test contact form end-to-end on production**
+        - Submit form → email received at destination address
+        - Submit 6 rapid requests → 429 rate limit response on 6th
+    - [ ] **1.2.d Mark deferred Phase 0 subtasks complete**
+        - Return to 0.1 and check off contact form + rate limiting items
+
+- [ ] **1.3 Update live site references**
+
+    - [ ] **1.3.a Update `liveDemo` link in project data**
         - `src/data/projects.ts` → `arc-portfolio` entry → `links.liveDemo` is currently
           `undefined`
         - Set to final production URL
 
-    - [ ] **1.2.b Update README with live site URL**
+    - [ ] **1.3.b Update README with live site URL**
         - Replace placeholder (if used during Phase 5) with actual production URL
 
-    - [ ] **1.2.c Run quality gates and commit**
+    - [ ] **1.3.c Run quality gates and commit**
         - Type-check, lint, format, build, tests
         - Commit directly to `main`
 
