@@ -121,6 +121,7 @@ export default async function RootLayout({
   const wallpaperOption = WALLPAPER_OPTIONS.find((w) => w.id === serverWallpaper);
   const wallpaperSrc = wallpaperOption?.src;
   const wallpaperSrcHiRes = wallpaperOption?.srcHiRes;
+  const wallpaperSrcMobile = wallpaperOption?.srcMobile;
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -133,8 +134,18 @@ export default async function RootLayout({
             rel="preload"
             as="image"
             href={wallpaperSrc}
-            imageSrcSet={wallpaperSrcHiRes ? `${wallpaperSrc} 1920w, ${wallpaperSrcHiRes} 2560w` : undefined}
-            imageSizes={wallpaperSrcHiRes ? "100vw" : undefined}
+            imageSrcSet={
+              wallpaperSrcMobile || wallpaperSrcHiRes
+                ? [
+                    wallpaperSrcMobile && `${wallpaperSrcMobile} 1280w`,
+                    `${wallpaperSrc} 1920w`,
+                    wallpaperSrcHiRes && `${wallpaperSrcHiRes} 2560w`,
+                  ]
+                    .filter(Boolean)
+                    .join(", ")
+                : undefined
+            }
+            imageSizes={wallpaperSrcMobile || wallpaperSrcHiRes ? "100vw" : undefined}
             fetchPriority="high"
           />
         )}

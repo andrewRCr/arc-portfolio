@@ -241,7 +241,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
  * ```
  */
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
-  const { wallpaperSrc, wallpaperSrcHiRes } = useWallpaperContext();
+  const { wallpaperSrc, wallpaperSrcHiRes, wallpaperSrcMobile } = useWallpaperContext();
 
   return (
     // AnimationProvider: centralized animation state (single source of truth)
@@ -250,7 +250,11 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <IntroStateSignal />
 
       {/* Background layer */}
-      <WallpaperBackground imageSrc={wallpaperSrc} imageSrcHiRes={wallpaperSrcHiRes} />
+      <WallpaperBackground
+        imageSrc={wallpaperSrc}
+        imageSrcHiRes={wallpaperSrcHiRes}
+        imageSrcMobile={wallpaperSrcMobile}
+      />
 
       {/* LayoutGroup enables shared layoutId animations between TopBar and IntroSequence */}
       <LayoutGroup>

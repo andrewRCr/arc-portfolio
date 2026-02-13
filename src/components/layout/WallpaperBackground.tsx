@@ -18,6 +18,8 @@ export interface WallpaperBackgroundProps {
   imageSrc?: string;
   /** Optional path to high-res wallpaper image - 1440p (for large viewports) */
   imageSrcHiRes?: string;
+  /** Optional path to mobile wallpaper image - ~1280w (for mobile viewports) */
+  imageSrcMobile?: string;
 }
 
 /** Fade transition duration in seconds */
@@ -111,7 +113,7 @@ function WallpaperImage({ src, srcSet }: { src: string; srcSet?: string }) {
  * <WallpaperBackground imageSrc="/wallpaper/optimized-1080/example.webp" />
  * ```
  */
-export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgroundProps) {
+export function WallpaperBackground({ imageSrc, imageSrcHiRes, imageSrcMobile }: WallpaperBackgroundProps) {
   const { activeTheme } = useThemeContext();
   const { layoutMode } = useLayoutPreferences();
   const { reducedMotion } = useAnimationContext();
@@ -147,8 +149,15 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes }: WallpaperBackgr
     ? { backgroundColor: darkOverlayColor }
     : { background: buildWallpaperGradient(customGradientStops) };
 
-  // Build srcSet if hi-res version available
-  const srcSet = imageSrcHiRes ? `${imageSrc} 1920w, ${imageSrcHiRes} 2560w` : undefined;
+  // Build srcSet with available resolution variants
+  const srcSet = useMemo(() => {
+    if (!imageSrcMobile && !imageSrcHiRes) return undefined;
+    const parts: string[] = [];
+    if (imageSrcMobile) parts.push(`${imageSrcMobile} 1280w`);
+    parts.push(`${imageSrc} 1920w`);
+    if (imageSrcHiRes) parts.push(`${imageSrcHiRes} 2560w`);
+    return parts.join(", ");
+  }, [imageSrc, imageSrcMobile, imageSrcHiRes]);
 
   return (
     <div

@@ -47,6 +47,7 @@ interface WallpaperContextValue {
   setActiveWallpaper: (id: WallpaperId) => void;
   wallpaperSrc: string | undefined;
   wallpaperSrcHiRes: string | undefined;
+  wallpaperSrcMobile: string | undefined;
   /** Whether wallpaper display is enabled (false shows gradient) */
   isWallpaperEnabled: boolean;
   /** Toggle wallpaper display on/off */
@@ -287,6 +288,14 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
     return option?.srcHiRes;
   }, [activeWallpaper, devOverrideSrc, isWallpaperEnabled]);
 
+  const wallpaperSrcMobile = React.useMemo(() => {
+    // No mobile variant for dev override
+    if (devOverrideSrc) return undefined;
+    if (!isWallpaperEnabled) return undefined;
+    const option = WALLPAPER_OPTIONS.find((o) => o.id === activeWallpaper);
+    return option?.srcMobile;
+  }, [activeWallpaper, devOverrideSrc, isWallpaperEnabled]);
+
   return (
     <WallpaperContext.Provider
       value={{
@@ -294,6 +303,7 @@ export function WallpaperContextProvider({ children, serverWallpaper }: Wallpape
         setActiveWallpaper,
         wallpaperSrc,
         wallpaperSrcHiRes,
+        wallpaperSrcMobile,
         isWallpaperEnabled,
         setWallpaperEnabled,
         setDevOverrideSrc,

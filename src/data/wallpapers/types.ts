@@ -24,6 +24,8 @@ export interface WallpaperOption {
   readonly src: string | undefined;
   /** Path to high-res wallpaper image (1440p), for large viewports */
   readonly srcHiRes?: string;
+  /** Path to mobile wallpaper image (~1280w), for mobile viewports */
+  readonly srcMobile?: string;
   /** Path to thumbnail image (200×150), for picker preview */
   readonly thumbnailSrc?: string;
   /** Which themes this wallpaper works well with */

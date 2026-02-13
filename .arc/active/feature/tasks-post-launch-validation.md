@@ -105,7 +105,7 @@ Vercel auto-generates a preview deployment when the PR is opened.
 
 ### **Phase 2:** Production Validation
 
-- [ ] **2.1 Lighthouse baseline audit**
+- [x] **2.1 Lighthouse baseline audit**
 
     **Goal:** Verify META-PRD target of 90+ across all four Lighthouse categories.
 
@@ -146,13 +146,28 @@ Vercel auto-generates a preview deployment when the PR is opened.
         wallpaper variants, JS reduction, TBT) are worth pursuing regardless.
         Recommend updating META-PRD target to acknowledge the animation tradeoff.
 
-    - [ ] **2.1.b Address scores below 90**
-        - Focus on genuine performance improvements (not LCP score gaming):
-          1. Generate mobile wallpaper variants (~1080px) and update srcset
-          2. Investigate and reduce unused JS (~83KB)
-          3. Investigate Home/Skills TBT (heavy scriptParseCompile)
-        - Commit fixes directly to `main` (atomic fixes)
-        - Re-run Lighthouse to measure impact
+    - [x] **2.1.b Address scores below 90**
+
+        Two workstreams addressed genuine performance issues identified in 2.1.a:
+
+        **Workstream A** (committed `0aeabb5`): Build-time simple-icons extraction.
+        Eliminated ~5MB client JS bundle by extracting 36 used icons at build time
+        instead of importing all 3,384. Addressed unused JS (~83KB) and Home/Skills
+        TBT (~400-500ms `scriptParseCompile`).
+
+        **Workstream B**: Mobile wallpaper variants (1280w) via Sharp script.
+        40 variants generated, avg 146KB (down from 282KB, ~48% reduction).
+        Added 3-point srcSet (`1280w, 1920w, 2560w`) to `WallpaperBackground`
+        and preload link. Mobile devices now download ~135KB less per wallpaper.
+
+        Files created: `scripts/generate-wallpaper-mobile.ts`,
+        `public/wallpaper/optimized-mobile/` (40 WebP files, 5.7MB total).
+        Files modified: `types.ts` (`srcMobile`), `index.ts` (36 entries),
+        `WallpaperContext.tsx`, `WallpaperBackground.tsx`, `LayoutWrapper.tsx`,
+        `layout.tsx` (preload), `package.json`.
+
+        **Re-run Lighthouse**: Requires push + deploy to measure production impact.
+        LCP still dominated by intentional intro animation (design tradeoff).
 
 - [ ] **2.2 Production smoke test**
 

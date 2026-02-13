@@ -10,6 +10,7 @@
     "generate:thumbnails": "tsx scripts/generate-wallpaper-thumbnails.ts",
     "generate:blur-placeholders": "tsx scripts/generate-blur-placeholders.ts",
     "generate:skill-icons": "tsx scripts/generate-skill-icons.ts",
+    "generate:wallpaper-mobile": "tsx scripts/generate-wallpaper-mobile.ts",
     "prebuild": "npm run generate:css-defaults && npm run generate:blur-placeholders && npm run generate:skill-icons",
     "build": "next build",
     "start": "next start",
