@@ -19,21 +19,20 @@ contemporary web development practices.
 
 **Last Completed:**
 
-- ✅ Visual Polish (feature) - 2026-02-05
-    - Page transitions, tab animations, hover micro-interactions, project status system
-    - 3-slot typography, theme consolidation, AnimationContext, hover color architecture
-    - 1366 unit tests, 341 E2E tests
-    - [Archive](../archive/2026-q1/feature/06_visual-polish/)
+- ✅ Launch Preparation (feature) - 2026-02-12
+    - Dev infrastructure, content polish, SEO, custom error pages, Vercel deployment
+    - Upstash Redis, blur placeholders, Safari transition fixes, responsive tuning
+    - 1441 unit tests, 341 E2E tests
+    - [Archive](../archive/2026-q1/feature/07_launch-preparation/)
 
 **Currently Active:**
 
-- Launch Preparation (feature) - Dev infrastructure, content polish, SEO, deployment
-    - Task list: `.arc/active/feature/tasks-launch-preparation.md`
-    - Branch: `feature/launch-preparation`
+- Post-Launch Validation - Domain config, Lighthouse audit, production smoke testing
+    - Task list: `.arc/active/feature/tasks-post-launch-validation.md`
 
 **Next Priority:**
 
-- (deployment completes v1.0)
+- Post-v1.0 backlog items (analytics, blog, resume download)
 
 ---
 
@@ -48,12 +47,9 @@ contemporary web development practices.
 - ✅ TWM Startup Animation - Terminal boot sequence on first home visit
 - ✅ **Visual Polish** (2026-02-05) - Page transitions, tab animations, micro-interactions, theme consolidation
 
-### Phase C: Launch
+### Phase C: Launch ✅
 
-- **Launch Preparation** ← Next
-    - Dev infrastructure, content copy pass, custom error pages
-    - SEO & metadata (OG, sitemap, structured data, favicon)
-    - Vercel deployment with multi-domain (`andrewcreekmore.dev` primary)
+- ✅ **Launch Preparation** (2026-02-12) - Dev infrastructure, SEO, deployment to Vercel
 
 ### Post-v1.0 (Backlog)
 
@@ -167,6 +163,18 @@ contemporary web development practices.
 - **AnimationContext**: Centralized animation state machine (intro/refresh/route modes)
 - **Hover color architecture**: Primary-to-secondary color shift tuned per-theme for contrast compliance
 - **Test coverage**: 1366 unit tests, 341 E2E tests
+
+### ✅ Launch Preparation
+
+- **Dev infrastructure**: Production gating for `/dev/*` routes, `SHOW_ALL_PROJECT_TYPES` feature flag
+- **In-development badge**: Shared `InDevelopmentBadge` component across cards, featured section, detail pages
+- **Content copy**: Holistic pass across all 9 software projects with progressive depth model
+- **Custom error pages**: TWM-themed 404, error boundary, and global error pages
+- **SEO**: Per-page metadata, dynamic `generateMetadata`, Open Graph tags, sitemap, robots.txt, JSON-LD, favicon
+- **Safari fixes**: Icon button jitter fix, border/background transition snap (double-transition strategy)
+- **Image optimization**: Blur placeholders for all `<Image>` components, responsive hero images
+- **Deployment**: Vercel with GitHub integration, Upstash Redis from Marketplace, public README
+- **Test coverage**: 1441 unit tests, 341 E2E tests
 
 ---
 
