@@ -61,7 +61,7 @@ export function FooterBar({ isActive, onActivate, className }: FooterBarProps) {
         style={{ height: innerHeight, maxWidth: contentMaxWidth }}
       >
         {/* Social Links */}
-        <nav aria-label="Social links" className="flex items-center gap-1">
+        <nav aria-label="Social links" className="-ml-3.5 flex items-center gap-1">
           {/* Email - obfuscated for scraper protection */}
           <TouchTarget>
             <ObfuscatedMailtoIcon encoded={encodeEmail(contact.email)} />
