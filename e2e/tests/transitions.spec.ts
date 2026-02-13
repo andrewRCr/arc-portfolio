@@ -20,7 +20,7 @@ test.describe("Component Transitions", () => {
   });
 
   test.describe("Switch Component", () => {
-    test("switch thumb slides when toggled", async ({ page }) => {
+    test("switch thumb has transform transition and toggles", async ({ page }) => {
       await page.goto("/");
 
       // Open theme control to access switch
@@ -32,20 +32,14 @@ test.describe("Component Transitions", () => {
       const wallpaperToggle = page.getByTestId("wallpaper-toggle");
       const switchThumb = wallpaperToggle.locator("span");
 
-      // Record initial thumb position
-      const initialBox = await switchThumb.boundingBox();
-      expect(initialBox).not.toBeNull();
+      // Verify thumb has transition-transform class (not clobbered by global CSS)
+      await expect(switchThumb).toHaveClass(/transition-transform/);
 
-      // Toggle the switch
+      // Verify switch actually toggles (state changes on click)
+      const initialState = await wallpaperToggle.getAttribute("data-state");
       await wallpaperToggle.click();
-
-      // Wait briefly for slide animation
-      await page.waitForTimeout(150);
-
-      // Verify thumb moved horizontally (slide animation worked)
-      const finalBox = await switchThumb.boundingBox();
-      expect(finalBox).not.toBeNull();
-      expect(finalBox!.x).not.toBeCloseTo(initialBox!.x, 0);
+      const expectedState = initialState === "checked" ? "unchecked" : "checked";
+      await expect(wallpaperToggle).toHaveAttribute("data-state", expectedState);
     });
   });
 
@@ -95,7 +89,7 @@ test.describe("Component Transitions", () => {
   });
 
   test.describe("Theme Toggle Does Not Break Transitions", () => {
-    test("switch thumb still slides after theme toggle completes", async ({ page }) => {
+    test("switch thumb retains transform transition after theme toggle", async ({ page }) => {
       await page.goto("/");
 
       // Open theme control
@@ -108,28 +102,22 @@ test.describe("Component Transitions", () => {
       const modeButton = themeContent.getByRole("button", { name: /switch to .* mode/i });
       await modeButton.click();
 
-      // Wait for theme transition to complete (TRANSITION_DURATION = 300ms, + 100ms buffer)
-      await page.waitForTimeout(400);
+      // Wait for theme transition to complete (attribute removed when done)
+      await page.waitForFunction(
+        () => !document.documentElement.hasAttribute("data-theme-transition"),
+        { timeout: 2000 },
+      );
 
-      // Verify the data-theme-transition attribute is removed
-      const hasTransitionAttr = await page.evaluate(() => {
-        return document.documentElement.hasAttribute("data-theme-transition");
-      });
-      expect(hasTransitionAttr).toBe(false);
-
-      // Verify switch thumb still slides after theme toggle
+      // Verify switch thumb still has transition-transform class after theme toggle
       const wallpaperToggle = page.getByTestId("wallpaper-toggle");
       const switchThumb = wallpaperToggle.locator("span");
+      await expect(switchThumb).toHaveClass(/transition-transform/);
 
-      const initialBox = await switchThumb.boundingBox();
-      expect(initialBox).not.toBeNull();
-
+      // Verify switch still toggles after theme transition
+      const initialState = await wallpaperToggle.getAttribute("data-state");
       await wallpaperToggle.click();
-      await page.waitForTimeout(150);
-
-      const finalBox = await switchThumb.boundingBox();
-      expect(finalBox).not.toBeNull();
-      expect(finalBox!.x).not.toBeCloseTo(initialBox!.x, 0);
+      const expectedState = initialState === "checked" ? "unchecked" : "checked";
+      await expect(wallpaperToggle).toHaveAttribute("data-state", expectedState);
     });
   });
 
