@@ -181,62 +181,54 @@ deployment when the PR is opened.
         TBT, CLS, SI) are near-perfect on both form factors. No Lighthouse badges — scores not displayed in
         README; the site speaks for itself.
 
-- [ ] **2.2 Production smoke test**
+- [x] **2.2 Production smoke test**
 
-    - [ ] **2.2.a Verify all public pages load**
-        - Home, Projects, Skills, About, Contact, project detail pages
-        - Test on desktop and mobile viewports
+    Verified on desktop (Chrome, Firefox, Safari macOS) and mobile (iOS Safari, iPhone).
+    Initial iOS investigation revealed a Noir browser extension overriding site colors/wallpaper —
+    not a site bug. Added `<meta name="color-scheme" content="dark light" />` to signal native
+    dark mode support to extensions.
 
-    - [ ] **2.2.b Verify functionality**
-        - Contact form submits successfully (email received)
-        - Rate limiting works (429 on excessive requests)
-        - Theme toggle persists across sessions
-        - Wallpaper selection persists
-        - Navigation and page transitions work smoothly
+    - [x] **2.2.a Verify all public pages load**
+        - All pages verified on desktop and iOS Safari mobile
 
-    - [ ] **2.2.c Verify SEO implementation**
-        - View page source — meta tags, OG tags, canonical URLs present
-        - Test social preview with LinkedIn/Twitter sharing debugger tools
-        - Verify sitemap accessible at `/sitemap.xml`
-        - Verify robots.txt accessible at `/robots.txt`
+    - [x] **2.2.b Verify functionality**
+        - Contact form, rate limiting, theme/wallpaper persistence, navigation all confirmed
 
-    - [ ] **2.2.d Verify production gating**
-        - Navigate to `/dev/sandbox`, `/dev/typography`, etc. — all return 404
-        - Verify custom 404 page displays (not Vercel default)
+    - [x] **2.2.c Verify SEO implementation**
+        - Meta tags, OG tags, canonical URLs present in page source
+        - Social preview verified on LinkedIn (image + title + domain) and X/Twitter
+        - Sitemap at `/sitemap.xml`, robots.txt at `/robots.txt` confirmed
 
-    - [ ] **2.2.e Verify error handling**
-        - Custom 404 page displays for non-existent routes
-        - Error boundary renders for runtime errors (if testable)
+    - [x] **2.2.d Verify production gating**
+        - Dev pages return 404 with custom 404 page (not Vercel default)
+
+    - [x] **2.2.e Verify error handling**
+        - Custom 404 page renders for non-existent routes
 
 ### **Phase 3:** External Registration
 
-- [ ] **3.1 NexusMods API app registration**
+- [x] **3.1 NexusMods API app registration**
 
-    **Note:** Compliance task, not code. Requires public GitHub repo and live site — both should be in place by
-    this point.
+    Submitted via NexusMods API app registration form with public GitHub repo and live site URLs.
 
-    - [ ] **3.1.a Submit NexusMods app registration**
-        - Application name
-        - Short description
-        - Logo (suitable for dark backgrounds)
-        - GitHub repository URL (public)
-        - Live site URL
+    - [x] **3.1.a Submit NexusMods app registration**
 
 ---
 
 ## Success Criteria
 
-- [ ] Site live and accessible at `andrewcreekmore.dev`
-- [ ] All secondary domains redirect (308) to primary `.dev` domain
-- [ ] SSL certificates valid for all domains
-- [ ] Lighthouse: A11y, Best Practices, SEO 100 across all pages; Performance 80-85 mobile / 92-98 desktop
+- [x] Site live and accessible at `andrewcreekmore.dev`
+- [-] All secondary domains redirect (308) to primary `.dev` domain
+      (Remaining: `andrewcreekmore.com` pending transfer — Task 1.1.b, ~Feb 18)
+- [x] SSL certificates valid for all domains
+- [x] Lighthouse: A11y, Best Practices, SEO 100 across all pages; Performance 80-85 mobile / 92-98 desktop
       (limited by intentional intro animation LCP — all other metrics near-perfect)
-- [ ] Contact form delivers email in production
-- [ ] Rate limiting returns 429 on excessive requests in production
-- [ ] All public pages load on desktop and mobile
-- [ ] Theme and wallpaper preferences persist across sessions
-- [ ] SEO artifacts verified (meta tags, OG tags, sitemap, robots.txt, social previews)
-- [ ] Dev pages return 404 in production
-- [ ] Custom error pages display correctly
-- [ ] NexusMods API registration submitted
-- [ ] Project data and README updated with live site URL
+- [x] Contact form delivers email in production
+- [x] Rate limiting returns 429 on excessive requests in production
+- [x] All public pages load on desktop and mobile
+- [x] Theme and wallpaper preferences persist across sessions
+- [x] SEO artifacts verified (meta tags, OG tags, sitemap, robots.txt, social previews)
+- [x] Dev pages return 404 in production
+- [x] Custom error pages display correctly
+- [x] NexusMods API registration submitted
+- [x] Project data and README updated with live site URL

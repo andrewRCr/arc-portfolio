@@ -126,6 +126,9 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Signal native dark/light mode support to browsers and extensions
+            (e.g., Noir, Dark Reader) so they don't override site colors. */}
+        <meta name="color-scheme" content="dark light" />
         {/* Preload wallpaper image to prevent flicker on page load.
             Starts download before CSS parsing, eliminating the discovery delay.
             Uses imagesrcset/imagesizes for responsive preloading (correct variant for viewport). */}
