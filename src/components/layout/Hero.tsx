@@ -98,6 +98,19 @@ export function Hero({ children }: HeroProps) {
       };
     }
 
+    // Name in non-route modes: include scale and filter at neutral values.
+    // Prevents FM from reverting to mount-time initial values when mode switches
+    // (e.g., route → intro on replay), which would orphan scale/filter properties.
+    if (isName) {
+      return {
+        initial: { opacity: 0, scale: 1, filter: BLUR_NONE },
+        animate: contentVisible
+          ? { opacity: 1, scale: 1, filter: BLUR_NONE }
+          : { opacity: 0, scale: 1, filter: BLUR_NONE },
+        transition: contentVisible ? getHeroNameTiming(animationMode) : HIDE_TRANSITION,
+      };
+    }
+
     // Route: slide + blur for non-name text
     if (animationMode === "route") {
       const yOffset = staggerIndex === 0 ? -8 : 8;
@@ -119,10 +132,12 @@ export function Hero({ children }: HeroProps) {
       };
     }
 
-    // Other modes: simple fade
+    // Other modes (intro, skip, instant): simple fade.
+    // Include y and filter at neutral values to prevent FM from reverting to
+    // mount-time initial values when mode switches (e.g., route → intro on replay).
     return {
-      initial: { opacity: 0 },
-      animate: { opacity: contentVisible ? 1 : 0 },
+      initial: { opacity: 0, y: 0, filter: BLUR_NONE },
+      animate: contentVisible ? { opacity: 1, y: 0, filter: BLUR_NONE } : { opacity: 0, y: 0, filter: BLUR_NONE },
       transition: contentVisible ? getHeroTextTiming(animationMode, staggerIndex) : HIDE_TRANSITION,
     };
   };

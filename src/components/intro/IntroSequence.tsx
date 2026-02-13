@@ -283,8 +283,11 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     };
   }, [shouldShow, handleSkip]);
 
-  // Don't render until mounted (avoids SSR mismatch) or if animation is complete
-  if (!mounted || !shouldShow || reducedMotion) {
+  // Don't render until mounted (avoids SSR mismatch) or if animation is complete.
+  // On replay (replayCount > 0), skip the mounted guard — we're guaranteed client-side,
+  // and the one-frame gap from useHasMounted causes a visible flash of content.
+  const isReplay = intro.replayCount > 0;
+  if ((!mounted && !isReplay) || !shouldShow || reducedMotion) {
     return null;
   }
 

@@ -435,8 +435,12 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
     state.isInitialized && state.pathname !== null && currentPathname !== state.pathname;
 
   // If pathname changed, treat this render as a route change
-  // This provides correct loadMode synchronously (before children render)
-  const effectiveLoadMode = pathnameChangedSinceLastSync ? "route" : state.loadMode;
+  // This provides correct loadMode synchronously (before children render).
+  // Exception: preserve intro mode when intro is active/pending (e.g., replay triggered
+  // from a non-home page via <Link href="/">). The pathname change should not override
+  // intro visibility flags — the overlay covers the navigation transition.
+  const introInProgress = state.loadMode === "intro" && state.introPhase !== "complete";
+  const effectiveLoadMode = pathnameChangedSinceLastSync && !introInProgress ? "route" : state.loadMode;
 
   // Sync pathname to state after render (so next render knows the current pathname)
   React.useEffect(() => {
