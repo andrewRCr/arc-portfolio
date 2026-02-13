@@ -16,7 +16,7 @@ interface TextLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 function isInternalHref(href: string): boolean {
-  return /^(\/[^/]|#|\?|\.\/)/.test(href) || href === "" || href === "/";
+  return /^(\/[^/]|#|\?|\.\.?\/)/.test(href) || href === "" || href === "/";
 }
 
 export function TextLink({ href, external, className, children, ...props }: TextLinkProps) {
