@@ -11,12 +11,16 @@ import { cn } from "@/lib/utils";
 interface TextLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /** Link destination */
   href: string;
-  /** Open in new tab. Defaults to auto-detect: internal paths (starting with /) open same-tab, others open new-tab. */
+  /** Open in new tab. Defaults to auto-detect: relative/hash/query links open same-tab, absolute URLs open new-tab. */
   external?: boolean;
 }
 
+function isInternalHref(href: string): boolean {
+  return /^(\/[^/]|#|\?|\.\/)/.test(href) || href === "" || href === "/";
+}
+
 export function TextLink({ href, external, className, children, ...props }: TextLinkProps) {
-  const isExternal = external ?? !href.startsWith("/");
+  const isExternal = external ?? !isInternalHref(href);
   const externalProps = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (

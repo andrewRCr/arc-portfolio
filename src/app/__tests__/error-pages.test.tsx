@@ -79,6 +79,12 @@ describe("Error Boundary", () => {
     expect(screen.getByText("test-digest-123")).toBeInTheDocument();
   });
 
+  it("does not display digest when absent", () => {
+    const errorWithoutDigest = new Error("Test error");
+    render(<ErrorPage error={errorWithoutDigest} reset={mockReset} />);
+    expect(screen.queryByText("test-digest-123")).not.toBeInTheDocument();
+  });
+
   it("logs error to console", () => {
     render(<ErrorPage error={mockError} reset={mockReset} />);
     expect(console.error).toHaveBeenCalledWith(mockError);
