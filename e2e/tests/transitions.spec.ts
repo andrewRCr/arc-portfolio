@@ -103,10 +103,9 @@ test.describe("Component Transitions", () => {
       await modeButton.click();
 
       // Wait for theme transition to complete (attribute removed when done)
-      await page.waitForFunction(
-        () => !document.documentElement.hasAttribute("data-theme-transition"),
-        { timeout: 2000 },
-      );
+      await page.waitForFunction(() => !document.documentElement.hasAttribute("data-theme-transition"), {
+        timeout: 2000,
+      });
 
       // Verify switch thumb still has transition-transform class after theme toggle
       const wallpaperToggle = page.getByTestId("wallpaper-toggle");
