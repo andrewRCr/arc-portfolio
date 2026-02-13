@@ -20,7 +20,7 @@ test.describe("Component Transitions", () => {
   });
 
   test.describe("Switch Component", () => {
-    test("switch thumb has transform in transition-property", async ({ page }) => {
+    test("switch thumb slides when toggled", async ({ page }) => {
       await page.goto("/");
 
       // Open theme control to access switch
@@ -28,17 +28,24 @@ test.describe("Component Transitions", () => {
       await trigger.click();
       await expect(page.getByRole("heading", { name: /theme/i })).toBeVisible();
 
-      // Find the wallpaper toggle switch
-      const switchThumb = page.getByTestId("wallpaper-toggle").locator("span");
+      // Find the wallpaper toggle and its thumb
+      const wallpaperToggle = page.getByTestId("wallpaper-toggle");
+      const switchThumb = wallpaperToggle.locator("span");
 
-      // Get computed transition-property
-      const transitionProperty = await switchThumb.evaluate((el) => {
-        return window.getComputedStyle(el).transitionProperty;
-      });
+      // Record initial thumb position
+      const initialBox = await switchThumb.boundingBox();
+      expect(initialBox).not.toBeNull();
 
-      // Should include transform (for slide animation)
-      // Note: browsers may expand shorthand, so check for 'transform' substring
-      expect(transitionProperty).toMatch(/transform/i);
+      // Toggle the switch
+      await wallpaperToggle.click();
+
+      // Wait briefly for slide animation
+      await page.waitForTimeout(150);
+
+      // Verify thumb moved horizontally (slide animation worked)
+      const finalBox = await switchThumb.boundingBox();
+      expect(finalBox).not.toBeNull();
+      expect(finalBox!.x).not.toBeCloseTo(initialBox!.x, 0);
     });
   });
 
@@ -88,7 +95,7 @@ test.describe("Component Transitions", () => {
   });
 
   test.describe("Theme Toggle Does Not Break Transitions", () => {
-    test("component transitions work after theme toggle completes", async ({ page }) => {
+    test("switch thumb still slides after theme toggle completes", async ({ page }) => {
       await page.goto("/");
 
       // Open theme control
@@ -101,23 +108,28 @@ test.describe("Component Transitions", () => {
       const modeButton = themeContent.getByRole("button", { name: /switch to .* mode/i });
       await modeButton.click();
 
-      // Wait for transition to complete (TRANSITION_DURATION in useThemeTransition.ts = 300ms, + 100ms buffer)
+      // Wait for theme transition to complete (TRANSITION_DURATION = 300ms, + 100ms buffer)
       await page.waitForTimeout(400);
-
-      // Verify switch thumb still has transform transition
-      const switchThumb = page.getByTestId("wallpaper-toggle").locator("span");
-      const transitionProperty = await switchThumb.evaluate((el) => {
-        return window.getComputedStyle(el).transitionProperty;
-      });
-
-      expect(transitionProperty).toMatch(/transform/i);
 
       // Verify the data-theme-transition attribute is removed
       const hasTransitionAttr = await page.evaluate(() => {
         return document.documentElement.hasAttribute("data-theme-transition");
       });
-
       expect(hasTransitionAttr).toBe(false);
+
+      // Verify switch thumb still slides after theme toggle
+      const wallpaperToggle = page.getByTestId("wallpaper-toggle");
+      const switchThumb = wallpaperToggle.locator("span");
+
+      const initialBox = await switchThumb.boundingBox();
+      expect(initialBox).not.toBeNull();
+
+      await wallpaperToggle.click();
+      await page.waitForTimeout(150);
+
+      const finalBox = await switchThumb.boundingBox();
+      expect(finalBox).not.toBeNull();
+      expect(finalBox!.x).not.toBeCloseTo(initialBox!.x, 0);
     });
   });
 
