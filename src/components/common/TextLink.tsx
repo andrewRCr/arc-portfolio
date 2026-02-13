@@ -15,12 +15,13 @@ interface TextLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   external?: boolean;
 }
 
-function isInternalHref(href: string): boolean {
-  return /^(\/[^/]|#|\?|\.\.?\/)/.test(href) || href === "" || href === "/";
+/** External if protocol-relative (//) or has a URI scheme (http:, mailto:, etc.) */
+function isExternalHref(href: string): boolean {
+  return href.startsWith("//") || /^[a-z][a-z\d+.-]*:/i.test(href);
 }
 
 export function TextLink({ href, external, className, children, ...props }: TextLinkProps) {
-  const isExternal = external ?? !isInternalHref(href);
+  const isExternal = external ?? isExternalHref(href);
   const externalProps = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
