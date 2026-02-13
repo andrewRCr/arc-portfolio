@@ -35,11 +35,8 @@ Vercel auto-generates a preview deployment when the PR is opened.
 
     Validated on Vercel PR preview during `feature/launch-preparation` PR #9 review.
 
-    - [ ] Contact form submits successfully (email received)
-        - **Blocked:** Zeptomail returns TM_4001 "Access Denied" — `andrewcreekmore.dev`
-          not yet registered/verified as sender domain. Deferred to Phase 1.
-    - [ ] Rate limiting returns 429 on 6th rapid request
-        - **Blocked:** Cannot test until contact form sends successfully. Deferred to Phase 1.
+    - [x] Contact form submits successfully (email received)
+    - [x] Rate limiting returns 429 on 6th rapid request
     - [x] Dev pages (`/dev/*`) return 404 (production gating via `NODE_ENV`)
     - [x] Custom 404 and error pages render (not Vercel/Next.js defaults)
     - [x] All public pages load; theme and wallpaper toggles persist
@@ -53,64 +50,58 @@ Vercel auto-generates a preview deployment when the PR is opened.
     **Note:** Domain registration, DNS configuration, and domain transfers are manual tasks
     performed outside the codebase. Subtasks here track the operational steps.
 
-    - [ ] **1.1.a Register new domains**
-        - `andrewcreekmore.dev` (primary)
-        - `andrewrcr.dev` and `andrewrcr.com` (handle-based, easier to share verbally)
-        - Register at chosen registrar (Cloudflare, Namecheap, etc.)
-        - Configure DNS for all three to point to Vercel
+    - [x] **1.1.a Register new domains**
+        - Registered at Cloudflare: `andrewcreekmore.dev` (primary),
+          `andrewrcr.dev`, `andrewrcr.com`
+        - Configured DNS (A + CNAME) for all three pointing to Vercel
+        - Added anti-spoofing TXT records (SPF `-all`, DMARC `p=reject`)
 
     - [ ] **1.1.b Transfer `andrewcreekmore.com` from Squarespace**
-        - Initiate transfer to same registrar as `.dev` domains
-        - Configure DNS to point to Vercel
+        - Transfer unlocked and auth code requested at Squarespace
+        - **Waiting:** Auth code delivery (up to 24 hours)
+        - Once received, initiate transfer at Cloudflare
         - **Note:** Domain transfers can take 5–7 days; do not block other tasks on this
 
-    - [ ] **1.1.c Add all domains to Vercel project**
-        - Set `andrewcreekmore.dev` as primary domain
-        - Add `andrewcreekmore.com`, `andrewrcr.dev`, `andrewrcr.com` as aliases
-          (Vercel auto-308 redirects to primary)
-        - Verify SSL certificates provisioned for all domains
-        - **DNS gotchas:**
-            - If using Cloudflare: DNS records must be "DNS Only" (gray cloud), NOT proxied
-              (orange cloud) — Cloudflare proxy breaks Vercel's Let's Encrypt SSL validation
-            - If any CAA records exist on the domain: add `0 issue "letsencrypt.org"` or SSL
-              generation will silently fail
-            - DNS propagation can take up to 48 hours (usually under 1 hour in practice)
+    - [x] **1.1.c Add all domains to Vercel project**
+        - `andrewcreekmore.dev` set as primary domain
+        - `www` subdomains and `andrewrcr.dev`/`.com` (+ their `www`) configured
+          as 308 redirects to primary
+        - SSL certificates provisioned and verified for all domains
+        - No CAA records present (verified via Google DNS) — no SSL blockers
+        - Cloudflare DNS set to "DNS Only" (gray cloud) per Vercel requirements
 
-    - [ ] **1.1.d Verify domains resolve correctly**
-        - `https://andrewcreekmore.dev` loads the site
-        - `https://andrewcreekmore.com` redirects (308) to `.dev`
-        - `https://andrewrcr.dev` and `https://andrewrcr.com` redirect (308) to `.dev`
-        - SSL certificates valid for all domains (no browser warnings)
+    - [x] **1.1.d Verify domains resolve correctly**
+        - `https://andrewcreekmore.dev` → 200 (loads site)
+        - `https://www.andrewcreekmore.dev` → 308 to apex
+        - `https://andrewrcr.dev` → 308 to `andrewcreekmore.dev`
+        - `https://www.andrewrcr.dev` → 308 to `andrewcreekmore.dev`
+        - `https://andrewrcr.com` → 308 to `andrewcreekmore.dev`
+        - `https://www.andrewrcr.com` → 308 to `andrewcreekmore.dev`
+        - SSL valid on all domains
+        - **Remaining:** `andrewcreekmore.com` pending transfer (Task 1.1.b)
 
-- [ ] **1.2 Configure Zeptomail sender domain and verify contact form**
+- [x] **1.2 Configure Zeptomail sender domain and verify contact form**
 
-    **Blocked until:** `andrewcreekmore.dev` registered (Task 1.1.a)
+    - [x] **1.2.a Add `andrewcreekmore.dev` as verified sender domain in Zeptomail**
+        - Added domain, configured DKIM (TXT) and bounce CNAME at Cloudflare
+        - Both records verified in Zeptomail dashboard
+    - [x] **1.2.b Update `CONTACT_EMAIL_FROM` env var in Vercel if needed**
+        - Verified existing config matches Zeptomail sender address
+    - [x] **1.2.c Test contact form end-to-end on production**
+        - Contact form submission → email received
+        - 6 rapid POST requests → 429 on 6th (rate limiting confirmed)
+    - [x] **1.2.d Mark deferred Phase 0 subtasks complete**
+        - Phase 0.1 contact form and rate limiting items checked off
 
-    - [ ] **1.2.a Add `andrewcreekmore.dev` as verified sender domain in Zeptomail**
-        - Add domain in Zeptomail dashboard
-        - Configure required DNS records (SPF, DKIM, DMARC) at registrar
-        - Wait for Zeptomail domain verification to complete
-    - [ ] **1.2.b Update `CONTACT_EMAIL_FROM` env var in Vercel if needed**
-        - Verify `noreply@andrewcreekmore.dev` (or chosen address) matches Zeptomail config
-    - [ ] **1.2.c Test contact form end-to-end on production**
-        - Submit form → email received at destination address
-        - Submit 6 rapid requests → 429 rate limit response on 6th
-    - [ ] **1.2.d Mark deferred Phase 0 subtasks complete**
-        - Return to 0.1 and check off contact form + rate limiting items
+- [x] **1.3 Update live site references**
 
-- [ ] **1.3 Update live site references**
-
-    - [ ] **1.3.a Update `liveDemo` link in project data**
-        - `src/data/projects.ts` → `arc-portfolio` entry → `links.liveDemo` is currently
-          `undefined`
-        - Set to final production URL
-
-    - [ ] **1.3.b Update README with live site URL**
-        - Replace placeholder (if used during Phase 5) with actual production URL
-
-    - [ ] **1.3.c Run quality gates and commit**
-        - Type-check, lint, format, build, tests
-        - Commit directly to `main`
+    - [x] **1.3.a Update `liveDemo` link in project data**
+        - Set `src/data/projects.ts` arc-portfolio `links.liveDemo` to
+          `https://andrewcreekmore.dev`
+    - [x] **1.3.b Update README with live site URL**
+        - Already had correct URL (`andrewcreekmore.dev`) — no change needed
+    - [x] **1.3.c Run quality gates and commit**
+        - Type-check, lint, format, tests pass; committed to `main`
 
 ### **Phase 2:** Production Validation
 
