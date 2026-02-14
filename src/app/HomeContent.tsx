@@ -1,0 +1,147 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { Hero } from "@/components/layout/Hero";
+import { FeaturedSection } from "@/components/sections/FeaturedSection";
+import { SkillLogoGrid } from "@/components/skills/SkillLogoGrid";
+import { skills } from "@/data/skills";
+import {
+  BODY_CONTENT_DELAY,
+  BODY_CONTENT_DURATION,
+  HIDE_DURATION,
+  REFRESH_CONTENT_DELAY,
+  REFRESH_CONTENT_DURATION,
+  SKIP_BODY_DELAY,
+  SKIP_CONTENT_DURATION,
+  MATERIAL_EASE,
+  LAYOUT_CONTENT_FADE_DURATION,
+} from "@/lib/animation-timing";
+import { useIsPhone, useIsShortViewport } from "@/hooks/useMediaQuery";
+import { useLayoutPreferences, type LayoutMode } from "@/contexts/LayoutPreferencesContext";
+import { useAnimationContext, type AnimationMode } from "@/contexts/AnimationContext";
+
+// Extract featured skills from all categories
+const allFeaturedSkills = Object.values(skills)
+  .flat()
+  .filter((skill) => skill.featured);
+
+// Explicit ordering for Home page - grouped by ecosystem:
+// JS/frontend stack, Python stack, Microsoft stack, AI footer
+const featuredOrderDesktop = [
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Python",
+  "Django",
+  "C#",
+  ".NET",
+  "Blazor",
+  "Claude Code",
+  "Codex CLI",
+];
+
+// Mobile: curated 6 skills (2 per ecosystem, no AI - fits single row)
+const featuredOrderMobile = ["TypeScript", "React", "Python", "Django", "C#", ".NET"];
+
+const getFeaturedSkills = (order: string[]) =>
+  order
+    .map((name) => allFeaturedSkills.find((s) => s.name === name))
+    .filter((s): s is (typeof allFeaturedSkills)[number] => s !== undefined);
+
+/** Content fade-out duration in ms (from animation-timing.ts) */
+const CONTENT_FADE_OUT_MS = LAYOUT_CONTENT_FADE_DURATION * 1000;
+
+export default function HomeContent() {
+  const isPhone = useIsPhone();
+  const isShortViewport = useIsShortViewport();
+  const { layoutMode, isLayoutTransitioning } = useLayoutPreferences();
+  const { animationMode, visibility } = useAnimationContext();
+
+  // Use new visibility flag - accounts for initialization
+  const contentVisible = visibility.contentVisible;
+
+  // Delayed layout mode - waits for content fade-out before updating.
+  // This prevents the skills row from changing while still visible.
+  const [delayedLayoutMode, setDelayedLayoutMode] = useState<LayoutMode>(layoutMode);
+
+  useEffect(() => {
+    // Delay update when transitioning (waits for fade-out), sync immediately otherwise
+    const delay = isLayoutTransitioning ? CONTENT_FADE_OUT_MS : 0;
+    const timer = setTimeout(() => {
+      setDelayedLayoutMode(layoutMode);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [layoutMode, isLayoutTransitioning]);
+
+  // Get body content timing based on animationMode
+  const getBodyContentTiming = (mode: AnimationMode) => {
+    switch (mode) {
+      case "instant":
+        return { duration: 0 };
+      case "route":
+        // Route: body content doesn't need special timing (already visible context)
+        return { duration: 0.3, ease: MATERIAL_EASE };
+      case "refresh":
+        return {
+          duration: REFRESH_CONTENT_DURATION,
+          delay: REFRESH_CONTENT_DELAY + 0.1, // Slightly after hero
+          ease: MATERIAL_EASE,
+        };
+      case "skip":
+        return {
+          duration: SKIP_CONTENT_DURATION,
+          delay: SKIP_BODY_DELAY,
+          ease: MATERIAL_EASE,
+        };
+      case "intro":
+      default:
+        return {
+          duration: BODY_CONTENT_DURATION,
+          delay: BODY_CONTENT_DELAY,
+          ease: "easeOut" as const,
+        };
+    }
+  };
+
+  const bodyTransition = contentVisible ? getBodyContentTiming(animationMode) : { duration: HIDE_DURATION };
+
+  // Responsive positioning: skills in hero when viewport can't fit them in the body
+  // Phone: always in hero (compact set). Short viewport (laptop): in hero (full set).
+  // Tall desktop: below FeaturedSection in scrollable body.
+  // Mobile boxed: curated 6 skills (single row). Mobile fullscreen: full 10 (5/5 split)
+  // Uses delayedLayoutMode to wait for content fade-out before changing skills list
+  const skillsInHero = isPhone || isShortViewport;
+  const useFullSkillSet = !isPhone || delayedLayoutMode === "full";
+  const featuredSkills = getFeaturedSkills(useFullSkillSet ? featuredOrderDesktop : featuredOrderMobile);
+
+  // Icon size: phone (28px), laptop/compact (40px), full desktop (48px)
+  const skillSize = isShortViewport && !isPhone ? "responsiveMd" : "responsive";
+
+  const heroContent = skillsInHero ? (
+    <Hero>
+      <SkillLogoGrid skills={featuredSkills} layout="row" size={skillSize} linkToProjects={true} />
+    </Hero>
+  ) : (
+    <Hero />
+  );
+
+  return (
+    <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
+      <motion.div
+        className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: contentVisible ? 1 : 0 }}
+        transition={bodyTransition}
+      >
+        <FeaturedSection />
+        {!skillsInHero && (
+          <div className="mt-6 md:mt-10 lg:mt-16 flex justify-center">
+            <SkillLogoGrid skills={featuredSkills} layout="row" size="responsive" linkToProjects={true} />
+          </div>
+        )}
+      </motion.div>
+    </PageLayout>
+  );
+}

@@ -676,6 +676,7 @@ html[data-theme-transition] *::after {
 @keyframes bios-fade-out {
   to {
     opacity: 0.01;
+    z-index: -2;
   }
 }
 
