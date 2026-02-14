@@ -570,6 +570,29 @@ html[data-theme-transition] *::after {
    Framer Motion wrappers in LayoutWrapper (Phase 4 layout expansion animation).
    TopBar manages its own visibility via placeholder/actual rendering logic. */
 
+/* LCP anchor background — always uses dark-mode background per palette.
+   The intro sequence always presents dark regardless of light/dark preference.
+   Palette class is set by blocking script before paint, so --intro-bg resolves
+   before the anchor element is painted. See: layout.tsx [data-lcp-anchor]. */
+:root {
+  --intro-bg: 53 43 42;
+}
+.rose-pine {
+  --intro-bg: 25 23 36;
+}
+.gruvbox {
+  --intro-bg: 40 40 40;
+}
+.ayu {
+  --intro-bg: 31 36 48;
+}
+.rouge {
+  --intro-bg: 23 32 48;
+}
+.mariana {
+  --intro-bg: 48 56 65;
+}
+
 /* Terminal cursor blink */
 @keyframes blink {
   0%,

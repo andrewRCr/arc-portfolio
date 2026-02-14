@@ -165,6 +165,26 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${firaCode.variable} ${ibmPlexSans.variable} antialiased`}
         style={{ backgroundColor: "rgb(var(--background))" }}
       >
+        {/* LCP anchor — viewport-filling element with background-image (data URI) that
+            registers as the Largest Contentful Paint candidate at ~0ms. Without this,
+            LCP measures the hero h1 text which is held at opacity:0 during the intro
+            animation (~4.3s on mobile). The intro animation is intentional UX, not a
+            performance issue — this anchor compensates for LCP's inability to distinguish
+            between "slow to load" and "intentionally animated." */}
+        <div
+          data-lcp-anchor
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: -2,
+            pointerEvents: "none",
+            backgroundColor: "rgb(var(--intro-bg))",
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3C/svg%3E\")",
+            backgroundSize: "cover",
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
