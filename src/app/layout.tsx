@@ -181,7 +181,7 @@ export default async function RootLayout({
             pointerEvents: "none",
             backgroundColor: "rgb(var(--intro-bg))",
             backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3C/svg%3E\")",
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='black' fill-opacity='0.15'/%3E%3C/svg%3E\")",
             backgroundSize: "cover",
           }}
         />
