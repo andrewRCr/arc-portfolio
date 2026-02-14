@@ -242,6 +242,16 @@ deployment when the PR is opened.
 
     **Files:** `LayoutWrapper.tsx`, `ConditionalFrame.tsx`
 
+- [x] **3.4 Fix OG title showing "Full-Stack Developer" in iMessage previews**
+
+    iMessage deduplicates `og:site_name` from `og:title` prefix, stripping "Andrew Creekmore - "
+    and leaving just "Full-Stack Developer". Research confirmed `og:site_name` is optional (no SEO
+    impact; platforms fall back to domain name). Fix: removed `og:site_name`, set explicit
+    `og:title` to `"Andrew Creekmore | Portfolio"` (compact for previews). Page `<title>` remains
+    `"Andrew Creekmore - Full-Stack Developer"` for SEO.
+
+    **Files:** `src/app/layout.tsx`
+
 ---
 
 ## Success Criteria

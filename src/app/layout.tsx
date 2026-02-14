@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     canonical: "./",
   },
   openGraph: {
-    siteName: SITE.name,
+    title: "Andrew Creekmore | Portfolio",
     locale: SITE.locale,
     type: "website",
     images: [{ url: "/og-default.png", width: 1200, height: 630 }],
