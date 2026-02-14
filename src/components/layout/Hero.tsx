@@ -154,7 +154,7 @@ export function Hero({ children }: HeroProps) {
   const outerPadding = compact ? "pt-4 px-6" : "pt-4 px-2 md:pt-8 md:px-8";
   const contentMarginBottom = compact ? "mb-4" : "md:mb-8";
   const childrenMarginTop = compact ? "mt-0" : "mt-2 md:mt-0";
-  const headingMarginTop = children ? (compact ? "mt-2" : "mt-4 md:mt-8") : "mt-4 md:mt-2";
+  const headingMarginTop = children ? (compact ? "mt-4" : "mt-4 md:mt-8") : "mt-4 md:mt-2";
 
   return (
     <div className={outerPadding}>
