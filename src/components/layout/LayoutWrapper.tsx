@@ -31,6 +31,8 @@ type WindowId = "top" | "main" | "footer";
 export interface LayoutWrapperProps {
   /** Main content to render in the central window */
   children: React.ReactNode;
+  /** First visit (no intro cookie) — defers wallpaper loading priority so CSS paints faster */
+  isFirstVisit?: boolean;
 }
 
 /**
@@ -245,7 +247,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
  * </LayoutWrapper>
  * ```
  */
-export function LayoutWrapper({ children }: LayoutWrapperProps) {
+export function LayoutWrapper({ children, isFirstVisit }: LayoutWrapperProps) {
   const { wallpaperSrc, wallpaperSrcHiRes, wallpaperSrcMobile } = useWallpaperContext();
 
   return (
@@ -259,6 +261,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         imageSrc={wallpaperSrc}
         imageSrcHiRes={wallpaperSrcHiRes}
         imageSrcMobile={wallpaperSrcMobile}
+        deferLoading={isFirstVisit}
       />
 
       {/* LayoutGroup enables shared layoutId animations between TopBar and IntroSequence */}

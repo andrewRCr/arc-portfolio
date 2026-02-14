@@ -20,6 +20,8 @@ export interface WallpaperBackgroundProps {
   imageSrcHiRes?: string;
   /** Optional path to mobile wallpaper image - ~1280w (for mobile viewports) */
   imageSrcMobile?: string;
+  /** Defer loading priority — lowers fetchPriority so render-blocking CSS loads first */
+  deferLoading?: boolean;
 }
 
 /** Fade transition duration in seconds */
@@ -29,7 +31,7 @@ const FADE_DURATION = 0.5;
  * Inner component for the wallpaper image with fade-in on load and fade-out on exit.
  * Uses key={src} from parent to trigger AnimatePresence crossfade on wallpaper switch.
  */
-function WallpaperImage({ src, srcSet }: { src: string; srcSet?: string }) {
+function WallpaperImage({ src, srcSet, deferLoading }: { src: string; srcSet?: string; deferLoading?: boolean }) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -74,7 +76,7 @@ function WallpaperImage({ src, srcSet }: { src: string; srcSet?: string }) {
       transition={{ duration: FADE_DURATION, ease: "easeOut" }}
       loading="eager"
       decoding="async"
-      fetchPriority="high"
+      fetchPriority={deferLoading ? "low" : "high"}
       onLoad={handleLoad}
     />
   );
@@ -113,7 +115,12 @@ function WallpaperImage({ src, srcSet }: { src: string; srcSet?: string }) {
  * <WallpaperBackground imageSrc="/wallpaper/optimized-1080/example.webp" />
  * ```
  */
-export function WallpaperBackground({ imageSrc, imageSrcHiRes, imageSrcMobile }: WallpaperBackgroundProps) {
+export function WallpaperBackground({
+  imageSrc,
+  imageSrcHiRes,
+  imageSrcMobile,
+  deferLoading,
+}: WallpaperBackgroundProps) {
   const { activeTheme } = useThemeContext();
   const { layoutMode } = useLayoutPreferences();
   const { reducedMotion } = useAnimationContext();
@@ -202,7 +209,9 @@ export function WallpaperBackground({ imageSrc, imageSrcHiRes, imageSrcMobile }:
           )}
         </AnimatePresence>
       )}
-      <AnimatePresence>{imageSrc && <WallpaperImage key={imageSrc} src={imageSrc} srcSet={srcSet} />}</AnimatePresence>
+      <AnimatePresence>
+        {imageSrc && <WallpaperImage key={imageSrc} src={imageSrc} srcSet={srcSet} deferLoading={deferLoading} />}
+      </AnimatePresence>
     </div>
   );
 }

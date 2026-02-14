@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Geist, Geist_Mono, Fira_Code, IBM_Plex_Sans } from "next/font/google";
+import { Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/config/site";
 import {
@@ -20,9 +20,14 @@ import { defaultPalette, themes } from "@/data/themes";
 import { LAYOUT_MODES } from "@/config/layout";
 import { WALLPAPER_OPTIONS } from "@/data/wallpapers";
 
+// Only Geist Mono is preloaded — it's needed for the BIOS POST LCP text.
+// Other fonts use preload: false to avoid competing with render-blocking CSS
+// on throttled connections. They load via CSS in the background during the
+// intro animation (~7s) and are browser-cached for return visits.
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  preload: false,
 });
 
 const geistMono = Geist_Mono({
@@ -30,15 +35,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const firaCode = Fira_Code({
-  variable: "--font-fira-code",
-  subsets: ["latin"],
-});
-
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -135,8 +136,11 @@ export default async function RootLayout({
         <meta name="color-scheme" content="dark light" />
         {/* Preload wallpaper image to prevent flicker on page load.
             Starts download before CSS parsing, eliminating the discovery delay.
-            Uses imagesrcset/imagesizes for responsive preloading (correct variant for viewport). */}
-        {wallpaperSrc && (
+            Uses imagesrcset/imagesizes for responsive preloading (correct variant for viewport).
+            Skip for first visits (no intro cookie): BIOS POST + intro sequence provide ~7s of
+            animation before the wallpaper is visible, so the SSR <img> in WallpaperBackground
+            has plenty of time to load without competing with render-blocking CSS. */}
+        {wallpaperSrc && introCookie && (
           <link
             rel="preload"
             as="image"
@@ -165,7 +169,7 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration = "manual";` }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${firaCode.variable} ${ibmPlexSans.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexSans.variable} antialiased`}
         style={{ backgroundColor: "rgb(var(--background))" }}
       >
         {/* LCP anchor — BIOS-style POST screen. Server-rendered text paints at
@@ -182,7 +186,7 @@ export default async function RootLayout({
         >
           <HydrationSignal />
           <ConsoleLoggerInit />
-          <LayoutWrapper>
+          <LayoutWrapper isFirstVisit={!introCookie}>
             <ConditionalFrame>{children}</ConditionalFrame>
           </LayoutWrapper>
         </ThemeProvider>
