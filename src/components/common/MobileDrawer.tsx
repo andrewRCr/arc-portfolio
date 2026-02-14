@@ -60,6 +60,7 @@ export function MobileDrawer({
       <SheetContent
         side="bottom"
         hideCloseButton
+        onOpenAutoFocus={(e) => e.preventDefault()}
         style={{
           // fillHeight: exact height, otherwise maxHeight allows content-based sizing
           ...(fillHeight ? { height: containerHeight } : { maxHeight: containerHeight }),

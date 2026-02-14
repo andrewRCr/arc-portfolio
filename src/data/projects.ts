@@ -28,7 +28,7 @@ export const projects: Project[] = [
       "frontend types.",
     shortDescription:
       "Movie discovery platform demonstrating end-to-end type safety, a layered service architecture with dependency injection, " +
-      "production-grade containerized infrastructure, and custom validation and enrichment pipelines over external API integration.",
+      "containerized infrastructure, and custom validation and enrichment pipelines over external API integration.",
     category: ["Web App"],
     tags: [
       "React",

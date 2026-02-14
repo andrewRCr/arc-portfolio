@@ -56,7 +56,7 @@ export function MobileNavigation() {
           {NAV_ITEMS.map((item) => {
             const active = isActive(item.href);
             return (
-              <DropdownMenuItem key={item.href} asChild>
+              <DropdownMenuItem key={item.href} asChild className="focus:bg-secondary-low focus:text-foreground">
                 <Link
                   href={item.href}
                   aria-current={active ? "page" : undefined}
