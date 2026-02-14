@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/config/site";
+
+export const runtime = "edge";
 import {
   PALETTE_STORAGE_KEY,
   PALETTE_COOKIE_NAME,

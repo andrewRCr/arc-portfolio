@@ -9,5 +9,5 @@
  * This prevents the email from appearing in static HTML.
  */
 export function encodeEmail(email: string): string {
-  return Buffer.from(email).toString("base64");
+  return btoa(email);
 }
