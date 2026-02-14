@@ -570,10 +570,10 @@ html[data-theme-transition] *::after {
    Framer Motion wrappers in LayoutWrapper (Phase 4 layout expansion animation).
    TopBar manages its own visibility via placeholder/actual rendering logic. */
 
-/* LCP anchor background — always uses dark-mode background per palette.
+/* Intro background — always uses dark-mode background per palette.
    The intro sequence always presents dark regardless of light/dark preference.
    Palette class is set by blocking script before paint, so --intro-bg resolves
-   before the anchor element is painted. See: layout.tsx [data-lcp-anchor]. */
+   before the LCP loading indicator is painted. See: layout.tsx [data-lcp-anchor]. */
 :root {
   --intro-bg: 53 43 42;
 }
@@ -591,6 +591,43 @@ html[data-theme-transition] *::after {
 }
 .mariana {
   --intro-bg: 48 56 65;
+}
+
+/* LCP loading indicator — server-rendered dots that anchor LCP at ~0ms.
+   Visible briefly before the intro animation overlay mounts (~200ms).
+   Container auto-fades via CSS to avoid needing client-side coordination. */
+.lcp-loading-indicator {
+  animation: lcp-fade-out 0.3s ease-out 0.5s forwards;
+}
+
+.lcp-dot {
+  font-size: 2.5rem;
+  line-height: 1;
+  color: rgb(var(--muted-foreground));
+  opacity: 0.3;
+  animation: lcp-dot-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes lcp-dot-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes lcp-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lcp-loading-indicator {
+    display: none;
+  }
 }
 
 /* Terminal cursor blink */

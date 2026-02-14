@@ -8,6 +8,7 @@ import {
   PALETTE_COOKIE_NAME,
   WALLPAPER_COOKIE_NAME,
   LAYOUT_MODE_COOKIE_NAME,
+  INTRO_COOKIE_NAME,
 } from "@/config/storage";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
@@ -94,6 +95,7 @@ export default async function RootLayout({
   const paletteCookie = cookieStore.get(PALETTE_COOKIE_NAME)?.value;
   const wallpaperCookie = cookieStore.get(WALLPAPER_COOKIE_NAME)?.value;
   const layoutModeCookie = cookieStore.get(LAYOUT_MODE_COOKIE_NAME)?.value;
+  const introCookie = cookieStore.get(INTRO_COOKIE_NAME)?.value;
 
   // Determine server palette (cookie or default)
   const serverPalette = paletteCookie && paletteCookie in themes ? paletteCookie : defaultPalette;
@@ -165,26 +167,41 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${firaCode.variable} ${ibmPlexSans.variable} antialiased`}
         style={{ backgroundColor: "rgb(var(--background))" }}
       >
-        {/* LCP anchor — viewport-filling element with background-image (data URI) that
-            registers as the Largest Contentful Paint candidate at ~0ms. Without this,
-            LCP measures the hero h1 text which is held at opacity:0 during the intro
-            animation (~4.3s on mobile). The intro animation is intentional UX, not a
-            performance issue — this anchor compensates for LCP's inability to distinguish
-            between "slow to load" and "intentionally animated." */}
-        <div
-          data-lcp-anchor
-          aria-hidden="true"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: -2,
-            pointerEvents: "none",
-            backgroundColor: "rgb(var(--intro-bg))",
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='black' fill-opacity='0.15'/%3E%3C/svg%3E\")",
-            backgroundSize: "cover",
-          }}
-        />
+        {/* LCP anchor — server-rendered loading dots that register as Chrome's Largest
+            Contentful Paint candidate at ~0ms. Without this, LCP measures the andrewRCr
+            span at ~4.7s during the intro animation. Chrome ignores background-color and
+            low-entropy background-images for LCP, so text content is required. The dots
+            auto-fade via CSS before the intro animation overlay mounts. Only rendered for
+            new users (no intro cookie) since returning users skip the intro. */}
+        {!introCookie && (
+          <div
+            data-lcp-anchor
+            aria-hidden="true"
+            className="lcp-loading-indicator font-terminal"
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 101,
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+              paddingTop: "calc(20vh + 6px)",
+              backgroundColor: "rgb(var(--intro-bg))",
+              pointerEvents: "none",
+              gap: "0.75rem",
+            }}
+          >
+            <span className="lcp-dot" style={{ animationDelay: "0s" }}>
+              ●
+            </span>
+            <span className="lcp-dot" style={{ animationDelay: "0.1s" }}>
+              ●
+            </span>
+            <span className="lcp-dot" style={{ animationDelay: "0.2s" }}>
+              ●
+            </span>
+          </div>
+        )}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
