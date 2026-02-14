@@ -244,11 +244,12 @@ deployment when the PR is opened.
 
 - [x] **3.4 Fix OG title showing "Full-Stack Developer" in iMessage previews**
 
-    iMessage deduplicates `og:site_name` from `og:title` prefix, stripping "Andrew Creekmore - "
-    and leaving just "Full-Stack Developer". Research confirmed `og:site_name` is optional (no SEO
-    impact; platforms fall back to domain name). Fix: removed `og:site_name`, set explicit
-    `og:title` to `"Andrew Creekmore | Portfolio"` (compact for previews). Page `<title>` remains
-    `"Andrew Creekmore - Full-Stack Developer"` for SEO.
+    iMessage strips the site name prefix from `og:title` via undocumented domain-based
+    deduplication (parses `andrewcreekmore.dev` → "Andrew Creekmore", strips matching
+    prefix regardless of `og:site_name`). No Apple documentation exists for this behavior.
+    Fix: reversed `og:title` to `"Portfolio | Andrew Creekmore"` so name is suffix (not
+    stripped). Restored `og:site_name` (provides cleaner label on Facebook/LinkedIn/Slack
+    vs raw domain fallback). Page `<title>` unchanged for SEO.
 
     **Files:** `src/app/layout.tsx`
 
