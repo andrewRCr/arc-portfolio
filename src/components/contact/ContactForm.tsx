@@ -37,15 +37,15 @@ type FormStatus = "idle" | "submitting" | "success" | "error";
 interface ContactFormProps {
   /**
    * Visual variant for different contexts:
-   * - "standalone": Transparent field backgrounds (for use without card wrapper)
-   * - "card": Tinted field backgrounds (for use inside card context)
+   * - "standalone": bg-surface-background field backgrounds (for use without card wrapper)
+   * - "card": bg-surface-card field backgrounds (for use inside card context)
    */
   variant?: "standalone" | "card";
 }
 
 export function ContactForm({ variant = "standalone" }: ContactFormProps) {
   const isPhone = useIsPhone();
-  const inputBg = variant === "card" ? "bg-surface-card" : "bg-transparent";
+  const inputBg = variant === "card" ? "bg-surface-card" : "bg-surface-background";
   const [status, setStatus] = useState<FormStatus>("idle");
 
   // Note: Don't use useForm<ContactFormData> - explicit generic type breaks zod v4 compatibility
