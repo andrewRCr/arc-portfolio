@@ -9,6 +9,9 @@
   <img alt="Vercel" src="https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white" />
   <br>
   <a href="https://pagespeed.web.dev/analysis?url=https://andrewcreekmore.dev">
+    <img alt="Lighthouse Performance"
+      src="https://img.shields.io/badge/Performance-90%2B-brightgreen?logo=lighthouse&logoColor=white" /></a>
+  <a href="https://pagespeed.web.dev/analysis?url=https://andrewcreekmore.dev">
     <img alt="Lighthouse Accessibility"
       src="https://img.shields.io/badge/Accessibility-100-brightgreen?logo=lighthouse&logoColor=white" /></a>
   <a href="https://pagespeed.web.dev/analysis?url=https://andrewcreekmore.dev">
@@ -17,6 +20,7 @@
   <a href="https://pagespeed.web.dev/analysis?url=https://andrewcreekmore.dev">
     <img alt="Lighthouse SEO"
       src="https://img.shields.io/badge/SEO-100-brightgreen?logo=lighthouse&logoColor=white" /></a>
+  <br>
   <a href="https://github.com/andrewRCr/arc-portfolio/actions/workflows/ci.yml">
     <img alt="CI"
       src="https://github.com/andrewRCr/arc-portfolio/actions/workflows/ci.yml/badge.svg" /></a>
