@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import { getNavBorderTiming, getBorderDrawTiming, HIDE_TRANSITION } from "@/lib/animation-timing";
 import { useAnimationContext } from "@/contexts/AnimationContext";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import { Navigation } from "./Navigation";
 import { PageTransition } from "./PageTransition";
 
@@ -71,11 +72,13 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   const isDevRoute = pathname?.startsWith("/dev");
   const { navGapDepth, windowBorderWidth, contentMaxWidth, tuiFrameMaxWidth } = DEFAULT_LAYOUT_TOKENS;
   const { animationMode, intro, visibility } = useAnimationContext();
+  const { layoutMode, isLayoutTransitioning } = useLayoutPreferences();
 
   // Derive values from AnimationContext
   const introPhase = intro.phase;
   // Use new visibility flag that accounts for initialization
   const contentVisible = visibility.contentVisible;
+  const isFullscreen = layoutMode === "full";
 
   // Timing logic centralized in animation-timing.ts (SRP compliance)
   const navBorderTransition = contentVisible ? getNavBorderTiming(animationMode) : HIDE_TRANSITION;
@@ -123,6 +126,9 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
   // Track if SVG animation has been triggered - persists until retrigger
   const [svgTriggered, setSvgTriggered] = useState(false);
 
+  // Track if SVG draw animation has completed - switches to CSS border for smooth resize tracking
+  const [borderDrawComplete, setBorderDrawComplete] = useState(false);
+
   // Trigger SVG based on current phase
   // - "entering": Reset for new intro cycle
   // - "expanding": Trigger the border draw animation (for both normal intro and skip)
@@ -131,6 +137,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
     if (introPhase === "entering") {
       // New intro cycle starting - reset so border can animate again
       setSvgTriggered(false); // eslint-disable-line react-hooks/set-state-in-effect
+      setBorderDrawComplete(false);
     } else if (introPhase === "expanding") {
       // Trigger the border draw animation
       // Dimensions are valid (offsetWidth/offsetHeight ignore parent transforms)
@@ -140,8 +147,43 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
     // Once triggered, stays triggered until next intro cycle
   }, [introPhase]);
 
-  // Show SVG border for intro and skip modes (not refresh/route)
-  const showAnimatedBorder = svgTriggered && (animationMode === "intro" || animationMode === "skip");
+  // Whether this session uses the SVG draw animation (intro/skip modes only)
+  const svgMode = svgTriggered && (animationMode === "intro" || animationMode === "skip");
+
+  // Defer SVG return after layout transition ends: the CSS transition may not have fully
+  // painted, and the ResizeObserver debounce (50ms) means dimensions could be stale.
+  // Keep CSS border briefly, then force a sync measurement before showing SVG.
+  const [deferSvgReturn, setDeferSvgReturn] = useState(false);
+
+  useEffect(() => {
+    if (isLayoutTransitioning) {
+      // Transition started — flag that we need to defer SVG return
+      setDeferSvgReturn(true); // eslint-disable-line react-hooks/set-state-in-effect
+    } else if (deferSvgReturn) {
+      // Transition ended — wait for CSS to settle + ResizeObserver to flush,
+      // then force sync measurement and show SVG with correct dimensions
+      const timer = setTimeout(() => {
+        if (containerRef.current) {
+          const container = containerRef.current;
+          setDimensions({
+            width: container.offsetWidth,
+            height: container.offsetHeight,
+            navGapHalf: parseFloat(getComputedStyle(container).getPropertyValue("--nav-gap-half")) || 70,
+          });
+        }
+        setDeferSvgReturn(false);
+      }, 80); // 50ms debounce + 16ms frame budget + margin
+      return () => clearTimeout(timer);
+    }
+  }, [isLayoutTransitioning, deferSvgReturn]);
+
+  // SVG border: shown in stable boxed mode after intro draw (correct dimensions, no resizing).
+  // CSS border: shown during layout transitions, full mode, and brief post-transition buffer
+  // (tracks container size natively via absolute inset-0, unlike SVG which uses debounced
+  // ResizeObserver dimensions). Swaps happen during transitions when all UI is animating,
+  // masking any visual difference. Intro always resets to boxed (LayoutWrapper).
+  const useCssBorder = isFullscreen || isLayoutTransitioning || deferSvgReturn;
+  const showAnimatedBorder = svgMode && !useCssBorder;
 
   // Timing logic centralized in animation-timing.ts (SRP compliance)
   const borderDrawTiming = getBorderDrawTiming(animationMode);
@@ -205,7 +247,10 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
         className="relative rounded-lg flex flex-col flex-1 min-h-0 mx-auto w-full"
         style={{ maxWidth: tuiFrameMaxWidth }}
       >
-        {/* SVG animated border - draws from notch edges to bottom center */}
+        {/* SVG animated border - draws from notch edges to bottom center.
+            Shown in stable boxed mode after intro. Swapped to CSS border during layout
+            transitions/full mode (CSS tracks resize natively, SVG uses debounced dimensions).
+            When remounting after a layout transition, borderDrawComplete skips the draw animation. */}
         {showAnimatedBorder && width > 0 && (
           <svg
             className="absolute inset-0 pointer-events-none overflow-visible"
@@ -222,11 +267,17 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
               strokeWidth={windowBorderWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
+              initial={{
+                strokeDasharray: pathLength,
+                strokeDashoffset: borderDrawComplete ? 0 : pathLength,
+              }}
               animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
               transition={{
-                strokeDashoffset: borderDrawTiming,
-                strokeDasharray: { duration: 0 }, // Instant update on resize
+                strokeDashoffset: borderDrawComplete ? { duration: 0 } : borderDrawTiming,
+                strokeDasharray: { duration: 0 },
+              }}
+              onAnimationComplete={() => {
+                if (!borderDrawComplete) setBorderDrawComplete(true);
               }}
             />
             {/* Right half - draws from right notch edge to bottom center */}
@@ -237,17 +288,22 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
               strokeWidth={windowBorderWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
+              initial={{
+                strokeDasharray: pathLength,
+                strokeDashoffset: borderDrawComplete ? 0 : pathLength,
+              }}
               animate={{ strokeDasharray: pathLength, strokeDashoffset: 0 }}
               transition={{
-                strokeDashoffset: borderDrawTiming,
-                strokeDasharray: { duration: 0 }, // Instant update on resize
+                strokeDashoffset: borderDrawComplete ? { duration: 0 } : borderDrawTiming,
+                strokeDasharray: { duration: 0 },
               }}
             />
           </svg>
         )}
 
-        {/* Static CSS border - shown when not animating (or as fallback) */}
+        {/* CSS border - shown during layout transitions and full mode.
+            Uses absolute inset-0 so it tracks container size natively.
+            When swapping from SVG (svgMode), appears instantly via initial={false}. */}
         {!showAnimatedBorder && (
           <motion.div
             className="absolute inset-0 border-solid border-border-strong rounded-lg pointer-events-none"
@@ -258,7 +314,7 @@ export function ConditionalFrame({ children }: { children: React.ReactNode }) {
                 clipPath: borderClipPath,
               } as React.CSSProperties
             }
-            initial={{ opacity: 0 }}
+            initial={svgMode ? false : { opacity: 0 }}
             animate={{ opacity: contentVisible ? 1 : 0 }}
             transition={navBorderTransition}
             aria-hidden="true"

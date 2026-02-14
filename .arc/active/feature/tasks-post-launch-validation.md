@@ -205,13 +205,42 @@ deployment when the PR is opened.
     - [x] **2.2.e Verify error handling**
         - Custom 404 page renders for non-existent routes
 
-### **Phase 3:** External Registration
+### **Phase 3:** Post-Launch Maintenance
 
 - [x] **3.1 NexusMods API app registration**
 
     Submitted via NexusMods API app registration form with public GitHub repo and live site URLs.
 
     - [x] **3.1.a Submit NexusMods app registration**
+
+- [x] **3.2 Fix layout toggle overlapping lightbox close button (mobile)**
+
+    Added `isLightboxOpen` state to `LayoutPreferencesContext` (same pattern as existing `isDrawerOpen`).
+    `ImageGallery` syncs lightbox open state via effect; `LayoutWrapper` hides the toggle when lightbox
+    is open. Updated test imports in `ImageGallery.test.tsx` and `ProjectDetail.test.tsx` to use custom
+    render wrapper (pre-existing gap — tests imported directly from `@testing-library/react` instead of
+    `@tests/test-utils`).
+
+    **Files:** `LayoutPreferencesContext.tsx`, `ImageGallery.tsx`, `LayoutWrapper.tsx`,
+    `ImageGallery.test.tsx`, `ProjectDetail.test.tsx`
+
+- [x] **3.3 Fix layout mode transition visual issues**
+
+    Two issues fixed during layout mode transitions (boxed↔full toggle):
+
+    **Backdrop-blur snap (topbar and footer):** Removed `opacity` from the Framer Motion `animate` prop on
+    both the topbar and footer parent `motion.div` wrappers. Height animation with `overflow: hidden` provides
+    a clean clip reveal/hide without conflicting with `backdrop-filter` on the child `WindowContainer`. Also
+    added `AnimatePresence` fade (150ms) to the layout toggle button itself.
+
+    **TUI frame border snapping:** The SVG border (used after intro draw animation) has explicit `width`/`height`
+    from a debounced ResizeObserver (50ms), causing it to lag behind CSS-driven container resize during layout
+    transitions. Fix: swap to the CSS border (`absolute inset-0`, tracks natively) during transitions and full
+    mode, swap back to SVG in stable boxed mode. Added post-transition buffer (80ms) with forced sync dimension
+    measurement to prevent stale SVG dimensions on return. SVG skips draw animation on remount via
+    `borderDrawComplete` flag.
+
+    **Files:** `LayoutWrapper.tsx`, `ConditionalFrame.tsx`
 
 ---
 

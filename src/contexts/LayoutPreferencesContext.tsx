@@ -22,6 +22,9 @@ interface LayoutPreferencesContextValue {
   /** Whether the mobile theme control drawer is open (for coordinating UI elements) */
   isDrawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;
+  /** Whether the image gallery lightbox is open (for coordinating UI elements) */
+  isLightboxOpen: boolean;
+  setLightboxOpen: (open: boolean) => void;
   /** Whether layout mode is currently transitioning (for content crossfade coordination) */
   isLayoutTransitioning: boolean;
 }
@@ -65,6 +68,9 @@ export function LayoutPreferencesContextProvider({
 
   // Drawer open state (ephemeral, for UI coordination)
   const [isDrawerOpen, setDrawerOpen] = React.useState(false);
+
+  // Lightbox open state (ephemeral, for UI coordination)
+  const [isLightboxOpen, setLightboxOpen] = React.useState(false);
 
   // Layout transition state (for content crossfade during mode changes)
   const [isLayoutTransitioning, setLayoutTransitioning] = React.useState(false);
@@ -135,7 +141,15 @@ export function LayoutPreferencesContextProvider({
 
   return (
     <LayoutPreferencesContext.Provider
-      value={{ layoutMode, setLayoutMode, isDrawerOpen, setDrawerOpen, isLayoutTransitioning }}
+      value={{
+        layoutMode,
+        setLayoutMode,
+        isDrawerOpen,
+        setDrawerOpen,
+        isLightboxOpen,
+        setLightboxOpen,
+        isLayoutTransitioning,
+      }}
     >
       {children}
     </LayoutPreferencesContext.Provider>

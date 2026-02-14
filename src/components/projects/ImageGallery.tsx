@@ -23,6 +23,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Lightbox from "yet-another-react-lightbox";
 import { useIsPhone } from "@/hooks/useMediaQuery";
+import { useLayoutPreferences } from "@/contexts/LayoutPreferencesContext";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -41,6 +42,14 @@ export function ImageGallery({ images }: ImageGalleryProps) {
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const isPhone = useIsPhone();
+  const { setLightboxOpen } = useLayoutPreferences();
+
+  // Sync lightbox open state to context (hides layout toggle while lightbox is open)
+  const isLightboxOpen = lightboxIndex >= 0;
+  useEffect(() => {
+    setLightboxOpen(isLightboxOpen);
+    return () => setLightboxOpen(false);
+  }, [isLightboxOpen, setLightboxOpen]);
 
   // Track mount state to avoid rendering Lightbox during SSR
   // (yet-another-react-lightbox accesses document.body internally)

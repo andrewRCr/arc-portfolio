@@ -6,7 +6,7 @@
  * only tests our wrapper's interface and behavior.
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@tests/test-utils";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import { checkA11y } from "@tests/test-utils";

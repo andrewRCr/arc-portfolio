@@ -6,7 +6,7 @@
  * back button) are tested in DetailHeader.test.tsx.
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@tests/test-utils";
 import { describe, it, expect, vi } from "vitest";
 import ProjectDetail from "../ProjectDetail";
 import { getBackDestination } from "../utils";

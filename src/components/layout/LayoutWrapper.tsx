@@ -39,7 +39,7 @@ export interface LayoutWrapperProps {
  */
 function LayoutContent({ children }: LayoutWrapperProps) {
   const { windowGap, windowContainerMaxWidth, topBarHeight, footerHeight } = DEFAULT_LAYOUT_TOKENS;
-  const { layoutMode, setLayoutMode, isDrawerOpen } = useLayoutPreferences();
+  const { layoutMode, setLayoutMode, isDrawerOpen, isLightboxOpen } = useLayoutPreferences();
   const { loadMode, animationMode, intro, visibility, reducedMotion, isInitialized } = useAnimationContext();
   const dispatch = useAnimationDispatch();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
@@ -93,10 +93,12 @@ function LayoutContent({ children }: LayoutWrapperProps) {
   const effectiveActiveWindow = isFullscreen ? "main" : activeWindow;
 
   // Layout toggle button visibility:
-  // - Mobile: always visible (toggle between full and boxed), hidden when drawer is open
+  // - Mobile: always visible (toggle between full and boxed), hidden when drawer or lightbox is open
   // - Desktop: only visible as escape hatch if "full" mode inherited (e.g., from mobile session
   //   or viewport resize). Desktop can't enter fullscreen via ThemeControl, but needs a way out.
-  const showLayoutToggle = isMobile ? !isDrawerOpen : isFullscreen && !isDrawerOpen;
+  const showLayoutToggle = isMobile
+    ? !isDrawerOpen && !isLightboxOpen
+    : isFullscreen && !isDrawerOpen && !isLightboxOpen;
 
   const toggleLayoutMode = () => {
     setLayoutMode(isFullscreen ? "boxed" : "full");
@@ -135,12 +137,12 @@ function LayoutContent({ children }: LayoutWrapperProps) {
         onPointerDown={() => setActiveWindow(null)}
         inert={shouldShowIntro || undefined}
       >
-        {/* TopBar wrapper - animates height/opacity for fullscreen mode (isolated from intro animation) */}
+        {/* TopBar wrapper - animates height for fullscreen mode (isolated from intro animation)
+            Note: opacity intentionally NOT animated here — animating opacity on a parent of
+            backdrop-blur causes the blur to snap on/off instead of transitioning smoothly.
+            Height + overflow:hidden provides a clean clip reveal without the blur artifact. */}
         <motion.div
-          animate={{
-            height: isFullscreen ? 0 : topBarHeight,
-            opacity: isFullscreen ? 0 : 1,
-          }}
+          animate={{ height: isFullscreen ? 0 : topBarHeight }}
           transition={{ duration: fullscreenBarDuration, ease: "easeInOut" }}
           style={{ overflow: "hidden", flexShrink: 0 }}
         >
@@ -182,10 +184,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
               key="footer-actual"
               layoutId={introPhase === "morphing" ? "footer-window" : undefined}
               layout={introPhase === "morphing"}
-              animate={{
-                height: isFullscreen ? 0 : footerHeight,
-                opacity: isFullscreen ? 0 : 1,
-              }}
+              animate={{ height: isFullscreen ? 0 : footerHeight }}
               transition={{ duration: fullscreenBarDuration, ease: "easeInOut" }}
               exit={{ opacity: 0, transition: { duration: HIDE_DURATION } }}
               style={{ overflow: "hidden", flexShrink: 0 }}
@@ -200,17 +199,23 @@ function LayoutContent({ children }: LayoutWrapperProps) {
           - Mobile: always visible, toggles between full and boxed
           - Desktop: only visible in fullscreen mode (exit button)
           - Position: top-right of main content area (accounts for TopBar in boxed mode) */}
-      {showLayoutToggle && (
-        <button
-          type="button"
-          onClick={toggleLayoutMode}
-          aria-label={isFullscreen ? "Exit fullscreen mode" : "Enter fullscreen mode"}
-          className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-surface-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
-          style={{ top: isFullscreen ? 16 : topBarHeight + windowGap + 16 }}
-        >
-          {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-        </button>
-      )}
+      <AnimatePresence>
+        {showLayoutToggle && (
+          <motion.button
+            type="button"
+            onClick={toggleLayoutMode}
+            aria-label={isFullscreen ? "Exit fullscreen mode" : "Enter fullscreen mode"}
+            className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-surface-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
+            style={{ top: isFullscreen ? 16 : topBarHeight + windowGap + 16 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Intro animation overlay - renders above layout during animation
           Normal layout renders underneath as morph target for window transition */}
