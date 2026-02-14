@@ -595,7 +595,9 @@ html[data-theme-transition] *::after {
 
 /* LCP loading indicator — server-rendered dots that anchor LCP at ~0ms.
    Visible briefly before the intro animation overlay mounts (~200ms).
-   Container auto-fades via CSS to avoid needing client-side coordination. */
+   Both layers auto-fade via CSS. Fade target is opacity:0.01 (not 0)
+   because Chrome invalidates LCP entries when elements reach opacity:0. */
+.lcp-loading-bg,
 .lcp-loading-indicator {
   animation: lcp-fade-out 0.3s ease-out 0.5s forwards;
 }
@@ -620,7 +622,7 @@ html[data-theme-transition] *::after {
 
 @keyframes lcp-fade-out {
   to {
-    opacity: 0;
+    opacity: 0.01;
   }
 }
 
