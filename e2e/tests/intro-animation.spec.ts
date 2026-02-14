@@ -32,8 +32,8 @@ function isMobileViewport(page: Page): boolean {
 /** Selector for the intro overlay element */
 const INTRO_OVERLAY_SELECTOR = "[data-intro-sequence]";
 
-/** Max time to wait for animation to complete naturally (animation is ~5.5s + spring buffer) */
-const ANIMATION_COMPLETE_TIMEOUT = 8000;
+/** Max time to wait for animation to complete naturally (~3s BIOS POST + ~5.5s intro + buffer) */
+const ANIMATION_COMPLETE_TIMEOUT = 12000;
 
 test.describe("Intro Animation", () => {
   // Linux CI WebKit uses software compositing (WPE backend) instead of Core Animation,
@@ -82,6 +82,7 @@ test.describe("Intro Animation", () => {
     // First visit - let animation complete and set cookie
     await page.goto("/");
     const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).toBeAttached({ timeout: 2000 });
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
 
     // Navigate away and back to test cookie persistence
@@ -105,6 +106,7 @@ test.describe("Intro Animation", () => {
     // First visit - let animation complete
     await page.goto("/");
     const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).toBeAttached({ timeout: 2000 });
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
 
     // Click the branding link ("andrewRCr >_" text area in TopBar)
@@ -129,6 +131,7 @@ test.describe("Intro Animation", () => {
     // First visit - let animation complete
     await page.goto("/");
     const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).toBeAttached({ timeout: 2000 });
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
 
     // Hover over the branding link to ensure hint is visible
@@ -161,6 +164,7 @@ test.describe("Intro Animation", () => {
     // First visit - let animation complete
     await page.goto("/");
     const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).toBeAttached({ timeout: 2000 });
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
 
     // Navigate away first (so clicking Home actually navigates)
@@ -324,6 +328,7 @@ test.describe("Intro Animation", () => {
 
     // Let initial animation complete
     const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).toBeAttached({ timeout: 2000 });
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
 
     // Navigate away and back (this sets hasEverMounted = true for Hero)
@@ -362,6 +367,7 @@ test.describe("Intro Animation", () => {
     // First visit - let animation complete to set cookie
     await page.goto("/");
     const overlay = page.locator(INTRO_OVERLAY_SELECTOR);
+    await expect(overlay).toBeAttached({ timeout: 2000 });
     await expect(overlay).not.toBeAttached({ timeout: ANIMATION_COMPLETE_TIMEOUT });
 
     // Reload the page (simulates browser refresh with cookie)
@@ -382,9 +388,6 @@ test.describe("Intro Animation", () => {
     // Content should NOT be fully visible immediately after hydration
     // The refresh animation has a delay before content fades in
     expect(initialOpacity).toBeLessThan(1);
-
-    // Wait for animation to complete
-    await page.waitForTimeout(800); // REFRESH_CONTENT_DELAY + duration + buffer
 
     // Verify final state: content is now fully visible
     const heroName = page.getByRole("heading", { name: "Andrew Creekmore", level: 1 });

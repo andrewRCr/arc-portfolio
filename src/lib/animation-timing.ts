@@ -6,11 +6,13 @@
  *
  * Sections:
  * 1. SHARED - Easing curves, blur values, utility transitions
- * 2. INTRO SEQUENCE - TWM startup animation (entering, typing, loading, morphing, expanding)
- * 3. ROUTE TRANSITIONS - Page navigation animations (abbreviated intros)
- * 4. PAGE HEADER - Header animation configs for route changes
+ * 2. BIOS POST - Pre-intro POST screen (CSS-only, before TWM sequence)
+ * 3. INTRO SEQUENCE - TWM startup animation (entering, typing, loading, morphing, expanding)
+ * 4. ROUTE TRANSITIONS - Page navigation animations (abbreviated intros)
+ * 5. PAGE HEADER - Header animation configs for route changes
  *
  * Intro Timeline Overview:
+ * - BIOS POST: Server-rendered POST screen, fades out before intro starts
  * - ENTERING: Window scales up, backdrop blurs, content fades in
  * - TYPING: "portfolio init" types out with cursor
  * - LOADING: Spinner displays
@@ -38,13 +40,45 @@ export const BLUR_NONE = "blur(0px)";
 export const INSTANT_TRANSITION = { duration: 0 };
 
 // ============================================================================
+// BIOS POST - Pre-Intro POST Screen
+// ============================================================================
+// CSS-only BIOS POST screen that plays before the TWM intro sequence.
+// Sequence: header blur-in → cursor pause → check lines → final hold → fade.
+
+/** Duration of header blur-to-focus animation */
+export const BIOS_POST_HEADER_FOCUS = 0.4;
+
+/** Duration the initial cursor blinks before checks start */
+export const BIOS_POST_INITIAL_PAUSE = 0.85;
+
+/** Gap between each check line appearing */
+export const BIOS_POST_CHECK_STAGGER = 0.15;
+
+/** Number of POST check lines (CPU, Memory, Display) */
+export const BIOS_POST_CHECK_COUNT = 3;
+
+/** Duration the final cursor blinks after "Starting window manager..." */
+export const BIOS_POST_FINAL_HOLD = 0.85;
+
+/** Fade-out duration */
+export const BIOS_POST_FADE_DURATION = 0.3;
+
+/** Total BIOS POST sequence duration (seconds) */
+export const BIOS_POST_DURATION =
+  BIOS_POST_HEADER_FOCUS +
+  BIOS_POST_INITIAL_PAUSE +
+  BIOS_POST_CHECK_COUNT * BIOS_POST_CHECK_STAGGER +
+  BIOS_POST_FINAL_HOLD +
+  BIOS_POST_FADE_DURATION;
+
+// ============================================================================
 // INTRO SEQUENCE - TWM Startup Animation
 // ============================================================================
 
 // --- ENTERING - Window Entrance ---
 
 /** Duration of window scale-up animation */
-export const WINDOW_SCALE_DURATION = 0.3;
+export const WINDOW_SCALE_DURATION = 0.2;
 
 /** Duration of content fade-in/out within window */
 export const CONTENT_FADE_DURATION = 0.2;
@@ -66,10 +100,10 @@ export const BLUR_DURATION = 0.4;
 // ============================================================================
 
 /** Delay after cursor appears before typing starts */
-export const TYPING_START_DELAY = 1.0;
+export const TYPING_START_DELAY = 0.85;
 
 /** Delay between each character typed */
-export const TYPING_CHAR_DELAY = 0.06;
+export const TYPING_CHAR_DELAY = 0.04;
 
 /** Pause after typing completes before loading phase */
 export const TYPING_COMPLETE_PAUSE = 0.3;

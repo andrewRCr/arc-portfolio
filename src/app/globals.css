@@ -593,41 +593,94 @@ html[data-theme-transition] *::after {
   --intro-bg: 48 56 65;
 }
 
-/* LCP loading indicator — server-rendered dots that anchor LCP at ~0ms.
-   Visible briefly before the intro animation overlay mounts (~200ms).
-   Both layers auto-fade via CSS. Fade target is opacity:0.01 (not 0)
-   because Chrome invalidates LCP entries when elements reach opacity:0. */
-.lcp-loading-bg,
-.lcp-loading-indicator {
-  animation: lcp-fade-out 0.3s ease-out 0.5s forwards;
+/* BIOS POST screen — server-rendered text that anchors LCP at ~0ms.
+   Visible briefly before the intro animation overlay mounts.
+   Fade target is opacity:0.01 (not 0) because Chrome invalidates
+   LCP entries when elements reach opacity:0.
+   Fade delay is set via --bios-fade-delay CSS custom property from the
+   component (derived from timing constants). */
+.bios-bg,
+.bios-post {
+  animation: bios-fade-out var(--bios-fade-duration, 0.25s) ease-out var(--bios-fade-delay, 1.5s) forwards;
 }
 
-.lcp-dot {
-  font-size: 2.5rem;
-  line-height: 1;
-  color: rgb(var(--muted-foreground));
-  opacity: 0.3;
-  animation: lcp-dot-pulse 0.6s ease-in-out infinite;
+/* Header line (logo + title) — blurs into focus on load */
+.bios-header {
+  filter: blur(4px);
+  opacity: 0.4;
+  animation: bios-focus 0.4s ease-out forwards;
 }
 
-@keyframes lcp-dot-pulse {
+@keyframes bios-focus {
+  to {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+/* POST check lines — start hidden, snap to full brightness on delay */
+.bios-line {
+  color: transparent;
+  animation: bios-check 0.1s ease-out forwards;
+}
+
+@keyframes bios-check {
+  to {
+    color: rgb(var(--muted-foreground));
+  }
+}
+
+/* Initial blinking cursor — hidden until header focuses, then blinks
+   for the pause duration, then hides when checks start.
+   animation-delay and animation-duration are set inline from timing
+   constants (3 values matching the 3 animations below). */
+.bios-cursor {
+  visibility: hidden;
+  animation:
+    bios-show 0s step-end forwards,
+    bios-blink 0.53s step-end infinite,
+    bios-hide 0s step-end forwards;
+}
+
+/* Final blinking cursor — hidden initially, appears + blinks at delay */
+.bios-cursor-final {
+  visibility: hidden;
+  animation:
+    bios-show 0s step-end forwards,
+    bios-blink 0.53s step-end infinite;
+  animation-delay: inherit;
+}
+
+@keyframes bios-blink {
   0%,
   100% {
-    opacity: 0.3;
+    opacity: 1;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0;
   }
 }
 
-@keyframes lcp-fade-out {
+@keyframes bios-hide {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes bios-show {
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes bios-fade-out {
   to {
     opacity: 0.01;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lcp-loading-indicator {
+  .bios-post {
     display: none;
   }
 }

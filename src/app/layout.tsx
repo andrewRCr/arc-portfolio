@@ -13,6 +13,7 @@ import {
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ConditionalFrame } from "@/components/layout/ConditionalFrame";
+import { BiosPost } from "@/components/intro/BiosPost";
 import { ConsoleLoggerInit } from "@/components/dev/ConsoleLoggerInit";
 import { HydrationSignal } from "@/components/dev/HydrationSignal";
 import { defaultPalette, themes } from "@/data/themes";
@@ -167,53 +168,10 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${firaCode.variable} ${ibmPlexSans.variable} antialiased`}
         style={{ backgroundColor: "rgb(var(--background))" }}
       >
-        {/* LCP anchor — two layers: (1) full-viewport dark background, (2) positioned
-            loading dots that register as Chrome's LCP candidate at ~0ms. Layers are
-            separated because Chrome filters full-viewport elements as "background" for
-            LCP. The dots must be in a non-full-viewport element to be counted. Both
-            layers fade to opacity:0.01 (not 0) because Chrome invalidates LCP entries
-            when elements reach opacity:0. Only rendered for new users (no intro cookie)
-            since returning users skip the intro. */}
-        {!introCookie && (
-          <>
-            <div
-              aria-hidden="true"
-              className="lcp-loading-bg"
-              style={{
-                position: "fixed",
-                inset: 0,
-                zIndex: 101,
-                backgroundColor: "rgb(var(--intro-bg))",
-                pointerEvents: "none",
-              }}
-            />
-            <div
-              data-lcp-anchor
-              aria-hidden="true"
-              className="lcp-loading-indicator font-terminal"
-              style={{
-                position: "fixed",
-                top: "calc(20vh + 6px)",
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 102,
-                display: "flex",
-                gap: "0.75rem",
-                pointerEvents: "none",
-              }}
-            >
-              <span className="lcp-dot" style={{ animationDelay: "0s" }}>
-                ●
-              </span>
-              <span className="lcp-dot" style={{ animationDelay: "0.1s" }}>
-                ●
-              </span>
-              <span className="lcp-dot" style={{ animationDelay: "0.2s" }}>
-                ●
-              </span>
-            </div>
-          </>
-        )}
+        {/* LCP anchor — BIOS-style POST screen. Server-rendered text paints at
+            ~0ms as Chrome's LCP candidate. Fades before intro animation takes over.
+            Only rendered for new users (no intro cookie). */}
+        {!introCookie && <BiosPost />}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

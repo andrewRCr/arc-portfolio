@@ -9,9 +9,11 @@
  * Route: /dev/sandbox
  */
 
+import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DevPageHeader } from "@/components/dev/DevPageHeader";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { BiosPost } from "@/components/intro/BiosPost";
 
 // =============================================================================
 // PAGE COMPONENT
@@ -19,6 +21,7 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 
 export default function SandboxPage() {
   const mounted = useHasMounted();
+  const [biosKey, setBiosKey] = useState(0);
 
   if (!mounted) {
     return (
@@ -31,7 +34,24 @@ export default function SandboxPage() {
   return (
     <PageLayout header={<DevPageHeader title="Sandbox" jumpLinks={[]} showEnvPreview={true} />}>
       <div className="space-y-8">
-        <p className="text-sm text-muted-foreground">Empty scratch space. Add temporary experiments here.</p>
+        <div>
+          <div className="flex items-center gap-4 mb-3">
+            <h2 className="text-sm font-terminal text-muted-foreground">BIOS POST Screen (LCP anchor)</h2>
+            <button
+              onClick={() => setBiosKey((k) => k + 1)}
+              className="text-xs font-terminal text-primary hover:text-accent-mid transition-colors"
+            >
+              [replay]
+            </button>
+          </div>
+          <div
+            key={biosKey}
+            className="relative w-full rounded overflow-hidden border border-border"
+            style={{ height: "24rem" }}
+          >
+            <BiosPost preview />
+          </div>
+        </div>
       </div>
     </PageLayout>
   );

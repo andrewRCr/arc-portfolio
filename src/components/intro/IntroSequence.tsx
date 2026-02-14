@@ -37,6 +37,7 @@ import {
   MORPH_EXIT_DELAY,
   POST_MORPH_PAUSE,
   SPINNER_INTERVAL_MS,
+  BIOS_POST_DURATION,
 } from "@/lib/animation-timing";
 import { CommandWindow } from "./CommandWindow";
 
@@ -81,6 +82,7 @@ const delay = (seconds: number) => new Promise<void>((resolve) => setTimeout(res
 function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   const { loadMode, intro, reducedMotion, isInitialized } = useAnimationContext();
   const dispatch = useAnimationDispatch();
+  const isReplay = intro.replayCount > 0;
 
   // Derive shouldShow: render overlay when in intro mode and not complete
   const shouldShow = loadMode === "intro" && intro.phase !== "complete";
@@ -90,6 +92,20 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   // be true even if the cookie exists. We defer rendering until after hydration
   // when we can properly read the cookie state.
   const mounted = useHasMounted();
+
+  // Gate visual animations until BIOS POST screen finishes.
+  // On replay, skip the delay (BIOS POST only plays on initial load).
+  // Uses performance.now() to sync with the CSS animations, which start
+  // at first paint — before React hydration mounts this component.
+  const [biosComplete, setBiosComplete] = useState(isReplay);
+
+  useEffect(() => {
+    if (isReplay) return;
+    const elapsed = performance.now() / 1000;
+    const remaining = Math.max(0, BIOS_POST_DURATION - elapsed);
+    const timer = setTimeout(() => setBiosComplete(true), remaining * 1000);
+    return () => clearTimeout(timer);
+  }, [isReplay]);
 
   // Current phase within the animation sequence
   const [phase, setPhase] = useState<IntroPhase>("entering");
@@ -193,13 +209,13 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     };
   }, []);
 
-  // Start animation automatically on mount (if not already started)
-  // Wait for initialization and check we're in intro mode at idle phase
+  // Start animation automatically after BIOS POST completes.
+  // Wait for initialization and check we're in intro mode at idle phase.
   useEffect(() => {
-    if (mounted && isInitialized && loadMode === "intro" && intro.phase === "idle") {
+    if (biosComplete && mounted && isInitialized && loadMode === "intro" && intro.phase === "idle") {
       dispatch({ type: "INTRO_START" });
     }
-  }, [mounted, isInitialized, loadMode, intro.phase, dispatch]);
+  }, [biosComplete, mounted, isInitialized, loadMode, intro.phase, dispatch]);
 
   // Trigger morph after loading phase
   useEffect(() => {
@@ -258,8 +274,12 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
     };
   }, [morphComplete, dispatch]);
 
-  // Handle skip action
+  // Handle skip action — also hides the BIOS POST screen (CSS-only, in layout)
+  // via direct DOM manipulation since the POST elements aren't React-managed.
   const handleSkip = useCallback(() => {
+    document.querySelectorAll<HTMLElement>(".bios-post, .bios-bg").forEach((el) => {
+      el.style.display = "none";
+    });
     dispatch({ type: "INTRO_SKIP" });
     markIntroSeen();
     onSkip?.();
@@ -286,7 +306,6 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   // Don't render until mounted (avoids SSR mismatch) or if animation is complete.
   // On replay (replayCount > 0), skip the mounted guard — we're guaranteed client-side,
   // and the one-frame gap from useHasMounted causes a visible flash of content.
-  const isReplay = intro.replayCount > 0;
   if ((!mounted && !isReplay) || !shouldShow || reducedMotion) {
     return null;
   }
@@ -309,29 +328,35 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
         6. complete: Animation done, overlay unmounts
       */}
 
-      {/* Backdrop blur layer - synced with window entrance, removed during morph */}
-      <motion.div
-        className="absolute inset-0"
-        initial={{ backdropFilter: "blur(0px)" }}
-        animate={{ backdropFilter: blurActive ? `blur(${BLUR_AMOUNT}px)` : "blur(0px)" }}
-        transition={{ duration: BLUR_DURATION, ease: "easeOut" }}
-      />
-
-      {/* CommandWindow with AnimatePresence for exit/morph animation */}
-      <AnimatePresence mode="wait" onExitComplete={handleMorphComplete}>
-        {showCommandWindow && (
-          <CommandWindow
-            key="command-window"
-            typedText={displayedText}
-            isTypingComplete={isTypingComplete}
-            showContent={showContent}
-            showCursor={showCursor}
-            isMorphing={phase === "morphing"}
-            onEntranceComplete={handleEntranceComplete}
-            loadingContent={phase === "loading" ? <LoadingSpinner /> : undefined}
+      {/* Visual content gates on biosComplete — waits for BIOS POST screen
+          to finish before starting backdrop blur and CommandWindow entrance */}
+      {biosComplete && (
+        <>
+          {/* Backdrop blur layer - synced with window entrance, removed during morph */}
+          <motion.div
+            className="absolute inset-0"
+            initial={{ backdropFilter: "blur(0px)" }}
+            animate={{ backdropFilter: blurActive ? `blur(${BLUR_AMOUNT}px)` : "blur(0px)" }}
+            transition={{ duration: BLUR_DURATION, ease: "easeOut" }}
           />
-        )}
-      </AnimatePresence>
+
+          {/* CommandWindow with AnimatePresence for exit/morph animation */}
+          <AnimatePresence mode="wait" onExitComplete={handleMorphComplete}>
+            {showCommandWindow && (
+              <CommandWindow
+                key="command-window"
+                typedText={displayedText}
+                isTypingComplete={isTypingComplete}
+                showContent={showContent}
+                showCursor={showCursor}
+                isMorphing={phase === "morphing"}
+                onEntranceComplete={handleEntranceComplete}
+                loadingContent={phase === "loading" ? <LoadingSpinner /> : undefined}
+              />
+            )}
+          </AnimatePresence>
+        </>
+      )}
     </div>
   );
 }

@@ -252,6 +252,72 @@ deployment when the PR is opened.
 
     **Files:** `src/app/layout.tsx`
 
+- [x] **3.5 Add BIOS POST screen as LCP anchor and intro prelude**
+
+    Replaced the prior loading dots approach (commits `06a46ec`–`c81a4e3`, which failed to register
+    as LCP due to Chrome evaluating individual `<span>` elements as separate small candidates) with a
+    BIOS-style POST screen that fits the desktop environment metaphor (BIOS → command window → tiling
+    window manager).
+
+    **LCP solution:** Server-rendered text block paints at ~0ms (~84ms render time measured via
+    PerformanceObserver). Single LCP candidate of ~44,000 CSS px² — exceeds all later page content
+    so Chrome never replaces it. Key constraints discovered and documented: text must be in a single
+    block-level div (not flex/inline-flex), fade target must be `opacity: 0.01` (not 0), total area
+    must exceed ~34,000 CSS px².
+
+    **Visual design:** ARC logo + "ARC BIOS v1.0" header with blur-focus animation, blinking
+    cursor, staggered POST check lines (CPU/Memory/Display), "Starting window manager..." finale,
+    and "Press <Any> to skip POST." hint at the bottom. Check lines and cursors start fully hidden
+    (transparent/`visibility: hidden`) and animate in on their stagger delays. The header and skip
+    hint are the LCP-visible text at first paint (both use the blur-focus animation starting at
+    `opacity: 0.4`). Fade-out into the existing CommandWindow intro sequence.
+
+    **Skip affordance:** "Press <Any> to skip POST." is visible from first paint, serving dual
+    purpose as LCP anchor text and user guidance that the animation is skippable.
+
+    **Timing coordination:** BIOS POST timing constants centralized in `animation-timing.ts`
+    (single source of truth). IntroSequence delays its visual start until BIOS POST completes,
+    using `performance.now()` to account for React hydration lag vs CSS animation start time.
+    Intro sequence entrance timing tightened (window scale 0.2s, typing start delay 0.85s,
+    char delay 0.04s) for a snappier transition.
+
+    **Skip integration:** Click/keypress during BIOS POST hides it via direct DOM manipulation
+    and skips the full intro sequence. Replay (TopBar branding click) skips BIOS POST
+    (cold boot vs warm reboot metaphor).
+
+    **Files:** `BiosPost.tsx` (new), `animation-timing.ts`, `IntroSequence.tsx`, `globals.css`,
+    `layout.tsx`, `dev/sandbox/page.tsx`
+
+    - [x] **3.5.a BiosPost unit tests**
+
+        21 unit tests covering content rendering (header, check lines, final line, skip hint),
+        production vs preview mode (fixed vs absolute positioning, fade class), timing derivation
+        (animation delays match timing constants), and LCP anchor attribute (`data-lcp-anchor`
+        present in production, absent in preview). All pass.
+
+        **Files:** `src/components/intro/__tests__/BiosPost.test.tsx` (new)
+
+    - [x] **3.5.b E2E test fix — overlay timing race condition**
+
+        Six intro animation E2E tests had a race condition: `expect(overlay).not.toBeAttached()`
+        passed immediately (~45ms after `page.goto`) because React hadn't hydrated yet (~178ms),
+        so the overlay wasn't in the DOM. The assertion passed before the animation started,
+        meaning the intro cookie was never set. Tests that depended on cookie persistence (refresh
+        mode, subsequent visit) tested the wrong behavior.
+
+        **Root cause:** BIOS POST added enough JS/CSS weight to push hydration past Playwright's
+        first assertion poll. On committed code (no BIOS POST), hydration was fast enough to win
+        the race.
+
+        **Fix:** Added `await expect(overlay).toBeAttached({ timeout: 2000 })` before every
+        `not.toBeAttached` that waits for a first-visit animation to complete. Also removed
+        debug code (cookie logging, debug eval block, extended wait) from the refresh test.
+
+        **Verification:** Full E2E suite — 341 passed, 0 failed (79 skipped: visual regression
+        baselines + WebKit intro animation on WSL2).
+
+        **Files:** `e2e/tests/intro-animation.spec.ts`
+
 ---
 
 ## Success Criteria
