@@ -20,7 +20,6 @@
   <a href="https://pagespeed.web.dev/analysis?url=https://andrewcreekmore.dev">
     <img alt="Lighthouse SEO"
       src="https://img.shields.io/badge/SEO-100-brightgreen?logo=lighthouse&logoColor=white" /></a>
-  <br>
   <a href="https://github.com/andrewRCr/arc-portfolio/actions/workflows/ci.yml">
     <img alt="CI"
       src="https://github.com/andrewRCr/arc-portfolio/actions/workflows/ci.yml/badge.svg" /></a>
