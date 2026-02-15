@@ -49,7 +49,7 @@ export const INSTANT_TRANSITION = { duration: 0 };
 export const BIOS_POST_HEADER_FOCUS = 0.4;
 
 /** Duration the initial cursor blinks before checks start */
-export const BIOS_POST_INITIAL_PAUSE = 0.85;
+export const BIOS_POST_INITIAL_PAUSE = 1.15;
 
 /** Gap between each check line appearing */
 export const BIOS_POST_CHECK_STAGGER = 0.15;
@@ -58,7 +58,7 @@ export const BIOS_POST_CHECK_STAGGER = 0.15;
 export const BIOS_POST_CHECK_COUNT = 3;
 
 /** Duration the final cursor blinks after "Starting window manager..." */
-export const BIOS_POST_FINAL_HOLD = 1.15;
+export const BIOS_POST_FINAL_HOLD = 1.45;
 
 /** Fade-out duration */
 export const BIOS_POST_FADE_DURATION = 0.3;

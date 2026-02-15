@@ -37,7 +37,6 @@ import {
   MORPH_EXIT_DELAY,
   POST_MORPH_PAUSE,
   SPINNER_INTERVAL_MS,
-  BIOS_POST_DURATION,
 } from "@/lib/animation-timing";
 import { CommandWindow } from "./CommandWindow";
 
@@ -94,17 +93,24 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   const mounted = useHasMounted();
 
   // Gate visual animations until BIOS POST screen finishes.
-  // On replay, skip the delay (BIOS POST only plays on initial load).
-  // Uses performance.now() to sync with the CSS animations, which start
-  // at first paint — before React hydration mounts this component.
+  // On replay, skip the wait (BIOS POST only plays on initial load).
+  // Listens for the CSS animationend event on .bios-bg rather than
+  // estimating with performance.now(), which drifts from the CSS
+  // animation timeline by the render delay (TTFB + parse + paint).
   const [biosComplete, setBiosComplete] = useState(isReplay);
 
   useEffect(() => {
     if (isReplay) return;
-    const elapsed = performance.now() / 1000;
-    const remaining = Math.max(0, BIOS_POST_DURATION - elapsed);
-    const timer = setTimeout(() => setBiosComplete(true), remaining * 1000);
-    return () => clearTimeout(timer);
+    const biosEl = document.querySelector(".bios-bg");
+    if (!biosEl) {
+      // No BIOS element (e.g., reduced-motion hides it) — skip wait.
+      // Deferred to avoid synchronous setState in effect body.
+      const timer = setTimeout(() => setBiosComplete(true), 0);
+      return () => clearTimeout(timer);
+    }
+    const handler = () => setBiosComplete(true);
+    biosEl.addEventListener("animationend", handler);
+    return () => biosEl.removeEventListener("animationend", handler);
   }, [isReplay]);
 
   // Current phase within the animation sequence
