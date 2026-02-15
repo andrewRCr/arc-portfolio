@@ -130,7 +130,7 @@ export default function HomeContent() {
   return (
     <PageLayout pageId="home" header={heroContent} headerType="hero" stickyHeader>
       <motion.div
-        className="flex-1 flex flex-col px-2 pb-2 md:px-12 md:pb-8"
+        className="flex-1 flex flex-col pb-2 sm:px-2 md:px-12 md:pb-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: contentVisible ? 1 : 0 }}
         transition={bodyTransition}

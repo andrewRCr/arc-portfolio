@@ -124,7 +124,7 @@ function BioContent({ uniqueDownloads }: { uniqueDownloads?: number }) {
 /** Mobile layout - no card wrapper, stacked with breathing room */
 function MobileAboutSection({ uniqueDownloads }: { uniqueDownloads?: number }) {
   return (
-    <div className="flex flex-col items-center space-y-6">
+    <div className="flex flex-col items-center space-y-4 sm:space-y-6">
       <PhotoCard compact />
       <div className="flex flex-col">
         <BioContent uniqueDownloads={uniqueDownloads} />

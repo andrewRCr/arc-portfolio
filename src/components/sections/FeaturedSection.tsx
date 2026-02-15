@@ -63,7 +63,7 @@ export function FeaturedSection() {
   }, []);
 
   return (
-    <div className="grid md:grid-cols-2 gap-4 mt-3">
+    <div className="grid md:grid-cols-2 gap-4 mt-1 sm:mt-3">
       {featuredProjects.map(({ project, type }) => {
         const isInDevelopment = project.status === "in-development";
 

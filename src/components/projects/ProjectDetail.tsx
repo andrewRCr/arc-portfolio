@@ -79,7 +79,7 @@ function ContentList({ items }: { items: ContentItem[] }) {
   });
 
   return (
-    <div>
+    <div className="max-sm:text-sm">
       {groups.map((group, groupIndex) => {
         const isFirst = groupIndex === 0;
         const prevGroup = groups[groupIndex - 1];
@@ -141,7 +141,7 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
       {/* Description - supports multiple paragraphs and markdown formatting */}
       <div className="mt-4 space-y-4">
         {descriptionParagraphs.map((paragraph, index) => (
-          <p key={index} className="text-base sm:text-lg text-foreground">
+          <p key={index} className="text-sm sm:text-lg text-foreground">
             <InlineMarkdown>{paragraph}</InlineMarkdown>
           </p>
         ))}
@@ -156,14 +156,14 @@ export default function ProjectDetail({ project, footer }: ProjectDetailProps) {
 
       {/* Key Features - technical capabilities inventory */}
       {project.features && project.features.length > 0 && (
-        <DetailCard title={labels.features} className="mt-6 sm:mt-8">
+        <DetailCard title={labels.features} className="mt-4 sm:mt-8">
           <ContentList items={project.features} />
         </DetailCard>
       )}
 
       {/* Implementation Details - extended technical deep-dive */}
       {project.details && project.details.length > 0 && (
-        <DetailCard title={labels.details} className="mt-6 sm:mt-8">
+        <DetailCard title={labels.details} className="mt-4 sm:mt-8">
           <ContentList items={project.details} />
         </DetailCard>
       )}

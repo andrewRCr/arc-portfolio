@@ -8,7 +8,6 @@
 
 import { Download, ThumbsUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { formatStatNumber } from "@/lib/nexusmods";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
@@ -31,6 +30,7 @@ const statConfig: Record<
   {
     icon: typeof Download;
     label: string;
+    shortLabel: string;
     tooltip: string;
     ariaLabel: (value: number) => string;
   }
@@ -38,12 +38,14 @@ const statConfig: Record<
   downloads: {
     icon: Download,
     label: "downloads",
+    shortLabel: "downloads",
     tooltip: "Total Downloads",
     ariaLabel: (v) => `${v.toLocaleString()} total downloads`,
   },
   endorsements: {
     icon: ThumbsUp,
     label: "endorsements",
+    shortLabel: "endorsed",
     tooltip: "Endorsements",
     ariaLabel: (v) => `${v.toLocaleString()} endorsements`,
   },
@@ -66,15 +68,11 @@ export function ModStatsBadge({ value, type, className, showRaw = false }: ModSt
   const displayValue = showRaw ? value.toLocaleString() : formatStatNumber(value);
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Badge variant="secondary" className={cn("gap-1.5", className)} aria-label={config.ariaLabel(value)}>
-          <Icon className="size-3" aria-hidden="true" />
-          <span>{displayValue}</span>
-        </Badge>
-      </TooltipTrigger>
-      <TooltipContent>{config.tooltip}</TooltipContent>
-    </Tooltip>
+    <Badge variant="secondary" className={cn("gap-1.5", className)} aria-label={config.ariaLabel(value)}>
+      <Icon className="size-3" aria-hidden="true" />
+      <span>{displayValue}</span>
+      <span className="text-muted-foreground">{config.shortLabel}</span>
+    </Badge>
   );
 }
 
@@ -90,6 +88,7 @@ function buildStatEntries(downloads?: number, endorsements?: number) {
       icon: config.icon,
       value: formatStatNumber(value),
       label: config.ariaLabel(value),
+      shortLabel: config.shortLabel,
     };
   });
 }
@@ -193,7 +192,9 @@ export function ModStatsInline({ downloads, endorsements, className }: ModStatsI
         return (
           <span key={index} className="inline-flex items-center gap-1">
             <Icon className="size-2.5" aria-hidden="true" />
-            <span className="text-xs">{stat.value}</span>
+            <span className="text-xs">
+              {stat.value} <span className="text-muted-foreground">{stat.shortLabel}</span>
+            </span>
           </span>
         );
       })}

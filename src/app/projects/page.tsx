@@ -64,7 +64,7 @@ function TabPanel({
       tabIndex={withTabAttributes ? 0 : undefined}
       className="space-y-6"
     >
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
           <ProjectCard key={project.slug} project={project} categoryType={categoryType} />
         ))}
@@ -162,7 +162,7 @@ function ProjectsContent() {
       pageId="projects"
       header={
         <PageHeader title="Projects" hideDivider={FEATURES.SHOW_ALL_PROJECT_TYPES}>
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <div className="flex flex-col gap-1 max-sm:-mt-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             {/* Left: Tabs (when all types shown) or Filter Indicator (when filtering) */}
             {(FEATURES.SHOW_ALL_PROJECT_TYPES || isFiltered) && (
               <div className="min-w-0 sm:flex-1 min-h-11">
@@ -203,7 +203,7 @@ function ProjectsContent() {
       {/* Must be inside PageLayout to access ScrollContext */}
       <ScrollResetOnTabChange currentTab={currentTab} />
 
-      <div className="px-4">
+      <div className="max-sm:-mt-2 sm:px-4">
         {/* ARIA Live Region for result count */}
         {isFiltered && (
           <div role="status" aria-live="polite" className="sr-only">

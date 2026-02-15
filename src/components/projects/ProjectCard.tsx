@@ -23,6 +23,8 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
   const hasValidThumbnail = Boolean(project.images.thumbnail);
   const blurDataURL = getBlurDataURL(project.images.thumbnail);
   const isInDevelopment = project.status === "in-development";
+  const displayTitle = project.cardTitle ?? project.title;
+  const titleSizeClass = displayTitle.length > 20 ? "text-lg max-sm:text-base" : "text-lg";
 
   return (
     <Link
@@ -75,9 +77,9 @@ export default function ProjectCard({ project, categoryType = "software" }: Proj
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-lg font-semibold leading-relaxed font-title">
+        <h3 className={`mb-2 ${titleSizeClass} font-semibold leading-relaxed font-title`}>
           <span className="bg-accent-low px-2 py-0.5 text-accent-low-foreground transition-colors duration-300 box-decoration-clone group-hover:bg-secondary-high group-hover:text-secondary-foreground">
-            {project.cardTitle ?? project.title}
+            {displayTitle}
           </span>
         </h3>
 

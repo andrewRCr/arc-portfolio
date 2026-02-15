@@ -511,6 +511,13 @@ html[data-theme-transition] *::after {
   padding-top: 24px;
   padding-bottom: 56px;
 }
+/* Baseline (pages with data-page) - phone: push scrollbar outside container */
+@media (max-width: 639px) {
+  [data-page] .os-scrollbar-vertical {
+    right: auto;
+    left: calc(100% - 6px);
+  }
+}
 /* Baseline (pages with data-page) - desktop */
 @media (min-width: 768px) {
   [data-page] .os-scrollbar-vertical {

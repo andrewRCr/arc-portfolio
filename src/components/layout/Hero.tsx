@@ -151,14 +151,14 @@ export function Hero({ children }: HeroProps) {
 
   // Spacing classes: phone → compact (laptop) → desktop
   // Compact overrides md: breakpoints since laptop width >= md but needs tighter vertical spacing
-  const outerPadding = compact ? "pt-4 px-6" : "pt-4 px-2 md:pt-8 md:px-8";
+  const outerPadding = compact ? "pt-4 px-6" : "pt-2 sm:pt-4 md:pt-8 md:px-12";
   const contentMarginBottom = compact ? "mb-4" : "md:mb-8";
   const childrenMarginTop = compact ? "mt-0" : "mt-2 md:mt-0";
   const headingMarginTop = children ? (compact ? "mt-4" : "mt-4 md:mt-8") : "mt-4 md:mt-2";
 
   return (
     <div className={outerPadding}>
-      <div className="pl-0 md:pl-2 pb-2">
+      <div className="pb-2">
         {/* Container with relative positioning for absolute bar */}
         <div className="relative pl-6">
           {/* Animated left bar - separate element for scaleY animation */}
@@ -172,7 +172,7 @@ export function Hero({ children }: HeroProps) {
               <motion.p className="text-xs font-terminal text-muted-foreground" {...textProps(0)}>
                 &gt; portfolio.init()
               </motion.p>
-              <motion.h1 className="text-4xl font-bold font-title origin-left" {...textProps(1)}>
+              <motion.h1 className="text-3xl sm:text-4xl font-bold font-title origin-left" {...textProps(1)}>
                 {SITE.name}
               </motion.h1>
               <motion.p className="text-lg font-body text-muted-foreground" {...textProps(2)}>
@@ -189,10 +189,7 @@ export function Hero({ children }: HeroProps) {
         </motion.div>
       )}
 
-      <motion.h2
-        className={`mb-1 md:mx-4 text-sm font-terminal text-muted-foreground ${headingMarginTop}`}
-        {...secondaryProps}
-      >
+      <motion.h2 className={`mb-1 text-sm font-terminal text-muted-foreground ${headingMarginTop}`} {...secondaryProps}>
         Featured Projects
       </motion.h2>
     </div>
