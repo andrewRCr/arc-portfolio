@@ -48,9 +48,17 @@ export const VIEWPORT_QUERIES = {
   /** Phone viewport - extra compact layouts (2-col gallery, card-style headers) */
   phone: MEDIA_QUERIES.belowSm,
   /**
-   * Short viewport - not enough vertical space for full body content.
-   * Triggers at <=875px viewport height (laptop screens ~900px minus browser chrome).
+   * Short viewport - not enough vertical space for full body content below hero.
    * Used to move key elements (e.g., skills logos) into fixed header areas.
+   *
+   * 950px is the minimum viewport height where the Home page skills row can
+   * display comfortably below the FeaturedSection (~250px hero + ~500px cards
+   * + ~120px skills row + breathing room). Below this, the row risks appearing
+   * half-cut at the viewport edge. CSS max-height already excludes browser
+   * chrome and OS taskbars/docks, so this compares against actual usable space.
+   *
+   * Prefer false positives (laptop mode on a desktop) over false negatives
+   * (half-visible skills row that looks broken).
    */
-  shortViewport: "(max-height: 875px)",
+  shortViewport: "(max-height: 950px)",
 } as const;
