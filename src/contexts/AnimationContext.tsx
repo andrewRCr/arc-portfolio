@@ -317,11 +317,13 @@ export function animationReducer(state: AnimationState, action: AnimationAction)
     }
 
     case "ROUTE_CHANGE_START": {
-      // Don't interrupt active intro with route change
-      const isIntroActive =
-        state.loadMode === "intro" && state.introPhase !== "idle" && state.introPhase !== "complete";
+      // Don't interrupt pending or active intro with route change.
+      // Includes "idle" phase: replay sets phase to "idle" before the intro
+      // starts, and a simultaneous navigation must not overwrite loadMode.
+      // Matches the render-level guard (introInProgress) in AnimationProvider.
+      const isIntroPendingOrActive = state.loadMode === "intro" && state.introPhase !== "complete";
 
-      if (isIntroActive) {
+      if (isIntroPendingOrActive) {
         return state;
       }
 

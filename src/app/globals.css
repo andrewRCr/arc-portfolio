@@ -680,6 +680,13 @@ html[data-theme-transition] *::after {
   }
 }
 
+/* After intro completes (skip or natural), JS sets data-bios-played on <html>.
+   Hides BIOS POST even if RSC reconciliation re-inserts fresh elements. */
+[data-bios-played] .bios-bg,
+[data-bios-played] .bios-post {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bios-post {
     display: none;

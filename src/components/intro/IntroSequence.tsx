@@ -265,6 +265,7 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
       setPhase("complete");
       dispatch({ type: "INTRO_COMPLETE" });
       markIntroSeen();
+      document.documentElement.dataset.biosPlayed = "";
     };
 
     runSequence();
@@ -275,11 +276,11 @@ function IntroSequenceInner({ onSkip }: IntroSequenceProps) {
   }, [morphComplete, dispatch]);
 
   // Handle skip action — also hides the BIOS POST screen (CSS-only, in layout)
-  // via direct DOM manipulation since the POST elements aren't React-managed.
+  // via data attribute since the POST elements aren't React-managed.
+  // The attribute persists on <html> so fresh elements inserted by RSC
+  // reconciliation (e.g., after cookie expiry + navigation) stay hidden.
   const handleSkip = useCallback(() => {
-    document.querySelectorAll<HTMLElement>(".bios-post, .bios-bg").forEach((el) => {
-      el.style.display = "none";
-    });
+    document.documentElement.dataset.biosPlayed = "";
     dispatch({ type: "INTRO_SKIP" });
     markIntroSeen();
     onSkip?.();

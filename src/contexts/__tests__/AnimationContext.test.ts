@@ -424,6 +424,21 @@ describe("AnimationContext", () => {
       // Should not interrupt intro with route change
       expect(newState.loadMode).toBe("intro");
     });
+
+    it("does not change loadMode during idle intro (replay + navigation)", () => {
+      const state: AnimationState = {
+        ...initialAnimationState,
+        loadMode: "intro",
+        introPhase: "idle",
+        replayCount: 1,
+        isInitialized: true,
+      };
+
+      const newState = animationReducer(state, { type: "ROUTE_CHANGE_START" });
+
+      // Replay sets phase to "idle" — simultaneous navigation must not overwrite
+      expect(newState.loadMode).toBe("intro");
+    });
   });
 
   describe("ROUTE_CHANGE_COMPLETE action", () => {
