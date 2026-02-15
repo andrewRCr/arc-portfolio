@@ -214,29 +214,6 @@ describe("LayoutWrapper", () => {
       expect(footerWrapper).toHaveStyle({ overflow: "hidden" });
     });
 
-    it("shows exit fullscreen button", () => {
-      render(
-        <LayoutWrapper>
-          <p>Main content</p>
-        </LayoutWrapper>
-      );
-
-      expect(screen.getByRole("button", { name: /exit fullscreen/i })).toBeInTheDocument();
-    });
-
-    it("exit fullscreen button calls setLayoutMode with 'boxed'", async () => {
-      render(
-        <LayoutWrapper>
-          <p>Main content</p>
-        </LayoutWrapper>
-      );
-
-      const exitButton = screen.getByRole("button", { name: /exit fullscreen/i });
-      fireEvent.click(exitButton);
-
-      expect(mockSetLayoutMode).toHaveBeenCalledWith("boxed");
-    });
-
     it("main content window is still rendered", () => {
       render(
         <LayoutWrapper>

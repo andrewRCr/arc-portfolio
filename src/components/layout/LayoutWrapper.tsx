@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Minimize2, Maximize2 } from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { DEFAULT_LAYOUT_TOKENS } from "@/lib/theme";
 import {
@@ -18,6 +17,7 @@ import { useIsMobile } from "@/hooks/useMediaQuery";
 import { TopBar } from "./TopBar";
 import { FooterBar } from "./FooterBar";
 import { WindowContainer } from "./WindowContainer";
+import { LayoutModeToggle } from "./LayoutModeToggle";
 import { WallpaperBackground } from "./WallpaperBackground";
 import { IntroSequence } from "@/components/intro";
 import { IntroStateSignal } from "@/components/dev/IntroStateSignal";
@@ -41,7 +41,7 @@ export interface LayoutWrapperProps {
  */
 function LayoutContent({ children }: LayoutWrapperProps) {
   const { windowGap, windowContainerMaxWidth, topBarHeight, footerHeight } = DEFAULT_LAYOUT_TOKENS;
-  const { layoutMode, setLayoutMode, isDrawerOpen, isLightboxOpen } = useLayoutPreferences();
+  const { layoutMode, setLayoutMode } = useLayoutPreferences();
   const { loadMode, animationMode, intro, visibility, reducedMotion, isInitialized } = useAnimationContext();
   const dispatch = useAnimationDispatch();
   const [activeWindow, setActiveWindow] = useState<WindowId | null>(null);
@@ -93,18 +93,6 @@ function LayoutContent({ children }: LayoutWrapperProps) {
   // In fullscreen mode, main window is always active (it's the only visible window)
   // In other modes, respect user interaction state
   const effectiveActiveWindow = isFullscreen ? "main" : activeWindow;
-
-  // Layout toggle button visibility:
-  // - Mobile: always visible (toggle between full and boxed), hidden when drawer or lightbox is open
-  // - Desktop: only visible as escape hatch if "full" mode inherited (e.g., from mobile session
-  //   or viewport resize). Desktop can't enter fullscreen via ThemeControl, but needs a way out.
-  const showLayoutToggle = isMobile
-    ? !isDrawerOpen && !isLightboxOpen
-    : isFullscreen && !isDrawerOpen && !isLightboxOpen;
-
-  const toggleLayoutMode = () => {
-    setLayoutMode(isFullscreen ? "boxed" : "full");
-  };
 
   // Apply max-width in "boxed" mode, use 100% for wide/full (enables CSS transition interpolation)
   const containerMaxWidth = layoutMode === "boxed" ? windowContainerMaxWidth : "100%";
@@ -197,27 +185,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
         </AnimatePresence>
       </div>
 
-      {/* Layout mode toggle button
-          - Mobile: always visible, toggles between full and boxed
-          - Desktop: only visible in fullscreen mode (exit button)
-          - Position: top-right of main content area (accounts for TopBar in boxed mode) */}
-      <AnimatePresence>
-        {showLayoutToggle && (
-          <motion.button
-            type="button"
-            onClick={toggleLayoutMode}
-            aria-label={isFullscreen ? "Exit fullscreen mode" : "Enter fullscreen mode"}
-            className="fixed right-4 z-50 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-surface-muted backdrop-blur-sm border border-border shadow-lg [-webkit-tap-highlight-color:transparent] outline-none hover:bg-popover/80 transition-colors focus-visible:ring-2 focus-visible:ring-ring"
-            style={{ top: isFullscreen ? 16 : topBarHeight + windowGap + 16 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-          </motion.button>
-        )}
-      </AnimatePresence>
+      <LayoutModeToggle />
 
       {/* Intro animation overlay - renders above layout during animation
           Normal layout renders underneath as morph target for window transition */}
