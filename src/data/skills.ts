@@ -26,12 +26,11 @@ export const skills: Skills = {
     { name: "Next.js", featured: true, showInDefaultFilters: true, iconSlug: "nextdotjs" },
     { name: "TanStack Query", iconSlug: "reactquery" },
     { name: "Shadcn/ui", iconSlug: "shadcnui" },
-    { name: "Chakra UI", iconSlug: "chakraui" },
     { name: "Blazor", featured: true, showInDefaultFilters: true, iconSlug: "blazor" },
+    { name: "Framer Motion", iconSlug: "framer" },
+    { name: "Chakra UI" },
     { name: "WPF" },
-    { name: "MudBlazor" },
     { name: "Bootstrap" },
-    { name: "Framer Motion", iconSlug: "framer" }, // Used in arc-portfolio; remove if startup animation not implemented
     // { name: "React Hook Form" }, // Planned - in development
     // { name: "Zod" }, // Planned - in development
   ],

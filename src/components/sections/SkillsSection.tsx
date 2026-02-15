@@ -26,7 +26,8 @@ const mobileLanguageOrder = ["TypeScript", "JavaScript", "Python", "C#", "C++"];
 export function SkillsSection() {
   const isPhone = useIsPhone();
   const isShortViewport = useIsShortViewport();
-  const compact = !isPhone && isShortViewport;
+  const compact = isShortViewport || isPhone;
+  const compactLogos = !isPhone && isShortViewport;
   const allLanguages = skills.Languages ?? [];
 
   // Delay showing languages row to avoid hydration flash (mobile vs desktop curation)
@@ -51,7 +52,7 @@ export function SkillsSection() {
           <SkillLogoGrid
             skills={languages}
             layout="row"
-            size={compact ? "responsiveMd" : "responsiveLg"}
+            size={compactLogos ? "responsiveMd" : "responsiveLg"}
             gap="relaxed"
             linkToProjects={true}
           />
@@ -70,7 +71,7 @@ export function SkillsSection() {
           }
 
           return (
-            <DetailCard key={category} title={category} compact={compact || isPhone}>
+            <DetailCard key={category} title={category} compact={compact}>
               {/* Primary skills with logos */}
               {primarySkills.length > 0 && (
                 <div className="flex justify-center">
