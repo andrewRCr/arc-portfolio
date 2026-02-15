@@ -60,7 +60,6 @@ export default async function SoftwareProjectPage({ params }: ProjectPageProps) 
     if (!isModStatsError(statsResult)) {
       stats = {
         downloads: statsResult.downloads,
-        uniqueDownloads: statsResult.uniqueDownloads,
         endorsements: statsResult.endorsements,
       };
     }

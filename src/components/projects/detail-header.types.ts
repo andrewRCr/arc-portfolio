@@ -14,7 +14,6 @@ import type { ProjectLinks } from "@/types/project";
  */
 export interface DetailHeaderStats {
   downloads?: number;
-  uniqueDownloads?: number;
   endorsements?: number;
 }
 

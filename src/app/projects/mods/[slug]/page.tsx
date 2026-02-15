@@ -70,7 +70,6 @@ export default async function ModProjectPage({ params }: ModPageProps) {
     statsResult && !isModStatsError(statsResult)
       ? {
           downloads: statsResult.downloads,
-          uniqueDownloads: statsResult.uniqueDownloads,
           endorsements: statsResult.endorsements,
         }
       : undefined;

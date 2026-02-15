@@ -5,25 +5,22 @@
  */
 
 /**
- * Stats returned from NexusMods API for a single mod
+ * Stats returned from NexusMods GraphQL API for a single mod
  */
 export interface ModStats {
   modId: number;
   name: string;
   downloads: number;
-  uniqueDownloads: number;
   endorsements: number;
   /** ISO timestamp of last update */
   updatedAt: string;
 }
 
 /**
- * Aggregate stats across all mods
+ * Author-level stats from NexusMods User query
  */
-export interface AggregateStats {
-  totalDownloads: number;
-  totalUniqueDownloads: number;
-  totalEndorsements: number;
+export interface AuthorStats {
+  uniqueDownloads: number;
   modCount: number;
   /** ISO timestamp when stats were fetched */
   fetchedAt: string;
@@ -35,15 +32,15 @@ export interface AggregateStats {
 export interface ModStatsError {
   error: true;
   message: string;
-  code: "NO_API_KEY" | "RATE_LIMITED" | "NOT_FOUND" | "API_ERROR";
+  code: "RATE_LIMITED" | "NOT_FOUND" | "API_ERROR";
 }
 
 export type ModStatsResult = ModStats | ModStatsError;
-export type AggregateStatsResult = AggregateStats | ModStatsError;
+export type AuthorStatsResult = AuthorStats | ModStatsError;
 
 /**
  * Check if result is an error
  */
-export function isModStatsError(result: ModStatsResult | AggregateStatsResult): result is ModStatsError {
+export function isModStatsError(result: ModStatsResult | AuthorStatsResult): result is ModStatsError {
   return "error" in result && result.error === true;
 }

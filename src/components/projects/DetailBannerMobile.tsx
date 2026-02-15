@@ -41,8 +41,7 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
   const isPhone = useIsPhone();
   const isInDevelopment = status === "in-development";
   const hasCategories = categories && categories.length > 0;
-  const hasStats =
-    stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
+  const hasStats = stats && (stats.downloads !== undefined || stats.endorsements !== undefined);
   const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
   const blurDataURL = heroImage ? getBlurDataURL(heroImage) : undefined;
   const aspectRatioStyle = { aspectRatio: `${DETAIL_HEADER_ASPECT_RATIO}/1` };
@@ -64,11 +63,7 @@ export function DetailBannerMobile({ categories, heroImage, links, stats, metada
   // Stats go in toolbar label for mods (they have stats but no metadata)
   // Metadata goes in toolbar label for regular projects
   const statsLabelContent = hasStats ? (
-    <ModStatsInline
-      downloads={stats.downloads}
-      uniqueDownloads={stats.uniqueDownloads}
-      endorsements={stats.endorsements}
-    />
+    <ModStatsInline downloads={stats.downloads} endorsements={stats.endorsements} />
   ) : undefined;
 
   return (

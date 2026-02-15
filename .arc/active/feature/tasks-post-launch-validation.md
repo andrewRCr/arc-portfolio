@@ -318,6 +318,44 @@ deployment when the PR is opened.
 
         **Files:** `e2e/tests/intro-animation.spec.ts`
 
+- [x] **3.6 Migrate NexusMods API from v1 REST to v2 GraphQL**
+
+    NexusMods support declined formal app registration (reserved for public mod managers) and
+    recommended the GraphQL v2 API which works without authentication. Migration eliminates API key
+    dependency, simplifies aggregate stats (1 query vs 38), and drops per-mod unique downloads
+    (not available in v2). About page aggregate uses `userByName` query for author-level unique
+    downloads directly.
+
+    - [x] **3.6.a Migrate server-side API layer**
+
+        Rewrote API from REST v1 (`api.nexusmods.com/v1`) to GraphQL v2
+        (`api.nexusmods.com/v2/graphql`). Individual mod stats via `legacyModsByDomain` query,
+        author aggregate via `userByName` query. Removed API key dependency, hidden mods
+        tracking, 28 aggregate-only mods from registry, and `getDisplayedModStats` (dead code).
+
+        **Files:** `nexusmods.ts` (config), `nexusmods-types.ts`, `actions/nexusmods.ts`,
+        `.env.example`
+
+    - [x] **3.6.b Update UI components**
+
+        Removed `uniqueDownloads` from `DetailHeaderStats`, `ModStatsBadge` (all variants),
+        detail header components (desktop + mobile), and both mod/software page components.
+        About page now uses `getAuthorStats` instead of `getAggregateStats`. Badges show
+        2 stats (endorsements + downloads) instead of 3.
+
+        **Files:** `detail-header.types.ts`, `ModStatsBadge.tsx`, `DetailHeaderDesktop.tsx`,
+        `DetailBannerMobile.tsx`, `mods/[slug]/page.tsx`, `software/[slug]/page.tsx`,
+        `about/page.tsx`
+
+    - [x] **3.6.c Update tests and verify**
+
+        Updated type tests (removed `AggregateStats`/`NO_API_KEY`, added `AuthorStats`),
+        badge tests (2-stat display, removed `uniqueDownloads` references). All quality
+        gates pass: type-check, lint, format, 1470/1470 tests, build.
+
+        **Files:** `actions/__tests__/nexusmods.test.ts`,
+        `projects/__tests__/ModStatsBadge.test.tsx`
+
 ---
 
 ## Success Criteria
@@ -335,5 +373,5 @@ deployment when the PR is opened.
 - [x] SEO artifacts verified (meta tags, OG tags, sitemap, robots.txt, social previews)
 - [x] Dev pages return 404 in production
 - [x] Custom error pages display correctly
-- [x] NexusMods API registration submitted
+- [x] NexusMods API migrated to v2 GraphQL (no registration/key required)
 - [x] Project data and README updated with live site URL

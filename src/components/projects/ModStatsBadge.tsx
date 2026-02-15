@@ -6,14 +6,14 @@
  * Reusable badge for showing download counts and endorsements.
  */
 
-import { Download, ThumbsUp, Users } from "lucide-react";
+import { Download, ThumbsUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { formatStatNumber } from "@/lib/nexusmods";
 import { useIsPhone } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 
-export type ModStatType = "downloads" | "uniqueDownloads" | "endorsements";
+export type ModStatType = "downloads" | "endorsements";
 
 interface ModStatsBadgeProps {
   /** The stat value to display */
@@ -41,12 +41,6 @@ const statConfig: Record<
     tooltip: "Total Downloads",
     ariaLabel: (v) => `${v.toLocaleString()} total downloads`,
   },
-  uniqueDownloads: {
-    icon: Users,
-    label: "unique downloads",
-    tooltip: "Unique Downloads",
-    ariaLabel: (v) => `${v.toLocaleString()} unique downloads`,
-  },
   endorsements: {
     icon: ThumbsUp,
     label: "endorsements",
@@ -59,8 +53,8 @@ const statConfig: Record<
  * Badge displaying a NexusMods statistic with appropriate icon
  *
  * @example
- * <ModStatsBadge type="uniqueDownloads" value={5951} />
- * // Renders: [Users icon] 6K
+ * <ModStatsBadge type="downloads" value={15153} />
+ * // Renders: [Download icon] 15.2K
  *
  * @example
  * <ModStatsBadge type="endorsements" value={212} />
@@ -85,10 +79,9 @@ export function ModStatsBadge({ value, type, className, showRaw = false }: ModSt
 }
 
 /** Build formatted stat entries from optional stat values, deriving icons/labels from statConfig */
-function buildStatEntries(downloads?: number, uniqueDownloads?: number, endorsements?: number) {
+function buildStatEntries(downloads?: number, endorsements?: number) {
   const entries: Array<{ type: ModStatType; value: number }> = [];
   if (endorsements !== undefined) entries.push({ type: "endorsements", value: endorsements });
-  if (uniqueDownloads !== undefined) entries.push({ type: "uniqueDownloads", value: uniqueDownloads });
   if (downloads !== undefined) entries.push({ type: "downloads", value: downloads });
 
   return entries.map(({ type, value }) => {
@@ -103,17 +96,16 @@ function buildStatEntries(downloads?: number, uniqueDownloads?: number, endorsem
 
 /**
  * Compact badge combining multiple stats in one (for phone viewports)
- * Renders: [👍 212 · 👥 6K · ⬇️ 9K]
+ * Renders: [👍 212 · ⬇️ 15K]
  */
 interface ModStatsCompactProps {
   downloads?: number;
-  uniqueDownloads?: number;
   endorsements?: number;
   className?: string;
 }
 
-function ModStatsCompact({ downloads, uniqueDownloads, endorsements, className }: ModStatsCompactProps) {
-  const stats = buildStatEntries(downloads, uniqueDownloads, endorsements);
+function ModStatsCompact({ downloads, endorsements, className }: ModStatsCompactProps) {
+  const stats = buildStatEntries(downloads, endorsements);
 
   if (stats.length === 0) return null;
 
@@ -142,24 +134,22 @@ function ModStatsCompact({ downloads, uniqueDownloads, endorsements, className }
  *
  * @example
  * <ModStatsGroup
- *   uniqueDownloads={5951}
+ *   downloads={15153}
  *   endorsements={212}
  * />
  */
 interface ModStatsGroupProps {
-  /** Total downloads (optional, usually not shown) */
+  /** Total downloads */
   downloads?: number;
-  /** Unique downloads */
-  uniqueDownloads?: number;
   /** Endorsements */
   endorsements?: number;
   /** Additional class names for the container */
   className?: string;
 }
 
-export function ModStatsGroup({ downloads, uniqueDownloads, endorsements, className }: ModStatsGroupProps) {
+export function ModStatsGroup({ downloads, endorsements, className }: ModStatsGroupProps) {
   const isPhone = useIsPhone();
-  const hasStats = downloads !== undefined || uniqueDownloads !== undefined || endorsements !== undefined;
+  const hasStats = downloads !== undefined || endorsements !== undefined;
 
   if (!hasStats) {
     return null;
@@ -167,21 +157,13 @@ export function ModStatsGroup({ downloads, uniqueDownloads, endorsements, classN
 
   // Phone: single compact badge with all stats
   if (isPhone) {
-    return (
-      <ModStatsCompact
-        downloads={downloads}
-        uniqueDownloads={uniqueDownloads}
-        endorsements={endorsements}
-        className={className}
-      />
-    );
+    return <ModStatsCompact downloads={downloads} endorsements={endorsements} className={className} />;
   }
 
   // Tablet/Desktop: separate badges
   return (
     <div className={cn("flex items-center gap-2", className)}>
       {endorsements !== undefined && <ModStatsBadge type="endorsements" value={endorsements} />}
-      {uniqueDownloads !== undefined && <ModStatsBadge type="uniqueDownloads" value={uniqueDownloads} />}
       {downloads !== undefined && <ModStatsBadge type="downloads" value={downloads} />}
     </div>
   );
@@ -189,17 +171,16 @@ export function ModStatsGroup({ downloads, uniqueDownloads, endorsements, classN
 
 /**
  * Inline stats display (no badge wrapper) - for embedding in other components
- * Renders: [👍 212 · 👥 6K · ⬇️ 9K] as inline content
+ * Renders: [👍 212 · ⬇️ 15K] as inline content
  */
 interface ModStatsInlineProps {
   downloads?: number;
-  uniqueDownloads?: number;
   endorsements?: number;
   className?: string;
 }
 
-export function ModStatsInline({ downloads, uniqueDownloads, endorsements, className }: ModStatsInlineProps) {
-  const stats = buildStatEntries(downloads, uniqueDownloads, endorsements);
+export function ModStatsInline({ downloads, endorsements, className }: ModStatsInlineProps) {
+  const stats = buildStatEntries(downloads, endorsements);
 
   if (stats.length === 0) return null;
 

@@ -21,12 +21,6 @@ describe("ModStatsBadge", () => {
       expect(screen.getByLabelText("1,500 total downloads")).toBeInTheDocument();
     });
 
-    it("renders uniqueDownloads badge", () => {
-      render(<ModStatsBadge type="uniqueDownloads" value={5951} />);
-      expect(screen.getByText("6K")).toBeInTheDocument();
-      expect(screen.getByLabelText("5,951 unique downloads")).toBeInTheDocument();
-    });
-
     it("renders endorsements badge", () => {
       render(<ModStatsBadge type="endorsements" value={212} />);
       expect(screen.getByText("212")).toBeInTheDocument();
@@ -36,7 +30,7 @@ describe("ModStatsBadge", () => {
 
   describe("number formatting", () => {
     it("formats thousands with K suffix", () => {
-      render(<ModStatsBadge type="uniqueDownloads" value={15300} />);
+      render(<ModStatsBadge type="downloads" value={15300} />);
       expect(screen.getByText("15.3K")).toBeInTheDocument();
     });
 
@@ -46,7 +40,7 @@ describe("ModStatsBadge", () => {
     });
 
     it("shows raw number when showRaw is true", () => {
-      render(<ModStatsBadge type="uniqueDownloads" value={5951} showRaw />);
+      render(<ModStatsBadge type="downloads" value={5951} showRaw />);
       expect(screen.getByText("5,951")).toBeInTheDocument();
     });
 
@@ -58,8 +52,8 @@ describe("ModStatsBadge", () => {
 
   describe("accessibility", () => {
     it("has appropriate aria-label for screen readers", () => {
-      render(<ModStatsBadge type="uniqueDownloads" value={5951} />);
-      const badge = screen.getByLabelText("5,951 unique downloads");
+      render(<ModStatsBadge type="downloads" value={5951} />);
+      const badge = screen.getByLabelText("5,951 total downloads");
       expect(badge).toBeInTheDocument();
     });
 
@@ -88,8 +82,8 @@ describe("ModStatsBadge", () => {
 
 describe("ModStatsGroup", () => {
   it("renders multiple badges", () => {
-    render(<ModStatsGroup uniqueDownloads={5951} endorsements={212} />);
-    expect(screen.getByText("6K")).toBeInTheDocument();
+    render(<ModStatsGroup downloads={15153} endorsements={212} />);
+    expect(screen.getByText("15.2K")).toBeInTheDocument();
     expect(screen.getByText("212")).toBeInTheDocument();
   });
 
@@ -104,27 +98,21 @@ describe("ModStatsGroup", () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it("renders stats in correct order (endorsements, uniqueDownloads, downloads)", () => {
-    render(<ModStatsGroup downloads={1000} uniqueDownloads={500} endorsements={50} />);
-    // Query by aria-label (more semantic than data-slot which gets overwritten by Tooltip)
+  it("renders stats in correct order (endorsements, downloads)", () => {
+    render(<ModStatsGroup downloads={1000} endorsements={50} />);
     const endorsements = screen.getByLabelText("50 endorsements");
-    const uniqueDownloads = screen.getByLabelText("500 unique downloads");
     const downloads = screen.getByLabelText("1,000 total downloads");
 
-    // Verify all three badges exist
     expect(endorsements).toBeInTheDocument();
-    expect(uniqueDownloads).toBeInTheDocument();
     expect(downloads).toBeInTheDocument();
 
     // Verify order by checking DOM position (endorsements should come first)
     const parent = endorsements.parentElement;
     const children = Array.from(parent?.children || []);
     const endorsementsIndex = children.indexOf(endorsements);
-    const uniqueDownloadsIndex = children.indexOf(uniqueDownloads);
     const downloadsIndex = children.indexOf(downloads);
 
-    expect(endorsementsIndex).toBeLessThan(uniqueDownloadsIndex);
-    expect(uniqueDownloadsIndex).toBeLessThan(downloadsIndex);
+    expect(endorsementsIndex).toBeLessThan(downloadsIndex);
   });
 
   it("accepts custom className", () => {
@@ -143,18 +131,15 @@ describe("ModStatsGroup", () => {
     });
 
     it("renders single compact badge on phone", () => {
-      render(<ModStatsGroup uniqueDownloads={5951} endorsements={212} />);
-      // On phone, all stats combined in one badge with dot separators
-      const badge = screen.getByLabelText(/212 endorsements, 5,951 unique downloads/);
+      render(<ModStatsGroup downloads={15153} endorsements={212} />);
+      // On phone, all stats combined in one badge
+      const badge = screen.getByLabelText(/212 endorsements, 15,153 total downloads/);
       expect(badge).toBeInTheDocument();
     });
 
     it("renders all stats in compact format with gap spacing", () => {
-      const { container } = render(<ModStatsGroup downloads={1000} uniqueDownloads={500} endorsements={50} />);
-      // Stats are displayed with gap spacing (no dot separators)
-      // Verify all three values are present
+      const { container } = render(<ModStatsGroup downloads={1000} endorsements={50} />);
       expect(screen.getByText("50")).toBeInTheDocument();
-      expect(screen.getByText("500")).toBeInTheDocument();
       expect(screen.getByText("1K")).toBeInTheDocument();
       // Badge should have gap class for spacing
       const badge = container.firstChild;
@@ -162,13 +147,13 @@ describe("ModStatsGroup", () => {
     });
 
     it("shows stats in correct order in compact badge", () => {
-      render(<ModStatsGroup downloads={9000} uniqueDownloads={6000} endorsements={200} />);
-      const badge = screen.getByLabelText(/200 endorsements, 6,000 unique downloads, 9,000 total downloads/);
+      render(<ModStatsGroup downloads={9000} endorsements={200} />);
+      const badge = screen.getByLabelText(/200 endorsements, 9,000 total downloads/);
       expect(badge).toBeInTheDocument();
     });
 
     it("formats numbers in compact badge", () => {
-      render(<ModStatsGroup uniqueDownloads={5951} />);
+      render(<ModStatsGroup downloads={5951} />);
       expect(screen.getByText("6K")).toBeInTheDocument();
     });
 

@@ -1,81 +1,89 @@
 "use server";
 
 /**
- * Server Actions for NexusMods API
+ * Server Actions for NexusMods GraphQL API (v2)
  *
- * Fetches mod statistics (downloads, endorsements) from NexusMods API.
+ * Fetches mod statistics (downloads, endorsements) and author-level stats
+ * via the NexusMods GraphQL endpoint. No authentication required for
+ * read-only queries.
+ *
  * Uses Next.js caching with 6-hour revalidation to minimize API calls.
- *
- * API key must be set in NEXUSMODS_API_KEY environment variable.
  */
 
 import { unstable_cache } from "next/cache";
-import {
-  NEXUSMODS_CONFIG,
-  ALL_MODS_FOR_AGGREGATE,
-  DISPLAYED_MODS,
-  HIDDEN_MODS_DOWNLOAD_TALLY,
-  type NexusModEntry,
-} from "@/config/nexusmods";
-import { isModStatsError, type ModStatsResult, type AggregateStatsResult } from "@/lib/nexusmods-types";
+import { NEXUSMODS_CONFIG, DISPLAYED_MODS } from "@/config/nexusmods";
+import { type ModStatsResult, type AuthorStatsResult } from "@/lib/nexusmods-types";
 
 /**
- * Build headers required by NexusMods API
+ * Execute a GraphQL query against the NexusMods v2 API
  */
-function getApiHeaders(): HeadersInit | null {
-  const apiKey = process.env.NEXUSMODS_API_KEY;
-  if (!apiKey) {
-    return null;
+async function graphqlQuery<T>(query: string): Promise<T> {
+  const response = await fetch(NEXUSMODS_CONFIG.apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query }),
+  });
+
+  if (response.status === 429) {
+    throw new GraphQLError("NexusMods API rate limit exceeded", "RATE_LIMITED");
   }
 
-  return {
-    apikey: apiKey,
-    "Application-Name": NEXUSMODS_CONFIG.appName,
-    "Application-Version": NEXUSMODS_CONFIG.appVersion,
-  };
+  if (!response.ok) {
+    throw new GraphQLError(`NexusMods API error: ${response.status} ${response.statusText}`, "API_ERROR");
+  }
+
+  const json = await response.json();
+
+  if (json.errors?.length) {
+    throw new GraphQLError(`GraphQL error: ${json.errors[0].message}`, "API_ERROR");
+  }
+
+  return json.data as T;
+}
+
+class GraphQLError extends Error {
+  constructor(
+    message: string,
+    public code: "RATE_LIMITED" | "NOT_FOUND" | "API_ERROR"
+  ) {
+    super(message);
+  }
 }
 
 /**
- * Raw API response from NexusMods mod info endpoint
+ * GraphQL response types (internal)
  */
-interface NexusModsApiResponse {
-  mod_id: number;
-  name: string;
-  mod_downloads: number;
-  mod_unique_downloads: number;
-  endorsement_count: number;
-  updated_timestamp: number;
+interface ModQueryResponse {
+  legacyModsByDomain: {
+    nodes: Array<{
+      modId: number;
+      name: string;
+      downloads: number;
+      endorsements: number;
+      updatedAt: string;
+    }>;
+  };
+}
+
+interface AuthorQueryResponse {
+  userByName: {
+    uniqueModDownloads: number;
+    modCount: number;
+  };
 }
 
 /**
  * Fetch stats for a single mod (uncached - internal use)
  */
 async function fetchModStatsInternal(game: string, modId: number): Promise<ModStatsResult> {
-  const headers = getApiHeaders();
-  if (!headers) {
-    return {
-      error: true,
-      message: "NexusMods API key not configured",
-      code: "NO_API_KEY",
-    };
-  }
-
-  const url = `${NEXUSMODS_CONFIG.baseUrl}/games/${game}/mods/${modId}.json`;
-
   try {
-    const response = await fetch(url, {
-      headers,
-    });
+    const data = await graphqlQuery<ModQueryResponse>(
+      `{ legacyModsByDomain(ids: [{gameDomain: "${game}", modId: ${modId}}]) { nodes { modId name downloads endorsements updatedAt } } }`
+    );
 
-    if (response.status === 429) {
-      return {
-        error: true,
-        message: "NexusMods API rate limit exceeded",
-        code: "RATE_LIMITED",
-      };
-    }
+    const mod = data.legacyModsByDomain.nodes[0];
 
-    if (response.status === 404) {
+    if (!mod) {
       return {
         error: true,
         message: `Mod not found: ${game}/${modId}`,
@@ -83,25 +91,17 @@ async function fetchModStatsInternal(game: string, modId: number): Promise<ModSt
       };
     }
 
-    if (!response.ok) {
-      return {
-        error: true,
-        message: `NexusMods API error: ${response.status} ${response.statusText}`,
-        code: "API_ERROR",
-      };
-    }
-
-    const data: NexusModsApiResponse = await response.json();
-
     return {
-      modId: data.mod_id,
-      name: data.name,
-      downloads: data.mod_downloads,
-      uniqueDownloads: data.mod_unique_downloads,
-      endorsements: data.endorsement_count,
-      updatedAt: new Date(data.updated_timestamp * 1000).toISOString(),
+      modId: mod.modId,
+      name: mod.name,
+      downloads: mod.downloads,
+      endorsements: mod.endorsements,
+      updatedAt: mod.updatedAt,
     };
   } catch (error) {
+    if (error instanceof GraphQLError) {
+      return { error: true, message: error.message, code: error.code };
+    }
     return {
       error: true,
       message: error instanceof Error ? error.message : "Unknown error fetching mod",
@@ -151,98 +151,52 @@ export async function getModStatsBySlug(portfolioSlug: string): Promise<ModStats
 }
 
 /**
- * Fetch aggregate stats across all mods in registry (uncached - internal use)
+ * Fetch author-level stats (uncached - internal use)
  */
-async function fetchAggregateStatsInternal(): Promise<AggregateStatsResult> {
-  const headers = getApiHeaders();
-  if (!headers) {
-    return {
-      error: true,
-      message: "NexusMods API key not configured",
-      code: "NO_API_KEY",
-    };
-  }
+async function fetchAuthorStatsInternal(): Promise<AuthorStatsResult> {
+  try {
+    const data = await graphqlQuery<AuthorQueryResponse>(
+      `{ userByName(name: "${NEXUSMODS_CONFIG.authorName}") { uniqueModDownloads modCount } }`
+    );
 
-  let totalDownloads = 0;
-  let totalUniqueDownloads = 0;
-  let totalEndorsements = 0;
-  let successCount = 0;
-
-  // Fetch all mods in parallel (respecting that we have 600 request quota)
-  // Includes hidden mods to match NexusMods profile page total
-  const results = await Promise.all(ALL_MODS_FOR_AGGREGATE.map((mod) => fetchModStatsInternal(mod.game, mod.modId)));
-
-  for (const result of results) {
-    if (!isModStatsError(result)) {
-      // Hidden mods return undefined for downloads - skip those values
-      totalDownloads += result.downloads ?? 0;
-      totalUniqueDownloads += result.uniqueDownloads ?? 0;
-      totalEndorsements += result.endorsements ?? 0;
-      successCount++;
+    if (!data.userByName) {
+      return {
+        error: true,
+        message: `Author not found: ${NEXUSMODS_CONFIG.authorName}`,
+        code: "NOT_FOUND",
+      };
     }
-  }
 
-  // If we couldn't fetch any mods, return error
-  if (successCount === 0) {
+    return {
+      uniqueDownloads: data.userByName.uniqueModDownloads,
+      modCount: data.userByName.modCount,
+      fetchedAt: new Date().toISOString(),
+    };
+  } catch (error) {
+    if (error instanceof GraphQLError) {
+      return { error: true, message: error.message, code: error.code };
+    }
     return {
       error: true,
-      message: "Failed to fetch any mod stats",
+      message: error instanceof Error ? error.message : "Unknown error fetching author stats",
       code: "API_ERROR",
     };
   }
-
-  // Add manual tally for hidden mods (API returns undefined for their downloads)
-  // These values captured manually from NexusMods before mods were hidden
-  totalDownloads += HIDDEN_MODS_DOWNLOAD_TALLY.downloads;
-  totalUniqueDownloads += HIDDEN_MODS_DOWNLOAD_TALLY.uniqueDownloads;
-
-  return {
-    totalDownloads,
-    totalUniqueDownloads,
-    totalEndorsements,
-    modCount: successCount,
-    fetchedAt: new Date().toISOString(),
-  };
 }
 
 /**
- * Get aggregate stats across all mods (cached)
+ * Get author-level stats (cached)
  *
- * Sums downloads, unique downloads, and endorsements across all 38 mods
- * (35 registry + 3 hidden mods).
+ * Returns unique downloads and mod count directly from the NexusMods
+ * User profile, matching what's displayed on the author's profile page.
  *
- * @returns Aggregate stats or error
+ * @returns Author stats or error
  */
-export const getAggregateStats = unstable_cache(
-  async (): Promise<AggregateStatsResult> => {
-    return fetchAggregateStatsInternal();
+export const getAuthorStats = unstable_cache(
+  async (): Promise<AuthorStatsResult> => {
+    return fetchAuthorStatsInternal();
   },
-  ["nexusmods-aggregate-stats"],
-  {
-    revalidate: NEXUSMODS_CONFIG.cacheTtl,
-    tags: ["nexusmods"],
-  }
-);
-
-/**
- * Get stats for all displayed mods (cached)
- *
- * Returns stats for the 7 mods shown in the portfolio.
- * Useful for batch fetching on pages that show multiple mods.
- *
- * @returns Array of mod stats (including any errors)
- */
-export const getDisplayedModStats = unstable_cache(
-  async (): Promise<Array<{ entry: NexusModEntry; stats: ModStatsResult }>> => {
-    const results = await Promise.all(
-      DISPLAYED_MODS.map(async (entry) => ({
-        entry,
-        stats: await fetchModStatsInternal(entry.game, entry.modId),
-      }))
-    );
-    return results;
-  },
-  ["nexusmods-displayed-stats"],
+  ["nexusmods-author-stats"],
   {
     revalidate: NEXUSMODS_CONFIG.cacheTtl,
     tags: ["nexusmods"],

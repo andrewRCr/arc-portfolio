@@ -37,8 +37,7 @@ export function DetailHeaderDesktop({
   const backLabel = backLabelProp ?? dest.label;
   const isInDevelopment = status === "in-development";
   const hasCategories = categories && categories.length > 0;
-  const hasStats =
-    stats && (stats.downloads !== undefined || stats.uniqueDownloads !== undefined || stats.endorsements !== undefined);
+  const hasStats = stats && (stats.downloads !== undefined || stats.endorsements !== undefined);
   const { opacity } = useHeaderCrossfade("out");
   const hasLinks = Boolean(links?.github || links?.liveDemo || links?.download || links?.nexusmods);
 
@@ -110,13 +109,7 @@ export function DetailHeaderDesktop({
                     {category}
                   </span>
                 ))}
-              {hasStats && (
-                <ModStatsGroup
-                  downloads={stats.downloads}
-                  uniqueDownloads={stats.uniqueDownloads}
-                  endorsements={stats.endorsements}
-                />
-              )}
+              {hasStats && <ModStatsGroup downloads={stats.downloads} endorsements={stats.endorsements} />}
               {/* Project metadata - subtle text after badges */}
               {hasMetadata && <span className="ml-2 text-sm text-muted-foreground">{metadataParts.join(" · ")}</span>}
             </div>
