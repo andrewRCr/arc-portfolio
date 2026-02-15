@@ -110,7 +110,7 @@ export function ThemeControlDrawer() {
               e.currentTarget.blur();
             }}
             aria-label={`Current mode: ${theme}. Click to switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            className="gap-1.5 min-h-11 min-w-[5.25rem] px-4 font-terminal text-xs border-2 border-border text-accent-high hover:bg-transparent hover:text-accent-high"
+            className="gap-1.5 min-h-11 min-w-[5.25rem] px-4 font-terminal text-xs border-2 border-border text-foreground hover:bg-transparent hover:text-accent-high"
           >
             {theme === "dark" ? (
               <>
@@ -131,7 +131,7 @@ export function ThemeControlDrawer() {
               e.currentTarget.blur();
             }}
             aria-label={`Current layout: ${layoutMode}. Click to switch to ${layoutMode === "full" ? "boxed" : "full"} layout`}
-            className="gap-1.5 min-h-11 min-w-[5.25rem] px-4 font-terminal text-xs border-2 border-border text-accent-high hover:bg-transparent hover:text-accent-high"
+            className="gap-1.5 min-h-11 min-w-[5.25rem] px-4 font-terminal text-xs border-2 border-border text-foreground hover:bg-transparent hover:text-accent-high"
           >
             {layoutMode === "full" ? (
               <>
@@ -153,7 +153,7 @@ export function ThemeControlDrawer() {
             }}
             aria-label="Reset all preferences to defaults"
             disabled={!hasCustomPreferences}
-            className="gap-1.5 min-h-11 min-w-11 px-4 font-terminal text-xs border-2 border-border text-accent-high hover:bg-transparent hover:text-accent-high"
+            className="gap-1.5 min-h-11 min-w-11 px-4 font-terminal text-xs border-2 border-border text-foreground hover:bg-transparent hover:text-accent-high"
           >
             <RotateCcw className="h-4 w-4" />
             <span>Reset</span>

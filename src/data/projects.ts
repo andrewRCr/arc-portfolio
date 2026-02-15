@@ -9,7 +9,7 @@ import { Project } from "@/types/project";
 
 /** Shared feature bullet for projects developed with the ARC Framework. */
 export const ARC_FRAMEWORK_FEATURE =
-  "Built with [ARC Framework](/projects/software/arc-framework) — a spec-driven development methodology emphasizing focused human-agent collaboration";
+  "Built with [ARC Framework](/projects/software/arc-framework), a spec-driven development methodology emphasizing focused human-agent collaboration";
 
 export const projects: Project[] = [
   // ==========================================
@@ -182,8 +182,8 @@ export const projects: Project[] = [
     title: "andrewRCr Portfolio",
     slug: "arc-portfolio",
     description:
-      "A developer portfolio engineered as a production application. All content — project data, theme definitions, and " +
-      "site configuration — flows through typed, validated data models. The multi-theme design system persists user " +
+      "A developer portfolio engineered as a production application. All content (project data, theme definitions, and " +
+      "site configuration) flows through typed, validated data models. The multi-theme design system persists user " +
       "preferences to cookies via Server Actions, preventing flash of unstyled content on page load. Accessibility is " +
       "validated by automated testing across the component library and every theme combination.",
     shortDescription:
@@ -221,7 +221,7 @@ export const projects: Project[] = [
       "Type-safe content architecture with validated data models for project data, theme definitions, and site configuration",
       "Theme system built on semantic design tokens for color and layout, with WCAG AA contrast validation across all combinations",
       "Automated accessibility auditing with vitest-axe integrated across component test suites",
-      "Responsive layouts with distinct compositions across viewports — CSS-only breakpoints for hydration safety",
+      "Responsive layouts with distinct compositions across viewports; CSS-only breakpoints for hydration safety",
       "Orchestrated animation system with centralized timing driving intro sequences, page transitions, and shared element morphing",
       ARC_FRAMEWORK_FEATURE,
     ],
