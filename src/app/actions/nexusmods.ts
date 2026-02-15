@@ -74,6 +74,11 @@ interface AuthorQueryResponse {
 
 /**
  * Fetch stats for a single mod (uncached - internal use)
+ *
+ * Uses `legacyModsByDomain` for exact game domain + mod ID lookup. The "legacy"
+ * prefix refers to the ID scheme (domain + modId), not the API version — NexusMods
+ * is transitioning to internal UIDs. If deprecated, the `mods` query with
+ * `gameDomainName` filter is a drop-in replacement.
  */
 async function fetchModStatsInternal(game: string, modId: number): Promise<ModStatsResult> {
   try {
