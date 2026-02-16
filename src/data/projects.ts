@@ -298,7 +298,7 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/andrewRCr/TaskFocus",
-      liveDemo: "https://taskfocus.andrewcreekmore.com",
+      liveDemo: "https://taskfocus.andrewcreekmore.dev",
       download: "https://github.com/andrewRCr/TaskFocus/releases", // Windows desktop app
     },
     images: {
@@ -377,7 +377,7 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/andrewRCr/PetResort",
-      liveDemo: "https://pet-resort.andrewcreekmore.com",
+      liveDemo: "https://pet-resort.andrewcreekmore.dev",
       // Public demo credentials - fictional business owner account for demo access
       demoCredentials: {
         username: "admin",
@@ -531,7 +531,7 @@ export const projects: Project[] = [
     links: {
       github: "https://github.com/andrewRCr/ActionRPGProject",
       liveDemo: undefined, // Game project - no live demo available
-      download: "https://drive.google.com/file/d/1aUZ3IhFJOaD7NjLIIzOBAaum8KmxyvjM/view?usp=sharing", // Google Drive - packaged executable (~5GB)
+      download: "https://downloads.andrewcreekmore.dev/ActionRPGProject_1.0.zip", // Cloudflare R2 - packaged executable (~5.4GB)
     },
     images: {
       thumbnail: "/thumbnails/action-rpg-project.webp",
@@ -623,7 +623,7 @@ export const projects: Project[] = [
     links: {
       github: "https://github.com/andrewRCr/SurvivalHorrorProject",
       liveDemo: undefined, // Game project - no live demo available
-      download: "https://drive.google.com/file/d/1f7JPpYg7aZcZ0B5MIgAoK4epn9MWZhD4/view?usp=sharing", // Google Drive - packaged executable (~5GB)
+      download: "https://downloads.andrewcreekmore.dev/MansionEscape98_v1.6.7z", // Cloudflare R2 - packaged executable (~4.2GB)
     },
     images: {
       thumbnail: "/thumbnails/survival-horror-project.webp",
