@@ -725,9 +725,9 @@ export const projects: Project[] = [
       "Adaptive AI opponent with anti-stalemate logic and local two-player multiplayer",
     ],
     links: {
-      github: "https://github.com/andrewRCr/PongClone",
+      github: "https://github.com/andrewRCr/CppPong",
       liveDemo: undefined, // Desktop game - no web demo
-      download: "https://github.com/andrewRCr/PongClone/releases", // Windows executable
+      download: "https://github.com/andrewRCr/CppPong/releases", // Windows executable
     },
     images: {
       thumbnail: "/thumbnails/cpp-pong.webp",
