@@ -3,7 +3,8 @@
 **Parent:** Follows `tasks-launch-preparation.md` (Phase 5 → archive → PR → merge)
 **Created:** 2026-02-12
 **Branch:** `main` (no feature branch — operational follow-up after launch preparation merge)
-**Status:** In Progress
+**Status:** Complete
+**Completed:** 2026-02-19
 
 ## Overview
 
@@ -43,7 +44,7 @@ deployment when the PR is opened.
 
 ### **Phase 1:** Domain Configuration
 
-- [ ] **1.1 Register and configure domains**
+- [x] **1.1 Register and configure domains**
 
     **Note:** Domain registration, DNS configuration, and domain transfers are manual tasks performed outside the
     codebase. Subtasks here track the operational steps.
@@ -53,12 +54,12 @@ deployment when the PR is opened.
         - Configured DNS (A + CNAME) for all three pointing to Vercel
         - Added anti-spoofing TXT records (SPF `-all`, DMARC `p=reject`)
 
-    - [ ] **1.1.b Transfer `andrewcreekmore.com` from Squarespace**
-        - Domain unlocked at Squarespace, auth code received
-        - Domain added to Cloudflare (site onboarded, nameservers updated at Squarespace)
-        - Transfer initiated at Cloudflare with auth code
-        - **Waiting:** Squarespace transfer release (~Feb 18). Domain transfers take 5–7 days; do not block on this.
-        - Once transfer completes: verify DNS intact, add to Vercel project, verify redirect to primary domain
+    - [x] **1.1.b Transfer `andrewcreekmore.com` from Squarespace**
+        - Transfer completed from Squarespace to Cloudflare
+        - DNS records (A + CNAME) added at Cloudflare, domains added to Vercel as 308 redirects
+        - Verified: `https://andrewcreekmore.com` → 308 → `andrewcreekmore.dev`
+        - Verified: `https://www.andrewcreekmore.com` → 308 → `andrewcreekmore.dev`
+        - SSL valid (issued 2026-02-19)
 
     - [x] **1.1.c Add all domains to Vercel project**
         - `andrewcreekmore.dev` set as primary domain
@@ -75,7 +76,8 @@ deployment when the PR is opened.
         - `https://andrewrcr.com` → 308 to `andrewcreekmore.dev`
         - `https://www.andrewrcr.com` → 308 to `andrewcreekmore.dev`
         - SSL valid on all domains
-        - **Remaining:** `andrewcreekmore.com` pending transfer (Task 1.1.b)
+        - `https://andrewcreekmore.com` → 308 to `andrewcreekmore.dev`
+        - `https://www.andrewcreekmore.com` → 308 to `andrewcreekmore.dev`
 
 - [x] **1.2 Configure Zeptomail sender domain and verify contact form**
 
@@ -361,8 +363,7 @@ deployment when the PR is opened.
 ## Success Criteria
 
 - [x] Site live and accessible at `andrewcreekmore.dev`
-- [-] All secondary domains redirect (308) to primary `.dev` domain
-      (Remaining: `andrewcreekmore.com` pending transfer — Task 1.1.b, ~Feb 18)
+- [x] All secondary domains redirect (308) to primary `.dev` domain
 - [x] SSL certificates valid for all domains
 - [x] Lighthouse: A11y, Best Practices, SEO 100 across all pages; Performance 80-85 mobile / 92-98 desktop
       (limited by intentional intro animation LCP — all other metrics near-perfect)

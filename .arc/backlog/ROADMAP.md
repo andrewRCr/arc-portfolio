@@ -1,13 +1,17 @@
 # Roadmap: Order of Operations
 
-**Purpose:** Internal planning artifact documenting sequencing strategy for remaining work.
-Subject to change as we learn.
+Planning and reasoning — the sequencing strategy for the project's development, what was
+built and why in that order. For project state and record (achievements, current status),
+see [PROJECT-STATUS.md](../reference/constitution/PROJECT-STATUS.md).
 
-**Last Updated:** 2026-02-13
+**Last Updated:** 2026-02-19
+
+**Status:** v1.0 complete. All planned phases shipped. Future work is maintenance or
+enhancement as needed — no active sequencing strategy.
 
 ---
 
-## Current Sequencing Strategy
+## Completed Sequencing Strategy
 
 ### Phase A: Foundation ✅
 
@@ -15,12 +19,12 @@ Establish content baseline and design system infrastructure before visual design
 
 1. ✅ **Content Migration** (2025-12-27)
    - All Squarespace content migrated with display components
-   - [Archive](../.arc/reference/archive/2025-q4/feature/03_content-migration/)
+   - [Archive](../reference/archive/2025-q4/feature/03_content-migration/)
 
 2. ✅ **Design System Foundation** (2025-12-30)
    - Token architecture (shadcn conventions), E2E testing (Playwright), accessibility validation
    - 3 theme families (Gruvbox, Rose Pine, Remedy) with WCAG AA compliance
-   - [Archive](../.arc/reference/archive/2025-q4/technical/04_design-system-foundation/)
+   - [Archive](../reference/archive/2025-q4/technical/04_design-system-foundation/)
 
 ### Phase B: Visual Design System ✅
 
@@ -57,22 +61,29 @@ Transform placeholder styling into distinctive, polished design.
 
 ### Phase C: Launch ✅
 
-Production readiness and deployment.
+Production readiness, deployment, and validation.
 
 9. ✅ **Launch Preparation** (2026-02-12)
-   - Dev infrastructure, content copy, SEO, custom error pages, Vercel deployment
-   - Upstash Redis, blur placeholders, Safari transition fixes, responsive tuning
-   - 1441 unit tests, 341 E2E tests
-   - [Archive](../reference/archive/2026-q1/feature/07_launch-preparation/)
+    - Dev infrastructure, content copy, SEO, custom error pages, Vercel deployment
+    - Upstash Redis, blur placeholders, Safari transition fixes, responsive tuning
+    - 1441 unit tests, 341 E2E tests
+    - [Archive](../reference/archive/2026-q1/feature/07_launch-preparation/)
+
+10. ✅ **Post-Launch Validation** (2026-02-19)
+    - Domain config (4 domains + Squarespace transfer), Lighthouse audit, production smoke testing
+    - BIOS POST LCP anchor, NexusMods v2 GraphQL migration, layout/OG fixes
+    - 1470 unit tests, 341 E2E tests
+    - [Archive](../reference/archive/2026-q1/feature/08_post-launch-validation/)
 
 ---
 
-## Post-v1.0 (Backlog)
+## Backlog (No Active Plans)
 
-Items that can wait until after initial deployment:
+Ideas that may or may not be pursued. No sequencing strategy — these would be evaluated
+individually if/when there's reason to pick them up.
 
 - **Resume Download** - PDF generation (portfolio is primary artifact; TBD if needed)
-- **Analytics Integration** - Vercel Analytics (trivial post-launch addition)
+- **Analytics Integration** - Vercel Analytics (trivial addition)
 - **Blog / Content Feature** - Feature flag infrastructure supports future addition
 
 ---
@@ -99,7 +110,9 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
                                                             │
                                                             ▼
                                                    Launch Preparation
-                                               (flags, SEO, deployment)
+                                                            │
+                                                            ▼
+                                                Post-Launch Validation
 ```
 
 ---
@@ -108,30 +121,30 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ### Included in v1.0
 
-| Item                       | Rationale                                         |
-|----------------------------|---------------------------------------------------|
-| TWM Layout System          | Core visual identity                              |
-| Basic theming (dark/light) | User preference                                   |
-| Responsive design          | Mobile users                                      |
-| Feature flag system        | Enable incremental project/feature rollout        |
-| Completed project pages    | Portfolio showcase (projects ready at launch)     |
+| Item                       | Rationale                                     |
+|----------------------------|-----------------------------------------------|
+| TWM Layout System          | Core visual identity                          |
+| Basic theming (dark/light) | User preference                               |
+| Responsive design          | Mobile users                                  |
+| Feature flag system        | Enable incremental project/feature rollout    |
+| Completed project pages    | Portfolio showcase (projects ready at launch) |
 
 ### Deferred Post-v1.0
 
-| Item            | Rationale                  | When                    |
-|-----------------|----------------------------|-------------------------|
-| Resume Download | Portfolio is primary asset | If needed for job apps  |
-| Blog            | Scope TBD                  | Post-v1.0, flag-gated   |
-| Analytics       | Trivial addition           | Post-launch             |
+| Item            | Rationale                  | When                   |
+|-----------------|----------------------------|------------------------|
+| Resume Download | Portfolio is primary asset | If needed for job apps |
+| Blog            | Scope TBD                  | Post-v1.0, flag-gated  |
+| Analytics       | Trivial addition           | Post-launch            |
 
 ### Skipped
 
-| Item              | Rationale                               |
-|-------------------|-----------------------------------------|
-| CMS integration   | Static content sufficient for portfolio |
-| User accounts     | Not needed for portfolio                |
-| Project search    | Superseded by tabs + skill filtering    |
-| Semantic tokens   | Single form doesn't justify token system|
+| Item            | Rationale                                |
+|-----------------|------------------------------------------|
+| CMS integration | Static content sufficient for portfolio  |
+| User accounts   | Not needed for portfolio                 |
+| Project search  | Superseded by tabs + skill filtering     |
+| Semantic tokens | Single form doesn't justify token system |
 
 ---
 
@@ -151,6 +164,8 @@ Content Migration ──► Design System Foundation ──► TWM Layout System
 
 ## Change Log
 
+- **2026-02-19**: Post-Launch Validation completed. All phases complete — v1.0 shipped. Renamed
+  "Current Sequencing Strategy" to "Completed Sequencing Strategy". Backlog reframed as unplanned ideas.
 - **2026-02-13**: Launch Preparation completed and archived. Phase C marked complete. v1.0 deployed.
 - **2026-02-06**: Consolidated Phase C items 9-11 (Feature Flags, SEO, Deployment) into single
   Launch Preparation work unit (item 9). Cleaned stale backlog entries (Mod Portfolio complete,
