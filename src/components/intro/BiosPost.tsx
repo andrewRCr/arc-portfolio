@@ -14,6 +14,7 @@
  * - Fade target is opacity:0.01, not 0 (Chrome invalidates at 0)
  */
 
+import { ArcLogo } from "@/components/icons/ArcLogo";
 import {
   BIOS_POST_HEADER_FOCUS,
   BIOS_POST_INITIAL_PAUSE,
@@ -21,10 +22,6 @@ import {
   BIOS_POST_FINAL_HOLD,
   BIOS_POST_FADE_DURATION,
 } from "@/lib/animation-timing";
-
-/** ARC logo path from icon.svg (arch shape, no background rectangle) */
-const ARC_LOGO_PATH =
-  "M465 421L268 421L268 332L378 332L378 298A110 100 0 0 0 158 298L158 421L71 421L71 296A197 182 0 0 1 465 296Z";
 
 /** POST check lines (appear after initial pause, staggered) */
 const CHECK_LINES = ["CPU ...................... OK", "Memory .............. 640K OK", "Display .................. OK"];
@@ -102,10 +99,9 @@ export function BiosPost({ preview = false }: BiosPostProps) {
         {/* Logo — absolutely positioned at content edge so its left side
             aligns with the check lines below. Header text is indented by
             8 monospace characters to clear the logo + gap. */}
-        <svg
+        <ArcLogo
           aria-hidden="true"
           className="bios-header"
-          viewBox="60 100 420 325"
           style={{
             position: "absolute",
             left: "4.25rem",
@@ -114,9 +110,7 @@ export function BiosPost({ preview = false }: BiosPostProps) {
             height: "3rem",
             fill: "rgb(var(--primary))",
           }}
-        >
-          <path d={ARC_LOGO_PATH} />
-        </svg>
+        />
         {"        "}
         <span className="bios-header font-semibold">ARC BIOS v1.0</span>
         {"\n"}
