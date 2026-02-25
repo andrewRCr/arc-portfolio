@@ -4,6 +4,17 @@ Completed atomic tasks archived in reverse chronological order.
 
 ---
 
+- [x] **Remove Upstash Redis dependency from contact form rate limiting**
+    - **Outcome:** Removed `@upstash/redis` package and all Redis code paths from the contact
+      API route. Rate limiting now uses only the in-memory sliding window, which was already the
+      local dev and fallback path. Simplifies the stack — a portfolio contact form doesn't need
+      global Redis-backed rate limiting across serverless instances. Triggered by Upstash inactivity
+      archival notice. Existing tests (14) already exercised the in-memory path exclusively; all pass
+      unchanged. `checkRateLimit()` is now synchronous.
+    - **Files:** `src/app/api/contact/route.ts`, `.env.example`, `package.json`, `package-lock.json`
+
+    - **Branch:** `main`
+
 - [x] **Fix Ayu light muted-foreground indistinguishable from foreground**
     - **Outcome:** Ayu light's `muted-foreground` was only 1.12:1 from `foreground` (invisible
       difference) because contrast tests checked against raw tokens, not composited surfaces.

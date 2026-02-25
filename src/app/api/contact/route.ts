@@ -2,12 +2,11 @@
  * POST /api/contact
  *
  * Handles contact form submissions with validation, honeypot protection,
- * rate limiting, and email delivery via Zeptomail.
+ * in-memory rate limiting, and email delivery via Zeptomail.
  */
 
 import { NextResponse } from "next/server";
 import { z, ZodError } from "zod";
-import { Redis } from "@upstash/redis";
 
 // Validation schema (matches client-side)
 const MESSAGE_MAX_LENGTH = 2500;
@@ -27,59 +26,23 @@ const contactSchema = z.object({
 const RATE_LIMIT_WINDOW_SECONDS = 60; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 5; // 5 requests per minute
 
-// In-memory fallback for local development (when Upstash Redis is not configured)
-const localRateLimitMap = new Map<string, { count: number; resetTime: number }>();
-
-// Lazy-initialized Upstash Redis client (module-scoped singleton)
-let redisClient: Redis | null = null;
-
-function getRedisClient(): Redis | null {
-  if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) return null;
-  if (!redisClient) {
-    redisClient = new Redis({
-      url: process.env.KV_REST_API_URL,
-      token: process.env.KV_REST_API_TOKEN,
-    });
-  }
-  return redisClient;
-}
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
 // Export for testing - allows resetting rate limiter between tests
 export function _resetRateLimiter() {
-  localRateLimitMap.clear();
+  rateLimitMap.clear();
 }
 
 /**
- * Check rate limit using Upstash Redis (production) or in-memory fallback (local dev)
- * Returns true if request is allowed, false if rate limited
+ * Check rate limit using in-memory sliding window.
+ * Returns true if request is allowed, false if rate limited.
  */
-async function checkRateLimit(ip: string): Promise<boolean> {
-  const key = `rate_limit:contact:${ip}`;
-
-  // Try Upstash Redis first (production — env vars auto-injected by Vercel Marketplace integration)
-  const redis = getRedisClient();
-  if (redis) {
-    try {
-      const count = await redis.incr(key);
-
-      // Set expiry on first request in window
-      if (count === 1) {
-        await redis.expire(key, RATE_LIMIT_WINDOW_SECONDS);
-      }
-
-      return count <= RATE_LIMIT_MAX_REQUESTS;
-    } catch (error) {
-      console.error("[contact] Upstash Redis error, falling back to in-memory:", error);
-      // Fall through to in-memory fallback
-    }
-  }
-
-  // In-memory fallback for local development or KV failures
+function checkRateLimit(ip: string): boolean {
   const now = Date.now();
-  const record = localRateLimitMap.get(ip);
+  const record = rateLimitMap.get(ip);
 
   if (!record || now > record.resetTime) {
-    localRateLimitMap.set(ip, {
+    rateLimitMap.set(ip, {
       count: 1,
       resetTime: now + RATE_LIMIT_WINDOW_SECONDS * 1000,
     });
@@ -117,7 +80,7 @@ export async function POST(request: Request) {
     const clientIP = getClientIP(request);
 
     // Check rate limit
-    const allowed = await checkRateLimit(clientIP);
+    const allowed = checkRateLimit(clientIP);
     if (!allowed) {
       return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
     }
